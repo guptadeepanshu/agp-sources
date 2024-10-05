@@ -17,7 +17,9 @@
 package com.android.builder.dexing;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.io.ByteStreams;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;

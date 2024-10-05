@@ -19,23 +19,18 @@ package com.android.build.gradle.internal.fusedlibrary
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.DependencySet
 import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.specs.Spec
 
 class SegregatingConstraintHandler(
     private val incomingConfiguration: Configuration,
-    private val targetConfiguration: Configuration,
     private val mergeSpec: Spec<ComponentIdentifier>,
     private val project: Project,
-): Action<ResolvableDependencies> {
-
-    override fun execute(
-        resolvableDependencies: ResolvableDependencies,
-    ) {
-        println("constrained include : BEFORE RESOLVED ${incomingConfiguration.name} -> ${targetConfiguration.name}")
+): Action<DependencySet> {
+    override fun execute(targetDependencies: DependencySet) {
         incomingConfiguration.incoming.resolutionResult.allDependencies { dependency ->
             when (dependency) {
                 is ModuleDependency -> println("ModuleDep !")
@@ -44,9 +39,10 @@ class SegregatingConstraintHandler(
                         println("Removing merged dependency : ${dependency.selected.id}")
                     } else {
                         println("Keeping un-merged dependency : ${dependency.selected.id}")
-                        project.dependencies.add(
-                            targetConfiguration.name,
-                            dependency.selected.id.toString()
+                        targetDependencies.add(
+                            project.dependencies.create(
+                                dependency.selected.id.toString()
+                            )
                         )
                     }
                 }

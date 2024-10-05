@@ -271,8 +271,8 @@ class PublishingSpecs {
                 runtime(COMPILE_SYMBOL_LIST, ArtifactType.COMPILE_SYMBOL_LIST)
                 runtime(JAVA_RES, ArtifactType.JAVA_RES)
                 runtime(CONSUMER_PROGUARD_DIR, ArtifactType.UNFILTERED_PROGUARD_RULES)
-                runtime(LIBRARY_JNI, ArtifactType.JNI)
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
+                runtime(LIBRARY_JNI, ArtifactType.JNI)
                 runtime(COMPILED_LOCAL_RESOURCES, ArtifactType.COMPILED_DEPENDENCIES_RESOURCES)
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 runtime(InternalArtifactType.LIBRARY_ART_PROFILE, ArtifactType.ART_PROFILE)
@@ -336,18 +336,22 @@ class PublishingSpecs {
                 publish(com.android.build.api.artifact.SingleArtifact.AAR, ArtifactType.AAR)
 
                 api(COMPILE_LIBRARY_CLASSES_JAR, ArtifactType.CLASSES_JAR)
+                api(COMPILE_R_CLASS_JAR, ArtifactType.R_CLASS_JAR)
 
                 // manifest is published to both to compare and detect provided-only library
                 // dependencies.
                 output(MERGED_MANIFEST, ArtifactType.MANIFEST)
                 output(FULL_JAR, ArtifactType.JAR)
+                output(SYMBOL_LIST_WITH_PACKAGE_NAME, ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
 
                 runtime(RUNTIME_LIBRARY_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 // Publish the CLASSES_DIR artifact type with a LibraryElements.CLASSES attribute to
                 // match the behavior of the Java library plugin. The LibraryElements attribute will
                 // be used for incremental dexing of test fixtures.
                 runtime(RUNTIME_LIBRARY_CLASSES_DIR, ArtifactType.CLASSES_DIR, LibraryElements.CLASSES)
-
+                runtime(PACKAGED_RES, ArtifactType.ANDROID_RES)
+                runtime(PUBLIC_RES, ArtifactType.PUBLIC_RES)
+                runtime(COMPILE_SYMBOL_LIST, ArtifactType.COMPILE_SYMBOL_LIST)
                 runtime(JAVA_RES, ArtifactType.JAVA_RES)
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 runtime(CONSUMER_PROGUARD_DIR, ArtifactType.UNFILTERED_PROGUARD_RULES)

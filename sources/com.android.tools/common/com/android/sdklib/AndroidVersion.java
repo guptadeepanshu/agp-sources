@@ -88,6 +88,7 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
         public static final int S_V2 = 32;
         public static final int TIRAMISU = 33;
         public static final int UPSIDE_DOWN_CAKE = 34;
+        public static final int VANILLA_ICE_CREAM = 35;
     }
 
     /**
@@ -99,7 +100,8 @@ public final class AndroidVersion implements Comparable<AndroidVersion>, Seriali
         S(31, 1),
         S_V2(32, 1),
         TIRAMISU(33, 3),
-        UPSIDE_DOWN_CAKE(34, 7);
+        UPSIDE_DOWN_CAKE(34, 7),
+        VANILLA_ICE_CREAM(35, 13);
 
         private final int myApi;
 

@@ -177,6 +177,14 @@ private static final long serialVersionUID = 0L;
      * <code>MIGRATE_TEST_COVERAGE_ENABLED = 31;</code>
      */
     MIGRATE_TEST_COVERAGE_ENABLED(31),
+    /**
+     * <code>USE_ANDROIDX_DEFAULT = 32;</code>
+     */
+    USE_ANDROIDX_DEFAULT(32),
+    /**
+     * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT = 33;</code>
+     */
+    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT(33),
     ;
 
     /**
@@ -307,6 +315,14 @@ private static final long serialVersionUID = 0L;
      * <code>MIGRATE_TEST_COVERAGE_ENABLED = 31;</code>
      */
     public static final int MIGRATE_TEST_COVERAGE_ENABLED_VALUE = 31;
+    /**
+     * <code>USE_ANDROIDX_DEFAULT = 32;</code>
+     */
+    public static final int USE_ANDROIDX_DEFAULT_VALUE = 32;
+    /**
+     * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT = 33;</code>
+     */
+    public static final int EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT_VALUE = 33;
 
 
     public final int getNumber() {
@@ -361,6 +377,8 @@ private static final long serialVersionUID = 0L;
         case 29: return ANDROID_MANIFEST_USE_EMBEDDED_DEX;
         case 30: return SHADERS_DEFAULT;
         case 31: return MIGRATE_TEST_COVERAGE_ENABLED;
+        case 32: return USE_ANDROIDX_DEFAULT;
+        case 33: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT;
         default: return null;
       }
     }
@@ -1713,7 +1731,7 @@ private static final long serialVersionUID = 0L;
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    * @return Whether the java8DefaultSettings field is set.
    */
   @java.lang.Override
@@ -1726,7 +1744,7 @@ private static final long serialVersionUID = 0L;
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    * @return The java8DefaultSettings.
    */
   @java.lang.Override
@@ -1739,7 +1757,7 @@ private static final long serialVersionUID = 0L;
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettingsOrBuilder getJava8DefaultSettingsOrBuilder() {
@@ -1754,7 +1772,7 @@ private static final long serialVersionUID = 0L;
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    * @return Whether the r8FullModeDefaultSettings field is set.
    */
   @java.lang.Override
@@ -1767,7 +1785,7 @@ private static final long serialVersionUID = 0L;
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    * @return The r8FullModeDefaultSettings.
    */
   @java.lang.Override
@@ -1780,7 +1798,7 @@ private static final long serialVersionUID = 0L;
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder getR8FullModeDefaultSettingsOrBuilder() {
@@ -2361,7 +2379,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      * @return Whether the java8DefaultSettings field is set.
      */
     public boolean hasJava8DefaultSettings() {
@@ -2373,7 +2391,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      * @return The java8DefaultSettings.
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings getJava8DefaultSettings() {
@@ -2389,7 +2407,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public Builder setJava8DefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings value) {
       if (java8DefaultSettingsBuilder_ == null) {
@@ -2410,7 +2428,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public Builder setJava8DefaultSettings(
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.Builder builderForValue) {
@@ -2429,7 +2447,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public Builder mergeJava8DefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings value) {
       if (java8DefaultSettingsBuilder_ == null) {
@@ -2454,7 +2472,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public Builder clearJava8DefaultSettings() {
       if (java8DefaultSettingsBuilder_ == null) {
@@ -2472,7 +2490,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.Builder getJava8DefaultSettingsBuilder() {
       bitField0_ |= 0x00000004;
@@ -2485,7 +2503,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettingsOrBuilder getJava8DefaultSettingsOrBuilder() {
       if (java8DefaultSettingsBuilder_ != null) {
@@ -2501,7 +2519,7 @@ private static final long serialVersionUID = 0L;
      * JAVA8_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettingsOrBuilder> 
@@ -2526,7 +2544,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      * @return Whether the r8FullModeDefaultSettings field is set.
      */
     public boolean hasR8FullModeDefaultSettings() {
@@ -2538,7 +2556,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      * @return The r8FullModeDefaultSettings.
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getR8FullModeDefaultSettings() {
@@ -2554,7 +2572,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public Builder setR8FullModeDefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings value) {
       if (r8FullModeDefaultSettingsBuilder_ == null) {
@@ -2575,7 +2593,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public Builder setR8FullModeDefaultSettings(
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder builderForValue) {
@@ -2594,7 +2612,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public Builder mergeR8FullModeDefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings value) {
       if (r8FullModeDefaultSettingsBuilder_ == null) {
@@ -2619,7 +2637,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public Builder clearR8FullModeDefaultSettings() {
       if (r8FullModeDefaultSettingsBuilder_ == null) {
@@ -2637,7 +2655,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder getR8FullModeDefaultSettingsBuilder() {
       bitField0_ |= 0x00000008;
@@ -2650,7 +2668,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder getR8FullModeDefaultSettingsOrBuilder() {
       if (r8FullModeDefaultSettingsBuilder_ != null) {
@@ -2666,7 +2684,7 @@ private static final long serialVersionUID = 0L;
      * R8_FULL_MODE_DEFAULT.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder> 

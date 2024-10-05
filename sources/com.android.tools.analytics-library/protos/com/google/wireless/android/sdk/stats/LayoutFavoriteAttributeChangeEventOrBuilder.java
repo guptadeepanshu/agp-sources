@@ -12,7 +12,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    * @return Whether the added field is set.
    */
   boolean hasAdded();
@@ -21,7 +21,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    * @return The added.
    */
   com.google.wireless.android.sdk.stats.AndroidAttribute getAdded();
@@ -30,7 +30,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAddedOrBuilder();
 
@@ -39,7 +39,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    * @return Whether the removed field is set.
    */
   boolean hasRemoved();
@@ -48,7 +48,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    * @return The removed.
    */
   com.google.wireless.android.sdk.stats.AndroidAttribute getRemoved();
@@ -57,7 +57,7 @@ public interface LayoutFavoriteAttributeChangeEventOrBuilder extends
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getRemovedOrBuilder();
 

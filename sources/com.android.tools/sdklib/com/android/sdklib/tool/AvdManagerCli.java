@@ -1278,26 +1278,9 @@ class AvdManagerCli extends CommandLineParser {
      * @param hwConfig We may modify this
      */
     private static void updateUninitializedDynamicParameters(@NonNull Map<String, String> hwConfig) {
-
-        // Update the RAM size
-        boolean updateRamSize = true;
-        Storage ramSize;
-        String ramSizeString = hwConfig.get(EmulatedProperties.RAM_STORAGE_KEY);
-        if (ramSizeString != null) {
-            ramSize = Storage.getStorageFromString(ramSizeString);
-            updateRamSize = (ramSize == null || ramSize.getSize() == 0);
-        }
-        if (updateRamSize) {
-            String lcdWidthString = hwConfig.get(HardwareProperties.HW_LCD_WIDTH);
-            String lcdHeightString = hwConfig.get(HardwareProperties.HW_LCD_HEIGHT);
-            int numPixels;
-            try {
-                numPixels = Integer.parseInt(lcdWidthString) * Integer.parseInt(lcdHeightString);
-            } catch (Exception unused) {
-                numPixels = 1920 * 1080; // Just use a reasonable screen size
-            }
-            ramSize = EmulatedProperties.defaultRamStorage(numPixels);
-            hwConfig.put(EmulatedProperties.RAM_STORAGE_KEY, ramSize.toIniString());
+        Storage ramSize = Storage.getStorageFromString(hwConfig.get(EmulatedProperties.RAM_STORAGE_KEY));
+        if (ramSize == null || ramSize.getSize() == 0) {
+            hwConfig.put(EmulatedProperties.RAM_STORAGE_KEY, EmulatedProperties.MAX_DEFAULT_RAM_SIZE.toIniString());
         }
 
         // Update the internal data partition size
@@ -1349,7 +1332,7 @@ class AvdManagerCli extends CommandLineParser {
 
             boolean isWear = (screenDiagonalInches <= 2.5); // CDD 2.2.1 "Screen Size"
 
-            Storage heapSize = EmulatedProperties.calculateDefaultVmHeapSize(screenSize, density, isWear);
+            Storage heapSize = EmulatedProperties.minimumVmHeapSize(screenSize, density, isWear);
 
             hwConfig.put(EmulatedProperties.VM_HEAP_STORAGE_KEY, heapSize.toIniString());
         }

@@ -150,7 +150,7 @@ abstract class AbstractTestDataImpl(
 
     // Note: creationConfig.testedApplicationId returns the instrumentation target application ID.
     // testedApplicationId and instrumentationTargetPackageID are usually the same value
-    // except for the one case where there are test.apk and app.apk and the self-instrumeting
+    // except for the one case where there are test.apk and app.apk and the self-instrumenting
     // flag is enabled. See TestApplicationTestData class.
     override val testedApplicationId = creationConfig.testedApplicationId
 

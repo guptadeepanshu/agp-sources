@@ -16,6 +16,8 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.declarative.dsl.model.annotations.Restricted
+
 /**
  * A list of build features that can be disabled or enabled in an Android Application project.
  */
@@ -33,6 +35,7 @@ interface ApplicationBuildFeatures : BuildFeatures {
      *
      * More information about this feature at: TBD
      */
+    @get:Restricted
     var dataBinding: Boolean?
 
     /**

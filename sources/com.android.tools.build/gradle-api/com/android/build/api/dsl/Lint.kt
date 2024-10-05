@@ -16,6 +16,7 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.declarative.dsl.model.annotations.Restricted
 import java.io.File
 
 /**
@@ -125,6 +126,7 @@ interface Lint {
     val checkOnly: MutableSet<String>
 
     /** Whether lint should set the exit code of the process if errors are found */
+    @get:Restricted
     var abortOnError: Boolean
 
     /**
@@ -195,6 +197,7 @@ interface Lint {
      * Whether lint should check for fatal errors during release builds. Default is true. If issues
      * with severity "fatal" are found, the release build is aborted.
      */
+    @get:Restricted
     var checkReleaseBuilds: Boolean
 
     /**

@@ -45,6 +45,7 @@ import com.android.build.gradle.internal.tasks.SigningReportTask
 import com.android.build.gradle.internal.tasks.ValidateSigningTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
+import com.android.build.gradle.internal.utils.ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.utils.addComposeArgsToKotlinCompile
 import com.android.build.gradle.internal.utils.configureKotlinCompileTasks
@@ -336,7 +337,8 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
     }
 
     private fun configureKotlinPluginTasksIfNecessary() {
-        if (!isKotlinPluginAppliedInTheSameClassloader(project)) {
+        if (!isKotlinPluginAppliedInTheSameClassloader(project)
+            && !project.pluginManager.hasPlugin(ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID)) {
             return
         }
         val composeIsEnabled = allPropertiesList

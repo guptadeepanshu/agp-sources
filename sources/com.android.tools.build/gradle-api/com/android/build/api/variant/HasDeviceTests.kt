@@ -25,9 +25,13 @@ import org.gradle.api.Incubating
 interface HasDeviceTests {
 
     /**
-     * Variant's [List] of [DeviceTest] configurations, or empty if all devices tests (like android
+     * Variant's [Map] of [DeviceTest] configurations, or empty if all devices tests (like android
      * tests) are disabled for this variant.
+     *
+     *  @return a [Map] which keys are unique names within the tested variant like
+     * [DeviceTestBuilder.ANDROID_TEST_TYPE] and the values are [DeviceTest] for that host
+     * test suite.
      */
     @get:Incubating
-    val deviceTests: List<DeviceTest>
+    val deviceTests: Map<String, DeviceTest>
 }

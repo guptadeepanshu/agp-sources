@@ -28,8 +28,10 @@ import com.android.tools.r8.GenerateMainDexList;
 import com.android.tools.r8.GenerateMainDexListCommand;
 import com.android.tools.r8.errors.DuplicateTypesDiagnostic;
 import com.android.tools.r8.origin.Origin;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;

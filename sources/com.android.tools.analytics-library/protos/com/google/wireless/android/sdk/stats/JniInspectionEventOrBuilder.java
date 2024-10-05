@@ -45,7 +45,7 @@ public interface JniInspectionEventOrBuilder extends
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    * @return Whether the performanceEvent field is set.
    */
   boolean hasPerformanceEvent();
@@ -55,7 +55,7 @@ public interface JniInspectionEventOrBuilder extends
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    * @return The performanceEvent.
    */
   com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent getPerformanceEvent();
@@ -65,7 +65,7 @@ public interface JniInspectionEventOrBuilder extends
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEventOrBuilder getPerformanceEventOrBuilder();
 }

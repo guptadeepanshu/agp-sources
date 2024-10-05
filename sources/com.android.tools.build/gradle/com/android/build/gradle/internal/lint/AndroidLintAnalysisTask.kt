@@ -313,13 +313,14 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             )
             task.projectInputs.initialize(variant, LintMode.ANALYSIS)
             task.variantInputs.initialize(
+                task,
                 variant,
                 useModuleDependencyLintModels = false,
                 warnIfProjectTreatedAsExternalDependency = false,
                 LintMode.ANALYSIS,
                 fatalOnly = fatalOnly
             )
-            task.lintTool.initialize(creationConfig.services, name)
+            task.lintTool.initialize(creationConfig.services, task)
             task.desugaredMethodsFiles.from(
                 getDesugaredMethods(
                     creationConfig.services,
@@ -420,6 +421,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             )
             task.projectInputs.initialize(mainVariant, LintMode.ANALYSIS)
             task.variantInputs.initialize(
+                task,
                 mainVariant,
                 creationConfig as? HostTestCreationConfig,
                 creationConfig as? DeviceTestCreationConfig,
@@ -435,7 +437,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 isPerComponentLintAnalysis = true
             )
 
-            task.lintTool.initialize(mainVariant.services, name)
+            task.lintTool.initialize(mainVariant.services, task)
             task.desugaredMethodsFiles.from(
                 getDesugaredMethods(
                     mainVariant.services,
@@ -526,7 +528,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         this.analyticsService.setDisallowChanges(getBuildService(taskCreationServices.buildServiceRegistry))
         this.fatalOnly.setDisallowChanges(fatalOnly)
         this.checkOnly.setDisallowChanges(lintOptions.checkOnly)
-        this.lintTool.initialize(taskCreationServices, this.name)
+        this.lintTool.initialize(taskCreationServices, this)
         this.projectInputs
             .initializeForStandalone(
                 project,
@@ -537,6 +539,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         this.variantInputs
             .initializeForStandalone(
                 project,
+                this,
                 javaPluginExtension,
                 kotlinExtensionWrapper,
                 taskCreationServices.projectOptions,

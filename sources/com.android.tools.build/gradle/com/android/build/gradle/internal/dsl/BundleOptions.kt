@@ -33,6 +33,7 @@ abstract class BundleOptions : Bundle {
     abstract override val storeArchive: BundleOptionsStoreArchive
     abstract override val integrityConfigDir: DirectoryProperty
     abstract override val countrySet: BundleOptionsCountrySet
+    abstract override val aiModelVersion: BundleOptionsAiModelVersion
 
     abstract fun abi(action: Action<BundleOptionsAbi>)
     abstract fun density(action: Action<BundleOptionsDensity>)
@@ -41,4 +42,5 @@ abstract class BundleOptions : Bundle {
     abstract fun deviceTier(action: Action<BundleOptionsDeviceTier>)
     abstract fun storeArchive(action: Action<BundleOptionsStoreArchive>)
     abstract fun countrySet(action: Action<BundleOptionsCountrySet>)
+    abstract fun aiModelVersion(action: Action<BundleOptionsAiModelVersion>)
 }

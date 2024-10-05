@@ -115,7 +115,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             instrumentationRunner.get(),
             handleProfiling.orNull,
             functionalTest.orNull,
-            testLabel.orNull,
+            testLabel.orNull?.let { it.ifEmpty { null } },
             if (testManifestFile.get().asFile.isFile) testManifestFile.get().asFile else null,
             computeProviders(),
             placeholdersValues.get(),
@@ -427,7 +427,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
 
     @get:Optional
     @get:Input
-    abstract val testLabel: Property<String?>
+    abstract val testLabel: Property<String>
 
     @get:Input
     abstract val placeholdersValues: MapProperty<String, String>

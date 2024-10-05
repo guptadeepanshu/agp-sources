@@ -1703,7 +1703,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -1713,7 +1713,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -1723,7 +1723,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -1821,7 +1821,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -1834,7 +1834,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -1847,7 +1847,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -2328,7 +2328,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the metadata field is set.
        */
@@ -2340,7 +2340,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The metadata.
        */
@@ -2356,7 +2356,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -2376,7 +2376,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -2394,7 +2394,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -2418,7 +2418,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -2435,7 +2435,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -2447,7 +2447,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -2462,7 +2462,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -2668,7 +2668,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the result field is set.
      */
@@ -2678,7 +2678,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The result.
      */
@@ -2688,7 +2688,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder();
 
@@ -2697,7 +2697,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the backendError field is set.
      */
@@ -2707,7 +2707,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The backendError.
      */
@@ -2717,7 +2717,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder();
   }
@@ -2773,7 +2773,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the result field is set.
      */
@@ -2786,7 +2786,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The result.
      */
@@ -2799,7 +2799,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
@@ -2813,7 +2813,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the backendError field is set.
      */
@@ -2826,7 +2826,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The backendError.
      */
@@ -2839,7 +2839,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
@@ -3242,7 +3242,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the result field is set.
        */
@@ -3254,7 +3254,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The result.
        */
@@ -3270,7 +3270,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
         if (resultBuilder_ == null) {
@@ -3290,7 +3290,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setResult(
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder builderForValue) {
@@ -3308,7 +3308,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeResult(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult value) {
         if (resultBuilder_ == null) {
@@ -3332,7 +3332,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearResult() {
         if (resultBuilder_ == null) {
@@ -3349,7 +3349,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder getResultBuilder() {
         bitField0_ |= 0x00000001;
@@ -3361,7 +3361,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder getResultOrBuilder() {
         if (resultBuilder_ != null) {
@@ -3376,7 +3376,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionResult result = 1 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResult.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResultOrBuilder> 
@@ -3400,7 +3400,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the backendError field is set.
        */
@@ -3412,7 +3412,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The backendError.
        */
@@ -3428,7 +3428,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
         if (backendErrorBuilder_ == null) {
@@ -3448,7 +3448,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setBackendError(
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder builderForValue) {
@@ -3466,7 +3466,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeBackendError(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError value) {
         if (backendErrorBuilder_ == null) {
@@ -3490,7 +3490,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearBackendError() {
         if (backendErrorBuilder_ == null) {
@@ -3507,7 +3507,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder getBackendErrorBuilder() {
         bitField0_ |= 0x00000002;
@@ -3519,7 +3519,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder getBackendErrorOrBuilder() {
         if (backendErrorBuilder_ != null) {
@@ -3534,7 +3534,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlCompletionEvent.CompletionError backend_error = 2 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionError.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionErrorOrBuilder> 
@@ -3622,7 +3622,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -3632,7 +3632,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -3642,7 +3642,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -3719,7 +3719,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -3732,7 +3732,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -3745,7 +3745,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -4166,7 +4166,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the metadata field is set.
        */
@@ -4178,7 +4178,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The metadata.
        */
@@ -4194,7 +4194,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -4214,7 +4214,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -4232,7 +4232,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -4256,7 +4256,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -4273,7 +4273,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -4285,7 +4285,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -4300,7 +4300,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -4447,7 +4447,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -4457,7 +4457,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -4467,7 +4467,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -4565,7 +4565,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the metadata field is set.
      */
@@ -4578,7 +4578,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The metadata.
      */
@@ -4591,7 +4591,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -5071,7 +5071,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the metadata field is set.
        */
@@ -5083,7 +5083,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The metadata.
        */
@@ -5099,7 +5099,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -5119,7 +5119,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -5137,7 +5137,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -5161,7 +5161,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -5178,7 +5178,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -5190,7 +5190,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -5205,7 +5205,7 @@ private static final long serialVersionUID = 0L;
        * Historical: Not used starting with Android Studio 2023.2.1.11
        * </pre>
        *
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true];</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -5468,32 +5468,32 @@ private static final long serialVersionUID = 0L;
     int getCompletionsAccepted();
 
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      * @return Whether the latenciesMs field is set.
      */
     boolean hasLatenciesMs();
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      * @return The latenciesMs.
      */
     com.google.wireless.android.sdk.stats.Histogram getLatenciesMs();
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder();
 
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      * @return Whether the notAcceptedShownDurationsMs field is set.
      */
     boolean hasNotAcceptedShownDurationsMs();
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      * @return The notAcceptedShownDurationsMs.
      */
     com.google.wireless.android.sdk.stats.Histogram getNotAcceptedShownDurationsMs();
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder();
   }
@@ -5789,7 +5789,7 @@ private static final long serialVersionUID = 0L;
     public static final int LATENCIES_MS_FIELD_NUMBER = 6;
     private com.google.wireless.android.sdk.stats.Histogram latenciesMs_;
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      * @return Whether the latenciesMs field is set.
      */
     @java.lang.Override
@@ -5797,7 +5797,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      * @return The latenciesMs.
      */
     @java.lang.Override
@@ -5805,7 +5805,7 @@ private static final long serialVersionUID = 0L;
       return latenciesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : latenciesMs_;
     }
     /**
-     * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+     * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder() {
@@ -5815,7 +5815,7 @@ private static final long serialVersionUID = 0L;
     public static final int NOT_ACCEPTED_SHOWN_DURATIONS_MS_FIELD_NUMBER = 7;
     private com.google.wireless.android.sdk.stats.Histogram notAcceptedShownDurationsMs_;
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      * @return Whether the notAcceptedShownDurationsMs field is set.
      */
     @java.lang.Override
@@ -5823,7 +5823,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      * @return The notAcceptedShownDurationsMs.
      */
     @java.lang.Override
@@ -5831,7 +5831,7 @@ private static final long serialVersionUID = 0L;
       return notAcceptedShownDurationsMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : notAcceptedShownDurationsMs_;
     }
     /**
-     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+     * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder() {
@@ -6637,14 +6637,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> latenciesMsBuilder_;
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        * @return Whether the latenciesMs field is set.
        */
       public boolean hasLatenciesMs() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        * @return The latenciesMs.
        */
       public com.google.wireless.android.sdk.stats.Histogram getLatenciesMs() {
@@ -6655,7 +6655,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public Builder setLatenciesMs(com.google.wireless.android.sdk.stats.Histogram value) {
         if (latenciesMsBuilder_ == null) {
@@ -6671,7 +6671,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public Builder setLatenciesMs(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -6685,7 +6685,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public Builder mergeLatenciesMs(com.google.wireless.android.sdk.stats.Histogram value) {
         if (latenciesMsBuilder_ == null) {
@@ -6705,7 +6705,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public Builder clearLatenciesMs() {
         if (latenciesMsBuilder_ == null) {
@@ -6718,7 +6718,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getLatenciesMsBuilder() {
         bitField0_ |= 0x00000020;
@@ -6726,7 +6726,7 @@ private static final long serialVersionUID = 0L;
         return getLatenciesMsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getLatenciesMsOrBuilder() {
         if (latenciesMsBuilder_ != null) {
@@ -6737,7 +6737,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.Histogram latencies_ms = 6;</code>
+       * <code>optional .android_studio.Histogram latencies_ms = 6 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -6757,14 +6757,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> notAcceptedShownDurationsMsBuilder_;
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        * @return Whether the notAcceptedShownDurationsMs field is set.
        */
       public boolean hasNotAcceptedShownDurationsMs() {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        * @return The notAcceptedShownDurationsMs.
        */
       public com.google.wireless.android.sdk.stats.Histogram getNotAcceptedShownDurationsMs() {
@@ -6775,7 +6775,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public Builder setNotAcceptedShownDurationsMs(com.google.wireless.android.sdk.stats.Histogram value) {
         if (notAcceptedShownDurationsMsBuilder_ == null) {
@@ -6791,7 +6791,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public Builder setNotAcceptedShownDurationsMs(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -6805,7 +6805,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public Builder mergeNotAcceptedShownDurationsMs(com.google.wireless.android.sdk.stats.Histogram value) {
         if (notAcceptedShownDurationsMsBuilder_ == null) {
@@ -6825,7 +6825,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public Builder clearNotAcceptedShownDurationsMs() {
         if (notAcceptedShownDurationsMsBuilder_ == null) {
@@ -6838,7 +6838,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getNotAcceptedShownDurationsMsBuilder() {
         bitField0_ |= 0x00000040;
@@ -6846,7 +6846,7 @@ private static final long serialVersionUID = 0L;
         return getNotAcceptedShownDurationsMsFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getNotAcceptedShownDurationsMsOrBuilder() {
         if (notAcceptedShownDurationsMsBuilder_ != null) {
@@ -6857,7 +6857,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7;</code>
+       * <code>optional .android_studio.Histogram not_accepted_shown_durations_ms = 7 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -6990,7 +6990,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the request field is set.
    */
@@ -7003,7 +7003,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The request.
    */
@@ -7019,7 +7019,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
@@ -7035,7 +7035,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the response field is set.
    */
@@ -7048,7 +7048,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The response.
    */
@@ -7064,7 +7064,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
@@ -7080,7 +7080,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the shown field is set.
    */
@@ -7093,7 +7093,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The shown.
    */
@@ -7109,7 +7109,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
@@ -7125,7 +7125,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the accepted field is set.
    */
@@ -7138,7 +7138,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The accepted.
    */
@@ -7154,7 +7154,7 @@ private static final long serialVersionUID = 0L;
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
@@ -7166,7 +7166,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int AGGREGATE_FIELD_NUMBER = 5;
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    * @return Whether the aggregate field is set.
    */
   @java.lang.Override
@@ -7174,7 +7174,7 @@ private static final long serialVersionUID = 0L;
     return completionCase_ == 5;
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    * @return The aggregate.
    */
   @java.lang.Override
@@ -7185,7 +7185,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder() {
@@ -7711,7 +7711,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the request field is set.
      */
@@ -7724,7 +7724,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The request.
      */
@@ -7747,7 +7747,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
       if (requestBuilder_ == null) {
@@ -7767,7 +7767,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setRequest(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder builderForValue) {
@@ -7785,7 +7785,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeRequest(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest value) {
       if (requestBuilder_ == null) {
@@ -7811,7 +7811,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearRequest() {
       if (requestBuilder_ == null) {
@@ -7834,7 +7834,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder getRequestBuilder() {
       return getRequestFieldBuilder().getBuilder();
@@ -7844,7 +7844,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder() {
@@ -7862,7 +7862,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequest.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder> 
@@ -7890,7 +7890,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the response field is set.
      */
@@ -7903,7 +7903,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The response.
      */
@@ -7926,7 +7926,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
       if (responseBuilder_ == null) {
@@ -7946,7 +7946,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setResponse(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder builderForValue) {
@@ -7964,7 +7964,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeResponse(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse value) {
       if (responseBuilder_ == null) {
@@ -7990,7 +7990,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearResponse() {
       if (responseBuilder_ == null) {
@@ -8013,7 +8013,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder getResponseBuilder() {
       return getResponseFieldBuilder().getBuilder();
@@ -8023,7 +8023,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder() {
@@ -8041,7 +8041,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponse.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder> 
@@ -8069,7 +8069,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the shown field is set.
      */
@@ -8082,7 +8082,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The shown.
      */
@@ -8105,7 +8105,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
       if (shownBuilder_ == null) {
@@ -8125,7 +8125,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setShown(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder builderForValue) {
@@ -8143,7 +8143,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeShown(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown value) {
       if (shownBuilder_ == null) {
@@ -8169,7 +8169,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearShown() {
       if (shownBuilder_ == null) {
@@ -8192,7 +8192,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder getShownBuilder() {
       return getShownFieldBuilder().getBuilder();
@@ -8202,7 +8202,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder() {
@@ -8220,7 +8220,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShown.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder> 
@@ -8248,7 +8248,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the accepted field is set.
      */
@@ -8261,7 +8261,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The accepted.
      */
@@ -8284,7 +8284,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
       if (acceptedBuilder_ == null) {
@@ -8304,7 +8304,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setAccepted(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder builderForValue) {
@@ -8322,7 +8322,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeAccepted(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted value) {
       if (acceptedBuilder_ == null) {
@@ -8348,7 +8348,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearAccepted() {
       if (acceptedBuilder_ == null) {
@@ -8371,7 +8371,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder getAcceptedBuilder() {
       return getAcceptedFieldBuilder().getBuilder();
@@ -8381,7 +8381,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder() {
@@ -8399,7 +8399,7 @@ private static final long serialVersionUID = 0L;
      * Historical: Not used starting with Android Studio 2023.2.1.11
      * </pre>
      *
-     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAccepted.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder> 
@@ -8423,7 +8423,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder> aggregateBuilder_;
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      * @return Whether the aggregate field is set.
      */
     @java.lang.Override
@@ -8431,7 +8431,7 @@ private static final long serialVersionUID = 0L;
       return completionCase_ == 5;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      * @return The aggregate.
      */
     @java.lang.Override
@@ -8449,7 +8449,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     public Builder setAggregate(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent value) {
       if (aggregateBuilder_ == null) {
@@ -8465,7 +8465,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     public Builder setAggregate(
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder builderForValue) {
@@ -8479,7 +8479,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     public Builder mergeAggregate(com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent value) {
       if (aggregateBuilder_ == null) {
@@ -8501,7 +8501,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     public Builder clearAggregate() {
       if (aggregateBuilder_ == null) {
@@ -8520,13 +8520,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder getAggregateBuilder() {
       return getAggregateFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder() {
@@ -8540,7 +8540,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+     * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent.Builder, com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder> 

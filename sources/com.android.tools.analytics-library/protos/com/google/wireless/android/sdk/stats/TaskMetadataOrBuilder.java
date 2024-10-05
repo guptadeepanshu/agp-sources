@@ -113,7 +113,7 @@ public interface TaskMetadataOrBuilder extends
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    * @return Whether the taskConfig field is set.
    */
   boolean hasTaskConfig();
@@ -122,7 +122,7 @@ public interface TaskMetadataOrBuilder extends
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    * @return The taskConfig.
    */
   com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig getTaskConfig();
@@ -131,7 +131,7 @@ public interface TaskMetadataOrBuilder extends
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfigOrBuilder getTaskConfigOrBuilder();
 }

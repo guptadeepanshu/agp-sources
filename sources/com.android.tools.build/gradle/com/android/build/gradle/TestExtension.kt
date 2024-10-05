@@ -1,6 +1,5 @@
 package com.android.build.gradle
 
-import com.android.build.api.dsl.PrivacySandbox
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariant
@@ -16,6 +15,7 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.internal.DefaultDomainObjectSet
@@ -27,14 +27,16 @@ open class TestExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    private val publicExtensionImpl: TestExtensionImpl
+    private val publicExtensionImpl: TestExtensionImpl,
+    stats: GradleBuildProject.Builder?
 ) : BaseExtension(
     dslServices,
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    false
+    false,
+    stats
 ), TestAndroidConfig,
     InternalTestExtension by publicExtensionImpl {
 

@@ -169,7 +169,7 @@ public class ConnectedDeviceProvider extends DeviceProvider {
                             device.getState(),
                             device.getState() == IDevice.DeviceState.UNAUTHORIZED
                                     ? ",\n"
-                                    + "    see http://d.android.com/tools/help/adb.html#Enabling"
+                                            + "    see http://d.android.com/tools/help/adb.html#Enabling"
                                     : "");
                 }
             }
@@ -186,6 +186,7 @@ public class ConnectedDeviceProvider extends DeviceProvider {
             }
             // ensure device names are unique since many reports are keyed off of names.
             makeDeviceNamesUnique();
+
         } catch (Throwable throwable) {
             Log.removeLogger(logAdapter);
             logAdapter = null;

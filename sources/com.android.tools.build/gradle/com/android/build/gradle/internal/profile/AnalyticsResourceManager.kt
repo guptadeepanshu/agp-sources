@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.profile
 
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.VariantTask
 import com.android.build.gradle.options.BooleanOption
@@ -322,7 +323,7 @@ class AnalyticsResourceManager constructor(
         // Use 'platform independent' path to match AS behaviour.
         rootProjectPath = project.rootProject.projectDir.absolutePath.replace('\\', '/')
         enableProfileJson = projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON)
-        profileDir = getProfileDir(projectOptions, project.gradle)?.toFile()
+        profileDir = getProfileDir(projectOptions, project)?.toFile()
     }
 
     fun collectTaskMetadata(graph: TaskExecutionGraph) {
@@ -467,20 +468,24 @@ class AnalyticsResourceManager constructor(
             .build()
     }
 
-    private fun getProfileDir(projectOptions: ProjectOptions, gradle: Gradle): Path? {
+    private fun getProfileDir(projectOptions: ProjectOptions, project: Project): Path? {
         val profileDir = projectOptions.get(StringOption.PROFILE_OUTPUT_DIR)
         val enableJsonProfile = projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON)
         return when {
             profileDir != null -> {
-                gradle.rootProject.file(profileDir).toPath()
+                project.isolated.rootProject.projectDirectory.dir(profileDir).asFile.toPath()
             }
             enableJsonProfile -> {
                 // If profile json is enabled but no directory is given for the profile outputs,
                 // default to build/android-profile
-                gradle.rootProject
-                    .buildDir
-                    .toPath()
-                    .resolve(PROFILE_DIRECTORY)
+                val profileDir = project.isolated.rootProject.projectDirectory
+                    .dir("build/${PROFILE_DIRECTORY}").asFile.toPath()
+                LoggerWrapper.getLogger(this::class.java).info(
+                    "Profile outputs directory is set to build/${PROFILE_DIRECTORY} as default " +
+                            "because profile json is enabled but no directory is given for the " +
+                            "profile outputs. To configure the profile outputs directory, please"  +
+                            "use android.advanced.profileOutputDir gradle property")
+                profileDir
             }
             else -> {
                 null

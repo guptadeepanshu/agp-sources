@@ -16,19 +16,25 @@
 
 package com.android.build.gradle.internal.plugins
 
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.FusedLibraryExtension
 import com.android.build.gradle.internal.dsl.FusedLibraryExtensionImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScopeImpl
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScopeImpl
 import com.android.build.gradle.internal.fusedlibrary.SegregatingConstraintHandler
 import com.android.build.gradle.internal.fusedlibrary.configureElements
 import com.android.build.gradle.internal.fusedlibrary.configureTransformsForFusedLibrary
 import com.android.build.gradle.internal.fusedlibrary.createTasks
+import com.android.build.gradle.internal.fusedlibrary.failForDatabindingDependencies
 import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.tasks.MergeJavaResourceTask
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.FusedLibraryBundleAar
@@ -37,6 +43,7 @@ import com.android.build.gradle.tasks.FusedLibraryClassesRewriteTask
 import com.android.build.gradle.tasks.FusedLibraryManifestMergerTask
 import com.android.build.gradle.tasks.FusedLibraryMergeArtifactTask
 import com.android.build.gradle.tasks.FusedLibraryMergeClasses
+import com.android.build.gradle.tasks.FusedLibraryMergeResourceCompileSymbolsTask
 import com.android.build.gradle.tasks.FusedLibraryMergeResourcesTask
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import groovy.namespace.QName
@@ -75,11 +82,13 @@ class FusedLibraryPlugin @Inject constructor(
         }
     }
 
-    private val variantScope: FusedLibraryVariantScope by lazy(LazyThreadSafetyMode.NONE) {
+    private val variantScope: FusedLibraryGlobalScope by lazy(LazyThreadSafetyMode.NONE) {
         withProject("variantScope") { project ->
-            FusedLibraryVariantScopeImpl(
-                    project
-            ) { extension }
+            FusedLibraryGlobalScopeImpl(
+                    project,
+                    projectServices,
+                    { extension }
+            )
         }
     }
 
@@ -90,6 +99,11 @@ class FusedLibraryPlugin @Inject constructor(
     }
 
     override fun configureProject(project: Project) {
+        Aapt2DaemonBuildService
+            .RegistrationAction(project, projectServices.projectOptions).execute()
+        Aapt2ThreadPoolBuildService
+            .RegistrationAction(project, projectServices.projectOptions).execute()
+        SymbolTableBuildService.RegistrationAction(project).execute()
     }
 
     override fun configureExtension(project: Project) {
@@ -264,7 +278,8 @@ class FusedLibraryPlugin @Inject constructor(
                         FusedLibraryMergeClasses.FusedLibraryCreationAction(variantScope),
                         FusedLibraryBundleClasses.CreationAction(variantScope),
                         FusedLibraryBundleAar.CreationAction(variantScope),
-                        MergeJavaResourceTask.FusedLibraryCreationAction(variantScope)
+                        MergeJavaResourceTask.FusedLibraryCreationAction(variantScope),
+                        FusedLibraryMergeResourceCompileSymbolsTask.CreationAction(variantScope)
                 ) + FusedLibraryMergeArtifactTask.getCreationActions(variantScope),
         )
     }
@@ -297,66 +312,74 @@ class FusedLibraryPlugin @Inject constructor(
         // to the resolved 'include' dependency. It is for JAVA_API usage which mean all transitive
         // dependencies that are implementation() scoped will not be included.
         val includeApiClasspath = project.configurations.create("includeApiClasspath").also {
-            it.isCanBeConsumed = false
-            it.attributes.attribute(
+            apiClasspath ->
+            apiClasspath.isCanBeConsumed = false
+            apiClasspath.attributes.attribute(
                     Usage.USAGE_ATTRIBUTE,
                     project.objects.named(Usage::class.java, Usage.JAVA_API)
             )
             val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
-            it.attributes.attribute(
+            apiClasspath.attributes.attribute(
                     BuildTypeAttr.ATTRIBUTE,
                     buildType,
             )
-            it.extendsFrom(includeConfigurations)
+
+            apiClasspath.failForDatabindingDependencies()
+
+            apiClasspath.extendsFrom(includeConfigurations)
         }
         // This is the configuration that will contain all the JAVA_API dependencies that are not
         // fused in the resulting aar library.
-        val includedApiUnmerged = project.configurations.create("includeApiUnmerged").also {
-            it.isCanBeConsumed = false
-            it.isCanBeResolved = true
-            it.incoming.beforeResolve(
+        val includedApiUnmerged =
+            project.configurations.create("includeApiUnmerged").also { targetConfiguration ->
+                targetConfiguration.isCanBeConsumed = false
+                targetConfiguration.isCanBeResolved = true
+
+                targetConfiguration.withDependencies {
                     SegregatingConstraintHandler(
-                            includeApiClasspath,
-                            it,
-                            variantScope.mergeSpec,
-                            project,
+                        includeApiClasspath,
+                        variantScope.mergeSpec,
+                        project
                     )
-            )
+                }
         }
         // This is the internal configuration that will be used to feed tasks that require access
         // to the resolved 'include' dependency. It is for JAVA_RUNTIME usage which mean all transitive
         // dependencies that are implementation() scoped will  be included.
         val includeRuntimeClasspath =
                 project.configurations.create("includeRuntimeClasspath").also {
-                    it.isCanBeConsumed = false
-                    it.isCanBeResolved = true
+                    runtimeClasspath ->
+                    runtimeClasspath.isCanBeConsumed = false
+                    runtimeClasspath.isCanBeResolved = true
 
-                    it.attributes.attribute(
+                    runtimeClasspath.attributes.attribute(
                             Usage.USAGE_ATTRIBUTE,
                             project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
                     )
                     val buildType: BuildTypeAttr =
                             project.objects.named(BuildTypeAttr::class.java, "debug")
-                    it.attributes.attribute(
+                    runtimeClasspath.attributes.attribute(
                             BuildTypeAttr.ATTRIBUTE,
                             buildType,
                     )
 
-                    it.extendsFrom(includeConfigurations)
+                    runtimeClasspath.failForDatabindingDependencies()
+
+                    runtimeClasspath.extendsFrom(includeConfigurations)
                 }
         // This is the configuration that will contain all the JAVA_RUNTIME dependencies that are
         // not fused in the resulting aar library.
-        val includeRuntimeUnmerged = project.configurations.create("includeRuntimeUnmerged").also {
-            it.isCanBeConsumed = false
-            it.isCanBeResolved = true
-            it.incoming.beforeResolve(
+        val includeRuntimeUnmerged =
+            project.configurations.create("includeRuntimeUnmerged").also { targetConfiguration ->
+                targetConfiguration.isCanBeConsumed = false
+                targetConfiguration.isCanBeResolved = true
+                targetConfiguration.withDependencies {
                     SegregatingConstraintHandler(
-                            includeConfigurations,
-                            it,
-                            variantScope.mergeSpec,
-                            project,
+                        includeConfigurations,
+                        variantScope.mergeSpec,
+                        project,
                     )
-            )
+                }
         }
         // this is the outgoing configuration for JAVA_API scoped declarations, it will contain
         // this module and all transitive non merged dependencies
@@ -397,6 +420,13 @@ class FusedLibraryPlugin @Inject constructor(
                 includeApiElements,
                 includeRuntimeElements,
                 includeRuntimeUnmerged
+        )
+
+        variantScope.artifacts.forScope(
+            InternalScopedArtifacts.InternalScope.LOCAL_DEPS
+        ).setInitialContent(
+            ScopedArtifact.CLASSES,
+            variantScope.getLocalJars()
         )
     }
 }

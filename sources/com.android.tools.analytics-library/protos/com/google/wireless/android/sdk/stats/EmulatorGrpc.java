@@ -266,7 +266,7 @@ private static final long serialVersionUID = 0L;
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    * @return Whether the rcvBytesEstimate field is set.
    */
   @java.lang.Override
@@ -278,7 +278,7 @@ private static final long serialVersionUID = 0L;
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    * @return The rcvBytesEstimate.
    */
   @java.lang.Override
@@ -290,7 +290,7 @@ private static final long serialVersionUID = 0L;
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvBytesEstimateOrBuilder() {
@@ -304,7 +304,7 @@ private static final long serialVersionUID = 0L;
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    * @return Whether the sndBytesEstimate field is set.
    */
   @java.lang.Override
@@ -316,7 +316,7 @@ private static final long serialVersionUID = 0L;
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    * @return The sndBytesEstimate.
    */
   @java.lang.Override
@@ -328,7 +328,7 @@ private static final long serialVersionUID = 0L;
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndBytesEstimateOrBuilder() {
@@ -342,7 +342,7 @@ private static final long serialVersionUID = 0L;
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    * @return Whether the duration field is set.
    */
   @java.lang.Override
@@ -354,7 +354,7 @@ private static final long serialVersionUID = 0L;
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    * @return The duration.
    */
   @java.lang.Override
@@ -366,7 +366,7 @@ private static final long serialVersionUID = 0L;
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDurationOrBuilder() {
@@ -380,7 +380,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    * @return Whether the rcv field is set.
    */
   @java.lang.Override
@@ -392,7 +392,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    * @return The rcv.
    */
   @java.lang.Override
@@ -404,7 +404,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvOrBuilder() {
@@ -418,7 +418,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    * @return Whether the snd field is set.
    */
   @java.lang.Override
@@ -430,7 +430,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    * @return The snd.
    */
   @java.lang.Override
@@ -442,7 +442,7 @@ private static final long serialVersionUID = 0L;
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndOrBuilder() {
@@ -1286,7 +1286,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      * @return Whether the rcvBytesEstimate field is set.
      */
     public boolean hasRcvBytesEstimate() {
@@ -1297,7 +1297,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      * @return The rcvBytesEstimate.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getRcvBytesEstimate() {
@@ -1312,7 +1312,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public Builder setRcvBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBytesEstimateBuilder_ == null) {
@@ -1332,7 +1332,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public Builder setRcvBytesEstimate(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1350,7 +1350,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public Builder mergeRcvBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBytesEstimateBuilder_ == null) {
@@ -1374,7 +1374,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public Builder clearRcvBytesEstimate() {
       if (rcvBytesEstimateBuilder_ == null) {
@@ -1391,7 +1391,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getRcvBytesEstimateBuilder() {
       bitField0_ |= 0x00000008;
@@ -1403,7 +1403,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvBytesEstimateOrBuilder() {
       if (rcvBytesEstimateBuilder_ != null) {
@@ -1418,7 +1418,7 @@ private static final long serialVersionUID = 0L;
      * Sum of received message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 
@@ -1442,7 +1442,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      * @return Whether the sndBytesEstimate field is set.
      */
     public boolean hasSndBytesEstimate() {
@@ -1453,7 +1453,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      * @return The sndBytesEstimate.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getSndBytesEstimate() {
@@ -1468,7 +1468,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public Builder setSndBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBytesEstimateBuilder_ == null) {
@@ -1488,7 +1488,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public Builder setSndBytesEstimate(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1506,7 +1506,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public Builder mergeSndBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBytesEstimateBuilder_ == null) {
@@ -1530,7 +1530,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public Builder clearSndBytesEstimate() {
       if (sndBytesEstimateBuilder_ == null) {
@@ -1547,7 +1547,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getSndBytesEstimateBuilder() {
       bitField0_ |= 0x00000010;
@@ -1559,7 +1559,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndBytesEstimateOrBuilder() {
       if (sndBytesEstimateBuilder_ != null) {
@@ -1574,7 +1574,7 @@ private static final long serialVersionUID = 0L;
      * Sum of sent message size, if streaming
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 
@@ -1598,7 +1598,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      * @return Whether the duration field is set.
      */
     public boolean hasDuration() {
@@ -1609,7 +1609,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      * @return The duration.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getDuration() {
@@ -1624,7 +1624,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public Builder setDuration(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (durationBuilder_ == null) {
@@ -1644,7 +1644,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public Builder setDuration(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1662,7 +1662,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public Builder mergeDuration(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (durationBuilder_ == null) {
@@ -1686,7 +1686,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public Builder clearDuration() {
       if (durationBuilder_ == null) {
@@ -1703,7 +1703,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getDurationBuilder() {
       bitField0_ |= 0x00000020;
@@ -1715,7 +1715,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDurationOrBuilder() {
       if (durationBuilder_ != null) {
@@ -1730,7 +1730,7 @@ private static final long serialVersionUID = 0L;
      * Duration of the total request time in milliseconds.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 
@@ -1754,7 +1754,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      * @return Whether the rcv field is set.
      */
     public boolean hasRcv() {
@@ -1765,7 +1765,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      * @return The rcv.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getRcv() {
@@ -1780,7 +1780,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public Builder setRcv(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBuilder_ == null) {
@@ -1800,7 +1800,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public Builder setRcv(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1818,7 +1818,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public Builder mergeRcv(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBuilder_ == null) {
@@ -1842,7 +1842,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public Builder clearRcv() {
       if (rcvBuilder_ == null) {
@@ -1859,7 +1859,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getRcvBuilder() {
       bitField0_ |= 0x00000040;
@@ -1871,7 +1871,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvOrBuilder() {
       if (rcvBuilder_ != null) {
@@ -1886,7 +1886,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages received
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+     * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 
@@ -1910,7 +1910,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      * @return Whether the snd field is set.
      */
     public boolean hasSnd() {
@@ -1921,7 +1921,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      * @return The snd.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getSnd() {
@@ -1936,7 +1936,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public Builder setSnd(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBuilder_ == null) {
@@ -1956,7 +1956,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public Builder setSnd(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1974,7 +1974,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public Builder mergeSnd(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBuilder_ == null) {
@@ -1998,7 +1998,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public Builder clearSnd() {
       if (sndBuilder_ == null) {
@@ -2015,7 +2015,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getSndBuilder() {
       bitField0_ |= 0x00000080;
@@ -2027,7 +2027,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndOrBuilder() {
       if (sndBuilder_ != null) {
@@ -2042,7 +2042,7 @@ private static final long serialVersionUID = 0L;
      * Number of messages send
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+     * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 

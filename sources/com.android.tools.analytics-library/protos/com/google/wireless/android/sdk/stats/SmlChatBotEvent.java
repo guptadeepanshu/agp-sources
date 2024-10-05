@@ -964,17 +964,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -1062,7 +1062,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -1070,7 +1070,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -1078,7 +1078,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -1550,14 +1550,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -1568,7 +1568,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -1584,7 +1584,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -1598,7 +1598,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -1618,7 +1618,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -1631,7 +1631,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -1639,7 +1639,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -1650,7 +1650,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -1848,17 +1848,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -2023,7 +2023,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -2031,7 +2031,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -2039,7 +2039,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -2448,14 +2448,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -2466,7 +2466,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -2482,7 +2482,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -2496,7 +2496,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -2516,7 +2516,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -2529,7 +2529,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -2537,7 +2537,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -2548,7 +2548,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -2675,17 +2675,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -2745,7 +2745,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -2753,7 +2753,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -2761,7 +2761,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -3170,14 +3170,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -3188,7 +3188,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -3204,7 +3204,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -3218,7 +3218,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -3238,7 +3238,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -3251,7 +3251,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -3259,7 +3259,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -3270,7 +3270,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -3397,17 +3397,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -3479,7 +3479,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -3487,7 +3487,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -3495,7 +3495,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -3959,14 +3959,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -3977,7 +3977,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -3993,7 +3993,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -4007,7 +4007,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -4027,7 +4027,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -4040,7 +4040,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -4048,7 +4048,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -4059,7 +4059,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -4229,17 +4229,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -4322,7 +4322,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -4330,7 +4330,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -4338,7 +4338,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -4852,14 +4852,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -4870,7 +4870,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -4886,7 +4886,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -4900,7 +4900,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -4920,7 +4920,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -4933,7 +4933,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -4941,7 +4941,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -4952,7 +4952,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -5161,17 +5161,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -5230,7 +5230,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -5238,7 +5238,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -5246,7 +5246,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -5650,14 +5650,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -5668,7 +5668,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -5684,7 +5684,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -5698,7 +5698,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -5718,7 +5718,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -5731,7 +5731,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -5739,7 +5739,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -5750,7 +5750,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -6388,17 +6388,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -6513,7 +6513,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -6521,7 +6521,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -6529,7 +6529,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -7110,14 +7110,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -7128,7 +7128,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -7144,7 +7144,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -7158,7 +7158,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -7178,7 +7178,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -7191,7 +7191,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -7199,7 +7199,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -7210,7 +7210,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -7498,17 +7498,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     boolean hasMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
 
@@ -7650,7 +7650,7 @@ private static final long serialVersionUID = 0L;
     public static final int METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     @java.lang.Override
@@ -7658,7 +7658,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      * @return The metadata.
      */
     @java.lang.Override
@@ -7666,7 +7666,7 @@ private static final long serialVersionUID = 0L;
       return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
     }
     /**
-     * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
@@ -8420,14 +8420,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return Whether the metadata field is set.
        */
       public boolean hasMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        * @return The metadata.
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
@@ -8438,7 +8438,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -8454,7 +8454,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder setMetadata(
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
@@ -8468,7 +8468,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
@@ -8488,7 +8488,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
         if (metadataBuilder_ == null) {
@@ -8501,7 +8501,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -8509,7 +8509,7 @@ private static final long serialVersionUID = 0L;
         return getMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
         if (metadataBuilder_ != null) {
@@ -8520,7 +8520,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.SmlResponseMetadata metadata = 1;</code>
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
@@ -9006,7 +9006,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int RESPONSE_FIELD_NUMBER = 1;
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
    * @return Whether the response field is set.
    */
   @java.lang.Override
@@ -9014,7 +9014,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 1;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
    * @return The response.
    */
   @java.lang.Override
@@ -9025,7 +9025,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponseOrBuilder getResponseOrBuilder() {
@@ -9037,7 +9037,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int USER_FEEDBACK_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
    * @return Whether the userFeedback field is set.
    */
   @java.lang.Override
@@ -9045,7 +9045,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 2;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
    * @return The userFeedback.
    */
   @java.lang.Override
@@ -9056,7 +9056,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+   * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedbackOrBuilder getUserFeedbackOrBuilder() {
@@ -9068,7 +9068,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int ACTION_INVOKED_FIELD_NUMBER = 3;
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
    * @return Whether the actionInvoked field is set.
    */
   @java.lang.Override
@@ -9076,7 +9076,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 3;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
    * @return The actionInvoked.
    */
   @java.lang.Override
@@ -9087,7 +9087,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvokedOrBuilder getActionInvokedOrBuilder() {
@@ -9099,7 +9099,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int ACTION_RESULT_FIELD_NUMBER = 4;
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
    * @return Whether the actionResult field is set.
    */
   @java.lang.Override
@@ -9107,7 +9107,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 4;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
    * @return The actionResult.
    */
   @java.lang.Override
@@ -9118,7 +9118,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+   * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResultOrBuilder getActionResultOrBuilder() {
@@ -9130,7 +9130,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int PARSE_RESULT_FIELD_NUMBER = 5;
   /**
-   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
    * @return Whether the parseResult field is set.
    */
   @java.lang.Override
@@ -9138,7 +9138,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 5;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
    * @return The parseResult.
    */
   @java.lang.Override
@@ -9149,7 +9149,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+   * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResultOrBuilder getParseResultOrBuilder() {
@@ -9161,7 +9161,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int BOT_INVOKED_FIELD_NUMBER = 6;
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
    * @return Whether the botInvoked field is set.
    */
   @java.lang.Override
@@ -9169,7 +9169,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 6;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
    * @return The botInvoked.
    */
   @java.lang.Override
@@ -9180,7 +9180,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+   * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvokedOrBuilder getBotInvokedOrBuilder() {
@@ -9192,7 +9192,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int SLASH_ACTION_FIELD_NUMBER = 7;
   /**
-   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
    * @return Whether the slashAction field is set.
    */
   @java.lang.Override
@@ -9200,7 +9200,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 7;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
    * @return The slashAction.
    */
   @java.lang.Override
@@ -9211,7 +9211,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+   * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashActionOrBuilder getSlashActionOrBuilder() {
@@ -9223,7 +9223,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int DEPENDENCY_SUGGESTION_FIELD_NUMBER = 8;
   /**
-   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
    * @return Whether the dependencySuggestion field is set.
    */
   @java.lang.Override
@@ -9231,7 +9231,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 8;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
    * @return The dependencySuggestion.
    */
   @java.lang.Override
@@ -9242,7 +9242,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+   * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestionOrBuilder getDependencySuggestionOrBuilder() {
@@ -9254,7 +9254,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int HALLUCINATION_DETECTOR_RESULT_FIELD_NUMBER = 9;
   /**
-   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
    * @return Whether the hallucinationDetectorResult field is set.
    */
   @java.lang.Override
@@ -9262,7 +9262,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 9;
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
    * @return The hallucinationDetectorResult.
    */
   @java.lang.Override
@@ -9273,7 +9273,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+   * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder getHallucinationDetectorResultOrBuilder() {
@@ -9939,7 +9939,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponseOrBuilder> responseBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      * @return Whether the response field is set.
      */
     @java.lang.Override
@@ -9947,7 +9947,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 1;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      * @return The response.
      */
     @java.lang.Override
@@ -9965,7 +9965,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     public Builder setResponse(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse value) {
       if (responseBuilder_ == null) {
@@ -9981,7 +9981,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     public Builder setResponse(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse.Builder builderForValue) {
@@ -9995,7 +9995,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     public Builder mergeResponse(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse value) {
       if (responseBuilder_ == null) {
@@ -10017,7 +10017,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     public Builder clearResponse() {
       if (responseBuilder_ == null) {
@@ -10036,13 +10036,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse.Builder getResponseBuilder() {
       return getResponseFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponseOrBuilder getResponseOrBuilder() {
@@ -10056,7 +10056,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotResponse response = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponseOrBuilder> 
@@ -10080,7 +10080,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback, com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedbackOrBuilder> userFeedbackBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      * @return Whether the userFeedback field is set.
      */
     @java.lang.Override
@@ -10088,7 +10088,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 2;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      * @return The userFeedback.
      */
     @java.lang.Override
@@ -10106,7 +10106,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     public Builder setUserFeedback(com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback value) {
       if (userFeedbackBuilder_ == null) {
@@ -10122,7 +10122,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     public Builder setUserFeedback(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Builder builderForValue) {
@@ -10136,7 +10136,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     public Builder mergeUserFeedback(com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback value) {
       if (userFeedbackBuilder_ == null) {
@@ -10158,7 +10158,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     public Builder clearUserFeedback() {
       if (userFeedbackBuilder_ == null) {
@@ -10177,13 +10177,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Builder getUserFeedbackBuilder() {
       return getUserFeedbackFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedbackOrBuilder getUserFeedbackOrBuilder() {
@@ -10197,7 +10197,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2;</code>
+     * <code>.android_studio.SmlChatBotEvent.UserFeedback user_feedback = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback, com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedbackOrBuilder> 
@@ -10221,7 +10221,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvokedOrBuilder> actionInvokedBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      * @return Whether the actionInvoked field is set.
      */
     @java.lang.Override
@@ -10229,7 +10229,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 3;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      * @return The actionInvoked.
      */
     @java.lang.Override
@@ -10247,7 +10247,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     public Builder setActionInvoked(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked value) {
       if (actionInvokedBuilder_ == null) {
@@ -10263,7 +10263,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     public Builder setActionInvoked(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked.Builder builderForValue) {
@@ -10277,7 +10277,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     public Builder mergeActionInvoked(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked value) {
       if (actionInvokedBuilder_ == null) {
@@ -10299,7 +10299,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     public Builder clearActionInvoked() {
       if (actionInvokedBuilder_ == null) {
@@ -10318,13 +10318,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked.Builder getActionInvokedBuilder() {
       return getActionInvokedFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvokedOrBuilder getActionInvokedOrBuilder() {
@@ -10338,7 +10338,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionInvoked action_invoked = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvokedOrBuilder> 
@@ -10362,7 +10362,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResultOrBuilder> actionResultBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      * @return Whether the actionResult field is set.
      */
     @java.lang.Override
@@ -10370,7 +10370,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 4;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      * @return The actionResult.
      */
     @java.lang.Override
@@ -10388,7 +10388,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     public Builder setActionResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult value) {
       if (actionResultBuilder_ == null) {
@@ -10404,7 +10404,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     public Builder setActionResult(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult.Builder builderForValue) {
@@ -10418,7 +10418,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     public Builder mergeActionResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult value) {
       if (actionResultBuilder_ == null) {
@@ -10440,7 +10440,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     public Builder clearActionResult() {
       if (actionResultBuilder_ == null) {
@@ -10459,13 +10459,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult.Builder getActionResultBuilder() {
       return getActionResultFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResultOrBuilder getActionResultOrBuilder() {
@@ -10479,7 +10479,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4;</code>
+     * <code>.android_studio.SmlChatBotEvent.ActionResult action_result = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResultOrBuilder> 
@@ -10503,7 +10503,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResultOrBuilder> parseResultBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      * @return Whether the parseResult field is set.
      */
     @java.lang.Override
@@ -10511,7 +10511,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 5;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      * @return The parseResult.
      */
     @java.lang.Override
@@ -10529,7 +10529,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     public Builder setParseResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult value) {
       if (parseResultBuilder_ == null) {
@@ -10545,7 +10545,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     public Builder setParseResult(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult.Builder builderForValue) {
@@ -10559,7 +10559,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     public Builder mergeParseResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult value) {
       if (parseResultBuilder_ == null) {
@@ -10581,7 +10581,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     public Builder clearParseResult() {
       if (parseResultBuilder_ == null) {
@@ -10600,13 +10600,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult.Builder getParseResultBuilder() {
       return getParseResultFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResultOrBuilder getParseResultOrBuilder() {
@@ -10620,7 +10620,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5;</code>
+     * <code>.android_studio.SmlChatBotEvent.ParseResult parse_result = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResultOrBuilder> 
@@ -10644,7 +10644,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvokedOrBuilder> botInvokedBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      * @return Whether the botInvoked field is set.
      */
     @java.lang.Override
@@ -10652,7 +10652,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 6;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      * @return The botInvoked.
      */
     @java.lang.Override
@@ -10670,7 +10670,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     public Builder setBotInvoked(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked value) {
       if (botInvokedBuilder_ == null) {
@@ -10686,7 +10686,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     public Builder setBotInvoked(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked.Builder builderForValue) {
@@ -10700,7 +10700,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     public Builder mergeBotInvoked(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked value) {
       if (botInvokedBuilder_ == null) {
@@ -10722,7 +10722,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     public Builder clearBotInvoked() {
       if (botInvokedBuilder_ == null) {
@@ -10741,13 +10741,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked.Builder getBotInvokedBuilder() {
       return getBotInvokedFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvokedOrBuilder getBotInvokedOrBuilder() {
@@ -10761,7 +10761,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6;</code>
+     * <code>.android_studio.SmlChatBotEvent.BotInvoked bot_invoked = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvokedOrBuilder> 
@@ -10785,7 +10785,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction, com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashActionOrBuilder> slashActionBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      * @return Whether the slashAction field is set.
      */
     @java.lang.Override
@@ -10793,7 +10793,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 7;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      * @return The slashAction.
      */
     @java.lang.Override
@@ -10811,7 +10811,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     public Builder setSlashAction(com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction value) {
       if (slashActionBuilder_ == null) {
@@ -10827,7 +10827,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     public Builder setSlashAction(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction.Builder builderForValue) {
@@ -10841,7 +10841,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     public Builder mergeSlashAction(com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction value) {
       if (slashActionBuilder_ == null) {
@@ -10863,7 +10863,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     public Builder clearSlashAction() {
       if (slashActionBuilder_ == null) {
@@ -10882,13 +10882,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction.Builder getSlashActionBuilder() {
       return getSlashActionFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashActionOrBuilder getSlashActionOrBuilder() {
@@ -10902,7 +10902,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7;</code>
+     * <code>.android_studio.SmlChatBotEvent.SlashAction slash_action = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction, com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashActionOrBuilder> 
@@ -10926,7 +10926,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion, com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestionOrBuilder> dependencySuggestionBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      * @return Whether the dependencySuggestion field is set.
      */
     @java.lang.Override
@@ -10934,7 +10934,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 8;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      * @return The dependencySuggestion.
      */
     @java.lang.Override
@@ -10952,7 +10952,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     public Builder setDependencySuggestion(com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion value) {
       if (dependencySuggestionBuilder_ == null) {
@@ -10968,7 +10968,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     public Builder setDependencySuggestion(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion.Builder builderForValue) {
@@ -10982,7 +10982,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     public Builder mergeDependencySuggestion(com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion value) {
       if (dependencySuggestionBuilder_ == null) {
@@ -11004,7 +11004,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     public Builder clearDependencySuggestion() {
       if (dependencySuggestionBuilder_ == null) {
@@ -11023,13 +11023,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion.Builder getDependencySuggestionBuilder() {
       return getDependencySuggestionFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestionOrBuilder getDependencySuggestionOrBuilder() {
@@ -11043,7 +11043,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8;</code>
+     * <code>.android_studio.SmlChatBotEvent.DependencySuggestion dependency_suggestion = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion, com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestionOrBuilder> 
@@ -11067,7 +11067,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder> hallucinationDetectorResultBuilder_;
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      * @return Whether the hallucinationDetectorResult field is set.
      */
     @java.lang.Override
@@ -11075,7 +11075,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 9;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      * @return The hallucinationDetectorResult.
      */
     @java.lang.Override
@@ -11093,7 +11093,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     public Builder setHallucinationDetectorResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult value) {
       if (hallucinationDetectorResultBuilder_ == null) {
@@ -11109,7 +11109,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     public Builder setHallucinationDetectorResult(
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult.Builder builderForValue) {
@@ -11123,7 +11123,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     public Builder mergeHallucinationDetectorResult(com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult value) {
       if (hallucinationDetectorResultBuilder_ == null) {
@@ -11145,7 +11145,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     public Builder clearHallucinationDetectorResult() {
       if (hallucinationDetectorResultBuilder_ == null) {
@@ -11164,13 +11164,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult.Builder getHallucinationDetectorResultBuilder() {
       return getHallucinationDetectorResultFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder getHallucinationDetectorResultOrBuilder() {
@@ -11184,7 +11184,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9;</code>
+     * <code>.android_studio.SmlChatBotEvent.HallucinationDetectorResult hallucination_detector_result = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult.Builder, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder> 

@@ -19,32 +19,32 @@ public interface VsPluginEventOrBuilder extends
   com.google.wireless.android.sdk.stats.VsPluginEvent.VsPluginEventType getType();
 
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    * @return Whether the buildEvent field is set.
    */
   boolean hasBuildEvent();
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    * @return The buildEvent.
    */
   com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent getBuildEvent();
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEventOrBuilder getBuildEventOrBuilder();
 
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    * @return Whether the debugEvent field is set.
    */
   boolean hasDebugEvent();
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    * @return The debugEvent.
    */
   com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent getDebugEvent();
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEventOrBuilder getDebugEventOrBuilder();
 }

@@ -17,10 +17,9 @@ package com.android.tools.analytics.crash;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 public abstract class CrashReport {
   @NonNull private final String productId;
@@ -29,10 +28,10 @@ public abstract class CrashReport {
   @NonNull private final String type;
 
   public CrashReport(
-    @NonNull String productId,
-    @Nullable String version,
-    @Nullable Map<String, String> productData,
-    @NonNull String type) {
+      @NonNull String productId,
+      @Nullable String version,
+      @Nullable Map<String, String> productData,
+      @NonNull String type) {
     this.productId = productId;
     this.version = version;
     this.productData = productData;
@@ -66,11 +65,8 @@ public abstract class CrashReport {
 
   protected abstract void serializeTo(@NonNull MultipartEntityBuilder builder);
 
-  /**
-   * Report can alter default parameters before they are sent out.
-   */
-  protected void overrideDefaultParameters(Map<String, String> parameters) {
-  }
+  /** Report can alter default parameters before they are sent out. */
+  protected void overrideDefaultParameters(Map<String, String> parameters) {}
 
   public abstract static class BaseBuilder<T extends CrashReport, B extends BaseBuilder> {
     private String productId;

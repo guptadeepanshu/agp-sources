@@ -4848,7 +4848,7 @@ private static final long serialVersionUID = 0L;
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    * @return Whether the patch field is set.
    */
   @java.lang.Override
@@ -4860,7 +4860,7 @@ private static final long serialVersionUID = 0L;
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    * @return The patch.
    */
   @java.lang.Override
@@ -4872,7 +4872,7 @@ private static final long serialVersionUID = 0L;
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PatchOrBuilder getPatchOrBuilder() {
@@ -4886,7 +4886,7 @@ private static final long serialVersionUID = 0L;
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    * @return Whether the issueDialog field is set.
    */
   @java.lang.Override
@@ -4898,7 +4898,7 @@ private static final long serialVersionUID = 0L;
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    * @return The issueDialog.
    */
   @java.lang.Override
@@ -4910,7 +4910,7 @@ private static final long serialVersionUID = 0L;
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogOrBuilder getIssueDialogOrBuilder() {
@@ -4924,7 +4924,7 @@ private static final long serialVersionUID = 0L;
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    * @return Whether the issueDialogChoices field is set.
    */
   @java.lang.Override
@@ -4936,7 +4936,7 @@ private static final long serialVersionUID = 0L;
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    * @return The issueDialogChoices.
    */
   @java.lang.Override
@@ -4948,7 +4948,7 @@ private static final long serialVersionUID = 0L;
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoicesOrBuilder getIssueDialogChoicesOrBuilder() {
@@ -5471,7 +5471,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      * @return Whether the patch field is set.
      */
     public boolean hasPatch() {
@@ -5482,7 +5482,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      * @return The patch.
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch getPatch() {
@@ -5497,7 +5497,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public Builder setPatch(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch value) {
       if (patchBuilder_ == null) {
@@ -5517,7 +5517,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public Builder setPatch(
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.Builder builderForValue) {
@@ -5535,7 +5535,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public Builder mergePatch(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch value) {
       if (patchBuilder_ == null) {
@@ -5559,7 +5559,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public Builder clearPatch() {
       if (patchBuilder_ == null) {
@@ -5576,7 +5576,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.Builder getPatchBuilder() {
       bitField0_ |= 0x00000002;
@@ -5588,7 +5588,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PatchOrBuilder getPatchOrBuilder() {
       if (patchBuilder_ != null) {
@@ -5603,7 +5603,7 @@ private static final long serialVersionUID = 0L;
      * Information about the patch itself
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.Builder, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PatchOrBuilder> 
@@ -5627,7 +5627,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      * @return Whether the issueDialog field is set.
      */
     public boolean hasIssueDialog() {
@@ -5638,7 +5638,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      * @return The issueDialog.
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog getIssueDialog() {
@@ -5653,7 +5653,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public Builder setIssueDialog(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog value) {
       if (issueDialogBuilder_ == null) {
@@ -5673,7 +5673,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public Builder setIssueDialog(
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Builder builderForValue) {
@@ -5691,7 +5691,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public Builder mergeIssueDialog(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog value) {
       if (issueDialogBuilder_ == null) {
@@ -5715,7 +5715,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public Builder clearIssueDialog() {
       if (issueDialogBuilder_ == null) {
@@ -5732,7 +5732,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Builder getIssueDialogBuilder() {
       bitField0_ |= 0x00000004;
@@ -5744,7 +5744,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogOrBuilder getIssueDialogOrBuilder() {
       if (issueDialogBuilder_ != null) {
@@ -5759,7 +5759,7 @@ private static final long serialVersionUID = 0L;
      * Details about patch updater issues presented to the user.
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Builder, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogOrBuilder> 
@@ -5783,7 +5783,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      * @return Whether the issueDialogChoices field is set.
      */
     public boolean hasIssueDialogChoices() {
@@ -5794,7 +5794,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      * @return The issueDialogChoices.
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices getIssueDialogChoices() {
@@ -5809,7 +5809,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public Builder setIssueDialogChoices(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices value) {
       if (issueDialogChoicesBuilder_ == null) {
@@ -5829,7 +5829,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public Builder setIssueDialogChoices(
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Builder builderForValue) {
@@ -5847,7 +5847,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public Builder mergeIssueDialogChoices(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices value) {
       if (issueDialogChoicesBuilder_ == null) {
@@ -5871,7 +5871,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public Builder clearIssueDialogChoices() {
       if (issueDialogChoicesBuilder_ == null) {
@@ -5888,7 +5888,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Builder getIssueDialogChoicesBuilder() {
       bitField0_ |= 0x00000008;
@@ -5900,7 +5900,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoicesOrBuilder getIssueDialogChoicesOrBuilder() {
       if (issueDialogChoicesBuilder_ != null) {
@@ -5915,7 +5915,7 @@ private static final long serialVersionUID = 0L;
      * Options chosen by the user from the
      * </pre>
      *
-     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+     * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Builder, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoicesOrBuilder> 

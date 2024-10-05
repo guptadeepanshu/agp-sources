@@ -31,20 +31,14 @@ object HostData {
     ManagementFactory.getOperatingSystemMXBean() as OperatingSystemMXBean
   }
 
-  @JvmStatic
-  var runtimeBean: RuntimeMXBean? by stubbable {
-    ManagementFactory.getRuntimeMXBean()
-  }
+  @JvmStatic var runtimeBean: RuntimeMXBean? by stubbable { ManagementFactory.getRuntimeMXBean() }
 
   @JvmStatic
   var graphicsEnvironment: GraphicsEnvironment? by stubbable {
     GraphicsEnvironment.getLocalGraphicsEnvironment()
   }
 
-  @JvmStatic
-  var memoryBean: MemoryMXBean? by stubbable {
-    ManagementFactory.getMemoryMXBean()
-  }
+  @JvmStatic var memoryBean: MemoryMXBean? by stubbable { ManagementFactory.getMemoryMXBean() }
 
   @JvmStatic
   var classLoadingBean: ClassLoadingMXBean? by stubbable {
@@ -54,18 +48,16 @@ object HostData {
   @JvmStatic
   var garbageCollectorBeans: List<GarbageCollectorMXBean>? by stubbable {
     ManagementFactory.getGarbageCollectorMXBeans()
-
   }
 
-  @JvmStatic
-  var threadBean: ThreadMXBean? by stubbable {
-    ManagementFactory.getThreadMXBean()
-  }
+  @JvmStatic var threadBean: ThreadMXBean? by stubbable { ManagementFactory.getThreadMXBean() }
 }
 
 /**
  * stubbable is like lazy but provides a setter so the property can be stubbed out in tests
- * TODO(jvg): consider moving this to a utility library so other parts of our codebase can benefit from this pattern.
+ *
+ * TODO(jvg): consider moving this to a utility library so other parts of our codebase can benefit
+ *   from this pattern.
  */
 internal fun <T> stubbable(initializer: () -> T): StubbableLazy<T> = StubbableLazy(initializer)
 
@@ -86,9 +78,10 @@ internal class StubbableLazy<T>(val initializer: () -> T) : Lazy<T> {
     }
 
   override fun isInitialized(): Boolean = _value !== null
+
   operator fun getValue(thisRef: Any?, property: KProperty<*>): T = value
+
   operator fun setValue(hisRef: Any?, property: KProperty<*>, t: T) {
     _value = t
   }
 }
-

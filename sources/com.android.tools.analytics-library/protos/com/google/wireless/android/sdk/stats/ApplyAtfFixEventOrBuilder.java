@@ -12,7 +12,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return Whether the atfResult field is set.
    */
   boolean hasAtfResult();
@@ -21,7 +21,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return The atfResult.
    */
   com.google.wireless.android.sdk.stats.AtfResultDetail getAtfResult();
@@ -30,7 +30,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder();
 
@@ -39,7 +39,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    * @return Whether the atfFix field is set.
    */
   boolean hasAtfFix();
@@ -48,7 +48,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    * @return The atfFix.
    */
   com.google.wireless.android.sdk.stats.AtfFixDetail getAtfFix();
@@ -57,7 +57,7 @@ public interface ApplyAtfFixEventOrBuilder extends
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder getAtfFixOrBuilder();
 }

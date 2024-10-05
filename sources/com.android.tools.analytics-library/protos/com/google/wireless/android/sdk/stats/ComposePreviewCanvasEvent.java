@@ -170,6 +170,14 @@ private static final long serialVersionUID = 0L;
      * <code>GALLERY = 5;</code>
      */
     GALLERY(5),
+    /**
+     * <code>ORGANIZATION_LIST = 6;</code>
+     */
+    ORGANIZATION_LIST(6),
+    /**
+     * <code>ORGANIZATION_GRID = 7;</code>
+     */
+    ORGANIZATION_GRID(7),
     ;
 
     /**
@@ -196,6 +204,14 @@ private static final long serialVersionUID = 0L;
      * <code>GALLERY = 5;</code>
      */
     public static final int GALLERY_VALUE = 5;
+    /**
+     * <code>ORGANIZATION_LIST = 6;</code>
+     */
+    public static final int ORGANIZATION_LIST_VALUE = 6;
+    /**
+     * <code>ORGANIZATION_GRID = 7;</code>
+     */
+    public static final int ORGANIZATION_GRID_VALUE = 7;
 
 
     public final int getNumber() {
@@ -224,6 +240,8 @@ private static final long serialVersionUID = 0L;
         case 3: return GROUPED_LIST;
         case 4: return GROUPED_GRID;
         case 5: return GALLERY;
+        case 6: return ORGANIZATION_LIST;
+        case 7: return ORGANIZATION_GRID;
         default: return null;
       }
     }

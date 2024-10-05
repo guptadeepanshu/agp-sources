@@ -46,7 +46,6 @@ import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.ManifestMerger2.Invoker
 import com.android.manifmerger.ManifestMerger2.WEAR_APP_SUB_MANIFEST
 import com.android.manifmerger.ManifestProvider
-import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.artifacts.ArtifactCollection
@@ -169,8 +168,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             packageOverride.get(),
             namespace.get(),
             profileable.get(),
-            versionCode.orNull,
-            versionName.orNull,
+            versionCode.get().takeIf { it != -1 },
+            versionName.get().takeIf { it.isNotEmpty() },
             minSdkVersion.orNull,
             targetSdkVersion.orNull,
             maxSdkVersion.orNull,
@@ -300,11 +299,11 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
 
     @get:Input
     @get:Optional
-    abstract val versionCode: Property<Int?>
+    abstract val versionCode: Property<Int>
 
     @get:Input
     @get:Optional
-    abstract val versionName: Property<String?>
+    abstract val versionName: Property<String>
 
     class CreationAction(
         creationConfig: ApkCreationConfig

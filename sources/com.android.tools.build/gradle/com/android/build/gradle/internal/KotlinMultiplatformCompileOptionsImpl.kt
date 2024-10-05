@@ -59,6 +59,14 @@ internal class KotlinMultiplatformCompileOptionsImpl(
         throw IllegalAccessException("Compile options for kmp variants are read only.")
     }
 
+    override fun sourceCompatibility(sourceCompatibility: String) {
+        throw IllegalAccessException("Compile options for kmp variants are read only.")
+    }
+
+    override fun targetCompatibility(targetCompatibility: String) {
+        throw IllegalAccessException("Compile options for kmp variants are read only.")
+    }
+
     fun initFromCompilation(
         compilation: KotlinMultiplatformAndroidCompilation
     ) {

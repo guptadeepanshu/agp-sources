@@ -91,28 +91,6 @@ class VariantServicesImpl(
         }
     }
 
-    override fun <T> nullablePropertyOf(type: Class<T>, value: T?): Property<T?> {
-        return initializeNullableProperty(type).also {
-            it.set(value)
-            it.finalizeValueOnRead()
-            if (!forUnitTesting) {
-                it.disallowUnsafeRead()
-            }
-            delayedLock(it)
-        }
-    }
-
-    override fun <T> nullablePropertyOf(type: Class<T>, value: Provider<T?>): Property<T?> {
-        return initializeNullableProperty(type).also {
-            it.set(value)
-            it.finalizeValueOnRead()
-            if (!forUnitTesting) {
-                it.disallowUnsafeRead()
-            }
-            delayedLock(it)
-        }
-    }
-
     override fun <T> listPropertyOf(
         type: Class<T>,
         value: Collection<T>,
@@ -240,19 +218,6 @@ class VariantServicesImpl(
         return initializeListProperty(type)
     }
 
-    override fun <T> newNullablePropertyBackingDeprecatedApi(type: Class<T>, value: Provider<T?>): Property<T?> {
-        return initializeNullableProperty(type).also {
-            it.set(value)
-            if (!compatibilityMode) {
-                it.finalizeValueOnRead()
-                if (!forUnitTesting) {
-                    it.disallowUnsafeRead()
-                }
-            }
-            delayedLock(it)
-        }
-    }
-
     override fun <T> providerOf(
         type: Class<T>,
         value: Provider<T>,
@@ -264,17 +229,6 @@ class VariantServicesImpl(
             it.disallowChanges()
             it.finalizeValueOnRead()
             if (disallowUnsafeRead && !forUnitTesting) {
-                it.disallowUnsafeRead()
-            }
-        }
-    }
-
-    override fun <T> nullableProviderOf(type: Class<T>, value: Provider<T?>): Provider<T?> {
-        return initializeProperty(type).also {
-            it.set(value)
-            it.disallowChanges()
-            it.finalizeValueOnRead()
-            if (!forUnitTesting) {
                 it.disallowUnsafeRead()
             }
         }

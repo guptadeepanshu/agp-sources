@@ -21,6 +21,7 @@ import com.android.build.api.variant.ApplicationAndroidResourcesBuilder
 import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.DependenciesInfoBuilder
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
 import com.android.build.api.variant.VariantBuilder
@@ -122,21 +123,44 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
         }
 
 
-    override val deviceTests: List<DeviceTestBuilderImpl> =
-        dslInfo.dslDefinedDeviceTests.map { deviceTest ->
-            DeviceTestBuilderImpl(
-                variantBuilderServices,
-                globalVariantBuilderConfig,
-                this,
-                _enableMultiDex,
-                deviceTest.codeCoverageEnabled
-            )
-        }
+    override val deviceTests: Map<String, DeviceTestBuilderImpl> =
+        DeviceTestBuilderImpl.create(
+            dslInfo.dslDefinedDeviceTests,
+            variantBuilderServices,
+            globalVariantBuilderConfig,
+            { targetSdkVersion },
+            _enableMultiDex,
+        )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {
-        AndroidTestBuilderImpl(
-            deviceTests.single()
-        )
+        val androidTest = deviceTests.get(DeviceTestBuilder.ANDROID_TEST_TYPE)
+
+        if (androidTest != null) {
+            AndroidTestBuilderImpl(androidTest)
+        } else {
+            variantBuilderServices.issueReporter.reportWarning(
+                IssueReporter.Type.GENERIC,
+                "androidTest test suite not defined for this variant : $name"
+            )
+            // return an empty shell during sync, otherwise an exception will be generated.
+            object: AndroidTestBuilder {
+                override var enable: Boolean
+                    get() = false
+                    set(value) {}
+                override var enableMultiDex: Boolean?
+                    get() = false
+                    set(value) {}
+                override var enableCodeCoverage: Boolean
+                    get() = false
+                    set(value) {}
+                override var targetSdk: Int?
+                    get() = null
+                    set(value) {}
+                override var targetSdkPreview: String?
+                    get() = null
+                    set(value) {}
+            }
+        }
     }
 
     override val androidResources: ApplicationAndroidResourcesBuilder =

@@ -193,7 +193,7 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
             if (creationConfig is ApplicationCreationConfig) {
                 task.versionCode.setDisallowChanges(creationConfig.outputs.getMainSplit().versionCode)
             }
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
             task.sdkArchives.setFrom(
                     creationConfig.variantDependencies.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,

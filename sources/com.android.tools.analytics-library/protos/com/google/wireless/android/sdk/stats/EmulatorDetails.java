@@ -1328,7 +1328,7 @@ private static final long serialVersionUID = 0L;
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    * @return Whether the guestGl field is set.
    */
   @java.lang.Override
@@ -1340,7 +1340,7 @@ private static final long serialVersionUID = 0L;
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    * @return The guestGl.
    */
   @java.lang.Override
@@ -1352,7 +1352,7 @@ private static final long serialVersionUID = 0L;
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfoOrBuilder getGuestGlOrBuilder() {
@@ -1540,7 +1540,7 @@ private static final long serialVersionUID = 0L;
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    * @return Whether the usedFeatures field is set.
    */
   @java.lang.Override
@@ -1552,7 +1552,7 @@ private static final long serialVersionUID = 0L;
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    * @return The usedFeatures.
    */
   @java.lang.Override
@@ -1564,7 +1564,7 @@ private static final long serialVersionUID = 0L;
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeaturesOrBuilder getUsedFeaturesOrBuilder() {
@@ -1578,7 +1578,7 @@ private static final long serialVersionUID = 0L;
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    * @return Whether the avdInfo field is set.
    */
   @java.lang.Override
@@ -1590,7 +1590,7 @@ private static final long serialVersionUID = 0L;
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    * @return The avdInfo.
    */
   @java.lang.Override
@@ -1602,7 +1602,7 @@ private static final long serialVersionUID = 0L;
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdInfoOrBuilder getAvdInfoOrBuilder() {
@@ -1616,7 +1616,7 @@ private static final long serialVersionUID = 0L;
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    * @return Whether the featureFlagState field is set.
    */
   @java.lang.Override
@@ -1628,7 +1628,7 @@ private static final long serialVersionUID = 0L;
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    * @return The featureFlagState.
    */
   @java.lang.Override
@@ -1640,7 +1640,7 @@ private static final long serialVersionUID = 0L;
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagStateOrBuilder getFeatureFlagStateOrBuilder() {
@@ -1681,7 +1681,7 @@ private static final long serialVersionUID = 0L;
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    * @return Whether the quickbootLoad field is set.
    */
   @java.lang.Override
@@ -1693,7 +1693,7 @@ private static final long serialVersionUID = 0L;
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    * @return The quickbootLoad.
    */
   @java.lang.Override
@@ -1705,7 +1705,7 @@ private static final long serialVersionUID = 0L;
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoadOrBuilder getQuickbootLoadOrBuilder() {
@@ -1715,7 +1715,7 @@ private static final long serialVersionUID = 0L;
   public static final int QUICKBOOT_SAVE_FIELD_NUMBER = 22;
   private com.google.wireless.android.sdk.stats.EmulatorQuickbootSave quickbootSave_;
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    * @return Whether the quickbootSave field is set.
    */
   @java.lang.Override
@@ -1723,7 +1723,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00080000) != 0);
   }
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    * @return The quickbootSave.
    */
   @java.lang.Override
@@ -1731,7 +1731,7 @@ private static final long serialVersionUID = 0L;
     return quickbootSave_ == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.getDefaultInstance() : quickbootSave_;
   }
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder getQuickbootSaveOrBuilder() {
@@ -1745,7 +1745,7 @@ private static final long serialVersionUID = 0L;
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    * @return Whether the glesUsages field is set.
    */
   @java.lang.Override
@@ -1757,7 +1757,7 @@ private static final long serialVersionUID = 0L;
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    * @return The glesUsages.
    */
   @java.lang.Override
@@ -1769,7 +1769,7 @@ private static final long serialVersionUID = 0L;
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESUsagesOrBuilder getGlesUsagesOrBuilder() {
@@ -1883,7 +1883,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    * @return Whether the snapshotUiCounts field is set.
    */
   @java.lang.Override
@@ -1895,7 +1895,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    * @return The snapshotUiCounts.
    */
   @java.lang.Override
@@ -1907,7 +1907,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICountsOrBuilder getSnapshotUiCountsOrBuilder() {
@@ -1921,7 +1921,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    * @return Whether the camera field is set.
    */
   @java.lang.Override
@@ -1933,7 +1933,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    * @return The camera.
    */
   @java.lang.Override
@@ -1945,7 +1945,7 @@ private static final long serialVersionUID = 0L;
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorCameraSessionOrBuilder getCameraOrBuilder() {
@@ -1959,7 +1959,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    * @return Whether the virtualScene field is set.
    */
   @java.lang.Override
@@ -1971,7 +1971,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    * @return The virtualScene.
    */
   @java.lang.Override
@@ -1983,7 +1983,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSessionOrBuilder getVirtualSceneOrBuilder() {
@@ -1997,7 +1997,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    * @return Whether the bootInfo field is set.
    */
   @java.lang.Override
@@ -2009,7 +2009,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    * @return The bootInfo.
    */
   @java.lang.Override
@@ -2021,7 +2021,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorBootInfoOrBuilder getBootInfoOrBuilder() {
@@ -2035,7 +2035,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    * @return Whether the automation field is set.
    */
   @java.lang.Override
@@ -2047,7 +2047,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    * @return The automation.
    */
   @java.lang.Override
@@ -2059,7 +2059,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAutomationOrBuilder getAutomationOrBuilder() {
@@ -2073,7 +2073,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    * @return Whether the multiDisplay field is set.
    */
   @java.lang.Override
@@ -2085,7 +2085,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    * @return The multiDisplay.
    */
   @java.lang.Override
@@ -2097,7 +2097,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMultiDisplayOrBuilder getMultiDisplayOrBuilder() {
@@ -2111,7 +2111,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    * @return Whether the grpc field is set.
    */
   @java.lang.Override
@@ -2123,7 +2123,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    * @return The grpc.
    */
   @java.lang.Override
@@ -2135,7 +2135,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGrpcOrBuilder getGrpcOrBuilder() {
@@ -2149,7 +2149,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    * @return Whether the locationV2 field is set.
    */
   @java.lang.Override
@@ -2161,7 +2161,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    * @return The locationV2.
    */
   @java.lang.Override
@@ -2173,7 +2173,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLocationV2OrBuilder getLocationV2OrBuilder() {
@@ -2187,7 +2187,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    * @return Whether the screenshot field is set.
    */
   @java.lang.Override
@@ -2199,7 +2199,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    * @return The screenshot.
    */
   @java.lang.Override
@@ -2211,7 +2211,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshotOrBuilder getScreenshotOrBuilder() {
@@ -2285,7 +2285,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    * @return Whether the resizableDisplay field is set.
    */
   @java.lang.Override
@@ -2297,7 +2297,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    * @return The resizableDisplay.
    */
   @java.lang.Override
@@ -2309,7 +2309,7 @@ private static final long serialVersionUID = 0L;
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder() {
@@ -4801,7 +4801,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      * @return Whether the guestGl field is set.
      */
     public boolean hasGuestGl() {
@@ -4812,7 +4812,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      * @return The guestGl.
      */
     public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo getGuestGl() {
@@ -4827,7 +4827,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public Builder setGuestGl(com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo value) {
       if (guestGlBuilder_ == null) {
@@ -4847,7 +4847,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public Builder setGuestGl(
         com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo.Builder builderForValue) {
@@ -4865,7 +4865,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public Builder mergeGuestGl(com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo value) {
       if (guestGlBuilder_ == null) {
@@ -4889,7 +4889,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public Builder clearGuestGl() {
       if (guestGlBuilder_ == null) {
@@ -4906,7 +4906,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo.Builder getGuestGlBuilder() {
       bitField0_ |= 0x00000400;
@@ -4918,7 +4918,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfoOrBuilder getGuestGlOrBuilder() {
       if (guestGlBuilder_ != null) {
@@ -4933,7 +4933,7 @@ private static final long serialVersionUID = 0L;
      * Information about the gl implementation in the guest image.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+     * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo, com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorGuestGlInfoOrBuilder> 
@@ -5495,7 +5495,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      * @return Whether the usedFeatures field is set.
      */
     public boolean hasUsedFeatures() {
@@ -5506,7 +5506,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      * @return The usedFeatures.
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeatures getUsedFeatures() {
@@ -5521,7 +5521,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public Builder setUsedFeatures(com.google.wireless.android.sdk.stats.EmulatorFeatures value) {
       if (usedFeaturesBuilder_ == null) {
@@ -5541,7 +5541,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public Builder setUsedFeatures(
         com.google.wireless.android.sdk.stats.EmulatorFeatures.Builder builderForValue) {
@@ -5559,7 +5559,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public Builder mergeUsedFeatures(com.google.wireless.android.sdk.stats.EmulatorFeatures value) {
       if (usedFeaturesBuilder_ == null) {
@@ -5583,7 +5583,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public Builder clearUsedFeatures() {
       if (usedFeaturesBuilder_ == null) {
@@ -5600,7 +5600,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeatures.Builder getUsedFeaturesBuilder() {
       bitField0_ |= 0x00008000;
@@ -5612,7 +5612,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeaturesOrBuilder getUsedFeaturesOrBuilder() {
       if (usedFeaturesBuilder_ != null) {
@@ -5627,7 +5627,7 @@ private static final long serialVersionUID = 0L;
      * Flags for the used UI features.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+     * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorFeatures, com.google.wireless.android.sdk.stats.EmulatorFeatures.Builder, com.google.wireless.android.sdk.stats.EmulatorFeaturesOrBuilder> 
@@ -5651,7 +5651,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      * @return Whether the avdInfo field is set.
      */
     public boolean hasAvdInfo() {
@@ -5662,7 +5662,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      * @return The avdInfo.
      */
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo getAvdInfo() {
@@ -5677,7 +5677,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public Builder setAvdInfo(com.google.wireless.android.sdk.stats.EmulatorAvdInfo value) {
       if (avdInfoBuilder_ == null) {
@@ -5697,7 +5697,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public Builder setAvdInfo(
         com.google.wireless.android.sdk.stats.EmulatorAvdInfo.Builder builderForValue) {
@@ -5715,7 +5715,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public Builder mergeAvdInfo(com.google.wireless.android.sdk.stats.EmulatorAvdInfo value) {
       if (avdInfoBuilder_ == null) {
@@ -5739,7 +5739,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public Builder clearAvdInfo() {
       if (avdInfoBuilder_ == null) {
@@ -5756,7 +5756,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.Builder getAvdInfoBuilder() {
       bitField0_ |= 0x00010000;
@@ -5768,7 +5768,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfoOrBuilder getAvdInfoOrBuilder() {
       if (avdInfoBuilder_ != null) {
@@ -5783,7 +5783,7 @@ private static final long serialVersionUID = 0L;
      * Information about the currently loaded AVD.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+     * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorAvdInfo, com.google.wireless.android.sdk.stats.EmulatorAvdInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorAvdInfoOrBuilder> 
@@ -5807,7 +5807,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      * @return Whether the featureFlagState field is set.
      */
     public boolean hasFeatureFlagState() {
@@ -5818,7 +5818,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      * @return The featureFlagState.
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState getFeatureFlagState() {
@@ -5833,7 +5833,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public Builder setFeatureFlagState(com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState value) {
       if (featureFlagStateBuilder_ == null) {
@@ -5853,7 +5853,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public Builder setFeatureFlagState(
         com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.Builder builderForValue) {
@@ -5871,7 +5871,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public Builder mergeFeatureFlagState(com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState value) {
       if (featureFlagStateBuilder_ == null) {
@@ -5895,7 +5895,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public Builder clearFeatureFlagState() {
       if (featureFlagStateBuilder_ == null) {
@@ -5912,7 +5912,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.Builder getFeatureFlagStateBuilder() {
       bitField0_ |= 0x00020000;
@@ -5924,7 +5924,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagStateOrBuilder getFeatureFlagStateOrBuilder() {
       if (featureFlagStateBuilder_ != null) {
@@ -5939,7 +5939,7 @@ private static final long serialVersionUID = 0L;
      * State tracking emulator feature flag enable/disable.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+     * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.Builder, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagStateOrBuilder> 
@@ -6022,7 +6022,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      * @return Whether the quickbootLoad field is set.
      */
     public boolean hasQuickbootLoad() {
@@ -6033,7 +6033,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      * @return The quickbootLoad.
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad getQuickbootLoad() {
@@ -6048,7 +6048,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public Builder setQuickbootLoad(com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad value) {
       if (quickbootLoadBuilder_ == null) {
@@ -6068,7 +6068,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public Builder setQuickbootLoad(
         com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.Builder builderForValue) {
@@ -6086,7 +6086,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public Builder mergeQuickbootLoad(com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad value) {
       if (quickbootLoadBuilder_ == null) {
@@ -6110,7 +6110,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public Builder clearQuickbootLoad() {
       if (quickbootLoadBuilder_ == null) {
@@ -6127,7 +6127,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.Builder getQuickbootLoadBuilder() {
       bitField0_ |= 0x00080000;
@@ -6139,7 +6139,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoadOrBuilder getQuickbootLoadOrBuilder() {
       if (quickbootLoadBuilder_ != null) {
@@ -6154,7 +6154,7 @@ private static final long serialVersionUID = 0L;
      * Information about quickboot status of the current session.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+     * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad, com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.Builder, com.google.wireless.android.sdk.stats.EmulatorQuickbootLoadOrBuilder> 
@@ -6174,14 +6174,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorQuickbootSave, com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.Builder, com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder> quickbootSaveBuilder_;
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      * @return Whether the quickbootSave field is set.
      */
     public boolean hasQuickbootSave() {
       return ((bitField0_ & 0x00100000) != 0);
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      * @return The quickbootSave.
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave getQuickbootSave() {
@@ -6192,7 +6192,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public Builder setQuickbootSave(com.google.wireless.android.sdk.stats.EmulatorQuickbootSave value) {
       if (quickbootSaveBuilder_ == null) {
@@ -6208,7 +6208,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public Builder setQuickbootSave(
         com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.Builder builderForValue) {
@@ -6222,7 +6222,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public Builder mergeQuickbootSave(com.google.wireless.android.sdk.stats.EmulatorQuickbootSave value) {
       if (quickbootSaveBuilder_ == null) {
@@ -6242,7 +6242,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public Builder clearQuickbootSave() {
       if (quickbootSaveBuilder_ == null) {
@@ -6255,7 +6255,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.Builder getQuickbootSaveBuilder() {
       bitField0_ |= 0x00100000;
@@ -6263,7 +6263,7 @@ private static final long serialVersionUID = 0L;
       return getQuickbootSaveFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder getQuickbootSaveOrBuilder() {
       if (quickbootSaveBuilder_ != null) {
@@ -6274,7 +6274,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+     * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorQuickbootSave, com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.Builder, com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder> 
@@ -6298,7 +6298,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      * @return Whether the glesUsages field is set.
      */
     public boolean hasGlesUsages() {
@@ -6309,7 +6309,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      * @return The glesUsages.
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESUsages getGlesUsages() {
@@ -6324,7 +6324,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public Builder setGlesUsages(com.google.wireless.android.sdk.stats.EmulatorGLESUsages value) {
       if (glesUsagesBuilder_ == null) {
@@ -6344,7 +6344,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public Builder setGlesUsages(
         com.google.wireless.android.sdk.stats.EmulatorGLESUsages.Builder builderForValue) {
@@ -6362,7 +6362,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public Builder mergeGlesUsages(com.google.wireless.android.sdk.stats.EmulatorGLESUsages value) {
       if (glesUsagesBuilder_ == null) {
@@ -6386,7 +6386,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public Builder clearGlesUsages() {
       if (glesUsagesBuilder_ == null) {
@@ -6403,7 +6403,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESUsages.Builder getGlesUsagesBuilder() {
       bitField0_ |= 0x00200000;
@@ -6415,7 +6415,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESUsagesOrBuilder getGlesUsagesOrBuilder() {
       if (glesUsagesBuilder_ != null) {
@@ -6430,7 +6430,7 @@ private static final long serialVersionUID = 0L;
      * Track GLES command usages
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+     * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorGLESUsages, com.google.wireless.android.sdk.stats.EmulatorGLESUsages.Builder, com.google.wireless.android.sdk.stats.EmulatorGLESUsagesOrBuilder> 
@@ -7006,7 +7006,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      * @return Whether the snapshotUiCounts field is set.
      */
     public boolean hasSnapshotUiCounts() {
@@ -7017,7 +7017,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      * @return The snapshotUiCounts.
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts getSnapshotUiCounts() {
@@ -7032,7 +7032,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public Builder setSnapshotUiCounts(com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts value) {
       if (snapshotUiCountsBuilder_ == null) {
@@ -7052,7 +7052,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public Builder setSnapshotUiCounts(
         com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.Builder builderForValue) {
@@ -7070,7 +7070,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public Builder mergeSnapshotUiCounts(com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts value) {
       if (snapshotUiCountsBuilder_ == null) {
@@ -7094,7 +7094,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public Builder clearSnapshotUiCounts() {
       if (snapshotUiCountsBuilder_ == null) {
@@ -7111,7 +7111,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.Builder getSnapshotUiCountsBuilder() {
       bitField0_ |= 0x01000000;
@@ -7123,7 +7123,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICountsOrBuilder getSnapshotUiCountsOrBuilder() {
       if (snapshotUiCountsBuilder_ != null) {
@@ -7138,7 +7138,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on all snapshot UI.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+     * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts, com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.Builder, com.google.wireless.android.sdk.stats.EmulatorSnapshotUICountsOrBuilder> 
@@ -7162,7 +7162,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      * @return Whether the camera field is set.
      */
     public boolean hasCamera() {
@@ -7173,7 +7173,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      * @return The camera.
      */
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession getCamera() {
@@ -7188,7 +7188,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public Builder setCamera(com.google.wireless.android.sdk.stats.EmulatorCameraSession value) {
       if (cameraBuilder_ == null) {
@@ -7208,7 +7208,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public Builder setCamera(
         com.google.wireless.android.sdk.stats.EmulatorCameraSession.Builder builderForValue) {
@@ -7226,7 +7226,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public Builder mergeCamera(com.google.wireless.android.sdk.stats.EmulatorCameraSession value) {
       if (cameraBuilder_ == null) {
@@ -7250,7 +7250,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public Builder clearCamera() {
       if (cameraBuilder_ == null) {
@@ -7267,7 +7267,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.Builder getCameraBuilder() {
       bitField0_ |= 0x02000000;
@@ -7279,7 +7279,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorCameraSessionOrBuilder getCameraOrBuilder() {
       if (cameraBuilder_ != null) {
@@ -7294,7 +7294,7 @@ private static final long serialVersionUID = 0L;
      * Metrics on camera usage.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+     * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorCameraSession, com.google.wireless.android.sdk.stats.EmulatorCameraSession.Builder, com.google.wireless.android.sdk.stats.EmulatorCameraSessionOrBuilder> 
@@ -7318,7 +7318,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      * @return Whether the virtualScene field is set.
      */
     public boolean hasVirtualScene() {
@@ -7329,7 +7329,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      * @return The virtualScene.
      */
     public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession getVirtualScene() {
@@ -7344,7 +7344,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public Builder setVirtualScene(com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession value) {
       if (virtualSceneBuilder_ == null) {
@@ -7364,7 +7364,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public Builder setVirtualScene(
         com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession.Builder builderForValue) {
@@ -7382,7 +7382,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public Builder mergeVirtualScene(com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession value) {
       if (virtualSceneBuilder_ == null) {
@@ -7406,7 +7406,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public Builder clearVirtualScene() {
       if (virtualSceneBuilder_ == null) {
@@ -7423,7 +7423,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession.Builder getVirtualSceneBuilder() {
       bitField0_ |= 0x04000000;
@@ -7435,7 +7435,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSessionOrBuilder getVirtualSceneOrBuilder() {
       if (virtualSceneBuilder_ != null) {
@@ -7450,7 +7450,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for virtual scene camera sessions.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+     * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession, com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession.Builder, com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSessionOrBuilder> 
@@ -7474,7 +7474,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      * @return Whether the bootInfo field is set.
      */
     public boolean hasBootInfo() {
@@ -7485,7 +7485,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      * @return The bootInfo.
      */
     public com.google.wireless.android.sdk.stats.EmulatorBootInfo getBootInfo() {
@@ -7500,7 +7500,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public Builder setBootInfo(com.google.wireless.android.sdk.stats.EmulatorBootInfo value) {
       if (bootInfoBuilder_ == null) {
@@ -7520,7 +7520,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public Builder setBootInfo(
         com.google.wireless.android.sdk.stats.EmulatorBootInfo.Builder builderForValue) {
@@ -7538,7 +7538,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public Builder mergeBootInfo(com.google.wireless.android.sdk.stats.EmulatorBootInfo value) {
       if (bootInfoBuilder_ == null) {
@@ -7562,7 +7562,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public Builder clearBootInfo() {
       if (bootInfoBuilder_ == null) {
@@ -7579,7 +7579,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorBootInfo.Builder getBootInfoBuilder() {
       bitField0_ |= 0x08000000;
@@ -7591,7 +7591,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorBootInfoOrBuilder getBootInfoOrBuilder() {
       if (bootInfoBuilder_ != null) {
@@ -7606,7 +7606,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for emulator boot status and time.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+     * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorBootInfo, com.google.wireless.android.sdk.stats.EmulatorBootInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorBootInfoOrBuilder> 
@@ -7630,7 +7630,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      * @return Whether the automation field is set.
      */
     public boolean hasAutomation() {
@@ -7641,7 +7641,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      * @return The automation.
      */
     public com.google.wireless.android.sdk.stats.EmulatorAutomation getAutomation() {
@@ -7656,7 +7656,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public Builder setAutomation(com.google.wireless.android.sdk.stats.EmulatorAutomation value) {
       if (automationBuilder_ == null) {
@@ -7676,7 +7676,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public Builder setAutomation(
         com.google.wireless.android.sdk.stats.EmulatorAutomation.Builder builderForValue) {
@@ -7694,7 +7694,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public Builder mergeAutomation(com.google.wireless.android.sdk.stats.EmulatorAutomation value) {
       if (automationBuilder_ == null) {
@@ -7718,7 +7718,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public Builder clearAutomation() {
       if (automationBuilder_ == null) {
@@ -7735,7 +7735,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorAutomation.Builder getAutomationBuilder() {
       bitField0_ |= 0x10000000;
@@ -7747,7 +7747,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorAutomationOrBuilder getAutomationOrBuilder() {
       if (automationBuilder_ != null) {
@@ -7762,7 +7762,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for automation/macros.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+     * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorAutomation, com.google.wireless.android.sdk.stats.EmulatorAutomation.Builder, com.google.wireless.android.sdk.stats.EmulatorAutomationOrBuilder> 
@@ -7786,7 +7786,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      * @return Whether the multiDisplay field is set.
      */
     public boolean hasMultiDisplay() {
@@ -7797,7 +7797,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      * @return The multiDisplay.
      */
     public com.google.wireless.android.sdk.stats.EmulatorMultiDisplay getMultiDisplay() {
@@ -7812,7 +7812,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public Builder setMultiDisplay(com.google.wireless.android.sdk.stats.EmulatorMultiDisplay value) {
       if (multiDisplayBuilder_ == null) {
@@ -7832,7 +7832,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public Builder setMultiDisplay(
         com.google.wireless.android.sdk.stats.EmulatorMultiDisplay.Builder builderForValue) {
@@ -7850,7 +7850,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public Builder mergeMultiDisplay(com.google.wireless.android.sdk.stats.EmulatorMultiDisplay value) {
       if (multiDisplayBuilder_ == null) {
@@ -7874,7 +7874,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public Builder clearMultiDisplay() {
       if (multiDisplayBuilder_ == null) {
@@ -7891,7 +7891,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorMultiDisplay.Builder getMultiDisplayBuilder() {
       bitField0_ |= 0x20000000;
@@ -7903,7 +7903,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorMultiDisplayOrBuilder getMultiDisplayOrBuilder() {
       if (multiDisplayBuilder_ != null) {
@@ -7918,7 +7918,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for multi-display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+     * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorMultiDisplay, com.google.wireless.android.sdk.stats.EmulatorMultiDisplay.Builder, com.google.wireless.android.sdk.stats.EmulatorMultiDisplayOrBuilder> 
@@ -7942,7 +7942,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      * @return Whether the grpc field is set.
      */
     public boolean hasGrpc() {
@@ -7953,7 +7953,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      * @return The grpc.
      */
     public com.google.wireless.android.sdk.stats.EmulatorGrpc getGrpc() {
@@ -7968,7 +7968,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public Builder setGrpc(com.google.wireless.android.sdk.stats.EmulatorGrpc value) {
       if (grpcBuilder_ == null) {
@@ -7988,7 +7988,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public Builder setGrpc(
         com.google.wireless.android.sdk.stats.EmulatorGrpc.Builder builderForValue) {
@@ -8006,7 +8006,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public Builder mergeGrpc(com.google.wireless.android.sdk.stats.EmulatorGrpc value) {
       if (grpcBuilder_ == null) {
@@ -8030,7 +8030,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public Builder clearGrpc() {
       if (grpcBuilder_ == null) {
@@ -8047,7 +8047,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGrpc.Builder getGrpcBuilder() {
       bitField0_ |= 0x40000000;
@@ -8059,7 +8059,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGrpcOrBuilder getGrpcOrBuilder() {
       if (grpcBuilder_ != null) {
@@ -8074,7 +8074,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for gRPC invocation
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+     * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorGrpc, com.google.wireless.android.sdk.stats.EmulatorGrpc.Builder, com.google.wireless.android.sdk.stats.EmulatorGrpcOrBuilder> 
@@ -8098,7 +8098,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      * @return Whether the locationV2 field is set.
      */
     public boolean hasLocationV2() {
@@ -8109,7 +8109,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      * @return The locationV2.
      */
     public com.google.wireless.android.sdk.stats.EmulatorLocationV2 getLocationV2() {
@@ -8124,7 +8124,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public Builder setLocationV2(com.google.wireless.android.sdk.stats.EmulatorLocationV2 value) {
       if (locationV2Builder_ == null) {
@@ -8144,7 +8144,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public Builder setLocationV2(
         com.google.wireless.android.sdk.stats.EmulatorLocationV2.Builder builderForValue) {
@@ -8162,7 +8162,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public Builder mergeLocationV2(com.google.wireless.android.sdk.stats.EmulatorLocationV2 value) {
       if (locationV2Builder_ == null) {
@@ -8186,7 +8186,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public Builder clearLocationV2() {
       if (locationV2Builder_ == null) {
@@ -8203,7 +8203,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorLocationV2.Builder getLocationV2Builder() {
       bitField0_ |= 0x80000000;
@@ -8215,7 +8215,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorLocationV2OrBuilder getLocationV2OrBuilder() {
       if (locationV2Builder_ != null) {
@@ -8230,7 +8230,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for LocationUiV2
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+     * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorLocationV2, com.google.wireless.android.sdk.stats.EmulatorLocationV2.Builder, com.google.wireless.android.sdk.stats.EmulatorLocationV2OrBuilder> 
@@ -8254,7 +8254,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      * @return Whether the screenshot field is set.
      */
     public boolean hasScreenshot() {
@@ -8265,7 +8265,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      * @return The screenshot.
      */
     public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot getScreenshot() {
@@ -8280,7 +8280,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public Builder setScreenshot(com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot value) {
       if (screenshotBuilder_ == null) {
@@ -8300,7 +8300,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public Builder setScreenshot(
         com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot.Builder builderForValue) {
@@ -8318,7 +8318,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public Builder mergeScreenshot(com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot value) {
       if (screenshotBuilder_ == null) {
@@ -8342,7 +8342,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public Builder clearScreenshot() {
       if (screenshotBuilder_ == null) {
@@ -8359,7 +8359,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot.Builder getScreenshotBuilder() {
       bitField1_ |= 0x00000001;
@@ -8371,7 +8371,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshotOrBuilder getScreenshotOrBuilder() {
       if (screenshotBuilder_ != null) {
@@ -8386,7 +8386,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for streamScreenshot
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+     * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot, com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot.Builder, com.google.wireless.android.sdk.stats.EmulatorStreamScreenshotOrBuilder> 
@@ -8722,7 +8722,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      * @return Whether the resizableDisplay field is set.
      */
     public boolean hasResizableDisplay() {
@@ -8733,7 +8733,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      * @return The resizableDisplay.
      */
     public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay() {
@@ -8748,7 +8748,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public Builder setResizableDisplay(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay value) {
       if (resizableDisplayBuilder_ == null) {
@@ -8768,7 +8768,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public Builder setResizableDisplay(
         com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder builderForValue) {
@@ -8786,7 +8786,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public Builder mergeResizableDisplay(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay value) {
       if (resizableDisplayBuilder_ == null) {
@@ -8810,7 +8810,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public Builder clearResizableDisplay() {
       if (resizableDisplayBuilder_ == null) {
@@ -8827,7 +8827,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder getResizableDisplayBuilder() {
       bitField1_ |= 0x00000004;
@@ -8839,7 +8839,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder() {
       if (resizableDisplayBuilder_ != null) {
@@ -8854,7 +8854,7 @@ private static final long serialVersionUID = 0L;
      * Metrics for resizable display
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorResizableDisplay, com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder, com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder> 

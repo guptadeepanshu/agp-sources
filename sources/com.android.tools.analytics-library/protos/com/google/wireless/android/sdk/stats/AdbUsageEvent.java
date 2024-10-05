@@ -1211,7 +1211,7 @@ private static final long serialVersionUID = 0L;
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return Whether the processPropertiesEvent field is set.
    */
   @java.lang.Override
@@ -1223,7 +1223,7 @@ private static final long serialVersionUID = 0L;
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return The processPropertiesEvent.
    */
   @java.lang.Override
@@ -1238,7 +1238,7 @@ private static final long serialVersionUID = 0L;
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder getProcessPropertiesEventOrBuilder() {
@@ -1620,7 +1620,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      * @return Whether the processPropertiesEvent field is set.
      */
     @java.lang.Override
@@ -1632,7 +1632,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      * @return The processPropertiesEvent.
      */
     @java.lang.Override
@@ -1654,7 +1654,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder setProcessPropertiesEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent value) {
       if (processPropertiesEventBuilder_ == null) {
@@ -1674,7 +1674,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder setProcessPropertiesEvent(
         com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.Builder builderForValue) {
@@ -1692,7 +1692,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder mergeProcessPropertiesEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent value) {
       if (processPropertiesEventBuilder_ == null) {
@@ -1718,7 +1718,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder clearProcessPropertiesEvent() {
       if (processPropertiesEventBuilder_ == null) {
@@ -1741,7 +1741,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.Builder getProcessPropertiesEventBuilder() {
       return getProcessPropertiesEventFieldBuilder().getBuilder();
@@ -1751,7 +1751,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder getProcessPropertiesEventOrBuilder() {
@@ -1769,7 +1769,7 @@ private static final long serialVersionUID = 0L;
      * Add other types of events, e.g. attaching debugger, etc
      * </pre>
      *
-     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+     * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent, com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.Builder, com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder> 

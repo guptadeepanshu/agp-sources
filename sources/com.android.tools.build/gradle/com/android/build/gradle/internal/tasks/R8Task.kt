@@ -240,6 +240,9 @@ abstract class R8Task @Inject constructor(
     @get:OutputFile
     abstract val mergedStartupProfile: RegularFileProperty
 
+    @get:OutputFile
+    abstract val r8Metadata: RegularFileProperty
+
     class PrivacySandboxSdkCreationAction(
         val creationConfig: PrivacySandboxSdkVariantScope,
         addCompileRClass: Boolean,
@@ -268,6 +271,10 @@ abstract class R8Task @Inject constructor(
             creationConfig.artifacts.use(taskProvider)
                 .wiredWithFiles(R8Task::resourcesJar, R8Task::outputResources)
                 .toTransform(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                R8Task::r8Metadata
+            ).on(InternalArtifactType.R8_METADATA)
         }
 
         override fun configure(
@@ -413,6 +420,10 @@ abstract class R8Task @Inject constructor(
                     .wiredWithFiles(R8Task::inputArtProfile, R8Task::outputArtProfile)
                     .toTransform(InternalArtifactType.R8_ART_PROFILE)
             }
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                R8Task::r8Metadata
+            ).on(InternalArtifactType.R8_METADATA)
         }
 
         override fun configure(
@@ -558,7 +569,6 @@ abstract class R8Task @Inject constructor(
     }
 
     override fun doTaskAction() {
-
         val output: Property<out FileSystemLocation> =
             when {
                 componentType.orNull?.isAar == true -> outputClasses
@@ -678,6 +688,7 @@ abstract class R8Task @Inject constructor(
                 it.outputArtProfile.set(outputArtProfile)
             }
             it.inputProfileForDexStartupOptimization.set(inputProfileForDexStartupOptimization)
+            it.r8Metadata.set(r8Metadata)
         }
         if (executionOptions.get().runInSeparateProcess) {
             workerExecutor.processIsolation { spec ->
@@ -726,6 +737,7 @@ abstract class R8Task @Inject constructor(
             inputArtProfile: File?,
             outputArtProfile: File?,
             inputProfileForDexStartupOptimization: File?,
+            r8Metadata: File?
         ) {
             val logger = LoggerWrapper.getLogger(R8Task::class.java)
 
@@ -801,6 +813,7 @@ abstract class R8Task @Inject constructor(
                 inputArtProfile?.toPath(),
                 outputArtProfile?.toPath(),
                 inputProfileForDexStartupOptimization?.toPath(),
+                r8Metadata?.toPath(),
             )
         }
 
@@ -852,6 +865,7 @@ abstract class R8Task @Inject constructor(
             abstract val inputArtProfile: RegularFileProperty
             abstract val outputArtProfile: RegularFileProperty
             abstract val inputProfileForDexStartupOptimization: RegularFileProperty
+            abstract val r8Metadata: RegularFileProperty
         }
 
         override fun execute() {
@@ -890,6 +904,7 @@ abstract class R8Task @Inject constructor(
                 parameters.inputArtProfile.orNull?.asFile,
                 parameters.outputArtProfile.orNull?.asFile,
                 parameters.inputProfileForDexStartupOptimization.orNull?.asFile,
+                parameters.r8Metadata.orNull?.asFile,
             )
         }
     }

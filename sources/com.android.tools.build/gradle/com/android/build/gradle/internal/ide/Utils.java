@@ -16,6 +16,9 @@
 
 package com.android.build.gradle.internal.ide;
 
+import static com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_JAVA_SOURCES;
+import static com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES;
+
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
@@ -24,15 +27,20 @@ import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.builder.compiling.BuildConfigType;
+
 import com.google.common.collect.Streams;
+
+import kotlin.Unit;
+
+import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.Directory;
+import org.gradle.api.file.FileCollection;
+import org.gradle.api.provider.Provider;
+
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
-import kotlin.Unit;
-import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.Directory;
-import org.gradle.api.file.FileCollection;
 
 public class Utils {
 
@@ -66,6 +74,16 @@ public class Utils {
                                                                     .getShouldBeAddedToIdeModel()));
                             return Unit.INSTANCE;
                         });
+        Provider<Directory> kaptGeneratedJavaSources =
+                component.getBuiltInKaptArtifact(BUILT_IN_KAPT_GENERATED_JAVA_SOURCES.INSTANCE);
+        if (kaptGeneratedJavaSources != null) {
+            fileCollection.from(kaptGeneratedJavaSources);
+        }
+        Provider<Directory> kaptGeneratedKotlinSources =
+                component.getBuiltInKaptArtifact(BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES.INSTANCE);
+        if (kaptGeneratedKotlinSources != null) {
+            fileCollection.from(kaptGeneratedKotlinSources);
+        }
         if (component.getOldVariantApiLegacySupport() != null) {
             fileCollection.from(
                     component
@@ -90,12 +108,8 @@ public class Utils {
         ArtifactsImpl artifacts = component.getArtifacts();
         fileCollection.from(getGeneratedSourceFoldersFileCollectionForUnitTests(component));
         if (component.getBuildFeatures().getAidl()) {
-            Callable<Directory> aidlCallable =
-                    () ->
-                            artifacts
-                                    .get(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR.INSTANCE)
-                                    .getOrNull();
-            fileCollection.from(aidlCallable);
+            fileCollection.from(
+                    artifacts.get(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR.INSTANCE));
         }
         if (component.getBuildConfigCreationConfig() != null
                 && component.getBuildConfigCreationConfig().getBuildConfigType()
@@ -118,26 +132,15 @@ public class Utils {
                     mainVariant.getRenderscriptCreationConfig().getDslRenderscriptNdkModeEnabled();
         }
         if (!ndkMode && component.getBuildFeatures().getRenderScript()) {
-            Callable<Directory> renderscriptCallable =
-                    () ->
-                            artifacts
-                                    .get(
-                                            InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
-                                                    .INSTANCE)
-                                    .getOrNull();
-            fileCollection.from(renderscriptCallable);
+            fileCollection.from(
+                    artifacts.get(InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE));
         }
         boolean isDataBindingEnabled = component.getBuildFeatures().getDataBinding();
         boolean isViewBindingEnabled = component.getBuildFeatures().getViewBinding();
         if (isDataBindingEnabled || isViewBindingEnabled) {
-            Callable<Directory> dataBindingCallable =
-                    () ->
-                            artifacts
-                                    .get(
-                                            InternalArtifactType.DATA_BINDING_BASE_CLASS_SOURCE_OUT
-                                                    .INSTANCE)
-                                    .getOrNull();
-            fileCollection.from(dataBindingCallable);
+            fileCollection.from(
+                    artifacts.get(
+                            InternalArtifactType.DATA_BINDING_BASE_CLASS_SOURCE_OUT.INSTANCE));
         }
         fileCollection.disallowChanges();
         return fileCollection;
@@ -175,6 +178,25 @@ public class Utils {
                         component.getArtifacts().get(InternalArtifactType.GENERATED_RES.INSTANCE));
             }
         }
+        return Streams.stream(fileCollection).collect(Collectors.toList());
+    }
+
+    @NonNull
+    public static List<File> getGeneratedAssetsFolders(@NonNull ComponentCreationConfig component) {
+        ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
+        component
+                .getSources()
+                .assets(
+                        resSources -> {
+                            fileCollection.from(
+                                    resSources.variantSourcesForModel$gradle_core(
+                                            directoryEntry ->
+                                                    directoryEntry.isUserAdded()
+                                                            && directoryEntry.isGenerated()
+                                                            && directoryEntry
+                                                                    .getShouldBeAddedToIdeModel()));
+                            return Unit.INSTANCE;
+                        });
         return Streams.stream(fileCollection).collect(Collectors.toList());
     }
 }

@@ -19,14 +19,14 @@ package com.android.tools.analytics
 import com.google.wireless.android.play.playlog.proto.ClientAnalytics
 
 /**
- * A [UsageTracker] that does not report any logs. Used when the user opts-out of reporting
- * usage analytics to Google.
+ * A [UsageTracker] that does not report any logs. Used when the user opts-out of reporting usage
+ * analytics to Google.
  */
 object NullUsageTracker : UsageTrackerWriter() {
 
-    override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {}
+  override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {}
 
-    override fun close() {}
+  override fun close() {}
 
-    override fun flush() {}
+  override fun flush() {}
 }

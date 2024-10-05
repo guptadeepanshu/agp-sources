@@ -98,7 +98,7 @@ public interface LldbSessionStartDetailsOrBuilder extends
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    * @return Whether the deviceInfo field is set.
    */
   boolean hasDeviceInfo();
@@ -107,7 +107,7 @@ public interface LldbSessionStartDetailsOrBuilder extends
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    * @return The deviceInfo.
    */
   com.google.wireless.android.sdk.stats.DeviceInfo getDeviceInfo();
@@ -116,7 +116,7 @@ public interface LldbSessionStartDetailsOrBuilder extends
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder();
 

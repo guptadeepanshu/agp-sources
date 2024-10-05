@@ -32,6 +32,7 @@ import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.SettingsExtension
 import com.android.build.api.extension.impl.KotlinMultiplatformAndroidComponentsExtensionImpl
 import com.android.build.api.extension.impl.MultiplatformVariantApiOperationsRegistrar
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension
 import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.KmpVariantImpl
@@ -54,6 +55,7 @@ import com.android.build.gradle.internal.dependency.SingleVariantBuildTypeRule
 import com.android.build.gradle.internal.dependency.SingleVariantProductFlavorRule
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.dsl.SdkComponentsImpl
 import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
@@ -353,7 +355,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
 
         mainVariant.unitTest = unitTest
         androidTest?.let {
-            mainVariant.addDeviceTest(it)
+            mainVariant.addDeviceTest(DeviceTestBuilder.ANDROID_TEST_TYPE, it)
         }
 
         val stats = configuratorService.getVariantBuilder(
@@ -478,7 +480,8 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             androidExtension,
             variantServices,
             project.layout.buildDirectory,
-            (androidTarget as KotlinMultiplatformAndroidTargetImpl).enableJavaSources
+            (androidTarget as KotlinMultiplatformAndroidTargetImpl).enableJavaSources,
+            dslServices
         )
 
         val paths = VariantPathHelper(
@@ -496,7 +499,11 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         return KmpVariantImpl(
             dslInfo = dslInfo,
             internalServices = variantServices,
-            buildFeatures = KotlinMultiplatformBuildFeaturesValuesImpl(),
+            buildFeatures = KotlinMultiplatformBuildFeaturesValuesImpl(
+                ModulePropertyKey.BooleanWithDefault.KMP_ANDROID_RESOURCES_ENABLED.getValue(
+                    dslInfo.experimentalProperties
+                )
+            ),
             variantDependencies = createVariantDependencies(project, dslInfo, kotlinCompilation, androidTarget),
             paths = paths,
             artifacts = artifacts,

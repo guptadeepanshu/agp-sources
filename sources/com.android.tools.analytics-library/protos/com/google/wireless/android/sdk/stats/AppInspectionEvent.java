@@ -1056,7 +1056,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      * @return Whether the offlineModeMetadata field is set.
      */
     boolean hasOfflineModeMetadata();
@@ -1065,7 +1065,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      * @return The offlineModeMetadata.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata getOfflineModeMetadata();
@@ -1074,7 +1074,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadataOrBuilder getOfflineModeMetadataOrBuilder();
 
@@ -1083,7 +1083,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      * @return Whether the exportDialogOpenedEvent field is set.
      */
     boolean hasExportDialogOpenedEvent();
@@ -1092,7 +1092,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      * @return The exportDialogOpenedEvent.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent getExportDialogOpenedEvent();
@@ -1101,7 +1101,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEventOrBuilder getExportDialogOpenedEventOrBuilder();
 
@@ -1110,7 +1110,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      * @return Whether the exportCompletedEvent field is set.
      */
     boolean hasExportCompletedEvent();
@@ -1119,7 +1119,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      * @return The exportCompletedEvent.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent getExportCompletedEvent();
@@ -1128,7 +1128,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEventOrBuilder getExportCompletedEventOrBuilder();
   }
@@ -4944,7 +4944,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      * @return Whether the offlineModeMetadata field is set.
      */
     @java.lang.Override
@@ -4956,7 +4956,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      * @return The offlineModeMetadata.
      */
     @java.lang.Override
@@ -4968,7 +4968,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |OFFLINE_MODE_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadataOrBuilder getOfflineModeMetadataOrBuilder() {
@@ -4982,7 +4982,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      * @return Whether the exportDialogOpenedEvent field is set.
      */
     @java.lang.Override
@@ -4994,7 +4994,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      * @return The exportDialogOpenedEvent.
      */
     @java.lang.Override
@@ -5006,7 +5006,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_DIALOG_OPENED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEventOrBuilder getExportDialogOpenedEventOrBuilder() {
@@ -5020,7 +5020,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      * @return Whether the exportCompletedEvent field is set.
      */
     @java.lang.Override
@@ -5032,7 +5032,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      * @return The exportCompletedEvent.
      */
     @java.lang.Override
@@ -5044,7 +5044,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |EXPORT_OPERATION_COMPLETED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEventOrBuilder getExportCompletedEventOrBuilder() {
@@ -6049,7 +6049,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        * @return Whether the offlineModeMetadata field is set.
        */
       public boolean hasOfflineModeMetadata() {
@@ -6060,7 +6060,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        * @return The offlineModeMetadata.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata getOfflineModeMetadata() {
@@ -6075,7 +6075,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public Builder setOfflineModeMetadata(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata value) {
         if (offlineModeMetadataBuilder_ == null) {
@@ -6095,7 +6095,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public Builder setOfflineModeMetadata(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata.Builder builderForValue) {
@@ -6113,7 +6113,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public Builder mergeOfflineModeMetadata(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata value) {
         if (offlineModeMetadataBuilder_ == null) {
@@ -6137,7 +6137,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public Builder clearOfflineModeMetadata() {
         if (offlineModeMetadataBuilder_ == null) {
@@ -6154,7 +6154,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata.Builder getOfflineModeMetadataBuilder() {
         bitField0_ |= 0x00000040;
@@ -6166,7 +6166,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadataOrBuilder getOfflineModeMetadataOrBuilder() {
         if (offlineModeMetadataBuilder_ != null) {
@@ -6181,7 +6181,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |OFFLINE_MODE_ENTERED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadataOrBuilder> 
@@ -6205,7 +6205,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        * @return Whether the exportDialogOpenedEvent field is set.
        */
       public boolean hasExportDialogOpenedEvent() {
@@ -6216,7 +6216,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        * @return The exportDialogOpenedEvent.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent getExportDialogOpenedEvent() {
@@ -6231,7 +6231,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public Builder setExportDialogOpenedEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent value) {
         if (exportDialogOpenedEventBuilder_ == null) {
@@ -6251,7 +6251,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public Builder setExportDialogOpenedEvent(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Builder builderForValue) {
@@ -6269,7 +6269,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public Builder mergeExportDialogOpenedEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent value) {
         if (exportDialogOpenedEventBuilder_ == null) {
@@ -6293,7 +6293,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public Builder clearExportDialogOpenedEvent() {
         if (exportDialogOpenedEventBuilder_ == null) {
@@ -6310,7 +6310,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Builder getExportDialogOpenedEventBuilder() {
         bitField0_ |= 0x00000080;
@@ -6322,7 +6322,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEventOrBuilder getExportDialogOpenedEventOrBuilder() {
         if (exportDialogOpenedEventBuilder_ != null) {
@@ -6337,7 +6337,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_DIALOG_OPENED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEventOrBuilder> 
@@ -6361,7 +6361,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        * @return Whether the exportCompletedEvent field is set.
        */
       public boolean hasExportCompletedEvent() {
@@ -6372,7 +6372,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        * @return The exportCompletedEvent.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent getExportCompletedEvent() {
@@ -6387,7 +6387,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public Builder setExportCompletedEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent value) {
         if (exportCompletedEventBuilder_ == null) {
@@ -6407,7 +6407,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public Builder setExportCompletedEvent(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Builder builderForValue) {
@@ -6425,7 +6425,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public Builder mergeExportCompletedEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent value) {
         if (exportCompletedEventBuilder_ == null) {
@@ -6449,7 +6449,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public Builder clearExportCompletedEvent() {
         if (exportCompletedEventBuilder_ == null) {
@@ -6466,7 +6466,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Builder getExportCompletedEventBuilder() {
         bitField0_ |= 0x00000100;
@@ -6478,7 +6478,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEventOrBuilder getExportCompletedEventOrBuilder() {
         if (exportCompletedEventBuilder_ != null) {
@@ -6493,7 +6493,7 @@ private static final long serialVersionUID = 0L;
        * Set if |type| is |EXPORT_OPERATION_COMPLETED|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
+       * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEventOrBuilder> 
@@ -6640,7 +6640,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return Whether the chainInfo field is set.
      */
     boolean hasChainInfo();
@@ -6651,7 +6651,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return The chainInfo.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo getChainInfo();
@@ -6662,7 +6662,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder();
   }
@@ -8202,7 +8202,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return Whether the chainInfo field is set.
      */
     @java.lang.Override
@@ -8216,7 +8216,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return The chainInfo.
      */
     @java.lang.Override
@@ -8230,7 +8230,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
@@ -8880,7 +8880,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        * @return Whether the chainInfo field is set.
        */
       public boolean hasChainInfo() {
@@ -8893,7 +8893,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        * @return The chainInfo.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo getChainInfo() {
@@ -8910,7 +8910,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder setChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo value) {
         if (chainInfoBuilder_ == null) {
@@ -8932,7 +8932,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder setChainInfo(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo.Builder builderForValue) {
@@ -8952,7 +8952,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder mergeChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo value) {
         if (chainInfoBuilder_ == null) {
@@ -8978,7 +8978,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder clearChainInfo() {
         if (chainInfoBuilder_ == null) {
@@ -8997,7 +8997,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo.Builder getChainInfoBuilder() {
         bitField0_ |= 0x00000008;
@@ -9011,7 +9011,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
         if (chainInfoBuilder_ != null) {
@@ -9028,7 +9028,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfoOrBuilder> 
@@ -9123,32 +9123,32 @@ private static final long serialVersionUID = 0L;
     com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType();
 
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      * @return Whether the ruleDetailUpdated field is set.
      */
     boolean hasRuleDetailUpdated();
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      * @return The ruleDetailUpdated.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent getRuleDetailUpdated();
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEventOrBuilder getRuleDetailUpdatedOrBuilder();
 
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      * @return Whether the responseIntercepted field is set.
      */
     boolean hasResponseIntercepted();
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      * @return The responseIntercepted.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent getResponseIntercepted();
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEventOrBuilder getResponseInterceptedOrBuilder();
   }
@@ -11051,7 +11051,7 @@ private static final long serialVersionUID = 0L;
     public static final int RULE_DETAIL_UPDATED_FIELD_NUMBER = 2;
     private com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent ruleDetailUpdated_;
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      * @return Whether the ruleDetailUpdated field is set.
      */
     @java.lang.Override
@@ -11059,7 +11059,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      * @return The ruleDetailUpdated.
      */
     @java.lang.Override
@@ -11067,7 +11067,7 @@ private static final long serialVersionUID = 0L;
       return ruleDetailUpdated_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent.getDefaultInstance() : ruleDetailUpdated_;
     }
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEventOrBuilder getRuleDetailUpdatedOrBuilder() {
@@ -11077,7 +11077,7 @@ private static final long serialVersionUID = 0L;
     public static final int RESPONSE_INTERCEPTED_FIELD_NUMBER = 3;
     private com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent responseIntercepted_;
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      * @return Whether the responseIntercepted field is set.
      */
     @java.lang.Override
@@ -11085,7 +11085,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      * @return The responseIntercepted.
      */
     @java.lang.Override
@@ -11093,7 +11093,7 @@ private static final long serialVersionUID = 0L;
       return responseIntercepted_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent.getDefaultInstance() : responseIntercepted_;
     }
     /**
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEventOrBuilder getResponseInterceptedOrBuilder() {
@@ -11571,14 +11571,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEventOrBuilder> ruleDetailUpdatedBuilder_;
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        * @return Whether the ruleDetailUpdated field is set.
        */
       public boolean hasRuleDetailUpdated() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        * @return The ruleDetailUpdated.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent getRuleDetailUpdated() {
@@ -11589,7 +11589,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public Builder setRuleDetailUpdated(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent value) {
         if (ruleDetailUpdatedBuilder_ == null) {
@@ -11605,7 +11605,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public Builder setRuleDetailUpdated(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent.Builder builderForValue) {
@@ -11619,7 +11619,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public Builder mergeRuleDetailUpdated(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent value) {
         if (ruleDetailUpdatedBuilder_ == null) {
@@ -11639,7 +11639,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public Builder clearRuleDetailUpdated() {
         if (ruleDetailUpdatedBuilder_ == null) {
@@ -11652,7 +11652,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent.Builder getRuleDetailUpdatedBuilder() {
         bitField0_ |= 0x00000002;
@@ -11660,7 +11660,7 @@ private static final long serialVersionUID = 0L;
         return getRuleDetailUpdatedFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEventOrBuilder getRuleDetailUpdatedOrBuilder() {
         if (ruleDetailUpdatedBuilder_ != null) {
@@ -11671,7 +11671,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent rule_detail_updated = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.RuleUpdatedEventOrBuilder> 
@@ -11691,14 +11691,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEventOrBuilder> responseInterceptedBuilder_;
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        * @return Whether the responseIntercepted field is set.
        */
       public boolean hasResponseIntercepted() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        * @return The responseIntercepted.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent getResponseIntercepted() {
@@ -11709,7 +11709,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public Builder setResponseIntercepted(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent value) {
         if (responseInterceptedBuilder_ == null) {
@@ -11725,7 +11725,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public Builder setResponseIntercepted(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent.Builder builderForValue) {
@@ -11739,7 +11739,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public Builder mergeResponseIntercepted(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent value) {
         if (responseInterceptedBuilder_ == null) {
@@ -11759,7 +11759,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public Builder clearResponseIntercepted() {
         if (responseInterceptedBuilder_ == null) {
@@ -11772,7 +11772,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent.Builder getResponseInterceptedBuilder() {
         bitField0_ |= 0x00000004;
@@ -11780,7 +11780,7 @@ private static final long serialVersionUID = 0L;
         return getResponseInterceptedFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEventOrBuilder getResponseInterceptedOrBuilder() {
         if (responseInterceptedBuilder_ != null) {
@@ -11791,7 +11791,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3;</code>
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent response_intercepted = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.ResponseInterceptedEventOrBuilder> 
@@ -11938,7 +11938,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return Whether the chainInfo field is set.
      */
     boolean hasChainInfo();
@@ -11949,7 +11949,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return The chainInfo.
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo();
@@ -11960,7 +11960,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder();
   }
@@ -13603,7 +13603,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return Whether the chainInfo field is set.
      */
     @java.lang.Override
@@ -13617,7 +13617,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      * @return The chainInfo.
      */
     @java.lang.Override
@@ -13631,7 +13631,7 @@ private static final long serialVersionUID = 0L;
      * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
@@ -14280,7 +14280,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        * @return Whether the chainInfo field is set.
        */
       public boolean hasChainInfo() {
@@ -14293,7 +14293,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        * @return The chainInfo.
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo() {
@@ -14310,7 +14310,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder setChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo value) {
         if (chainInfoBuilder_ == null) {
@@ -14332,7 +14332,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder setChainInfo(
           com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder builderForValue) {
@@ -14352,7 +14352,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder mergeChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo value) {
         if (chainInfoBuilder_ == null) {
@@ -14378,7 +14378,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public Builder clearChainInfo() {
         if (chainInfoBuilder_ == null) {
@@ -14397,7 +14397,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder getChainInfoBuilder() {
         bitField0_ |= 0x00000008;
@@ -14411,7 +14411,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
         if (chainInfoBuilder_ != null) {
@@ -14428,7 +14428,7 @@ private static final long serialVersionUID = 0L;
        * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
        * </pre>
        *
-       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder> 
@@ -14586,7 +14586,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
    * @return Whether the databaseInspectorEvent field is set.
    */
   @java.lang.Override
@@ -14598,7 +14598,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
    * @return The databaseInspectorEvent.
    */
   @java.lang.Override
@@ -14613,7 +14613,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder getDatabaseInspectorEventOrBuilder() {
@@ -14629,7 +14629,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
    * @return Whether the workManagerInspectorEvent field is set.
    */
   @java.lang.Override
@@ -14641,7 +14641,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
    * @return The workManagerInspectorEvent.
    */
   @java.lang.Override
@@ -14656,7 +14656,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder getWorkManagerInspectorEventOrBuilder() {
@@ -14672,7 +14672,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
    * @return Whether the networkInspectorEvent field is set.
    */
   @java.lang.Override
@@ -14684,7 +14684,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
    * @return The networkInspectorEvent.
    */
   @java.lang.Override
@@ -14699,7 +14699,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
@@ -14715,7 +14715,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
    * @return Whether the backgroundTaskInspectorEvent field is set.
    */
   @java.lang.Override
@@ -14727,7 +14727,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
    * @return The backgroundTaskInspectorEvent.
    */
   @java.lang.Override
@@ -14742,7 +14742,7 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
@@ -14786,7 +14786,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
    * @return Whether the environmentMetadata field is set.
    */
   @java.lang.Override
@@ -14798,7 +14798,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
    * @return The environmentMetadata.
    */
   @java.lang.Override
@@ -14810,7 +14810,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+   * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadataOrBuilder getEnvironmentMetadataOrBuilder() {
@@ -15474,7 +15474,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      * @return Whether the databaseInspectorEvent field is set.
      */
     @java.lang.Override
@@ -15486,7 +15486,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      * @return The databaseInspectorEvent.
      */
     @java.lang.Override
@@ -15508,7 +15508,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     public Builder setDatabaseInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent value) {
       if (databaseInspectorEventBuilder_ == null) {
@@ -15528,7 +15528,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     public Builder setDatabaseInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder builderForValue) {
@@ -15546,7 +15546,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     public Builder mergeDatabaseInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent value) {
       if (databaseInspectorEventBuilder_ == null) {
@@ -15572,7 +15572,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     public Builder clearDatabaseInspectorEvent() {
       if (databaseInspectorEventBuilder_ == null) {
@@ -15595,7 +15595,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder getDatabaseInspectorEventBuilder() {
       return getDatabaseInspectorEventFieldBuilder().getBuilder();
@@ -15605,7 +15605,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder getDatabaseInspectorEventOrBuilder() {
@@ -15623,7 +15623,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder> 
@@ -15651,7 +15651,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      * @return Whether the workManagerInspectorEvent field is set.
      */
     @java.lang.Override
@@ -15663,7 +15663,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      * @return The workManagerInspectorEvent.
      */
     @java.lang.Override
@@ -15685,7 +15685,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     public Builder setWorkManagerInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent value) {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -15705,7 +15705,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     public Builder setWorkManagerInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder builderForValue) {
@@ -15723,7 +15723,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     public Builder mergeWorkManagerInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent value) {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -15749,7 +15749,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     public Builder clearWorkManagerInspectorEvent() {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -15772,7 +15772,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder getWorkManagerInspectorEventBuilder() {
       return getWorkManagerInspectorEventFieldBuilder().getBuilder();
@@ -15782,7 +15782,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder getWorkManagerInspectorEventOrBuilder() {
@@ -15800,7 +15800,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder> 
@@ -15828,7 +15828,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      * @return Whether the networkInspectorEvent field is set.
      */
     @java.lang.Override
@@ -15840,7 +15840,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      * @return The networkInspectorEvent.
      */
     @java.lang.Override
@@ -15862,7 +15862,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     public Builder setNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
       if (networkInspectorEventBuilder_ == null) {
@@ -15882,7 +15882,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     public Builder setNetworkInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder builderForValue) {
@@ -15900,7 +15900,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     public Builder mergeNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
       if (networkInspectorEventBuilder_ == null) {
@@ -15926,7 +15926,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     public Builder clearNetworkInspectorEvent() {
       if (networkInspectorEventBuilder_ == null) {
@@ -15949,7 +15949,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder getNetworkInspectorEventBuilder() {
       return getNetworkInspectorEventFieldBuilder().getBuilder();
@@ -15959,7 +15959,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
@@ -15977,7 +15977,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder> 
@@ -16005,7 +16005,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      * @return Whether the backgroundTaskInspectorEvent field is set.
      */
     @java.lang.Override
@@ -16017,7 +16017,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      * @return The backgroundTaskInspectorEvent.
      */
     @java.lang.Override
@@ -16039,7 +16039,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     public Builder setBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -16059,7 +16059,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     public Builder setBackgroundTaskInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder builderForValue) {
@@ -16077,7 +16077,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     public Builder mergeBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -16103,7 +16103,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     public Builder clearBackgroundTaskInspectorEvent() {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -16126,7 +16126,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder getBackgroundTaskInspectorEventBuilder() {
       return getBackgroundTaskInspectorEventFieldBuilder().getBuilder();
@@ -16136,7 +16136,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
@@ -16154,7 +16154,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder> 
@@ -16242,7 +16242,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      * @return Whether the environmentMetadata field is set.
      */
     public boolean hasEnvironmentMetadata() {
@@ -16253,7 +16253,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      * @return The environmentMetadata.
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata getEnvironmentMetadata() {
@@ -16268,7 +16268,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public Builder setEnvironmentMetadata(com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata value) {
       if (environmentMetadataBuilder_ == null) {
@@ -16288,7 +16288,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public Builder setEnvironmentMetadata(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.Builder builderForValue) {
@@ -16306,7 +16306,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public Builder mergeEnvironmentMetadata(com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata value) {
       if (environmentMetadataBuilder_ == null) {
@@ -16330,7 +16330,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public Builder clearEnvironmentMetadata() {
       if (environmentMetadataBuilder_ == null) {
@@ -16347,7 +16347,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.Builder getEnvironmentMetadataBuilder() {
       bitField0_ |= 0x00000040;
@@ -16359,7 +16359,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadataOrBuilder getEnvironmentMetadataOrBuilder() {
       if (environmentMetadataBuilder_ != null) {
@@ -16374,7 +16374,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TOOL_WINDOW_OPENED|, |PROCESS_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
+     * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata, com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadataOrBuilder> 

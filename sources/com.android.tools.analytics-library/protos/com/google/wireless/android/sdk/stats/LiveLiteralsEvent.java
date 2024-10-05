@@ -425,7 +425,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      * @return Whether the numberOfProblems field is set.
      */
     boolean hasNumberOfProblems();
@@ -434,7 +434,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      * @return The numberOfProblems.
      */
     com.google.wireless.android.sdk.stats.PercentileEstimator getNumberOfProblems();
@@ -443,7 +443,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getNumberOfProblemsOrBuilder();
 
@@ -452,7 +452,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      * @return Whether the deploymentTimeMs field is set.
      */
     boolean hasDeploymentTimeMs();
@@ -461,7 +461,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      * @return The deploymentTimeMs.
      */
     com.google.wireless.android.sdk.stats.PercentileEstimator getDeploymentTimeMs();
@@ -470,7 +470,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeploymentTimeMsOrBuilder();
   }
@@ -635,7 +635,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      * @return Whether the numberOfProblems field is set.
      */
     @java.lang.Override
@@ -647,7 +647,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      * @return The numberOfProblems.
      */
     @java.lang.Override
@@ -659,7 +659,7 @@ private static final long serialVersionUID = 0L;
      * Stats for number of reported deployment problems.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+     * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getNumberOfProblemsOrBuilder() {
@@ -673,7 +673,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      * @return Whether the deploymentTimeMs field is set.
      */
     @java.lang.Override
@@ -685,7 +685,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      * @return The deploymentTimeMs.
      */
     @java.lang.Override
@@ -697,7 +697,7 @@ private static final long serialVersionUID = 0L;
      * Stats for deployment type.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+     * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeploymentTimeMsOrBuilder() {
@@ -1450,7 +1450,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        * @return Whether the numberOfProblems field is set.
        */
       public boolean hasNumberOfProblems() {
@@ -1461,7 +1461,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        * @return The numberOfProblems.
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimator getNumberOfProblems() {
@@ -1476,7 +1476,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public Builder setNumberOfProblems(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (numberOfProblemsBuilder_ == null) {
@@ -1496,7 +1496,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public Builder setNumberOfProblems(
           com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1514,7 +1514,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public Builder mergeNumberOfProblems(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (numberOfProblemsBuilder_ == null) {
@@ -1538,7 +1538,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public Builder clearNumberOfProblems() {
         if (numberOfProblemsBuilder_ == null) {
@@ -1555,7 +1555,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getNumberOfProblemsBuilder() {
         bitField0_ |= 0x00000010;
@@ -1567,7 +1567,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getNumberOfProblemsOrBuilder() {
         if (numberOfProblemsBuilder_ != null) {
@@ -1582,7 +1582,7 @@ private static final long serialVersionUID = 0L;
        * Stats for number of reported deployment problems.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
+       * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 
@@ -1606,7 +1606,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        * @return Whether the deploymentTimeMs field is set.
        */
       public boolean hasDeploymentTimeMs() {
@@ -1617,7 +1617,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        * @return The deploymentTimeMs.
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimator getDeploymentTimeMs() {
@@ -1632,7 +1632,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public Builder setDeploymentTimeMs(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (deploymentTimeMsBuilder_ == null) {
@@ -1652,7 +1652,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public Builder setDeploymentTimeMs(
           com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -1670,7 +1670,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public Builder mergeDeploymentTimeMs(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (deploymentTimeMsBuilder_ == null) {
@@ -1694,7 +1694,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public Builder clearDeploymentTimeMs() {
         if (deploymentTimeMsBuilder_ == null) {
@@ -1711,7 +1711,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getDeploymentTimeMsBuilder() {
         bitField0_ |= 0x00000020;
@@ -1723,7 +1723,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeploymentTimeMsOrBuilder() {
         if (deploymentTimeMsBuilder_ != null) {
@@ -1738,7 +1738,7 @@ private static final long serialVersionUID = 0L;
        * Stats for deployment type.
        * </pre>
        *
-       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
+       * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 

@@ -19,6 +19,8 @@ package com.android.build.api.variant.impl
 import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariantBuilder
 import com.android.build.api.variant.AndroidTestBuilder
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DeviceTestBuilder
+import com.android.build.api.variant.HasDeviceTestsBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.api.variant.VariantBuilder
@@ -93,20 +95,19 @@ open class LibraryVariantBuilderImpl @Inject constructor(
         dslInfo.optimizationDslInfo.postProcessingOptions.codeShrinkerEnabled()
         set(value) = setMinificationIfPossible("minifyEnabled", value) { field = it }
 
-    override val deviceTests: List<DeviceTestBuilderImpl> =
-        dslInfo.dslDefinedDeviceTests.map { deviceTest ->
-            DeviceTestBuilderImpl(
-                variantBuilderServices,
-                globalVariantBuilderConfig,
-                this,
-                dslInfo.isAndroidTestMultiDexEnabled,
-                deviceTest.codeCoverageEnabled
-            )
-        }
+    override val deviceTests: Map<String, DeviceTestBuilderImpl> =
+        DeviceTestBuilderImpl.create(
+            dslInfo.dslDefinedDeviceTests,
+            variantBuilderServices,
+            globalVariantBuilderConfig,
+            { targetSdkVersion },
+            dslInfo.isAndroidTestMultiDexEnabled,
+        )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {
         AndroidTestBuilderImpl(
-            deviceTests.single()
+            deviceTests.get(DeviceTestBuilder.ANDROID_TEST_TYPE)
+                ?: throw RuntimeException("No androidTest component defined on this variant")
         )
     }
 

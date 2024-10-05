@@ -183,7 +183,6 @@ interface OutOperationRequest<FileTypeT: FileSystemLocation> {
  * All APIs will use a [Artifact.Multiple] as a target type and must use a [ListProperty] of
  * [FileTypeT] to retrieve the artifacts.
  */
-@Incubating
 interface MultipleArtifactTypeOutOperationRequest<FileTypeT: FileSystemLocation> {
 
     /**

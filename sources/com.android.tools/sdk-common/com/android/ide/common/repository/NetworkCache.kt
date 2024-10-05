@@ -27,6 +27,11 @@ import java.nio.file.Path
 import java.nio.file.attribute.FileTime
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.locks.Lock
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
+import kotlin.io.path.absolutePathString
 
 /**
  * Provides a basic network cache with local disk fallback for data read from a URL.
@@ -58,6 +63,10 @@ abstract class NetworkCache constructor(
 
     protected var lastReadSourceType: DataSourceType = DataSourceType.UNKNOWN_SOURCE
 
+    protected val locks = HashMap<String, Lock>()
+    // need this counter to clean locks map eventually
+    protected var findDataParallelism = 0
+
     @Suppress("ArrayInDataClass")
     data class ReadUrlDataResult(
         val data: ByteArray?,
@@ -79,7 +88,40 @@ abstract class NetworkCache constructor(
     /** Reports an error found during I/O. */
     protected abstract fun error(throwable: Throwable, message: String?)
 
+    protected inline fun <T> withLock(file: Path, action: () -> T): T {
+        val lock = synchronized(this) {
+            findDataParallelism = findDataParallelism.inc()
+            locks.computeIfAbsent(file.absolutePathString()) { ReentrantLock() }
+        }
+        try {
+            return lock.withLock {
+                action.invoke()
+            }
+        } finally {
+            synchronized(this) {
+                findDataParallelism = findDataParallelism.dec()
+                if (findDataParallelism == 0 && locks.size > 1) locks.clear()
+            }
+        }
+    }
+
+    private fun getRelativePath(relative: String, treatAsDirectory: Boolean = false) =
+        buildString(relative.length + 8) {
+            append(relative.split('/').joinToString("/") { encode(it) })
+            if (treatAsDirectory && isNotEmpty() && !endsWith('/')) {
+                // If treat as directory is true, the cache location is the same as if
+                // the relative path had ended in a forward-slash.
+                append('/')
+            }
+            if (isEmpty() || endsWith('/')) {
+                // Cache directory entries as path/to/entry/(index), which cannot conflict
+                // with another entry as the brackets would have been url encoded.
+                append("(index)")
+            }
+        }
+
     /** Reads the given data relative to the base URL.
+     *  Method is safe to execute in parallel.
      *
      * @param relative The relative
      * @param treatAsDirectory store the cache content in a directory, i.e. as if the URL ended in /
@@ -90,21 +132,10 @@ abstract class NetworkCache constructor(
     protected open fun findData(relative: String, treatAsDirectory: Boolean = false): InputStream? {
         if (cacheDir != null) {
             var lastModified = 0L
-            synchronized(cacheDir) {
-                val relativePath = buildString(relative.length + 8) {
-                    append(relative.split('/').joinToString("/") { encode(it) })
-                    if (treatAsDirectory && isNotEmpty() && !endsWith('/')) {
-                        // If treat as directory is true, the cache location is the same as if
-                        // the relative path had ended in a forward-slash.
-                        append('/')
-                    }
-                    if (isEmpty() || endsWith('/')) {
-                        // Cache directory entries as path/to/entry/(index), which cannot conflict
-                        // with another entry as the brackets would have been url encoded.
-                        append("(index)")
-                    }
-                }
-                val file = cacheDir.resolve(relativePath)
+
+            val relativePath = getRelativePath(relative, treatAsDirectory)
+            val file = cacheDir.resolve(relativePath)
+            withLock(file){
                 try {
                     lastModified = CancellableFileIo.getLastModifiedTime(file).toMillis()
                     val now = System.currentTimeMillis()
@@ -137,6 +168,8 @@ abstract class NetworkCache constructor(
                         if (result.modifiedSince) {
                             result.data?.let { data ->
                                 lastReadSourceType = DataSourceType.CACHE_FILE_NEW
+                                // createDirectories(it) is safe for concurrent usage. It handles folder creation
+                                // race condition by accepting if a folder has been created by other thread
                                 file.parent?.let { Files.createDirectories(it) }
                                 Files.write(file, data)
                                 return ByteArrayInputStream(data)

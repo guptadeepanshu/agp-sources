@@ -25,8 +25,8 @@ import com.android.build.gradle.internal.utils.DESUGARED_DESUGAR_LIB
 import com.android.build.gradle.internal.utils.DesugarConfigJson.Companion.combineFileContents
 import com.android.build.gradle.internal.utils.getDesugarLibConfigFiles
 import com.android.builder.dexing.KeepRulesConfig
+import com.android.builder.dexing.L8OutputMode
 import com.android.builder.dexing.runL8
-import com.android.tools.r8.OutputMode
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
@@ -90,7 +90,7 @@ abstract class L8DesugarLibTransform : TransformAction<L8DesugarLibTransform.Par
             parameters.minSdkVersion.get(),
             KeepRulesConfig(emptyList(), emptyList()),
             false,
-            OutputMode.ClassFile
+            L8OutputMode.ClassFile
         )
     }
 }

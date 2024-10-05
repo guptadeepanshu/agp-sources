@@ -118,12 +118,12 @@ open class KmpVariantImpl @Inject constructor(
 
     override var unitTest: KmpHostTestImpl? = null
 
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
         get() = internalDeviceTests
     override val hostTests = mutableMapOf<String, HostTestCreationConfig>()
 
     override val androidDeviceTest: KmpAndroidTestImpl?
-        get() = deviceTests.filterIsInstance<KmpAndroidTestImpl>().firstOrNull()
+        get() = deviceTests.values.filterIsInstance<KmpAndroidTestImpl>().firstOrNull()
 
     override val requiresJacocoTransformation: Boolean
         get() = androidDeviceTest?.codeCoverageEnabled ?: false
@@ -189,9 +189,9 @@ open class KmpVariantImpl @Inject constructor(
     override fun finalizeAndLock() {
     }
 
-    private val internalDeviceTests = mutableListOf<DeviceTest>()
+    private val internalDeviceTests = mutableMapOf<String, DeviceTest>()
 
-    override fun addDeviceTest(deviceTest: DeviceTest) {
-        internalDeviceTests.add(deviceTest)
+    override fun addDeviceTest(testTypeName: String, deviceTest: DeviceTest) {
+        internalDeviceTests[testTypeName] = deviceTest
     }
 }

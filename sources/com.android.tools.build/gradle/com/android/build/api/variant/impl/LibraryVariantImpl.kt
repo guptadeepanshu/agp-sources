@@ -103,7 +103,7 @@ open class LibraryVariantImpl @Inject constructor(
         )
 
 
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
         get() = internalDeviceTests
 
     override val hostTests: Map<String, HostTestCreationConfig>
@@ -169,8 +169,8 @@ open class LibraryVariantImpl @Inject constructor(
         internalHostTests[testTypeName] = testComponent
     }
 
-    override fun addDeviceTest(deviceTest: DeviceTest) {
-        internalDeviceTests.add(deviceTest)
+    override fun addDeviceTest(testTypeName: String, deviceTest: DeviceTest) {
+        internalDeviceTests[testTypeName] = deviceTest
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -178,5 +178,5 @@ open class LibraryVariantImpl @Inject constructor(
     // ---------------------------------------------------------------------------------------------
 
     private val internalHostTests = mutableMapOf<String, HostTestCreationConfig>()
-    private val internalDeviceTests = mutableListOf<DeviceTest>()
+    private val internalDeviceTests = mutableMapOf<String, DeviceTest>()
 }

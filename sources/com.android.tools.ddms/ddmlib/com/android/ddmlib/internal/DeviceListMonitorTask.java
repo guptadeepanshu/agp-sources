@@ -51,7 +51,7 @@ public class DeviceListMonitorTask implements Runnable {
     private final UpdateListener mListener;
     private final boolean mEmitDeviceListUpdates;
 
-    private SocketChannel mAdbConnection = null;
+    private volatile SocketChannel mAdbConnection = null;
     private boolean mMonitoring = false;
     private int mConnectionAttempt = 0;
     private int mRestartAttemptCount = 0;
@@ -185,13 +185,8 @@ public class DeviceListMonitorTask implements Runnable {
             }
             mMonitoring = false;
             if (mAdbConnection != null) {
-                try {
-                    mAdbConnection.close();
-                } catch (IOException ioe) {
-                    // we can safely ignore that one.
-                }
+                closeConnection();
                 mAdbConnection = null;
-
                 errorHandler.accept(e);
             }
         }
@@ -247,10 +242,16 @@ public class DeviceListMonitorTask implements Runnable {
         mQuit = true;
 
         // wakeup the main loop thread by closing the main connection to adb.
-        if (mAdbConnection != null) {
+        closeConnection();
+    }
+
+    private void closeConnection() {
+        SocketChannel adbConnection = mAdbConnection;
+        if (adbConnection != null) {
             try {
-                mAdbConnection.close();
-            } catch (IOException ignored) {
+                adbConnection.close();
+            } catch (IOException e) {
+                Log.i("DeviceMonitor", "Adb close connection Error: " + e.getMessage());
             }
         }
     }

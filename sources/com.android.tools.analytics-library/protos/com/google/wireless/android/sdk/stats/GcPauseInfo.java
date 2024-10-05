@@ -242,7 +242,7 @@ private static final long serialVersionUID = 0L;
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    * @return Whether the pauseTimesMs field is set.
    */
   @java.lang.Override
@@ -254,7 +254,7 @@ private static final long serialVersionUID = 0L;
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    * @return The pauseTimesMs.
    */
   @java.lang.Override
@@ -266,7 +266,7 @@ private static final long serialVersionUID = 0L;
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPauseTimesMsOrBuilder() {
@@ -723,7 +723,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      * @return Whether the pauseTimesMs field is set.
      */
     public boolean hasPauseTimesMs() {
@@ -734,7 +734,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      * @return The pauseTimesMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getPauseTimesMs() {
@@ -749,7 +749,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public Builder setPauseTimesMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (pauseTimesMsBuilder_ == null) {
@@ -769,7 +769,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public Builder setPauseTimesMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -787,7 +787,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public Builder mergePauseTimesMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (pauseTimesMsBuilder_ == null) {
@@ -811,7 +811,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public Builder clearPauseTimesMs() {
       if (pauseTimesMsBuilder_ == null) {
@@ -828,7 +828,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getPauseTimesMsBuilder() {
       bitField0_ |= 0x00000002;
@@ -840,7 +840,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPauseTimesMsOrBuilder() {
       if (pauseTimesMsBuilder_ != null) {
@@ -855,7 +855,7 @@ private static final long serialVersionUID = 0L;
      * Distribution of pause times for this collector
      * </pre>
      *
-     * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+     * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 

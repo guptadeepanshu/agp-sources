@@ -52,9 +52,9 @@ import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.DynamicFeatureVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
+
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
-import java.util.Collection;
-import javax.inject.Inject;
+
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
@@ -62,6 +62,10 @@ import org.gradle.api.configuration.BuildFeatures;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
+
+import java.util.Collection;
+
+import javax.inject.Inject;
 
 /** Gradle plugin class for 'application' projects, applied on an optional APK module */
 public class DynamicFeaturePlugin
@@ -143,6 +147,9 @@ public class DynamicFeaturePlugin
                         dynamicFeatureExtension,
                         forUnitTesting);
 
+        GradleBuildProject.Builder stats =
+                getConfiguratorService().getProjectBuilder(project.getPath());
+
         if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
             //noinspection unchecked,rawtypes I am so sorry.
             Class<com.android.build.api.dsl.DynamicFeatureExtension> instanceType =
@@ -161,7 +168,8 @@ public class DynamicFeaturePlugin
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
                                             extraModelInfo,
-                                            dynamicFeatureExtension);
+                                            dynamicFeatureExtension,
+                                            stats);
             project.getExtensions()
                     .add(
                             DynamicFeatureExtension.class,
@@ -182,7 +190,8 @@ public class DynamicFeaturePlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                dynamicFeatureExtension);
+                                dynamicFeatureExtension,
+                                stats);
 
         initExtensionFromSettings(android);
 

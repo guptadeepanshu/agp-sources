@@ -139,12 +139,8 @@ abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
             super.configure(task)
 
             task.aapt2.let { aapt2Input ->
-                aapt2Input.buildService.setDisallowChanges(
-                        getBuildService(task.project.gradle.sharedServices)
-                )
-                aapt2Input.threadPoolBuildService.setDisallowChanges(
-                        getBuildService(task.project.gradle.sharedServices)
-                )
+                aapt2Input.initializeAapt2DaemonBuildService(task)
+                aapt2Input.initializeAapt2ThreadPoolBuildService(task)
                 val aapt2Bin =
                         Aapt2FromMaven.create(task.project) { System.getenv(it.propertyName) }
                 aapt2Input.binaryDirectory.setFrom(aapt2Bin.aapt2Directory)

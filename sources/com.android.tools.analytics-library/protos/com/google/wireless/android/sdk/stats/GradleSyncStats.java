@@ -4426,7 +4426,7 @@ private static final long serialVersionUID = 0L;
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    * @return Whether the downloadsData field is set.
    */
   @java.lang.Override
@@ -4438,7 +4438,7 @@ private static final long serialVersionUID = 0L;
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    * @return The downloadsData.
    */
   @java.lang.Override
@@ -4450,7 +4450,7 @@ private static final long serialVersionUID = 0L;
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder() {
@@ -6408,7 +6408,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      * @return Whether the downloadsData field is set.
      */
     public boolean hasDownloadsData() {
@@ -6419,7 +6419,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      * @return The downloadsData.
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsData() {
@@ -6434,7 +6434,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public Builder setDownloadsData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
       if (downloadsDataBuilder_ == null) {
@@ -6454,7 +6454,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public Builder setDownloadsData(
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder builderForValue) {
@@ -6472,7 +6472,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public Builder mergeDownloadsData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
       if (downloadsDataBuilder_ == null) {
@@ -6496,7 +6496,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public Builder clearDownloadsData() {
       if (downloadsDataBuilder_ == null) {
@@ -6513,7 +6513,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder getDownloadsDataBuilder() {
       bitField0_ |= 0x00004000;
@@ -6525,7 +6525,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder() {
       if (downloadsDataBuilder_ != null) {
@@ -6540,7 +6540,7 @@ private static final long serialVersionUID = 0L;
      * Data on downloads happened during sync.
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> 

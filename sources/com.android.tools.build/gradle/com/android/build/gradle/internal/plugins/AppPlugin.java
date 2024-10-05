@@ -40,6 +40,7 @@ import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
 import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo;
 import com.android.build.gradle.internal.dsl.ApplicationExtensionImpl;
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension;
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtensionInternal;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
@@ -57,15 +58,22 @@ import com.android.build.gradle.internal.variant.ApplicationVariantFactory;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
-import java.util.Collection;
-import javax.inject.Inject;
+
+import com.google.wireless.android.sdk.stats.GradleBuildProject;
+
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.api.configuration.BuildFeatures;
+import org.gradle.api.internal.plugins.software.SoftwareType;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
+
+import java.util.Collection;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 /** Gradle plugin class for 'application' projects, applied on the base application module */
 public class AppPlugin
@@ -95,6 +103,12 @@ public class AppPlugin
     protected void pluginSpecificApply(@NonNull Project project) {
     }
 
+    @SoftwareType(name = "androidApp", modelPublicType = BaseAppModuleExtensionInternal.class)
+    public BaseAppModuleExtensionInternal getAndroidApp() {
+        return (BaseAppModuleExtensionInternal)
+                Objects.requireNonNull(project).getExtensions().getByName("android");
+    }
+
     @NonNull
     @Override
     protected ExtensionData<
@@ -120,6 +134,8 @@ public class AppPlugin
         // detects whether we are running the plugin under unit test mode
         boolean forUnitTesting =
                 project.getProviders().gradleProperty("_agp_internal_test_mode_").isPresent();
+        GradleBuildProject.Builder stats =
+                getConfiguratorService().getProjectBuilder(project.getPath());
 
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
@@ -129,14 +145,18 @@ public class AppPlugin
                         applicationExtension,
                         forUnitTesting);
 
-        if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+        if (getProjectServices()
+                .getProjectOptions()
+                .get(BooleanOption.USE_DECLARATIVE_INTERFACES)) {
+
             // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
-            Class<ApplicationExtension> instanceType = (Class) BaseAppModuleExtension.class;
-            BaseAppModuleExtension android =
-                    (BaseAppModuleExtension)
+            Class<ApplicationExtension> instanceType = (Class) BaseAppModuleExtensionInternal.class;
+
+            BaseAppModuleExtensionInternal android =
+                    (BaseAppModuleExtensionInternal)
                             project.getExtensions()
                                     .create(
-                                            new TypeOf<ApplicationExtension>() {},
+                                            new TypeOf<>() {},
                                             "android",
                                             instanceType,
                                             dslServices,
@@ -144,7 +164,32 @@ public class AppPlugin
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
                                             extraModelInfo,
-                                            applicationExtension);
+                                            applicationExtension,
+                                            stats);
+
+            initExtensionFromSettings(applicationExtension);
+            setupDependencies(android);
+            return new ExtensionData<>(android, applicationExtension, bootClasspathConfig);
+        }
+
+        if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+            // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
+            Class<ApplicationExtension> instanceType = (Class) BaseAppModuleExtension.class;
+
+            BaseAppModuleExtension android =
+                    (BaseAppModuleExtension)
+                            project.getExtensions()
+                                    .create(
+                                            new TypeOf<>() {},
+                                            "android",
+                                            instanceType,
+                                            dslServices,
+                                            bootClasspathConfig,
+                                            buildOutputs,
+                                            dslContainers.getSourceSetManager(),
+                                            extraModelInfo,
+                                            applicationExtension,
+                                            stats);
             project.getExtensions()
                     .add(
                             BaseAppModuleExtension.class,
@@ -152,7 +197,6 @@ public class AppPlugin
                             android);
 
             initExtensionFromSettings(applicationExtension);
-
             return new ExtensionData<>(android, applicationExtension, bootClasspathConfig);
         }
 
@@ -166,9 +210,28 @@ public class AppPlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                applicationExtension);
+                                applicationExtension,
+                                stats);
         initExtensionFromSettings(android);
         return new ExtensionData<>(android, applicationExtension, bootClasspathConfig);
+    }
+
+    private void setupDependencies(BaseAppModuleExtensionInternal android) {
+        project.getConfigurations()
+                .getByName("api")
+                .fromDependencyCollector(android.getDependenciesDcl().getApi());
+        project.getConfigurations()
+                .getByName("implementation")
+                .fromDependencyCollector(android.getDependenciesDcl().getImplementation());
+
+        project.getConfigurations()
+                .getByName("testImplementation")
+                .fromDependencyCollector(android.getDependenciesDcl().getTestImplementation());
+
+        project.getConfigurations()
+                .getByName("androidTestImplementation")
+                .fromDependencyCollector(
+                        android.getDependenciesDcl().getAndroidTestImplementation());
     }
 
     /**

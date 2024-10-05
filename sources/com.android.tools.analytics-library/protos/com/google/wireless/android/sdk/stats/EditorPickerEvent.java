@@ -171,7 +171,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      * @return Whether the previewModification field is set.
      */
     boolean hasPreviewModification();
@@ -182,7 +182,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      * @return The previewModification.
      */
     com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification getPreviewModification();
@@ -193,7 +193,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModificationOrBuilder getPreviewModificationOrBuilder();
 
@@ -507,6 +507,22 @@ private static final long serialVersionUID = 0L;
          * <code>DEVICE_ORIENTATION = 17;</code>
          */
         DEVICE_ORIENTATION(17),
+        /**
+         * <pre>
+         * Device cutout for the Preview panel
+         * </pre>
+         *
+         * <code>DEVICE_CUTOUT = 18;</code>
+         */
+        DEVICE_CUTOUT(18),
+        /**
+         * <pre>
+         * System Navigation of Device in the Preview panel
+         * </pre>
+         *
+         * <code>DEVICE_NAVIGATION = 19;</code>
+         */
+        DEVICE_NAVIGATION(19),
         ;
 
         /**
@@ -650,6 +666,22 @@ private static final long serialVersionUID = 0L;
          * <code>DEVICE_ORIENTATION = 17;</code>
          */
         public static final int DEVICE_ORIENTATION_VALUE = 17;
+        /**
+         * <pre>
+         * Device cutout for the Preview panel
+         * </pre>
+         *
+         * <code>DEVICE_CUTOUT = 18;</code>
+         */
+        public static final int DEVICE_CUTOUT_VALUE = 18;
+        /**
+         * <pre>
+         * System Navigation of Device in the Preview panel
+         * </pre>
+         *
+         * <code>DEVICE_NAVIGATION = 19;</code>
+         */
+        public static final int DEVICE_NAVIGATION_VALUE = 19;
 
 
         public final int getNumber() {
@@ -690,6 +722,8 @@ private static final long serialVersionUID = 0L;
             case 15: return DEVICE_DIM_UNIT;
             case 16: return DEVICE_DPI;
             case 17: return DEVICE_ORIENTATION;
+            case 18: return DEVICE_CUTOUT;
+            case 19: return DEVICE_NAVIGATION;
             default: return null;
           }
         }
@@ -1065,6 +1099,78 @@ private static final long serialVersionUID = 0L;
          * <code>UI_MODE_NIGHT = 19;</code>
          */
         UI_MODE_NIGHT(19),
+        /**
+         * <pre>
+         * Set the shape of the device to 'Normal'
+         * </pre>
+         *
+         * <code>SHAPE_NORMAL = 20;</code>
+         */
+        SHAPE_NORMAL(20),
+        /**
+         * <pre>
+         * Set the shape of the device to 'Round'
+         * </pre>
+         *
+         * <code>SHAPE_ROUND = 21;</code>
+         */
+        SHAPE_ROUND(21),
+        /**
+         * <pre>
+         * Set the cutout of the device to 'none'
+         * </pre>
+         *
+         * <code>CUTOUT_NONE = 22;</code>
+         */
+        CUTOUT_NONE(22),
+        /**
+         * <pre>
+         * Set the cutout of the device to 'corner'
+         * </pre>
+         *
+         * <code>CUTOUT_CORNER = 23;</code>
+         */
+        CUTOUT_CORNER(23),
+        /**
+         * <pre>
+         * Set the cutout of the device to 'double'
+         * </pre>
+         *
+         * <code>CUTOUT_DOUBLE = 24;</code>
+         */
+        CUTOUT_DOUBLE(24),
+        /**
+         * <pre>
+         * Set the cutout of the device to 'punch_hole'
+         * </pre>
+         *
+         * <code>CUTOUT_HOLE = 25;</code>
+         */
+        CUTOUT_HOLE(25),
+        /**
+         * <pre>
+         * Set the cutout of the device to 'tall'
+         * </pre>
+         *
+         * <code>CUTOUT_TALL = 26;</code>
+         */
+        CUTOUT_TALL(26),
+        /**
+         * <pre>
+         * Set system navigation to 'buttons'
+         * </pre>
+         *
+         * <code>NAVIGATION_BUTTONS = 27;</code>
+         */
+        NAVIGATION_BUTTONS(27),
+        /**
+         * <pre>
+         * Set system navigation to 'gesture'
+         * </pre>
+         *
+         * <code>NAVIGATION_GESTURE = 28;</code>
+         */
+        NAVIGATION_GESTURE(28),
         ;
 
         /**
@@ -1228,6 +1334,78 @@ private static final long serialVersionUID = 0L;
          * <code>UI_MODE_NIGHT = 19;</code>
          */
         public static final int UI_MODE_NIGHT_VALUE = 19;
+        /**
+         * <pre>
+         * Set the shape of the device to 'Normal'
+         * </pre>
+         *
+         * <code>SHAPE_NORMAL = 20;</code>
+         */
+        public static final int SHAPE_NORMAL_VALUE = 20;
+        /**
+         * <pre>
+         * Set the shape of the device to 'Round'
+         * </pre>
+         *
+         * <code>SHAPE_ROUND = 21;</code>
+         */
+        public static final int SHAPE_ROUND_VALUE = 21;
+        /**
+         * <pre>
+         * Set the cutout of the device to 'none'
+         * </pre>
+         *
+         * <code>CUTOUT_NONE = 22;</code>
+         */
+        public static final int CUTOUT_NONE_VALUE = 22;
+        /**
+         * <pre>
+         * Set the cutout of the device to 'corner'
+         * </pre>
+         *
+         * <code>CUTOUT_CORNER = 23;</code>
+         */
+        public static final int CUTOUT_CORNER_VALUE = 23;
+        /**
+         * <pre>
+         * Set the cutout of the device to 'double'
+         * </pre>
+         *
+         * <code>CUTOUT_DOUBLE = 24;</code>
+         */
+        public static final int CUTOUT_DOUBLE_VALUE = 24;
+        /**
+         * <pre>
+         * Set the cutout of the device to 'punch_hole'
+         * </pre>
+         *
+         * <code>CUTOUT_HOLE = 25;</code>
+         */
+        public static final int CUTOUT_HOLE_VALUE = 25;
+        /**
+         * <pre>
+         * Set the cutout of the device to 'tall'
+         * </pre>
+         *
+         * <code>CUTOUT_TALL = 26;</code>
+         */
+        public static final int CUTOUT_TALL_VALUE = 26;
+        /**
+         * <pre>
+         * Set system navigation to 'buttons'
+         * </pre>
+         *
+         * <code>NAVIGATION_BUTTONS = 27;</code>
+         */
+        public static final int NAVIGATION_BUTTONS_VALUE = 27;
+        /**
+         * <pre>
+         * Set system navigation to 'gesture'
+         * </pre>
+         *
+         * <code>NAVIGATION_GESTURE = 28;</code>
+         */
+        public static final int NAVIGATION_GESTURE_VALUE = 28;
 
 
         public final int getNumber() {
@@ -1270,6 +1448,15 @@ private static final long serialVersionUID = 0L;
             case 17: return DENSITY_XXX_HIGH;
             case 18: return UI_MODE_NOT_NIGHT;
             case 19: return UI_MODE_NIGHT;
+            case 20: return SHAPE_NORMAL;
+            case 21: return SHAPE_ROUND;
+            case 22: return CUTOUT_NONE;
+            case 23: return CUTOUT_CORNER;
+            case 24: return CUTOUT_DOUBLE;
+            case 25: return CUTOUT_HOLE;
+            case 26: return CUTOUT_TALL;
+            case 27: return NAVIGATION_BUTTONS;
+            case 28: return NAVIGATION_GESTURE;
             default: return null;
           }
         }
@@ -2102,7 +2289,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      * @return Whether the previewModification field is set.
      */
     @java.lang.Override
@@ -2116,7 +2303,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      * @return The previewModification.
      */
     @java.lang.Override
@@ -2133,7 +2320,7 @@ private static final long serialVersionUID = 0L;
      * modified and the value assigned to it.
      * </pre>
      *
-     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+     * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModificationOrBuilder getPreviewModificationOrBuilder() {
@@ -2521,7 +2708,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        * @return Whether the previewModification field is set.
        */
       @java.lang.Override
@@ -2535,7 +2722,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        * @return The previewModification.
        */
       @java.lang.Override
@@ -2559,7 +2746,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       public Builder setPreviewModification(com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification value) {
         if (previewModificationBuilder_ == null) {
@@ -2581,7 +2768,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       public Builder setPreviewModification(
           com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.Builder builderForValue) {
@@ -2601,7 +2788,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       public Builder mergePreviewModification(com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification value) {
         if (previewModificationBuilder_ == null) {
@@ -2629,7 +2816,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       public Builder clearPreviewModification() {
         if (previewModificationBuilder_ == null) {
@@ -2654,7 +2841,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.Builder getPreviewModificationBuilder() {
         return getPreviewModificationFieldBuilder().getBuilder();
@@ -2666,7 +2853,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModificationOrBuilder getPreviewModificationOrBuilder() {
@@ -2686,7 +2873,7 @@ private static final long serialVersionUID = 0L;
        * modified and the value assigned to it.
        * </pre>
        *
-       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1;</code>
+       * <code>.android_studio.EditorPickerEvent.EditorPickerAction.PreviewPickerModification preview_modification = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification, com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.Builder, com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModificationOrBuilder> 

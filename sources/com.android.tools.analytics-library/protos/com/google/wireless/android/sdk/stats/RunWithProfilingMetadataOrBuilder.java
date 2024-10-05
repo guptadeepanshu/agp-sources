@@ -33,7 +33,7 @@ public interface RunWithProfilingMetadataOrBuilder extends
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    * @return Whether the buildVariantMetadata field is set.
    */
   boolean hasBuildVariantMetadata();
@@ -42,7 +42,7 @@ public interface RunWithProfilingMetadataOrBuilder extends
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    * @return The buildVariantMetadata.
    */
   com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata getBuildVariantMetadata();
@@ -51,7 +51,7 @@ public interface RunWithProfilingMetadataOrBuilder extends
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadataOrBuilder getBuildVariantMetadataOrBuilder();
 }

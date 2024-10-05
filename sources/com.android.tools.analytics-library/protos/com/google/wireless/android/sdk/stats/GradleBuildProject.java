@@ -2118,7 +2118,7 @@ private static final long serialVersionUID = 0L;
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    * @return Whether the metrics field is set.
    */
   @java.lang.Override
@@ -2131,7 +2131,7 @@ private static final long serialVersionUID = 0L;
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    * @return The metrics.
    */
   @java.lang.Override
@@ -2144,7 +2144,7 @@ private static final long serialVersionUID = 0L;
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProjectMetricsOrBuilder getMetricsOrBuilder() {
@@ -2311,7 +2311,7 @@ private static final long serialVersionUID = 0L;
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    * @return Whether the splits field is set.
    */
   @java.lang.Override
@@ -2323,7 +2323,7 @@ private static final long serialVersionUID = 0L;
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    * @return The splits.
    */
   @java.lang.Override
@@ -2335,7 +2335,7 @@ private static final long serialVersionUID = 0L;
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildSplitsOrBuilder getSplitsOrBuilder() {
@@ -2412,7 +2412,7 @@ private static final long serialVersionUID = 0L;
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    * @return Whether the options field is set.
    */
   @java.lang.Override
@@ -2424,7 +2424,7 @@ private static final long serialVersionUID = 0L;
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    * @return The options.
    */
   @java.lang.Override
@@ -2436,7 +2436,7 @@ private static final long serialVersionUID = 0L;
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettingsOrBuilder getOptionsOrBuilder() {
@@ -2709,7 +2709,7 @@ private static final long serialVersionUID = 0L;
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    * @return Whether the projectApiUse field is set.
    */
   @java.lang.Override
@@ -2721,7 +2721,7 @@ private static final long serialVersionUID = 0L;
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    * @return The projectApiUse.
    */
   @java.lang.Override
@@ -2733,7 +2733,7 @@ private static final long serialVersionUID = 0L;
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder() {
@@ -2807,7 +2807,7 @@ private static final long serialVersionUID = 0L;
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    * @return Whether the compileOptions field is set.
    */
   @java.lang.Override
@@ -2819,7 +2819,7 @@ private static final long serialVersionUID = 0L;
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    * @return The compileOptions.
    */
   @java.lang.Override
@@ -2831,7 +2831,7 @@ private static final long serialVersionUID = 0L;
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder() {
@@ -2896,6 +2896,33 @@ private static final long serialVersionUID = 0L;
     } else {
       return (com.google.protobuf.ByteString) ref;
     }
+  }
+
+  public static final int OLD_VARIANT_API_IN_USE_FIELD_NUMBER = 22;
+  private boolean oldVariantApiInUse_;
+  /**
+   * <pre>
+   * Set to true when user requests old variant api
+   * </pre>
+   *
+   * <code>optional bool old_variant_api_in_use = 22;</code>
+   * @return Whether the oldVariantApiInUse field is set.
+   */
+  @java.lang.Override
+  public boolean hasOldVariantApiInUse() {
+    return ((bitField0_ & 0x00010000) != 0);
+  }
+  /**
+   * <pre>
+   * Set to true when user requests old variant api
+   * </pre>
+   *
+   * <code>optional bool old_variant_api_in_use = 22;</code>
+   * @return The oldVariantApiInUse.
+   */
+  @java.lang.Override
+  public boolean getOldVariantApiInUse() {
+    return oldVariantApiInUse_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -2974,6 +3001,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00008000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 21, ndkVersion_);
+    }
+    if (((bitField0_ & 0x00010000) != 0)) {
+      output.writeBool(22, oldVariantApiInUse_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -3074,6 +3104,10 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00008000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(21, ndkVersion_);
+    }
+    if (((bitField0_ & 0x00010000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(22, oldVariantApiInUse_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -3177,6 +3211,11 @@ private static final long serialVersionUID = 0L;
       if (!getNdkVersion()
           .equals(other.getNdkVersion())) return false;
     }
+    if (hasOldVariantApiInUse() != other.hasOldVariantApiInUse()) return false;
+    if (hasOldVariantApiInUse()) {
+      if (getOldVariantApiInUse()
+          != other.getOldVariantApiInUse()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -3274,6 +3313,11 @@ private static final long serialVersionUID = 0L;
     if (hasNdkVersion()) {
       hash = (37 * hash) + NDK_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getNdkVersion().hashCode();
+    }
+    if (hasOldVariantApiInUse()) {
+      hash = (37 * hash) + OLD_VARIANT_API_IN_USE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getOldVariantApiInUse());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -3487,6 +3531,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00080000);
       ndkVersion_ = "";
       bitField0_ = (bitField0_ & ~0x00100000);
+      oldVariantApiInUse_ = false;
+      bitField0_ = (bitField0_ & ~0x00200000);
       return this;
     }
 
@@ -3632,6 +3678,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00008000;
       }
       result.ndkVersion_ = ndkVersion_;
+      if (((from_bitField0_ & 0x00200000) != 0)) {
+        result.oldVariantApiInUse_ = oldVariantApiInUse_;
+        to_bitField0_ |= 0x00010000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3822,6 +3872,9 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00100000;
         ndkVersion_ = other.ndkVersion_;
         onChanged();
+      }
+      if (other.hasOldVariantApiInUse()) {
+        setOldVariantApiInUse(other.getOldVariantApiInUse());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -4020,6 +4073,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00100000;
               break;
             } // case 170
+            case 176: {
+              oldVariantApiInUse_ = input.readBool();
+              bitField0_ |= 0x00200000;
+              break;
+            } // case 176
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -4463,7 +4521,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      * @return Whether the metrics field is set.
      */
     public boolean hasMetrics() {
@@ -4475,7 +4533,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      * @return The metrics.
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics getMetrics() {
@@ -4491,7 +4549,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public Builder setMetrics(com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics value) {
       if (metricsBuilder_ == null) {
@@ -4512,7 +4570,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public Builder setMetrics(
         com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.Builder builderForValue) {
@@ -4531,7 +4589,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public Builder mergeMetrics(com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics value) {
       if (metricsBuilder_ == null) {
@@ -4556,7 +4614,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public Builder clearMetrics() {
       if (metricsBuilder_ == null) {
@@ -4574,7 +4632,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.Builder getMetricsBuilder() {
       bitField0_ |= 0x00000020;
@@ -4587,7 +4645,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProjectMetricsOrBuilder getMetricsOrBuilder() {
       if (metricsBuilder_ != null) {
@@ -4603,7 +4661,7 @@ private static final long serialVersionUID = 0L;
      * Will be used to characterize and bucket projects for subgroup analysis.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+     * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics, com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.Builder, com.google.wireless.android.sdk.stats.GradleBuildProjectMetricsOrBuilder> 
@@ -5114,7 +5172,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      * @return Whether the splits field is set.
      */
     public boolean hasSplits() {
@@ -5125,7 +5183,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      * @return The splits.
      */
     public com.google.wireless.android.sdk.stats.GradleBuildSplits getSplits() {
@@ -5140,7 +5198,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public Builder setSplits(com.google.wireless.android.sdk.stats.GradleBuildSplits value) {
       if (splitsBuilder_ == null) {
@@ -5160,7 +5218,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public Builder setSplits(
         com.google.wireless.android.sdk.stats.GradleBuildSplits.Builder builderForValue) {
@@ -5178,7 +5236,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public Builder mergeSplits(com.google.wireless.android.sdk.stats.GradleBuildSplits value) {
       if (splitsBuilder_ == null) {
@@ -5202,7 +5260,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public Builder clearSplits() {
       if (splitsBuilder_ == null) {
@@ -5219,7 +5277,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildSplits.Builder getSplitsBuilder() {
       bitField0_ |= 0x00000200;
@@ -5231,7 +5289,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildSplitsOrBuilder getSplitsOrBuilder() {
       if (splitsBuilder_ != null) {
@@ -5246,7 +5304,7 @@ private static final long serialVersionUID = 0L;
      * The split config as defined by the user in the DSL.
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+     * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleBuildSplits, com.google.wireless.android.sdk.stats.GradleBuildSplits.Builder, com.google.wireless.android.sdk.stats.GradleBuildSplitsOrBuilder> 
@@ -5384,7 +5442,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      * @return Whether the options field is set.
      */
     public boolean hasOptions() {
@@ -5395,7 +5453,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      * @return The options.
      */
     public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings getOptions() {
@@ -5410,7 +5468,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public Builder setOptions(com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings value) {
       if (optionsBuilder_ == null) {
@@ -5430,7 +5488,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public Builder setOptions(
         com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.Builder builderForValue) {
@@ -5448,7 +5506,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public Builder mergeOptions(com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings value) {
       if (optionsBuilder_ == null) {
@@ -5472,7 +5530,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public Builder clearOptions() {
       if (optionsBuilder_ == null) {
@@ -5489,7 +5547,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.Builder getOptionsBuilder() {
       bitField0_ |= 0x00000800;
@@ -5501,7 +5559,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettingsOrBuilder getOptionsOrBuilder() {
       if (optionsBuilder_ != null) {
@@ -5516,7 +5574,7 @@ private static final long serialVersionUID = 0L;
      * The project options as set by the user or by studio.
      * </pre>
      *
-     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+     * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings, com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.Builder, com.google.wireless.android.sdk.stats.GradleProjectOptionsSettingsOrBuilder> 
@@ -6149,7 +6207,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      * @return Whether the projectApiUse field is set.
      */
     public boolean hasProjectApiUse() {
@@ -6160,7 +6218,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      * @return The projectApiUse.
      */
     public com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse() {
@@ -6175,7 +6233,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public Builder setProjectApiUse(com.google.wireless.android.sdk.stats.ProjectApiUse value) {
       if (projectApiUseBuilder_ == null) {
@@ -6195,7 +6253,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public Builder setProjectApiUse(
         com.google.wireless.android.sdk.stats.ProjectApiUse.Builder builderForValue) {
@@ -6213,7 +6271,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public Builder mergeProjectApiUse(com.google.wireless.android.sdk.stats.ProjectApiUse value) {
       if (projectApiUseBuilder_ == null) {
@@ -6237,7 +6295,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public Builder clearProjectApiUse() {
       if (projectApiUseBuilder_ == null) {
@@ -6254,7 +6312,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectApiUse.Builder getProjectApiUseBuilder() {
       bitField0_ |= 0x00020000;
@@ -6266,7 +6324,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder() {
       if (projectApiUseBuilder_ != null) {
@@ -6281,7 +6339,7 @@ private static final long serialVersionUID = 0L;
      * Records use of APIs used at the sub-project level
      * </pre>
      *
-     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ProjectApiUse, com.google.wireless.android.sdk.stats.ProjectApiUse.Builder, com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder> 
@@ -6617,7 +6675,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      * @return Whether the compileOptions field is set.
      */
     public boolean hasCompileOptions() {
@@ -6628,7 +6686,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      * @return The compileOptions.
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getCompileOptions() {
@@ -6643,7 +6701,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public Builder setCompileOptions(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions value) {
       if (compileOptionsBuilder_ == null) {
@@ -6663,7 +6721,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public Builder setCompileOptions(
         com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder builderForValue) {
@@ -6681,7 +6739,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public Builder mergeCompileOptions(com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions value) {
       if (compileOptionsBuilder_ == null) {
@@ -6705,7 +6763,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public Builder clearCompileOptions() {
       if (compileOptionsBuilder_ == null) {
@@ -6722,7 +6780,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder getCompileOptionsBuilder() {
       bitField0_ |= 0x00080000;
@@ -6734,7 +6792,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder() {
       if (compileOptionsBuilder_ != null) {
@@ -6749,7 +6807,7 @@ private static final long serialVersionUID = 0L;
      * Java compilation options
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+     * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions.Builder, com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder> 
@@ -6869,6 +6927,61 @@ private static final long serialVersionUID = 0L;
   }
   bitField0_ |= 0x00100000;
       ndkVersion_ = value;
+      onChanged();
+      return this;
+    }
+
+    private boolean oldVariantApiInUse_ ;
+    /**
+     * <pre>
+     * Set to true when user requests old variant api
+     * </pre>
+     *
+     * <code>optional bool old_variant_api_in_use = 22;</code>
+     * @return Whether the oldVariantApiInUse field is set.
+     */
+    @java.lang.Override
+    public boolean hasOldVariantApiInUse() {
+      return ((bitField0_ & 0x00200000) != 0);
+    }
+    /**
+     * <pre>
+     * Set to true when user requests old variant api
+     * </pre>
+     *
+     * <code>optional bool old_variant_api_in_use = 22;</code>
+     * @return The oldVariantApiInUse.
+     */
+    @java.lang.Override
+    public boolean getOldVariantApiInUse() {
+      return oldVariantApiInUse_;
+    }
+    /**
+     * <pre>
+     * Set to true when user requests old variant api
+     * </pre>
+     *
+     * <code>optional bool old_variant_api_in_use = 22;</code>
+     * @param value The oldVariantApiInUse to set.
+     * @return This builder for chaining.
+     */
+    public Builder setOldVariantApiInUse(boolean value) {
+      bitField0_ |= 0x00200000;
+      oldVariantApiInUse_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set to true when user requests old variant api
+     * </pre>
+     *
+     * <code>optional bool old_variant_api_in_use = 22;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearOldVariantApiInUse() {
+      bitField0_ = (bitField0_ & ~0x00200000);
+      oldVariantApiInUse_ = false;
       onChanged();
       return this;
     }

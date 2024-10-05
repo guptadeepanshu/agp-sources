@@ -22,50 +22,46 @@ import com.google.wireless.android.sdk.stats.ProductDetails
 import java.io.Flushable
 
 /**
- * UsageTrackerWriter is an api to report usage of features. This data is used to improve
- * future versions of Android Studio and related tools.
+ * UsageTrackerWriter is an api to report usage of features. This data is used to improve future
+ * versions of Android Studio and related tools.
  *
- * The tracker has an API to logDetails usage (in the form of protobuf messages).
- * A separate system called the Analytics Publisher takes the logs and sends them
- * to Google's servers for analysis.
+ * The tracker has an API to logDetails usage (in the form of protobuf messages). A separate system
+ * called the Analytics Publisher takes the logs and sends them to Google's servers for analysis.
  */
 abstract class UsageTrackerWriter : AutoCloseable, Flushable {
 
-    open fun scheduleJournalTimeout(maxJournalTime: Long) {}
+  open fun scheduleJournalTimeout(maxJournalTime: Long) {}
 
-    /** Logs usage data provided in the [AndroidStudioEvent].  */
-    fun logNow(studioEvent: AndroidStudioEvent.Builder) {
-        logAt(AnalyticsSettings.dateProvider.now().time, studioEvent)
+  /** Logs usage data provided in the [AndroidStudioEvent]. */
+  fun logNow(studioEvent: AndroidStudioEvent.Builder) {
+    logAt(AnalyticsSettings.dateProvider.now().time, studioEvent)
+  }
+
+  /** Logs usage data provided in the [AndroidStudioEvent] with provided event time. */
+  fun logAt(eventTimeMs: Long, studioEvent: AndroidStudioEvent.Builder) {
+    studioEvent.studioSessionId = UsageTracker.sessionId
+    studioEvent.ideBrand = UsageTracker.ideBrand
+
+    if (UsageTracker.version != null && !studioEvent.hasProductDetails()) {
+      studioEvent.setProductDetails(ProductDetails.newBuilder().setVersion(UsageTracker.version!!))
     }
 
-    /** Logs usage data provided in the [AndroidStudioEvent] with provided event time.  */
-    fun logAt(eventTimeMs: Long, studioEvent: AndroidStudioEvent.Builder) {
-        studioEvent.studioSessionId = UsageTracker.sessionId
-        studioEvent.ideBrand = UsageTracker.ideBrand
-
-        if (UsageTracker.version != null && !studioEvent.hasProductDetails()) {
-            studioEvent.setProductDetails(
-                ProductDetails.newBuilder()
-                    .setVersion(UsageTracker.version!!)
-            )
-        }
-
-        if (UsageTracker.ideaIsInternal) {
-            studioEvent.ideaIsInternal = true
-        }
-
-        UsageTracker.listener(studioEvent)
-
-        logDetails(
-            ClientAnalytics.LogEvent.newBuilder()
-                .setEventTimeMs(eventTimeMs)
-                .setSourceExtension(studioEvent.build().toByteString())
-        )
+    if (UsageTracker.ideaIsInternal) {
+      studioEvent.ideaIsInternal = true
     }
 
-    /**
-     * Logs usage data provided in the [ClientAnalytics.LogEvent]. Normally using {#log} is
-     * preferred please talk to this code's author if you need [.logDetails] instead.
-     */
-    abstract fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder)
+    UsageTracker.listener(studioEvent)
+
+    logDetails(
+      ClientAnalytics.LogEvent.newBuilder()
+        .setEventTimeMs(eventTimeMs)
+        .setSourceExtension(studioEvent.build().toByteString())
+    )
+  }
+
+  /**
+   * Logs usage data provided in the [ClientAnalytics.LogEvent]. Normally using {#log} is preferred
+   * please talk to this code's author if you need [.logDetails] instead.
+   */
+  abstract fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder)
 }

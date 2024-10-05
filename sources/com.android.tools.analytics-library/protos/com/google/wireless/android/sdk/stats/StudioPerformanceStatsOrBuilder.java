@@ -35,7 +35,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    * @return Whether the eventServiceTimeMs field is set.
    */
   boolean hasEventServiceTimeMs();
@@ -48,7 +48,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    * @return The eventServiceTimeMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getEventServiceTimeMs();
@@ -61,7 +61,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getEventServiceTimeMsOrBuilder();
 
@@ -97,7 +97,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    * @return Whether the writeLockWaitTimeMs field is set.
    */
   boolean hasWriteLockWaitTimeMs();
@@ -106,7 +106,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    * @return The writeLockWaitTimeMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getWriteLockWaitTimeMs();
@@ -115,7 +115,7 @@ public interface StudioPerformanceStatsOrBuilder extends
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getWriteLockWaitTimeMsOrBuilder();
 

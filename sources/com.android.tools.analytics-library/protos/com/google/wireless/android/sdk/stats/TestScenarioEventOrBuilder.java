@@ -8,32 +8,32 @@ public interface TestScenarioEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    * @return Whether the request field is set.
    */
   boolean hasRequest();
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    * @return The request.
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest getRequest();
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder getRequestOrBuilder();
 
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    * @return Whether the inconsistentCount field is set.
    */
   boolean hasInconsistentCount();
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    * @return The inconsistentCount.
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount();
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder();
 

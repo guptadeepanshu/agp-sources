@@ -122,6 +122,13 @@ enum class GoogleMavenArtifactId(val mavenGroupId: String, val mavenArtifactId: 
 
   // Wear Tiles
   WEAR_TILES_TOOLING("androidx.wear.tiles", "tiles-tooling", false),
+
+  // Lifecycle
+  ANDROIDX_LIFECYCLE_EXTENSIONS("androidx.lifecycle", "lifecycle-extensions", false),
+  ANDROIDX_LIFECYCLE_VIEWMODEL_KTX("androidx.lifecycle", "lifecycle-viewmodel-ktx", false),
+
+  // Core-Ktx
+  ANDROIDX_CORE_KTX("androidx.core", "core-ktx", false),
   ;
 
   fun getCoordinate(revision: String): GradleCoordinate =

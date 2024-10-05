@@ -19,8 +19,10 @@ package com.android.manifmerger;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -326,6 +328,20 @@ class AttributeModel {
                 }
             };
 
+    static final MergingPolicy STRING_VALUE_MERGING_POLICY =
+            new MergingPolicy() {
+                @Override
+                public boolean shouldMergeDefaultValues() {
+                    return true;
+                }
+
+                @Nullable
+                @Override
+                public String merge(@NonNull String higherPriority, @NonNull String lowerPriority) {
+                    return String.format("%s|%s", higherPriority, lowerPriority);
+                }
+            };
+
     /**
      * Decode a decimal or hexadecimal {@link String} into an {@link Integer}.
      * String starting with 0 will be considered decimal, not octal.
@@ -531,7 +547,7 @@ class AttributeModel {
                             MergingReport.Record.Severity.ERROR,
                             String.format(
                                     "Attribute %1$s at %2$s is not a valid hexadecimal value,"
-                                            + " minimum is 0x%3$08X, maximum is 0x%4$08X, found %5$s",
+                                        + " minimum is 0x%3$08X, maximum is 0x%4$08X, found %5$s",
                                     attribute.getId(),
                                     attribute.printPosition(),
                                     mMinimumValue,

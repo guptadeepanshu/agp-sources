@@ -274,6 +274,12 @@ class VariantPathHelper(
     val buildConfigSourceOutputDir: Provider<Directory>
             by lazy { generatedDir("source", "buildConfig", dirName) }
 
+    val kaptSourceOutputDir: Provider<Directory>
+            by lazy { generatedDir("source", "kapt", dirName) }
+
+    val kaptKotlinSourceOutputDir: Provider<Directory>
+            by lazy { generatedDir("source", "kaptKotlin", dirName) }
+
     val renderscriptObjOutputDir: Provider<Directory>
             by lazy {
                 getBuildSubDir(

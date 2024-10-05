@@ -27,7 +27,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.annotations.VisibleForTesting
 
 /** Java compilation options. */
-abstract class CompileOptions : CompileOptions {
+abstract class CompileOptions : CompileOptionsInternal {
 
     /**
      * Whether Java compilation should be incremental or not.
@@ -69,11 +69,19 @@ abstract class CompileOptions : CompileOptions {
         _sourceCompatibility = parseJavaVersion(sourceCompatibility)
     }
 
+    override fun sourceCompatibility(sourceCompatibility: String) {
+        _sourceCompatibility = parseJavaVersion(sourceCompatibility)
+    }
+
     fun setSourceCompatibility(sourceCompatibility: Any) {
         sourceCompatibility(sourceCompatibility)
     }
 
     override fun targetCompatibility(targetCompatibility: Any) {
+        _targetCompatibility = parseJavaVersion(targetCompatibility)
+    }
+
+    override fun targetCompatibility(targetCompatibility: String) {
         _targetCompatibility = parseJavaVersion(targetCompatibility)
     }
 

@@ -203,10 +203,8 @@ abstract class DependencyResourcesComputer {
 
     fun initFromVariantScope(
         creationConfig: ComponentCreationConfig,
-        androidResourcesCreationConfig: AndroidResourcesCreationConfig,
         microApkResDir: FileCollection,
         libraryDependencies: ArtifactCollection?,
-        relativeLocalResources: Boolean,
     ) {
         val projectOptions = creationConfig.services.projectOptions
         val services = creationConfig.services

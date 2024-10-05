@@ -19,6 +19,7 @@ package com.android.builder.dexing;
 import static com.android.utils.FileUtils.toSystemIndependentPath;
 
 import com.android.SdkConstants;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -63,7 +64,8 @@ public interface ClassFileInput extends Closeable {
      */
     Stream<ClassFileEntry> entries(BiPredicate<Path, String> filter) throws IOException;
 
-    /** @return the root {@link Path} of this {@link ClassFileInput}. */
+    /**
+     * @return the root {@link Path} of this {@link ClassFileInput}.
+     */
     Path getPath();
-
 }

@@ -60,7 +60,6 @@ interface TaskBasedOperation<TaskT: Task> {
      * @return the [MultipleArtifactTypeOutOperationRequest] to set the desired operation type
      * and the target [MultipleArtifact]
      */
-    @Incubating
     fun <FileTypeT: FileSystemLocation> wiredWithMultiple(
         taskInput: (TaskT) -> ListProperty<FileTypeT>
     ): MultipleArtifactTypeOutOperationRequest<FileTypeT>

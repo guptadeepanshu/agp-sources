@@ -80,6 +80,13 @@ interface LintModelModule {
   val javaSourceLevel: String
   val compileTarget: String
 
+  /**
+   * Returns the namespace of the main artifact. When this is not null, it overrides the value from
+   * the Android manifest.
+   */
+  val namespace: String?
+    get() = defaultVariant()?.`package`
+
   val variants: List<LintModelVariant>
 
   fun defaultVariant(): LintModelVariant? = variants.firstOrNull()

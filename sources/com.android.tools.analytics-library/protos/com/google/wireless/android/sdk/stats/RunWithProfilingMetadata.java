@@ -859,7 +859,7 @@ private static final long serialVersionUID = 0L;
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    * @return Whether the buildVariantMetadata field is set.
    */
   @java.lang.Override
@@ -871,7 +871,7 @@ private static final long serialVersionUID = 0L;
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    * @return The buildVariantMetadata.
    */
   @java.lang.Override
@@ -883,7 +883,7 @@ private static final long serialVersionUID = 0L;
    * Information about the active build variant.
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadataOrBuilder getBuildVariantMetadataOrBuilder() {
@@ -1344,7 +1344,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      * @return Whether the buildVariantMetadata field is set.
      */
     public boolean hasBuildVariantMetadata() {
@@ -1355,7 +1355,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      * @return The buildVariantMetadata.
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata getBuildVariantMetadata() {
@@ -1370,7 +1370,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public Builder setBuildVariantMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata value) {
       if (buildVariantMetadataBuilder_ == null) {
@@ -1390,7 +1390,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public Builder setBuildVariantMetadata(
         com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata.Builder builderForValue) {
@@ -1408,7 +1408,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public Builder mergeBuildVariantMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata value) {
       if (buildVariantMetadataBuilder_ == null) {
@@ -1432,7 +1432,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public Builder clearBuildVariantMetadata() {
       if (buildVariantMetadataBuilder_ == null) {
@@ -1449,7 +1449,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata.Builder getBuildVariantMetadataBuilder() {
       bitField0_ |= 0x00000002;
@@ -1461,7 +1461,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadataOrBuilder getBuildVariantMetadataOrBuilder() {
       if (buildVariantMetadataBuilder_ != null) {
@@ -1476,7 +1476,7 @@ private static final long serialVersionUID = 0L;
      * Information about the active build variant.
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata.BuildVariantMetadata build_variant_metadata = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadata.Builder, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.BuildVariantMetadataOrBuilder> 

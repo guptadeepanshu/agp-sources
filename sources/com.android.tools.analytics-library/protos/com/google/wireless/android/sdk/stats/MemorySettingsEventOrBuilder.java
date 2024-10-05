@@ -31,7 +31,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    * @return Whether the current field is set.
    */
   boolean hasCurrent();
@@ -40,7 +40,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    * @return The current.
    */
   com.google.wireless.android.sdk.stats.MemorySettings getCurrent();
@@ -49,7 +49,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getCurrentOrBuilder();
 
@@ -58,7 +58,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    * @return Whether the recommended field is set.
    */
   boolean hasRecommended();
@@ -67,7 +67,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    * @return The recommended.
    */
   com.google.wireless.android.sdk.stats.MemorySettings getRecommended();
@@ -76,7 +76,7 @@ public interface MemorySettingsEventOrBuilder extends
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getRecommendedOrBuilder();
 
@@ -85,7 +85,7 @@ public interface MemorySettingsEventOrBuilder extends
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    * @return Whether the changed field is set.
    */
   boolean hasChanged();
@@ -94,7 +94,7 @@ public interface MemorySettingsEventOrBuilder extends
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    * @return The changed.
    */
   com.google.wireless.android.sdk.stats.MemorySettings getChanged();
@@ -103,7 +103,7 @@ public interface MemorySettingsEventOrBuilder extends
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getChangedOrBuilder();
 }

@@ -209,7 +209,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      * @return Whether the configuration field is set.
      */
     boolean hasConfiguration();
@@ -218,7 +218,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      * @return The configuration.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getConfiguration();
@@ -227,7 +227,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getConfigurationOrBuilder();
 
@@ -321,7 +321,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      * @return Whether the configuration field is set.
      */
     @java.lang.Override
@@ -333,7 +333,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      * @return The configuration.
      */
     @java.lang.Override
@@ -345,7 +345,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration the dialog represents
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getConfigurationOrBuilder() {
@@ -823,7 +823,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        * @return Whether the configuration field is set.
        */
       public boolean hasConfiguration() {
@@ -834,7 +834,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        * @return The configuration.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getConfiguration() {
@@ -849,7 +849,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public Builder setConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (configurationBuilder_ == null) {
@@ -869,7 +869,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public Builder setConfiguration(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
@@ -887,7 +887,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public Builder mergeConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (configurationBuilder_ == null) {
@@ -911,7 +911,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public Builder clearConfiguration() {
         if (configurationBuilder_ == null) {
@@ -928,7 +928,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder getConfigurationBuilder() {
         bitField0_ |= 0x00000001;
@@ -940,7 +940,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getConfigurationOrBuilder() {
         if (configurationBuilder_ != null) {
@@ -955,7 +955,7 @@ private static final long serialVersionUID = 0L;
        * The Logcat format configuration the dialog represents
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder> 
@@ -3439,7 +3439,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      * @return Whether the tagTerms field is set.
      */
     boolean hasTagTerms();
@@ -3448,7 +3448,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      * @return The tagTerms.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getTagTerms();
@@ -3457,7 +3457,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getTagTermsOrBuilder();
 
@@ -3466,7 +3466,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      * @return Whether the packageTerms field is set.
      */
     boolean hasPackageTerms();
@@ -3475,7 +3475,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      * @return The packageTerms.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getPackageTerms();
@@ -3484,7 +3484,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getPackageTermsOrBuilder();
 
@@ -3493,7 +3493,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      * @return Whether the messageTerms field is set.
      */
     boolean hasMessageTerms();
@@ -3502,7 +3502,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      * @return The messageTerms.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getMessageTerms();
@@ -3511,7 +3511,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getMessageTermsOrBuilder();
 
@@ -3520,7 +3520,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      * @return Whether the lineTerms field is set.
      */
     boolean hasLineTerms();
@@ -3529,7 +3529,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      * @return The lineTerms.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getLineTerms();
@@ -3538,7 +3538,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getLineTermsOrBuilder();
 
@@ -3760,7 +3760,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      * @return Whether the processTerms field is set.
      */
     boolean hasProcessTerms();
@@ -3769,7 +3769,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      * @return The processTerms.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getProcessTerms();
@@ -3778,7 +3778,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder();
   }
@@ -4773,7 +4773,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      * @return Whether the tagTerms field is set.
      */
     @java.lang.Override
@@ -4785,7 +4785,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      * @return The tagTerms.
      */
     @java.lang.Override
@@ -4797,7 +4797,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'tag' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getTagTermsOrBuilder() {
@@ -4811,7 +4811,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      * @return Whether the packageTerms field is set.
      */
     @java.lang.Override
@@ -4823,7 +4823,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      * @return The packageTerms.
      */
     @java.lang.Override
@@ -4835,7 +4835,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'package' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getPackageTermsOrBuilder() {
@@ -4849,7 +4849,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      * @return Whether the messageTerms field is set.
      */
     @java.lang.Override
@@ -4861,7 +4861,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      * @return The messageTerms.
      */
     @java.lang.Override
@@ -4873,7 +4873,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'message' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getMessageTermsOrBuilder() {
@@ -4887,7 +4887,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      * @return Whether the lineTerms field is set.
      */
     @java.lang.Override
@@ -4899,7 +4899,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      * @return The lineTerms.
      */
     @java.lang.Override
@@ -4911,7 +4911,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to entire log entry
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getLineTermsOrBuilder() {
@@ -5226,7 +5226,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      * @return Whether the processTerms field is set.
      */
     @java.lang.Override
@@ -5238,7 +5238,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      * @return The processTerms.
      */
     @java.lang.Override
@@ -5250,7 +5250,7 @@ private static final long serialVersionUID = 0L;
      * Summary of search terms pertaining to the log entry 'process' field
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder() {
@@ -6110,7 +6110,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        * @return Whether the tagTerms field is set.
        */
       public boolean hasTagTerms() {
@@ -6121,7 +6121,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        * @return The tagTerms.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getTagTerms() {
@@ -6136,7 +6136,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public Builder setTagTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (tagTermsBuilder_ == null) {
@@ -6156,7 +6156,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public Builder setTagTerms(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
@@ -6174,7 +6174,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public Builder mergeTagTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (tagTermsBuilder_ == null) {
@@ -6198,7 +6198,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public Builder clearTagTerms() {
         if (tagTermsBuilder_ == null) {
@@ -6215,7 +6215,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getTagTermsBuilder() {
         bitField0_ |= 0x00000001;
@@ -6227,7 +6227,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getTagTermsOrBuilder() {
         if (tagTermsBuilder_ != null) {
@@ -6242,7 +6242,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'tag' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
@@ -6266,7 +6266,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        * @return Whether the packageTerms field is set.
        */
       public boolean hasPackageTerms() {
@@ -6277,7 +6277,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        * @return The packageTerms.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getPackageTerms() {
@@ -6292,7 +6292,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public Builder setPackageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (packageTermsBuilder_ == null) {
@@ -6312,7 +6312,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public Builder setPackageTerms(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
@@ -6330,7 +6330,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public Builder mergePackageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (packageTermsBuilder_ == null) {
@@ -6354,7 +6354,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public Builder clearPackageTerms() {
         if (packageTermsBuilder_ == null) {
@@ -6371,7 +6371,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getPackageTermsBuilder() {
         bitField0_ |= 0x00000002;
@@ -6383,7 +6383,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getPackageTermsOrBuilder() {
         if (packageTermsBuilder_ != null) {
@@ -6398,7 +6398,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'package' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
@@ -6422,7 +6422,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        * @return Whether the messageTerms field is set.
        */
       public boolean hasMessageTerms() {
@@ -6433,7 +6433,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        * @return The messageTerms.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getMessageTerms() {
@@ -6448,7 +6448,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public Builder setMessageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (messageTermsBuilder_ == null) {
@@ -6468,7 +6468,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public Builder setMessageTerms(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
@@ -6486,7 +6486,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public Builder mergeMessageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (messageTermsBuilder_ == null) {
@@ -6510,7 +6510,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public Builder clearMessageTerms() {
         if (messageTermsBuilder_ == null) {
@@ -6527,7 +6527,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getMessageTermsBuilder() {
         bitField0_ |= 0x00000004;
@@ -6539,7 +6539,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getMessageTermsOrBuilder() {
         if (messageTermsBuilder_ != null) {
@@ -6554,7 +6554,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'message' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
@@ -6578,7 +6578,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        * @return Whether the lineTerms field is set.
        */
       public boolean hasLineTerms() {
@@ -6589,7 +6589,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        * @return The lineTerms.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getLineTerms() {
@@ -6604,7 +6604,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public Builder setLineTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (lineTermsBuilder_ == null) {
@@ -6624,7 +6624,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public Builder setLineTerms(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
@@ -6642,7 +6642,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public Builder mergeLineTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (lineTermsBuilder_ == null) {
@@ -6666,7 +6666,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public Builder clearLineTerms() {
         if (lineTermsBuilder_ == null) {
@@ -6683,7 +6683,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getLineTermsBuilder() {
         bitField0_ |= 0x00000008;
@@ -6695,7 +6695,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getLineTermsOrBuilder() {
         if (lineTermsBuilder_ != null) {
@@ -6710,7 +6710,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to entire log entry
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
@@ -7347,7 +7347,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        * @return Whether the processTerms field is set.
        */
       public boolean hasProcessTerms() {
@@ -7358,7 +7358,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        * @return The processTerms.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getProcessTerms() {
@@ -7373,7 +7373,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public Builder setProcessTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (processTermsBuilder_ == null) {
@@ -7393,7 +7393,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public Builder setProcessTerms(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
@@ -7411,7 +7411,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public Builder mergeProcessTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (processTermsBuilder_ == null) {
@@ -7435,7 +7435,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public Builder clearProcessTerms() {
         if (processTermsBuilder_ == null) {
@@ -7452,7 +7452,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getProcessTermsBuilder() {
         bitField0_ |= 0x00008000;
@@ -7464,7 +7464,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder() {
         if (processTermsBuilder_ != null) {
@@ -7479,7 +7479,7 @@ private static final long serialVersionUID = 0L;
        * Summary of search terms pertaining to the log entry 'process' field
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
@@ -7586,7 +7586,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      * @return Whether the formatConfiguration field is set.
      */
     boolean hasFormatConfiguration();
@@ -7595,7 +7595,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      * @return The formatConfiguration.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatConfiguration();
@@ -7604,7 +7604,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatConfigurationOrBuilder();
 
@@ -7613,7 +7613,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      * @return Whether the filter field is set.
      */
     boolean hasFilter();
@@ -7622,7 +7622,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      * @return The filter.
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent getFilter();
@@ -7631,7 +7631,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getFilterOrBuilder();
 
@@ -7733,7 +7733,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      * @return Whether the formatConfiguration field is set.
      */
     @java.lang.Override
@@ -7745,7 +7745,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      * @return The formatConfiguration.
      */
     @java.lang.Override
@@ -7757,7 +7757,7 @@ private static final long serialVersionUID = 0L;
      * The formatting configuration of the panel
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatConfigurationOrBuilder() {
@@ -7771,7 +7771,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      * @return Whether the filter field is set.
      */
     @java.lang.Override
@@ -7783,7 +7783,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      * @return The filter.
      */
     @java.lang.Override
@@ -7795,7 +7795,7 @@ private static final long serialVersionUID = 0L;
      * The panel filter.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getFilterOrBuilder() {
@@ -8341,7 +8341,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        * @return Whether the formatConfiguration field is set.
        */
       public boolean hasFormatConfiguration() {
@@ -8352,7 +8352,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        * @return The formatConfiguration.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatConfiguration() {
@@ -8367,7 +8367,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public Builder setFormatConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (formatConfigurationBuilder_ == null) {
@@ -8387,7 +8387,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public Builder setFormatConfiguration(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
@@ -8405,7 +8405,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public Builder mergeFormatConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (formatConfigurationBuilder_ == null) {
@@ -8429,7 +8429,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public Builder clearFormatConfiguration() {
         if (formatConfigurationBuilder_ == null) {
@@ -8446,7 +8446,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder getFormatConfigurationBuilder() {
         bitField0_ |= 0x00000002;
@@ -8458,7 +8458,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatConfigurationOrBuilder() {
         if (formatConfigurationBuilder_ != null) {
@@ -8473,7 +8473,7 @@ private static final long serialVersionUID = 0L;
        * The formatting configuration of the panel
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder> 
@@ -8497,7 +8497,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        * @return Whether the filter field is set.
        */
       public boolean hasFilter() {
@@ -8508,7 +8508,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        * @return The filter.
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent getFilter() {
@@ -8523,7 +8523,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public Builder setFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
         if (filterBuilder_ == null) {
@@ -8543,7 +8543,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public Builder setFilter(
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder builderForValue) {
@@ -8561,7 +8561,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public Builder mergeFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
         if (filterBuilder_ == null) {
@@ -8585,7 +8585,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public Builder clearFilter() {
         if (filterBuilder_ == null) {
@@ -8602,7 +8602,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder getFilterBuilder() {
         bitField0_ |= 0x00000004;
@@ -8614,7 +8614,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getFilterOrBuilder() {
         if (filterBuilder_ != null) {
@@ -8629,7 +8629,7 @@ private static final long serialVersionUID = 0L;
        * The panel filter.
        * </pre>
        *
-       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3;</code>
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder> 
@@ -8798,7 +8798,7 @@ private static final long serialVersionUID = 0L;
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the formatDialog field is set.
    */
@@ -8811,7 +8811,7 @@ private static final long serialVersionUID = 0L;
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The formatDialog.
    */
@@ -8824,7 +8824,7 @@ private static final long serialVersionUID = 0L;
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatDialogOrBuilder() {
@@ -8838,7 +8838,7 @@ private static final long serialVersionUID = 0L;
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    * @return Whether the logcatFilter field is set.
    */
   @java.lang.Override
@@ -8850,7 +8850,7 @@ private static final long serialVersionUID = 0L;
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    * @return The logcatFilter.
    */
   @java.lang.Override
@@ -8862,7 +8862,7 @@ private static final long serialVersionUID = 0L;
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getLogcatFilterOrBuilder() {
@@ -8876,7 +8876,7 @@ private static final long serialVersionUID = 0L;
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    * @return Whether the formatDialogApplied field is set.
    */
   @java.lang.Override
@@ -8888,7 +8888,7 @@ private static final long serialVersionUID = 0L;
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    * @return The formatDialogApplied.
    */
   @java.lang.Override
@@ -8900,7 +8900,7 @@ private static final long serialVersionUID = 0L;
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialogOrBuilder getFormatDialogAppliedOrBuilder() {
@@ -8914,7 +8914,7 @@ private static final long serialVersionUID = 0L;
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    * @return Whether the panelAdded field is set.
    */
   @java.lang.Override
@@ -8926,7 +8926,7 @@ private static final long serialVersionUID = 0L;
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    * @return The panelAdded.
    */
   @java.lang.Override
@@ -8938,7 +8938,7 @@ private static final long serialVersionUID = 0L;
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEventOrBuilder getPanelAddedOrBuilder() {
@@ -9518,7 +9518,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the formatDialog field is set.
      */
@@ -9530,7 +9530,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The formatDialog.
      */
@@ -9546,7 +9546,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setFormatDialog(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
       if (formatDialogBuilder_ == null) {
@@ -9566,7 +9566,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setFormatDialog(
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
@@ -9584,7 +9584,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeFormatDialog(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
       if (formatDialogBuilder_ == null) {
@@ -9608,7 +9608,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearFormatDialog() {
       if (formatDialogBuilder_ == null) {
@@ -9625,7 +9625,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder getFormatDialogBuilder() {
       bitField0_ |= 0x00000002;
@@ -9637,7 +9637,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatDialogOrBuilder() {
       if (formatDialogBuilder_ != null) {
@@ -9652,7 +9652,7 @@ private static final long serialVersionUID = 0L;
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder> 
@@ -9676,7 +9676,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      * @return Whether the logcatFilter field is set.
      */
     public boolean hasLogcatFilter() {
@@ -9687,7 +9687,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      * @return The logcatFilter.
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent getLogcatFilter() {
@@ -9702,7 +9702,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public Builder setLogcatFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
       if (logcatFilterBuilder_ == null) {
@@ -9722,7 +9722,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public Builder setLogcatFilter(
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder builderForValue) {
@@ -9740,7 +9740,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public Builder mergeLogcatFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
       if (logcatFilterBuilder_ == null) {
@@ -9764,7 +9764,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public Builder clearLogcatFilter() {
       if (logcatFilterBuilder_ == null) {
@@ -9781,7 +9781,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder getLogcatFilterBuilder() {
       bitField0_ |= 0x00000004;
@@ -9793,7 +9793,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getLogcatFilterOrBuilder() {
       if (logcatFilterBuilder_ != null) {
@@ -9808,7 +9808,7 @@ private static final long serialVersionUID = 0L;
      * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder> 
@@ -9832,7 +9832,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      * @return Whether the formatDialogApplied field is set.
      */
     public boolean hasFormatDialogApplied() {
@@ -9843,7 +9843,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      * @return The formatDialogApplied.
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog getFormatDialogApplied() {
@@ -9858,7 +9858,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public Builder setFormatDialogApplied(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog value) {
       if (formatDialogAppliedBuilder_ == null) {
@@ -9878,7 +9878,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public Builder setFormatDialogApplied(
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.Builder builderForValue) {
@@ -9896,7 +9896,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public Builder mergeFormatDialogApplied(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog value) {
       if (formatDialogAppliedBuilder_ == null) {
@@ -9920,7 +9920,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public Builder clearFormatDialogApplied() {
       if (formatDialogAppliedBuilder_ == null) {
@@ -9937,7 +9937,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.Builder getFormatDialogAppliedBuilder() {
       bitField0_ |= 0x00000008;
@@ -9949,7 +9949,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialogOrBuilder getFormatDialogAppliedOrBuilder() {
       if (formatDialogAppliedBuilder_ != null) {
@@ -9964,7 +9964,7 @@ private static final long serialVersionUID = 0L;
      * The Logcat format configuration set by the format dialog
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialogOrBuilder> 
@@ -9988,7 +9988,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      * @return Whether the panelAdded field is set.
      */
     public boolean hasPanelAdded() {
@@ -9999,7 +9999,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      * @return The panelAdded.
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent getPanelAdded() {
@@ -10014,7 +10014,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public Builder setPanelAdded(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent value) {
       if (panelAddedBuilder_ == null) {
@@ -10034,7 +10034,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public Builder setPanelAdded(
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.Builder builderForValue) {
@@ -10052,7 +10052,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public Builder mergePanelAdded(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent value) {
       if (panelAddedBuilder_ == null) {
@@ -10076,7 +10076,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public Builder clearPanelAdded() {
       if (panelAddedBuilder_ == null) {
@@ -10093,7 +10093,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.Builder getPanelAddedBuilder() {
       bitField0_ |= 0x00000010;
@@ -10105,7 +10105,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEventOrBuilder getPanelAddedOrBuilder() {
       if (panelAddedBuilder_ != null) {
@@ -10120,7 +10120,7 @@ private static final long serialVersionUID = 0L;
      * A Logcat panel was added
      * </pre>
      *
-     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEventOrBuilder> 

@@ -970,7 +970,7 @@ private static final long serialVersionUID = 0L;
   public static final int PROJECT_METADATA_FIELD_NUMBER = 2;
   private com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata projectMetadata_;
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    * @return Whether the projectMetadata field is set.
    */
   @java.lang.Override
@@ -978,7 +978,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    * @return The projectMetadata.
    */
   @java.lang.Override
@@ -986,7 +986,7 @@ private static final long serialVersionUID = 0L;
     return projectMetadata_ == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.getDefaultInstance() : projectMetadata_;
   }
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder getProjectMetadataOrBuilder() {
@@ -1419,14 +1419,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata, com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.Builder, com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder> projectMetadataBuilder_;
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      * @return Whether the projectMetadata field is set.
      */
     public boolean hasProjectMetadata() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      * @return The projectMetadata.
      */
     public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata getProjectMetadata() {
@@ -1437,7 +1437,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public Builder setProjectMetadata(com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata value) {
       if (projectMetadataBuilder_ == null) {
@@ -1453,7 +1453,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public Builder setProjectMetadata(
         com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.Builder builderForValue) {
@@ -1467,7 +1467,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public Builder mergeProjectMetadata(com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata value) {
       if (projectMetadataBuilder_ == null) {
@@ -1487,7 +1487,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public Builder clearProjectMetadata() {
       if (projectMetadataBuilder_ == null) {
@@ -1500,7 +1500,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.Builder getProjectMetadataBuilder() {
       bitField0_ |= 0x00000002;
@@ -1508,7 +1508,7 @@ private static final long serialVersionUID = 0L;
       return getProjectMetadataFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder getProjectMetadataOrBuilder() {
       if (projectMetadataBuilder_ != null) {
@@ -1519,7 +1519,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+     * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata, com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.Builder, com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder> 

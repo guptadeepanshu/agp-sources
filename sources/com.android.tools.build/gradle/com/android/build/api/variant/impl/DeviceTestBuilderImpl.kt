@@ -19,22 +19,51 @@ package com.android.build.api.variant.impl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.PropertyAccessNotAllowedException
+import com.android.build.gradle.internal.core.dsl.ComponentDslInfo.DslDefinedDeviceTest
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.options.BooleanOption
+import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 
-open class DeviceTestBuilderImpl (
+open class DeviceTestBuilderImpl(
     variantBuilderServices: VariantBuilderServices,
     private val globalVariantBuilderConfig: GlobalVariantBuilderConfig,
-    private val variantBuilderImpl: VariantBuilderImpl,
+    private val defaultTargetSdkVersionProvider: () -> AndroidVersion,
+    val componentType: ComponentType,
     enableMultiDex: Boolean?,
     enableCodeCoverage: Boolean,
 ): DeviceTestBuilder {
+
+    companion object {
+        fun create(
+            dslDefinedDeviceTests: List<DslDefinedDeviceTest>,
+            variantBuilderServices: VariantBuilderServices,
+            globalVariantBuilderConfig: GlobalVariantBuilderConfig,
+            defaultTargetSdkVersionProvider: () -> AndroidVersion,
+            enableMultiDex: Boolean?,
+        ): Map<String, DeviceTestBuilderImpl> =
+            dslDefinedDeviceTests.associate { dslDeviceTest ->
+                dslDeviceTest.type to
+                    if (dslDeviceTest.type == DeviceTestBuilder.ANDROID_TEST_TYPE) {
+                        DeviceTestBuilderImpl(
+                            variantBuilderServices,
+                            globalVariantBuilderConfig,
+                            defaultTargetSdkVersionProvider,
+                            ComponentTypeImpl.ANDROID_TEST,
+                            enableMultiDex,
+                            dslDeviceTest.codeCoverageEnabled,
+                        )
+                    } else {
+                        throw RuntimeException("Unknown device test type : ${dslDeviceTest.type}")
+                    }
+            }
+    }
 
     // target sdk version to be used in the Variant API
     internal val targetSdkVersion: AndroidVersion
         get() = mutableTargetSdk?.sanitize()
             ?: globalVariantBuilderConfig.deviceTestOptions.targetSdkVersion
-            ?: variantBuilderImpl.targetSdkVersion
+            ?: defaultTargetSdkVersionProvider()
 
     // backing property for [targetSdk] and [targetSdkPreview]
     private var mutableTargetSdk: MutableAndroidVersion? = null

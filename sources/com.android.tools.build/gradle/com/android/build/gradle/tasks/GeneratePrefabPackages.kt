@@ -264,8 +264,8 @@ private fun translateFromStagedToFinal(
 fun reportErrors(stderr : File) {
     if (!stderr.isFile) return
     var relevantLibrary = ""
-    var errorPresent = false
     PassThroughRecordingLoggingEnvironment().use { logger ->
+        var errorPresent = false
         stderr.forEachLine { line ->
             if (logger.errors.isNotEmpty()) {
                 // Everything after the first error is logged as lifecycle
@@ -276,7 +276,6 @@ fun reportErrors(stderr : File) {
                 infoln(line)
                 return@forEachLine
             }
-            errorPresent = true
             for((regex, behavior) in errorMatchers) {
                 val found = regex.find(line)
                 if (found != null) {
@@ -284,19 +283,26 @@ fun reportErrors(stderr : File) {
                         RelevantLibraryDiscovery -> {
                             relevantLibrary = " [${found.destructured.component1()}]"
                             lifecycleln(line)
+                            errorPresent = true
                         }
                         RelevantLibraryError -> {
                             val text = found.destructured.component1()
                             errorln(behavior.code!!, "$text$relevantLibrary")
+                            errorPresent = true
                         }
                         OtherError -> {
                             relevantLibrary = ""
                             errorln(behavior.code!!, found.destructured.component1())
+                            errorPresent = true
                         }
-                        InformationOnly ->
+                        InformationOnly -> {
+                            // Do not set errorPresent to true here. Move on to the next line.
                             infoln(line)
-                        Unrecognized ->
+                        }
+                        Unrecognized -> {
+                            errorPresent = true
                             error("$line$relevantLibrary")
+                        }
                     }
                     break
                 }

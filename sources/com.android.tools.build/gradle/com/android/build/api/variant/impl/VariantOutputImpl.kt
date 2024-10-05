@@ -30,10 +30,10 @@ import java.io.Serializable
 data class VariantOutputImpl(
     @get:Input
     @get:Optional
-    override val versionCode: Property<Int?>,
+    override val versionCode: Property<Int>,
     @get:Input
     @get:Optional
-    override val versionName: Property<String?>,
+    override val versionName: Property<String>,
     @get:Input
     override val enabled: Property<Boolean>,
 

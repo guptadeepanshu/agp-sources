@@ -25,6 +25,6 @@ interface DynamicFeatureCreationConfig: VariantCreationConfig, ApkCreationConfig
     val resOffset: Provider<Int>
 
     val baseModuleDebuggable: Provider<Boolean>
-    val baseModuleVersionCode: Property<Int?>
-    val baseModuleVersionName: Property<String?>
+    val baseModuleVersionCode: Property<Int>
+    val baseModuleVersionName: Property<String>
 }

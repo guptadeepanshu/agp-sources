@@ -75,22 +75,23 @@ open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
             return _androidTest
         }
 
-    override val deviceTests: List<DeviceTestBuilder>
+    override val deviceTests: Map<String, DeviceTestBuilder>
         get() {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.DEVICE_TESTS_BUILDER_VALUE
-            // return a copy of the list every time as new items may have
+            // return a copy of the map every time as new items may have
             // been added to it since last call.
-            return delegate.deviceTests.map {
+            return delegate.deviceTests.mapValues {
+                val value = it.value
                 @Suppress("DEPRECATION")
-                if (it is AndroidTestBuilder) {
+                if (value is AndroidTestBuilder) {
                     AnalyticsEnabledAndroidTestBuilder(
-                        it,
+                        value,
                         stats
                     )
                 } else {
                     AnalyticsEnabledDeviceTestBuilder(
-                        it,
+                        value,
                         stats
                     )
                 }
@@ -101,7 +102,7 @@ open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
         get() {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.HOST_TESTS_BUILDER_VALUE
-            // return a copy of the list every time as new items may have
+            // return a copy of the map every time as new items may have
             // been added to it since last call.
             return delegate.hostTests.mapValues {
                 AnalyticsEnabledHostTestBuilder(

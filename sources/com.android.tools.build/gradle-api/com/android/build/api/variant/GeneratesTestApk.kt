@@ -45,7 +45,7 @@ interface GeneratesTestApk: GeneratesApk {
     val functionalTest: Property<Boolean>
 
     /**
-     * The test label.
+     * The test label, or "" if none defined.
      */
-    val testLabel: Property<String?>
+    val testLabel: Property<String>
 }

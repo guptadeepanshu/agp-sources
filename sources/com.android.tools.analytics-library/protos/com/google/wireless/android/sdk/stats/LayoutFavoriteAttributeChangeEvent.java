@@ -52,7 +52,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    * @return Whether the added field is set.
    */
   @java.lang.Override
@@ -64,7 +64,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    * @return The added.
    */
   @java.lang.Override
@@ -76,7 +76,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was added as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAddedOrBuilder() {
@@ -90,7 +90,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    * @return Whether the removed field is set.
    */
   @java.lang.Override
@@ -102,7 +102,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    * @return The removed.
    */
   @java.lang.Override
@@ -114,7 +114,7 @@ private static final long serialVersionUID = 0L;
    * This attribute was removed as a favorite attribute
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+   * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getRemovedOrBuilder() {
@@ -642,7 +642,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      * @return Whether the added field is set.
      */
     public boolean hasAdded() {
@@ -653,7 +653,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      * @return The added.
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute getAdded() {
@@ -668,7 +668,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public Builder setAdded(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (addedBuilder_ == null) {
@@ -688,7 +688,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public Builder setAdded(
         com.google.wireless.android.sdk.stats.AndroidAttribute.Builder builderForValue) {
@@ -706,7 +706,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public Builder mergeAdded(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (addedBuilder_ == null) {
@@ -730,7 +730,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public Builder clearAdded() {
       if (addedBuilder_ == null) {
@@ -747,7 +747,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute.Builder getAddedBuilder() {
       bitField0_ |= 0x00000001;
@@ -759,7 +759,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAddedOrBuilder() {
       if (addedBuilder_ != null) {
@@ -774,7 +774,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was added as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute added = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute added = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidAttribute, com.google.wireless.android.sdk.stats.AndroidAttribute.Builder, com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder> 
@@ -798,7 +798,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      * @return Whether the removed field is set.
      */
     public boolean hasRemoved() {
@@ -809,7 +809,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      * @return The removed.
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute getRemoved() {
@@ -824,7 +824,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public Builder setRemoved(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (removedBuilder_ == null) {
@@ -844,7 +844,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public Builder setRemoved(
         com.google.wireless.android.sdk.stats.AndroidAttribute.Builder builderForValue) {
@@ -862,7 +862,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public Builder mergeRemoved(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (removedBuilder_ == null) {
@@ -886,7 +886,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public Builder clearRemoved() {
       if (removedBuilder_ == null) {
@@ -903,7 +903,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute.Builder getRemovedBuilder() {
       bitField0_ |= 0x00000002;
@@ -915,7 +915,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getRemovedOrBuilder() {
       if (removedBuilder_ != null) {
@@ -930,7 +930,7 @@ private static final long serialVersionUID = 0L;
      * This attribute was removed as a favorite attribute
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
+     * <code>optional .android_studio.AndroidAttribute removed = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidAttribute, com.google.wireless.android.sdk.stats.AndroidAttribute.Builder, com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder> 

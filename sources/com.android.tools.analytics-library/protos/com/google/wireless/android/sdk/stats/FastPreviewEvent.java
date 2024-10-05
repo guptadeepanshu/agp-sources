@@ -1317,7 +1317,7 @@ private static final long serialVersionUID = 0L;
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    * @return Whether the compilationResult field is set.
    */
   @java.lang.Override
@@ -1329,7 +1329,7 @@ private static final long serialVersionUID = 0L;
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    * @return The compilationResult.
    */
   @java.lang.Override
@@ -1341,7 +1341,7 @@ private static final long serialVersionUID = 0L;
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResultOrBuilder getCompilationResultOrBuilder() {
@@ -1794,7 +1794,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      * @return Whether the compilationResult field is set.
      */
     public boolean hasCompilationResult() {
@@ -1805,7 +1805,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      * @return The compilationResult.
      */
     public com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult getCompilationResult() {
@@ -1820,7 +1820,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public Builder setCompilationResult(com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult value) {
       if (compilationResultBuilder_ == null) {
@@ -1840,7 +1840,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public Builder setCompilationResult(
         com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult.Builder builderForValue) {
@@ -1858,7 +1858,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public Builder mergeCompilationResult(com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult value) {
       if (compilationResultBuilder_ == null) {
@@ -1882,7 +1882,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public Builder clearCompilationResult() {
       if (compilationResultBuilder_ == null) {
@@ -1899,7 +1899,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult.Builder getCompilationResultBuilder() {
       bitField0_ |= 0x00000002;
@@ -1911,7 +1911,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResultOrBuilder getCompilationResultOrBuilder() {
       if (compilationResultBuilder_ != null) {
@@ -1926,7 +1926,7 @@ private static final long serialVersionUID = 0L;
      * The compilation result when type = COMPILE
      * </pre>
      *
-     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+     * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult, com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult.Builder, com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResultOrBuilder> 

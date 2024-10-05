@@ -277,7 +277,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     }
 
     override val requiresJacocoTransformation: Boolean
-        get() = (this as? HasDeviceTests)?.deviceTests?.any { it.codeCoverageEnabled } ?: false
+        get() = (this as? HasDeviceTests)?.deviceTests?.values?.any { it.codeCoverageEnabled } ?: false
 
     override val isCoreLibraryDesugaringEnabledLintCheck: Boolean
         get() = if (this is ApkCreationConfig) {
@@ -310,7 +310,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     }
 
     private fun deviceTests(): List<ComponentImpl<*>> =
-        (this as? HasDeviceTests)?.deviceTests?.map { it as ComponentImpl<*> }
+        (this as? HasDeviceTests)?.deviceTests?.values?.map { it as ComponentImpl<*> }
             ?: listOf()
 
     private fun hostTests(): List<ComponentImpl<*>> =

@@ -32,7 +32,7 @@ abstract class NonIncrementalTask : AndroidVariantTask() {
 
     @TaskAction
     fun taskAction() {
-        recordTaskAction(analyticsService.orNull) {
+        recordTaskAction {
             cleanUpTaskOutputs()
             doTaskAction()
         }
@@ -47,7 +47,7 @@ abstract class NonIncrementalGlobalTask : AndroidGlobalTask() {
 
     @TaskAction
     fun taskAction() {
-        recordTaskAction(analyticsService.get()) {
+        recordTaskAction {
             cleanUpTaskOutputs()
             doTaskAction()
         }

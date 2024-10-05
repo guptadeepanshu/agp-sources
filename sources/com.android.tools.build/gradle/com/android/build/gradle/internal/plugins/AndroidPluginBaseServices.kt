@@ -143,6 +143,8 @@ abstract class AndroidPluginBaseServices(
 
         if (projectOptions.get(BooleanOption.ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT)
             || projectOptions.get(BooleanOption.ENABLE_SCREENSHOT_TEST)) {
+            // TODO(b/341765853) - no need to have this try/catch once KotlinBaseApiPlugin has been
+            //  added as a runtime dependency.
             try {
                 project.plugins.apply(KotlinBaseApiPlugin::class.java)
             } catch (e: Throwable) {

@@ -30,6 +30,7 @@ import com.android.builder.testing.api.TestException
 import com.android.utils.ILogger
 import com.google.common.base.Preconditions
 import com.google.testing.platform.proto.api.config.RunnerConfigProto
+import com.google.wireless.android.sdk.stats.DeviceTestSpanProfile
 import java.io.File
 import java.util.logging.Level
 import org.gradle.api.logging.Logger
@@ -54,6 +55,7 @@ class ManagedDeviceTestRunner(
     private val utpLoggingLevel: Level = Level.WARNING,
     private val targetIsSplitApk: Boolean,
     private val uninstallApksAfterTest: Boolean,
+    private val utpRunProfileManager: UtpRunProfileManager,
     private val configFactory: UtpConfigFactory = UtpConfigFactory(),
     private val runUtpTestSuiteAndWaitFunc: (
         List<UtpRunnerConfig>, String, String, File, ILogger
@@ -102,7 +104,9 @@ class ManagedDeviceTestRunner(
         val extractedSdkApks = getExtractedSdkApks(testData, utpManagedDevice)
         val runnerConfigs = mutableListOf<UtpRunnerConfig>()
         try {
+            utpRunProfileManager.recordDeviceLockStart()
             avdComponents.lockManager.lock(numShards ?: 1).use { lock ->
+                utpRunProfileManager.recordDeviceLockEnd()
                 val devicesAcquired = lock.lockCount
                 if (devicesAcquired != (numShards ?: 1) ) {
                     logger.warning("Unable to retrieve $numShards devices, only " +
@@ -167,6 +171,11 @@ class ManagedDeviceTestRunner(
                             utpOutputDir,
                             runnerConfigProto,
                             configFactory.createServerConfigProto(),
+                            utpRunProfileManager.createTestRunProfile(
+                                utpOutputDir,
+                                DeviceTestSpanProfile.DeviceType.VIRTUAL_MANAGED_DEVICE,
+                                shardedManagedDevice.deviceName
+                            ),
                             shardConfig,
                             utpLoggingLevel
                         )
@@ -209,7 +218,6 @@ class ManagedDeviceTestRunner(
                     }
                 }
             }
-
             return results.all(UtpTestRunResult::testPassed)
         } finally {
             avdComponents.closeOpenEmulators(utpManagedDevice.id)

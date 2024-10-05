@@ -76,7 +76,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      * @return Whether the pluginIdentifier field is set.
      */
     boolean hasPluginIdentifier();
@@ -85,7 +85,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      * @return The pluginIdentifier.
      */
     com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier();
@@ -94,7 +94,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder();
   }
@@ -177,7 +177,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      * @return Whether the pluginIdentifier field is set.
      */
     @java.lang.Override
@@ -189,7 +189,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      * @return The pluginIdentifier.
      */
     @java.lang.Override
@@ -201,7 +201,7 @@ private static final long serialVersionUID = 0L;
      * The plugin identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
@@ -649,7 +649,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        * @return Whether the pluginIdentifier field is set.
        */
       public boolean hasPluginIdentifier() {
@@ -660,7 +660,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        * @return The pluginIdentifier.
        */
       public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {
@@ -675,7 +675,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public Builder setPluginIdentifier(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
         if (pluginIdentifierBuilder_ == null) {
@@ -695,7 +695,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public Builder setPluginIdentifier(
           com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder builderForValue) {
@@ -713,7 +713,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public Builder mergePluginIdentifier(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
         if (pluginIdentifierBuilder_ == null) {
@@ -737,7 +737,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public Builder clearPluginIdentifier() {
         if (pluginIdentifierBuilder_ == null) {
@@ -754,7 +754,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder getPluginIdentifierBuilder() {
         bitField0_ |= 0x00000002;
@@ -766,7 +766,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
         if (pluginIdentifierBuilder_ != null) {
@@ -781,7 +781,7 @@ private static final long serialVersionUID = 0L;
        * The plugin identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder> 
@@ -3255,7 +3255,7 @@ private static final long serialVersionUID = 0L;
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    * @return Whether the overallConfigurationData field is set.
    */
   @java.lang.Override
@@ -3268,7 +3268,7 @@ private static final long serialVersionUID = 0L;
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    * @return The overallConfigurationData.
    */
   @java.lang.Override
@@ -3281,7 +3281,7 @@ private static final long serialVersionUID = 0L;
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder getOverallConfigurationDataOrBuilder() {
@@ -4025,7 +4025,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      * @return Whether the overallConfigurationData field is set.
      */
     public boolean hasOverallConfigurationData() {
@@ -4037,7 +4037,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      * @return The overallConfigurationData.
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData getOverallConfigurationData() {
@@ -4053,7 +4053,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public Builder setOverallConfigurationData(com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData value) {
       if (overallConfigurationDataBuilder_ == null) {
@@ -4074,7 +4074,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public Builder setOverallConfigurationData(
         com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData.Builder builderForValue) {
@@ -4093,7 +4093,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public Builder mergeOverallConfigurationData(com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData value) {
       if (overallConfigurationDataBuilder_ == null) {
@@ -4118,7 +4118,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public Builder clearOverallConfigurationData() {
       if (overallConfigurationDataBuilder_ == null) {
@@ -4136,7 +4136,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData.Builder getOverallConfigurationDataBuilder() {
       bitField0_ |= 0x00000002;
@@ -4149,7 +4149,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder getOverallConfigurationDataOrBuilder() {
       if (overallConfigurationDataBuilder_ != null) {
@@ -4165,7 +4165,7 @@ private static final long serialVersionUID = 0L;
      * build
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData, com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData.Builder, com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder> 

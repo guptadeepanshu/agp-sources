@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.profile.AnalyticsUtil
 import com.android.builder.model.TestOptions
 import com.android.Version
 import com.android.build.gradle.internal.profile.AnalyticsService
+import com.android.build.gradle.internal.testing.utp.UtpRunProfileManager
 import com.android.tools.analytics.CommonMetricsData
 import com.android.tools.analytics.recordTestLibrary
 import com.google.wireless.android.sdk.stats.AndroidStudioEvent
@@ -35,14 +36,16 @@ fun recordOkInstrumentedTestRun(
     execution: TestOptions.Execution,
     coverageEnabled: Boolean,
     testCount: Int,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    utpRunProfileManager: UtpRunProfileManager?
 ) =
     recordOkInstrumentedTestRun(
         gatherTestLibraries(dependencies),
         execution,
         coverageEnabled,
         testCount,
-        analyticsService
+        analyticsService,
+        utpRunProfileManager
     )
 
 fun recordOkInstrumentedTestRun(
@@ -50,7 +53,8 @@ fun recordOkInstrumentedTestRun(
     execution: TestOptions.Execution,
     coverageEnabled: Boolean,
     testCount: Int,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    utpRunProfileManager: UtpRunProfileManager?
 ) {
     recordTestRun(
         testLibraries = testLibraries,
@@ -59,7 +63,8 @@ fun recordOkInstrumentedTestRun(
         testCount = testCount,
         TestRun.TestKind.INSTRUMENTATION_TEST,
         infrastructureCrashed = false,
-        analyticsService = analyticsService
+        analyticsService = analyticsService,
+        utpRunProfileManager
     )
 }
 
@@ -88,20 +93,23 @@ fun recordCrashedInstrumentedTestRun(
     dependencies: ArtifactCollection,
     execution: TestOptions.Execution,
     coverageEnabled: Boolean,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    utpRunProfileManager: UtpRunProfileManager?
 ) =
     recordCrashedInstrumentedTestRun(
         gatherTestLibraries(dependencies),
         execution,
         coverageEnabled,
-        analyticsService
+        analyticsService,
+        utpRunProfileManager
     )
 
 fun recordCrashedInstrumentedTestRun(
     testLibraries: TestLibraries,
     execution: TestOptions.Execution,
     coverageEnabled: Boolean,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    utpRunProfileManager: UtpRunProfileManager?
 ) {
     recordTestRun(
         testLibraries = testLibraries,
@@ -110,7 +118,8 @@ fun recordCrashedInstrumentedTestRun(
         testCount = 0,
         TestRun.TestKind.INSTRUMENTATION_TEST,
         infrastructureCrashed = true,
-        analyticsService = analyticsService
+        analyticsService = analyticsService,
+        utpRunProfileManager = utpRunProfileManager
     )
 }
 
@@ -142,7 +151,8 @@ private fun recordTestRun(
     testType: TestRun.TestKind,
     infrastructureCrashed: Boolean,
     analyticsService: AnalyticsService,
-    invocationType: TestRun.TestInvocationType = TestRun.TestInvocationType.GRADLE_TEST
+    utpRunProfileManager: UtpRunProfileManager? = null,
+    invocationType: TestRun.TestInvocationType = TestRun.TestInvocationType.GRADLE_TEST,
 ) {
     val run = TestRun.newBuilder().apply {
         testInvocationType = invocationType
@@ -153,6 +163,11 @@ private fun recordTestRun(
         codeCoverageEnabled = coverageEnabled
         this.testLibraries = testLibraries
         if (execution != null) testExecution = AnalyticsUtil.toProto(execution)
+        if (utpRunProfileManager != null) {
+            addAllDeviceTestSpanProfiles (
+                utpRunProfileManager.deviceTestSpanProfileProtos
+            )
+        }
     }.build()
 
     analyticsService.recordEvent(

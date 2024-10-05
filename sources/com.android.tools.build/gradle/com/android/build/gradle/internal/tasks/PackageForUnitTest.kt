@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package com.android.build.gradle.internal.tasks
+
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
@@ -22,8 +23,6 @@ import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.ApkFlinger
@@ -55,6 +54,7 @@ import java.nio.file.Paths
 import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.zip.Deflater.BEST_SPEED
+
 /**
  * Task that takes the linked android resources zip and android assets and puts them into a zip file
  * without code or signing.
@@ -62,18 +62,22 @@ import java.util.zip.Deflater.BEST_SPEED
 @DisableCachingByDefault(because = SIMPLE_MERGING_TASK)
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST, secondaryTaskCategories = [TaskCategory.APK_PACKAGING])
 abstract class PackageForHostTest : NonIncrementalTask() {
+
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val resApk: DirectoryProperty
+
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val mergedAssetsDirectory: DirectoryProperty
+
     @get:Input
     @get:Optional
     abstract val noCompress: ListProperty<String>
+
     @get:OutputFile
     abstract val apkForHostTest: RegularFileProperty
-    @Throws(IOException::class)
+
     override fun doTaskAction() {
         // this can certainly be optimized by making it incremental...
         val apkForHostTest = apkForHostTest.get().asFile
@@ -111,6 +115,7 @@ abstract class PackageForHostTest : NonIncrementalTask() {
             })
         }
     }
+
     internal fun apkFrom(compiledResourcesZip: Provider<Directory>): File {
         val builtArtifacts = BuiltArtifactsLoaderImpl().load(compiledResourcesZip)
             ?: throw RuntimeException("Cannot load resources from $compiledResourcesZip")
@@ -139,15 +144,17 @@ abstract class PackageForHostTest : NonIncrementalTask() {
         sb.append("Cannot find a build output with all resources, please file a bug.")
         throw RuntimeException(sb.toString())
     }
+
     class CreationAction(creationConfig: HostTestCreationConfig) :
         VariantTaskCreationAction<PackageForHostTest, HostTestCreationConfig>(
             creationConfig
-        ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
-        creationConfig
-    ) {
+        ) {
+
         override val name = computeTaskName(
-            "package", "For${creationConfig.componentType.suffix}")
+            "package", "For${creationConfig.componentType.suffix}"
+        )
         override val type = PackageForHostTest::class.java
+
         override fun handleProvider(
             taskProvider: TaskProvider<PackageForHostTest>
         ) {
@@ -159,6 +166,7 @@ abstract class PackageForHostTest : NonIncrementalTask() {
 
 
         }
+
         override fun configure(
             task: PackageForHostTest
         ) {

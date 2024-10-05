@@ -356,7 +356,7 @@ private static final long serialVersionUID = 0L;
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    * @return Whether the componentInfo field is set.
    */
   @java.lang.Override
@@ -368,7 +368,7 @@ private static final long serialVersionUID = 0L;
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    * @return The componentInfo.
    */
   @java.lang.Override
@@ -380,7 +380,7 @@ private static final long serialVersionUID = 0L;
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfoOrBuilder getComponentInfoOrBuilder() {
@@ -394,7 +394,7 @@ private static final long serialVersionUID = 0L;
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    * @return Whether the eventInfo field is set.
    */
   @java.lang.Override
@@ -406,7 +406,7 @@ private static final long serialVersionUID = 0L;
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    * @return The eventInfo.
    */
   @java.lang.Override
@@ -418,7 +418,7 @@ private static final long serialVersionUID = 0L;
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfoOrBuilder getEventInfoOrBuilder() {
@@ -1512,7 +1512,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      * @return Whether the componentInfo field is set.
      */
     public boolean hasComponentInfo() {
@@ -1523,7 +1523,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      * @return The componentInfo.
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo getComponentInfo() {
@@ -1538,7 +1538,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public Builder setComponentInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo value) {
       if (componentInfoBuilder_ == null) {
@@ -1558,7 +1558,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public Builder setComponentInfo(
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Builder builderForValue) {
@@ -1576,7 +1576,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public Builder mergeComponentInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo value) {
       if (componentInfoBuilder_ == null) {
@@ -1600,7 +1600,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public Builder clearComponentInfo() {
       if (componentInfoBuilder_ == null) {
@@ -1617,7 +1617,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Builder getComponentInfoBuilder() {
       bitField0_ |= 0x00000020;
@@ -1629,7 +1629,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfoOrBuilder getComponentInfoOrBuilder() {
       if (componentInfoBuilder_ != null) {
@@ -1644,7 +1644,7 @@ private static final long serialVersionUID = 0L;
      * Information about the component involved in the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfoOrBuilder> 
@@ -1668,7 +1668,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      * @return Whether the eventInfo field is set.
      */
     public boolean hasEventInfo() {
@@ -1679,7 +1679,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      * @return The eventInfo.
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo getEventInfo() {
@@ -1694,7 +1694,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public Builder setEventInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo value) {
       if (eventInfoBuilder_ == null) {
@@ -1714,7 +1714,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public Builder setEventInfo(
         com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.Builder builderForValue) {
@@ -1732,7 +1732,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public Builder mergeEventInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo value) {
       if (eventInfoBuilder_ == null) {
@@ -1756,7 +1756,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public Builder clearEventInfo() {
       if (eventInfoBuilder_ == null) {
@@ -1773,7 +1773,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.Builder getEventInfoBuilder() {
       bitField0_ |= 0x00000040;
@@ -1785,7 +1785,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfoOrBuilder getEventInfoOrBuilder() {
       if (eventInfoBuilder_ != null) {
@@ -1800,7 +1800,7 @@ private static final long serialVersionUID = 0L;
      * Information about the event.
      * </pre>
      *
-     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+     * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo, com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfoOrBuilder> 

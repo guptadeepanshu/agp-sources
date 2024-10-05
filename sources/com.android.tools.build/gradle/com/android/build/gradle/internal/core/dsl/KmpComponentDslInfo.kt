@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.core.dsl
 
 import com.android.build.gradle.api.JavaCompileOptions
-import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 
 /**
  * Represents the dsl info for a component that is part of the kotlin multiplatform android plugin,
@@ -29,10 +28,6 @@ import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslIn
  */
 interface KmpComponentDslInfo: ComponentDslInfo {
     val buildTypeMatchingFallbacks: List<String>
-
-    // KMP doesn't support android resources
-    override val androidResourcesDsl: AndroidResourcesDslInfo?
-        get() = null
 
     override val javaCompileOptionsSetInDSL: JavaCompileOptions
         get() {

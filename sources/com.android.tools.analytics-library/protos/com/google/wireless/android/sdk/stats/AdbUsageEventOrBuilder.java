@@ -12,7 +12,7 @@ public interface AdbUsageEventOrBuilder extends
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return Whether the processPropertiesEvent field is set.
    */
   boolean hasProcessPropertiesEvent();
@@ -21,7 +21,7 @@ public interface AdbUsageEventOrBuilder extends
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return The processPropertiesEvent.
    */
   com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent getProcessPropertiesEvent();
@@ -30,7 +30,7 @@ public interface AdbUsageEventOrBuilder extends
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1;</code>
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder getProcessPropertiesEventOrBuilder();
 

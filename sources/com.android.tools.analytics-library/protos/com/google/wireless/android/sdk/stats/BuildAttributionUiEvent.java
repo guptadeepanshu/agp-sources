@@ -2244,7 +2244,7 @@ private static final long serialVersionUID = 0L;
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    * @return Whether the currentPage field is set.
    */
   @java.lang.Override
@@ -2256,7 +2256,7 @@ private static final long serialVersionUID = 0L;
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    * @return The currentPage.
    */
   @java.lang.Override
@@ -2268,7 +2268,7 @@ private static final long serialVersionUID = 0L;
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getCurrentPageOrBuilder() {
@@ -2282,7 +2282,7 @@ private static final long serialVersionUID = 0L;
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    * @return Whether the targetPage field is set.
    */
   @java.lang.Override
@@ -2294,7 +2294,7 @@ private static final long serialVersionUID = 0L;
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    * @return The targetPage.
    */
   @java.lang.Override
@@ -2306,7 +2306,7 @@ private static final long serialVersionUID = 0L;
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getTargetPageOrBuilder() {
@@ -3249,7 +3249,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      * @return Whether the currentPage field is set.
      */
     public boolean hasCurrentPage() {
@@ -3260,7 +3260,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      * @return The currentPage.
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page getCurrentPage() {
@@ -3275,7 +3275,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public Builder setCurrentPage(com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page value) {
       if (currentPageBuilder_ == null) {
@@ -3295,7 +3295,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public Builder setCurrentPage(
         com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder builderForValue) {
@@ -3313,7 +3313,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public Builder mergeCurrentPage(com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page value) {
       if (currentPageBuilder_ == null) {
@@ -3337,7 +3337,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public Builder clearCurrentPage() {
       if (currentPageBuilder_ == null) {
@@ -3354,7 +3354,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder getCurrentPageBuilder() {
       bitField0_ |= 0x00000002;
@@ -3366,7 +3366,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getCurrentPageOrBuilder() {
       if (currentPageBuilder_ != null) {
@@ -3381,7 +3381,7 @@ private static final long serialVersionUID = 0L;
      * What page was opened when this event happened.
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page, com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder, com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder> 
@@ -3405,7 +3405,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      * @return Whether the targetPage field is set.
      */
     public boolean hasTargetPage() {
@@ -3416,7 +3416,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      * @return The targetPage.
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page getTargetPage() {
@@ -3431,7 +3431,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public Builder setTargetPage(com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page value) {
       if (targetPageBuilder_ == null) {
@@ -3451,7 +3451,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public Builder setTargetPage(
         com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder builderForValue) {
@@ -3469,7 +3469,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public Builder mergeTargetPage(com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page value) {
       if (targetPageBuilder_ == null) {
@@ -3493,7 +3493,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public Builder clearTargetPage() {
       if (targetPageBuilder_ == null) {
@@ -3510,7 +3510,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder getTargetPageBuilder() {
       bitField0_ |= 0x00000004;
@@ -3522,7 +3522,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getTargetPageOrBuilder() {
       if (targetPageBuilder_ != null) {
@@ -3537,7 +3537,7 @@ private static final long serialVersionUID = 0L;
      * What page will be opened because of this event (if page changes).
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+     * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page, com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page.Builder, com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder> 

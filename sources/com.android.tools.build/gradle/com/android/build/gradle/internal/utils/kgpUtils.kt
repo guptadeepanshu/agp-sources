@@ -44,7 +44,9 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
+const val ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID = "com.android.experimental.built-in-kotlin"
 const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+const val ANDROID_BUILT_IN_KAPT_PLUGIN_ID = "com.android.legacy-kapt"
 const val COMPOSE_COMPILER_PLUGIN_ID = "org.jetbrains.kotlin.plugin.compose"
 const val KSP_PLUGIN_ID = "com.google.devtools.ksp"
 const val KOTLIN_MPP_PLUGIN_ID = "org.jetbrains.kotlin.multiplatform"
@@ -332,13 +334,6 @@ fun findKaptOrKspConfigurationsForVariant(
     }
 }
 
-fun isKotlinBaseApiPluginApplied(projectInfo: ProjectInfo): Boolean =
-    try {
-        projectInfo.hasPlugin(KotlinBaseApiPlugin::class.java)
-    } catch (e: Throwable) {
-        if (e is ClassNotFoundException || e is NoClassDefFoundError) false else throw e
-    }
-
 fun findKotlinBaseApiPlugin(projectInfo: ProjectInfo): KotlinBaseApiPlugin? =
     try {
         projectInfo.findPlugin(KotlinBaseApiPlugin::class.java)
@@ -350,8 +345,8 @@ fun findKotlinBaseApiPlugin(projectInfo: ProjectInfo): KotlinBaseApiPlugin? =
  * Check that the kotlin stdlib is present in the compile and runtime classpaths
  *
  * KGP automatically adds the kotlin stdlib dependency, which is not desirable behavior. Instead of
- * doing that, AGP checks for the dependency when the "com.android.kotlin" plugin is applied and
- * instructs users to add the dependency if it is missing.
+ * doing that, AGP checks for the dependency when built-in Kotlin support is enabled and instructs
+ * the user to add the dependency if it is missing.
  */
 internal fun checkKotlinStdLibIsInDependencies(
     project: Project,

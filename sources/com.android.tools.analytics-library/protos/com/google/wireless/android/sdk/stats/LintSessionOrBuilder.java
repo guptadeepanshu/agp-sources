@@ -31,7 +31,7 @@ public interface LintSessionOrBuilder extends
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    * @return Whether the lintPerformance field is set.
    */
   boolean hasLintPerformance();
@@ -40,7 +40,7 @@ public interface LintSessionOrBuilder extends
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    * @return The lintPerformance.
    */
   com.google.wireless.android.sdk.stats.LintPerformance getLintPerformance();
@@ -49,7 +49,7 @@ public interface LintSessionOrBuilder extends
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LintPerformanceOrBuilder getLintPerformanceOrBuilder();
 

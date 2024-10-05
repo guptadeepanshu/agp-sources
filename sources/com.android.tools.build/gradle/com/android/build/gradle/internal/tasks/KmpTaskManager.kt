@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.SdkConstants
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifact
@@ -33,6 +34,8 @@ import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.plugins.LINT_PLUGIN_ID
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask
+import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
+import com.android.build.gradle.internal.res.ParseLibraryResourcesTask
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -42,11 +45,14 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.factory.registerTask
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.tasks.BundleAar
+import com.android.build.gradle.tasks.ExtractDeepLinksTask
+import com.android.build.gradle.tasks.MergeResources
 import com.android.build.gradle.tasks.ProcessLibraryManifest
 import com.android.build.gradle.tasks.ZipMergingTask
 import com.android.builder.core.ComponentTypeImpl
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.file.RegularFile
 import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
@@ -106,6 +112,24 @@ class KmpTaskManager(
 
         maybeCreateJavacTask(variant)
 
+        if (variant.buildFeatures.androidResources) {
+            createPackageResourcesTask(
+                creationConfig = variant,
+                taskProviderCallback = object: TaskProviderCallback<MergeResources> {
+                    override fun handleProvider(taskProvider: TaskProvider<MergeResources>) {
+                        variant.artifacts
+                            .setInitialProvider<RegularFile, MergeResources>(taskProvider)
+                            { obj: MergeResources -> obj.publicFile }
+                            .withName(SdkConstants.FN_PUBLIC_TXT)
+                            .on(InternalArtifactType.PUBLIC_RES)
+                    }
+                }
+            )
+            taskFactory.register(ParseLibraryResourcesTask.CreateAction(variant))
+            taskFactory.register(GenerateLibraryRFileTask.CreationAction(variant))
+        }
+
+
         project.tasks.registerTask(
             BundleLibraryClassesJar.KotlinMultiplatformCreationAction(
                 component = variant,
@@ -135,7 +159,7 @@ class KmpTaskManager(
             )
         )
 
-        project.tasks.registerTask(ProcessJavaResTask.CreationAction(variant))
+        project.tasks.registerTask(ProcessJavaResTask.KotlinMultiplatformCreationAction(variant))
         project.tasks.registerTask(
             MergeJavaResourceTask.CreationAction(
                 javaResMergingScopes,
@@ -230,6 +254,20 @@ class KmpTaskManager(
             }
 
         project.tasks.named("assemble").dependsOn(variant.taskContainer.assembleTask)
+    }
+
+    private fun createPackageResourcesTask(
+        creationConfig: KmpCreationConfig,
+        taskProviderCallback: TaskProviderCallback<MergeResources>
+    ) {
+        val mergeResourcesTask: TaskProvider<MergeResources> = project.tasks.registerTask(
+            MergeResources.KotlinMultiplatformCreationAction(creationConfig),
+            null,
+            null,
+            taskProviderCallback
+        )
+
+        creationConfig.androidKotlinCompilation.compileTaskProvider.dependsOn(mergeResourcesTask)
     }
 
     private fun createUnitTestTasks(

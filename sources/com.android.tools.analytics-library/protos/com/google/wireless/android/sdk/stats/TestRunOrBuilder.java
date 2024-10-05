@@ -138,7 +138,7 @@ public interface TestRunOrBuilder extends
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    * @return Whether the testLibraries field is set.
    */
   boolean hasTestLibraries();
@@ -147,7 +147,7 @@ public interface TestRunOrBuilder extends
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    * @return The testLibraries.
    */
   com.google.wireless.android.sdk.stats.TestLibraries getTestLibraries();
@@ -156,7 +156,7 @@ public interface TestRunOrBuilder extends
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestLibrariesOrBuilder getTestLibrariesOrBuilder();
 
@@ -186,7 +186,7 @@ public interface TestRunOrBuilder extends
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    * @return Whether the automaticSnapshotOnFailure field is set.
    */
   boolean hasAutomaticSnapshotOnFailure();
@@ -197,7 +197,7 @@ public interface TestRunOrBuilder extends
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    * @return The automaticSnapshotOnFailure.
    */
   com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure();
@@ -208,7 +208,7 @@ public interface TestRunOrBuilder extends
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder();
 
@@ -217,7 +217,7 @@ public interface TestRunOrBuilder extends
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    * @return Whether the previewScreenshotRun field is set.
    */
   boolean hasPreviewScreenshotRun();
@@ -226,7 +226,7 @@ public interface TestRunOrBuilder extends
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    * @return The previewScreenshotRun.
    */
   com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getPreviewScreenshotRun();
@@ -235,7 +235,7 @@ public interface TestRunOrBuilder extends
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder();
 

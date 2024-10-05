@@ -680,7 +680,7 @@ private static final long serialVersionUID = 0L;
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    * @return Whether the instantRunStatus field is set.
    */
   @java.lang.Override
@@ -692,7 +692,7 @@ private static final long serialVersionUID = 0L;
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    * @return The instantRunStatus.
    */
   @java.lang.Override
@@ -704,7 +704,7 @@ private static final long serialVersionUID = 0L;
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunStatusOrBuilder getInstantRunStatusOrBuilder() {
@@ -3693,7 +3693,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      * @return Whether the instantRunStatus field is set.
      */
     public boolean hasInstantRunStatus() {
@@ -3704,7 +3704,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      * @return The instantRunStatus.
      */
     public com.google.wireless.android.sdk.stats.InstantRunStatus getInstantRunStatus() {
@@ -3719,7 +3719,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public Builder setInstantRunStatus(com.google.wireless.android.sdk.stats.InstantRunStatus value) {
       if (instantRunStatusBuilder_ == null) {
@@ -3739,7 +3739,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public Builder setInstantRunStatus(
         com.google.wireless.android.sdk.stats.InstantRunStatus.Builder builderForValue) {
@@ -3757,7 +3757,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public Builder mergeInstantRunStatus(com.google.wireless.android.sdk.stats.InstantRunStatus value) {
       if (instantRunStatusBuilder_ == null) {
@@ -3781,7 +3781,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public Builder clearInstantRunStatus() {
       if (instantRunStatusBuilder_ == null) {
@@ -3798,7 +3798,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.InstantRunStatus.Builder getInstantRunStatusBuilder() {
       bitField0_ |= 0x00001000;
@@ -3810,7 +3810,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.InstantRunStatusOrBuilder getInstantRunStatusOrBuilder() {
       if (instantRunStatusBuilder_ != null) {
@@ -3825,7 +3825,7 @@ private static final long serialVersionUID = 0L;
      * For instant run builds: the resulting instant run build info.
      * </pre>
      *
-     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+     * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.InstantRunStatus, com.google.wireless.android.sdk.stats.InstantRunStatus.Builder, com.google.wireless.android.sdk.stats.InstantRunStatusOrBuilder> 

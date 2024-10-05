@@ -42,9 +42,9 @@ import com.android.sdklib.AndroidTargetHash.SYSTEM_IMAGE_PREFIX
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.BuildToolInfo
 import com.android.sdklib.OptionalLibrary
-import org.gradle.api.DefaultTask
 import org.gradle.api.NonExtensible
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
@@ -443,10 +443,7 @@ fun getSdkDir(projectRootDir: File, issueReporter: IssueReporter, providers: Pro
 
 /** This can be used by tasks requiring android.jar as input with [org.gradle.api.tasks.Nested]. */
 @NonExtensible
-abstract class AndroidJarInput {
-
-    @get:Internal
-    abstract val sdkBuildService: Property<SdkComponentsBuildService>
+abstract class AndroidJarInput : UsesSdkComponentsBuildService {
 
     // both compile version and build tools revision are irrelevant as @Input because the path
     // the android.jar file will change when any of these two values changes.
@@ -457,10 +454,9 @@ abstract class AndroidJarInput {
     abstract val buildToolsRevision: Property<Revision>
 
     private fun sdkLoader(): Provider<SdkComponentsBuildService.VersionedSdkLoader> =
-        sdkBuildService.map {
+        sdkComponentsBuildService.map {
             it.sdkLoader(compileSdkVersion, buildToolsRevision)
         }
-
 
     @PathSensitive(PathSensitivity.NONE)
     @InputFile
@@ -468,16 +464,14 @@ abstract class AndroidJarInput {
 
 }
 
-fun AndroidJarInput.initialize(creationConfig: ComponentCreationConfig) {
-    sdkBuildService.setDisallowChanges(
-        getBuildService(creationConfig.services.buildServiceRegistry))
+fun AndroidJarInput.initialize(task: Task, creationConfig: ComponentCreationConfig) {
+    initializeSdkComponentsBuildService(task)
     this.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
     this.buildToolsRevision.setDisallowChanges(creationConfig.global.buildToolsRevision)
 }
 
-fun AndroidJarInput.initialize(creationConfig: PrivacySandboxSdkVariantScope, task: DefaultTask) {
-    sdkBuildService.setDisallowChanges(
-            getBuildService(task.project.gradle.sharedServices))
+fun AndroidJarInput.initialize(task: Task, creationConfig: PrivacySandboxSdkVariantScope) {
+    initializeSdkComponentsBuildService(task)
     this.compileSdkVersion.setDisallowChanges(creationConfig.compileSdkVersion)
     this.buildToolsRevision.setDisallowChanges(
             Revision.parseRevision(creationConfig.extension.buildToolsVersion)
@@ -486,18 +480,15 @@ fun AndroidJarInput.initialize(creationConfig: PrivacySandboxSdkVariantScope, ta
 
 /** This can be used by tasks requiring build-tools executables as input with [org.gradle.api.tasks.Nested]. */
 @NonExtensible
-abstract class BuildToolsExecutableInput {
+abstract class BuildToolsExecutableInput : UsesSdkComponentsBuildService {
     @get:Internal //used to create the SdkLoader but not an dependency input.
     abstract val compileSdkVersion: Property<String>
 
     @get:Input
     abstract val buildToolsRevision: Property<Revision>
 
-    @get:Internal
-    abstract val sdkBuildService: Property<SdkComponentsBuildService>
-
     private fun sdkLoader(): Provider<SdkComponentsBuildService.VersionedSdkLoader> =
-        sdkBuildService.map {
+        sdkComponentsBuildService.map {
             it.sdkLoader(compileSdkVersion, buildToolsRevision)
         }
 
@@ -536,24 +527,26 @@ abstract class BuildToolsExecutableInput {
         }
 }
 
-fun BuildToolsExecutableInput.initialize(creationConfig: ComponentCreationConfig) {
+fun BuildToolsExecutableInput.initialize(task: Task, creationConfig: ComponentCreationConfig) {
     initialize(
+            task,
             creationConfig.services.buildServiceRegistry,
             creationConfig.global.compileSdkHashString,
             creationConfig.global.buildToolsRevision)
 }
 
 fun BuildToolsExecutableInput.initialize(
+        task: Task?, // null iff the caller is a transform
         buildServiceRegistry: BuildServiceRegistry,
         compileSdkHashString: String,
         buildToolsRevision: Revision) {
 
-    sdkBuildService.setDisallowChanges(
-            getBuildService(buildServiceRegistry)
-    )
-    this.compileSdkVersion.setDisallowChanges(
-            compileSdkHashString
-    )
+    if (task != null) {
+        initializeSdkComponentsBuildService(task)
+    } else {
+        sdkComponentsBuildService.setDisallowChanges(getBuildService(buildServiceRegistry))
+    }
+    this.compileSdkVersion.setDisallowChanges(compileSdkHashString)
     this.buildToolsRevision.setDisallowChanges(buildToolsRevision)
 }
 

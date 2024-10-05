@@ -23,7 +23,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    * @return Whether the uiFreeze field is set.
    */
   boolean hasUiFreeze();
@@ -32,7 +32,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    * @return The uiFreeze.
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze getUiFreeze();
@@ -41,7 +41,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreezeOrBuilder getUiFreezeOrBuilder();
 
@@ -50,7 +50,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    * @return Whether the exit field is set.
    */
   boolean hasExit();
@@ -59,7 +59,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    * @return The exit.
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit getExit();
@@ -68,7 +68,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.ExitOrBuilder getExitOrBuilder();
 
@@ -77,7 +77,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    * @return Whether the memory field is set.
    */
   boolean hasMemory();
@@ -86,7 +86,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    * @return The memory.
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory getMemory();
@@ -95,7 +95,7 @@ public interface SystemHealthEventOrBuilder extends
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.MemoryOrBuilder getMemoryOrBuilder();
 
@@ -104,7 +104,7 @@ public interface SystemHealthEventOrBuilder extends
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    * @return Whether the exception field is set.
    */
   boolean hasException();
@@ -113,7 +113,7 @@ public interface SystemHealthEventOrBuilder extends
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    * @return The exception.
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getException();
@@ -122,7 +122,7 @@ public interface SystemHealthEventOrBuilder extends
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder();
 

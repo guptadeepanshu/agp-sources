@@ -12,7 +12,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    * @return Whether the successRunTimeMs field is set.
    */
   boolean hasSuccessRunTimeMs();
@@ -21,7 +21,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    * @return The successRunTimeMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getSuccessRunTimeMs();
@@ -30,7 +30,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getSuccessRunTimeMsOrBuilder();
 
@@ -40,7 +40,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    * @return Whether the canceledRunTimeMs field is set.
    */
   boolean hasCanceledRunTimeMs();
@@ -50,7 +50,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    * @return The canceledRunTimeMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getCanceledRunTimeMs();
@@ -60,7 +60,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getCanceledRunTimeMsOrBuilder();
 
@@ -69,7 +69,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    * @return Whether the failedRunTimeMs field is set.
    */
   boolean hasFailedRunTimeMs();
@@ -78,7 +78,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    * @return The failedRunTimeMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getFailedRunTimeMs();
@@ -87,7 +87,7 @@ public interface ManifestMergerStatsOrBuilder extends
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getFailedRunTimeMsOrBuilder();
 }

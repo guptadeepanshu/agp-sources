@@ -24,6 +24,8 @@ import com.android.build.gradle.internal.ide.level2.EmptyDependencyGraphs
 import com.android.build.gradle.internal.ide.level2.FullDependencyGraphsImpl
 import com.android.build.gradle.internal.ide.level2.SimpleDependencyGraphsImpl
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
+import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.model.AndroidProject
 import com.android.builder.model.level2.DependencyGraphs
 import com.android.builder.model.level2.Library
@@ -34,10 +36,12 @@ import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Maps
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
+import org.gradle.api.tasks.Internal
 import java.io.File
 
 /** Build service used to cache library dependencies used in the model builder. */
@@ -132,6 +136,22 @@ abstract class LibraryDependencyCacheBuildService
     ) {
         override fun configure(parameters: Parameters) {
             parameters.mavenCoordinatesCache.set(mavenCoordinatesCache)
+        }
+    }
+}
+
+/** Common interface for tasks/task inputs that use [LibraryDependencyCacheBuildService]. */
+interface UsesLibraryDependencyCacheBuildService {
+
+    @get:Internal
+    val libraryDependencyCacheBuildService: Property<LibraryDependencyCacheBuildService>
+
+    fun initializeLibraryDependencyCacheBuildService(task: Task) {
+        getBuildService<LibraryDependencyCacheBuildService, LibraryDependencyCacheBuildService.Parameters>(task.project.gradle.sharedServices).let {
+            libraryDependencyCacheBuildService.setDisallowChanges(it)
+            task.usesService(it)
+            // LibraryDependencyCacheBuildService uses MavenCoordinatesCacheBuildService, so we also need to set the following
+            task.usesService(getBuildService<MavenCoordinatesCacheBuildService, MavenCoordinatesCacheBuildService.Parameters>(task.project.gradle.sharedServices))
         }
     }
 }

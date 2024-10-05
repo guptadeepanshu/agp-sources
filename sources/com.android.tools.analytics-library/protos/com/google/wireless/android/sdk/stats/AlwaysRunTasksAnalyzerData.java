@@ -77,7 +77,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the pluginIdentifier field is set.
      */
@@ -88,7 +88,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The pluginIdentifier.
      */
@@ -99,7 +99,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder();
 
@@ -108,7 +108,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      * @return Whether the taskIdentifier field is set.
      */
     boolean hasTaskIdentifier();
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      * @return The taskIdentifier.
      */
     com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier getTaskIdentifier();
@@ -126,7 +126,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder getTaskIdentifierOrBuilder();
   }
@@ -321,7 +321,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the pluginIdentifier field is set.
      */
@@ -335,7 +335,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The pluginIdentifier.
      */
@@ -349,7 +349,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated, use task_identifier instead
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
@@ -363,7 +363,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      * @return Whether the taskIdentifier field is set.
      */
     @java.lang.Override
@@ -375,7 +375,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      * @return The taskIdentifier.
      */
     @java.lang.Override
@@ -387,7 +387,7 @@ private static final long serialVersionUID = 0L;
      * The always running task identifier
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+     * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder getTaskIdentifierOrBuilder() {
@@ -882,7 +882,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the pluginIdentifier field is set.
        */
@@ -895,7 +895,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The pluginIdentifier.
        */
@@ -912,7 +912,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setPluginIdentifier(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
         if (pluginIdentifierBuilder_ == null) {
@@ -933,7 +933,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setPluginIdentifier(
           com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder builderForValue) {
@@ -952,7 +952,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergePluginIdentifier(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
         if (pluginIdentifierBuilder_ == null) {
@@ -977,7 +977,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearPluginIdentifier() {
         if (pluginIdentifierBuilder_ == null) {
@@ -995,7 +995,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder getPluginIdentifierBuilder() {
         bitField0_ |= 0x00000002;
@@ -1008,7 +1008,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
         if (pluginIdentifierBuilder_ != null) {
@@ -1024,7 +1024,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated, use task_identifier instead
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder> 
@@ -1048,7 +1048,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        * @return Whether the taskIdentifier field is set.
        */
       public boolean hasTaskIdentifier() {
@@ -1059,7 +1059,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        * @return The taskIdentifier.
        */
       public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier getTaskIdentifier() {
@@ -1074,7 +1074,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public Builder setTaskIdentifier(com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier value) {
         if (taskIdentifierBuilder_ == null) {
@@ -1094,7 +1094,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public Builder setTaskIdentifier(
           com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.Builder builderForValue) {
@@ -1112,7 +1112,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public Builder mergeTaskIdentifier(com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier value) {
         if (taskIdentifierBuilder_ == null) {
@@ -1136,7 +1136,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public Builder clearTaskIdentifier() {
         if (taskIdentifierBuilder_ == null) {
@@ -1153,7 +1153,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.Builder getTaskIdentifierBuilder() {
         bitField0_ |= 0x00000004;
@@ -1165,7 +1165,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder getTaskIdentifierOrBuilder() {
         if (taskIdentifierBuilder_ != null) {
@@ -1180,7 +1180,7 @@ private static final long serialVersionUID = 0L;
        * The always running task identifier
        * </pre>
        *
-       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
+       * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier, com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.Builder, com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder> 

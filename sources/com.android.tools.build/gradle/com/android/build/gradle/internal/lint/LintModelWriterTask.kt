@@ -144,6 +144,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
         this.variantInputs
             .initializeForStandalone(
                 project,
+                this,
                 javaExtension,
                 kotlinExtensionWrapper,
                 taskCreationServices.projectOptions,
@@ -200,6 +201,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
             val warnIfProjectTreatedAsExternalDependency =
                 isForLocalReportTask && creationConfig.global.lintOptions.checkDependencies
             task.variantInputs.initialize(
+                task,
                 variant,
                 useModuleDependencyLintModels = useModuleDependencyLintModels,
                 warnIfProjectTreatedAsExternalDependency,
@@ -279,6 +281,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
             val warnIfProjectTreatedAsExternalDependency =
                 isMainModelForLocalReportTask && creationConfig.global.lintOptions.checkDependencies
             task.variantInputs.initialize(
+                task,
                 mainVariant,
                 creationConfig as? HostTestCreationConfig,
                 creationConfig as? DeviceTestCreationConfig,

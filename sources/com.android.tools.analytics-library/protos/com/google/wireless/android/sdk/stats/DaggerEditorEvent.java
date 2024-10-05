@@ -1337,7 +1337,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    * @return Whether the navigationMetadata field is set.
    */
   @java.lang.Override
@@ -1349,7 +1349,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    * @return The navigationMetadata.
    */
   @java.lang.Override
@@ -1361,7 +1361,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadataOrBuilder getNavigationMetadataOrBuilder() {
@@ -2001,7 +2001,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      * @return Whether the navigationMetadata field is set.
      */
     public boolean hasNavigationMetadata() {
@@ -2012,7 +2012,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      * @return The navigationMetadata.
      */
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata getNavigationMetadata() {
@@ -2027,7 +2027,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public Builder setNavigationMetadata(com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata value) {
       if (navigationMetadataBuilder_ == null) {
@@ -2047,7 +2047,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public Builder setNavigationMetadata(
         com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.Builder builderForValue) {
@@ -2065,7 +2065,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public Builder mergeNavigationMetadata(com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata value) {
       if (navigationMetadataBuilder_ == null) {
@@ -2089,7 +2089,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public Builder clearNavigationMetadata() {
       if (navigationMetadataBuilder_ == null) {
@@ -2106,7 +2106,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.Builder getNavigationMetadataBuilder() {
       bitField0_ |= 0x00000002;
@@ -2118,7 +2118,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadataOrBuilder getNavigationMetadataOrBuilder() {
       if (navigationMetadataBuilder_ != null) {
@@ -2133,7 +2133,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |NAVIGATED|
      * </pre>
      *
-     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+     * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata, com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.Builder, com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadataOrBuilder> 

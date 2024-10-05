@@ -35,6 +35,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
+import com.android.build.gradle.internal.tasks.UsesAnalytics;
 import com.android.build.gradle.internal.tasks.VariantTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
@@ -86,7 +87,7 @@ import java.util.concurrent.Callable;
 // TODO(b/330843002): This class should be renamed after the bug is fixed.
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
-public abstract class AndroidUnitTest extends Test implements VariantTask {
+public abstract class AndroidUnitTest extends Test implements VariantTask, UsesAnalytics {
 
     private String variantName;
 
@@ -217,6 +218,7 @@ public abstract class AndroidUnitTest extends Test implements VariantTask {
         @Override
         public void configure(@NonNull AndroidUnitTest task) {
             super.configure(task);
+            UsesAnalytics.ConfigureAction.INSTANCE.configure(task);
 
             JacocoPluginExtension pluginExtension =
                     task.getProject().getExtensions().findByType(JacocoPluginExtension.class);

@@ -132,7 +132,7 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val hostTests: Map<String, HostTestCreationConfig>
         get() = internalHostTests.toImmutableMap() // immutableMap so java users cannot modify it.
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
         get() = internalDeviceTests
 
     override var testFixtures: TestFixturesImpl? = null
@@ -225,8 +225,8 @@ open class ApplicationVariantImpl @Inject constructor(
         internalHostTests[testTypeName] = testComponent
     }
 
-    override fun addDeviceTest(deviceTest: DeviceTest) {
-        internalDeviceTests.add(deviceTest)
+    override fun addDeviceTest(testTypeName: String, deviceTest: DeviceTest) {
+        internalDeviceTests[testTypeName] = deviceTest
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -237,19 +237,19 @@ open class ApplicationVariantImpl @Inject constructor(
      * use [addTestComponent] to add a [HostTest] to the map.
      */
     private val internalHostTests = mutableMapOf<String, HostTestCreationConfig>()
-    private val internalDeviceTests = mutableListOf<DeviceTest>()
+    private val internalDeviceTests = mutableMapOf<String, DeviceTest>()
 
     override val consumesFeatureJars: Boolean
         get() = optimizationCreationConfig.minifiedEnabled && global.hasDynamicFeatures
 
-    private fun createVersionNameProperty(): Property<String?> =
-        internalServices.newNullablePropertyBackingDeprecatedApi(
+    private fun createVersionNameProperty(): Property<String> =
+        internalServices.newPropertyBackingDeprecatedApi(
             String::class.java,
             dslInfo.versionName,
         )
 
-    private fun createVersionCodeProperty() : Property<Int?> =
-        internalServices.newNullablePropertyBackingDeprecatedApi(
+    private fun createVersionCodeProperty() : Property<Int> =
+        internalServices.newPropertyBackingDeprecatedApi(
             Int::class.java,
             dslInfo.versionCode,
         )

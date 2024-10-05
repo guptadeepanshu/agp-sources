@@ -270,6 +270,14 @@ private static final long serialVersionUID = 0L;
     PROJECT_CLOSING(3),
     /**
      * <pre>
+     * Quota exhausted for the cloud project
+     * </pre>
+     *
+     * <code>RESOURCE_EXHAUSTED = 4;</code>
+     */
+    RESOURCE_EXHAUSTED(4),
+    /**
+     * <pre>
      * Disconnect Reasons
      * Device failed to connect to ADB
      * </pre>
@@ -350,6 +358,14 @@ private static final long serialVersionUID = 0L;
     public static final int PROJECT_CLOSING_VALUE = 3;
     /**
      * <pre>
+     * Quota exhausted for the cloud project
+     * </pre>
+     *
+     * <code>RESOURCE_EXHAUSTED = 4;</code>
+     */
+    public static final int RESOURCE_EXHAUSTED_VALUE = 4;
+    /**
+     * <pre>
      * Disconnect Reasons
      * Device failed to connect to ADB
      * </pre>
@@ -424,6 +440,7 @@ private static final long serialVersionUID = 0L;
         case 1: return USER_LOGGED_OUT;
         case 2: return SCOPE_CANCELLED;
         case 3: return PROJECT_CLOSING;
+        case 4: return RESOURCE_EXHAUSTED;
         case 11: return CONNECTION_FAILED;
         case 12: return ADB_DISCONNECTED;
         case 13: return LATENCY_DISCONNECT;
@@ -5005,7 +5022,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      * @return Whether the connectionMetrics field is set.
      */
     boolean hasConnectionMetrics();
@@ -5014,7 +5031,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      * @return The connectionMetrics.
      */
     com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics getConnectionMetrics();
@@ -5023,7 +5040,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetricsOrBuilder getConnectionMetricsOrBuilder();
   }
@@ -5359,7 +5376,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      * @return Whether the connectionMetrics field is set.
      */
     @java.lang.Override
@@ -5371,7 +5388,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      * @return The connectionMetrics.
      */
     @java.lang.Override
@@ -5383,7 +5400,7 @@ private static final long serialVersionUID = 0L;
      * Connection metrics measured during the reservation
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetricsOrBuilder getConnectionMetricsOrBuilder() {
@@ -6198,7 +6215,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        * @return Whether the connectionMetrics field is set.
        */
       public boolean hasConnectionMetrics() {
@@ -6209,7 +6226,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        * @return The connectionMetrics.
        */
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics getConnectionMetrics() {
@@ -6224,7 +6241,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public Builder setConnectionMetrics(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics value) {
         if (connectionMetricsBuilder_ == null) {
@@ -6244,7 +6261,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public Builder setConnectionMetrics(
           com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.Builder builderForValue) {
@@ -6262,7 +6279,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public Builder mergeConnectionMetrics(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics value) {
         if (connectionMetricsBuilder_ == null) {
@@ -6286,7 +6303,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public Builder clearConnectionMetrics() {
         if (connectionMetricsBuilder_ == null) {
@@ -6303,7 +6320,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.Builder getConnectionMetricsBuilder() {
         bitField0_ |= 0x00000020;
@@ -6315,7 +6332,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetricsOrBuilder getConnectionMetricsOrBuilder() {
         if (connectionMetricsBuilder_ != null) {
@@ -6330,7 +6347,7 @@ private static final long serialVersionUID = 0L;
        * Connection metrics measured during the reservation
        * </pre>
        *
-       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6;</code>
+       * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetricsOrBuilder> 
@@ -6510,7 +6527,7 @@ private static final long serialVersionUID = 0L;
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    * @return Whether the reserveDeviceDetails field is set.
    */
   @java.lang.Override
@@ -6522,7 +6539,7 @@ private static final long serialVersionUID = 0L;
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    * @return The reserveDeviceDetails.
    */
   @java.lang.Override
@@ -6534,7 +6551,7 @@ private static final long serialVersionUID = 0L;
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetailsOrBuilder getReserveDeviceDetailsOrBuilder() {
@@ -6548,7 +6565,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    * @return Whether the connectDeviceDetails field is set.
    */
   @java.lang.Override
@@ -6560,7 +6577,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    * @return The connectDeviceDetails.
    */
   @java.lang.Override
@@ -6572,7 +6589,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetailsOrBuilder getConnectDeviceDetailsOrBuilder() {
@@ -6586,7 +6603,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    * @return Whether the streamStartedDetails field is set.
    */
   @java.lang.Override
@@ -6598,7 +6615,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    * @return The streamStartedDetails.
    */
   @java.lang.Override
@@ -6610,7 +6627,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetailsOrBuilder getStreamStartedDetailsOrBuilder() {
@@ -6624,7 +6641,7 @@ private static final long serialVersionUID = 0L;
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    * @return Whether the extendReservationDetails field is set.
    */
   @java.lang.Override
@@ -6636,7 +6653,7 @@ private static final long serialVersionUID = 0L;
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    * @return The extendReservationDetails.
    */
   @java.lang.Override
@@ -6648,7 +6665,7 @@ private static final long serialVersionUID = 0L;
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetailsOrBuilder getExtendReservationDetailsOrBuilder() {
@@ -6662,7 +6679,7 @@ private static final long serialVersionUID = 0L;
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    * @return Whether the endReservationDetails field is set.
    */
   @java.lang.Override
@@ -6674,7 +6691,7 @@ private static final long serialVersionUID = 0L;
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    * @return The endReservationDetails.
    */
   @java.lang.Override
@@ -6686,7 +6703,7 @@ private static final long serialVersionUID = 0L;
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetailsOrBuilder getEndReservationDetailsOrBuilder() {
@@ -6727,7 +6744,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    * @return Whether the disconnectDeviceDetails field is set.
    */
   @java.lang.Override
@@ -6739,7 +6756,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    * @return The disconnectDeviceDetails.
    */
   @java.lang.Override
@@ -6751,7 +6768,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder getDisconnectDeviceDetailsOrBuilder() {
@@ -7596,7 +7613,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      * @return Whether the reserveDeviceDetails field is set.
      */
     public boolean hasReserveDeviceDetails() {
@@ -7607,7 +7624,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      * @return The reserveDeviceDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails getReserveDeviceDetails() {
@@ -7622,7 +7639,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public Builder setReserveDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails value) {
       if (reserveDeviceDetailsBuilder_ == null) {
@@ -7642,7 +7659,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public Builder setReserveDeviceDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.Builder builderForValue) {
@@ -7660,7 +7677,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public Builder mergeReserveDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails value) {
       if (reserveDeviceDetailsBuilder_ == null) {
@@ -7684,7 +7701,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public Builder clearReserveDeviceDetails() {
       if (reserveDeviceDetailsBuilder_ == null) {
@@ -7701,7 +7718,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.Builder getReserveDeviceDetailsBuilder() {
       bitField0_ |= 0x00000004;
@@ -7713,7 +7730,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetailsOrBuilder getReserveDeviceDetailsOrBuilder() {
       if (reserveDeviceDetailsBuilder_ != null) {
@@ -7728,7 +7745,7 @@ private static final long serialVersionUID = 0L;
      * set when type = RESERVE_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetailsOrBuilder> 
@@ -7752,7 +7769,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      * @return Whether the connectDeviceDetails field is set.
      */
     public boolean hasConnectDeviceDetails() {
@@ -7763,7 +7780,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      * @return The connectDeviceDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails getConnectDeviceDetails() {
@@ -7778,7 +7795,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public Builder setConnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails value) {
       if (connectDeviceDetailsBuilder_ == null) {
@@ -7798,7 +7815,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public Builder setConnectDeviceDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.Builder builderForValue) {
@@ -7816,7 +7833,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public Builder mergeConnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails value) {
       if (connectDeviceDetailsBuilder_ == null) {
@@ -7840,7 +7857,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public Builder clearConnectDeviceDetails() {
       if (connectDeviceDetailsBuilder_ == null) {
@@ -7857,7 +7874,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.Builder getConnectDeviceDetailsBuilder() {
       bitField0_ |= 0x00000008;
@@ -7869,7 +7886,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetailsOrBuilder getConnectDeviceDetailsOrBuilder() {
       if (connectDeviceDetailsBuilder_ != null) {
@@ -7884,7 +7901,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetailsOrBuilder> 
@@ -7908,7 +7925,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      * @return Whether the streamStartedDetails field is set.
      */
     public boolean hasStreamStartedDetails() {
@@ -7919,7 +7936,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      * @return The streamStartedDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails getStreamStartedDetails() {
@@ -7934,7 +7951,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public Builder setStreamStartedDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails value) {
       if (streamStartedDetailsBuilder_ == null) {
@@ -7954,7 +7971,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public Builder setStreamStartedDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.Builder builderForValue) {
@@ -7972,7 +7989,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public Builder mergeStreamStartedDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails value) {
       if (streamStartedDetailsBuilder_ == null) {
@@ -7996,7 +8013,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public Builder clearStreamStartedDetails() {
       if (streamStartedDetailsBuilder_ == null) {
@@ -8013,7 +8030,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.Builder getStreamStartedDetailsBuilder() {
       bitField0_ |= 0x00000010;
@@ -8025,7 +8042,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetailsOrBuilder getStreamStartedDetailsOrBuilder() {
       if (streamStartedDetailsBuilder_ != null) {
@@ -8040,7 +8057,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STREAM_STARTED
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetailsOrBuilder> 
@@ -8064,7 +8081,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      * @return Whether the extendReservationDetails field is set.
      */
     public boolean hasExtendReservationDetails() {
@@ -8075,7 +8092,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      * @return The extendReservationDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails getExtendReservationDetails() {
@@ -8090,7 +8107,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public Builder setExtendReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails value) {
       if (extendReservationDetailsBuilder_ == null) {
@@ -8110,7 +8127,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public Builder setExtendReservationDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.Builder builderForValue) {
@@ -8128,7 +8145,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public Builder mergeExtendReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails value) {
       if (extendReservationDetailsBuilder_ == null) {
@@ -8152,7 +8169,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public Builder clearExtendReservationDetails() {
       if (extendReservationDetailsBuilder_ == null) {
@@ -8169,7 +8186,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.Builder getExtendReservationDetailsBuilder() {
       bitField0_ |= 0x00000020;
@@ -8181,7 +8198,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetailsOrBuilder getExtendReservationDetailsOrBuilder() {
       if (extendReservationDetailsBuilder_ != null) {
@@ -8196,7 +8213,7 @@ private static final long serialVersionUID = 0L;
      * set when type = EXTEND_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetailsOrBuilder> 
@@ -8220,7 +8237,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      * @return Whether the endReservationDetails field is set.
      */
     public boolean hasEndReservationDetails() {
@@ -8231,7 +8248,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      * @return The endReservationDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails getEndReservationDetails() {
@@ -8246,7 +8263,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public Builder setEndReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails value) {
       if (endReservationDetailsBuilder_ == null) {
@@ -8266,7 +8283,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public Builder setEndReservationDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.Builder builderForValue) {
@@ -8284,7 +8301,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public Builder mergeEndReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails value) {
       if (endReservationDetailsBuilder_ == null) {
@@ -8308,7 +8325,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public Builder clearEndReservationDetails() {
       if (endReservationDetailsBuilder_ == null) {
@@ -8325,7 +8342,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.Builder getEndReservationDetailsBuilder() {
       bitField0_ |= 0x00000040;
@@ -8337,7 +8354,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetailsOrBuilder getEndReservationDetailsOrBuilder() {
       if (endReservationDetailsBuilder_ != null) {
@@ -8352,7 +8369,7 @@ private static final long serialVersionUID = 0L;
      * set when type = END_RESERVATION
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetailsOrBuilder> 
@@ -8435,7 +8452,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      * @return Whether the disconnectDeviceDetails field is set.
      */
     public boolean hasDisconnectDeviceDetails() {
@@ -8446,7 +8463,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      * @return The disconnectDeviceDetails.
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails getDisconnectDeviceDetails() {
@@ -8461,7 +8478,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public Builder setDisconnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails value) {
       if (disconnectDeviceDetailsBuilder_ == null) {
@@ -8481,7 +8498,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public Builder setDisconnectDeviceDetails(
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.Builder builderForValue) {
@@ -8499,7 +8516,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public Builder mergeDisconnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails value) {
       if (disconnectDeviceDetailsBuilder_ == null) {
@@ -8523,7 +8540,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public Builder clearDisconnectDeviceDetails() {
       if (disconnectDeviceDetailsBuilder_ == null) {
@@ -8540,7 +8557,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.Builder getDisconnectDeviceDetailsBuilder() {
       bitField0_ |= 0x00000100;
@@ -8552,7 +8569,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder getDisconnectDeviceDetailsOrBuilder() {
       if (disconnectDeviceDetailsBuilder_ != null) {
@@ -8567,7 +8584,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = DISCONNECT_DEVICE
      * </pre>
      *
-     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+     * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.Builder, com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder> 

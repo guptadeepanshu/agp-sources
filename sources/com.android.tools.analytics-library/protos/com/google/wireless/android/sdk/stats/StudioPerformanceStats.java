@@ -87,7 +87,7 @@ private static final long serialVersionUID = 0L;
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    * @return Whether the eventServiceTimeMs field is set.
    */
   @java.lang.Override
@@ -103,7 +103,7 @@ private static final long serialVersionUID = 0L;
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    * @return The eventServiceTimeMs.
    */
   @java.lang.Override
@@ -119,7 +119,7 @@ private static final long serialVersionUID = 0L;
    * approximately 100 events took between 10 and 20 milliseconds to process.
    * </pre>
    *
-   * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getEventServiceTimeMsOrBuilder() {
@@ -168,7 +168,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    * @return Whether the writeLockWaitTimeMs field is set.
    */
   @java.lang.Override
@@ -180,7 +180,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    * @return The writeLockWaitTimeMs.
    */
   @java.lang.Override
@@ -192,7 +192,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of wait times for the global write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+   * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getWriteLockWaitTimeMsOrBuilder() {
@@ -848,7 +848,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      * @return Whether the eventServiceTimeMs field is set.
      */
     public boolean hasEventServiceTimeMs() {
@@ -863,7 +863,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      * @return The eventServiceTimeMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getEventServiceTimeMs() {
@@ -882,7 +882,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public Builder setEventServiceTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (eventServiceTimeMsBuilder_ == null) {
@@ -906,7 +906,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public Builder setEventServiceTimeMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -928,7 +928,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public Builder mergeEventServiceTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (eventServiceTimeMsBuilder_ == null) {
@@ -956,7 +956,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public Builder clearEventServiceTimeMs() {
       if (eventServiceTimeMsBuilder_ == null) {
@@ -977,7 +977,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getEventServiceTimeMsBuilder() {
       bitField0_ |= 0x00000002;
@@ -993,7 +993,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getEventServiceTimeMsOrBuilder() {
       if (eventServiceTimeMsBuilder_ != null) {
@@ -1012,7 +1012,7 @@ private static final long serialVersionUID = 0L;
      * approximately 100 events took between 10 and 20 milliseconds to process.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -1107,7 +1107,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      * @return Whether the writeLockWaitTimeMs field is set.
      */
     public boolean hasWriteLockWaitTimeMs() {
@@ -1118,7 +1118,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      * @return The writeLockWaitTimeMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getWriteLockWaitTimeMs() {
@@ -1133,7 +1133,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public Builder setWriteLockWaitTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (writeLockWaitTimeMsBuilder_ == null) {
@@ -1153,7 +1153,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public Builder setWriteLockWaitTimeMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -1171,7 +1171,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public Builder mergeWriteLockWaitTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (writeLockWaitTimeMsBuilder_ == null) {
@@ -1195,7 +1195,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public Builder clearWriteLockWaitTimeMs() {
       if (writeLockWaitTimeMsBuilder_ == null) {
@@ -1212,7 +1212,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getWriteLockWaitTimeMsBuilder() {
       bitField0_ |= 0x00000008;
@@ -1224,7 +1224,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getWriteLockWaitTimeMsOrBuilder() {
       if (writeLockWaitTimeMsBuilder_ != null) {
@@ -1239,7 +1239,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of wait times for the global write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
+     * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 

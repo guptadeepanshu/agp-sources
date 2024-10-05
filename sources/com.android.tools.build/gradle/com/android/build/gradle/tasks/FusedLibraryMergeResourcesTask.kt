@@ -17,7 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.getBuildService
@@ -99,7 +99,7 @@ abstract class FusedLibraryMergeResourcesTask : NonIncrementalGlobalTask() {
                 logger = logger)
     }
 
-    class CreationAction(val creationConfig: FusedLibraryVariantScope) :
+    class CreationAction(val creationConfig: FusedLibraryGlobalScope) :
             TaskCreationAction<FusedLibraryMergeResourcesTask>() {
 
         override val name: String
@@ -125,7 +125,7 @@ abstract class FusedLibraryMergeResourcesTask : NonIncrementalGlobalTask() {
 
         override fun configure(task: FusedLibraryMergeResourcesTask) {
 
-            task.projectFilepath.set(creationConfig.layout.projectDirectory.asFile.absolutePath)
+            task.projectFilepath.set(creationConfig.projectLayout.projectDirectory.asFile.absolutePath)
             task.analyticsService.setDisallowChanges(
                     getBuildService(task.project.gradle.sharedServices)
             )

@@ -31,7 +31,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    * @return Whether the currentPage field is set.
    */
   boolean hasCurrentPage();
@@ -40,7 +40,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    * @return The currentPage.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page getCurrentPage();
@@ -49,7 +49,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page was opened when this event happened.
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page current_page = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getCurrentPageOrBuilder();
 
@@ -58,7 +58,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    * @return Whether the targetPage field is set.
    */
   boolean hasTargetPage();
@@ -67,7 +67,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    * @return The targetPage.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.Page getTargetPage();
@@ -76,7 +76,7 @@ public interface BuildAttributionUiEventOrBuilder extends
    * What page will be opened because of this event (if page changes).
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent.Page target_page = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.PageOrBuilder getTargetPageOrBuilder();
 

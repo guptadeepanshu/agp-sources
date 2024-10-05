@@ -16,6 +16,8 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.declarative.dsl.model.annotations.Restricted
+
 /**
  * Shared properties between [ApplicationProductFlavor] and [ApplicationDefaultConfig]
  *
@@ -29,6 +31,7 @@ interface ApplicationBaseFlavor :
      *
      * See [Set the Application ID](https://developer.android.com/studio/build/application-id.html)
      */
+    @get:Restricted
     var applicationId: String?
 
     /**
@@ -36,6 +39,7 @@ interface ApplicationBaseFlavor :
      *
      * See [Versioning Your Application](http://developer.android.com/tools/publishing/versioning.html)
      */
+    @get:Restricted
     var versionCode: Int?
 
     /**
@@ -43,6 +47,7 @@ interface ApplicationBaseFlavor :
      *
      * See [Versioning Your Application](http://developer.android.com/tools/publishing/versioning.html)
      */
+    @get:Restricted
     var versionName: String?
 
     /**
@@ -52,6 +57,7 @@ interface ApplicationBaseFlavor :
      *
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
+    @get:Restricted
     var targetSdk: Int?
 
     @Deprecated("Replaced by targetSdk property")
@@ -64,6 +70,7 @@ interface ApplicationBaseFlavor :
      *
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
+    @get:Restricted
     var targetSdkPreview: String?
 
     @Deprecated("Replaced by targetSdkPreview property")
@@ -78,6 +85,7 @@ interface ApplicationBaseFlavor :
      *
      * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
      */
+    @get:Restricted
     var maxSdk: Int?
 
     @Deprecated("Replaced by maxSdk property")

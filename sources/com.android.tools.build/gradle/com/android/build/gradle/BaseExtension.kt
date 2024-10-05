@@ -15,7 +15,6 @@
  */
 package com.android.build.gradle
 
-import com.android.SdkConstants
 import com.android.annotations.NonNull
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildFeatures
@@ -60,6 +59,7 @@ import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.Incubating
@@ -104,7 +104,8 @@ abstract class BaseExtension protected constructor(
     override val buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     private val sourceSetManager: SourceSetManager,
     private val extraModelInfo: ExtraModelInfo,
-    private val isBaseModule: Boolean
+    private val isBaseModule: Boolean,
+    private val stats: GradleBuildProject.Builder?
 ) : AndroidConfig, Lockable {
 
     private val _dexOptions = dslServices.newInstance(DexOptions::class.java)
@@ -148,6 +149,10 @@ abstract class BaseExtension protected constructor(
     fun disableWrite() {
         isWritable = false
         lock()
+    }
+
+    protected fun recordOldVariantApiUsage() {
+        stats?.oldVariantApiInUse = true
     }
 
     protected fun checkWritability() {

@@ -171,8 +171,10 @@ class ScopedArtifactsImpl(
         private val fileCollectionCreator: () -> ConfigurableFileCollection,
     ): ScopedArtifactsOperation<T> {
 
-        override fun toAppend(to: ScopedArtifact, with: (T) -> Property<out FileSystemLocation>) {
-            // register the new content to the current artifact collection
+        override fun <ArtifactT> toAppend(
+            to: ArtifactT,
+            with: (T) -> Property<out FileSystemLocation>
+        ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Appendable {
             scopedArtifacts.getScopedArtifactsContainer(to).currentScopedContent
                 .from(taskProvider.flatMap(with))
             // and sets the output path.
@@ -199,12 +201,12 @@ class ScopedArtifactsImpl(
             }
         }
 
-        override fun toTransform(
-            type: ScopedArtifact,
+        override fun <ArtifactT> toTransform(
+            type: ArtifactT,
             inputJars: (T) -> ListProperty<RegularFile>,
             inputDirectories: (T) -> ListProperty<Directory>,
             into: (T) -> RegularFileProperty
-        ) {
+        ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Transformable {
             val artifactContainer = scopedArtifacts.getScopedArtifactsContainer(type)
             val currentScopedContent = artifactContainer.currentScopedContent
             // set the [Task] input and output fields.
@@ -286,7 +288,10 @@ class ScopedArtifactsImpl(
                 .initialScopedContent.from(newContent)
         }
 
-        override fun toReplace(type: ScopedArtifact, into: (T) -> RegularFileProperty) {
+        override fun <ArtifactT> toReplace(
+            type: ArtifactT,
+            into: (T) -> RegularFileProperty
+        ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Replaceable {
             taskProvider.configure { task ->
                 setContentPath(type, into(task), taskProvider.name)
             }

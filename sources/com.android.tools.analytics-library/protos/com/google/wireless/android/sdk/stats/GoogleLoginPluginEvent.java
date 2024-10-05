@@ -1020,7 +1020,7 @@ private static final long serialVersionUID = 0L;
   public static final int FEATURES_FIELD_NUMBER = 2;
   private com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures features_;
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    * @return Whether the features field is set.
    */
   @java.lang.Override
@@ -1028,7 +1028,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    * @return The features.
    */
   @java.lang.Override
@@ -1036,7 +1036,7 @@ private static final long serialVersionUID = 0L;
     return features_ == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.getDefaultInstance() : features_;
   }
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeaturesOrBuilder getFeaturesOrBuilder() {
@@ -1524,14 +1524,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures, com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.Builder, com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeaturesOrBuilder> featuresBuilder_;
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      * @return Whether the features field is set.
      */
     public boolean hasFeatures() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      * @return The features.
      */
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures getFeatures() {
@@ -1542,7 +1542,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public Builder setFeatures(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures value) {
       if (featuresBuilder_ == null) {
@@ -1558,7 +1558,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public Builder setFeatures(
         com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.Builder builderForValue) {
@@ -1572,7 +1572,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public Builder mergeFeatures(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures value) {
       if (featuresBuilder_ == null) {
@@ -1592,7 +1592,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public Builder clearFeatures() {
       if (featuresBuilder_ == null) {
@@ -1605,7 +1605,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.Builder getFeaturesBuilder() {
       bitField0_ |= 0x00000002;
@@ -1613,7 +1613,7 @@ private static final long serialVersionUID = 0L;
       return getFeaturesFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeaturesOrBuilder getFeaturesOrBuilder() {
       if (featuresBuilder_ != null) {
@@ -1624,7 +1624,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+     * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures, com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.Builder, com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeaturesOrBuilder> 

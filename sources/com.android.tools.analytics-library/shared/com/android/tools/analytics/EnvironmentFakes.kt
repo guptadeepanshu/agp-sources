@@ -24,44 +24,42 @@ import com.google.common.annotations.VisibleForTesting
  */
 @VisibleForTesting
 object EnvironmentFakes {
-  /**
-   * Helper to fake the ANDROID_PREFS_ROOT environment variable to be set to `path`.
-   */
+  /** Helper to fake the ANDROID_PREFS_ROOT environment variable to be set to `path`. */
   fun setCustomAndroidPrefsRootEnvironment(path: String) {
     setSingleProperty("ANDROID_PREFS_ROOT", path)
   }
 
   fun setMap(map: Map<String, String>) {
-    Environment.instance = object : Environment() {
-      override fun getVariable(name: EnvironmentVariable): String? {
-        return map[name.key]
+    Environment.instance =
+      object : Environment() {
+        override fun getVariable(name: EnvironmentVariable): String? {
+          return map[name.key]
+        }
       }
-    }
   }
 
   fun setSingleProperty(key: String, value: String) {
-    Environment.instance = object : Environment() {
-      override fun getVariable(name: EnvironmentVariable): String? {
-        return if (key == name.key) {
-          value
+    Environment.instance =
+      object : Environment() {
+        override fun getVariable(name: EnvironmentVariable): String? {
+          return if (key == name.key) {
+            value
+          } else null
         }
-        else null
       }
-    }
   }
 
-  /** Helper to fake the ANDROID_PREFS_ROOT environment variable to be unset.  */
+  /** Helper to fake the ANDROID_PREFS_ROOT environment variable to be unset. */
   fun setNoEnvironmentVariable() {
-    Environment.instance = object : Environment() {
-      override fun getVariable(name: EnvironmentVariable): String? {
-        return null
+    Environment.instance =
+      object : Environment() {
+        override fun getVariable(name: EnvironmentVariable): String? {
+          return null
+        }
       }
-    }
   }
 
-  /**
-   * Helper to undo faking the environment variable reading.
-   */
+  /** Helper to undo faking the environment variable reading. */
   fun setSystemEnvironment() {
     Environment.instance = Environment.SYSTEM
   }

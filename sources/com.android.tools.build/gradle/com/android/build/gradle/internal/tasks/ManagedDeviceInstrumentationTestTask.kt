@@ -42,6 +42,7 @@ import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig
 import com.android.build.gradle.internal.testing.utp.ManagedDeviceTestRunner
 import com.android.build.gradle.internal.testing.utp.RetentionConfig
 import com.android.build.gradle.internal.testing.utp.UtpDependencies
+import com.android.build.gradle.internal.testing.utp.UtpRunProfileManager
 import com.android.build.gradle.internal.testing.utp.createEmulatorControlConfig
 import com.android.build.gradle.internal.testing.utp.createRetentionConfig
 import com.android.build.gradle.internal.testing.utp.maybeCreateUtpConfigurations
@@ -154,7 +155,9 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
         abstract val getKeepInstalledApks: Property<Boolean>
 
         fun createTestRunner(
-            workerExecutor: WorkerExecutor, numShards: Int?): ManagedDeviceTestRunner {
+            workerExecutor: WorkerExecutor,
+            numShards: Int?,
+            utpRunProfileManager: UtpRunProfileManager): ManagedDeviceTestRunner {
 
             val useOrchestrator = when(executionEnum.get()) {
                 TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR,
@@ -180,6 +183,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 utpLoggingLevel.get(),
                 getTargetIsSplitApk.getOrElse(false),
                 !getKeepInstalledApks.get(),
+                utpRunProfileManager
             )
         }
     }
@@ -280,16 +284,19 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             null
         }
 
+        val utpRunProfileManager = UtpRunProfileManager()
+
         val success = if (!testsFound()) {
             logger.info("No tests found, nothing to do.")
             true
         } else {
-            try {
-                val runner = testRunnerFactory.createTestRunner(
-                    workerExecutor,
-                    testRunnerFactory.testShardsSize.getOrNull()
-                )
+            val runner = testRunnerFactory.createTestRunner(
+                workerExecutor,
+                testRunnerFactory.testShardsSize.getOrNull(),
+                utpRunProfileManager
+            )
 
+            try {
                 runner.runTests(
                     device,
                     path,
@@ -309,7 +316,8 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                         dependencies,
                         testRunnerFactory.executionEnum.get(),
                         false,
-                        analyticsService.get())
+                        analyticsService.get(),
+                        utpRunProfileManager)
                 throw e
             }
         }
@@ -325,7 +333,8 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 testRunnerFactory.executionEnum.get(),
                 false,
                 results.testCount,
-                analyticsService.get())
+                analyticsService.get(),
+                utpRunProfileManager)
 
         if (!success) {
             val reportUrl = ConsoleRenderer().asClickableFileUrl(

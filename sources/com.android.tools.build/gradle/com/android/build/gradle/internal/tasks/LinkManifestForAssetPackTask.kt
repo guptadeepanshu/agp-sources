@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.res.Aapt2ProcessResourcesRunnable
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.registerAaptService
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -121,11 +120,9 @@ abstract class LinkManifestForAssetPackTask : NonIncrementalTask() {
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.ASSET_PACK_MANIFESTS, task.manifestsDirectory
             )
-            projectServices.initializeAapt2Input(task.aapt2)
+            projectServices.initializeAapt2Input(task.aapt2, task)
 
-            task.androidJarInput.sdkBuildService.setDisallowChanges(
-                getBuildService(projectServices.buildServiceRegistry)
-            )
+            task.androidJarInput.initializeSdkComponentsBuildService(task)
             task.androidJarInput.buildToolsRevision.setDisallowChanges(
                 ToolsRevisionUtils.DEFAULT_BUILD_TOOLS_REVISION
             )
@@ -160,8 +157,8 @@ abstract class LinkManifestForAssetPackTask : NonIncrementalTask() {
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.ASSET_PACK_MANIFESTS, task.manifestsDirectory)
 
-            creationConfig.services.initializeAapt2Input(task.aapt2)
-            task.androidJarInput.initialize(creationConfig)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
+            task.androidJarInput.initialize(task, creationConfig)
         }
     }
 }

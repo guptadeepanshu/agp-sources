@@ -21,14 +21,14 @@ import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.processing.ScopedException
 import android.databinding.tool.store.LayoutInfoInput
 import android.databinding.tool.util.L
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -53,14 +53,12 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.ChangeType
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import java.io.File
 import java.io.Serializable
-import java.util.ArrayList
 import javax.inject.Inject
 import javax.tools.Diagnostic
 
@@ -77,7 +75,7 @@ import javax.tools.Diagnostic
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.DATA_BINDING, secondaryTaskCategories = [TaskCategory.SOURCE_GENERATION])
-abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
+abstract class DataBindingGenBaseClassesTask : NewIncrementalTask() {
     // where xml info files are
     @get:InputFiles
     @get:Incremental
@@ -139,23 +137,19 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
     @get:Input
     var enableRPackageLookup: Boolean = false
         private set
-    @TaskAction
-    fun writeBaseClasses(inputChanges: InputChanges) {
-        // TODO extend NewIncrementalTask when moved to new API so that we can remove the manual call to recordTaskAction
 
-        recordTaskAction(analyticsService.get()) {
-            // TODO figure out why worker execution makes the task flake.
-            // Some files cannot be accessed even though they show up when directory listing is
-            // invoked.
-            // b/69652332
-            val args = buildInputArgs(inputChanges)
-            CodeGenerator(
-                args,
-                sourceOutFolder.get().asFile,
-                Logger.getLogger(DataBindingGenBaseClassesTask::class.java),
-                encodeErrors,
-                getRPackageProvider()).run()
-        }
+    override fun doTaskAction(inputChanges: InputChanges) {
+        // TODO figure out why worker execution makes the task flake.
+        // Some files cannot be accessed even though they show up when directory listing is
+        // invoked.
+        // b/69652332
+        val args = buildInputArgs(inputChanges)
+        CodeGenerator(
+            args,
+            sourceOutFolder.get().asFile,
+            Logger.getLogger(DataBindingGenBaseClassesTask::class.java),
+            encodeErrors,
+            getRPackageProvider()).run()
     }
 
     private fun collectResources(): List<SymbolTable> {

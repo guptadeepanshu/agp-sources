@@ -43,7 +43,6 @@ import com.android.tools.r8.R8Command
 import com.android.tools.r8.StringConsumer
 import com.android.tools.r8.TextInputStream
 import com.android.tools.r8.TextOutputStream
-import com.android.tools.r8.Version
 import com.android.tools.r8.origin.Origin
 import com.android.tools.r8.origin.PathOrigin
 import com.android.tools.r8.profile.art.ArtProfileBuilder
@@ -67,6 +66,7 @@ import java.util.logging.Logger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.io.path.exists
+import kotlin.io.path.writeText
 
 fun isProguardRule(name: String): Boolean {
     val lowerCaseName = name.toLowerCase(Locale.US)
@@ -104,6 +104,7 @@ fun runR8(
     inputArtProfile: Path? = null,
     outputArtProfile: Path? = null,
     inputProfileForDexStartupOptimization: Path? = null,
+    r8Metadata: Path? = null,
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -127,6 +128,12 @@ fun runR8(
 
     if (!useFullR8) {
         r8CommandBuilder.setProguardCompatibility(true);
+    }
+
+    if (r8Metadata != null) {
+        r8CommandBuilder.setBuildMetadataConsumer { metadata ->
+            r8Metadata.writeText(metadata.toJson())
+        }
     }
 
     if (toolConfig.r8OutputType == R8OutputType.DEX) {

@@ -17,7 +17,9 @@
 package com.android.builder.dexing;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.collect.Lists;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -26,8 +28,7 @@ import java.util.List;
 /** Helper methods for the {@link DexArchive}. */
 public final class DexArchives {
 
-    private DexArchives() {
-    }
+    private DexArchives() {}
 
     /**
      * Creates a {@link com.android.builder.dexing.DexArchive} from the specified path. It supports

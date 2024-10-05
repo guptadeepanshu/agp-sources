@@ -50,7 +50,7 @@ public interface SplittingTabsUsageEventOrBuilder extends
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    * @return Whether the splitType field is set.
    */
   boolean hasSplitType();
@@ -59,7 +59,7 @@ public interface SplittingTabsUsageEventOrBuilder extends
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    * @return The splitType.
    */
   com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType getSplitType();
@@ -68,7 +68,7 @@ public interface SplittingTabsUsageEventOrBuilder extends
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitTypeOrBuilder getSplitTypeOrBuilder();
 }

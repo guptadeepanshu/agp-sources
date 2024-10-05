@@ -96,7 +96,7 @@ internal class ApplicationVariantDslInfoImpl(
         SigningConfigResolver.create(buildTypeObj, mergedFlavor, signingConfigOverride, extension, services)
     }
 
-    override val versionName: Provider<String?> by lazy {
+    override val versionName: Provider<String> by lazy {
         // If the version name from the flavors is null, then we read from the manifest and combine
         // with suffixes, unless it's a test at which point we just return.
         // If the name is not-null, we just combine it with suffixes
@@ -115,7 +115,7 @@ internal class ApplicationVariantDslInfoImpl(
             dataProvider.manifestData.map {
                 it.versionName?.let { versionName ->
                     "$versionName$versionNameSuffix"
-                }
+                } ?: ""
             }
         } else {
             // use value from flavors
@@ -123,7 +123,7 @@ internal class ApplicationVariantDslInfoImpl(
         }
     }
 
-    override val versionCode: Provider<Int?> by lazy {
+    override val versionCode: Provider<Int> by lazy {
         // If the version code from the flavors is null, then we read from the manifest and combine
         // with suffixes, unless it's a test at which point we just return.
         // If the name is not-null, we just combine it with suffixes
@@ -139,7 +139,9 @@ internal class ApplicationVariantDslInfoImpl(
             // rely on manifest value
             // using map will allow us to keep task dependency should the manifest be generated or
             // transformed via a task.
-            dataProvider.manifestData.map { it.versionCode }
+            dataProvider.manifestData.map {
+                it.versionCode ?: -1
+            }
         } else {
             // use value from flavors
             services.provider { versionCodeFromFlavors }

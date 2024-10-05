@@ -2264,7 +2264,7 @@ private static final long serialVersionUID = 0L;
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    * @return Whether the testLibraries field is set.
    */
   @java.lang.Override
@@ -2276,7 +2276,7 @@ private static final long serialVersionUID = 0L;
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    * @return The testLibraries.
    */
   @java.lang.Override
@@ -2288,7 +2288,7 @@ private static final long serialVersionUID = 0L;
    * Provides details on commonly used test libraries.
    * </pre>
    *
-   * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+   * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestLibrariesOrBuilder getTestLibrariesOrBuilder() {
@@ -2331,7 +2331,7 @@ private static final long serialVersionUID = 0L;
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    * @return Whether the automaticSnapshotOnFailure field is set.
    */
   @java.lang.Override
@@ -2345,7 +2345,7 @@ private static final long serialVersionUID = 0L;
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    * @return The automaticSnapshotOnFailure.
    */
   @java.lang.Override
@@ -2359,7 +2359,7 @@ private static final long serialVersionUID = 0L;
    * ANDROID_STUDIO_THROUGH_GRADLE.
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder() {
@@ -2373,7 +2373,7 @@ private static final long serialVersionUID = 0L;
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    * @return Whether the previewScreenshotRun field is set.
    */
   @java.lang.Override
@@ -2385,7 +2385,7 @@ private static final long serialVersionUID = 0L;
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    * @return The previewScreenshotRun.
    */
   @java.lang.Override
@@ -2397,7 +2397,7 @@ private static final long serialVersionUID = 0L;
    * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
    * </pre>
    *
-   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+   * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder() {
@@ -3596,7 +3596,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      * @return Whether the testLibraries field is set.
      */
     public boolean hasTestLibraries() {
@@ -3607,7 +3607,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      * @return The testLibraries.
      */
     public com.google.wireless.android.sdk.stats.TestLibraries getTestLibraries() {
@@ -3622,7 +3622,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public Builder setTestLibraries(com.google.wireless.android.sdk.stats.TestLibraries value) {
       if (testLibrariesBuilder_ == null) {
@@ -3642,7 +3642,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public Builder setTestLibraries(
         com.google.wireless.android.sdk.stats.TestLibraries.Builder builderForValue) {
@@ -3660,7 +3660,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public Builder mergeTestLibraries(com.google.wireless.android.sdk.stats.TestLibraries value) {
       if (testLibrariesBuilder_ == null) {
@@ -3684,7 +3684,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public Builder clearTestLibraries() {
       if (testLibrariesBuilder_ == null) {
@@ -3701,7 +3701,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestLibraries.Builder getTestLibrariesBuilder() {
       bitField0_ |= 0x00000040;
@@ -3713,7 +3713,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestLibrariesOrBuilder getTestLibrariesOrBuilder() {
       if (testLibrariesBuilder_ != null) {
@@ -3728,7 +3728,7 @@ private static final long serialVersionUID = 0L;
      * Provides details on commonly used test libraries.
      * </pre>
      *
-     * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
+     * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestLibraries, com.google.wireless.android.sdk.stats.TestLibraries.Builder, com.google.wireless.android.sdk.stats.TestLibrariesOrBuilder> 
@@ -3813,7 +3813,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      * @return Whether the automaticSnapshotOnFailure field is set.
      */
     public boolean hasAutomaticSnapshotOnFailure() {
@@ -3826,7 +3826,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      * @return The automaticSnapshotOnFailure.
      */
     public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure() {
@@ -3843,7 +3843,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public Builder setAutomaticSnapshotOnFailure(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure value) {
       if (automaticSnapshotOnFailureBuilder_ == null) {
@@ -3865,7 +3865,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public Builder setAutomaticSnapshotOnFailure(
         com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder builderForValue) {
@@ -3885,7 +3885,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public Builder mergeAutomaticSnapshotOnFailure(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure value) {
       if (automaticSnapshotOnFailureBuilder_ == null) {
@@ -3911,7 +3911,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public Builder clearAutomaticSnapshotOnFailure() {
       if (automaticSnapshotOnFailureBuilder_ == null) {
@@ -3930,7 +3930,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder getAutomaticSnapshotOnFailureBuilder() {
       bitField0_ |= 0x00000100;
@@ -3944,7 +3944,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder() {
       if (automaticSnapshotOnFailureBuilder_ != null) {
@@ -3961,7 +3961,7 @@ private static final long serialVersionUID = 0L;
      * ANDROID_STUDIO_THROUGH_GRADLE.
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder> 
@@ -3985,7 +3985,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      * @return Whether the previewScreenshotRun field is set.
      */
     public boolean hasPreviewScreenshotRun() {
@@ -3996,7 +3996,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      * @return The previewScreenshotRun.
      */
     public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun getPreviewScreenshotRun() {
@@ -4011,7 +4011,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public Builder setPreviewScreenshotRun(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun value) {
       if (previewScreenshotRunBuilder_ == null) {
@@ -4031,7 +4031,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public Builder setPreviewScreenshotRun(
         com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder builderForValue) {
@@ -4049,7 +4049,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public Builder mergePreviewScreenshotRun(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun value) {
       if (previewScreenshotRunBuilder_ == null) {
@@ -4073,7 +4073,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public Builder clearPreviewScreenshotRun() {
       if (previewScreenshotRunBuilder_ == null) {
@@ -4090,7 +4090,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder getPreviewScreenshotRunBuilder() {
       bitField0_ |= 0x00000200;
@@ -4102,7 +4102,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder getPreviewScreenshotRunOrBuilder() {
       if (previewScreenshotRunBuilder_ != null) {
@@ -4117,7 +4117,7 @@ private static final long serialVersionUID = 0L;
      * Only set when test_kind=PREVIEW_SCREENSHOT_TEST
      * </pre>
      *
-     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10;</code>
+     * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder, com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRunOrBuilder> 

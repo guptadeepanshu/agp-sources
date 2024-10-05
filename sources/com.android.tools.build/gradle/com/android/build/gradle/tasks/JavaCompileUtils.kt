@@ -32,6 +32,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.errors.DefaultIssueReporter
@@ -100,12 +101,14 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
             creationConfig.global.bootClasspath,
             creationConfig.compileClasspath,
             creationConfig.getBuiltInKotlincOutput(),
+            creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR),
         )
     } else {
         this.options.bootstrapClasspath = this.project.files(creationConfig.global.bootClasspath)
         this.classpath = project.files(
             creationConfig.compileClasspath,
-            creationConfig.getBuiltInKotlincOutput()
+            creationConfig.getBuiltInKotlincOutput(),
+            creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR),
         )
     }
 
@@ -130,6 +133,11 @@ fun JavaCompile.configurePropertiesForAnnotationProcessing(
 ) {
     val processorOptions = creationConfig.javaCompilation.annotationProcessor
     val compileOptions = this.options
+    if (creationConfig.useBuiltInKaptSupport) {
+        // When KAPT is enabled, it runs annotation processing. This option disables annotation
+        // processing for javac.
+        compileOptions.compilerArgs.add("-proc:none")
+    }
 
     configureAnnotationProcessorPath(creationConfig)
 

@@ -326,7 +326,7 @@ private static final long serialVersionUID = 0L;
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    * @return Whether the buildAttributionAnalyzersData field is set.
    */
   @java.lang.Override
@@ -338,7 +338,7 @@ private static final long serialVersionUID = 0L;
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    * @return The buildAttributionAnalyzersData.
    */
   @java.lang.Override
@@ -350,7 +350,7 @@ private static final long serialVersionUID = 0L;
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersDataOrBuilder getBuildAttributionAnalyzersDataOrBuilder() {
@@ -364,7 +364,7 @@ private static final long serialVersionUID = 0L;
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    * @return Whether the buildAttributionPerformanceStats field is set.
    */
   @java.lang.Override
@@ -376,7 +376,7 @@ private static final long serialVersionUID = 0L;
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    * @return The buildAttributionPerformanceStats.
    */
   @java.lang.Override
@@ -388,7 +388,7 @@ private static final long serialVersionUID = 0L;
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStatsOrBuilder getBuildAttributionPerformanceStatsOrBuilder() {
@@ -995,7 +995,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      * @return Whether the buildAttributionAnalyzersData field is set.
      */
     public boolean hasBuildAttributionAnalyzersData() {
@@ -1006,7 +1006,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      * @return The buildAttributionAnalyzersData.
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData getBuildAttributionAnalyzersData() {
@@ -1021,7 +1021,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public Builder setBuildAttributionAnalyzersData(com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData value) {
       if (buildAttributionAnalyzersDataBuilder_ == null) {
@@ -1041,7 +1041,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public Builder setBuildAttributionAnalyzersData(
         com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData.Builder builderForValue) {
@@ -1059,7 +1059,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public Builder mergeBuildAttributionAnalyzersData(com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData value) {
       if (buildAttributionAnalyzersDataBuilder_ == null) {
@@ -1083,7 +1083,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public Builder clearBuildAttributionAnalyzersData() {
       if (buildAttributionAnalyzersDataBuilder_ == null) {
@@ -1100,7 +1100,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData.Builder getBuildAttributionAnalyzersDataBuilder() {
       bitField0_ |= 0x00000001;
@@ -1112,7 +1112,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersDataOrBuilder getBuildAttributionAnalyzersDataOrBuilder() {
       if (buildAttributionAnalyzersDataBuilder_ != null) {
@@ -1127,7 +1127,7 @@ private static final long serialVersionUID = 0L;
      * Data from build attribution analyzers
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+     * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData, com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData.Builder, com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersDataOrBuilder> 
@@ -1151,7 +1151,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      * @return Whether the buildAttributionPerformanceStats field is set.
      */
     public boolean hasBuildAttributionPerformanceStats() {
@@ -1162,7 +1162,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      * @return The buildAttributionPerformanceStats.
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats getBuildAttributionPerformanceStats() {
@@ -1177,7 +1177,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public Builder setBuildAttributionPerformanceStats(com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats value) {
       if (buildAttributionPerformanceStatsBuilder_ == null) {
@@ -1197,7 +1197,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public Builder setBuildAttributionPerformanceStats(
         com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats.Builder builderForValue) {
@@ -1215,7 +1215,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public Builder mergeBuildAttributionPerformanceStats(com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats value) {
       if (buildAttributionPerformanceStatsBuilder_ == null) {
@@ -1239,7 +1239,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public Builder clearBuildAttributionPerformanceStats() {
       if (buildAttributionPerformanceStatsBuilder_ == null) {
@@ -1256,7 +1256,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats.Builder getBuildAttributionPerformanceStatsBuilder() {
       bitField0_ |= 0x00000002;
@@ -1268,7 +1268,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStatsOrBuilder getBuildAttributionPerformanceStatsOrBuilder() {
       if (buildAttributionPerformanceStatsBuilder_ != null) {
@@ -1283,7 +1283,7 @@ private static final long serialVersionUID = 0L;
      * Stats about the performance of build attribution
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats, com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats.Builder, com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStatsOrBuilder> 

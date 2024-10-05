@@ -518,7 +518,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      * @return Whether the observableMetrics field is set.
      */
     boolean hasObservableMetrics();
@@ -527,7 +527,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      * @return The observableMetrics.
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics getObservableMetrics();
@@ -536,7 +536,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetricsOrBuilder getObservableMetricsOrBuilder();
 
@@ -545,7 +545,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      * @return Whether the bindingAdapterMetrics field is set.
      */
     boolean hasBindingAdapterMetrics();
@@ -554,7 +554,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      * @return The bindingAdapterMetrics.
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics getBindingAdapterMetrics();
@@ -563,7 +563,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetricsOrBuilder getBindingAdapterMetricsOrBuilder();
 
@@ -572,7 +572,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      * @return Whether the liveDataMetrics field is set.
      */
     boolean hasLiveDataMetrics();
@@ -581,7 +581,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      * @return The liveDataMetrics.
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics getLiveDataMetrics();
@@ -590,7 +590,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetricsOrBuilder getLiveDataMetricsOrBuilder();
   }
@@ -2865,7 +2865,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      * @return Whether the observableMetrics field is set.
      */
     @java.lang.Override
@@ -2877,7 +2877,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      * @return The observableMetrics.
      */
     @java.lang.Override
@@ -2889,7 +2889,7 @@ private static final long serialVersionUID = 0L;
      * Observable type metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetricsOrBuilder getObservableMetricsOrBuilder() {
@@ -2903,7 +2903,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      * @return Whether the bindingAdapterMetrics field is set.
      */
     @java.lang.Override
@@ -2915,7 +2915,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      * @return The bindingAdapterMetrics.
      */
     @java.lang.Override
@@ -2927,7 +2927,7 @@ private static final long serialVersionUID = 0L;
      * Binding adapter metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetricsOrBuilder getBindingAdapterMetricsOrBuilder() {
@@ -2941,7 +2941,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      * @return Whether the liveDataMetrics field is set.
      */
     @java.lang.Override
@@ -2953,7 +2953,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      * @return The liveDataMetrics.
      */
     @java.lang.Override
@@ -2965,7 +2965,7 @@ private static final long serialVersionUID = 0L;
      * Live Data metrics
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetricsOrBuilder getLiveDataMetricsOrBuilder() {
@@ -4094,7 +4094,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        * @return Whether the observableMetrics field is set.
        */
       public boolean hasObservableMetrics() {
@@ -4105,7 +4105,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        * @return The observableMetrics.
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics getObservableMetrics() {
@@ -4120,7 +4120,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public Builder setObservableMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics value) {
         if (observableMetricsBuilder_ == null) {
@@ -4140,7 +4140,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public Builder setObservableMetrics(
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.Builder builderForValue) {
@@ -4158,7 +4158,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public Builder mergeObservableMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics value) {
         if (observableMetricsBuilder_ == null) {
@@ -4182,7 +4182,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public Builder clearObservableMetrics() {
         if (observableMetricsBuilder_ == null) {
@@ -4199,7 +4199,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.Builder getObservableMetricsBuilder() {
         bitField0_ |= 0x00000100;
@@ -4211,7 +4211,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetricsOrBuilder getObservableMetricsOrBuilder() {
         if (observableMetricsBuilder_ != null) {
@@ -4226,7 +4226,7 @@ private static final long serialVersionUID = 0L;
        * Observable type metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.Builder, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetricsOrBuilder> 
@@ -4250,7 +4250,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        * @return Whether the bindingAdapterMetrics field is set.
        */
       public boolean hasBindingAdapterMetrics() {
@@ -4261,7 +4261,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        * @return The bindingAdapterMetrics.
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics getBindingAdapterMetrics() {
@@ -4276,7 +4276,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public Builder setBindingAdapterMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics value) {
         if (bindingAdapterMetricsBuilder_ == null) {
@@ -4296,7 +4296,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public Builder setBindingAdapterMetrics(
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.Builder builderForValue) {
@@ -4314,7 +4314,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public Builder mergeBindingAdapterMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics value) {
         if (bindingAdapterMetricsBuilder_ == null) {
@@ -4338,7 +4338,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public Builder clearBindingAdapterMetrics() {
         if (bindingAdapterMetricsBuilder_ == null) {
@@ -4355,7 +4355,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.Builder getBindingAdapterMetricsBuilder() {
         bitField0_ |= 0x00000200;
@@ -4367,7 +4367,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetricsOrBuilder getBindingAdapterMetricsOrBuilder() {
         if (bindingAdapterMetricsBuilder_ != null) {
@@ -4382,7 +4382,7 @@ private static final long serialVersionUID = 0L;
        * Binding adapter metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.Builder, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetricsOrBuilder> 
@@ -4406,7 +4406,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        * @return Whether the liveDataMetrics field is set.
        */
       public boolean hasLiveDataMetrics() {
@@ -4417,7 +4417,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        * @return The liveDataMetrics.
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics getLiveDataMetrics() {
@@ -4432,7 +4432,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public Builder setLiveDataMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics value) {
         if (liveDataMetricsBuilder_ == null) {
@@ -4452,7 +4452,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public Builder setLiveDataMetrics(
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.Builder builderForValue) {
@@ -4470,7 +4470,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public Builder mergeLiveDataMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics value) {
         if (liveDataMetricsBuilder_ == null) {
@@ -4494,7 +4494,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public Builder clearLiveDataMetrics() {
         if (liveDataMetricsBuilder_ == null) {
@@ -4511,7 +4511,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.Builder getLiveDataMetricsBuilder() {
         bitField0_ |= 0x00000400;
@@ -4523,7 +4523,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetricsOrBuilder getLiveDataMetricsOrBuilder() {
         if (liveDataMetricsBuilder_ != null) {
@@ -4538,7 +4538,7 @@ private static final long serialVersionUID = 0L;
        * Live Data metrics
        * </pre>
        *
-       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
+       * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.Builder, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetricsOrBuilder> 
@@ -5355,7 +5355,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    * @return Whether the pollMetadata field is set.
    */
   @java.lang.Override
@@ -5367,7 +5367,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    * @return The pollMetadata.
    */
   @java.lang.Override
@@ -5379,7 +5379,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadataOrBuilder getPollMetadataOrBuilder() {
@@ -5393,7 +5393,7 @@ private static final long serialVersionUID = 0L;
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    * @return Whether the viewBindingMetadata field is set.
    */
   @java.lang.Override
@@ -5405,7 +5405,7 @@ private static final long serialVersionUID = 0L;
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    * @return The viewBindingMetadata.
    */
   @java.lang.Override
@@ -5417,7 +5417,7 @@ private static final long serialVersionUID = 0L;
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadataOrBuilder getViewBindingMetadataOrBuilder() {
@@ -6010,7 +6010,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      * @return Whether the pollMetadata field is set.
      */
     public boolean hasPollMetadata() {
@@ -6021,7 +6021,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      * @return The pollMetadata.
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata getPollMetadata() {
@@ -6036,7 +6036,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public Builder setPollMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata value) {
       if (pollMetadataBuilder_ == null) {
@@ -6056,7 +6056,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public Builder setPollMetadata(
         com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.Builder builderForValue) {
@@ -6074,7 +6074,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public Builder mergePollMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata value) {
       if (pollMetadataBuilder_ == null) {
@@ -6098,7 +6098,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public Builder clearPollMetadata() {
       if (pollMetadataBuilder_ == null) {
@@ -6115,7 +6115,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.Builder getPollMetadataBuilder() {
       bitField0_ |= 0x00000004;
@@ -6127,7 +6127,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadataOrBuilder getPollMetadataOrBuilder() {
       if (pollMetadataBuilder_ != null) {
@@ -6142,7 +6142,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+     * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.Builder, com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadataOrBuilder> 
@@ -6166,7 +6166,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      * @return Whether the viewBindingMetadata field is set.
      */
     public boolean hasViewBindingMetadata() {
@@ -6177,7 +6177,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      * @return The viewBindingMetadata.
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata getViewBindingMetadata() {
@@ -6192,7 +6192,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public Builder setViewBindingMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata value) {
       if (viewBindingMetadataBuilder_ == null) {
@@ -6212,7 +6212,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public Builder setViewBindingMetadata(
         com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.Builder builderForValue) {
@@ -6230,7 +6230,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public Builder mergeViewBindingMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata value) {
       if (viewBindingMetadataBuilder_ == null) {
@@ -6254,7 +6254,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public Builder clearViewBindingMetadata() {
       if (viewBindingMetadataBuilder_ == null) {
@@ -6271,7 +6271,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.Builder getViewBindingMetadataBuilder() {
       bitField0_ |= 0x00000008;
@@ -6283,7 +6283,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadataOrBuilder getViewBindingMetadataOrBuilder() {
       if (viewBindingMetadataBuilder_ != null) {
@@ -6298,7 +6298,7 @@ private static final long serialVersionUID = 0L;
      * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+     * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata, com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.Builder, com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadataOrBuilder> 

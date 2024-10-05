@@ -31,7 +31,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    * @return Whether the session field is set.
    */
   boolean hasSession();
@@ -40,7 +40,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    * @return The session.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession getSession();
@@ -49,7 +49,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSessionOrBuilder getSessionOrBuilder();
 
@@ -58,7 +58,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    * @return Whether the snapshotInfo field is set.
    */
   boolean hasSnapshotInfo();
@@ -67,7 +67,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    * @return The snapshotInfo.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo getSnapshotInfo();
@@ -76,7 +76,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfoOrBuilder getSnapshotInfoOrBuilder();
 
@@ -85,7 +85,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    * @return Whether the errorInfo field is set.
    */
   boolean hasErrorInfo();
@@ -94,7 +94,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    * @return The errorInfo.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo getErrorInfo();
@@ -103,7 +103,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder();
 
@@ -112,7 +112,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    * @return Whether the autoConnectInfo field is set.
    */
   boolean hasAutoConnectInfo();
@@ -121,7 +121,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    * @return The autoConnectInfo.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo getAutoConnectInfo();
@@ -130,7 +130,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder();
 
@@ -139,7 +139,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    * @return Whether the transportError field is set.
    */
   boolean hasTransportError();
@@ -148,7 +148,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    * @return The transportError.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError getTransportError();
@@ -157,7 +157,7 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder();
 }

@@ -236,6 +236,7 @@ enum class BooleanOption(
     ENABLE_TEST_FIXTURES("android.experimental.enableTestFixtures", false, FeatureStage.Experimental),
 
     USE_NEW_DSL_INTERFACES("android.experimental.newDslInterfaces", false, FeatureStage.Experimental),
+    USE_DECLARATIVE_INTERFACES("android.experimental.declarative", false, FeatureStage.Experimental),
 
     /** Whether to force the APK to be deterministic. */
     FORCE_DETERMINISTIC_APK("android.experimental.forceDeterministicApk", false, FeatureStage.Experimental),

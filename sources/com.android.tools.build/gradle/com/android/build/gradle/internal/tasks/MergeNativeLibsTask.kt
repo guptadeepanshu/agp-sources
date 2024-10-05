@@ -343,7 +343,7 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
                 task.testOnly.setDisallowChanges(listOf())
             }
 
-            task.buildTools.initialize(creationConfig)
+            task.buildTools.initialize(task, creationConfig)
 
             task.projectNativeLibs
                 .from(getProjectNativeLibs(

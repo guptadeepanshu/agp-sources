@@ -12,7 +12,7 @@ public interface IgnoreAtfResultEventOrBuilder extends
    * Details related to the ATF result which has been ignored
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return Whether the atfResult field is set.
    */
   boolean hasAtfResult();
@@ -21,7 +21,7 @@ public interface IgnoreAtfResultEventOrBuilder extends
    * Details related to the ATF result which has been ignored
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return The atfResult.
    */
   com.google.wireless.android.sdk.stats.AtfResultDetail getAtfResult();
@@ -30,7 +30,7 @@ public interface IgnoreAtfResultEventOrBuilder extends
    * Details related to the ATF result which has been ignored
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder();
 }

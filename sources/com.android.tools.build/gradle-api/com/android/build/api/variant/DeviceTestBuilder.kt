@@ -23,6 +23,14 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface DeviceTestBuilder: GeneratesApkBuilder {
+    companion object {
+
+        /**
+         * Host test type for default unit tests.
+         */
+        @Incubating
+        const val ANDROID_TEST_TYPE = "AndroidTest"
+    }
 
     /**
      * Set to `true` if the variant's has any device tests, false otherwise.

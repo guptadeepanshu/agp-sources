@@ -2421,32 +2421,32 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      * @return Whether the opened field is set.
      */
     boolean hasOpened();
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      * @return The opened.
      */
     com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened getOpened();
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder();
 
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      * @return Whether the closed field is set.
      */
     boolean hasClosed();
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      * @return The closed.
      */
     com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed getClosed();
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder();
 
@@ -3828,7 +3828,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int OPENED_FIELD_NUMBER = 1;
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      * @return Whether the opened field is set.
      */
     @java.lang.Override
@@ -3836,7 +3836,7 @@ private static final long serialVersionUID = 0L;
       return motionCase_ == 1;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      * @return The opened.
      */
     @java.lang.Override
@@ -3847,7 +3847,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder() {
@@ -3859,7 +3859,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int CLOSED_FIELD_NUMBER = 2;
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      * @return Whether the closed field is set.
      */
     @java.lang.Override
@@ -3867,7 +3867,7 @@ private static final long serialVersionUID = 0L;
       return motionCase_ == 2;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      * @return The closed.
      */
     @java.lang.Override
@@ -3878,7 +3878,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder() {
@@ -4296,7 +4296,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder> openedBuilder_;
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        * @return Whether the opened field is set.
        */
       @java.lang.Override
@@ -4304,7 +4304,7 @@ private static final long serialVersionUID = 0L;
         return motionCase_ == 1;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        * @return The opened.
        */
       @java.lang.Override
@@ -4322,7 +4322,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       public Builder setOpened(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened value) {
         if (openedBuilder_ == null) {
@@ -4338,7 +4338,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       public Builder setOpened(
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder builderForValue) {
@@ -4352,7 +4352,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       public Builder mergeOpened(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened value) {
         if (openedBuilder_ == null) {
@@ -4374,7 +4374,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       public Builder clearOpened() {
         if (openedBuilder_ == null) {
@@ -4393,13 +4393,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder getOpenedBuilder() {
         return getOpenedFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder getOpenedOrBuilder() {
@@ -4413,7 +4413,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Opened opened = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Opened.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.OpenedOrBuilder> 
@@ -4437,7 +4437,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder> closedBuilder_;
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        * @return Whether the closed field is set.
        */
       @java.lang.Override
@@ -4445,7 +4445,7 @@ private static final long serialVersionUID = 0L;
         return motionCase_ == 2;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        * @return The closed.
        */
       @java.lang.Override
@@ -4463,7 +4463,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       public Builder setClosed(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed value) {
         if (closedBuilder_ == null) {
@@ -4479,7 +4479,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       public Builder setClosed(
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder builderForValue) {
@@ -4493,7 +4493,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       public Builder mergeClosed(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed value) {
         if (closedBuilder_ == null) {
@@ -4515,7 +4515,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       public Builder clearClosed() {
         if (closedBuilder_ == null) {
@@ -4534,13 +4534,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder getClosedBuilder() {
         return getClosedFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder getClosedOrBuilder() {
@@ -4554,7 +4554,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2;</code>
+       * <code>.android_studio.TSdkUAEvent.UserMotion.Closed closed = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Closed.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.ClosedOrBuilder> 
@@ -4684,7 +4684,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int STATE_UPDATE_FIELD_NUMBER = 1;
   /**
-   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
    * @return Whether the stateUpdate field is set.
    */
   @java.lang.Override
@@ -4692,7 +4692,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 1;
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
    * @return The stateUpdate.
    */
   @java.lang.Override
@@ -4703,7 +4703,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+   * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdateOrBuilder getStateUpdateOrBuilder() {
@@ -4715,7 +4715,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int FILTER_RUN_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
    * @return Whether the filterRun field is set.
    */
   @java.lang.Override
@@ -4723,7 +4723,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 2;
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
    * @return The filterRun.
    */
   @java.lang.Override
@@ -4734,7 +4734,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+   * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRunOrBuilder getFilterRunOrBuilder() {
@@ -4746,7 +4746,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int USER_MOTION_FIELD_NUMBER = 3;
   /**
-   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
    * @return Whether the userMotion field is set.
    */
   @java.lang.Override
@@ -4754,7 +4754,7 @@ private static final long serialVersionUID = 0L;
     return contentCase_ == 3;
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
    * @return The userMotion.
    */
   @java.lang.Override
@@ -4765,7 +4765,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+   * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder() {
@@ -5215,7 +5215,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate, com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdateOrBuilder> stateUpdateBuilder_;
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      * @return Whether the stateUpdate field is set.
      */
     @java.lang.Override
@@ -5223,7 +5223,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 1;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      * @return The stateUpdate.
      */
     @java.lang.Override
@@ -5241,7 +5241,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     public Builder setStateUpdate(com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate value) {
       if (stateUpdateBuilder_ == null) {
@@ -5257,7 +5257,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     public Builder setStateUpdate(
         com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder builderForValue) {
@@ -5271,7 +5271,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     public Builder mergeStateUpdate(com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate value) {
       if (stateUpdateBuilder_ == null) {
@@ -5293,7 +5293,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     public Builder clearStateUpdate() {
       if (stateUpdateBuilder_ == null) {
@@ -5312,13 +5312,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder getStateUpdateBuilder() {
       return getStateUpdateFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdateOrBuilder getStateUpdateOrBuilder() {
@@ -5332,7 +5332,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1;</code>
+     * <code>.android_studio.TSdkUAEvent.StateUpdate state_update = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate, com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdate.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.StateUpdateOrBuilder> 
@@ -5356,7 +5356,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun, com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRunOrBuilder> filterRunBuilder_;
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      * @return Whether the filterRun field is set.
      */
     @java.lang.Override
@@ -5364,7 +5364,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 2;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      * @return The filterRun.
      */
     @java.lang.Override
@@ -5382,7 +5382,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     public Builder setFilterRun(com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun value) {
       if (filterRunBuilder_ == null) {
@@ -5398,7 +5398,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     public Builder setFilterRun(
         com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Builder builderForValue) {
@@ -5412,7 +5412,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     public Builder mergeFilterRun(com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun value) {
       if (filterRunBuilder_ == null) {
@@ -5434,7 +5434,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     public Builder clearFilterRun() {
       if (filterRunBuilder_ == null) {
@@ -5453,13 +5453,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Builder getFilterRunBuilder() {
       return getFilterRunFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRunOrBuilder getFilterRunOrBuilder() {
@@ -5473,7 +5473,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2;</code>
+     * <code>.android_studio.TSdkUAEvent.FilterRun filter_run = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun, com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRun.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.FilterRunOrBuilder> 
@@ -5497,7 +5497,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder> userMotionBuilder_;
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      * @return Whether the userMotion field is set.
      */
     @java.lang.Override
@@ -5505,7 +5505,7 @@ private static final long serialVersionUID = 0L;
       return contentCase_ == 3;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      * @return The userMotion.
      */
     @java.lang.Override
@@ -5523,7 +5523,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     public Builder setUserMotion(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion value) {
       if (userMotionBuilder_ == null) {
@@ -5539,7 +5539,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     public Builder setUserMotion(
         com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder builderForValue) {
@@ -5553,7 +5553,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     public Builder mergeUserMotion(com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion value) {
       if (userMotionBuilder_ == null) {
@@ -5575,7 +5575,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     public Builder clearUserMotion() {
       if (userMotionBuilder_ == null) {
@@ -5594,13 +5594,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder getUserMotionBuilder() {
       return getUserMotionFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder() {
@@ -5614,7 +5614,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3;</code>
+     * <code>.android_studio.TSdkUAEvent.UserMotion user_motion = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotion.Builder, com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder> 

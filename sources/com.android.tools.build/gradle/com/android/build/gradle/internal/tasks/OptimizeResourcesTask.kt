@@ -154,7 +154,7 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
 
         override fun configure(task: OptimizeResourcesTask) {
             super.configure(task)
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
 
             task.enableResourceObfuscation.setDisallowChanges(false)
 

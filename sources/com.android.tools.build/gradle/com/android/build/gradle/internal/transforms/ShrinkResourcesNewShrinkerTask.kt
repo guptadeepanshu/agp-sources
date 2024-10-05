@@ -21,9 +21,18 @@ import com.android.build.api.artifact.ArtifactTransformationRequest
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.MultiOutputHandler
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_PROTO_FORMAT
+import com.android.build.gradle.internal.scope.InternalArtifactType.SHRUNK_RESOURCES_PROTO_FORMAT
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
+import com.android.build.gradle.internal.workeractions.WorkActionAdapter
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.tasks.PackageAndroidArtifact
 import com.android.build.shrinker.LinkedResourcesFormat
 import com.android.build.shrinker.LoggerAndFileDebugReporter
 import com.android.build.shrinker.ResourceShrinkerImpl
@@ -33,33 +42,18 @@ import com.android.build.shrinker.obfuscation.ProguardMappingsRecorder
 import com.android.build.shrinker.usages.DexUsageRecorder
 import com.android.build.shrinker.usages.ProtoAndroidManifestUsageRecorder
 import com.android.build.shrinker.usages.ToolsAttributeUsageRecorder
-import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
-import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getAaptDaemon
-import com.android.build.gradle.internal.services.registerAaptService
-import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
-import com.android.build.gradle.internal.workeractions.WorkActionAdapter
-import com.android.build.gradle.options.BooleanOption
-import com.android.builder.internal.aapt.AaptConvertConfig
-import com.android.build.gradle.tasks.PackageAndroidArtifact
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logging
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -72,11 +66,7 @@ import java.io.File
 import javax.inject.Inject
 
 /**
- * Shrinks application resources in proto format and convert them to binary via `aapt2 convert`.
- *
- * <p>Proto resources are taken from output of {@link LinkAndroidResForBundleTask} if possible. If
- * not, binary resources produced by {@link LinkApplicationAndroidResourcesTask} are converted to
- * proto first and passed as input to the shrinker.
+ * Shrinks application resources in proto format.
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION, secondaryTaskCategories = [TaskCategory.ANDROID_RESOURCES])
@@ -88,11 +78,6 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val originalResources: DirectoryProperty
-
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NAME_ONLY)
-    @get:Optional
-    abstract val originalResourcesForBundle: RegularFileProperty
 
     @get:Internal
     abstract val artifactTransformationRequest: Property<ArtifactTransformationRequest<ShrinkResourcesNewShrinkerTask>>
@@ -116,9 +101,6 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     @get:Input
     abstract val usePreciseShrinking: Property<Boolean>
 
-    @get:Nested
-    abstract val aapt: Aapt2Input
-
     override fun doTaskAction() {
         artifactTransformationRequest.get().submit(
             task = this,
@@ -126,50 +108,28 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
             actionType = ShrinkProtoResourcesAction::class.java
         ) { builtArtifact: BuiltArtifact, directory: Directory, parameters: ShrinkProtoResourcesParams ->
 
-            parameters.usePreciseShrinking.set(usePreciseShrinking)
-
+            parameters.originalProtoFile.set(File(builtArtifact.outputFile))
             parameters.shrunkProtoFile.set(
                 File(
                     directory.asFile,
                     outputsHandler.get().getOutputNameForSplit(
-                        prefix = "shrunk-resources",
-                        suffix = "proto-format${SdkConstants.DOT_RES}",
+                        prefix = SHRUNK_RESOURCES_PROTO_FORMAT.name().lowercase().replace("_", "-"),
+                        suffix = "",
                         outputType = builtArtifact.outputType,
                         filters = builtArtifact.filters
-                    )
+                    ) + SdkConstants.DOT_RES
                 )
             )
-            parameters.originalFile.set(File(builtArtifact.outputFile))
 
-            if (originalResourcesForBundle.isPresent) {
-                parameters.requiresInitialConversionToProto.set(false)
-                parameters.originalProtoFile.set(originalResourcesForBundle)
-            } else {
-                parameters.originalProtoFile.set(
-                    File(
-                        directory.asFile,
-                        outputsHandler.get().getOutputNameForSplit(
-                            prefix = "original-resources",
-                            suffix = "proto-format.ap_",
-                            outputType = builtArtifact.outputType,
-                            filters = builtArtifact.filters
-                        )
-                    )
-                )
-                parameters.requiresInitialConversionToProto.set(true)
-            }
-
+            parameters.mappingFileSrc.set(mappingFileSrc)
             if (mappingFileSrc.isPresent) {
                 mappingFileSrc.get().asFile.parentFile?.let {
                     parameters.reportFile.set(File(it, "resources.txt"));
                 }
             }
-
             parameters.dex.from(dex)
-            parameters.mappingFileSrc.set(mappingFileSrc)
             parameters.resourceDir.set(resourceDir)
-
-            parameters.aapt2ServiceKey.set(aapt.registerAaptService())
+            parameters.usePreciseShrinking.set(usePreciseShrinking)
 
             return@submit parameters.shrunkProtoFile.get().asFile
         }
@@ -192,8 +152,8 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
                     ShrinkResourcesNewShrinkerTask::shrunkResources
                 )
                 .toTransformMany(
-                    InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT,
-                    InternalArtifactType.SHRUNK_RESOURCES_PROTO_FORMAT
+                    LINKED_RESOURCES_PROTO_FORMAT,
+                    SHRUNK_RESOURCES_PROTO_FORMAT
                 )
         }
 
@@ -216,24 +176,11 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
                 task.resourceDir
             )
 
-            // If we have only one variant there is no splits configured and we can consume proto
-            // resources already created for bundles.
-            if (creationConfig !is ApplicationCreationConfig ||
-                (creationConfig.outputs.variantOutputs.size == 1 &&
-                        creationConfig.outputs.variantOutputs.all { it.filters.isEmpty() })) {
-                creationConfig.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT,
-                    task.originalResourcesForBundle
-                )
-            }
-
             task.artifactTransformationRequest.set(transformationRequest)
 
             task.dex.from(
                 PackageAndroidArtifact.CreationAction.getDexFolders(creationConfig)
             )
-
-            creationConfig.services.initializeAapt2Input(task.aapt)
 
             task.outputsHandler.setDisallowChanges(MultiOutputHandler.create(creationConfig))
         }
@@ -242,21 +189,16 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
 
 abstract class ShrinkProtoResourcesParams : DecoratedWorkParameters {
     abstract val usePreciseShrinking: Property<Boolean>
-    abstract val requiresInitialConversionToProto: Property<Boolean>
 
     abstract val shrunkProtoFile: RegularFileProperty
 
     abstract val originalProtoFile: RegularFileProperty
-    @get:Optional
-    abstract val originalFile: RegularFileProperty
 
     @get:Optional
     abstract val mappingFileSrc: RegularFileProperty
 
     abstract val resourceDir: DirectoryProperty
     abstract val dex: ConfigurableFileCollection
-
-    abstract val aapt2ServiceKey: Property<Aapt2DaemonServiceKey>
 
     abstract val reportFile: RegularFileProperty
 }
@@ -267,23 +209,8 @@ abstract class ShrinkProtoResourcesAction @Inject constructor() :
     private val logger = Logging.getLogger(ShrinkAppBundleResourcesTask::class.java)
 
     override fun doExecute() {
-        val aapt2ServiceKey = parameters.aapt2ServiceKey.get()
-        val originalFile = parameters.originalFile.get().asFile
         val originalProtoFile = parameters.originalProtoFile.get().asFile
         val shrunkProtoFile = parameters.shrunkProtoFile.get().asFile
-
-        if (parameters.requiresInitialConversionToProto.get()) {
-            getAaptDaemon(aapt2ServiceKey).use {
-                it.convert(
-                    AaptConvertConfig(
-                        inputFile = originalFile,
-                        outputFile = originalProtoFile,
-                        convertToProtos = true
-                    ),
-                    LoggerWrapper(logger)
-                )
-            }
-        }
 
         FileUtils.createZipFilesystem(originalProtoFile.toPath()).use { fs ->
             val dexRecorders = parameters.dex.files.map { DexUsageRecorder(it.toPath()) }

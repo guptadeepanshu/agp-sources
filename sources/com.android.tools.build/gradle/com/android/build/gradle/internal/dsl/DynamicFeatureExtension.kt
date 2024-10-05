@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.NamedDomainObjectContainer
 
 abstract class DynamicFeatureExtension(
@@ -33,11 +34,12 @@ abstract class DynamicFeatureExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    private val publicExtensionImpl: DynamicFeatureExtensionImpl
+    private val publicExtensionImpl: DynamicFeatureExtensionImpl,
+    stats: GradleBuildProject.Builder?
 ) : AppExtension(
     dslServices,
     bootClasspathConfig,
-    buildOutputs, sourceSetManager, extraModelInfo, false
+    buildOutputs, sourceSetManager, extraModelInfo, false, stats
 ), InternalDynamicFeatureExtension by publicExtensionImpl {
 
     // Overrides to make the parameterized types match, due to BaseExtension being part of

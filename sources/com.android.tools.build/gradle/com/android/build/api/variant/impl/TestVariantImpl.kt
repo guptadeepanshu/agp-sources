@@ -109,8 +109,8 @@ open class TestVariantImpl @Inject constructor(
     override val functionalTest: Property<Boolean> =
         internalServices.propertyOf(Boolean::class.java, dslInfo.functionalTest)
 
-    override val testLabel: Property<String?> =
-        internalServices.nullablePropertyOf(String::class.java, dslInfo.testLabel)
+    override val testLabel: Property<String> =
+        internalServices.propertyOf(String::class.java, dslInfo.testLabel)
 
     override val packaging: ApkPackaging by lazy {
         ApkPackagingImpl(
@@ -228,9 +228,16 @@ open class TestVariantImpl @Inject constructor(
                 AndroidArtifacts.ArtifactScope.PROJECT,
                 AndroidArtifacts.ArtifactType.MANIFEST_METADATA
             ).elements.map {
-                val manifestDirectory = it.single().asFile
-                BuiltArtifactsLoaderImpl.loadFromDirectory(manifestDirectory)?.applicationId
-                    ?: throw RuntimeException("Cannot find merged manifest at '$manifestDirectory', please file a bug.\"")
+                if (it.isEmpty()) {
+                    throw RuntimeException("The tested application ID could not be computed. " +
+                        "Please ensure that the test module specifies a valid module in " +
+                        "\"targetProjectPath\". Currently, library modules are not supported as " +
+                        "a target project.")
+                } else {
+                    val manifestDirectory = it.single().asFile
+                    BuiltArtifactsLoaderImpl.loadFromDirectory(manifestDirectory)?.applicationId
+                        ?: throw RuntimeException("Cannot find merged manifest at '$manifestDirectory', please file a bug.\"")
+                }
             }
     }
 

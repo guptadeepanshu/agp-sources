@@ -44,7 +44,7 @@ public interface BuildAttribuitionTaskIdentifierOrBuilder extends
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    * @return Whether the originPlugin field is set.
    */
   boolean hasOriginPlugin();
@@ -53,7 +53,7 @@ public interface BuildAttribuitionTaskIdentifierOrBuilder extends
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    * @return The originPlugin.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getOriginPlugin();
@@ -62,7 +62,7 @@ public interface BuildAttribuitionTaskIdentifierOrBuilder extends
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getOriginPluginOrBuilder();
 }

@@ -53,7 +53,8 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
-import com.android.build.gradle.internal.res.ConvertProtoResourcesTask
+import com.android.build.gradle.internal.res.ConvertLinkedResourcesToProtoTask
+import com.android.build.gradle.internal.res.ConvertShrunkResourcesToBinaryTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkAndroidResForBundleTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
@@ -72,6 +73,7 @@ import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
+import com.android.build.gradle.internal.services.KotlinServices
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
@@ -133,6 +135,7 @@ import com.android.build.gradle.internal.test.AbstractTestDataImpl
 import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkResourcesNewShrinkerTask
+import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.utils.checkKotlinStdLibIsInDependencies
 import com.android.build.gradle.internal.utils.isKotlinKaptPluginApplied
 import com.android.build.gradle.internal.utils.isKspPluginApplied
@@ -146,6 +149,8 @@ import com.android.build.gradle.tasks.GenerateManifestJarTask
 import com.android.build.gradle.tasks.GenerateResValues
 import com.android.build.gradle.tasks.JavaCompileCreationAction
 import com.android.build.gradle.tasks.JavaPreCompileTask
+import com.android.build.gradle.tasks.KaptCreationAction
+import com.android.build.gradle.tasks.KaptStubGenerationCreationAction
 import com.android.build.gradle.tasks.KotlinCompileCreationAction
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import com.android.build.gradle.tasks.MapSourceSetPathsTask
@@ -171,6 +176,7 @@ import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.dexing.DexingType
+import com.android.builder.errors.IssueReporter
 import com.android.utils.appendCapitalized
 import com.google.common.base.Preconditions
 import com.google.common.base.Strings
@@ -190,6 +196,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
+import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import java.io.File
 import java.util.Locale
 
@@ -867,7 +874,18 @@ abstract class TaskManager(
                 .setInitialContent(
                     ScopedArtifact.CLASSES,
                     creationConfig.artifacts,
-                    InternalArtifactType.KOTLINC
+                    InternalArtifactType.BUILT_IN_KOTLINC
+                )
+        }
+
+        if (creationConfig.useBuiltInKaptSupport) {
+            creationConfig
+                .artifacts
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .setInitialContent(
+                    ScopedArtifact.CLASSES,
+                    creationConfig.artifacts,
+                    InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR
                 )
         }
 
@@ -910,8 +928,57 @@ abstract class TaskManager(
         if (!creationConfig.useBuiltInKotlinSupport) {
             return
         }
-        checkKotlinStdLibIsInDependencies(project, creationConfig)
-        KotlinCompileCreationAction(creationConfig).registerTask()
+        val kotlinServices = creationConfig.services.kotlinServices
+        if (kotlinServices == null) {
+            creationConfig.services
+                .issueReporter
+                .reportError(
+                    IssueReporter.Type.GENERIC,
+                    RuntimeException(
+                        "Unable to access KotlinServices for AGP Built-in Kotlin support."
+                    )
+                )
+        } else {
+            checkKotlinStdLibIsInDependencies(project, creationConfig)
+            if (creationConfig.useBuiltInKaptSupport) {
+                copyKaptExtensionProperties(kotlinServices)
+                KaptStubGenerationCreationAction(creationConfig, kotlinServices).registerTask()
+                KaptCreationAction(creationConfig, project, kotlinServices).registerTask()
+            }
+            KotlinCompileCreationAction(creationConfig, kotlinServices).registerTask()
+        }
+    }
+
+    /**
+     * If the Jetbrains KAPT plugin is applied, copy the properties from its kapt extension to the
+     * kotlinServices.factory.kaptExtension.
+     *
+     * TODO(b/341765853) - request a proper API for this from Jetbrains
+     * TODO(b/341765853) - remove this after AGP stops supporting the [KOTLIN_KAPT_PLUGIN_ID] plugin
+     */
+    private fun copyKaptExtensionProperties(kotlinServices: KotlinServices) {
+        project.pluginManager.withPlugin(KOTLIN_KAPT_PLUGIN_ID) {
+            project.afterEvaluate {
+                val jetbrainsKaptExtension =
+                    project.extensions.findByName("kapt") as? KaptExtensionConfig
+                        ?: return@afterEvaluate
+                kotlinServices.factory.kaptExtension.also {
+                    it.correctErrorTypes = jetbrainsKaptExtension.correctErrorTypes
+                    it.detectMemoryLeaks = jetbrainsKaptExtension.detectMemoryLeaks
+                    it.dumpDefaultParameterValues =
+                        jetbrainsKaptExtension.dumpDefaultParameterValues
+                    it.includeCompileClasspath =
+                        jetbrainsKaptExtension.includeCompileClasspath
+                    it.keepJavacAnnotationProcessors = jetbrainsKaptExtension.keepJavacAnnotationProcessors
+                    it.mapDiagnosticLocations = jetbrainsKaptExtension.mapDiagnosticLocations
+                    it.showProcessorStats = jetbrainsKaptExtension.showProcessorStats
+                    it.strictMode = jetbrainsKaptExtension.strictMode
+                    it.stripMetadata = jetbrainsKaptExtension.stripMetadata
+                    it.useBuildCache = jetbrainsKaptExtension.useBuildCache
+                    it.useLightAnalysis = jetbrainsKaptExtension.useLightAnalysis
+                }
+            }
+        }
     }
 
     /**
@@ -1782,8 +1849,9 @@ abstract class TaskManager(
         }
         // Shrink resources in APK with a new resource shrinker and produce stripped res
         // package.
+        taskFactory.register(ConvertLinkedResourcesToProtoTask.CreationAction(creationConfig))
         taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
-        taskFactory.register(ConvertProtoResourcesTask.CreationAction(creationConfig))
+        taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(creationConfig))
         // Shrink resources in bundles with new resource shrinker.
         taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
     }

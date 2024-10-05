@@ -30,9 +30,9 @@ import com.android.build.gradle.internal.utils.getDesugarLibJarFromMaven
 import com.android.build.gradle.internal.utils.getDesugaredDesugarLib
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.KeepRulesConfig
+import com.android.builder.dexing.L8OutputMode
 import com.android.builder.dexing.runL8
 import com.android.builder.dexing.runTraceReferenceTool
-import com.android.tools.r8.OutputMode
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -237,7 +237,7 @@ abstract class L8DexWorkAction : ProfileAwareWorkAction<L8DexWorkAction.Params>(
             parameters.minSdkVersion.get(),
             keepRulesConfig,
             parameters.debuggable.get(),
-            OutputMode.DexIndexed,
+            L8OutputMode.DexIndexed,
             parameters.inputArtProfile.orNull?.asFile?.toPath(),
             parameters.outputArtProfile.orNull?.asFile?.toPath()
         )

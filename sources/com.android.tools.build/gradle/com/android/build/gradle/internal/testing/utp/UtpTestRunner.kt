@@ -25,6 +25,7 @@ import com.android.ide.common.workers.ExecutorServiceAdapter
 import com.android.utils.ILogger
 import com.google.common.collect.ImmutableList
 import com.google.testing.platform.proto.api.config.RunnerConfigProto
+import com.google.wireless.android.sdk.stats.DeviceTestSpanProfile
 import org.gradle.workers.WorkerExecutor
 import java.io.File
 import java.util.logging.Level
@@ -50,6 +51,7 @@ class UtpTestRunner @JvmOverloads constructor(
         private val installApkTimeout: Int?,
         private val targetIsSplitApk: Boolean,
         private val uninstallApksAfterTest: Boolean,
+        private val utpRunProfileManager: UtpRunProfileManager,
         private val configFactory: UtpConfigFactory = UtpConfigFactory(),
         private val runUtpTestSuiteAndWaitFunc: (
             List<UtpRunnerConfig>, String, String, File, ILogger
@@ -126,6 +128,10 @@ class UtpTestRunner @JvmOverloads constructor(
                 utpOutputDir,
                 runnerConfig,
                 configFactory.createServerConfigProto(),
+                utpRunProfile = utpRunProfileManager.createTestRunProfile(
+                    utpOutputDir,
+                    deviceConnector.getDeviceType(),
+                    deviceConnector.serialNumber),
                 utpLoggingLevel = utpLoggingLevel)
         }.toList()
 
@@ -169,3 +175,9 @@ class UtpTestRunner @JvmOverloads constructor(
         }.toMutableList()
     }
 }
+
+fun DeviceConnector.getDeviceType() = if(serialNumber.startsWith("emulator")) {
+        DeviceTestSpanProfile.DeviceType.CONNECTED_DEVICE_EMULATOR
+    } else {
+        DeviceTestSpanProfile.DeviceType.CONNECTED_DEVICE_PHYSICAL
+    }

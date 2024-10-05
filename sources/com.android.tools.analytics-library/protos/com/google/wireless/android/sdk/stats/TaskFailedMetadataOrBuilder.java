@@ -12,7 +12,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return Whether the taskData field is set.
    */
   boolean hasTaskData();
@@ -21,7 +21,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return The taskData.
    */
   com.google.wireless.android.sdk.stats.TaskMetadata getTaskData();
@@ -30,7 +30,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder getTaskDataOrBuilder();
 
@@ -58,7 +58,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    * @return Whether the taskStartFailureMetadata field is set.
    */
   boolean hasTaskStartFailureMetadata();
@@ -67,7 +67,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    * @return The taskStartFailureMetadata.
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata getTaskStartFailureMetadata();
@@ -76,7 +76,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadataOrBuilder getTaskStartFailureMetadataOrBuilder();
 
@@ -85,7 +85,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    * @return Whether the taskStopFailureMetadata field is set.
    */
   boolean hasTaskStopFailureMetadata();
@@ -94,7 +94,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    * @return The taskStopFailureMetadata.
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata getTaskStopFailureMetadata();
@@ -103,7 +103,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadataOrBuilder getTaskStopFailureMetadataOrBuilder();
 
@@ -112,7 +112,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    * @return Whether the taskProcessingFailureMetadata field is set.
    */
   boolean hasTaskProcessingFailureMetadata();
@@ -121,7 +121,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    * @return The taskProcessingFailureMetadata.
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata getTaskProcessingFailureMetadata();
@@ -130,7 +130,7 @@ public interface TaskFailedMetadataOrBuilder extends
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadataOrBuilder getTaskProcessingFailureMetadataOrBuilder();
 

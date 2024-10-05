@@ -34,7 +34,9 @@ import com.android.tools.r8.origin.Origin;
 import com.android.tools.r8.origin.PathOrigin;
 import com.android.tools.r8.startup.StartupProfileBuilder;
 import com.android.tools.r8.startup.StartupProfileProvider;
+
 import com.google.common.util.concurrent.MoreExecutors;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -48,6 +50,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import javax.annotation.Nonnull;
 
 final class D8DexArchiveMerger implements DexArchiveMerger {
@@ -245,5 +248,4 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
             return super.convertToMessage(kind, diagnostic);
         }
     }
-
 }

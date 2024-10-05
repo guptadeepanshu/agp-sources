@@ -198,7 +198,7 @@ abstract class AidlCompile : NonIncrementalTask() {
             if (creationConfig.componentType.isAar) {
                 task.packagedList = creationConfig.global.aidlPackagedList
             }
-            task.buildTools.initialize(creationConfig)
+            task.buildTools.initialize(task, creationConfig)
         }
     }
 

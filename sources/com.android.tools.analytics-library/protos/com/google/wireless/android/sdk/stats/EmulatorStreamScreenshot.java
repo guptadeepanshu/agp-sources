@@ -83,7 +83,7 @@ private static final long serialVersionUID = 0L;
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    * @return Whether the deliveryDelay field is set.
    */
   @java.lang.Override
@@ -96,7 +96,7 @@ private static final long serialVersionUID = 0L;
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    * @return The deliveryDelay.
    */
   @java.lang.Override
@@ -109,7 +109,7 @@ private static final long serialVersionUID = 0L;
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeliveryDelayOrBuilder() {
@@ -614,7 +614,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      * @return Whether the deliveryDelay field is set.
      */
     public boolean hasDeliveryDelay() {
@@ -626,7 +626,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      * @return The deliveryDelay.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getDeliveryDelay() {
@@ -642,7 +642,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public Builder setDeliveryDelay(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (deliveryDelayBuilder_ == null) {
@@ -663,7 +663,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public Builder setDeliveryDelay(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -682,7 +682,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public Builder mergeDeliveryDelay(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (deliveryDelayBuilder_ == null) {
@@ -707,7 +707,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public Builder clearDeliveryDelay() {
       if (deliveryDelayBuilder_ == null) {
@@ -725,7 +725,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getDeliveryDelayBuilder() {
       bitField0_ |= 0x00000002;
@@ -738,7 +738,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeliveryDelayOrBuilder() {
       if (deliveryDelayBuilder_ != null) {
@@ -754,7 +754,7 @@ private static final long serialVersionUID = 0L;
      * from the emulators perspective, and frames delivered.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 

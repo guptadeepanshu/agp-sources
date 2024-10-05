@@ -127,6 +127,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val appMetadata: RegularFileProperty
 
+    @get:InputFile
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val r8Metadata: RegularFileProperty
+
     @get:Input
     abstract val aaptOptionsNoCompress: ListProperty<String>
 
@@ -196,6 +201,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             it.bundleDeps.set(bundleDeps)
             it.bundleNeedsFusedStandaloneConfig.set(bundleNeedsFusedStandaloneConfig)
             it.appMetadata.set(appMetadata)
+            it.r8Metadata.set(r8Metadata)
             it.abiFilters.set(abiFilters)
             it.binaryArtProfiler.set(binaryArtProfile)
             it.binaryArtProfilerMetadata.set(binaryArtProfileMetadata)
@@ -227,6 +233,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         abstract val bundleDeps: RegularFileProperty
         abstract val bundleNeedsFusedStandaloneConfig: Property<Boolean>
         abstract val appMetadata: RegularFileProperty
+        abstract val r8Metadata: RegularFileProperty
         abstract val abiFilters: SetProperty<String>
         abstract val binaryArtProfiler: RegularFileProperty
         abstract val binaryArtProfilerMetadata: RegularFileProperty
@@ -292,6 +299,18 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                             Config.SuffixStripping.newBuilder()
                                 .setEnabled(true)
                                 .setDefaultSuffix(parameters.bundleOptions.get().defaultCountrySet?: "")
+                        )
+                        .setNegate(!it)
+                )
+            }
+            parameters.bundleOptions.get().enableAiModelVersion?.let {
+                splitsConfig.addSplitDimension(
+                    Config.SplitDimension.newBuilder()
+                        .setValue(Config.SplitDimension.Value.AI_MODEL_VERSION)
+                        .setSuffixStripping(
+                            Config.SuffixStripping.newBuilder()
+                                .setEnabled(true)
+                                .setDefaultSuffix(parameters.bundleOptions.get().defaultAiModelVersion?: "")
                         )
                         .setNegate(!it)
                 )
@@ -434,6 +453,14 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                     parameters.appMetadata.asFile.get().toPath()
             )
 
+            parameters.r8Metadata.orNull?.let { r8Metadata ->
+                command.addMetadataFile(
+                    "com.android.tools",
+                    "r8.json",
+                    r8Metadata.asFile.toPath()
+                )
+            }
+
             // all metadata files added through the Variant API
             val directories = parameters.metadataDirectories.get().iterator()
             parameters.metadataFiles.get().forEach { metadataFile ->
@@ -488,6 +515,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         @get:Input
         @get:Optional
         val defaultCountrySet: String?,
+        @get:Input
+        @get:Optional
+        val enableAiModelVersion: Boolean?,
+        @get:Input
+        @get:Optional
+        val defaultAiModelVersion: String?,
     ) : Serializable
 
     data class AssetPackOptionsForAssetPackBundle(
@@ -543,6 +576,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 InternalArtifactType.APP_METADATA,
                 task.appMetadata
             )
+            task.r8Metadata.disallowChanges()
         }
     }
 
@@ -654,6 +688,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 InternalArtifactType.APP_METADATA,
                 task.appMetadata
             )
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.R8_METADATA,
+                task.r8Metadata
+            )
 
             if (!creationConfig.debuggable) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
@@ -687,6 +725,8 @@ private fun com.android.build.api.dsl.Bundle.convert() =
       enableStoreArchive = storeArchive.enable ?: true,
       enableCountrySet = countrySet.enableSplit,
       defaultCountrySet = countrySet.defaultSet,
+      enableAiModelVersion = aiModelVersion.enableSplit,
+      defaultAiModelVersion = aiModelVersion.defaultVersion,
     )
 
 private fun AssetPackBundleExtension.convert() =
@@ -701,6 +741,8 @@ private fun AssetPackBundleExtension.convert() =
         enableStoreArchive = false,
         enableCountrySet = countrySet.enableSplit,
         defaultCountrySet = countrySet.defaultSet,
+        enableAiModelVersion = aiModelVersion.enableSplit,
+        defaultAiModelVersion = aiModelVersion.defaultVersion,
     )
 
 /**

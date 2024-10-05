@@ -39,6 +39,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.builder.core.ComponentTypeImpl
@@ -86,6 +87,7 @@ abstract class HostTestImpl @Inject constructor(
 
     final override val hostTestName: String
     final override val useBuiltInKotlinSupport: Boolean
+    final override val useBuiltInKaptSupport: Boolean
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
@@ -184,11 +186,17 @@ abstract class HostTestImpl @Inject constructor(
         when(dslInfo.componentType) {
             ComponentTypeImpl.UNIT_TEST -> {
                 hostTestName = HostTestBuilder.UNIT_TEST_TYPE
-                useBuiltInKotlinSupport = false
+                useBuiltInKotlinSupport = mainVariant.useBuiltInKotlinSupport
+                useBuiltInKaptSupport = mainVariant.useBuiltInKaptSupport
             }
             ComponentTypeImpl.SCREENSHOT_TEST -> {
                 hostTestName = HostTestBuilder.SCREENSHOT_TEST_TYPE
                 useBuiltInKotlinSupport = true
+                // For screenshotTest components, the application of the Jetbrains KAPT plugin
+                // should also enable built-in KAPT support.
+                useBuiltInKaptSupport =
+                    mainVariant.useBuiltInKaptSupport ||
+                            internalServices.projectInfo.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
             }
             else -> throw IllegalStateException(
                 "Expected a test component type, but ${componentIdentity.name} has type " +

@@ -31,7 +31,7 @@ public interface DaggerEditorEventOrBuilder extends
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    * @return Whether the navigationMetadata field is set.
    */
   boolean hasNavigationMetadata();
@@ -40,7 +40,7 @@ public interface DaggerEditorEventOrBuilder extends
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    * @return The navigationMetadata.
    */
   com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata getNavigationMetadata();
@@ -49,7 +49,7 @@ public interface DaggerEditorEventOrBuilder extends
    * Set if |type| is |NAVIGATED|
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2;</code>
+   * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadataOrBuilder getNavigationMetadataOrBuilder();
 

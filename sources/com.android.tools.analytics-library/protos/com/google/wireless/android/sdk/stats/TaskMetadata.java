@@ -98,6 +98,10 @@ private static final long serialVersionUID = 0L;
      * <code>JAVA_KOTLIN_METHOD_RECORDING = 9;</code>
      */
     JAVA_KOTLIN_METHOD_RECORDING(9),
+    /**
+     * <code>LEAKCANARY = 10;</code>
+     */
+    LEAKCANARY(10),
     ;
 
     /**
@@ -140,6 +144,10 @@ private static final long serialVersionUID = 0L;
      * <code>JAVA_KOTLIN_METHOD_RECORDING = 9;</code>
      */
     public static final int JAVA_KOTLIN_METHOD_RECORDING_VALUE = 9;
+    /**
+     * <code>LEAKCANARY = 10;</code>
+     */
+    public static final int LEAKCANARY_VALUE = 10;
 
 
     public final int getNumber() {
@@ -172,6 +180,7 @@ private static final long serialVersionUID = 0L;
         case 7: return JAVA_KOTLIN_ALLOCATIONS;
         case 8: return LIVE_VIEW;
         case 9: return JAVA_KOTLIN_METHOD_RECORDING;
+        case 10: return LEAKCANARY;
         default: return null;
       }
     }
@@ -587,62 +596,62 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      * @return Whether the callstackSampleTaskConfig field is set.
      */
     boolean hasCallstackSampleTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      * @return The callstackSampleTaskConfig.
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig getCallstackSampleTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfigOrBuilder getCallstackSampleTaskConfigOrBuilder();
 
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      * @return Whether the javaKotlinMethodTraceTaskConfig field is set.
      */
     boolean hasJavaKotlinMethodTraceTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      * @return The javaKotlinMethodTraceTaskConfig.
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig getJavaKotlinMethodTraceTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfigOrBuilder getJavaKotlinMethodTraceTaskConfigOrBuilder();
 
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      * @return Whether the javaKotlinMethodSampleTaskConfig field is set.
      */
     boolean hasJavaKotlinMethodSampleTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      * @return The javaKotlinMethodSampleTaskConfig.
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig getJavaKotlinMethodSampleTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfigOrBuilder getJavaKotlinMethodSampleTaskConfigOrBuilder();
 
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      * @return Whether the nativeAllocationsTaskConfig field is set.
      */
     boolean hasNativeAllocationsTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      * @return The nativeAllocationsTaskConfig.
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig getNativeAllocationsTaskConfig();
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder getNativeAllocationsTaskConfigOrBuilder();
 
@@ -736,7 +745,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int CALLSTACK_SAMPLE_TASK_CONFIG_FIELD_NUMBER = 1;
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      * @return Whether the callstackSampleTaskConfig field is set.
      */
     @java.lang.Override
@@ -744,7 +753,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 1;
     }
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      * @return The callstackSampleTaskConfig.
      */
     @java.lang.Override
@@ -755,7 +764,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+     * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfigOrBuilder getCallstackSampleTaskConfigOrBuilder() {
@@ -767,7 +776,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int JAVA_KOTLIN_METHOD_TRACE_TASK_CONFIG_FIELD_NUMBER = 2;
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      * @return Whether the javaKotlinMethodTraceTaskConfig field is set.
      */
     @java.lang.Override
@@ -775,7 +784,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 2;
     }
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      * @return The javaKotlinMethodTraceTaskConfig.
      */
     @java.lang.Override
@@ -786,7 +795,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfigOrBuilder getJavaKotlinMethodTraceTaskConfigOrBuilder() {
@@ -798,7 +807,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int JAVA_KOTLIN_METHOD_SAMPLE_TASK_CONFIG_FIELD_NUMBER = 3;
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      * @return Whether the javaKotlinMethodSampleTaskConfig field is set.
      */
     @java.lang.Override
@@ -806,7 +815,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 3;
     }
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      * @return The javaKotlinMethodSampleTaskConfig.
      */
     @java.lang.Override
@@ -817,7 +826,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+     * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfigOrBuilder getJavaKotlinMethodSampleTaskConfigOrBuilder() {
@@ -829,7 +838,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int NATIVE_ALLOCATIONS_TASK_CONFIG_FIELD_NUMBER = 4;
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      * @return Whether the nativeAllocationsTaskConfig field is set.
      */
     @java.lang.Override
@@ -837,7 +846,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 4;
     }
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      * @return The nativeAllocationsTaskConfig.
      */
     @java.lang.Override
@@ -848,7 +857,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+     * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder getNativeAllocationsTaskConfigOrBuilder() {
@@ -1334,7 +1343,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfigOrBuilder> callstackSampleTaskConfigBuilder_;
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        * @return Whether the callstackSampleTaskConfig field is set.
        */
       @java.lang.Override
@@ -1342,7 +1351,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 1;
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        * @return The callstackSampleTaskConfig.
        */
       @java.lang.Override
@@ -1360,7 +1369,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       public Builder setCallstackSampleTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig value) {
         if (callstackSampleTaskConfigBuilder_ == null) {
@@ -1376,7 +1385,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       public Builder setCallstackSampleTaskConfig(
           com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig.Builder builderForValue) {
@@ -1390,7 +1399,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       public Builder mergeCallstackSampleTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig value) {
         if (callstackSampleTaskConfigBuilder_ == null) {
@@ -1412,7 +1421,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       public Builder clearCallstackSampleTaskConfig() {
         if (callstackSampleTaskConfigBuilder_ == null) {
@@ -1431,13 +1440,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig.Builder getCallstackSampleTaskConfigBuilder() {
         return getCallstackSampleTaskConfigFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfigOrBuilder getCallstackSampleTaskConfigOrBuilder() {
@@ -1451,7 +1460,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1;</code>
+       * <code>.android_studio.TaskMetadata.CallstackSampleTaskConfig callstack_sample_task_config = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfigOrBuilder> 
@@ -1475,7 +1484,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfigOrBuilder> javaKotlinMethodTraceTaskConfigBuilder_;
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        * @return Whether the javaKotlinMethodTraceTaskConfig field is set.
        */
       @java.lang.Override
@@ -1483,7 +1492,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 2;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        * @return The javaKotlinMethodTraceTaskConfig.
        */
       @java.lang.Override
@@ -1501,7 +1510,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       public Builder setJavaKotlinMethodTraceTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig value) {
         if (javaKotlinMethodTraceTaskConfigBuilder_ == null) {
@@ -1517,7 +1526,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       public Builder setJavaKotlinMethodTraceTaskConfig(
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig.Builder builderForValue) {
@@ -1531,7 +1540,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       public Builder mergeJavaKotlinMethodTraceTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig value) {
         if (javaKotlinMethodTraceTaskConfigBuilder_ == null) {
@@ -1553,7 +1562,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       public Builder clearJavaKotlinMethodTraceTaskConfig() {
         if (javaKotlinMethodTraceTaskConfigBuilder_ == null) {
@@ -1572,13 +1581,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig.Builder getJavaKotlinMethodTraceTaskConfigBuilder() {
         return getJavaKotlinMethodTraceTaskConfigFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfigOrBuilder getJavaKotlinMethodTraceTaskConfigOrBuilder() {
@@ -1592,7 +1601,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodTraceTaskConfig java_kotlin_method_trace_task_config = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfigOrBuilder> 
@@ -1616,7 +1625,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfigOrBuilder> javaKotlinMethodSampleTaskConfigBuilder_;
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        * @return Whether the javaKotlinMethodSampleTaskConfig field is set.
        */
       @java.lang.Override
@@ -1624,7 +1633,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 3;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        * @return The javaKotlinMethodSampleTaskConfig.
        */
       @java.lang.Override
@@ -1642,7 +1651,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       public Builder setJavaKotlinMethodSampleTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig value) {
         if (javaKotlinMethodSampleTaskConfigBuilder_ == null) {
@@ -1658,7 +1667,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       public Builder setJavaKotlinMethodSampleTaskConfig(
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig.Builder builderForValue) {
@@ -1672,7 +1681,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       public Builder mergeJavaKotlinMethodSampleTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig value) {
         if (javaKotlinMethodSampleTaskConfigBuilder_ == null) {
@@ -1694,7 +1703,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       public Builder clearJavaKotlinMethodSampleTaskConfig() {
         if (javaKotlinMethodSampleTaskConfigBuilder_ == null) {
@@ -1713,13 +1722,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig.Builder getJavaKotlinMethodSampleTaskConfigBuilder() {
         return getJavaKotlinMethodSampleTaskConfigFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfigOrBuilder getJavaKotlinMethodSampleTaskConfigOrBuilder() {
@@ -1733,7 +1742,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3;</code>
+       * <code>.android_studio.TaskMetadata.JavaKotlinMethodSampleTaskConfig java_kotlin_method_sample_task_config = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfigOrBuilder> 
@@ -1757,7 +1766,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder> nativeAllocationsTaskConfigBuilder_;
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        * @return Whether the nativeAllocationsTaskConfig field is set.
        */
       @java.lang.Override
@@ -1765,7 +1774,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 4;
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        * @return The nativeAllocationsTaskConfig.
        */
       @java.lang.Override
@@ -1783,7 +1792,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       public Builder setNativeAllocationsTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig value) {
         if (nativeAllocationsTaskConfigBuilder_ == null) {
@@ -1799,7 +1808,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       public Builder setNativeAllocationsTaskConfig(
           com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig.Builder builderForValue) {
@@ -1813,7 +1822,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       public Builder mergeNativeAllocationsTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig value) {
         if (nativeAllocationsTaskConfigBuilder_ == null) {
@@ -1835,7 +1844,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       public Builder clearNativeAllocationsTaskConfig() {
         if (nativeAllocationsTaskConfigBuilder_ == null) {
@@ -1854,13 +1863,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig.Builder getNativeAllocationsTaskConfigBuilder() {
         return getNativeAllocationsTaskConfigFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder getNativeAllocationsTaskConfigOrBuilder() {
@@ -1874,7 +1883,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4;</code>
+       * <code>.android_studio.TaskMetadata.NativeAllocationsTaskConfig native_allocations_task_config = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder> 
@@ -4222,7 +4231,7 @@ private static final long serialVersionUID = 0L;
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    * @return Whether the taskConfig field is set.
    */
   @java.lang.Override
@@ -4234,7 +4243,7 @@ private static final long serialVersionUID = 0L;
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    * @return The taskConfig.
    */
   @java.lang.Override
@@ -4246,7 +4255,7 @@ private static final long serialVersionUID = 0L;
    * The task configuration used (if the task has a customizable configuration).
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+   * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfigOrBuilder getTaskConfigOrBuilder() {
@@ -5086,7 +5095,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      * @return Whether the taskConfig field is set.
      */
     public boolean hasTaskConfig() {
@@ -5097,7 +5106,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      * @return The taskConfig.
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig getTaskConfig() {
@@ -5112,7 +5121,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public Builder setTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig value) {
       if (taskConfigBuilder_ == null) {
@@ -5132,7 +5141,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public Builder setTaskConfig(
         com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.Builder builderForValue) {
@@ -5150,7 +5159,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public Builder mergeTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig value) {
       if (taskConfigBuilder_ == null) {
@@ -5174,7 +5183,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public Builder clearTaskConfig() {
       if (taskConfigBuilder_ == null) {
@@ -5191,7 +5200,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.Builder getTaskConfigBuilder() {
       bitField0_ |= 0x00000020;
@@ -5203,7 +5212,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfigOrBuilder getTaskConfigOrBuilder() {
       if (taskConfigBuilder_ != null) {
@@ -5218,7 +5227,7 @@ private static final long serialVersionUID = 0L;
      * The task configuration used (if the task has a customizable configuration).
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6;</code>
+     * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig, com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.Builder, com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfigOrBuilder> 

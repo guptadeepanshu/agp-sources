@@ -73,8 +73,13 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
 
     override val minSdkVersion: AndroidVersion by lazy {
-        extension.minSdkPreview?.let { AndroidVersion(it) } ?:
-        AndroidVersion(extension.minSdk ?: 34)
+        extension.minSdkPreview?.let { AndroidVersion(it) }
+            ?: AndroidVersion(extension.minSdk ?: 34)
+    }
+
+    override val targetSdkVersion: AndroidVersion by lazy {
+        extension.targetSdk?.let { AndroidVersion(it) }
+            ?: getCompileSdkApiVersion(extension)
     }
 
     override val bootClasspath: Provider<List<RegularFile>>

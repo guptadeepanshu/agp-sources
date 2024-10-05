@@ -21,6 +21,7 @@ import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.NamedDomainObjectContainer
 
 /**
@@ -33,12 +34,14 @@ abstract class AppExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    isBaseModule: Boolean
+    isBaseModule: Boolean,
+    stats: GradleBuildProject.Builder?
 ) : AbstractAppExtension(
     dslServices,
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    isBaseModule
+    isBaseModule,
+    stats
 )

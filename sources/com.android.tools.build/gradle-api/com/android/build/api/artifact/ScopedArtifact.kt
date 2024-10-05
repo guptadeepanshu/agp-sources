@@ -27,7 +27,7 @@ sealed class ScopedArtifact: Artifact.Single<RegularFile>(FILE, Category.INTERME
      * .class files, result of sources compilation and/or external dependencies depending on the
      * scope; includes users' transformation, but does not include Jacoco instrumentation
      */
-    object CLASSES: ScopedArtifact()
+    object CLASSES: ScopedArtifact(), Appendable, Transformable, Replaceable
 
-    object JAVA_RES: ScopedArtifact()
+    object JAVA_RES: ScopedArtifact(), Appendable, Transformable, Replaceable
 }

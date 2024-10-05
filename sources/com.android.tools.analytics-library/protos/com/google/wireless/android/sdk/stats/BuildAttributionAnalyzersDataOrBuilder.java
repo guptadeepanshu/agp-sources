@@ -31,7 +31,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    * @return Whether the alwaysRunTasksAnalyzerData field is set.
    */
   boolean hasAlwaysRunTasksAnalyzerData();
@@ -40,7 +40,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    * @return The alwaysRunTasksAnalyzerData.
    */
   com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData getAlwaysRunTasksAnalyzerData();
@@ -49,7 +49,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerDataOrBuilder getAlwaysRunTasksAnalyzerDataOrBuilder();
 
@@ -58,7 +58,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    * @return Whether the annotationProcessorsAnalyzerData field is set.
    */
   boolean hasAnnotationProcessorsAnalyzerData();
@@ -67,7 +67,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    * @return The annotationProcessorsAnalyzerData.
    */
   com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData getAnnotationProcessorsAnalyzerData();
@@ -76,7 +76,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerDataOrBuilder getAnnotationProcessorsAnalyzerDataOrBuilder();
 
@@ -85,7 +85,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    * @return Whether the criticalPathAnalyzerData field is set.
    */
   boolean hasCriticalPathAnalyzerData();
@@ -94,7 +94,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    * @return The criticalPathAnalyzerData.
    */
   com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData getCriticalPathAnalyzerData();
@@ -103,7 +103,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CriticalPathAnalyzerDataOrBuilder getCriticalPathAnalyzerDataOrBuilder();
 
@@ -112,7 +112,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    * @return Whether the projectConfigurationAnalyzerData field is set.
    */
   boolean hasProjectConfigurationAnalyzerData();
@@ -121,7 +121,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    * @return The projectConfigurationAnalyzerData.
    */
   com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData getProjectConfigurationAnalyzerData();
@@ -130,7 +130,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerDataOrBuilder getProjectConfigurationAnalyzerDataOrBuilder();
 
@@ -139,7 +139,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    * @return Whether the tasksConfigurationIssuesAnalyzerData field is set.
    */
   boolean hasTasksConfigurationIssuesAnalyzerData();
@@ -148,7 +148,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    * @return The tasksConfigurationIssuesAnalyzerData.
    */
   com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData getTasksConfigurationIssuesAnalyzerData();
@@ -157,7 +157,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerDataOrBuilder getTasksConfigurationIssuesAnalyzerDataOrBuilder();
 
@@ -166,7 +166,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    * @return Whether the configurationCacheCompatibilityData field is set.
    */
   boolean hasConfigurationCacheCompatibilityData();
@@ -175,7 +175,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    * @return The configurationCacheCompatibilityData.
    */
   com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData getConfigurationCacheCompatibilityData();
@@ -184,7 +184,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder getConfigurationCacheCompatibilityDataOrBuilder();
 
@@ -193,7 +193,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    * @return Whether the jetifierUsageData field is set.
    */
   boolean hasJetifierUsageData();
@@ -202,7 +202,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    * @return The jetifierUsageData.
    */
   com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData();
@@ -211,7 +211,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder();
 
@@ -220,7 +220,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    * @return Whether the downloadsAnalysisData field is set.
    */
   boolean hasDownloadsAnalysisData();
@@ -229,7 +229,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    * @return The downloadsAnalysisData.
    */
   com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsAnalysisData();
@@ -238,7 +238,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder();
 
@@ -247,7 +247,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    * @return Whether the taskCategoryIssuesData field is set.
    */
   boolean hasTaskCategoryIssuesData();
@@ -256,7 +256,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    * @return The taskCategoryIssuesData.
    */
   com.google.wireless.android.sdk.stats.TaskCategoryIssuesData getTaskCategoryIssuesData();
@@ -265,7 +265,7 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder();
 }

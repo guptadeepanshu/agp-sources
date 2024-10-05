@@ -48,6 +48,9 @@ interface Bundle {
     @get:Incubating
     val countrySet: BundleCountrySet
 
+    @get:Incubating
+    val aiModelVersion: BundleAiModelVersion
+
     fun abi(action: BundleAbi.() -> Unit)
 
     fun density(action: BundleDensity.() -> Unit)
@@ -66,4 +69,7 @@ interface Bundle {
 
     @Incubating
     fun countrySet(action: BundleCountrySet.() -> Unit)
+
+    @Incubating
+    fun aiModelVersion(action: BundleAiModelVersion.() -> Unit)
 }

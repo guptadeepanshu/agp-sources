@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.gradle.internal.services.DslServices
+import com.android.builder.errors.IssueReporter
 import javax.inject.Inject
 
 open class ComposeOptionsImpl @Inject constructor(private val dslServices: DslServices) :
@@ -30,5 +31,16 @@ open class ComposeOptionsImpl @Inject constructor(private val dslServices: DslSe
     // Live Literal is now replaced by Live Edit.
     // Support for useLiveLiterals in the Compose compiler will be removed
     // in the future.
+    @Deprecated("ComposeOptions.useLiveLiterals is deprecated and will be removed in AGP 9.0.")
     override var useLiveLiterals: Boolean = false
+        set(value) {
+            dslServices.issueReporter.reportWarning(
+                IssueReporter.Type.GENERIC,
+                """
+                ComposeOptions.useLiveLiterals is deprecated and will be removed in AGP 9.0.
+                The option is currently disabled by default. Enabling it may cause unexpected behavior in Android Studio.
+                """.trimIndent()
+            )
+            field = value
+        }
 }

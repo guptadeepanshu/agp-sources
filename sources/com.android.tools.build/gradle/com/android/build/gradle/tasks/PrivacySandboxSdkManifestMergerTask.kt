@@ -36,7 +36,9 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -46,15 +48,19 @@ import java.io.File
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTask() {
 
-    @get: InputFile
+    @get:InputFile
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val mainManifestFile: RegularFileProperty
+
+    @get:Input
+    abstract val targetSdkVersion: Property<String>
 
     abstract class PrivacySandboxManifestMergerParams: ProfileAwareWorkAction.Parameters() {
         abstract val mainAndroidManifest: RegularFileProperty
         abstract val dependencies: MapProperty<String, File>
         abstract val namespace: Property<String>
         abstract val minSdkVersion: Property<String>
+        abstract val targetSdkVersion: Property<String>
         abstract val outMergedManifestLocation: RegularFileProperty
         abstract val reportFile: RegularFileProperty
     }
@@ -77,7 +83,7 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
                         versionCode = null,
                         versionName = null,
                         minSdkVersion = minSdkVersion.get(),
-                        targetSdkVersion = null,
+                        targetSdkVersion = targetSdkVersion.get(),
                         maxSdkVersion = null,
                         testOnly = false,
                         extractNativeLibs = null,
@@ -108,6 +114,7 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
             params.dependencies.set(identifierToManifestDependencyFile)
             params.namespace.set(namespace)
             params.minSdkVersion.set(minSdkVersion)
+            params.targetSdkVersion.setDisallowChanges(targetSdkVersion)
             params.outMergedManifestLocation.set(mergedFusedLibraryManifest)
             params.reportFile.set(reportFile)
             params.mainAndroidManifest.set(mainManifestFile)
@@ -151,6 +158,7 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
             )
             task.libraryManifests.set(libraryManifests)
             task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiString)
+            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.apiString)
             task.namespace.setDisallowChanges(creationConfig.extension.bundle.applicationId)
             task.tmpDir.setDisallowChanges(
                     creationConfig.layout.buildDirectory.dir("tmp/FusedLibraryManifestMerger")

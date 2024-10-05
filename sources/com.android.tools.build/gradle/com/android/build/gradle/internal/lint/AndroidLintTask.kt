@@ -22,6 +22,7 @@ import com.android.SdkConstants.VALUE_TRUE
 import com.android.Version
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HasUnitTest
 import com.android.build.api.variant.HasDeviceTests
 import com.android.build.api.variant.HasTestFixtures
@@ -731,7 +732,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 )
 
                 // Add android test lint models and partial results
-                if ((creationConfig as? HasDeviceTests)?.deviceTests?.singleOrNull() != null
+                if ((creationConfig as? HasDeviceTests)?.deviceTests?.get(DeviceTestBuilder.ANDROID_TEST_TYPE) != null
                     && ignoreTestSources.not()) {
                     task.nestedComponentLintModels.from(
                         creationConfig.artifacts.get(ANDROID_TEST_LINT_MODEL)
@@ -776,7 +777,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             task.dependencyPartialResults.disallowChanges()
             task.nestedComponentLintModels.disallowChanges()
             task.nestedComponentPartialResults.disallowChanges()
-            task.lintTool.initialize(creationConfig.services, task.name)
+            task.lintTool.initialize(creationConfig.services, task)
             if (autoFix) {
                 task.outputs.upToDateWhen {
                     it.logger.debug("Lint fix task potentially modifies sources so cannot be up-to-date")
@@ -931,7 +932,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         }
         this.lintFixBuildService.disallowChanges()
         this.checkOnly.setDisallowChanges(lintOptions.checkOnly)
-        this.lintTool.initialize(taskCreationServices, this.name)
+        this.lintTool.initialize(taskCreationServices, this)
         this.projectInputs
             .initializeForStandalone(project, javaPluginExtension, lintOptions, lintMode)
         // Workaround for b/193244776 - Ensure the task runs if a baseline file is set and the file

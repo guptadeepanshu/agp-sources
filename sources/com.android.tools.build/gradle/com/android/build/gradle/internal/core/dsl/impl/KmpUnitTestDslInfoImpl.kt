@@ -18,6 +18,8 @@ package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.variant.DeviceTest
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.KmpVariantDslInfo
@@ -94,7 +96,9 @@ class KmpUnitTestDslInfoImpl(
     override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> =
         (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions?.let {
             listOf(
-                ComponentDslInfo.DslDefinedDeviceTest(it.enableCoverage)
+                ComponentDslInfo.DslDefinedDeviceTest(
+                    DeviceTestBuilder.Companion.ANDROID_TEST_TYPE,
+                    it.enableCoverage)
             )
         } ?: listOf()
 }

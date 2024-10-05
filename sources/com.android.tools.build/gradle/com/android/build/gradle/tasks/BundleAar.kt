@@ -49,6 +49,7 @@ import org.gradle.api.tasks.bundling.Zip
 import org.gradle.api.tasks.bundling.ZipEntryCompression
 import org.gradle.work.DisableCachingByDefault
 import java.util.Locale
+import java.util.concurrent.Callable
 
 /** Custom Zip task to allow archive name to be set lazily. */
 @DisableCachingByDefault
@@ -155,6 +156,7 @@ abstract class BundleAar : Zip(), VariantTask {
                 artifacts.get(InternalArtifactType.PACKAGED_RES),
                 prependToCopyPath(SdkConstants.FD_RES)
             )
+
             if (!creationConfig.global.namespacedAndroidResources) {
                 // In non-namespaced projects bundle the library manifest straight to the AAR.
                 task.from(artifacts.get(SingleArtifact.MERGED_MANIFEST))
@@ -165,10 +167,16 @@ abstract class BundleAar : Zip(), VariantTask {
                     InternalArtifactType.NON_NAMESPACED_LIBRARY_MANIFEST))
                 task.from(artifacts.get(InternalArtifactType.RES_STATIC_LIBRARY))
             }
+
             if (buildFeatures.androidResources) {
                 task.from(artifacts.get(InternalArtifactType.PUBLIC_RES))
-                task.from(artifacts.get(InternalArtifactType.NAVIGATION_JSON_FOR_AAR))
+
+                task.from(Callable {
+                    artifacts.get(InternalArtifactType.NAVIGATION_JSON_FOR_AAR)
+                        .takeIf { it.isPresent }
+                })
             }
+
             task.from(artifacts.get(InternalArtifactType.AAR_MAIN_JAR))
             task.from(
                 artifacts.get(InternalArtifactType.AAR_LIBS_DIRECTORY),

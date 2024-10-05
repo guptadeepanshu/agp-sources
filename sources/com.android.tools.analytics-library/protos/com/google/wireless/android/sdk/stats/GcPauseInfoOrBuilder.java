@@ -31,7 +31,7 @@ public interface GcPauseInfoOrBuilder extends
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    * @return Whether the pauseTimesMs field is set.
    */
   boolean hasPauseTimesMs();
@@ -40,7 +40,7 @@ public interface GcPauseInfoOrBuilder extends
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    * @return The pauseTimesMs.
    */
   com.google.wireless.android.sdk.stats.Histogram getPauseTimesMs();
@@ -49,7 +49,7 @@ public interface GcPauseInfoOrBuilder extends
    * Distribution of pause times for this collector
    * </pre>
    *
-   * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
+   * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HistogramOrBuilder getPauseTimesMsOrBuilder();
 }

@@ -44,4 +44,9 @@ interface AssetPackBundleExtension {
     val countrySet: BundleCountrySet
     @Incubating
     fun countrySet(action: BundleCountrySet.() -> Unit)
+
+    @get:Incubating
+    val aiModelVersion: BundleAiModelVersion
+    @Incubating
+    fun aiModelVersion(action: BundleAiModelVersion.() -> Unit)
 }

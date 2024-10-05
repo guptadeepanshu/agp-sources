@@ -4259,7 +4259,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    * @return Whether the uiFreeze field is set.
    */
   @java.lang.Override
@@ -4271,7 +4271,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    * @return The uiFreeze.
    */
   @java.lang.Override
@@ -4283,7 +4283,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about current UI freeze
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+   * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreezeOrBuilder getUiFreezeOrBuilder() {
@@ -4297,7 +4297,7 @@ private static final long serialVersionUID = 0L;
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    * @return Whether the exit field is set.
    */
   @java.lang.Override
@@ -4309,7 +4309,7 @@ private static final long serialVersionUID = 0L;
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    * @return The exit.
    */
   @java.lang.Override
@@ -4321,7 +4321,7 @@ private static final long serialVersionUID = 0L;
    * Additional information how this/previous session terminated
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExitOrBuilder getExitOrBuilder() {
@@ -4335,7 +4335,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    * @return Whether the memory field is set.
    */
   @java.lang.Override
@@ -4347,7 +4347,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    * @return The memory.
    */
   @java.lang.Override
@@ -4359,7 +4359,7 @@ private static final long serialVersionUID = 0L;
    * Additional information about memory events
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SystemHealthEvent.MemoryOrBuilder getMemoryOrBuilder() {
@@ -4373,7 +4373,7 @@ private static final long serialVersionUID = 0L;
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    * @return Whether the exception field is set.
    */
   @java.lang.Override
@@ -4385,7 +4385,7 @@ private static final long serialVersionUID = 0L;
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    * @return The exception.
    */
   @java.lang.Override
@@ -4397,7 +4397,7 @@ private static final long serialVersionUID = 0L;
    * Exception details
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+   * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder() {
@@ -5015,7 +5015,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      * @return Whether the uiFreeze field is set.
      */
     public boolean hasUiFreeze() {
@@ -5026,7 +5026,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      * @return The uiFreeze.
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze getUiFreeze() {
@@ -5041,7 +5041,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public Builder setUiFreeze(com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze value) {
       if (uiFreezeBuilder_ == null) {
@@ -5061,7 +5061,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public Builder setUiFreeze(
         com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.Builder builderForValue) {
@@ -5079,7 +5079,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public Builder mergeUiFreeze(com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze value) {
       if (uiFreezeBuilder_ == null) {
@@ -5103,7 +5103,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public Builder clearUiFreeze() {
       if (uiFreezeBuilder_ == null) {
@@ -5120,7 +5120,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.Builder getUiFreezeBuilder() {
       bitField0_ |= 0x00000002;
@@ -5132,7 +5132,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreezeOrBuilder getUiFreezeOrBuilder() {
       if (uiFreezeBuilder_ != null) {
@@ -5147,7 +5147,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about current UI freeze
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2;</code>
+     * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze, com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreezeOrBuilder> 
@@ -5171,7 +5171,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      * @return Whether the exit field is set.
      */
     public boolean hasExit() {
@@ -5182,7 +5182,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      * @return The exit.
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit getExit() {
@@ -5197,7 +5197,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public Builder setExit(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit value) {
       if (exitBuilder_ == null) {
@@ -5217,7 +5217,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public Builder setExit(
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.Builder builderForValue) {
@@ -5235,7 +5235,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public Builder mergeExit(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit value) {
       if (exitBuilder_ == null) {
@@ -5259,7 +5259,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public Builder clearExit() {
       if (exitBuilder_ == null) {
@@ -5276,7 +5276,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.Builder getExitBuilder() {
       bitField0_ |= 0x00000004;
@@ -5288,7 +5288,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExitOrBuilder getExitOrBuilder() {
       if (exitBuilder_ != null) {
@@ -5303,7 +5303,7 @@ private static final long serialVersionUID = 0L;
      * Additional information how this/previous session terminated
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.ExitOrBuilder> 
@@ -5327,7 +5327,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      * @return Whether the memory field is set.
      */
     public boolean hasMemory() {
@@ -5338,7 +5338,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      * @return The memory.
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory getMemory() {
@@ -5353,7 +5353,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public Builder setMemory(com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory value) {
       if (memoryBuilder_ == null) {
@@ -5373,7 +5373,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public Builder setMemory(
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.Builder builderForValue) {
@@ -5391,7 +5391,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public Builder mergeMemory(com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory value) {
       if (memoryBuilder_ == null) {
@@ -5415,7 +5415,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public Builder clearMemory() {
       if (memoryBuilder_ == null) {
@@ -5432,7 +5432,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.Builder getMemoryBuilder() {
       bitField0_ |= 0x00000008;
@@ -5444,7 +5444,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.MemoryOrBuilder getMemoryOrBuilder() {
       if (memoryBuilder_ != null) {
@@ -5459,7 +5459,7 @@ private static final long serialVersionUID = 0L;
      * Additional information about memory events
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory, com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.MemoryOrBuilder> 
@@ -5483,7 +5483,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      * @return Whether the exception field is set.
      */
     public boolean hasException() {
@@ -5494,7 +5494,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      * @return The exception.
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception getException() {
@@ -5509,7 +5509,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public Builder setException(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception value) {
       if (exceptionBuilder_ == null) {
@@ -5529,7 +5529,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public Builder setException(
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder builderForValue) {
@@ -5547,7 +5547,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public Builder mergeException(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception value) {
       if (exceptionBuilder_ == null) {
@@ -5571,7 +5571,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public Builder clearException() {
       if (exceptionBuilder_ == null) {
@@ -5588,7 +5588,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder getExceptionBuilder() {
       bitField0_ |= 0x00000010;
@@ -5600,7 +5600,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder getExceptionOrBuilder() {
       if (exceptionBuilder_ != null) {
@@ -5615,7 +5615,7 @@ private static final long serialVersionUID = 0L;
      * Exception details
      * </pre>
      *
-     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5;</code>
+     * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception, com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder, com.google.wireless.android.sdk.stats.SystemHealthEvent.ExceptionOrBuilder> 

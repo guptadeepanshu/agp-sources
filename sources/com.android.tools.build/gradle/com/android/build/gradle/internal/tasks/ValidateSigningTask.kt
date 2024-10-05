@@ -147,7 +147,7 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
      */
     @VisibleForTesting
     fun forceRerun(): Boolean {
-        val storeFile: File? = signingConfigData.map { it.storeFile }.orNull
+        val storeFile: File? = signingConfigData.get().storeFile
         return storeFile == null || !storeFile.isFile
     }
 
@@ -168,6 +168,7 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
         }
 
         override fun configure(task: ValidateSigningTask) {
+            UsesAnalytics.ConfigureAction.configure(task)
             task.signingConfigData.set(SigningConfigData.fromDslSigningConfig(signingConfig))
             task.outputs.upToDateWhen { !task.forceRerun() }
         }

@@ -48,7 +48,7 @@ abstract class UnsafeOutputsTask(reasonToLog: String) : AndroidVariantTask() {
 
     @TaskAction
     fun taskAction() {
-        recordTaskAction(analyticsService.get()) {
+        recordTaskAction {
             doTaskAction()
         }
     }
@@ -69,7 +69,7 @@ abstract class UnsafeOutputsGlobalTask(reasonToLog: String) : AndroidGlobalTask(
 
     @TaskAction
     fun taskAction() {
-        recordTaskAction(analyticsService.get()) {
+        recordTaskAction {
             doTaskAction()
         }
     }

@@ -21,8 +21,8 @@ package com.android.build.gradle.internal.services
 import com.android.SdkConstants
 import com.android.annotations.concurrency.GuardedBy
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
+import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.internal.aapt.v2.Aapt2
@@ -161,12 +161,7 @@ abstract class Aapt2DaemonBuildService : BuildService<Aapt2DaemonBuildService.Pa
  *
  * Use [ProjectServices.initializeAapt2Input] to initialize it.
  */
-interface Aapt2Input {
-    @get:Internal
-    val buildService: Property<Aapt2DaemonBuildService>
-
-    @get:Internal
-    val threadPoolBuildService: Property<Aapt2ThreadPoolBuildService>
+interface Aapt2Input : UsesAapt2DaemonBuildService, UsesAapt2ThreadPoolBuildService {
 
     @get:Input
     val version: Property<String>
@@ -185,17 +180,17 @@ interface Aapt2Input {
 
 @Deprecated("Instead use Aapt2Input.use inside a ProfileAwareWorkAction")
 fun Aapt2Input.registerAaptService(): Aapt2DaemonServiceKey =
-    this.buildService.get().registerAaptService(
+    this.aapt2DaemonBuildService.get().registerAaptService(
         version.get(),
-        buildService.get().getAapt2ExecutablePath(this)
+        aapt2DaemonBuildService.get().getAapt2ExecutablePath(this)
     )
 
 fun Aapt2Input.getErrorFormatMode(): SyncOptions.ErrorFormatMode {
-    return this.buildService.get().parameters.errorFormatMode.get()
+    return this.aapt2DaemonBuildService.get().parameters.errorFormatMode.get()
 }
 
 fun Aapt2Input.getAapt2Executable(): Path {
-    return buildService.get().getAapt2ExecutablePath(this)
+    return aapt2DaemonBuildService.get().getAapt2ExecutablePath(this)
 }
 
 @Deprecated("Use gradle workers with `Aapt2Input.getLeasingAapt2()` directly")
@@ -203,8 +198,8 @@ fun Aapt2Input.use(
     context: ProfileAwareWorkAction.Parameters,
     block: (AsyncResourceProcessor<Aapt2>) -> Unit
 ) {
-    val threadPool = threadPoolBuildService.get().aapt2ThreadPool
-    val daemonBuildService = buildService.get()
+    val threadPool = aapt2ThreadPoolBuildService.get().aapt2ThreadPool
+    val daemonBuildService = aapt2DaemonBuildService.get()
 
     AsyncResourceProcessor(
         owner = context.taskOwner.get(),
@@ -215,7 +210,7 @@ fun Aapt2Input.use(
 }
 
 fun Aapt2Input.getLeasingAapt2(): Aapt2 {
-    return buildService.get().getLeasingAapt2(this)
+    return aapt2DaemonBuildService.get().getLeasingAapt2(this)
 }
 
 /**

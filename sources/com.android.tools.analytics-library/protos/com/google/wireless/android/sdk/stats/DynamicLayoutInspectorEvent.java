@@ -493,7 +493,7 @@ private static final long serialVersionUID = 0L;
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    * @return Whether the session field is set.
    */
   @java.lang.Override
@@ -505,7 +505,7 @@ private static final long serialVersionUID = 0L;
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    * @return The session.
    */
   @java.lang.Override
@@ -517,7 +517,7 @@ private static final long serialVersionUID = 0L;
    * Data for the layout inspector session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSessionOrBuilder getSessionOrBuilder() {
@@ -531,7 +531,7 @@ private static final long serialVersionUID = 0L;
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    * @return Whether the snapshotInfo field is set.
    */
   @java.lang.Override
@@ -543,7 +543,7 @@ private static final long serialVersionUID = 0L;
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    * @return The snapshotInfo.
    */
   @java.lang.Override
@@ -555,7 +555,7 @@ private static final long serialVersionUID = 0L;
    * Additional information that will be available when looking at a snapshot
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfoOrBuilder getSnapshotInfoOrBuilder() {
@@ -569,7 +569,7 @@ private static final long serialVersionUID = 0L;
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    * @return Whether the errorInfo field is set.
    */
   @java.lang.Override
@@ -581,7 +581,7 @@ private static final long serialVersionUID = 0L;
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    * @return The errorInfo.
    */
   @java.lang.Override
@@ -593,7 +593,7 @@ private static final long serialVersionUID = 0L;
    * Extra info for error-related events
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder() {
@@ -607,7 +607,7 @@ private static final long serialVersionUID = 0L;
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    * @return Whether the autoConnectInfo field is set.
    */
   @java.lang.Override
@@ -619,7 +619,7 @@ private static final long serialVersionUID = 0L;
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    * @return The autoConnectInfo.
    */
   @java.lang.Override
@@ -631,7 +631,7 @@ private static final long serialVersionUID = 0L;
    * Extra info about auto connect to foreground process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder() {
@@ -645,7 +645,7 @@ private static final long serialVersionUID = 0L;
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    * @return Whether the transportError field is set.
    */
   @java.lang.Override
@@ -657,7 +657,7 @@ private static final long serialVersionUID = 0L;
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    * @return The transportError.
    */
   @java.lang.Override
@@ -669,7 +669,7 @@ private static final long serialVersionUID = 0L;
    * An error from the transport that prevents Layout Inspector from starting
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder() {
@@ -1290,7 +1290,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      * @return Whether the session field is set.
      */
     public boolean hasSession() {
@@ -1301,7 +1301,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      * @return The session.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession getSession() {
@@ -1316,7 +1316,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public Builder setSession(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession value) {
       if (sessionBuilder_ == null) {
@@ -1336,7 +1336,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public Builder setSession(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession.Builder builderForValue) {
@@ -1354,7 +1354,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public Builder mergeSession(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession value) {
       if (sessionBuilder_ == null) {
@@ -1378,7 +1378,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public Builder clearSession() {
       if (sessionBuilder_ == null) {
@@ -1395,7 +1395,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession.Builder getSessionBuilder() {
       bitField0_ |= 0x00000002;
@@ -1407,7 +1407,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSessionOrBuilder getSessionOrBuilder() {
       if (sessionBuilder_ != null) {
@@ -1422,7 +1422,7 @@ private static final long serialVersionUID = 0L;
      * Data for the layout inspector session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSession session = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSessionOrBuilder> 
@@ -1446,7 +1446,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      * @return Whether the snapshotInfo field is set.
      */
     public boolean hasSnapshotInfo() {
@@ -1457,7 +1457,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      * @return The snapshotInfo.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo getSnapshotInfo() {
@@ -1472,7 +1472,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public Builder setSnapshotInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo value) {
       if (snapshotInfoBuilder_ == null) {
@@ -1492,7 +1492,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public Builder setSnapshotInfo(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.Builder builderForValue) {
@@ -1510,7 +1510,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public Builder mergeSnapshotInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo value) {
       if (snapshotInfoBuilder_ == null) {
@@ -1534,7 +1534,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public Builder clearSnapshotInfo() {
       if (snapshotInfoBuilder_ == null) {
@@ -1551,7 +1551,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.Builder getSnapshotInfoBuilder() {
       bitField0_ |= 0x00000004;
@@ -1563,7 +1563,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfoOrBuilder getSnapshotInfoOrBuilder() {
       if (snapshotInfoBuilder_ != null) {
@@ -1578,7 +1578,7 @@ private static final long serialVersionUID = 0L;
      * Additional information that will be available when looking at a snapshot
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo snapshot_info = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfoOrBuilder> 
@@ -1602,7 +1602,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      * @return Whether the errorInfo field is set.
      */
     public boolean hasErrorInfo() {
@@ -1613,7 +1613,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      * @return The errorInfo.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo getErrorInfo() {
@@ -1628,7 +1628,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public Builder setErrorInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo value) {
       if (errorInfoBuilder_ == null) {
@@ -1648,7 +1648,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public Builder setErrorInfo(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder builderForValue) {
@@ -1666,7 +1666,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public Builder mergeErrorInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo value) {
       if (errorInfoBuilder_ == null) {
@@ -1690,7 +1690,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public Builder clearErrorInfo() {
       if (errorInfoBuilder_ == null) {
@@ -1707,7 +1707,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder getErrorInfoBuilder() {
       bitField0_ |= 0x00000008;
@@ -1719,7 +1719,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder() {
       if (errorInfoBuilder_ != null) {
@@ -1734,7 +1734,7 @@ private static final long serialVersionUID = 0L;
      * Extra info for error-related events
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder> 
@@ -1758,7 +1758,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      * @return Whether the autoConnectInfo field is set.
      */
     public boolean hasAutoConnectInfo() {
@@ -1769,7 +1769,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      * @return The autoConnectInfo.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo getAutoConnectInfo() {
@@ -1784,7 +1784,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public Builder setAutoConnectInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo value) {
       if (autoConnectInfoBuilder_ == null) {
@@ -1804,7 +1804,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public Builder setAutoConnectInfo(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder builderForValue) {
@@ -1822,7 +1822,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public Builder mergeAutoConnectInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo value) {
       if (autoConnectInfoBuilder_ == null) {
@@ -1846,7 +1846,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public Builder clearAutoConnectInfo() {
       if (autoConnectInfoBuilder_ == null) {
@@ -1863,7 +1863,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder getAutoConnectInfoBuilder() {
       bitField0_ |= 0x00000010;
@@ -1875,7 +1875,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder() {
       if (autoConnectInfoBuilder_ != null) {
@@ -1890,7 +1890,7 @@ private static final long serialVersionUID = 0L;
      * Extra info about auto connect to foreground process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder> 
@@ -1914,7 +1914,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      * @return Whether the transportError field is set.
      */
     public boolean hasTransportError() {
@@ -1925,7 +1925,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      * @return The transportError.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError getTransportError() {
@@ -1940,7 +1940,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public Builder setTransportError(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError value) {
       if (transportErrorBuilder_ == null) {
@@ -1960,7 +1960,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public Builder setTransportError(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder builderForValue) {
@@ -1978,7 +1978,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public Builder mergeTransportError(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError value) {
       if (transportErrorBuilder_ == null) {
@@ -2002,7 +2002,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public Builder clearTransportError() {
       if (transportErrorBuilder_ == null) {
@@ -2019,7 +2019,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder getTransportErrorBuilder() {
       bitField0_ |= 0x00000020;
@@ -2031,7 +2031,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder getTransportErrorOrBuilder() {
       if (transportErrorBuilder_ != null) {
@@ -2046,7 +2046,7 @@ private static final long serialVersionUID = 0L;
      * An error from the transport that prevents Layout Inspector from starting
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorTransportError transport_error = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportError.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorTransportErrorOrBuilder> 

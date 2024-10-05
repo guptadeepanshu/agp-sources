@@ -12,7 +12,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    * @return Whether the live field is set.
    */
   boolean hasLive();
@@ -21,7 +21,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    * @return The live.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode getLive();
@@ -30,7 +30,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveModeOrBuilder getLiveOrBuilder();
 
@@ -39,7 +39,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    * @return Whether the rotation field is set.
    */
   boolean hasRotation();
@@ -48,7 +48,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    * @return The rotation.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation getRotation();
@@ -57,7 +57,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotationOrBuilder getRotationOrBuilder();
 
@@ -66,7 +66,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    * @return Whether the memory field is set.
    */
   boolean hasMemory();
@@ -75,7 +75,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    * @return The memory.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory getMemory();
@@ -84,7 +84,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemoryOrBuilder getMemoryOrBuilder();
 
@@ -93,7 +93,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    * @return Whether the compose field is set.
    */
   boolean hasCompose();
@@ -102,7 +102,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    * @return The compose.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose getCompose();
@@ -111,7 +111,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorComposeOrBuilder getComposeOrBuilder();
 
@@ -120,7 +120,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    * @return Whether the system field is set.
    */
   boolean hasSystem();
@@ -129,7 +129,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    * @return The system.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode getSystem();
@@ -138,7 +138,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder getSystemOrBuilder();
 
@@ -147,7 +147,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    * @return Whether the gotoDeclaration field is set.
    */
   boolean hasGotoDeclaration();
@@ -156,7 +156,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    * @return The gotoDeclaration.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration();
@@ -165,7 +165,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder();
 
@@ -174,7 +174,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    * @return Whether the attach field is set.
    */
   boolean hasAttach();
@@ -183,7 +183,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    * @return The attach.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess getAttach();
@@ -192,7 +192,7 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder();
 }

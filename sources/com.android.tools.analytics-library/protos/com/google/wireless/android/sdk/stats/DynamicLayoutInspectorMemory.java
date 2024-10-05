@@ -856,7 +856,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    * @return Whether the initialSnapshot field is set.
    */
   @java.lang.Override
@@ -868,7 +868,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    * @return The initialSnapshot.
    */
   @java.lang.Override
@@ -880,7 +880,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getInitialSnapshotOrBuilder() {
@@ -894,7 +894,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    * @return Whether the largestSnapshot field is set.
    */
   @java.lang.Override
@@ -906,7 +906,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    * @return The largestSnapshot.
    */
   @java.lang.Override
@@ -918,7 +918,7 @@ private static final long serialVersionUID = 0L;
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getLargestSnapshotOrBuilder() {
@@ -1321,7 +1321,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      * @return Whether the initialSnapshot field is set.
      */
     public boolean hasInitialSnapshot() {
@@ -1332,7 +1332,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      * @return The initialSnapshot.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getInitialSnapshot() {
@@ -1347,7 +1347,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public Builder setInitialSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (initialSnapshotBuilder_ == null) {
@@ -1367,7 +1367,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public Builder setInitialSnapshot(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder builderForValue) {
@@ -1385,7 +1385,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public Builder mergeInitialSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (initialSnapshotBuilder_ == null) {
@@ -1409,7 +1409,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public Builder clearInitialSnapshot() {
       if (initialSnapshotBuilder_ == null) {
@@ -1426,7 +1426,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder getInitialSnapshotBuilder() {
       bitField0_ |= 0x00000001;
@@ -1438,7 +1438,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getInitialSnapshotOrBuilder() {
       if (initialSnapshotBuilder_ != null) {
@@ -1453,7 +1453,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the first image rendered
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder> 
@@ -1477,7 +1477,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      * @return Whether the largestSnapshot field is set.
      */
     public boolean hasLargestSnapshot() {
@@ -1488,7 +1488,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      * @return The largestSnapshot.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getLargestSnapshot() {
@@ -1503,7 +1503,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public Builder setLargestSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (largestSnapshotBuilder_ == null) {
@@ -1523,7 +1523,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public Builder setLargestSnapshot(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder builderForValue) {
@@ -1541,7 +1541,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public Builder mergeLargestSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (largestSnapshotBuilder_ == null) {
@@ -1565,7 +1565,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public Builder clearLargestSnapshot() {
       if (largestSnapshotBuilder_ == null) {
@@ -1582,7 +1582,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder getLargestSnapshotBuilder() {
       bitField0_ |= 0x00000002;
@@ -1594,7 +1594,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getLargestSnapshotOrBuilder() {
       if (largestSnapshotBuilder_ != null) {
@@ -1609,7 +1609,7 @@ private static final long serialVersionUID = 0L;
      * Memory snapshot for the image requiring the most memory in the session
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder> 

@@ -98,6 +98,10 @@ interface AndroidGradlePluginProjectFlags {
 
         /** Whether constraints for library components are disabled */
         EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS(false),
+
+        /** Whether data binding is enabled */
+        DATA_BINDING_ENABLED(false),
+
         ;
 
         /**

@@ -16,6 +16,7 @@
 
 package com.android.sdklib.internal.avd;
 
+import static com.android.sdklib.internal.avd.ConfigKey.TAG_IDS;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import com.android.SdkConstants;
@@ -31,6 +32,7 @@ import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.targets.SystemImage;
 import com.android.utils.ILogger;
 
+import com.android.utils.StringHelper;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -166,7 +168,7 @@ public final class AvdInfo {
     }
 
     public ImmutableList<IdDisplay> getTags() {
-        String ids = getProperties().get(ConfigKey.TAG_IDS);
+        String ids = getProperties().get(TAG_IDS);
         if (ids == null) {
             return ImmutableList.of(getTag());
         }
@@ -453,5 +455,11 @@ public final class AvdInfo {
         hashCode = 31 * hashCode + Objects.hashCode(mSystemImage);
 
         return hashCode;
+    }
+
+    /** Checks if the AVD has the given tag in the "tag.ids" property. */
+    public boolean hasTag(@NonNull String tag) {
+        String tags = mProperties.get(TAG_IDS);
+        return tags != null && StringHelper.asSeparatedListContains(tags, tag, ",");
     }
 }

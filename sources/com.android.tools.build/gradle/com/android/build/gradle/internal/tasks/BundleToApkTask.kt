@@ -200,7 +200,7 @@ abstract class BundleToApkTask : NonIncrementalTask() {
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE, task.bundle
             )
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
             if (creationConfig.privacySandboxCreationConfig != null) {
                 task.androidPrivacySandboxSdkArchives.fromDisallowChanges(
                         creationConfig.variantDependencies.getArtifactFileCollection(

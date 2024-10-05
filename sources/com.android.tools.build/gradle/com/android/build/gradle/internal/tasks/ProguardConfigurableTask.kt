@@ -48,7 +48,6 @@ import com.android.build.gradle.internal.tasks.factory.features.OptimizationTask
 import com.android.build.gradle.internal.tasks.factory.features.OptimizationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
@@ -713,7 +712,7 @@ abstract class ProguardConfigurableTask(
         private fun applyInheritedProguardFiles(
             task: ProguardConfigurableTask
         ) {
-            // All -dontwarn rules for test dependen]cies should go in here
+            // All -dontwarn rules for test dependencies should go in here
             task.configurationFiles.apply {
                 from(optimizationCreationConfig.proguardFiles)
                 from(task.libraryKeepRulesFileCollection)

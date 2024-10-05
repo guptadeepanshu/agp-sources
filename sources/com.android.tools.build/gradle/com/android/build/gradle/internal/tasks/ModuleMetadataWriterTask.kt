@@ -77,8 +77,8 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
         val declaration =
             ModuleMetadata(
                 applicationId = applicationId.get(),
-                versionCode = versionCode.orNull?.toString(),
-                versionName = versionName.orNull,
+                versionCode = versionCode.orNull?.toString() ?: "-1",
+                versionName = versionName.orNull ?: "",
                 debuggable = debuggable.get(),
                 abiFilters = abiFilters.get(),
                 ignoreFromInKeepRules = ignoreFromInKeepRules.get(),

@@ -12,7 +12,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the request field is set.
    */
@@ -22,7 +22,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The request.
    */
@@ -32,7 +32,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionRequest request = 1 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionRequestOrBuilder getRequestOrBuilder();
 
@@ -41,7 +41,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the response field is set.
    */
@@ -51,7 +51,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The response.
    */
@@ -61,7 +61,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionResponse response = 2 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionResponseOrBuilder getResponseOrBuilder();
 
@@ -70,7 +70,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the shown field is set.
    */
@@ -80,7 +80,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The shown.
    */
@@ -90,7 +90,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionShown shown = 3 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionShownOrBuilder getShownOrBuilder();
 
@@ -99,7 +99,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the accepted field is set.
    */
@@ -109,7 +109,7 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The accepted.
    */
@@ -119,22 +119,22 @@ public interface SmlCompletionEventOrBuilder extends
    * Historical: Not used starting with Android Studio 2023.2.1.11
    * </pre>
    *
-   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true];</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAccepted accepted = 4 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAcceptedOrBuilder getAcceptedOrBuilder();
 
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    * @return Whether the aggregate field is set.
    */
   boolean hasAggregate();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    * @return The aggregate.
    */
   com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEvent getAggregate();
   /**
-   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5;</code>
+   * <code>.android_studio.SmlCompletionEvent.CompletionAggregateEvent aggregate = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlCompletionEvent.CompletionAggregateEventOrBuilder getAggregateOrBuilder();
 

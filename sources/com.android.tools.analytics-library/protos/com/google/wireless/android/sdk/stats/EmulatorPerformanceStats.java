@@ -206,7 +206,7 @@ private static final long serialVersionUID = 0L;
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    * @return Whether the resourceUsage field is set.
    */
   @java.lang.Override
@@ -218,7 +218,7 @@ private static final long serialVersionUID = 0L;
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    * @return The resourceUsage.
    */
   @java.lang.Override
@@ -230,7 +230,7 @@ private static final long serialVersionUID = 0L;
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResourceUsageOrBuilder getResourceUsageOrBuilder() {
@@ -240,7 +240,7 @@ private static final long serialVersionUID = 0L;
   public static final int LATENCY_STATS_FIELD_NUMBER = 5;
   private com.google.wireless.android.sdk.stats.EmulatorLatencyStats latencyStats_;
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    * @return Whether the latencyStats field is set.
    */
   @java.lang.Override
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    * @return The latencyStats.
    */
   @java.lang.Override
@@ -256,7 +256,7 @@ private static final long serialVersionUID = 0L;
     return latencyStats_ == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.getDefaultInstance() : latencyStats_;
   }
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder getLatencyStatsOrBuilder() {
@@ -1571,7 +1571,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      * @return Whether the resourceUsage field is set.
      */
     public boolean hasResourceUsage() {
@@ -1582,7 +1582,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      * @return The resourceUsage.
      */
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsage getResourceUsage() {
@@ -1597,7 +1597,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public Builder setResourceUsage(com.google.wireless.android.sdk.stats.EmulatorResourceUsage value) {
       if (resourceUsageBuilder_ == null) {
@@ -1617,7 +1617,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public Builder setResourceUsage(
         com.google.wireless.android.sdk.stats.EmulatorResourceUsage.Builder builderForValue) {
@@ -1635,7 +1635,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public Builder mergeResourceUsage(com.google.wireless.android.sdk.stats.EmulatorResourceUsage value) {
       if (resourceUsageBuilder_ == null) {
@@ -1659,7 +1659,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public Builder clearResourceUsage() {
       if (resourceUsageBuilder_ == null) {
@@ -1676,7 +1676,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.Builder getResourceUsageBuilder() {
       bitField0_ |= 0x00000008;
@@ -1688,7 +1688,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsageOrBuilder getResourceUsageOrBuilder() {
       if (resourceUsageBuilder_ != null) {
@@ -1703,7 +1703,7 @@ private static final long serialVersionUID = 0L;
      * Resource usage and latency stats.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+     * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorResourceUsage, com.google.wireless.android.sdk.stats.EmulatorResourceUsage.Builder, com.google.wireless.android.sdk.stats.EmulatorResourceUsageOrBuilder> 
@@ -1723,14 +1723,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorLatencyStats, com.google.wireless.android.sdk.stats.EmulatorLatencyStats.Builder, com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder> latencyStatsBuilder_;
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      * @return Whether the latencyStats field is set.
      */
     public boolean hasLatencyStats() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      * @return The latencyStats.
      */
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStats getLatencyStats() {
@@ -1741,7 +1741,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public Builder setLatencyStats(com.google.wireless.android.sdk.stats.EmulatorLatencyStats value) {
       if (latencyStatsBuilder_ == null) {
@@ -1757,7 +1757,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public Builder setLatencyStats(
         com.google.wireless.android.sdk.stats.EmulatorLatencyStats.Builder builderForValue) {
@@ -1771,7 +1771,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public Builder mergeLatencyStats(com.google.wireless.android.sdk.stats.EmulatorLatencyStats value) {
       if (latencyStatsBuilder_ == null) {
@@ -1791,7 +1791,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public Builder clearLatencyStats() {
       if (latencyStatsBuilder_ == null) {
@@ -1804,7 +1804,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.Builder getLatencyStatsBuilder() {
       bitField0_ |= 0x00000010;
@@ -1812,7 +1812,7 @@ private static final long serialVersionUID = 0L;
       return getLatencyStatsFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder getLatencyStatsOrBuilder() {
       if (latencyStatsBuilder_ != null) {
@@ -1823,7 +1823,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+     * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorLatencyStats, com.google.wireless.android.sdk.stats.EmulatorLatencyStats.Builder, com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder> 

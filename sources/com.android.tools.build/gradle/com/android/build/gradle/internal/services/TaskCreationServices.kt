@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.internal.lint.LintFromMaven
 import org.gradle.api.Action
 import org.gradle.api.Named
+import org.gradle.api.Task
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.ConfigurableFileCollection
@@ -53,7 +54,7 @@ interface TaskCreationServices: BaseServices {
     fun <K, V> mapProperty(keyType: Class<K>, valueType: Class<V>): MapProperty<K, V>
     fun fileCollection(): ConfigurableFileCollection
     fun fileCollection(vararg files: Any): ConfigurableFileCollection
-    fun initializeAapt2Input(aapt2Input: Aapt2Input)
+    fun initializeAapt2Input(aapt2Input: Aapt2Input, task: Task)
 
     fun <T> provider(callable: () -> T?): Provider<T>
 

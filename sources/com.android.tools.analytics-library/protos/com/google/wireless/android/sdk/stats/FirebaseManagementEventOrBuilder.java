@@ -55,7 +55,7 @@ public interface FirebaseManagementEventOrBuilder extends
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    * @return Whether the createFirebaseProjectDetails field is set.
    */
   boolean hasCreateFirebaseProjectDetails();
@@ -64,7 +64,7 @@ public interface FirebaseManagementEventOrBuilder extends
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    * @return The createFirebaseProjectDetails.
    */
   com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails getCreateFirebaseProjectDetails();
@@ -73,7 +73,7 @@ public interface FirebaseManagementEventOrBuilder extends
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetailsOrBuilder getCreateFirebaseProjectDetailsOrBuilder();
 }

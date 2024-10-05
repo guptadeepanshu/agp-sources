@@ -53,5 +53,5 @@ interface InstrumentedTestCreationConfig: ApkCreationConfig, TestCreationConfig 
     val functionalTest: Provider<Boolean>
 
     /** Gets the test label for this variant  */
-    val testLabel: Provider<String?>
+    val testLabel: Provider<String>
 }

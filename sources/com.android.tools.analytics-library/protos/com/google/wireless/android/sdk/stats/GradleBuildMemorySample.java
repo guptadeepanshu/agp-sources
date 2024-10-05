@@ -144,7 +144,7 @@ private static final long serialVersionUID = 0L;
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    * @return Whether the javaProcessStats field is set.
    */
   @java.lang.Override
@@ -156,7 +156,7 @@ private static final long serialVersionUID = 0L;
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    * @return The javaProcessStats.
    */
   @java.lang.Override
@@ -168,7 +168,7 @@ private static final long serialVersionUID = 0L;
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder() {
@@ -808,7 +808,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      * @return Whether the javaProcessStats field is set.
      */
     public boolean hasJavaProcessStats() {
@@ -819,7 +819,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      * @return The javaProcessStats.
      */
     public com.google.wireless.android.sdk.stats.JavaProcessStats getJavaProcessStats() {
@@ -834,7 +834,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public Builder setJavaProcessStats(com.google.wireless.android.sdk.stats.JavaProcessStats value) {
       if (javaProcessStatsBuilder_ == null) {
@@ -854,7 +854,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public Builder setJavaProcessStats(
         com.google.wireless.android.sdk.stats.JavaProcessStats.Builder builderForValue) {
@@ -872,7 +872,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public Builder mergeJavaProcessStats(com.google.wireless.android.sdk.stats.JavaProcessStats value) {
       if (javaProcessStatsBuilder_ == null) {
@@ -896,7 +896,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public Builder clearJavaProcessStats() {
       if (javaProcessStatsBuilder_ == null) {
@@ -913,7 +913,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JavaProcessStats.Builder getJavaProcessStatsBuilder() {
       bitField0_ |= 0x00000008;
@@ -925,7 +925,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder() {
       if (javaProcessStatsBuilder_ != null) {
@@ -940,7 +940,7 @@ private static final long serialVersionUID = 0L;
      * More detailed stats on the current running java process.
      * </pre>
      *
-     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+     * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.JavaProcessStats, com.google.wireless.android.sdk.stats.JavaProcessStats.Builder, com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder> 

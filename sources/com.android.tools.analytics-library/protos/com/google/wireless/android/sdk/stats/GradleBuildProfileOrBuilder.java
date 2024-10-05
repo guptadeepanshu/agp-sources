@@ -392,7 +392,7 @@ public interface GradleBuildProfileOrBuilder extends
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    * @return Whether the instantRunStatus field is set.
    */
   boolean hasInstantRunStatus();
@@ -401,7 +401,7 @@ public interface GradleBuildProfileOrBuilder extends
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    * @return The instantRunStatus.
    */
   com.google.wireless.android.sdk.stats.InstantRunStatus getInstantRunStatus();
@@ -410,7 +410,7 @@ public interface GradleBuildProfileOrBuilder extends
    * For instant run builds: the resulting instant run build info.
    * </pre>
    *
-   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
+   * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.InstantRunStatusOrBuilder getInstantRunStatusOrBuilder();
 

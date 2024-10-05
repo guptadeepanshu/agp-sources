@@ -24,13 +24,13 @@ import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.meta.DetailsTypes;
-import com.google.common.base.Objects;
+
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Comparators;
 import com.google.common.collect.ImmutableList;
+
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * {@link ISystemImage} based on a {@link RepoPackage} (either system image, platform, or addon).
@@ -48,10 +48,10 @@ public class SystemImage implements ISystemImage {
      */
     private final IdDisplay mVendor;
 
-    /** Native ABIs (x86, armeabi-v7a, etc) of the system image. */
+    /** Native ABIs (x86, armeabi-v7a, etc.) of the system image. */
     private final List<String> mAbis;
 
-    /** Translated ABIs (x86, armeabi-v7a, etc) of the system image. */
+    /** Translated ABIs (x86, armeabi-v7a, etc.) of the system image. */
     private final List<String> mTranslatedAbis;
 
     /** Skins contained in this system image, or in the platform/addon it's based on. */
@@ -159,39 +159,39 @@ public class SystemImage implements ISystemImage {
     }
 
     @Override
-    public int compareTo(@NonNull ISystemImage o) {
-        return Comparator.comparing(ISystemImage::getTag)
-                .thenComparing(
-                        ISystemImage::getAbiTypes,
-                        Comparators.lexicographical(Comparator.<String>naturalOrder()))
-                .thenComparing(
-                        ISystemImage::getTranslatedAbiTypes,
-                        Comparators.lexicographical(Comparator.<String>naturalOrder()))
-                .thenComparing(
-                        ISystemImage::getAddonVendor, Comparator.nullsFirst(IdDisplay::compareTo))
-                .thenComparing(ISystemImage::getLocation)
-                .thenComparing(
-                        ISystemImage::getSkins,
-                        Comparators.lexicographical(Comparator.<Path>naturalOrder()))
-                .compare(this, o);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof SystemImage)) {
+    public boolean equals(@Nullable Object object) {
+        if (!(object instanceof SystemImage)) {
             return false;
         }
-        return compareTo((SystemImage) o) == 0;
+
+        SystemImage image = (SystemImage) object;
+
+        return mLocation.equals(image.mLocation)
+                && mTags.equals(image.mTags)
+                && Objects.equals(mVendor, image.mVendor)
+                && mAbis.equals(image.mAbis)
+                && mTranslatedAbis.equals(image.mTranslatedAbis)
+                && mSkins.equals(image.mSkins)
+                && mAndroidVersion.equals(image.mAndroidVersion)
+                && mPackage.equals(image.mPackage);
     }
 
     public int hashCode() {
-        return Objects.hashCode(
-                getTag(),
-                getAbiTypes(),
-                getTranslatedAbiTypes(),
-                getAddonVendor(),
-                getLocation(),
-                getSkins());
+        return Objects.hash(
+                mLocation,
+                mTags,
+                mVendor,
+                mAbis,
+                mTranslatedAbis,
+                mSkins,
+                mAndroidVersion,
+                mPackage);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return mPackage.getDisplayName();
     }
 
     @NonNull

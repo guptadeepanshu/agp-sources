@@ -30,7 +30,7 @@ abstract class NewIncrementalTask: AndroidVariantTask() {
 
     @TaskAction
     fun taskAction(inputChanges: InputChanges) {
-        recordTaskAction(analyticsService.get()) {
+        recordTaskAction {
             if (!inputChanges.isIncremental) {
                 // manually remove all outputs (b/169701279)
                 cleanUpTaskOutputs()

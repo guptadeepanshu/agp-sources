@@ -50,7 +50,7 @@ public interface EmulatorQuickbootLoadOrBuilder extends
    * Information about loaded snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    * @return Whether the snapshot field is set.
    */
   boolean hasSnapshot();
@@ -59,7 +59,7 @@ public interface EmulatorQuickbootLoadOrBuilder extends
    * Information about loaded snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    * @return The snapshot.
    */
   com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot();
@@ -68,7 +68,7 @@ public interface EmulatorQuickbootLoadOrBuilder extends
    * Information about loaded snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder();
 

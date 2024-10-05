@@ -55,7 +55,7 @@ private static final long serialVersionUID = 0L;
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    * @return Whether the gles1Usages field is set.
    */
   @java.lang.Override
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    * @return The gles1Usages.
    */
   @java.lang.Override
@@ -79,7 +79,7 @@ private static final long serialVersionUID = 0L;
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsagesOrBuilder getGles1UsagesOrBuilder() {
@@ -93,7 +93,7 @@ private static final long serialVersionUID = 0L;
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    * @return Whether the gles30Usages field is set.
    */
   @java.lang.Override
@@ -105,7 +105,7 @@ private static final long serialVersionUID = 0L;
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    * @return The gles30Usages.
    */
   @java.lang.Override
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESv30UsagesOrBuilder getGles30UsagesOrBuilder() {
@@ -520,7 +520,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      * @return Whether the gles1Usages field is set.
      */
     public boolean hasGles1Usages() {
@@ -531,7 +531,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      * @return The gles1Usages.
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages getGles1Usages() {
@@ -546,7 +546,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public Builder setGles1Usages(com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages value) {
       if (gles1UsagesBuilder_ == null) {
@@ -566,7 +566,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public Builder setGles1Usages(
         com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.Builder builderForValue) {
@@ -584,7 +584,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public Builder mergeGles1Usages(com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages value) {
       if (gles1UsagesBuilder_ == null) {
@@ -608,7 +608,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public Builder clearGles1Usages() {
       if (gles1UsagesBuilder_ == null) {
@@ -625,7 +625,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.Builder getGles1UsagesBuilder() {
       bitField0_ |= 0x00000001;
@@ -637,7 +637,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsagesOrBuilder getGles1UsagesOrBuilder() {
       if (gles1UsagesBuilder_ != null) {
@@ -652,7 +652,7 @@ private static final long serialVersionUID = 0L;
      * GLES 1 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+     * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages, com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.Builder, com.google.wireless.android.sdk.stats.EmulatorGLEScmUsagesOrBuilder> 
@@ -676,7 +676,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      * @return Whether the gles30Usages field is set.
      */
     public boolean hasGles30Usages() {
@@ -687,7 +687,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      * @return The gles30Usages.
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages getGles30Usages() {
@@ -702,7 +702,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public Builder setGles30Usages(com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages value) {
       if (gles30UsagesBuilder_ == null) {
@@ -722,7 +722,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public Builder setGles30Usages(
         com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.Builder builderForValue) {
@@ -740,7 +740,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public Builder mergeGles30Usages(com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages value) {
       if (gles30UsagesBuilder_ == null) {
@@ -764,7 +764,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public Builder clearGles30Usages() {
       if (gles30UsagesBuilder_ == null) {
@@ -781,7 +781,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.Builder getGles30UsagesBuilder() {
       bitField0_ |= 0x00000002;
@@ -793,7 +793,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorGLESv30UsagesOrBuilder getGles30UsagesOrBuilder() {
       if (gles30UsagesBuilder_ != null) {
@@ -808,7 +808,7 @@ private static final long serialVersionUID = 0L;
      * GLES 3.0 usage report
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+     * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages, com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.Builder, com.google.wireless.android.sdk.stats.EmulatorGLESv30UsagesOrBuilder> 

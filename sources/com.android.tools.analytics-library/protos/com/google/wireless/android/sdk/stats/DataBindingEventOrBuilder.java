@@ -50,7 +50,7 @@ public interface DataBindingEventOrBuilder extends
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    * @return Whether the pollMetadata field is set.
    */
   boolean hasPollMetadata();
@@ -59,7 +59,7 @@ public interface DataBindingEventOrBuilder extends
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    * @return The pollMetadata.
    */
   com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata getPollMetadata();
@@ -68,7 +68,7 @@ public interface DataBindingEventOrBuilder extends
    * Set if |type| is |DATA_BINDING_BUILD_EVENT| or |DATA_BINDING_SYNC_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
+   * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadataOrBuilder getPollMetadataOrBuilder();
 
@@ -77,7 +77,7 @@ public interface DataBindingEventOrBuilder extends
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    * @return Whether the viewBindingMetadata field is set.
    */
   boolean hasViewBindingMetadata();
@@ -86,7 +86,7 @@ public interface DataBindingEventOrBuilder extends
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    * @return The viewBindingMetadata.
    */
   com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata getViewBindingMetadata();
@@ -95,7 +95,7 @@ public interface DataBindingEventOrBuilder extends
    * Collects view binding layout count when |type| = |DATA_BINDING_BUILD_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
+   * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadataOrBuilder getViewBindingMetadataOrBuilder();
 }

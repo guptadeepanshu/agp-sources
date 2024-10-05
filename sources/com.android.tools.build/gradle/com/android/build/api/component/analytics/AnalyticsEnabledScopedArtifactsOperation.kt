@@ -16,6 +16,7 @@
 
 package com.android.build.api.component.analytics
 
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.ScopedArtifactsOperation
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
@@ -36,7 +37,10 @@ open class AnalyticsEnabledScopedArtifactsOperation<T: Task> @Inject constructor
     val objectFactory: ObjectFactory,
 ): ScopedArtifactsOperation<T> {
 
-    override fun toAppend(to: ScopedArtifact, with: (T) -> Property<out FileSystemLocation>) {
+    override fun <ArtifactT> toAppend(
+        to: ArtifactT,
+        with: (T) -> Property<out FileSystemLocation>
+    ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Appendable {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.SCOPED_ARTIFACTS_APPEND_VALUE
         delegate.toAppend(to, with)
@@ -52,18 +56,21 @@ open class AnalyticsEnabledScopedArtifactsOperation<T: Task> @Inject constructor
         delegate.toGet(type, inputJars, inputDirectories)
     }
 
-    override fun toTransform(
-        type: ScopedArtifact,
+    override fun <ArtifactT> toTransform(
+        type: ArtifactT,
         inputJars: (T) -> ListProperty<RegularFile>,
         inputDirectories: (T) -> ListProperty<Directory>,
         into: (T) -> RegularFileProperty
-    ) {
+    ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Transformable {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.SCOPED_ARTIFACTS_TO_TRANSFORM_VALUE
         delegate.toTransform(type, inputJars, inputDirectories, into)
     }
 
-    override fun toReplace(type: ScopedArtifact, into: (T) -> RegularFileProperty) {
+    override fun <ArtifactT> toReplace(
+        type: ArtifactT,
+        into: (T) -> RegularFileProperty
+    ) where ArtifactT : ScopedArtifact, ArtifactT : Artifact.Replaceable {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.SCOPED_ARTIFACTS_TO_REPLACE_VALUE
         delegate.toReplace(type, into)

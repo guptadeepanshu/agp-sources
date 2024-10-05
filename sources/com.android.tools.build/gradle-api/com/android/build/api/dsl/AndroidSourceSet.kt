@@ -143,6 +143,13 @@ interface AndroidSourceSet : Named {
     val annotationProcessorConfigurationName: String
 
     /**
+     * Returns the name of the kapt annotation processing tool classpath for this source set.
+     *
+     * This configuration is only created when built-in KAPT support is enabled.
+     */
+    val kaptConfigurationName: String
+
+    /**
      * Sets the root of the source sets to a given path.
      *
      * All entries of the source-set are located under this root directory.

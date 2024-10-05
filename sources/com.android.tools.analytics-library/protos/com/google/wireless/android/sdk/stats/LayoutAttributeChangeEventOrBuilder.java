@@ -12,7 +12,7 @@ public interface LayoutAttributeChangeEventOrBuilder extends
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    * @return Whether the attribute field is set.
    */
   boolean hasAttribute();
@@ -21,7 +21,7 @@ public interface LayoutAttributeChangeEventOrBuilder extends
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    * @return The attribute.
    */
   com.google.wireless.android.sdk.stats.AndroidAttribute getAttribute();
@@ -30,7 +30,7 @@ public interface LayoutAttributeChangeEventOrBuilder extends
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAttributeOrBuilder();
 

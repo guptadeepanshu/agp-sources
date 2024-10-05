@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+@file:JvmName("Skins")
 package com.android.sdklib.internal.avd
 
+import com.android.sdklib.devices.Device
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -43,18 +46,24 @@ data class OnDiskSkin(val path: Path) : Skin() {
 private val GENERIC_SKIN_PATTERN = "(\\d+)x(\\d+)(x\\d+)?".toRegex()
 
 fun skinFromConfig(config: Map<String, String>): Skin? {
-  val path = config[ConfigKey.SKIN_PATH]
-  if (path != null && path != "_no_skin") {
-    return OnDiskSkin(Paths.get(path))
-  }
-
   val name = config[ConfigKey.SKIN_NAME]
-  if (name != null) {
+  val path = config[ConfigKey.SKIN_PATH]
+
+  if (name != null && (path == null || name == path)) {
     val match = GENERIC_SKIN_PATTERN.matchEntire(name)
     if (match != null) {
       return GenericSkin(match.groupValues[1].toInt(), match.groupValues[2].toInt())
     }
   }
 
+  if (path != null && path != "_no_skin") {
+    return OnDiskSkin(Paths.get(path))
+  }
+
   return null
 }
+
+fun Device.defaultGenericSkin(): Skin? =
+    getScreenSize(defaultState.orientation)?.let {
+        GenericSkin(it.width, it.height)
+    }

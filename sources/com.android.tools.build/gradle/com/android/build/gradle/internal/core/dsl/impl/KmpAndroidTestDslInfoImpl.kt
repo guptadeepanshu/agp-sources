@@ -156,10 +156,12 @@ class KmpAndroidTestDslInfoImpl(
             } // else return the value from the Manifest
                 ?: dataProvider.manifestData.map { it.functionalTest ?: DEFAULT_FUNCTIONAL_TEST }
 
-    override val testLabel: Provider<String?>
+    override val testLabel: Provider<String>
         get() {
             // there is actually no DSL value for this.
-            return dataProvider.manifestData.map { it.testLabel }
+            return dataProvider.manifestData.map {
+                it.testLabel ?: ""
+            }
         }
 
     // Unsupported features

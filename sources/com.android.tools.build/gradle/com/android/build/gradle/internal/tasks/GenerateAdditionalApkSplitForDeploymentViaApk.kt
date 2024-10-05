@@ -230,8 +230,8 @@ abstract class GenerateAdditionalApkSplitForDeploymentViaApk : NonIncrementalTas
             )
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
             task.versionCode.setDisallowChanges(creationConfig.outputs.getMainSplit().versionCode)
-            task.androidJarInput.initialize(creationConfig)
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            task.androidJarInput.initialize(task, creationConfig)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
             task.apkSigningConfig.setDisallowChanges(SigningConfigDataProvider.create(creationConfig))
             val defaultDebugConfig: Provider<SigningConfigData> = getBuildService(
                     creationConfig.services.buildServiceRegistry,

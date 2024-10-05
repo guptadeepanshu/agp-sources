@@ -71,7 +71,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the targetFileType field is set.
      */
@@ -81,7 +81,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The targetFileType.
      */
@@ -91,7 +91,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTargetFileTypeOrBuilder();
 
@@ -100,7 +100,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the testFileType field is set.
      */
@@ -110,7 +110,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The testFileType.
      */
@@ -120,7 +120,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTestFileTypeOrBuilder();
 
@@ -243,7 +243,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the targetFileType field is set.
      */
@@ -256,7 +256,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The targetFileType.
      */
@@ -269,7 +269,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of target / selected file.
      * </pre>
      *
-     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTargetFileTypeOrBuilder() {
@@ -283,7 +283,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the testFileType field is set.
      */
@@ -296,7 +296,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The testFileType.
      */
@@ -309,7 +309,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated. FileType of generated test file
      * </pre>
      *
-     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTestFileTypeOrBuilder() {
@@ -923,7 +923,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the targetFileType field is set.
        */
@@ -935,7 +935,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The targetFileType.
        */
@@ -951,7 +951,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setTargetFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (targetFileTypeBuilder_ == null) {
@@ -971,7 +971,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setTargetFileType(
           com.google.wireless.android.sdk.stats.FileType.Builder builderForValue) {
@@ -989,7 +989,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeTargetFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (targetFileTypeBuilder_ == null) {
@@ -1013,7 +1013,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearTargetFileType() {
         if (targetFileTypeBuilder_ == null) {
@@ -1030,7 +1030,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType.Builder getTargetFileTypeBuilder() {
         bitField0_ |= 0x00000002;
@@ -1042,7 +1042,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTargetFileTypeOrBuilder() {
         if (targetFileTypeBuilder_ != null) {
@@ -1057,7 +1057,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of target / selected file.
        * </pre>
        *
-       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.FileType, com.google.wireless.android.sdk.stats.FileType.Builder, com.google.wireless.android.sdk.stats.FileTypeOrBuilder> 
@@ -1081,7 +1081,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the testFileType field is set.
        */
@@ -1093,7 +1093,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The testFileType.
        */
@@ -1109,7 +1109,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setTestFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (testFileTypeBuilder_ == null) {
@@ -1129,7 +1129,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setTestFileType(
           com.google.wireless.android.sdk.stats.FileType.Builder builderForValue) {
@@ -1147,7 +1147,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeTestFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (testFileTypeBuilder_ == null) {
@@ -1171,7 +1171,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearTestFileType() {
         if (testFileTypeBuilder_ == null) {
@@ -1188,7 +1188,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType.Builder getTestFileTypeBuilder() {
         bitField0_ |= 0x00000004;
@@ -1200,7 +1200,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileTypeOrBuilder getTestFileTypeOrBuilder() {
         if (testFileTypeBuilder_ != null) {
@@ -1215,7 +1215,7 @@ private static final long serialVersionUID = 0L;
        * Deprecated. FileType of generated test file
        * </pre>
        *
-       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true];</code>
+       * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.FileType, com.google.wireless.android.sdk.stats.FileType.Builder, com.google.wireless.android.sdk.stats.FileTypeOrBuilder> 
@@ -2099,7 +2099,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int REQUEST_FIELD_NUMBER = 1;
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    * @return Whether the request field is set.
    */
   @java.lang.Override
@@ -2107,7 +2107,7 @@ private static final long serialVersionUID = 0L;
     return transformCase_ == 1;
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    * @return The request.
    */
   @java.lang.Override
@@ -2118,7 +2118,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+   * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder getRequestOrBuilder() {
@@ -2130,7 +2130,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int INCONSISTENT_COUNT_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Override
@@ -2138,7 +2138,7 @@ private static final long serialVersionUID = 0L;
     return transformCase_ == 2;
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    * @return The inconsistentCount.
    */
   @java.lang.Override
@@ -2149,7 +2149,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
@@ -2563,7 +2563,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder> requestBuilder_;
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      * @return Whether the request field is set.
      */
     @java.lang.Override
@@ -2571,7 +2571,7 @@ private static final long serialVersionUID = 0L;
       return transformCase_ == 1;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      * @return The request.
      */
     @java.lang.Override
@@ -2589,7 +2589,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     public Builder setRequest(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest value) {
       if (requestBuilder_ == null) {
@@ -2605,7 +2605,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     public Builder setRequest(
         com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest.Builder builderForValue) {
@@ -2619,7 +2619,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     public Builder mergeRequest(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest value) {
       if (requestBuilder_ == null) {
@@ -2641,7 +2641,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     public Builder clearRequest() {
       if (requestBuilder_ == null) {
@@ -2660,13 +2660,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest.Builder getRequestBuilder() {
       return getRequestFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder getRequestOrBuilder() {
@@ -2680,7 +2680,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1;</code>
+     * <code>.android_studio.TestScenarioEvent.TestScenarioRequest request = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder> 
@@ -2704,7 +2704,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder> inconsistentCountBuilder_;
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      * @return Whether the inconsistentCount field is set.
      */
     @java.lang.Override
@@ -2712,7 +2712,7 @@ private static final long serialVersionUID = 0L;
       return transformCase_ == 2;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      * @return The inconsistentCount.
      */
     @java.lang.Override
@@ -2730,7 +2730,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     public Builder setInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
       if (inconsistentCountBuilder_ == null) {
@@ -2746,7 +2746,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     public Builder setInconsistentCount(
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder builderForValue) {
@@ -2760,7 +2760,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     public Builder mergeInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
       if (inconsistentCountBuilder_ == null) {
@@ -2782,7 +2782,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     public Builder clearInconsistentCount() {
       if (inconsistentCountBuilder_ == null) {
@@ -2801,13 +2801,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder getInconsistentCountBuilder() {
       return getInconsistentCountFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
@@ -2821,7 +2821,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2;</code>
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder> 

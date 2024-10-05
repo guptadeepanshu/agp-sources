@@ -144,6 +144,22 @@ private static final long serialVersionUID = 0L;
      * <code>PERFORMANCE_STATS = 11;</code>
      */
     PERFORMANCE_STATS(11),
+    /**
+     * <pre>
+     * For tracking the number of events users view.
+     * </pre>
+     *
+     * <code>EVENT_VIEWED = 12;</code>
+     */
+    EVENT_VIEWED(12),
+    /**
+     * <pre>
+     * Track user sentiment of AQI insights.
+     * </pre>
+     *
+     * <code>INSIGHT_SENTIMENT = 13;</code>
+     */
+    INSIGHT_SENTIMENT(13),
     ;
 
     /**
@@ -238,6 +254,22 @@ private static final long serialVersionUID = 0L;
      * <code>PERFORMANCE_STATS = 11;</code>
      */
     public static final int PERFORMANCE_STATS_VALUE = 11;
+    /**
+     * <pre>
+     * For tracking the number of events users view.
+     * </pre>
+     *
+     * <code>EVENT_VIEWED = 12;</code>
+     */
+    public static final int EVENT_VIEWED_VALUE = 12;
+    /**
+     * <pre>
+     * Track user sentiment of AQI insights.
+     * </pre>
+     *
+     * <code>INSIGHT_SENTIMENT = 13;</code>
+     */
+    public static final int INSIGHT_SENTIMENT_VALUE = 13;
 
 
     public final int getNumber() {
@@ -272,6 +304,8 @@ private static final long serialVersionUID = 0L;
         case 9: return NOTE;
         case 10: return MODE_TRANSITION;
         case 11: return PERFORMANCE_STATS;
+        case 12: return EVENT_VIEWED;
+        case 13: return INSIGHT_SENTIMENT;
         default: return null;
       }
     }
@@ -338,6 +372,10 @@ private static final long serialVersionUID = 0L;
      * <code>NON_FATAL = 2;</code>
      */
     NON_FATAL(2),
+    /**
+     * <code>ANR = 3;</code>
+     */
+    ANR(3),
     ;
 
     /**
@@ -352,6 +390,10 @@ private static final long serialVersionUID = 0L;
      * <code>NON_FATAL = 2;</code>
      */
     public static final int NON_FATAL_VALUE = 2;
+    /**
+     * <code>ANR = 3;</code>
+     */
+    public static final int ANR_VALUE = 3;
 
 
     public final int getNumber() {
@@ -377,6 +419,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_TYPE;
         case 1: return FATAL;
         case 2: return NON_FATAL;
+        case 3: return ANR;
         default: return null;
       }
     }
@@ -1755,7 +1798,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      * @return Whether the vcsIntegrationDetails field is set.
      */
     boolean hasVcsIntegrationDetails();
@@ -1764,7 +1807,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      * @return The vcsIntegrationDetails.
      */
     com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails getVcsIntegrationDetails();
@@ -1773,7 +1816,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetailsOrBuilder getVcsIntegrationDetailsOrBuilder();
   }
@@ -2130,6 +2173,10 @@ private static final long serialVersionUID = 0L;
        * <code>ALL = 3;</code>
        */
       ALL(3),
+      /**
+       * <code>ANR = 4;</code>
+       */
+      ANR(4),
       ;
 
       /**
@@ -2148,6 +2195,10 @@ private static final long serialVersionUID = 0L;
        * <code>ALL = 3;</code>
        */
       public static final int ALL_VALUE = 3;
+      /**
+       * <code>ANR = 4;</code>
+       */
+      public static final int ANR_VALUE = 4;
 
 
       public final int getNumber() {
@@ -2174,6 +2225,7 @@ private static final long serialVersionUID = 0L;
           case 1: return FATAL;
           case 2: return NON_FATAL;
           case 3: return ALL;
+          case 4: return ANR;
           default: return null;
         }
       }
@@ -3278,7 +3330,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      * @return Whether the vcsIntegrationDetails field is set.
      */
     @java.lang.Override
@@ -3290,7 +3342,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      * @return The vcsIntegrationDetails.
      */
     @java.lang.Override
@@ -3302,7 +3354,7 @@ private static final long serialVersionUID = 0L;
      * The app vcs info got from this fetch.
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetailsOrBuilder getVcsIntegrationDetailsOrBuilder() {
@@ -4666,7 +4718,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        * @return Whether the vcsIntegrationDetails field is set.
        */
       public boolean hasVcsIntegrationDetails() {
@@ -4677,7 +4729,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        * @return The vcsIntegrationDetails.
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails getVcsIntegrationDetails() {
@@ -4692,7 +4744,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public Builder setVcsIntegrationDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails value) {
         if (vcsIntegrationDetailsBuilder_ == null) {
@@ -4712,7 +4764,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public Builder setVcsIntegrationDetails(
           com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails.Builder builderForValue) {
@@ -4730,7 +4782,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public Builder mergeVcsIntegrationDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails value) {
         if (vcsIntegrationDetailsBuilder_ == null) {
@@ -4754,7 +4806,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public Builder clearVcsIntegrationDetails() {
         if (vcsIntegrationDetailsBuilder_ == null) {
@@ -4771,7 +4823,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails.Builder getVcsIntegrationDetailsBuilder() {
         bitField0_ |= 0x00000800;
@@ -4783,7 +4835,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetailsOrBuilder getVcsIntegrationDetailsOrBuilder() {
         if (vcsIntegrationDetailsBuilder_ != null) {
@@ -4798,7 +4850,7 @@ private static final long serialVersionUID = 0L;
        * The app vcs info got from this fetch.
        * </pre>
        *
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails vcs_integration_details = 12 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.VcsIntegrationDetailsOrBuilder> 
@@ -10679,17 +10731,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      * @return Whether the vcBasedLineNumberMappingLatency field is set.
      */
     boolean hasVcBasedLineNumberMappingLatency();
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      * @return The vcBasedLineNumberMappingLatency.
      */
     com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency getVcBasedLineNumberMappingLatency();
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatencyOrBuilder getVcBasedLineNumberMappingLatencyOrBuilder();
   }
@@ -11542,7 +11594,7 @@ private static final long serialVersionUID = 0L;
     public static final int VC_BASED_LINE_NUMBER_MAPPING_LATENCY_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vcBasedLineNumberMappingLatency_;
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      * @return Whether the vcBasedLineNumberMappingLatency field is set.
      */
     @java.lang.Override
@@ -11550,7 +11602,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      * @return The vcBasedLineNumberMappingLatency.
      */
     @java.lang.Override
@@ -11558,7 +11610,7 @@ private static final long serialVersionUID = 0L;
       return vcBasedLineNumberMappingLatency_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency.getDefaultInstance() : vcBasedLineNumberMappingLatency_;
     }
     /**
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatencyOrBuilder getVcBasedLineNumberMappingLatencyOrBuilder() {
@@ -11912,14 +11964,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatencyOrBuilder> vcBasedLineNumberMappingLatencyBuilder_;
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        * @return Whether the vcBasedLineNumberMappingLatency field is set.
        */
       public boolean hasVcBasedLineNumberMappingLatency() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        * @return The vcBasedLineNumberMappingLatency.
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency getVcBasedLineNumberMappingLatency() {
@@ -11930,7 +11982,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public Builder setVcBasedLineNumberMappingLatency(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency value) {
         if (vcBasedLineNumberMappingLatencyBuilder_ == null) {
@@ -11946,7 +11998,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public Builder setVcBasedLineNumberMappingLatency(
           com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency.Builder builderForValue) {
@@ -11960,7 +12012,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public Builder mergeVcBasedLineNumberMappingLatency(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency value) {
         if (vcBasedLineNumberMappingLatencyBuilder_ == null) {
@@ -11980,7 +12032,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public Builder clearVcBasedLineNumberMappingLatency() {
         if (vcBasedLineNumberMappingLatencyBuilder_ == null) {
@@ -11993,7 +12045,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency.Builder getVcBasedLineNumberMappingLatencyBuilder() {
         bitField0_ |= 0x00000001;
@@ -12001,7 +12053,7 @@ private static final long serialVersionUID = 0L;
         return getVcBasedLineNumberMappingLatencyFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatencyOrBuilder getVcBasedLineNumberMappingLatencyOrBuilder() {
         if (vcBasedLineNumberMappingLatencyBuilder_ != null) {
@@ -12012,7 +12064,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1;</code>
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency vc_based_line_number_mapping_latency = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatency.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.VersionControlBasedLineNumberMappingLatencyOrBuilder> 
@@ -12086,6 +12138,1972 @@ private static final long serialVersionUID = 0L;
 
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface EventDetailsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppQualityInsightsUsageEvent.EventDetails)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return Whether the issueId field is set.
+     */
+    boolean hasIssueId();
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return The issueId.
+     */
+    java.lang.String getIssueId();
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return The bytes for issueId.
+     */
+    com.google.protobuf.ByteString
+        getIssueIdBytes();
+
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return Whether the eventId field is set.
+     */
+    boolean hasEventId();
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return The eventId.
+     */
+    java.lang.String getEventId();
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return The bytes for eventId.
+     */
+    com.google.protobuf.ByteString
+        getEventIdBytes();
+
+    /**
+     * <pre>
+     * Whether the viewing of this event triggered a network fetch, or was it
+     * served from cache.
+     * </pre>
+     *
+     * <code>optional bool is_fetched = 3;</code>
+     * @return Whether the isFetched field is set.
+     */
+    boolean hasIsFetched();
+    /**
+     * <pre>
+     * Whether the viewing of this event triggered a network fetch, or was it
+     * served from cache.
+     * </pre>
+     *
+     * <code>optional bool is_fetched = 3;</code>
+     * @return The isFetched.
+     */
+    boolean getIsFetched();
+  }
+  /**
+   * Protobuf type {@code android_studio.AppQualityInsightsUsageEvent.EventDetails}
+   */
+  public static final class EventDetails extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppQualityInsightsUsageEvent.EventDetails)
+      EventDetailsOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use EventDetails.newBuilder() to construct.
+    private EventDetails(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private EventDetails() {
+      issueId_ = "";
+      eventId_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new EventDetails();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_EventDetails_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_EventDetails_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.class, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int ISSUE_ID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object issueId_;
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return Whether the issueId field is set.
+     */
+    @java.lang.Override
+    public boolean hasIssueId() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return The issueId.
+     */
+    @java.lang.Override
+    public java.lang.String getIssueId() {
+      java.lang.Object ref = issueId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          issueId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an issue.
+     * </pre>
+     *
+     * <code>optional string issue_id = 1;</code>
+     * @return The bytes for issueId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getIssueIdBytes() {
+      java.lang.Object ref = issueId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        issueId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int EVENT_ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object eventId_;
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return Whether the eventId field is set.
+     */
+    @java.lang.Override
+    public boolean hasEventId() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return The eventId.
+     */
+    @java.lang.Override
+    public java.lang.String getEventId() {
+      java.lang.Object ref = eventId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          eventId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Hashed string that uniquely identifies an event.
+     * </pre>
+     *
+     * <code>optional string event_id = 2;</code>
+     * @return The bytes for eventId.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getEventIdBytes() {
+      java.lang.Object ref = eventId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        eventId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IS_FETCHED_FIELD_NUMBER = 3;
+    private boolean isFetched_;
+    /**
+     * <pre>
+     * Whether the viewing of this event triggered a network fetch, or was it
+     * served from cache.
+     * </pre>
+     *
+     * <code>optional bool is_fetched = 3;</code>
+     * @return Whether the isFetched field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsFetched() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the viewing of this event triggered a network fetch, or was it
+     * served from cache.
+     * </pre>
+     *
+     * <code>optional bool is_fetched = 3;</code>
+     * @return The isFetched.
+     */
+    @java.lang.Override
+    public boolean getIsFetched() {
+      return isFetched_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, issueId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, eventId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeBool(3, isFetched_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, issueId_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, eventId_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, isFetched_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails other = (com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails) obj;
+
+      if (hasIssueId() != other.hasIssueId()) return false;
+      if (hasIssueId()) {
+        if (!getIssueId()
+            .equals(other.getIssueId())) return false;
+      }
+      if (hasEventId() != other.hasEventId()) return false;
+      if (hasEventId()) {
+        if (!getEventId()
+            .equals(other.getEventId())) return false;
+      }
+      if (hasIsFetched() != other.hasIsFetched()) return false;
+      if (hasIsFetched()) {
+        if (getIsFetched()
+            != other.getIsFetched()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasIssueId()) {
+        hash = (37 * hash) + ISSUE_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getIssueId().hashCode();
+      }
+      if (hasEventId()) {
+        hash = (37 * hash) + EVENT_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getEventId().hashCode();
+      }
+      if (hasIsFetched()) {
+        hash = (37 * hash) + IS_FETCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getIsFetched());
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AppQualityInsightsUsageEvent.EventDetails}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppQualityInsightsUsageEvent.EventDetails)
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_EventDetails_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_EventDetails_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.class, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        issueId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        eventId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isFetched_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_EventDetails_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails build() {
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails buildPartial() {
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails result = new com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.issueId_ = issueId_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.eventId_ = eventId_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.isFetched_ = isFetched_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails other) {
+        if (other == com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance()) return this;
+        if (other.hasIssueId()) {
+          bitField0_ |= 0x00000001;
+          issueId_ = other.issueId_;
+          onChanged();
+        }
+        if (other.hasEventId()) {
+          bitField0_ |= 0x00000002;
+          eventId_ = other.eventId_;
+          onChanged();
+        }
+        if (other.hasIsFetched()) {
+          setIsFetched(other.getIsFetched());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                issueId_ = input.readBytes();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              case 18: {
+                eventId_ = input.readBytes();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 18
+              case 24: {
+                isFetched_ = input.readBool();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object issueId_ = "";
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @return Whether the issueId field is set.
+       */
+      public boolean hasIssueId() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @return The issueId.
+       */
+      public java.lang.String getIssueId() {
+        java.lang.Object ref = issueId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            issueId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @return The bytes for issueId.
+       */
+      public com.google.protobuf.ByteString
+          getIssueIdBytes() {
+        java.lang.Object ref = issueId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          issueId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @param value The issueId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIssueId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        issueId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIssueId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        issueId_ = getDefaultInstance().getIssueId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an issue.
+       * </pre>
+       *
+       * <code>optional string issue_id = 1;</code>
+       * @param value The bytes for issueId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIssueIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        issueId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object eventId_ = "";
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @return Whether the eventId field is set.
+       */
+      public boolean hasEventId() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @return The eventId.
+       */
+      public java.lang.String getEventId() {
+        java.lang.Object ref = eventId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            eventId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @return The bytes for eventId.
+       */
+      public com.google.protobuf.ByteString
+          getEventIdBytes() {
+        java.lang.Object ref = eventId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          eventId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @param value The eventId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEventId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        eventId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEventId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        eventId_ = getDefaultInstance().getEventId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Hashed string that uniquely identifies an event.
+       * </pre>
+       *
+       * <code>optional string event_id = 2;</code>
+       * @param value The bytes for eventId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEventIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        eventId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isFetched_ ;
+      /**
+       * <pre>
+       * Whether the viewing of this event triggered a network fetch, or was it
+       * served from cache.
+       * </pre>
+       *
+       * <code>optional bool is_fetched = 3;</code>
+       * @return Whether the isFetched field is set.
+       */
+      @java.lang.Override
+      public boolean hasIsFetched() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Whether the viewing of this event triggered a network fetch, or was it
+       * served from cache.
+       * </pre>
+       *
+       * <code>optional bool is_fetched = 3;</code>
+       * @return The isFetched.
+       */
+      @java.lang.Override
+      public boolean getIsFetched() {
+        return isFetched_;
+      }
+      /**
+       * <pre>
+       * Whether the viewing of this event triggered a network fetch, or was it
+       * served from cache.
+       * </pre>
+       *
+       * <code>optional bool is_fetched = 3;</code>
+       * @param value The isFetched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsFetched(boolean value) {
+        bitField0_ |= 0x00000004;
+        isFetched_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Whether the viewing of this event triggered a network fetch, or was it
+       * served from cache.
+       * </pre>
+       *
+       * <code>optional bool is_fetched = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsFetched() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        isFetched_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppQualityInsightsUsageEvent.EventDetails)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppQualityInsightsUsageEvent.EventDetails)
+    private static final com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<EventDetails>
+        PARSER = new com.google.protobuf.AbstractParser<EventDetails>() {
+      @java.lang.Override
+      public EventDetails parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<EventDetails> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<EventDetails> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface InsightSentimentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppQualityInsightsUsageEvent.InsightSentiment)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+     * @return Whether the sentiment field is set.
+     */
+    boolean hasSentiment();
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+     * @return The sentiment.
+     */
+    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment getSentiment();
+
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+     * @return Whether the experiment field is set.
+     */
+    boolean hasExperiment();
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+     * @return The experiment.
+     */
+    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment getExperiment();
+
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+     * @return Whether the crashType field is set.
+     */
+    boolean hasCrashType();
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+     * @return The crashType.
+     */
+    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType getCrashType();
+  }
+  /**
+   * Protobuf type {@code android_studio.AppQualityInsightsUsageEvent.InsightSentiment}
+   */
+  public static final class InsightSentiment extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppQualityInsightsUsageEvent.InsightSentiment)
+      InsightSentimentOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use InsightSentiment.newBuilder() to construct.
+    private InsightSentiment(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private InsightSentiment() {
+      sentiment_ = 0;
+      experiment_ = 0;
+      crashType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new InsightSentiment();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_InsightSentiment_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_InsightSentiment_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.class, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment}
+     */
+    public enum Sentiment
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_SENTIMENT = 0;</code>
+       */
+      UNKNOWN_SENTIMENT(0),
+      /**
+       * <code>THUMBS_UP = 1;</code>
+       */
+      THUMBS_UP(1),
+      /**
+       * <code>THUMBS_DOWN = 2;</code>
+       */
+      THUMBS_DOWN(2),
+      ;
+
+      /**
+       * <code>UNKNOWN_SENTIMENT = 0;</code>
+       */
+      public static final int UNKNOWN_SENTIMENT_VALUE = 0;
+      /**
+       * <code>THUMBS_UP = 1;</code>
+       */
+      public static final int THUMBS_UP_VALUE = 1;
+      /**
+       * <code>THUMBS_DOWN = 2;</code>
+       */
+      public static final int THUMBS_DOWN_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Sentiment valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Sentiment forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_SENTIMENT;
+          case 1: return THUMBS_UP;
+          case 2: return THUMBS_DOWN;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Sentiment>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Sentiment> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Sentiment>() {
+              public Sentiment findValueByNumber(int number) {
+                return Sentiment.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Sentiment[] VALUES = values();
+
+      public static Sentiment valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Sentiment(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment)
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment}
+     */
+    public enum Experiment
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_EXPERIMENT = 0;</code>
+       */
+      UNKNOWN_EXPERIMENT(0),
+      /**
+       * <code>CONTROL = 1;</code>
+       */
+      CONTROL(1),
+      /**
+       * <code>TOP_SOURCE = 2;</code>
+       */
+      TOP_SOURCE(2),
+      /**
+       * <code>TOP_THREE_SOURCES = 3;</code>
+       */
+      TOP_THREE_SOURCES(3),
+      /**
+       * <code>ALL_SOURCES = 4;</code>
+       */
+      ALL_SOURCES(4),
+      ;
+
+      /**
+       * <code>UNKNOWN_EXPERIMENT = 0;</code>
+       */
+      public static final int UNKNOWN_EXPERIMENT_VALUE = 0;
+      /**
+       * <code>CONTROL = 1;</code>
+       */
+      public static final int CONTROL_VALUE = 1;
+      /**
+       * <code>TOP_SOURCE = 2;</code>
+       */
+      public static final int TOP_SOURCE_VALUE = 2;
+      /**
+       * <code>TOP_THREE_SOURCES = 3;</code>
+       */
+      public static final int TOP_THREE_SOURCES_VALUE = 3;
+      /**
+       * <code>ALL_SOURCES = 4;</code>
+       */
+      public static final int ALL_SOURCES_VALUE = 4;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Experiment valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Experiment forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_EXPERIMENT;
+          case 1: return CONTROL;
+          case 2: return TOP_SOURCE;
+          case 3: return TOP_THREE_SOURCES;
+          case 4: return ALL_SOURCES;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Experiment>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Experiment> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Experiment>() {
+              public Experiment findValueByNumber(int number) {
+                return Experiment.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final Experiment[] VALUES = values();
+
+      public static Experiment valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Experiment(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment)
+    }
+
+    private int bitField0_;
+    public static final int SENTIMENT_FIELD_NUMBER = 1;
+    private int sentiment_;
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+     * @return Whether the sentiment field is set.
+     */
+    @java.lang.Override public boolean hasSentiment() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+     * @return The sentiment.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment getSentiment() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment.valueOf(sentiment_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment.UNKNOWN_SENTIMENT : result;
+    }
+
+    public static final int EXPERIMENT_FIELD_NUMBER = 2;
+    private int experiment_;
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+     * @return Whether the experiment field is set.
+     */
+    @java.lang.Override public boolean hasExperiment() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+     * @return The experiment.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment getExperiment() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment.valueOf(experiment_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment.UNKNOWN_EXPERIMENT : result;
+    }
+
+    public static final int CRASH_TYPE_FIELD_NUMBER = 3;
+    private int crashType_;
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+     * @return Whether the crashType field is set.
+     */
+    @java.lang.Override public boolean hasCrashType() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+     * @return The crashType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType getCrashType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType.valueOf(crashType_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType.UNKNOWN_TYPE : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, sentiment_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, experiment_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeEnum(3, crashType_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, sentiment_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, experiment_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, crashType_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment other = (com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment) obj;
+
+      if (hasSentiment() != other.hasSentiment()) return false;
+      if (hasSentiment()) {
+        if (sentiment_ != other.sentiment_) return false;
+      }
+      if (hasExperiment() != other.hasExperiment()) return false;
+      if (hasExperiment()) {
+        if (experiment_ != other.experiment_) return false;
+      }
+      if (hasCrashType() != other.hasCrashType()) return false;
+      if (hasCrashType()) {
+        if (crashType_ != other.crashType_) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasSentiment()) {
+        hash = (37 * hash) + SENTIMENT_FIELD_NUMBER;
+        hash = (53 * hash) + sentiment_;
+      }
+      if (hasExperiment()) {
+        hash = (37 * hash) + EXPERIMENT_FIELD_NUMBER;
+        hash = (53 * hash) + experiment_;
+      }
+      if (hasCrashType()) {
+        hash = (37 * hash) + CRASH_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + crashType_;
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AppQualityInsightsUsageEvent.InsightSentiment}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppQualityInsightsUsageEvent.InsightSentiment)
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_InsightSentiment_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_InsightSentiment_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.class, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        sentiment_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        experiment_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        crashType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppQualityInsightsUsageEvent_InsightSentiment_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment build() {
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment buildPartial() {
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment result = new com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.sentiment_ = sentiment_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.experiment_ = experiment_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.crashType_ = crashType_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment other) {
+        if (other == com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance()) return this;
+        if (other.hasSentiment()) {
+          setSentiment(other.getSentiment());
+        }
+        if (other.hasExperiment()) {
+          setExperiment(other.getExperiment());
+        }
+        if (other.hasCrashType()) {
+          setCrashType(other.getCrashType());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment tmpValue =
+                    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  sentiment_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment tmpValue =
+                    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  experiment_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              case 24: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType tmpValue =
+                    com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(3, tmpRaw);
+                } else {
+                  crashType_ = tmpRaw;
+                  bitField0_ |= 0x00000004;
+                }
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int sentiment_ = 0;
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+       * @return Whether the sentiment field is set.
+       */
+      @java.lang.Override public boolean hasSentiment() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+       * @return The sentiment.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment getSentiment() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment.valueOf(sentiment_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment.UNKNOWN_SENTIMENT : result;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+       * @param value The sentiment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSentiment(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        sentiment_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Sentiment sentiment = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSentiment() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sentiment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int experiment_ = 0;
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+       * @return Whether the experiment field is set.
+       */
+      @java.lang.Override public boolean hasExperiment() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+       * @return The experiment.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment getExperiment() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment.valueOf(experiment_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment.UNKNOWN_EXPERIMENT : result;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+       * @param value The experiment to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExperiment(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Experiment value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        experiment_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment.Experiment experiment = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearExperiment() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        experiment_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int crashType_ = 0;
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+       * @return Whether the crashType field is set.
+       */
+      @java.lang.Override public boolean hasCrashType() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+       * @return The crashType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType getCrashType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType result = com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType.valueOf(crashType_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType.UNKNOWN_TYPE : result;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+       * @param value The crashType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCrashType(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.CrashType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        crashType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.AppQualityInsightsUsageEvent.CrashType crash_type = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCrashType() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        crashType_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppQualityInsightsUsageEvent.InsightSentiment)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppQualityInsightsUsageEvent.InsightSentiment)
+    private static final com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<InsightSentiment>
+        PARSER = new com.google.protobuf.AbstractParser<InsightSentiment>() {
+      @java.lang.Override
+      public InsightSentiment parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<InsightSentiment> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<InsightSentiment> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -12192,7 +14210,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    * @return Whether the zeroStateDetails field is set.
    */
   @java.lang.Override
@@ -12204,7 +14222,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    * @return The zeroStateDetails.
    */
   @java.lang.Override
@@ -12216,7 +14234,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetailsOrBuilder getZeroStateDetailsOrBuilder() {
@@ -12230,7 +14248,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    * @return Whether the fetchDetails field is set.
    */
   @java.lang.Override
@@ -12242,7 +14260,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    * @return The fetchDetails.
    */
   @java.lang.Override
@@ -12254,7 +14272,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetailsOrBuilder getFetchDetailsOrBuilder() {
@@ -12268,7 +14286,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    * @return Whether the crashOpenDetails field is set.
    */
   @java.lang.Override
@@ -12280,7 +14298,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    * @return The crashOpenDetails.
    */
   @java.lang.Override
@@ -12292,7 +14310,7 @@ private static final long serialVersionUID = 0L;
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetailsOrBuilder getCrashOpenDetailsOrBuilder() {
@@ -12306,7 +14324,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    * @return Whether the stacktraceDetails field is set.
    */
   @java.lang.Override
@@ -12318,7 +14336,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    * @return The stacktraceDetails.
    */
   @java.lang.Override
@@ -12330,7 +14348,7 @@ private static final long serialVersionUID = 0L;
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetailsOrBuilder getStacktraceDetailsOrBuilder() {
@@ -12344,7 +14362,7 @@ private static final long serialVersionUID = 0L;
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    * @return Whether the consoleLinkDetails field is set.
    */
   @java.lang.Override
@@ -12356,7 +14374,7 @@ private static final long serialVersionUID = 0L;
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    * @return The consoleLinkDetails.
    */
   @java.lang.Override
@@ -12368,7 +14386,7 @@ private static final long serialVersionUID = 0L;
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetailsOrBuilder getConsoleLinkDetailsOrBuilder() {
@@ -12382,7 +14400,7 @@ private static final long serialVersionUID = 0L;
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    * @return Whether the matcherDetails field is set.
    */
   @java.lang.Override
@@ -12394,7 +14412,7 @@ private static final long serialVersionUID = 0L;
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    * @return The matcherDetails.
    */
   @java.lang.Override
@@ -12406,7 +14424,7 @@ private static final long serialVersionUID = 0L;
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetailsOrBuilder getMatcherDetailsOrBuilder() {
@@ -12420,7 +14438,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    * @return Whether the errorDetails field is set.
    */
   @java.lang.Override
@@ -12432,7 +14450,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    * @return The errorDetails.
    */
   @java.lang.Override
@@ -12444,7 +14462,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetailsOrBuilder getErrorDetailsOrBuilder() {
@@ -12458,7 +14476,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    * @return Whether the issueChangedDetails field is set.
    */
   @java.lang.Override
@@ -12470,7 +14488,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    * @return The issueChangedDetails.
    */
   @java.lang.Override
@@ -12482,7 +14500,7 @@ private static final long serialVersionUID = 0L;
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetailsOrBuilder getIssueChangedDetailsOrBuilder() {
@@ -12496,7 +14514,7 @@ private static final long serialVersionUID = 0L;
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    * @return Whether the notesDetails field is set.
    */
   @java.lang.Override
@@ -12508,7 +14526,7 @@ private static final long serialVersionUID = 0L;
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    * @return The notesDetails.
    */
   @java.lang.Override
@@ -12520,7 +14538,7 @@ private static final long serialVersionUID = 0L;
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetailsOrBuilder getNotesDetailsOrBuilder() {
@@ -12615,7 +14633,7 @@ private static final long serialVersionUID = 0L;
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    * @return Whether the performanceStats field is set.
    */
   @java.lang.Override
@@ -12627,7 +14645,7 @@ private static final long serialVersionUID = 0L;
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    * @return The performanceStats.
    */
   @java.lang.Override
@@ -12639,11 +14657,87 @@ private static final long serialVersionUID = 0L;
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStatsOrBuilder getPerformanceStatsOrBuilder() {
     return performanceStats_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.getDefaultInstance() : performanceStats_;
+  }
+
+  public static final int EVENT_DETAILS_FIELD_NUMBER = 16;
+  private com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails eventDetails_;
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   * @return Whether the eventDetails field is set.
+   */
+  @java.lang.Override
+  public boolean hasEventDetails() {
+    return ((bitField0_ & 0x00008000) != 0);
+  }
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   * @return The eventDetails.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getEventDetails() {
+    return eventDetails_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance() : eventDetails_;
+  }
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder getEventDetailsOrBuilder() {
+    return eventDetails_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance() : eventDetails_;
+  }
+
+  public static final int INSIGHT_SENTIMENT_FIELD_NUMBER = 17;
+  private com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment insightSentiment_;
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   * @return Whether the insightSentiment field is set.
+   */
+  @java.lang.Override
+  public boolean hasInsightSentiment() {
+    return ((bitField0_ & 0x00010000) != 0);
+  }
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   * @return The insightSentiment.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getInsightSentiment() {
+    return insightSentiment_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance() : insightSentiment_;
+  }
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder getInsightSentimentOrBuilder() {
+    return insightSentiment_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance() : insightSentiment_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -12704,6 +14798,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00004000) != 0)) {
       output.writeMessage(15, getPerformanceStats());
+    }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      output.writeMessage(16, getEventDetails());
+    }
+    if (((bitField0_ & 0x00010000) != 0)) {
+      output.writeMessage(17, getInsightSentiment());
     }
     getUnknownFields().writeTo(output);
   }
@@ -12772,6 +14872,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00004000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(15, getPerformanceStats());
+    }
+    if (((bitField0_ & 0x00008000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(16, getEventDetails());
+    }
+    if (((bitField0_ & 0x00010000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(17, getInsightSentiment());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -12860,6 +14968,16 @@ private static final long serialVersionUID = 0L;
       if (!getPerformanceStats()
           .equals(other.getPerformanceStats())) return false;
     }
+    if (hasEventDetails() != other.hasEventDetails()) return false;
+    if (hasEventDetails()) {
+      if (!getEventDetails()
+          .equals(other.getEventDetails())) return false;
+    }
+    if (hasInsightSentiment() != other.hasInsightSentiment()) return false;
+    if (hasInsightSentiment()) {
+      if (!getInsightSentiment()
+          .equals(other.getInsightSentiment())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -12931,6 +15049,14 @@ private static final long serialVersionUID = 0L;
     if (hasPerformanceStats()) {
       hash = (37 * hash) + PERFORMANCE_STATS_FIELD_NUMBER;
       hash = (53 * hash) + getPerformanceStats().hashCode();
+    }
+    if (hasEventDetails()) {
+      hash = (37 * hash) + EVENT_DETAILS_FIELD_NUMBER;
+      hash = (53 * hash) + getEventDetails().hashCode();
+    }
+    if (hasInsightSentiment()) {
+      hash = (37 * hash) + INSIGHT_SENTIMENT_FIELD_NUMBER;
+      hash = (53 * hash) + getInsightSentiment().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -13070,6 +15196,8 @@ private static final long serialVersionUID = 0L;
         getIssueChangedDetailsFieldBuilder();
         getNotesDetailsFieldBuilder();
         getPerformanceStatsFieldBuilder();
+        getEventDetailsFieldBuilder();
+        getInsightSentimentFieldBuilder();
       }
     }
     @java.lang.Override
@@ -13145,6 +15273,18 @@ private static final long serialVersionUID = 0L;
         performanceStatsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00004000);
+      if (eventDetailsBuilder_ == null) {
+        eventDetails_ = null;
+      } else {
+        eventDetailsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00008000);
+      if (insightSentimentBuilder_ == null) {
+        insightSentiment_ = null;
+      } else {
+        insightSentimentBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00010000);
       return this;
     }
 
@@ -13273,6 +15413,22 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00004000;
       }
+      if (((from_bitField0_ & 0x00008000) != 0)) {
+        if (eventDetailsBuilder_ == null) {
+          result.eventDetails_ = eventDetails_;
+        } else {
+          result.eventDetails_ = eventDetailsBuilder_.build();
+        }
+        to_bitField0_ |= 0x00008000;
+      }
+      if (((from_bitField0_ & 0x00010000) != 0)) {
+        if (insightSentimentBuilder_ == null) {
+          result.insightSentiment_ = insightSentiment_;
+        } else {
+          result.insightSentiment_ = insightSentimentBuilder_.build();
+        }
+        to_bitField0_ |= 0x00010000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -13368,6 +15524,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasPerformanceStats()) {
         mergePerformanceStats(other.getPerformanceStats());
+      }
+      if (other.hasEventDetails()) {
+        mergeEventDetails(other.getEventDetails());
+      }
+      if (other.hasInsightSentiment()) {
+        mergeInsightSentiment(other.getInsightSentiment());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -13511,6 +15673,20 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00004000;
               break;
             } // case 122
+            case 130: {
+              input.readMessage(
+                  getEventDetailsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00008000;
+              break;
+            } // case 130
+            case 138: {
+              input.readMessage(
+                  getInsightSentimentFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00010000;
+              break;
+            } // case 138
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -13715,7 +15891,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      * @return Whether the zeroStateDetails field is set.
      */
     public boolean hasZeroStateDetails() {
@@ -13726,7 +15902,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      * @return The zeroStateDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails getZeroStateDetails() {
@@ -13741,7 +15917,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public Builder setZeroStateDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails value) {
       if (zeroStateDetailsBuilder_ == null) {
@@ -13761,7 +15937,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public Builder setZeroStateDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails.Builder builderForValue) {
@@ -13779,7 +15955,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public Builder mergeZeroStateDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails value) {
       if (zeroStateDetailsBuilder_ == null) {
@@ -13803,7 +15979,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public Builder clearZeroStateDetails() {
       if (zeroStateDetailsBuilder_ == null) {
@@ -13820,7 +15996,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails.Builder getZeroStateDetailsBuilder() {
       bitField0_ |= 0x00000004;
@@ -13832,7 +16008,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetailsOrBuilder getZeroStateDetailsOrBuilder() {
       if (zeroStateDetailsBuilder_ != null) {
@@ -13847,7 +16023,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ZERO_STATE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetailsOrBuilder> 
@@ -13871,7 +16047,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      * @return Whether the fetchDetails field is set.
      */
     public boolean hasFetchDetails() {
@@ -13882,7 +16058,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      * @return The fetchDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails getFetchDetails() {
@@ -13897,7 +16073,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public Builder setFetchDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails value) {
       if (fetchDetailsBuilder_ == null) {
@@ -13917,7 +16093,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public Builder setFetchDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.Builder builderForValue) {
@@ -13935,7 +16111,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public Builder mergeFetchDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails value) {
       if (fetchDetailsBuilder_ == null) {
@@ -13959,7 +16135,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public Builder clearFetchDetails() {
       if (fetchDetailsBuilder_ == null) {
@@ -13976,7 +16152,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.Builder getFetchDetailsBuilder() {
       bitField0_ |= 0x00000008;
@@ -13988,7 +16164,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetailsOrBuilder getFetchDetailsOrBuilder() {
       if (fetchDetailsBuilder_ != null) {
@@ -14003,7 +16179,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASHES_FETCHED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetailsOrBuilder> 
@@ -14027,7 +16203,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      * @return Whether the crashOpenDetails field is set.
      */
     public boolean hasCrashOpenDetails() {
@@ -14038,7 +16214,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      * @return The crashOpenDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails getCrashOpenDetails() {
@@ -14053,7 +16229,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public Builder setCrashOpenDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails value) {
       if (crashOpenDetailsBuilder_ == null) {
@@ -14073,7 +16249,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public Builder setCrashOpenDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails.Builder builderForValue) {
@@ -14091,7 +16267,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public Builder mergeCrashOpenDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails value) {
       if (crashOpenDetailsBuilder_ == null) {
@@ -14115,7 +16291,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public Builder clearCrashOpenDetails() {
       if (crashOpenDetailsBuilder_ == null) {
@@ -14132,7 +16308,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails.Builder getCrashOpenDetailsBuilder() {
       bitField0_ |= 0x00000010;
@@ -14144,7 +16320,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetailsOrBuilder getCrashOpenDetailsOrBuilder() {
       if (crashOpenDetailsBuilder_ != null) {
@@ -14159,7 +16335,7 @@ private static final long serialVersionUID = 0L;
      * set when type = CRASH_LIST_DETAILS_VIEW
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetailsOrBuilder> 
@@ -14183,7 +16359,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      * @return Whether the stacktraceDetails field is set.
      */
     public boolean hasStacktraceDetails() {
@@ -14194,7 +16370,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      * @return The stacktraceDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails getStacktraceDetails() {
@@ -14209,7 +16385,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public Builder setStacktraceDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails value) {
       if (stacktraceDetailsBuilder_ == null) {
@@ -14229,7 +16405,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public Builder setStacktraceDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails.Builder builderForValue) {
@@ -14247,7 +16423,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public Builder mergeStacktraceDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails value) {
       if (stacktraceDetailsBuilder_ == null) {
@@ -14271,7 +16447,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public Builder clearStacktraceDetails() {
       if (stacktraceDetailsBuilder_ == null) {
@@ -14288,7 +16464,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails.Builder getStacktraceDetailsBuilder() {
       bitField0_ |= 0x00000020;
@@ -14300,7 +16476,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetailsOrBuilder getStacktraceDetailsOrBuilder() {
       if (stacktraceDetailsBuilder_ != null) {
@@ -14315,7 +16491,7 @@ private static final long serialVersionUID = 0L;
      * set when type = STACKTRACE_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetailsOrBuilder> 
@@ -14339,7 +16515,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      * @return Whether the consoleLinkDetails field is set.
      */
     public boolean hasConsoleLinkDetails() {
@@ -14350,7 +16526,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      * @return The consoleLinkDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails getConsoleLinkDetails() {
@@ -14365,7 +16541,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public Builder setConsoleLinkDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails value) {
       if (consoleLinkDetailsBuilder_ == null) {
@@ -14385,7 +16561,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public Builder setConsoleLinkDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails.Builder builderForValue) {
@@ -14403,7 +16579,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public Builder mergeConsoleLinkDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails value) {
       if (consoleLinkDetailsBuilder_ == null) {
@@ -14427,7 +16603,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public Builder clearConsoleLinkDetails() {
       if (consoleLinkDetailsBuilder_ == null) {
@@ -14444,7 +16620,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails.Builder getConsoleLinkDetailsBuilder() {
       bitField0_ |= 0x00000040;
@@ -14456,7 +16632,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetailsOrBuilder getConsoleLinkDetailsOrBuilder() {
       if (consoleLinkDetailsBuilder_ != null) {
@@ -14471,7 +16647,7 @@ private static final long serialVersionUID = 0L;
      * set when type = FB_CONSOLE_LINK_CLICKED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetailsOrBuilder> 
@@ -14495,7 +16671,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      * @return Whether the matcherDetails field is set.
      */
     public boolean hasMatcherDetails() {
@@ -14506,7 +16682,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      * @return The matcherDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails getMatcherDetails() {
@@ -14521,7 +16697,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public Builder setMatcherDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails value) {
       if (matcherDetailsBuilder_ == null) {
@@ -14541,7 +16717,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public Builder setMatcherDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails.Builder builderForValue) {
@@ -14559,7 +16735,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public Builder mergeMatcherDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails value) {
       if (matcherDetailsBuilder_ == null) {
@@ -14583,7 +16759,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public Builder clearMatcherDetails() {
       if (matcherDetailsBuilder_ == null) {
@@ -14600,7 +16776,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails.Builder getMatcherDetailsBuilder() {
       bitField0_ |= 0x00000080;
@@ -14612,7 +16788,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetailsOrBuilder getMatcherDetailsOrBuilder() {
       if (matcherDetailsBuilder_ != null) {
@@ -14627,7 +16803,7 @@ private static final long serialVersionUID = 0L;
      * set when type = MATCHERS_INITIATED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetailsOrBuilder> 
@@ -14651,7 +16827,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      * @return Whether the errorDetails field is set.
      */
     public boolean hasErrorDetails() {
@@ -14662,7 +16838,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      * @return The errorDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails getErrorDetails() {
@@ -14677,7 +16853,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public Builder setErrorDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails value) {
       if (errorDetailsBuilder_ == null) {
@@ -14697,7 +16873,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public Builder setErrorDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails.Builder builderForValue) {
@@ -14715,7 +16891,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public Builder mergeErrorDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails value) {
       if (errorDetailsBuilder_ == null) {
@@ -14739,7 +16915,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public Builder clearErrorDetails() {
       if (errorDetailsBuilder_ == null) {
@@ -14756,7 +16932,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails.Builder getErrorDetailsBuilder() {
       bitField0_ |= 0x00000100;
@@ -14768,7 +16944,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetailsOrBuilder getErrorDetailsOrBuilder() {
       if (errorDetailsBuilder_ != null) {
@@ -14783,7 +16959,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ERROR
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetailsOrBuilder> 
@@ -14807,7 +16983,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      * @return Whether the issueChangedDetails field is set.
      */
     public boolean hasIssueChangedDetails() {
@@ -14818,7 +16994,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      * @return The issueChangedDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails getIssueChangedDetails() {
@@ -14833,7 +17009,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public Builder setIssueChangedDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails value) {
       if (issueChangedDetailsBuilder_ == null) {
@@ -14853,7 +17029,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public Builder setIssueChangedDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails.Builder builderForValue) {
@@ -14871,7 +17047,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public Builder mergeIssueChangedDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails value) {
       if (issueChangedDetailsBuilder_ == null) {
@@ -14895,7 +17071,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public Builder clearIssueChangedDetails() {
       if (issueChangedDetailsBuilder_ == null) {
@@ -14912,7 +17088,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails.Builder getIssueChangedDetailsBuilder() {
       bitField0_ |= 0x00000200;
@@ -14924,7 +17100,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetailsOrBuilder getIssueChangedDetailsOrBuilder() {
       if (issueChangedDetailsBuilder_ != null) {
@@ -14939,7 +17115,7 @@ private static final long serialVersionUID = 0L;
      * set when type = ISSUE_STATUS_CHANGED
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetailsOrBuilder> 
@@ -14963,7 +17139,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      * @return Whether the notesDetails field is set.
      */
     public boolean hasNotesDetails() {
@@ -14974,7 +17150,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      * @return The notesDetails.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails getNotesDetails() {
@@ -14989,7 +17165,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public Builder setNotesDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails value) {
       if (notesDetailsBuilder_ == null) {
@@ -15009,7 +17185,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public Builder setNotesDetails(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails.Builder builderForValue) {
@@ -15027,7 +17203,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public Builder mergeNotesDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails value) {
       if (notesDetailsBuilder_ == null) {
@@ -15051,7 +17227,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public Builder clearNotesDetails() {
       if (notesDetailsBuilder_ == null) {
@@ -15068,7 +17244,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails.Builder getNotesDetailsBuilder() {
       bitField0_ |= 0x00000400;
@@ -15080,7 +17256,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetailsOrBuilder getNotesDetailsOrBuilder() {
       if (notesDetailsBuilder_ != null) {
@@ -15095,7 +17271,7 @@ private static final long serialVersionUID = 0L;
      * set when type = NOTE
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetailsOrBuilder> 
@@ -15292,7 +17468,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      * @return Whether the performanceStats field is set.
      */
     public boolean hasPerformanceStats() {
@@ -15303,7 +17479,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      * @return The performanceStats.
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats getPerformanceStats() {
@@ -15318,7 +17494,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public Builder setPerformanceStats(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats value) {
       if (performanceStatsBuilder_ == null) {
@@ -15338,7 +17514,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public Builder setPerformanceStats(
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.Builder builderForValue) {
@@ -15356,7 +17532,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public Builder mergePerformanceStats(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats value) {
       if (performanceStatsBuilder_ == null) {
@@ -15380,7 +17556,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public Builder clearPerformanceStats() {
       if (performanceStatsBuilder_ == null) {
@@ -15397,7 +17573,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.Builder getPerformanceStatsBuilder() {
       bitField0_ |= 0x00004000;
@@ -15409,7 +17585,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStatsOrBuilder getPerformanceStatsOrBuilder() {
       if (performanceStatsBuilder_ != null) {
@@ -15424,7 +17600,7 @@ private static final long serialVersionUID = 0L;
      * set when type = PERFORMANCE_STATS
      * </pre>
      *
-     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStatsOrBuilder> 
@@ -15438,6 +17614,318 @@ private static final long serialVersionUID = 0L;
         performanceStats_ = null;
       }
       return performanceStatsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails eventDetails_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder> eventDetailsBuilder_;
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     * @return Whether the eventDetails field is set.
+     */
+    public boolean hasEventDetails() {
+      return ((bitField0_ & 0x00008000) != 0);
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     * @return The eventDetails.
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getEventDetails() {
+      if (eventDetailsBuilder_ == null) {
+        return eventDetails_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance() : eventDetails_;
+      } else {
+        return eventDetailsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public Builder setEventDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails value) {
+      if (eventDetailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        eventDetails_ = value;
+        onChanged();
+      } else {
+        eventDetailsBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public Builder setEventDetails(
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder builderForValue) {
+      if (eventDetailsBuilder_ == null) {
+        eventDetails_ = builderForValue.build();
+        onChanged();
+      } else {
+        eventDetailsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public Builder mergeEventDetails(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails value) {
+      if (eventDetailsBuilder_ == null) {
+        if (((bitField0_ & 0x00008000) != 0) &&
+            eventDetails_ != null &&
+            eventDetails_ != com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance()) {
+          eventDetails_ =
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.newBuilder(eventDetails_).mergeFrom(value).buildPartial();
+        } else {
+          eventDetails_ = value;
+        }
+        onChanged();
+      } else {
+        eventDetailsBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public Builder clearEventDetails() {
+      if (eventDetailsBuilder_ == null) {
+        eventDetails_ = null;
+        onChanged();
+      } else {
+        eventDetailsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00008000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder getEventDetailsBuilder() {
+      bitField0_ |= 0x00008000;
+      onChanged();
+      return getEventDetailsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder getEventDetailsOrBuilder() {
+      if (eventDetailsBuilder_ != null) {
+        return eventDetailsBuilder_.getMessageOrBuilder();
+      } else {
+        return eventDetails_ == null ?
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.getDefaultInstance() : eventDetails_;
+      }
+    }
+    /**
+     * <pre>
+     * set when type = EVENT_VIEWED
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder> 
+        getEventDetailsFieldBuilder() {
+      if (eventDetailsBuilder_ == null) {
+        eventDetailsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder>(
+                getEventDetails(),
+                getParentForChildren(),
+                isClean());
+        eventDetails_ = null;
+      }
+      return eventDetailsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment insightSentiment_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder> insightSentimentBuilder_;
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     * @return Whether the insightSentiment field is set.
+     */
+    public boolean hasInsightSentiment() {
+      return ((bitField0_ & 0x00010000) != 0);
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     * @return The insightSentiment.
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getInsightSentiment() {
+      if (insightSentimentBuilder_ == null) {
+        return insightSentiment_ == null ? com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance() : insightSentiment_;
+      } else {
+        return insightSentimentBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public Builder setInsightSentiment(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment value) {
+      if (insightSentimentBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        insightSentiment_ = value;
+        onChanged();
+      } else {
+        insightSentimentBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public Builder setInsightSentiment(
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder builderForValue) {
+      if (insightSentimentBuilder_ == null) {
+        insightSentiment_ = builderForValue.build();
+        onChanged();
+      } else {
+        insightSentimentBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public Builder mergeInsightSentiment(com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment value) {
+      if (insightSentimentBuilder_ == null) {
+        if (((bitField0_ & 0x00010000) != 0) &&
+            insightSentiment_ != null &&
+            insightSentiment_ != com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance()) {
+          insightSentiment_ =
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.newBuilder(insightSentiment_).mergeFrom(value).buildPartial();
+        } else {
+          insightSentiment_ = value;
+        }
+        onChanged();
+      } else {
+        insightSentimentBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00010000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public Builder clearInsightSentiment() {
+      if (insightSentimentBuilder_ == null) {
+        insightSentiment_ = null;
+        onChanged();
+      } else {
+        insightSentimentBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00010000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder getInsightSentimentBuilder() {
+      bitField0_ |= 0x00010000;
+      onChanged();
+      return getInsightSentimentFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder getInsightSentimentOrBuilder() {
+      if (insightSentimentBuilder_ != null) {
+        return insightSentimentBuilder_.getMessageOrBuilder();
+      } else {
+        return insightSentiment_ == null ?
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.getDefaultInstance() : insightSentiment_;
+      }
+    }
+    /**
+     * <pre>
+     * set when type = INSIGHT_SENTIMENT
+     * </pre>
+     *
+     * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder> 
+        getInsightSentimentFieldBuilder() {
+      if (insightSentimentBuilder_ == null) {
+        insightSentimentBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment.Builder, com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder>(
+                getInsightSentiment(),
+                getParentForChildren(),
+                isClean());
+        insightSentiment_ = null;
+      }
+      return insightSentimentBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

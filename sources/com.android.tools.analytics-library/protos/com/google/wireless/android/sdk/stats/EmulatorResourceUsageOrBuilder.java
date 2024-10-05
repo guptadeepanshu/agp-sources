@@ -19,17 +19,17 @@ public interface EmulatorResourceUsageOrBuilder extends
   com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition();
 
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    * @return Whether the mainLoopSlice field is set.
    */
   boolean hasMainLoopSlice();
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    * @return The mainLoopSlice.
    */
   com.google.wireless.android.sdk.stats.CpuTimeSlice getMainLoopSlice();
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getMainLoopSliceOrBuilder();
 
@@ -99,32 +99,32 @@ public interface EmulatorResourceUsageOrBuilder extends
   com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource getTopGuestCpuUsageSources(int index);
 
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    * @return Whether the memoryUsage field is set.
    */
   boolean hasMemoryUsage();
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    * @return The memoryUsage.
    */
   com.google.wireless.android.sdk.stats.EmulatorMemoryUsage getMemoryUsage();
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder getMemoryUsageOrBuilder();
 
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    * @return Whether the graphicsResourceUsage field is set.
    */
   boolean hasGraphicsResourceUsage();
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    * @return The graphicsResourceUsage.
    */
   com.google.wireless.android.sdk.stats.GraphicsResourceUsage getGraphicsResourceUsage();
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder getGraphicsResourceUsageOrBuilder();
 }

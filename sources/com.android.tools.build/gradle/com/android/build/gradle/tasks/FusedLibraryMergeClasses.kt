@@ -17,7 +17,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -84,7 +84,7 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         }
     }
 
-    class FusedLibraryCreationAction(val creationConfig: FusedLibraryVariantScope) :
+    class FusedLibraryCreationAction(val creationConfig: FusedLibraryGlobalScope) :
             TaskCreationAction<FusedLibraryMergeClasses>() {
         override val name: String
             get() = "mergeClasses"

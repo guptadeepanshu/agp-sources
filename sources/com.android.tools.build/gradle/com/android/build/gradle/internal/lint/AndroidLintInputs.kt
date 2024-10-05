@@ -41,8 +41,8 @@ import com.android.build.gradle.internal.ide.Utils.getGeneratedSourceFoldersFile
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputsImpl
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
-import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
+import com.android.build.gradle.internal.ide.dependencies.UsesLibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.getDependencyGraphBuilder
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -99,6 +99,7 @@ import com.android.utils.PathUtils
 import com.android.utils.appendCapitalized
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.UnknownDomainObjectException
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.Configuration
@@ -115,6 +116,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.SetProperty
+import org.gradle.api.services.BuildServiceParameters
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -200,9 +202,12 @@ abstract class LintTool {
     @get:Internal
     abstract val lintClassLoaderBuildService: Property<LintClassLoaderBuildService>
 
-    fun initialize(taskCreationServices: TaskCreationServices, taskName: String) {
+    fun initialize(taskCreationServices: TaskCreationServices, task: Task) {
         classpath.fromDisallowChanges(taskCreationServices.lintFromMaven.files)
-        lintClassLoaderBuildService.setDisallowChanges(getBuildService(taskCreationServices.buildServiceRegistry))
+        getBuildService<LintClassLoaderBuildService, BuildServiceParameters.None>(taskCreationServices.buildServiceRegistry).let {
+            lintClassLoaderBuildService.setDisallowChanges(it)
+            task.usesService(it)
+        }
         versionKey.setDisallowChanges(deriveVersionKey(taskCreationServices, lintClassLoaderBuildService))
         val projectOptions = taskCreationServices.projectOptions
         runInProcess.setDisallowChanges(projectOptions.getProvider(BooleanOption.RUN_LINT_IN_PROCESS))
@@ -210,7 +215,7 @@ abstract class LintTool {
         lintCacheDirectory.setDisallowChanges(
             taskCreationServices.projectInfo
                 .buildDirectory
-                .dir("${SdkConstants.FD_INTERMEDIATES}/lint-cache/$taskName")
+                .dir("${SdkConstants.FD_INTERMEDIATES}/lint-cache/${task.name}")
         )
     }
 
@@ -679,18 +684,14 @@ abstract class SystemPropertyInputs {
         javaVersion.setDisallowChanges(providerFactory.systemProperty("java.version"))
         lintApiDatabase.fileProvider(
             providerFactory.systemProperty("LINT_API_DATABASE").map {
-                // Suppress the warning because the Gradle docs say "May return null"
-                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-                File(it).takeIf { file -> file.isFile }
-            }
+                File(it)
+            }.filter { it.isFile }
         )
         lintApiDatabase.disallowChanges()
         lintConfigurationOverride.fileProvider(
             providerFactory.systemProperty("lint.configuration.override").map {
-                // Suppress the warning because the Gradle docs say "May return null"
-                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-                File(it).takeIf { file -> file.isFile }
-            }
+                File(it)
+            }.filter { it.isFile }
         )
         lintConfigurationOverride.disallowChanges()
         lintNullnessIgnoreDeprecated.setDisallowChanges(
@@ -766,18 +767,14 @@ abstract class EnvironmentVariableInputs {
         )
         lintApiDatabase.fileProvider(
             providerFactory.environmentVariable("LINT_API_DATABASE").map {
-                // Suppress the warning because the Gradle docs say "May return null"
-                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-                File(it).takeIf { file -> file.isFile }
-            }
+                File(it)
+            }.filter { it.isFile }
         )
         lintApiDatabase.disallowChanges()
         lintOverrideConfiguration.fileProvider(
             providerFactory.environmentVariable("LINT_OVERRIDE_CONFIGURATION").map {
-                // Suppress the warning because the Gradle docs say "May return null"
-                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-                File(it).takeIf { file -> file.isFile }
-            }
+                File(it)
+            }.filter { it.isFile }
         )
         lintOverrideConfiguration.disallowChanges()
     }
@@ -786,7 +783,7 @@ abstract class EnvironmentVariableInputs {
 /**
  * Inputs for the variant.
  */
-abstract class VariantInputs {
+abstract class VariantInputs : UsesLibraryDependencyCacheBuildService {
 
     @get:Input
     abstract val name: Property<String>
@@ -897,9 +894,6 @@ abstract class VariantInputs {
     abstract val buildFeatures: BuildFeaturesInput
 
     @get:Internal
-    abstract val libraryDependencyCacheBuildService: Property<LibraryDependencyCacheBuildService>
-
-    @get:Internal
     abstract val mavenCoordinatesCache: Property<MavenCoordinatesCacheBuildService>
 
     /**
@@ -918,6 +912,7 @@ abstract class VariantInputs {
      * @param fatalOnly whether lint is being invoked with --fatal-only
      */
     fun initialize(
+        task: Task,
         variantWithTests: VariantWithTests,
         useModuleDependencyLintModels: Boolean,
         warnIfProjectTreatedAsExternalDependency: Boolean,
@@ -926,6 +921,7 @@ abstract class VariantInputs {
         fatalOnly: Boolean
     ) {
         initialize(
+            task,
             variantWithTests.main,
             variantWithTests.unitTest,
             variantWithTests.androidTest,
@@ -943,6 +939,7 @@ abstract class VariantInputs {
     }
 
     fun initialize(
+        task: Task,
         variantCreationConfig: VariantCreationConfig,
         hostTestCreationConfig: HostTestCreationConfig?,
         deviceTestCreationConfig: DeviceTestCreationConfig?,
@@ -1146,12 +1143,13 @@ abstract class VariantInputs {
                 ?: false
         )
         buildFeatures.initialize(variantCreationConfig)
-        libraryDependencyCacheBuildService.setDisallowChanges(getBuildService(variantCreationConfig.services.buildServiceRegistry))
+        initializeLibraryDependencyCacheBuildService(task)
         mavenCoordinatesCache.setDisallowChanges(getBuildService(variantCreationConfig.services.buildServiceRegistry))
     }
 
     internal fun initializeForStandalone(
         project: Project,
+        task: Task,
         javaExtension: JavaPluginExtension,
         kotlinExtensionWrapper: KotlinMultiplatformExtensionWrapper?,
         projectOptions: ProjectOptions,
@@ -1166,6 +1164,7 @@ abstract class VariantInputs {
         if (kotlinExtensionWrapper == null) {
             initializeForStandalone(
                 project,
+                task,
                 javaExtension,
                 projectOptions,
                 fatalOnly,
@@ -1178,6 +1177,7 @@ abstract class VariantInputs {
         } else {
             initializeForStandaloneWithKotlinMultiplatform(
                 project,
+                task,
                 kotlinExtensionWrapper,
                 projectOptions,
                 fatalOnly,
@@ -1193,6 +1193,7 @@ abstract class VariantInputs {
 
     private fun initializeForStandalone(
         project: Project,
+        task: Task,
         javaExtension: JavaPluginExtension,
         projectOptions: ProjectOptions,
         fatalOnly: Boolean,
@@ -1286,7 +1287,7 @@ abstract class VariantInputs {
         androidTestSourceProvider.disallowChanges()
         testFixturesSourceProvider.disallowChanges()
         buildFeatures.initializeForStandalone()
-        libraryDependencyCacheBuildService.setDisallowChanges(getBuildService(project.gradle.sharedServices))
+        initializeLibraryDependencyCacheBuildService(task)
         mavenCoordinatesCache.setDisallowChanges(getBuildService(project.gradle.sharedServices))
         proguardFiles.setDisallowChanges(null)
         extractedProguardFiles.setDisallowChanges(null)
@@ -1296,6 +1297,7 @@ abstract class VariantInputs {
 
     private fun initializeForStandaloneWithKotlinMultiplatform(
         project: Project,
+        task: Task,
         kotlinExtensionWrapper: KotlinMultiplatformExtensionWrapper,
         projectOptions: ProjectOptions,
         fatalOnly: Boolean,
@@ -1395,9 +1397,7 @@ abstract class VariantInputs {
         androidTestSourceProvider.disallowChanges()
         testFixturesSourceProvider.disallowChanges()
         buildFeatures.initializeForStandalone()
-        libraryDependencyCacheBuildService.setDisallowChanges(
-            getBuildService(project.gradle.sharedServices)
-        )
+        initializeLibraryDependencyCacheBuildService(task)
         mavenCoordinatesCache.setDisallowChanges(getBuildService(project.gradle.sharedServices))
         proguardFiles.setDisallowChanges(null)
         extractedProguardFiles.setDisallowChanges(null)
@@ -1798,6 +1798,8 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             } else {
                 classesOutputDirectories.from(creationConfig.artifacts.get(InternalArtifactType.JAVAC))
                 creationConfig.getBuiltInKotlincOutput()?.let { classesOutputDirectories.from(it) }
+                creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR)
+                    ?.let { classesOutputDirectories.from(it) }
             }
             creationConfig.oldVariantApiLegacySupport?.variantData?.let {
                 classesOutputDirectories.from(
@@ -2653,8 +2655,12 @@ abstract class UastInputs  {
         this.compilerOptionsKotlinLanguageVersion.disallowChanges()
         // Ignore the type mismatch warning because the Gradle docs say "May return null"
         this.kotlinOptionsKotlinLanguageVersion.set(
-            kotlinCompileTaskProvider.map { kotlinCompileTask ->
-                runCatching { kotlinCompileTask.kotlinOptions.languageVersion }.getOrNull()
+            kotlinCompileTaskProvider.flatMap { kotlinCompileTask ->
+                // languageVersion is defined as a String? so it's ok to wrap it in a Provider
+                // as no task dependency needs to be carried over.
+                runCatching { kotlinCompileTask.kotlinOptions.languageVersion }.getOrNull()?.let {
+                    project.provider { it }
+                } ?: project.provider { null }
             }
         )
         this.kotlinOptionsKotlinLanguageVersion.disallowChanges()

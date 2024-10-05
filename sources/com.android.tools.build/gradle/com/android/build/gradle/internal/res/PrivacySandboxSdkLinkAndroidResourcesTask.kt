@@ -172,12 +172,8 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
             super.configure(task)
 
             task.aapt2.let { aapt2Input ->
-                aapt2Input.buildService.setDisallowChanges(
-                        getBuildService(task.project.gradle.sharedServices)
-                )
-                aapt2Input.threadPoolBuildService.setDisallowChanges(
-                        getBuildService(task.project.gradle.sharedServices)
-                )
+                aapt2Input.initializeAapt2DaemonBuildService(task)
+                aapt2Input.initializeAapt2ThreadPoolBuildService(task)
                 val aapt2Bin = create(task.project) { System.getenv(it.propertyName) }
                 aapt2Input.binaryDirectory.setFrom(aapt2Bin.aapt2Directory)
                 aapt2Input.version.setDisallowChanges(aapt2Bin.version)
@@ -185,7 +181,7 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
                         task.project.gradle.startParameter.maxWorkerCount
                 )
             }
-            task.androidJarInput.initialize(creationConfig, task)
+            task.androidJarInput.initialize(task, creationConfig)
 
             val mergedRes =
                     creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.MERGED_RES)

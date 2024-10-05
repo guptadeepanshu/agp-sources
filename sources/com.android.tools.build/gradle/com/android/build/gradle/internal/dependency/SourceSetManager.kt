@@ -22,6 +22,10 @@ import com.android.build.gradle.internal.api.LazyAndroidSourceSet
 import com.android.build.gradle.internal.dsl.AndroidSourceSetFactory
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.utils.ANDROID_BUILT_IN_KAPT_PLUGIN_ID
+import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
+import com.android.build.gradle.options.BooleanOption
+import com.android.builder.core.ComponentType
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
@@ -45,14 +49,12 @@ class SourceSetManager(
 
     private val configuredSourceSets = mutableSetOf<String>()
 
-    fun setUpTestSourceSet(name: String): LazyAndroidSourceSet {
-        return setUpSourceSet(name, true)
-    }
+    private val pluginManager = project.pluginManager
 
     @JvmOverloads
-    fun setUpSourceSet(name: String, isTestComponent: Boolean = false): LazyAndroidSourceSet {
+    fun setUpSourceSet(name: String, componentType: ComponentType): LazyAndroidSourceSet {
         if (!configuredSourceSets.contains(name)) {
-            createConfigurationsForSourceSet(name, isTestComponent)
+            createConfigurationsForSourceSet(name, componentType)
             configuredSourceSets.add(name)
         }
         return LazyAndroidSourceSet(
@@ -61,7 +63,7 @@ class SourceSetManager(
         )
     }
 
-    private fun createConfigurationsForSourceSet(name: String, isTestComponent: Boolean) {
+    private fun createConfigurationsForSourceSet(name: String, componentType: ComponentType) {
         val sourceSetName = AndroidSourceSetName(name)
         val apiName = sourceSetName.apiConfigurationName
         val implementationName = sourceSetName.implementationConfigurationName
@@ -69,7 +71,7 @@ class SourceSetManager(
         val compileOnlyName = sourceSetName.compileOnlyConfigurationName
         val compileOnlyApiName = sourceSetName.compileOnlyApiConfigurationName
 
-        val api = if (!isTestComponent) {
+        val api = if (!componentType.isTestComponent) {
             createConfiguration(apiName, getConfigDesc("API", name))
         } else {
             null
@@ -84,7 +86,7 @@ class SourceSetManager(
 
         createConfiguration(runtimeOnlyName, getConfigDesc("Runtime only", name))
         createConfiguration(compileOnlyName, getConfigDesc("Compile only", name))
-        if (!isTestComponent) {
+        if (!componentType.isTestComponent) {
             createConfiguration(compileOnlyApiName, getConfigDesc("Compile only API", name))
         }
 
@@ -98,6 +100,21 @@ class SourceSetManager(
             sourceSetName.annotationProcessorConfigurationName,
             "Classpath for the annotation processor for '$name'."
         )
+
+        val createKaptConfiguration: () -> Unit = {
+            createConfiguration(
+                sourceSetName.kaptConfigurationName,
+                "Classpath for the KAPT annotation processors for '$name'.",
+                canBeResolved = true
+            )
+        }
+        // Only create the KAPT configuration if necessary
+        pluginManager.withPlugin(ANDROID_BUILT_IN_KAPT_PLUGIN_ID) { createKaptConfiguration() }
+        if (componentType.isForScreenshotPreview || (componentType.isTestFixturesComponent && dslServices.projectOptions.get(BooleanOption.ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT))) {
+            // For testFixtures and screenshotTest components, the application of the Jetbrains KAPT
+            // plugin should also enable built-in KAPT support.
+            pluginManager.withPlugin(KOTLIN_KAPT_PLUGIN_ID) { createKaptConfiguration() }
+        }
     }
 
     /**

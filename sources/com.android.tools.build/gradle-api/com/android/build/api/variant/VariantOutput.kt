@@ -39,7 +39,7 @@ interface VariantOutput: VariantOutputConfiguration {
      * It is safe to modify it. When using Splits/Multi-APK output, it is generally necessary to
      * change this value per output.
      */
-    val versionCode: Property<Int?>
+    val versionCode: Property<Int>
 
     /**
      * The version name for this output.
@@ -50,7 +50,7 @@ interface VariantOutput: VariantOutputConfiguration {
      *
      * It is safe to modify it.
      */
-    val versionName: Property<String?>
+    val versionName: Property<String>
 
     /**
      * Flag controlling whether the output is enabled.

@@ -19,6 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.api.variant.SourceDirectories
 import com.android.build.gradle.internal.services.VariantServices
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
 
 /**
@@ -26,10 +27,30 @@ import org.gradle.api.tasks.util.PatternFilterable
  */
 class KotlinMultiplatformFlatSourceDirectoriesImpl(
     name: String,
-    variantServices: VariantServices,
+    val variantServices: VariantServices,
     variantDslFilters: PatternFilterable?,
     private val compilation: KotlinMultiplatformAndroidCompilation
-): FlatSourceDirectoriesImpl(name, variantServices, variantDslFilters), SourceDirectories.Flat {
+): FlatSourceDirectoriesImpl(name, variantServices, variantDslFilters) {
+
+    /**
+     * Note: This doesn't preserve task dependencies of internal `directoryEntry` objects as the
+     * provider watched is the one from the outer scope only. Do not use unless necessary.
+     *
+     * https://youtrack.jetbrains.com/issue/KT-59503
+     */
+    @Deprecated("This is only to support kotlin multiplatform")
+    internal fun addStaticSources(sources: Provider<out Collection<DirectoryEntry>>) {
+        variantSources.addAll(sources)
+        directories.addAll(sources.map { directoryEntries ->
+            directoryEntries.flatMap { directoryEntry ->
+                directoryEntry.asFiles(
+                    variantServices.provider {
+                        variantServices.projectInfo.projectDirectory
+                    }
+                ).get()
+            }
+        })
+    }
 
     override fun addSource(directoryEntry: DirectoryEntry) {
         throw IllegalAccessException("$name sources for kotlin multiplatform android plugin " +

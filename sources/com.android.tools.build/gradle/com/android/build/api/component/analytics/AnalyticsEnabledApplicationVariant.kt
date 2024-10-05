@@ -186,17 +186,18 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
     override val dexing: Dexing
         get() = generatesApk.dexing
 
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
         get()  {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.DEVICE_TESTS_VALUE
             // return a new list everytime as items may eventually be added through future APIs.
             // we may consider returning a live list instead.
-            return  delegate.deviceTests.map {
-                if (it is AndroidTest) {
-                    AnalyticsEnabledAndroidTest(it, stats, objectFactory)
+            return  delegate.deviceTests.mapValues {
+                val value = it.value
+                if (value is AndroidTest) {
+                    AnalyticsEnabledAndroidTest(value, stats, objectFactory)
                 } else {
-                    AnalyticsEnabledDeviceTest(it, stats, objectFactory)
+                    AnalyticsEnabledDeviceTest(value, stats, objectFactory)
                 }
             }
         }

@@ -148,6 +148,14 @@ private static final long serialVersionUID = 0L;
      * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS = 9;</code>
      */
     EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS(9),
+    /**
+     * <pre>
+     * Whether data binding is enabled for this library (never expected in KMP)
+     * </pre>
+     *
+     * <code>DATA_BINDING_ENABLED = 10;</code>
+     */
+    DATA_BINDING_ENABLED(10),
     UNRECOGNIZED(-1),
     ;
 
@@ -238,6 +246,14 @@ private static final long serialVersionUID = 0L;
      * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS = 9;</code>
      */
     public static final int EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_VALUE = 9;
+    /**
+     * <pre>
+     * Whether data binding is enabled for this library (never expected in KMP)
+     * </pre>
+     *
+     * <code>DATA_BINDING_ENABLED = 10;</code>
+     */
+    public static final int DATA_BINDING_ENABLED_VALUE = 10;
 
 
     public final int getNumber() {
@@ -274,6 +290,7 @@ private static final long serialVersionUID = 0L;
         case 7: return ENABLE_VCS_INFO;
         case 8: return BUILD_FEATURE_ANDROID_RESOURCES;
         case 9: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS;
+        case 10: return DATA_BINDING_ENABLED;
         default: return null;
       }
     }

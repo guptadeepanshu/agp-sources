@@ -50,6 +50,7 @@ interface ComponentDslInfo {
     )
 
     class DslDefinedDeviceTest(
+        val type: String,
         val codeCoverageEnabled: Boolean,
     )
 

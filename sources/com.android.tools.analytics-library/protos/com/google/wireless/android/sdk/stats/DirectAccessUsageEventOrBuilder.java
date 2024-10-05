@@ -66,7 +66,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    * @return Whether the reserveDeviceDetails field is set.
    */
   boolean hasReserveDeviceDetails();
@@ -75,7 +75,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    * @return The reserveDeviceDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails getReserveDeviceDetails();
@@ -84,7 +84,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = RESERVE_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetailsOrBuilder getReserveDeviceDetailsOrBuilder();
 
@@ -93,7 +93,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    * @return Whether the connectDeviceDetails field is set.
    */
   boolean hasConnectDeviceDetails();
@@ -102,7 +102,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    * @return The connectDeviceDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails getConnectDeviceDetails();
@@ -111,7 +111,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = CONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetailsOrBuilder getConnectDeviceDetailsOrBuilder();
 
@@ -120,7 +120,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    * @return Whether the streamStartedDetails field is set.
    */
   boolean hasStreamStartedDetails();
@@ -129,7 +129,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    * @return The streamStartedDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails getStreamStartedDetails();
@@ -138,7 +138,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = STREAM_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetailsOrBuilder getStreamStartedDetailsOrBuilder();
 
@@ -147,7 +147,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    * @return Whether the extendReservationDetails field is set.
    */
   boolean hasExtendReservationDetails();
@@ -156,7 +156,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    * @return The extendReservationDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails getExtendReservationDetails();
@@ -165,7 +165,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = EXTEND_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetailsOrBuilder getExtendReservationDetailsOrBuilder();
 
@@ -174,7 +174,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    * @return Whether the endReservationDetails field is set.
    */
   boolean hasEndReservationDetails();
@@ -183,7 +183,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    * @return The endReservationDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails getEndReservationDetails();
@@ -192,7 +192,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * set when type = END_RESERVATION
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetailsOrBuilder getEndReservationDetailsOrBuilder();
 
@@ -220,7 +220,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    * @return Whether the disconnectDeviceDetails field is set.
    */
   boolean hasDisconnectDeviceDetails();
@@ -229,7 +229,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    * @return The disconnectDeviceDetails.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails getDisconnectDeviceDetails();
@@ -238,7 +238,7 @@ public interface DirectAccessUsageEventOrBuilder extends
    * Set when type = DISCONNECT_DEVICE
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder getDisconnectDeviceDetailsOrBuilder();
 }

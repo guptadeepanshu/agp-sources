@@ -340,7 +340,7 @@ private static final long serialVersionUID = 0L;
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    * @return Whether the current field is set.
    */
   @java.lang.Override
@@ -352,7 +352,7 @@ private static final long serialVersionUID = 0L;
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    * @return The current.
    */
   @java.lang.Override
@@ -364,7 +364,7 @@ private static final long serialVersionUID = 0L;
    * Current memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings current = 2;</code>
+   * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getCurrentOrBuilder() {
@@ -378,7 +378,7 @@ private static final long serialVersionUID = 0L;
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    * @return Whether the recommended field is set.
    */
   @java.lang.Override
@@ -390,7 +390,7 @@ private static final long serialVersionUID = 0L;
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    * @return The recommended.
    */
   @java.lang.Override
@@ -402,7 +402,7 @@ private static final long serialVersionUID = 0L;
    * Recommended memory settings.
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+   * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getRecommendedOrBuilder() {
@@ -416,7 +416,7 @@ private static final long serialVersionUID = 0L;
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    * @return Whether the changed field is set.
    */
   @java.lang.Override
@@ -428,7 +428,7 @@ private static final long serialVersionUID = 0L;
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    * @return The changed.
    */
   @java.lang.Override
@@ -440,7 +440,7 @@ private static final long serialVersionUID = 0L;
    * New memory settings changed by users (may or may not be saved yet).
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettings changed = 4;</code>
+   * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getChangedOrBuilder() {
@@ -979,7 +979,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      * @return Whether the current field is set.
      */
     public boolean hasCurrent() {
@@ -990,7 +990,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      * @return The current.
      */
     public com.google.wireless.android.sdk.stats.MemorySettings getCurrent() {
@@ -1005,7 +1005,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public Builder setCurrent(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (currentBuilder_ == null) {
@@ -1025,7 +1025,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public Builder setCurrent(
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
@@ -1043,7 +1043,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public Builder mergeCurrent(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (currentBuilder_ == null) {
@@ -1067,7 +1067,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public Builder clearCurrent() {
       if (currentBuilder_ == null) {
@@ -1084,7 +1084,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettings.Builder getCurrentBuilder() {
       bitField0_ |= 0x00000002;
@@ -1096,7 +1096,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getCurrentOrBuilder() {
       if (currentBuilder_ != null) {
@@ -1111,7 +1111,7 @@ private static final long serialVersionUID = 0L;
      * Current memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings current = 2;</code>
+     * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.MemorySettings, com.google.wireless.android.sdk.stats.MemorySettings.Builder, com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder> 
@@ -1135,7 +1135,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      * @return Whether the recommended field is set.
      */
     public boolean hasRecommended() {
@@ -1146,7 +1146,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      * @return The recommended.
      */
     public com.google.wireless.android.sdk.stats.MemorySettings getRecommended() {
@@ -1161,7 +1161,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public Builder setRecommended(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (recommendedBuilder_ == null) {
@@ -1181,7 +1181,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public Builder setRecommended(
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
@@ -1199,7 +1199,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public Builder mergeRecommended(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (recommendedBuilder_ == null) {
@@ -1223,7 +1223,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public Builder clearRecommended() {
       if (recommendedBuilder_ == null) {
@@ -1240,7 +1240,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettings.Builder getRecommendedBuilder() {
       bitField0_ |= 0x00000004;
@@ -1252,7 +1252,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getRecommendedOrBuilder() {
       if (recommendedBuilder_ != null) {
@@ -1267,7 +1267,7 @@ private static final long serialVersionUID = 0L;
      * Recommended memory settings.
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings recommended = 3;</code>
+     * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.MemorySettings, com.google.wireless.android.sdk.stats.MemorySettings.Builder, com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder> 
@@ -1291,7 +1291,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      * @return Whether the changed field is set.
      */
     public boolean hasChanged() {
@@ -1302,7 +1302,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      * @return The changed.
      */
     public com.google.wireless.android.sdk.stats.MemorySettings getChanged() {
@@ -1317,7 +1317,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public Builder setChanged(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (changedBuilder_ == null) {
@@ -1337,7 +1337,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public Builder setChanged(
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
@@ -1355,7 +1355,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public Builder mergeChanged(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (changedBuilder_ == null) {
@@ -1379,7 +1379,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public Builder clearChanged() {
       if (changedBuilder_ == null) {
@@ -1396,7 +1396,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettings.Builder getChangedBuilder() {
       bitField0_ |= 0x00000008;
@@ -1408,7 +1408,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getChangedOrBuilder() {
       if (changedBuilder_ != null) {
@@ -1423,7 +1423,7 @@ private static final long serialVersionUID = 0L;
      * New memory settings changed by users (may or may not be saved yet).
      * </pre>
      *
-     * <code>optional .android_studio.MemorySettings changed = 4;</code>
+     * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.MemorySettings, com.google.wireless.android.sdk.stats.MemorySettings.Builder, com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder> 

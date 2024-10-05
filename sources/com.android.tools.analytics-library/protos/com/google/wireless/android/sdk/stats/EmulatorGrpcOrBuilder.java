@@ -69,7 +69,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    * @return Whether the rcvBytesEstimate field is set.
    */
   boolean hasRcvBytesEstimate();
@@ -78,7 +78,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    * @return The rcvBytesEstimate.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getRcvBytesEstimate();
@@ -87,7 +87,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of received message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvBytesEstimateOrBuilder();
 
@@ -96,7 +96,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    * @return Whether the sndBytesEstimate field is set.
    */
   boolean hasSndBytesEstimate();
@@ -105,7 +105,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    * @return The sndBytesEstimate.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getSndBytesEstimate();
@@ -114,7 +114,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Sum of sent message size, if streaming
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
+   * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndBytesEstimateOrBuilder();
 
@@ -123,7 +123,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    * @return Whether the duration field is set.
    */
   boolean hasDuration();
@@ -132,7 +132,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    * @return The duration.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getDuration();
@@ -141,7 +141,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Duration of the total request time in milliseconds.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
+   * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDurationOrBuilder();
 
@@ -150,7 +150,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    * @return Whether the rcv field is set.
    */
   boolean hasRcv();
@@ -159,7 +159,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    * @return The rcv.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getRcv();
@@ -168,7 +168,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages received
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator rcv = 7;</code>
+   * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvOrBuilder();
 
@@ -177,7 +177,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    * @return Whether the snd field is set.
    */
   boolean hasSnd();
@@ -186,7 +186,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    * @return The snd.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getSnd();
@@ -195,7 +195,7 @@ public interface EmulatorGrpcOrBuilder extends
    * Number of messages send
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator snd = 8;</code>
+   * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndOrBuilder();
 

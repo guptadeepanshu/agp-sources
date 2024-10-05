@@ -28,14 +28,16 @@ import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
 import com.android.utils.ILogger;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+
 import org.gradle.api.logging.Logger;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.DisableCachingByDefault;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.DEPLOYMENT)
@@ -140,7 +142,7 @@ public abstract class UninstallTask extends NonIncrementalTask {
             task.setTimeOutInMs(
                     creationConfig.getGlobal().getInstallationOptions().getTimeOutInMs());
 
-            SdkComponentsKt.initialize(task.getBuildToolsExecutableInput(), creationConfig);
+            SdkComponentsKt.initialize(task.getBuildToolsExecutableInput(), task, creationConfig);
         }
 
         @Override

@@ -207,7 +207,7 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE, task.bundle
             )
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
             task.tempDirectory = creationConfig.paths.getIncrementalDir(name)
             task.signingConfigData = SigningConfigDataProvider.create(creationConfig)
         }

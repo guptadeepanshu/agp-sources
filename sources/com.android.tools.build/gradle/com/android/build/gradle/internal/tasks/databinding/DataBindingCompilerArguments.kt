@@ -153,7 +153,7 @@ class DataBindingCompilerArguments constructor(
             artifactType = artifactType,
             modulePackage = packageName.get(),
             minApi = minApi,
-            apiFile = apiVersionsFile.get().asFile,
+            apiFile = apiVersionsFile.orNull?.asFile,
             dependencyArtifactsDir = dependencyArtifactsDir.get().asFile,
             layoutInfoDir = layoutInfoDir.get().asFile,
             classLogDir = classLogDir.get().asFile,

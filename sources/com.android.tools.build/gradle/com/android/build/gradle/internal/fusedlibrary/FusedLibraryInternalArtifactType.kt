@@ -53,4 +53,6 @@ FusedLibraryInternalArtifactType<T : FileSystemLocation>(
     object MERGED_NAVIGATION_JSON: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
     object MERGED_AAR_METADATA: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
     object MERGED_JAVA_RES: FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable, Transformable
+    // The R.txt of dependency resources packaged in the AAR for generating the R class in consuming modules.
+    object COMPILE_SYMBOL_LIST : FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
 }

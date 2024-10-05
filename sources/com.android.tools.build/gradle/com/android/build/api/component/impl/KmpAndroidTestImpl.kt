@@ -135,8 +135,8 @@ open class KmpAndroidTestImpl @Inject constructor(
         internalServices.propertyOf(Boolean::class.java, dslInfo.handleProfiling)
     override val functionalTest: Property<Boolean> =
         internalServices.propertyOf(Boolean::class.java, dslInfo.functionalTest)
-    override val testLabel: Property<String?> =
-        internalServices.nullablePropertyOf(String::class.java, dslInfo.testLabel)
+    override val testLabel: Property<String> =
+        internalServices.propertyOf(String::class.java, dslInfo.testLabel)
 
     // Even if android resources is not enabled, we still need to merge and link external resources
     // to create the test apk.

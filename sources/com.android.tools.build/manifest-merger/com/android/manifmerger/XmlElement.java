@@ -16,6 +16,10 @@
 
 package com.android.manifmerger;
 
+import static com.android.manifmerger.FeatureFlag.NAMESPACE_URI;
+import static com.android.manifmerger.FeatureFlag.QUALIFIED_ATTRIBUTE_NAME;
+import static com.android.manifmerger.XmlElementMergeMapperKt.mapMergingElements;
+
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -25,12 +29,21 @@ import com.android.ide.common.resources.MergingException;
 import com.android.utils.ILogger;
 import com.android.utils.SdkUtils;
 import com.android.utils.XmlUtils;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -39,15 +52,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 /**
  * Xml {@link Element} which is mergeable.
@@ -626,6 +632,21 @@ public class XmlElement extends OrphanXmlElement {
     }
 
     /**
+     * Returns the first child of a particular type.
+     *
+     * @param type the requested child type.
+     * @return the child of {@link Optional#empty()} ()} if no child of this type exist.
+     */
+    public Optional<XmlElement> getFirstNodeByType(ManifestModel.NodeTypes type) {
+        for (XmlElement xmlElement : mMergeableChildren.values()) {
+            if (xmlElement.isA(type)) {
+                return Optional.of(xmlElement);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Returns all immediate children of this node for a particular type, irrespective of their
      * key.
      * @param type the type of children element requested.
@@ -647,30 +668,24 @@ public class XmlElement extends OrphanXmlElement {
             @NonNull XmlElement lowerPriorityNode,
             @NonNull MergingReport.Builder mergingReport,
             @NonNull ManifestMerger2.ProcessCancellationChecker processCancellationChecker) {
-
-        // find all the child nodes that matches with the lower priority node's children
-        Map<XmlElement, Optional<XmlElement>> matchingChildNodes =
-                lowerPriorityNode.getMergeableElements().stream()
-                        .collect(
-                                Collectors.toMap(
-                                        Function.identity(),
-                                        node ->
-                                                getNodeByTypeAndKey(
-                                                        node.getType(), node.getKey())));
-        // read all lower priority mergeable nodes.
-        // if the same node is not defined in this document merge it in.
-        // if the same is defined, so far, give an error message.
-        for (XmlElement lowerPriorityChild : lowerPriorityNode.getMergeableElements()) {
+        var mappedNodes =
+                mapMergingElements(
+                        lowerPriorityNode, this, processCancellationChecker, mergingReport);
+        for (var pair : mappedNodes) {
+            var lowerPriorityChild = pair.getFirst();
+            var matchingNode = pair.getSecond();
             processCancellationChecker.check();
             if (shouldIgnore(lowerPriorityChild, mergingReport)) {
                 continue;
             }
-            mergeChild(
-                    lowerPriorityChild,
-                    mergingReport,
-                    matchingChildNodes.get(lowerPriorityChild),
-                    processCancellationChecker);
+            mergeChild(lowerPriorityChild, mergingReport, matchingNode, processCancellationChecker);
         }
+    }
+
+    /** Sets the feature flag attribute on the XML element. */
+    public XmlElement setFeatureFlag(String value) {
+        setAttributeNS(NAMESPACE_URI, QUALIFIED_ATTRIBUTE_NAME, value);
+        return this;
     }
 
     /**
@@ -859,7 +874,7 @@ public class XmlElement extends OrphanXmlElement {
         // do we have an element of the same type of that child with no key ?
         Optional<XmlElement> thisChildElementOptional =
                 getNodeByTypeAndKey(lowerPriorityChild.getType(), null /* keyValue */);
-        if (!thisChildElementOptional.isPresent()) {
+        if (thisChildElementOptional.isEmpty()) {
             return false;
         }
         XmlElement thisChild = thisChildElementOptional.get();
@@ -933,8 +948,9 @@ public class XmlElement extends OrphanXmlElement {
                                         this,
                                         MergingReport.Record.Severity.ERROR,
                                         String.format(
-                                                "Node %1$s at %2$s is tagged with tools:node=\"strict\", yet "
-                                                        + "%3$s at %4$s is different : %5$s",
+                                                "Node %1$s at %2$s is tagged with"
+                                                    + " tools:node=\"strict\", yet %3$s at %4$s is"
+                                                    + " different : %5$s",
                                                 higherPriority.getId(),
                                                 higherPriority.printPosition(),
                                                 lowerPriority.getId(),
@@ -1138,8 +1154,8 @@ public class XmlElement extends OrphanXmlElement {
                 Lists.transform(expectedChildren, NODE_TO_NAME).forEach(extraChildrenNames::remove);
                 return Optional.of(
                         String.format(
-                                "%1$s: Number of children do not match up: "
-                                        + "expected %2$d versus %3$d at %4$s, extra elements found : %5$s",
+                                "%1$s: Number of children do not match up: expected %2$d versus"
+                                        + " %3$d at %4$s, extra elements found : %5$s",
                                 getId(),
                                 expectedChildrenSize,
                                 actualChildrenSize,
@@ -1283,6 +1299,21 @@ public class XmlElement extends OrphanXmlElement {
             previousSibling = previousSibling.getPreviousSibling();
         }
         return nodesToAdopt.build().reverse();
+    }
+
+    /** Creates and return deep clone of an XML element */
+    public XmlElement clone() {
+        Element node = (Element) getXml().cloneNode(true);
+        return new XmlElement(node, getDocument());
+    }
+
+    public Map<String, List<XmlElement>> getChildrenByTypeAndKey() {
+        return getMergeableElements().stream()
+                .collect(
+                        Collectors.groupingBy(
+                                child -> child.getType() + child.getKey(),
+                                LinkedHashMap::new,
+                                Collectors.toList()));
     }
 
     static class ElementOperationsAndMergeRuleMarkers {

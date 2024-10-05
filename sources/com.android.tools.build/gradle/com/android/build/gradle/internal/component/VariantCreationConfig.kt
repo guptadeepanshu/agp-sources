@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.component
 import com.android.build.api.variant.Component
 import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalBoolean
 import com.android.build.gradle.options.OptionalBooleanOption
+import com.android.build.gradle.options.parseBoolean
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
@@ -43,10 +44,13 @@ interface VariantCreationConfig: ConsumableCreationConfig {
      * version is at least 2.0.
      */
     val lintUseK2UastManualSetting: Provider<Boolean> get() {
-        // Ignore the type mismatch warning because the Gradle docs say "May return null"
-        return experimentalProperties.map {
-            OptionalBoolean.LINT_USE_K2_UAST.getValue(it) ?:
-                services.projectOptions.get(OptionalBooleanOption.LINT_USE_K2_UAST)
+        val ret: Provider<Boolean> = experimentalProperties.getting(OptionalBoolean.LINT_USE_K2_UAST.key).map {
+            parseBoolean(OptionalBoolean.LINT_USE_K2_UAST.key, it)
         }
+
+        services.projectOptions.get(OptionalBooleanOption.LINT_USE_K2_UAST)?.let {
+            return ret.orElse(it)
+        }
+        return ret
     }
 }

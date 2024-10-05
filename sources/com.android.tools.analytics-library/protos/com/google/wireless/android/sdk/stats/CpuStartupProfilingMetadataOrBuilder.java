@@ -8,17 +8,17 @@ public interface CpuStartupProfilingMetadataOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    * @return Whether the profilingConfig field is set.
    */
   boolean hasProfilingConfig();
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    * @return The profilingConfig.
    */
   com.google.wireless.android.sdk.stats.CpuProfilingConfig getProfilingConfig();
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getProfilingConfigOrBuilder();
 }

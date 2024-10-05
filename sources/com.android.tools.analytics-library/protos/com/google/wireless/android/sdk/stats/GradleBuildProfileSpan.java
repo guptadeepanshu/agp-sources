@@ -1774,7 +1774,7 @@ private static final long serialVersionUID = 0L;
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    * @return Whether the transform field is set.
    */
   @java.lang.Override
@@ -1788,7 +1788,7 @@ private static final long serialVersionUID = 0L;
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    * @return The transform.
    */
   @java.lang.Override
@@ -1802,7 +1802,7 @@ private static final long serialVersionUID = 0L;
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTransformExecutionOrBuilder getTransformOrBuilder() {
@@ -1817,7 +1817,7 @@ private static final long serialVersionUID = 0L;
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    * @return Whether the task field is set.
    */
   @java.lang.Override
@@ -1830,7 +1830,7 @@ private static final long serialVersionUID = 0L;
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    * @return The task.
    */
   @java.lang.Override
@@ -1843,7 +1843,7 @@ private static final long serialVersionUID = 0L;
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTaskExecutionOrBuilder getTaskOrBuilder() {
@@ -2894,7 +2894,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      * @return Whether the transform field is set.
      */
     public boolean hasTransform() {
@@ -2907,7 +2907,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      * @return The transform.
      */
     public com.google.wireless.android.sdk.stats.GradleTransformExecution getTransform() {
@@ -2924,7 +2924,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public Builder setTransform(com.google.wireless.android.sdk.stats.GradleTransformExecution value) {
       if (transformBuilder_ == null) {
@@ -2946,7 +2946,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public Builder setTransform(
         com.google.wireless.android.sdk.stats.GradleTransformExecution.Builder builderForValue) {
@@ -2966,7 +2966,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public Builder mergeTransform(com.google.wireless.android.sdk.stats.GradleTransformExecution value) {
       if (transformBuilder_ == null) {
@@ -2992,7 +2992,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public Builder clearTransform() {
       if (transformBuilder_ == null) {
@@ -3011,7 +3011,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleTransformExecution.Builder getTransformBuilder() {
       bitField0_ |= 0x00000020;
@@ -3025,7 +3025,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleTransformExecutionOrBuilder getTransformOrBuilder() {
       if (transformBuilder_ != null) {
@@ -3042,7 +3042,7 @@ private static final long serialVersionUID = 0L;
      * TASK_TRANSFORM.
      * </pre>
      *
-     * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+     * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleTransformExecution, com.google.wireless.android.sdk.stats.GradleTransformExecution.Builder, com.google.wireless.android.sdk.stats.GradleTransformExecutionOrBuilder> 
@@ -3067,7 +3067,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      * @return Whether the task field is set.
      */
     public boolean hasTask() {
@@ -3079,7 +3079,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      * @return The task.
      */
     public com.google.wireless.android.sdk.stats.GradleTaskExecution getTask() {
@@ -3095,7 +3095,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public Builder setTask(com.google.wireless.android.sdk.stats.GradleTaskExecution value) {
       if (taskBuilder_ == null) {
@@ -3116,7 +3116,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public Builder setTask(
         com.google.wireless.android.sdk.stats.GradleTaskExecution.Builder builderForValue) {
@@ -3135,7 +3135,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public Builder mergeTask(com.google.wireless.android.sdk.stats.GradleTaskExecution value) {
       if (taskBuilder_ == null) {
@@ -3160,7 +3160,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public Builder clearTask() {
       if (taskBuilder_ == null) {
@@ -3178,7 +3178,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleTaskExecution.Builder getTaskBuilder() {
       bitField0_ |= 0x00000040;
@@ -3191,7 +3191,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleTaskExecutionOrBuilder getTaskOrBuilder() {
       if (taskBuilder_ != null) {
@@ -3207,7 +3207,7 @@ private static final long serialVersionUID = 0L;
      * Only used when executionType is TASK_EXECUTION
      * </pre>
      *
-     * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+     * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleTaskExecution, com.google.wireless.android.sdk.stats.GradleTaskExecution.Builder, com.google.wireless.android.sdk.stats.GradleTaskExecutionOrBuilder> 

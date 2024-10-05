@@ -29,17 +29,19 @@ import com.android.buildanalyzer.common.CheckJetifierProjectResult
 import com.android.buildanalyzer.common.DependencyPath
 import com.android.buildanalyzer.common.FullDependencyPath
 import com.android.buildanalyzer.common.TaskCategory
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult
+import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.internal.deprecation.DeprecatableConfiguration
 import org.gradle.work.DisableCachingByDefault
+import java.io.Serializable
 
 /**
  * Task to check whether Jetifier is needed for the current project. This is done by checking
@@ -69,6 +71,9 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
      */
     @get:Internal
     abstract val configurationToResolveFirst: ListProperty<String>
+
+    @get:Nested
+    abstract val resolutionUnit: ListProperty<ResolutionUnit>
 
     class CreationAction(
         creationConfig: GlobalTaskCreationConfig,
@@ -100,9 +105,24 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
 
             // This task should always run
             task.outputs.upToDateWhen { false }
-            task.notCompatibleWithConfigurationCache("See https://buganizer.corp.google.com/issues/219099391")
+
+            val resolutionUnit = task.project.configurations
+                .filter { it.isCanBeResolved || (it is DeprecatableConfiguration && it.canSafelyBeResolved()) }
+                .map { ResolutionUnit(it.name, it.incoming.resolutionResult.rootComponent)
+            }
+            task.resolutionUnit.setDisallowChanges(resolutionUnit)
         }
     }
+
+    /**
+     * @param configurationName the name of the configuration this component belongs to
+     */
+    data class ResolutionUnit(
+        @get:Internal
+        val configurationName: String,
+        @get:Internal
+        val rootComponent: Provider<ResolvedComponentResult>
+    ) : Serializable
 
     override fun doTaskAction() {
         if (!jetifierEnabled.get()) {
@@ -119,15 +139,16 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
     private fun detect(): CheckJetifierProjectResult {
         val dependenciesDependingOnSupportLibs = LinkedHashMap<String, FullDependencyPath>()
         val resolveFirstNames = configurationToResolveFirst.get()
-        val (handleFirst, theRest) = project.configurations.toList()
-            .partition { resolveFirstNames.contains(it.name) }
 
-        val handler = { configuration: Configuration ->
-            for (pathToSupportLib in ConfigurationAnalyzer(configuration).findPathsToSupportLibs()) {
+        val (handleFirst, theRest) = resolutionUnit.get()
+            .partition { resolveFirstNames.contains(it.configurationName) }
+
+        val handler = { unit: ResolutionUnit ->
+            for (pathToSupportLib in ConfigurationAnalyzer(unit.rootComponent.get()).findPathsToSupportLibs()) {
                 val directDependency = pathToSupportLib.elements.first()
                 // Store only one path, see `CheckJetifierProjectResult`'s kdoc
                 dependenciesDependingOnSupportLibs.computeIfAbsent(directDependency) {
-                    FullDependencyPath(project.path, configuration.name, pathToSupportLib)
+                    FullDependencyPath(projectPath.get(), unit.configurationName, pathToSupportLib)
                 }
             }
         }
@@ -139,13 +160,13 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
     private fun reportToConsole(result: CheckJetifierProjectResult) {
         if (result.isEmpty()) {
             logger.quiet(
-                "Project '${project.path}' does not use any legacy support libraries." +
+                "Project '${projectPath}' does not use any legacy support libraries." +
                         " If this is the case for all other projects, you can disable Jetifier" +
                         " by setting ${BooleanOption.ENABLE_JETIFIER.propertyName}=false in gradle.properties."
             )
         } else {
             logger.quiet(
-                "The following libraries used by project '${project.path}' depend on legacy support libraries." +
+                "The following libraries used by project '${projectPath}' depend on legacy support libraries." +
                         " To disable Jetifier, you will need to use AndroidX-supported versions of these libraries."
             )
             logger.quiet("\t" + result.getDisplayString().replace("\n", "\n\t"))
@@ -153,7 +174,7 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
     }
 }
 
-private class ConfigurationAnalyzer(private val configuration: Configuration) {
+private class ConfigurationAnalyzer(private val rootComponent: ResolvedComponentResult) {
 
     /**
      * Finds direct dependencies of the given configuration that directly/transitively depend on
@@ -164,15 +185,8 @@ private class ConfigurationAnalyzer(private val configuration: Configuration) {
      *     retains only one path.
      */
     fun findPathsToSupportLibs(): List<DependencyPath> {
-        if (!configuration.isCanBeResolved) {
-            return emptyList()
-        }
-        if (configuration is DeprecatableConfiguration && !configuration.canSafelyBeResolved()) {
-            return emptyList()
-        }
-
         val directDependencies =
-            configuration.incoming.resolutionResult.root.dependencies.filter { dependency ->
+            rootComponent.dependencies.filter { dependency ->
                 // Skip dependency constraints
                 if (dependency.isConstraint) {
                     return@filter false

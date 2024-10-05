@@ -16,8 +16,8 @@
 package com.android.tools.analytics.crash;
 
 import com.android.annotations.NonNull;
-import com.google.common.base.Ascii;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Ascii;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -40,18 +40,21 @@ import java.util.logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.GzipCompressingEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
- * {@link GoogleCrashReporter} provides APIs to upload crash reports to Google crash reporting service.
- * @see <a href="http://go/studio-g3doc/implementation/crash">Crash Backend</a> for more information.
+ * {@link GoogleCrashReporter} provides APIs to upload crash reports to Google crash reporting
+ * service.
+ *
+ * @see <a href="http://go/studio-g3doc/implementation/crash">Crash Backend</a> for more
+ *     information.
  */
 public class GoogleCrashReporter implements CrashReporter {
 
@@ -66,39 +69,44 @@ public class GoogleCrashReporter implements CrashReporter {
   private static final int MAX_BYTES_FOR_FILE = 1258291; // Crash limits uploaded files to 1.2MB
   private static final String TRUNCATION_INDICATOR = "[truncated]";
 
-  private static final String LOCALE = Locale.getDefault() == null ? "unknown" : Locale.getDefault().toString();
+  private static final String LOCALE =
+      Locale.getDefault() == null ? "unknown" : Locale.getDefault().toString();
 
   private static final int REJECTED_UPLOAD_TRIGGER_COUNT = 20;
-  private static AtomicInteger ourRejectedExecutionCount = new AtomicInteger();
+  private static final AtomicInteger ourRejectedExecutionCount = new AtomicInteger();
 
   /**
-   * Executor to use when uploading crash events. Earlier versions relied on the ForkJoin pool, but this causes
-   * issues if we generate lots of exceptions within a short time - See https://code.google.com/p/android/issues/detail?id=230109.
-   * This executor is configured such that it only allows a maximum of 5 threads to ever be alive for the purpose of uploading events,
-   * with a backlog of 30 more in the queue. If the queue is full, then subsequent submissions to the queue are rejected.
+   * Executor to use when uploading crash events. Earlier versions relied on the ForkJoin pool, but
+   * this causes issues if we generate lots of exceptions within a short time - See
+   * https://code.google.com/p/android/issues/detail?id=230109. This executor is configured such
+   * that it only allows a maximum of 5 threads to ever be alive for the purpose of uploading
+   * events, with a backlog of 30 more in the queue. If the queue is full, then subsequent
+   * submissions to the queue are rejected.
    */
   private static final ExecutorService ourExecutor =
-    new ThreadPoolExecutor(1,
-                           5,
-                           1, TimeUnit.MINUTES,
-                           new LinkedBlockingDeque<>(30),
-                           new ThreadFactoryBuilder().setDaemon(true).setNameFormat("google-crash-pool-%d").build(),
-                           (r, executor) -> {
-                             ourRejectedExecutionCount.incrementAndGet();
-                             if (ourRejectedExecutionCount.compareAndSet(REJECTED_UPLOAD_TRIGGER_COUNT, 0)) {
-                               Logger.getLogger(
-                                       GoogleCrashReporter.class.getName())
-                                 .info("Lost " + REJECTED_UPLOAD_TRIGGER_COUNT + " crash events due to full queue.");
-                             }
-                           });
+      new ThreadPoolExecutor(
+          1,
+          5,
+          1,
+          TimeUnit.MINUTES,
+          new LinkedBlockingDeque<>(30),
+          new ThreadFactoryBuilder().setDaemon(true).setNameFormat("google-crash-pool-%d").build(),
+          (r, executor) -> {
+            ourRejectedExecutionCount.incrementAndGet();
+            if (ourRejectedExecutionCount.compareAndSet(REJECTED_UPLOAD_TRIGGER_COUNT, 0)) {
+              Logger.getLogger(GoogleCrashReporter.class.getName())
+                  .info(
+                      "Lost " + REJECTED_UPLOAD_TRIGGER_COUNT + " crash events due to full queue.");
+            }
+          });
 
-  // The standard keys expected by crash backend. The product id and version are required, others are optional.
+  // The standard keys expected by crash backend. The product id and version are required, others
+  // are optional.
   protected static final String KEY_PRODUCT_ID = "productId";
   protected static final String KEY_VERSION = "version";
 
   // We allow reporting a max of 1 crash per minute
   private static final double MAX_CRASHES_PER_SEC = 1.0 / 60.0;
-
 
   private final boolean isUnitTestMode;
   private final boolean isDebugBuild;
@@ -107,19 +115,22 @@ public class GoogleCrashReporter implements CrashReporter {
 
   public GoogleCrashReporter(boolean isUnitTestMode, boolean isDebugBuild) {
     this(
-            (isUnitTestMode || isDebugBuild || java.lang.Boolean.getBoolean(
-                    SYSTEM_PROPERTY_USE_STAGING_CRASH_URL)) ? STAGING_CRASH_URL : CRASH_URL,
-            UploadRateLimiter.create(MAX_CRASHES_PER_SEC),
-            isUnitTestMode,
-            isDebugBuild);
+        (isUnitTestMode
+                || isDebugBuild
+                || java.lang.Boolean.getBoolean(SYSTEM_PROPERTY_USE_STAGING_CRASH_URL))
+            ? STAGING_CRASH_URL
+            : CRASH_URL,
+        UploadRateLimiter.create(MAX_CRASHES_PER_SEC),
+        isUnitTestMode,
+        isDebugBuild);
   }
 
   @VisibleForTesting
   GoogleCrashReporter(
-          @NonNull String crashUrl,
-          @NonNull UploadRateLimiter rateLimiter,
-          boolean isUnitTestMode,
-          boolean isDebugBuild) {
+      @NonNull String crashUrl,
+      @NonNull UploadRateLimiter rateLimiter,
+      boolean isUnitTestMode,
+      boolean isDebugBuild) {
     this.crashUrl = crashUrl;
     this.rateLimiter = rateLimiter;
     this.isUnitTestMode = isUnitTestMode;
@@ -144,7 +155,8 @@ public class GoogleCrashReporter implements CrashReporter {
     if (!skipLimiter) { // non-user reported crash events are rate limited on the client side
       if (!rateLimiter.tryAcquire()) {
         CompletableFuture<String> f = new CompletableFuture<>();
-        f.completeExceptionally(new RuntimeException("Exceeded Quota of crashes that can be reported"));
+        f.completeExceptionally(
+            new RuntimeException("Exceeded Quota of crashes that can be reported"));
         return f;
       }
     }
@@ -165,7 +177,7 @@ public class GoogleCrashReporter implements CrashReporter {
   @Override
   public CompletableFuture<String> submit(@NonNull Map<String, String> kv) {
     Map<String, String> parameters = getDefaultParameters();
-    kv.forEach(parameters::put);
+    parameters.putAll(kv);
     return submit(newMultipartEntityBuilderWithKv(parameters).build());
   }
 
@@ -175,43 +187,43 @@ public class GoogleCrashReporter implements CrashReporter {
     CompletableFuture<String> future = new CompletableFuture<>();
 
     try {
-      ourExecutor.submit(() -> {
-        try {
-          HttpClient client = HttpClients.createDefault();
+      ourExecutor.submit(
+          () -> {
+            try (CloseableHttpClient client = HttpClients.createSystem()) {
+              HttpEntity entity = requestEntity;
+              if (!isUnitTestMode) {
+                // The test server used in testing doesn't handle gzip compression (netty requires
+                // jcraft jzlib for gzip decompression)
+                entity = new GzipCompressingEntity(requestEntity);
+              }
 
-          HttpEntity entity = requestEntity;
-          if (!isUnitTestMode) {
-            // The test server used in testing doesn't handle gzip compression (netty requires jcraft jzlib for gzip decompression)
-            entity = new GzipCompressingEntity(requestEntity);
-          }
+              HttpPost post = new HttpPost(crashUrl);
+              post.setEntity(entity);
+              HttpResponse response = client.execute(post);
+              StatusLine statusLine = response.getStatusLine();
+              if (statusLine.getStatusCode() >= 300) {
+                future.completeExceptionally(
+                    new HttpResponseException(
+                        statusLine.getStatusCode(), statusLine.getReasonPhrase()));
+                return;
+              }
 
-          HttpPost post = new HttpPost(crashUrl);
-          post.setEntity(entity);
+              entity = response.getEntity();
+              if (entity == null) {
+                future.completeExceptionally(new NullPointerException("Empty response entity"));
+                return;
+              }
 
-          HttpResponse response = client.execute(post);
-          StatusLine statusLine = response.getStatusLine();
-          if (statusLine.getStatusCode() >= 300) {
-            future.completeExceptionally(new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase()));
-            return;
-          }
-
-          entity = response.getEntity();
-          if (entity == null) {
-            future.completeExceptionally(new NullPointerException("Empty response entity"));
-            return;
-          }
-
-          String reportId = EntityUtils.toString(entity);
-          if (isDebugBuild) {
-            //noinspection UseOfSystemOutOrSystemErr
-            System.out.println("Report submitted: http://go/crash-staging/" + reportId);
-          }
-          future.complete(reportId);
-        }
-        catch (IOException e) {
-          future.completeExceptionally(e);
-        }
-      });
+              String reportId = EntityUtils.toString(entity);
+              if (isDebugBuild) {
+                //noinspection UseOfSystemOutOrSystemErr
+                System.out.println("Report submitted: http://go/crash-staging/" + reportId);
+              }
+              future.complete(reportId);
+            } catch (IOException e) {
+              future.completeExceptionally(e);
+            }
+          });
     } catch (RejectedExecutionException ignore) {
       // handled by the rejected execution handler associated with ourExecutor
     }
@@ -220,7 +232,8 @@ public class GoogleCrashReporter implements CrashReporter {
   }
 
   @NonNull
-  private static MultipartEntityBuilder newMultipartEntityBuilderWithKv(@NonNull Map<String, String> kv) {
+  private static MultipartEntityBuilder newMultipartEntityBuilderWithKv(
+      @NonNull Map<String, String> kv) {
     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
     kv.forEach((key, value) -> addBodyToBuilder(builder, key, value));
     return builder;
@@ -230,12 +243,13 @@ public class GoogleCrashReporter implements CrashReporter {
     addBodyToBuilder(builder, key, value, ContentType.DEFAULT_TEXT);
   }
 
-  /**
-    * Ensures fields too long for Crash are attached to the request as a file.
-   */
-  public static void addBodyToBuilder(MultipartEntityBuilder builder, String key, String value, ContentType contentType) {
-    builder.addTextBody(key, Ascii.truncate(value, MAX_BYTES_FOR_VALUE, TRUNCATION_INDICATOR), contentType);
-    // only upload the full text as a file if it will fit in the Crash file size limit - if it doesn't,
+  /** Ensures fields too long for Crash are attached to the request as a file. */
+  public static void addBodyToBuilder(
+      MultipartEntityBuilder builder, String key, String value, ContentType contentType) {
+    builder.addTextBody(
+        key, Ascii.truncate(value, MAX_BYTES_FOR_VALUE, TRUNCATION_INDICATOR), contentType);
+    // only upload the full text as a file if it will fit in the Crash file size limit - if it
+    // doesn't,
     // Crash will discard all files attached to this report.
     if (value.length() > MAX_BYTES_FOR_VALUE && value.length() <= MAX_BYTES_FOR_FILE) {
       builder.addBinaryBody(key + "-full", value.getBytes(), contentType, key + ".txt");

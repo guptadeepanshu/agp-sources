@@ -20,7 +20,9 @@ import static com.android.builder.dexing.ClassFileInput.CLASS_MATCHER;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
+
 import com.google.common.base.Preconditions;
+
 import java.io.IOException;
 
 /**

@@ -115,7 +115,7 @@ public interface CpuCaptureMetadataOrBuilder extends
    * The user's configuration used to generate this capture
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6 [lazy = true];</code>
    * @return Whether the profilingConfig field is set.
    */
   boolean hasProfilingConfig();
@@ -124,7 +124,7 @@ public interface CpuCaptureMetadataOrBuilder extends
    * The user's configuration used to generate this capture
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6 [lazy = true];</code>
    * @return The profilingConfig.
    */
   com.google.wireless.android.sdk.stats.CpuProfilingConfig getProfilingConfig();
@@ -133,7 +133,7 @@ public interface CpuCaptureMetadataOrBuilder extends
    * The user's configuration used to generate this capture
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getProfilingConfigOrBuilder();
 

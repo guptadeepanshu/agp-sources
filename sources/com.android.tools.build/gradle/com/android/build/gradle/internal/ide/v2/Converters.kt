@@ -24,12 +24,14 @@ import com.android.build.api.variant.InternalSources
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.internal.utils.toImmutableMap
 import com.android.builder.core.DefaultApiVersion
 import com.android.builder.model.TestOptions
+import com.android.builder.model.v2.CustomSourceDirectory
 import com.android.builder.model.v2.dsl.ClassField
 import com.android.builder.model.v2.ide.AaptOptions.Namespacing.DISABLED
 import com.android.builder.model.v2.ide.AaptOptions.Namespacing.REQUIRED
@@ -193,25 +195,24 @@ internal fun DslApiVersion.convert() = ApiVersionImpl(
 )
 
 internal fun DefaultAndroidSourceSet.convert(
-        features: BuildFeatureValues,
-        variantSources: VariantCreationConfig? = null
+    features: BuildFeatureValues,
+    mixin: List<ComponentCreationConfig> = listOf()
 ): SourceProvider {
-    val mixin = variantSources?.sources
     return SourceProviderImpl(
         name = name,
         manifestFile = manifestFile,
-        javaDirectories = (javaDirectories + variantSourcesForModel(mixin?.java)).toSet(),
-        kotlinDirectories = (kotlinDirectories + variantSourcesForModel(mixin?.kotlin)).toSet(),
+        javaDirectories = (javaDirectories + variantSourcesForList(mixin.mapNotNull { it.sources.java })).toSet(),
+        kotlinDirectories = (kotlinDirectories + variantSourcesForList(mixin.mapNotNull { it.sources.kotlin })).toSet(),
         resourcesDirectories = resourcesDirectories,
         aidlDirectories = if (features.aidl) aidlDirectories else null,
         renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
         baselineProfileDirectories = ((baselineProfiles as DefaultAndroidSourceDirectorySet).srcDirs
-            + variantSourcesForModel(mixin?.baselineProfiles)).toSet(),
+                + variantSourcesForList(mixin.mapNotNull { it.sources.baselineProfiles })).toSet(),
         resDirectories = if (features.androidResources) resDirectories else null,
-        assetsDirectories = (assetsDirectories + allVariantSources(mixin?.assets)).toSet(),
-        jniLibsDirectories = (jniLibsDirectories + variantSourcesForModel(mixin?.jniLibs)).toSet(),
+        assetsDirectories = (assetsDirectories + variantSourcesForList(mixin.mapNotNull { it.sources.assets })).toSet(),
+        jniLibsDirectories = (jniLibsDirectories + variantSourcesForList(mixin.mapNotNull { it.sources.jniLibs })).toSet(),
         shadersDirectories = if (features.shaders) {
-            (shadersDirectories + variantSourcesForModel(mixin?.shaders)).toSet()
+            (shadersDirectories + variantSourcesForList(mixin.mapNotNull { it.sources.shaders })).toSet()
         } else null,
         mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null,
         customDirectories = customDirectories,
@@ -244,11 +245,8 @@ internal fun DefaultAndroidSourceSet.convert(
 private fun variantSourcesForModel(sourceDirectories: SourceDirectoriesImpl?) =
     sourceDirectories?.variantSourcesForModel { it.shouldBeAddedToIdeModel && !it.isGenerated } ?: emptyList()
 
-/**
- * Returns source dirs that should be added to the model included generated
- */
-private fun allVariantSources(sourceDirectories: SourceDirectoriesImpl?) =
-    sourceDirectories?.variantSourcesForModel { it.shouldBeAddedToIdeModel } ?: emptyList()
+private fun variantSourcesForList(sourceDirectoriesList: List<SourceDirectoriesImpl>) =
+    sourceDirectoriesList.flatMap { sourceDir -> sourceDir.variantSourcesForModel { it.shouldBeAddedToIdeModel && !it.isGenerated } }
 
 internal fun AndroidResources.convert() = AaptOptionsImpl(
     namespacing = if (namespaced) REQUIRED else DISABLED

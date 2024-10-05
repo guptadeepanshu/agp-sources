@@ -3356,7 +3356,7 @@ private static final long serialVersionUID = 0L;
    * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the cpuConfig field is set.
    */
@@ -3370,7 +3370,7 @@ private static final long serialVersionUID = 0L;
    * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The cpuConfig.
    */
@@ -3384,7 +3384,7 @@ private static final long serialVersionUID = 0L;
    * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
    * </pre>
    *
-   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+   * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getCpuConfigOrBuilder() {
@@ -3398,7 +3398,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CAPTURE_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
    * @return Whether the cpuCaptureMetadata field is set.
    */
   @java.lang.Override
@@ -3410,7 +3410,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CAPTURE_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
    * @return The cpuCaptureMetadata.
    */
   @java.lang.Override
@@ -3422,7 +3422,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CAPTURE_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+   * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
@@ -3436,7 +3436,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+   * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
    * @return Whether the filterMetadata field is set.
    */
   @java.lang.Override
@@ -3448,7 +3448,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+   * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
    * @return The filterMetadata.
    */
   @java.lang.Override
@@ -3460,7 +3460,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+   * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.FilterMetadataOrBuilder getFilterMetadataOrBuilder() {
@@ -3501,7 +3501,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_CREATED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
    * @return Whether the sessionStartMetadata field is set.
    */
   @java.lang.Override
@@ -3513,7 +3513,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_CREATED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
    * @return The sessionStartMetadata.
    */
   @java.lang.Override
@@ -3525,7 +3525,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_CREATED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+   * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaDataOrBuilder getSessionStartMetadataOrBuilder() {
@@ -3539,7 +3539,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_ARTIFACT_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
    * @return Whether the sessionArtifactMetadata field is set.
    */
   @java.lang.Override
@@ -3551,7 +3551,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_ARTIFACT_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
    * @return The sessionArtifactMetadata.
    */
   @java.lang.Override
@@ -3563,7 +3563,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SESSION_ARTIFACT_SELECTED|
    * </pre>
    *
-   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+   * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaDataOrBuilder getSessionArtifactMetadataOrBuilder() {
@@ -3577,7 +3577,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_STARTUP_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
    * @return Whether the cpuStartupProfilingMetadata field is set.
    */
   @java.lang.Override
@@ -3589,7 +3589,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_STARTUP_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
    * @return The cpuStartupProfilingMetadata.
    */
   @java.lang.Override
@@ -3601,7 +3601,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_STARTUP_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+   * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadataOrBuilder getCpuStartupProfilingMetadataOrBuilder() {
@@ -3615,7 +3615,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_IMPORT_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
    * @return Whether the cpuImportTraceMetadata field is set.
    */
   @java.lang.Override
@@ -3627,7 +3627,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_IMPORT_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
    * @return The cpuImportTraceMetadata.
    */
   @java.lang.Override
@@ -3639,7 +3639,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_IMPORT_TRACE|
    * </pre>
    *
-   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+   * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuImportTraceMetadataOrBuilder getCpuImportTraceMetadataOrBuilder() {
@@ -3653,7 +3653,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_API_TRACING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
    * @return Whether the cpuApiTracingMetadata field is set.
    */
   @java.lang.Override
@@ -3665,7 +3665,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_API_TRACING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
    * @return The cpuApiTracingMetadata.
    */
   @java.lang.Override
@@ -3677,7 +3677,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |CPU_API_TRACING|
    * </pre>
    *
-   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+   * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuApiTracingMetadataOrBuilder getCpuApiTracingMetadataOrBuilder() {
@@ -3691,7 +3691,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_RANGE|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
    * @return Whether the energyRangeMetadata field is set.
    */
   @java.lang.Override
@@ -3703,7 +3703,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_RANGE|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
    * @return The energyRangeMetadata.
    */
   @java.lang.Override
@@ -3715,7 +3715,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_RANGE|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+   * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyRangeMetadataOrBuilder getEnergyRangeMetadataOrBuilder() {
@@ -3729,7 +3729,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
    * @return Whether the energyEventMetadata field is set.
    */
   @java.lang.Override
@@ -3741,7 +3741,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
    * @return The energyEventMetadata.
    */
   @java.lang.Override
@@ -3753,7 +3753,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_ENERGY_EVENT|
    * </pre>
    *
-   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+   * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEventMetadataOrBuilder getEnergyEventMetadataOrBuilder() {
@@ -3767,7 +3767,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFD_CRASHED|
    * </pre>
    *
-   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
    * @return Whether the perfdCrashInfo field is set.
    */
   @java.lang.Override
@@ -3779,7 +3779,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFD_CRASHED|
    * </pre>
    *
-   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
    * @return The perfdCrashInfo.
    */
   @java.lang.Override
@@ -3791,7 +3791,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFD_CRASHED|
    * </pre>
    *
-   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+   * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PerfdCrashInfoOrBuilder getPerfdCrashInfoOrBuilder() {
@@ -3805,7 +3805,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
    * @return Whether the transportFailureMetadata field is set.
    */
   @java.lang.Override
@@ -3817,7 +3817,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
    * @return The transportFailureMetadata.
    */
   @java.lang.Override
@@ -3829,7 +3829,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+   * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportFailureMetadataOrBuilder getTransportFailureMetadataOrBuilder() {
@@ -3843,7 +3843,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |MEMORY_INSTANCE_FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
    * @return Whether the memoryInstanceFilterMetadata field is set.
    */
   @java.lang.Override
@@ -3855,7 +3855,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |MEMORY_INSTANCE_FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
    * @return The memoryInstanceFilterMetadata.
    */
   @java.lang.Override
@@ -3867,7 +3867,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |MEMORY_INSTANCE_FILTER|
    * </pre>
    *
-   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+   * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadataOrBuilder getMemoryInstanceFilterMetadataOrBuilder() {
@@ -3881,7 +3881,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_STARTED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
    * @return Whether the transportDaemonStartedInfo field is set.
    */
   @java.lang.Override
@@ -3893,7 +3893,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_STARTED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
    * @return The transportDaemonStartedInfo.
    */
   @java.lang.Override
@@ -3905,7 +3905,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRANSPORT_DAEMON_STARTED|
    * </pre>
    *
-   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+   * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfoOrBuilder getTransportDaemonStartedInfoOrBuilder() {
@@ -3919,7 +3919,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_MANAGER_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
    * @return Whether the tpdManagerStats field is set.
    */
   @java.lang.Override
@@ -3931,7 +3931,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_MANAGER_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
    * @return The tpdManagerStats.
    */
   @java.lang.Override
@@ -3943,7 +3943,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_MANAGER_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStatsOrBuilder getTpdManagerStatsOrBuilder() {
@@ -3957,7 +3957,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_QUERY_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
    * @return Whether the tpdQueryStats field is set.
    */
   @java.lang.Override
@@ -3969,7 +3969,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_QUERY_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
    * @return The tpdQueryStats.
    */
   @java.lang.Override
@@ -3981,7 +3981,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TPD_QUERY_*|
    * </pre>
    *
-   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+   * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStatsOrBuilder getTpdQueryStatsOrBuilder() {
@@ -3995,7 +3995,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_BOX|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
    * @return Whether the boxSelectionMetadata field is set.
    */
   @java.lang.Override
@@ -4007,7 +4007,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_BOX|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
    * @return The boxSelectionMetadata.
    */
   @java.lang.Override
@@ -4019,7 +4019,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |SELECT_BOX|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+   * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadataOrBuilder getBoxSelectionMetadataOrBuilder() {
@@ -4033,7 +4033,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRACK_GROUP_METADATA|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
    * @return Whether the trackGroupMetadata field is set.
    */
   @java.lang.Override
@@ -4045,7 +4045,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRACK_GROUP_METADATA|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
    * @return The trackGroupMetadata.
    */
   @java.lang.Override
@@ -4057,7 +4057,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TRACK_GROUP_METADATA|
    * </pre>
    *
-   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+   * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadataOrBuilder getTrackGroupMetadataOrBuilder() {
@@ -4098,7 +4098,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |LOADING|
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
    * @return Whether the loading field is set.
    */
   @java.lang.Override
@@ -4110,7 +4110,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |LOADING|
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
    * @return The loading.
    */
   @java.lang.Override
@@ -4122,7 +4122,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |LOADING|
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder() {
@@ -4136,7 +4136,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RUN_WITH_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
    * @return Whether the runWithProfilingMetadata field is set.
    */
   @java.lang.Override
@@ -4148,7 +4148,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RUN_WITH_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
    * @return The runWithProfilingMetadata.
    */
   @java.lang.Override
@@ -4160,7 +4160,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RUN_WITH_PROFILING|
    * </pre>
    *
-   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder() {
@@ -4174,7 +4174,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
    * </pre>
    *
-   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
    * @return Whether the perfettoSdkHandshakeMetadata field is set.
    */
   @java.lang.Override
@@ -4186,7 +4186,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
    * </pre>
    *
-   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
    * @return The perfettoSdkHandshakeMetadata.
    */
   @java.lang.Override
@@ -4198,7 +4198,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
    * </pre>
    *
-   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+   * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadataOrBuilder getPerfettoSdkHandshakeMetadataOrBuilder() {
@@ -4212,7 +4212,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
    * </pre>
    *
-   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
    * @return Whether the resolveComposeTracingCodeLocationMetadata field is set.
    */
   @java.lang.Override
@@ -4224,7 +4224,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
    * </pre>
    *
-   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
    * @return The resolveComposeTracingCodeLocationMetadata.
    */
   @java.lang.Override
@@ -4236,7 +4236,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
    * </pre>
    *
-   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+   * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadataOrBuilder getResolveComposeTracingCodeLocationMetadataOrBuilder() {
@@ -4250,7 +4250,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
    * </pre>
    *
-   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
    * @return Whether the powerProfilerCaptureMetadata field is set.
    */
   @java.lang.Override
@@ -4262,7 +4262,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
    * </pre>
    *
-   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
    * @return The powerProfilerCaptureMetadata.
    */
   @java.lang.Override
@@ -4274,7 +4274,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
    * </pre>
    *
-   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+   * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder() {
@@ -4288,7 +4288,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_ENTERED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
    * @return Whether the taskEnteredMetadata field is set.
    */
   @java.lang.Override
@@ -4300,7 +4300,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_ENTERED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
    * @return The taskEnteredMetadata.
    */
   @java.lang.Override
@@ -4312,7 +4312,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_ENTERED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+   * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder getTaskEnteredMetadataOrBuilder() {
@@ -4326,7 +4326,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FINISHED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
    * @return Whether the taskFinishedMetadata field is set.
    */
   @java.lang.Override
@@ -4338,7 +4338,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FINISHED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
    * @return The taskFinishedMetadata.
    */
   @java.lang.Override
@@ -4350,7 +4350,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FINISHED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+   * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder getTaskFinishedMetadataOrBuilder() {
@@ -4364,7 +4364,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
    * @return Whether the taskFailedMetadata field is set.
    */
   @java.lang.Override
@@ -4376,7 +4376,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
    * @return The taskFailedMetadata.
    */
   @java.lang.Override
@@ -4388,7 +4388,7 @@ private static final long serialVersionUID = 0L;
    * Set if |type| is |TASK_FAILED|
    * </pre>
    *
-   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+   * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder getTaskFailedMetadataOrBuilder() {
@@ -6090,7 +6090,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the cpuConfig field is set.
      */
@@ -6103,7 +6103,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The cpuConfig.
      */
@@ -6120,7 +6120,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setCpuConfig(com.google.wireless.android.sdk.stats.CpuProfilingConfig value) {
       if (cpuConfigBuilder_ == null) {
@@ -6141,7 +6141,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder setCpuConfig(
         com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder builderForValue) {
@@ -6160,7 +6160,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder mergeCpuConfig(com.google.wireless.android.sdk.stats.CpuProfilingConfig value) {
       if (cpuConfigBuilder_ == null) {
@@ -6185,7 +6185,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearCpuConfig() {
       if (cpuConfigBuilder_ == null) {
@@ -6203,7 +6203,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder getCpuConfigBuilder() {
       bitField0_ |= 0x00000004;
@@ -6216,7 +6216,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getCpuConfigOrBuilder() {
       if (cpuConfigBuilder_ != null) {
@@ -6232,7 +6232,7 @@ private static final long serialVersionUID = 0L;
      * Deprecated since 3.0.0.8 and superseded by cpu_capture_metadata
      * </pre>
      *
-     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
+     * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuProfilingConfig, com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder, com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder> 
@@ -6256,7 +6256,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      * @return Whether the cpuCaptureMetadata field is set.
      */
     public boolean hasCpuCaptureMetadata() {
@@ -6267,7 +6267,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      * @return The cpuCaptureMetadata.
      */
     public com.google.wireless.android.sdk.stats.CpuCaptureMetadata getCpuCaptureMetadata() {
@@ -6282,7 +6282,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public Builder setCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
       if (cpuCaptureMetadataBuilder_ == null) {
@@ -6302,7 +6302,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public Builder setCpuCaptureMetadata(
         com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder builderForValue) {
@@ -6320,7 +6320,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public Builder mergeCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
       if (cpuCaptureMetadataBuilder_ == null) {
@@ -6344,7 +6344,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public Builder clearCpuCaptureMetadata() {
       if (cpuCaptureMetadataBuilder_ == null) {
@@ -6361,7 +6361,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder getCpuCaptureMetadataBuilder() {
       bitField0_ |= 0x00000008;
@@ -6373,7 +6373,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
       if (cpuCaptureMetadataBuilder_ != null) {
@@ -6388,7 +6388,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CAPTURE_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuCaptureMetadata, com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder> 
@@ -6412,7 +6412,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      * @return Whether the filterMetadata field is set.
      */
     public boolean hasFilterMetadata() {
@@ -6423,7 +6423,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      * @return The filterMetadata.
      */
     public com.google.wireless.android.sdk.stats.FilterMetadata getFilterMetadata() {
@@ -6438,7 +6438,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public Builder setFilterMetadata(com.google.wireless.android.sdk.stats.FilterMetadata value) {
       if (filterMetadataBuilder_ == null) {
@@ -6458,7 +6458,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public Builder setFilterMetadata(
         com.google.wireless.android.sdk.stats.FilterMetadata.Builder builderForValue) {
@@ -6476,7 +6476,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public Builder mergeFilterMetadata(com.google.wireless.android.sdk.stats.FilterMetadata value) {
       if (filterMetadataBuilder_ == null) {
@@ -6500,7 +6500,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public Builder clearFilterMetadata() {
       if (filterMetadataBuilder_ == null) {
@@ -6517,7 +6517,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FilterMetadata.Builder getFilterMetadataBuilder() {
       bitField0_ |= 0x00000010;
@@ -6529,7 +6529,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FilterMetadataOrBuilder getFilterMetadataOrBuilder() {
       if (filterMetadataBuilder_ != null) {
@@ -6544,7 +6544,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
+     * <code>optional .android_studio.FilterMetadata filter_metadata = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.FilterMetadata, com.google.wireless.android.sdk.stats.FilterMetadata.Builder, com.google.wireless.android.sdk.stats.FilterMetadataOrBuilder> 
@@ -6627,7 +6627,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      * @return Whether the sessionStartMetadata field is set.
      */
     public boolean hasSessionStartMetadata() {
@@ -6638,7 +6638,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      * @return The sessionStartMetadata.
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData getSessionStartMetadata() {
@@ -6653,7 +6653,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public Builder setSessionStartMetadata(com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData value) {
       if (sessionStartMetadataBuilder_ == null) {
@@ -6673,7 +6673,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public Builder setSessionStartMetadata(
         com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.Builder builderForValue) {
@@ -6691,7 +6691,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public Builder mergeSessionStartMetadata(com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData value) {
       if (sessionStartMetadataBuilder_ == null) {
@@ -6715,7 +6715,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public Builder clearSessionStartMetadata() {
       if (sessionStartMetadataBuilder_ == null) {
@@ -6732,7 +6732,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.Builder getSessionStartMetadataBuilder() {
       bitField0_ |= 0x00000040;
@@ -6744,7 +6744,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaDataOrBuilder getSessionStartMetadataOrBuilder() {
       if (sessionStartMetadataBuilder_ != null) {
@@ -6759,7 +6759,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_CREATED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
+     * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData, com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.Builder, com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaDataOrBuilder> 
@@ -6783,7 +6783,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      * @return Whether the sessionArtifactMetadata field is set.
      */
     public boolean hasSessionArtifactMetadata() {
@@ -6794,7 +6794,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      * @return The sessionArtifactMetadata.
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData getSessionArtifactMetadata() {
@@ -6809,7 +6809,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public Builder setSessionArtifactMetadata(com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData value) {
       if (sessionArtifactMetadataBuilder_ == null) {
@@ -6829,7 +6829,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public Builder setSessionArtifactMetadata(
         com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.Builder builderForValue) {
@@ -6847,7 +6847,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public Builder mergeSessionArtifactMetadata(com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData value) {
       if (sessionArtifactMetadataBuilder_ == null) {
@@ -6871,7 +6871,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public Builder clearSessionArtifactMetadata() {
       if (sessionArtifactMetadataBuilder_ == null) {
@@ -6888,7 +6888,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.Builder getSessionArtifactMetadataBuilder() {
       bitField0_ |= 0x00000080;
@@ -6900,7 +6900,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaDataOrBuilder getSessionArtifactMetadataOrBuilder() {
       if (sessionArtifactMetadataBuilder_ != null) {
@@ -6915,7 +6915,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SESSION_ARTIFACT_SELECTED|
      * </pre>
      *
-     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
+     * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData, com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.Builder, com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaDataOrBuilder> 
@@ -6939,7 +6939,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      * @return Whether the cpuStartupProfilingMetadata field is set.
      */
     public boolean hasCpuStartupProfilingMetadata() {
@@ -6950,7 +6950,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      * @return The cpuStartupProfilingMetadata.
      */
     public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata getCpuStartupProfilingMetadata() {
@@ -6965,7 +6965,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public Builder setCpuStartupProfilingMetadata(com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata value) {
       if (cpuStartupProfilingMetadataBuilder_ == null) {
@@ -6985,7 +6985,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public Builder setCpuStartupProfilingMetadata(
         com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata.Builder builderForValue) {
@@ -7003,7 +7003,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public Builder mergeCpuStartupProfilingMetadata(com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata value) {
       if (cpuStartupProfilingMetadataBuilder_ == null) {
@@ -7027,7 +7027,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public Builder clearCpuStartupProfilingMetadata() {
       if (cpuStartupProfilingMetadataBuilder_ == null) {
@@ -7044,7 +7044,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata.Builder getCpuStartupProfilingMetadataBuilder() {
       bitField0_ |= 0x00000100;
@@ -7056,7 +7056,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadataOrBuilder getCpuStartupProfilingMetadataOrBuilder() {
       if (cpuStartupProfilingMetadataBuilder_ != null) {
@@ -7071,7 +7071,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_STARTUP_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
+     * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata, com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata.Builder, com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadataOrBuilder> 
@@ -7095,7 +7095,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      * @return Whether the cpuImportTraceMetadata field is set.
      */
     public boolean hasCpuImportTraceMetadata() {
@@ -7106,7 +7106,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      * @return The cpuImportTraceMetadata.
      */
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata getCpuImportTraceMetadata() {
@@ -7121,7 +7121,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public Builder setCpuImportTraceMetadata(com.google.wireless.android.sdk.stats.CpuImportTraceMetadata value) {
       if (cpuImportTraceMetadataBuilder_ == null) {
@@ -7141,7 +7141,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public Builder setCpuImportTraceMetadata(
         com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Builder builderForValue) {
@@ -7159,7 +7159,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public Builder mergeCpuImportTraceMetadata(com.google.wireless.android.sdk.stats.CpuImportTraceMetadata value) {
       if (cpuImportTraceMetadataBuilder_ == null) {
@@ -7183,7 +7183,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public Builder clearCpuImportTraceMetadata() {
       if (cpuImportTraceMetadataBuilder_ == null) {
@@ -7200,7 +7200,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Builder getCpuImportTraceMetadataBuilder() {
       bitField0_ |= 0x00000200;
@@ -7212,7 +7212,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadataOrBuilder getCpuImportTraceMetadataOrBuilder() {
       if (cpuImportTraceMetadataBuilder_ != null) {
@@ -7227,7 +7227,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_IMPORT_TRACE|
      * </pre>
      *
-     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
+     * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuImportTraceMetadata, com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Builder, com.google.wireless.android.sdk.stats.CpuImportTraceMetadataOrBuilder> 
@@ -7251,7 +7251,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      * @return Whether the cpuApiTracingMetadata field is set.
      */
     public boolean hasCpuApiTracingMetadata() {
@@ -7262,7 +7262,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      * @return The cpuApiTracingMetadata.
      */
     public com.google.wireless.android.sdk.stats.CpuApiTracingMetadata getCpuApiTracingMetadata() {
@@ -7277,7 +7277,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public Builder setCpuApiTracingMetadata(com.google.wireless.android.sdk.stats.CpuApiTracingMetadata value) {
       if (cpuApiTracingMetadataBuilder_ == null) {
@@ -7297,7 +7297,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public Builder setCpuApiTracingMetadata(
         com.google.wireless.android.sdk.stats.CpuApiTracingMetadata.Builder builderForValue) {
@@ -7315,7 +7315,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public Builder mergeCpuApiTracingMetadata(com.google.wireless.android.sdk.stats.CpuApiTracingMetadata value) {
       if (cpuApiTracingMetadataBuilder_ == null) {
@@ -7339,7 +7339,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public Builder clearCpuApiTracingMetadata() {
       if (cpuApiTracingMetadataBuilder_ == null) {
@@ -7356,7 +7356,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuApiTracingMetadata.Builder getCpuApiTracingMetadataBuilder() {
       bitField0_ |= 0x00000400;
@@ -7368,7 +7368,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuApiTracingMetadataOrBuilder getCpuApiTracingMetadataOrBuilder() {
       if (cpuApiTracingMetadataBuilder_ != null) {
@@ -7383,7 +7383,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |CPU_API_TRACING|
      * </pre>
      *
-     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
+     * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuApiTracingMetadata, com.google.wireless.android.sdk.stats.CpuApiTracingMetadata.Builder, com.google.wireless.android.sdk.stats.CpuApiTracingMetadataOrBuilder> 
@@ -7407,7 +7407,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      * @return Whether the energyRangeMetadata field is set.
      */
     public boolean hasEnergyRangeMetadata() {
@@ -7418,7 +7418,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      * @return The energyRangeMetadata.
      */
     public com.google.wireless.android.sdk.stats.EnergyRangeMetadata getEnergyRangeMetadata() {
@@ -7433,7 +7433,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public Builder setEnergyRangeMetadata(com.google.wireless.android.sdk.stats.EnergyRangeMetadata value) {
       if (energyRangeMetadataBuilder_ == null) {
@@ -7453,7 +7453,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public Builder setEnergyRangeMetadata(
         com.google.wireless.android.sdk.stats.EnergyRangeMetadata.Builder builderForValue) {
@@ -7471,7 +7471,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public Builder mergeEnergyRangeMetadata(com.google.wireless.android.sdk.stats.EnergyRangeMetadata value) {
       if (energyRangeMetadataBuilder_ == null) {
@@ -7495,7 +7495,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public Builder clearEnergyRangeMetadata() {
       if (energyRangeMetadataBuilder_ == null) {
@@ -7512,7 +7512,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EnergyRangeMetadata.Builder getEnergyRangeMetadataBuilder() {
       bitField0_ |= 0x00000800;
@@ -7524,7 +7524,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EnergyRangeMetadataOrBuilder getEnergyRangeMetadataOrBuilder() {
       if (energyRangeMetadataBuilder_ != null) {
@@ -7539,7 +7539,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_RANGE|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
+     * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EnergyRangeMetadata, com.google.wireless.android.sdk.stats.EnergyRangeMetadata.Builder, com.google.wireless.android.sdk.stats.EnergyRangeMetadataOrBuilder> 
@@ -7563,7 +7563,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      * @return Whether the energyEventMetadata field is set.
      */
     public boolean hasEnergyEventMetadata() {
@@ -7574,7 +7574,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      * @return The energyEventMetadata.
      */
     public com.google.wireless.android.sdk.stats.EnergyEventMetadata getEnergyEventMetadata() {
@@ -7589,7 +7589,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public Builder setEnergyEventMetadata(com.google.wireless.android.sdk.stats.EnergyEventMetadata value) {
       if (energyEventMetadataBuilder_ == null) {
@@ -7609,7 +7609,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public Builder setEnergyEventMetadata(
         com.google.wireless.android.sdk.stats.EnergyEventMetadata.Builder builderForValue) {
@@ -7627,7 +7627,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public Builder mergeEnergyEventMetadata(com.google.wireless.android.sdk.stats.EnergyEventMetadata value) {
       if (energyEventMetadataBuilder_ == null) {
@@ -7651,7 +7651,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public Builder clearEnergyEventMetadata() {
       if (energyEventMetadataBuilder_ == null) {
@@ -7668,7 +7668,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EnergyEventMetadata.Builder getEnergyEventMetadataBuilder() {
       bitField0_ |= 0x00001000;
@@ -7680,7 +7680,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EnergyEventMetadataOrBuilder getEnergyEventMetadataOrBuilder() {
       if (energyEventMetadataBuilder_ != null) {
@@ -7695,7 +7695,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_ENERGY_EVENT|
      * </pre>
      *
-     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
+     * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EnergyEventMetadata, com.google.wireless.android.sdk.stats.EnergyEventMetadata.Builder, com.google.wireless.android.sdk.stats.EnergyEventMetadataOrBuilder> 
@@ -7719,7 +7719,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      * @return Whether the perfdCrashInfo field is set.
      */
     public boolean hasPerfdCrashInfo() {
@@ -7730,7 +7730,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      * @return The perfdCrashInfo.
      */
     public com.google.wireless.android.sdk.stats.PerfdCrashInfo getPerfdCrashInfo() {
@@ -7745,7 +7745,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public Builder setPerfdCrashInfo(com.google.wireless.android.sdk.stats.PerfdCrashInfo value) {
       if (perfdCrashInfoBuilder_ == null) {
@@ -7765,7 +7765,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public Builder setPerfdCrashInfo(
         com.google.wireless.android.sdk.stats.PerfdCrashInfo.Builder builderForValue) {
@@ -7783,7 +7783,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public Builder mergePerfdCrashInfo(com.google.wireless.android.sdk.stats.PerfdCrashInfo value) {
       if (perfdCrashInfoBuilder_ == null) {
@@ -7807,7 +7807,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public Builder clearPerfdCrashInfo() {
       if (perfdCrashInfoBuilder_ == null) {
@@ -7824,7 +7824,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PerfdCrashInfo.Builder getPerfdCrashInfoBuilder() {
       bitField0_ |= 0x00002000;
@@ -7836,7 +7836,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PerfdCrashInfoOrBuilder getPerfdCrashInfoOrBuilder() {
       if (perfdCrashInfoBuilder_ != null) {
@@ -7851,7 +7851,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFD_CRASHED|
      * </pre>
      *
-     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
+     * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PerfdCrashInfo, com.google.wireless.android.sdk.stats.PerfdCrashInfo.Builder, com.google.wireless.android.sdk.stats.PerfdCrashInfoOrBuilder> 
@@ -7875,7 +7875,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      * @return Whether the transportFailureMetadata field is set.
      */
     public boolean hasTransportFailureMetadata() {
@@ -7886,7 +7886,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      * @return The transportFailureMetadata.
      */
     public com.google.wireless.android.sdk.stats.TransportFailureMetadata getTransportFailureMetadata() {
@@ -7901,7 +7901,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public Builder setTransportFailureMetadata(com.google.wireless.android.sdk.stats.TransportFailureMetadata value) {
       if (transportFailureMetadataBuilder_ == null) {
@@ -7921,7 +7921,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public Builder setTransportFailureMetadata(
         com.google.wireless.android.sdk.stats.TransportFailureMetadata.Builder builderForValue) {
@@ -7939,7 +7939,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public Builder mergeTransportFailureMetadata(com.google.wireless.android.sdk.stats.TransportFailureMetadata value) {
       if (transportFailureMetadataBuilder_ == null) {
@@ -7963,7 +7963,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public Builder clearTransportFailureMetadata() {
       if (transportFailureMetadataBuilder_ == null) {
@@ -7980,7 +7980,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TransportFailureMetadata.Builder getTransportFailureMetadataBuilder() {
       bitField0_ |= 0x00004000;
@@ -7992,7 +7992,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TransportFailureMetadataOrBuilder getTransportFailureMetadataOrBuilder() {
       if (transportFailureMetadataBuilder_ != null) {
@@ -8007,7 +8007,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_FAILED| OR |TRANSPORT_PROXY_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
+     * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TransportFailureMetadata, com.google.wireless.android.sdk.stats.TransportFailureMetadata.Builder, com.google.wireless.android.sdk.stats.TransportFailureMetadataOrBuilder> 
@@ -8031,7 +8031,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      * @return Whether the memoryInstanceFilterMetadata field is set.
      */
     public boolean hasMemoryInstanceFilterMetadata() {
@@ -8042,7 +8042,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      * @return The memoryInstanceFilterMetadata.
      */
     public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata getMemoryInstanceFilterMetadata() {
@@ -8057,7 +8057,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public Builder setMemoryInstanceFilterMetadata(com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata value) {
       if (memoryInstanceFilterMetadataBuilder_ == null) {
@@ -8077,7 +8077,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public Builder setMemoryInstanceFilterMetadata(
         com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.Builder builderForValue) {
@@ -8095,7 +8095,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public Builder mergeMemoryInstanceFilterMetadata(com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata value) {
       if (memoryInstanceFilterMetadataBuilder_ == null) {
@@ -8119,7 +8119,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public Builder clearMemoryInstanceFilterMetadata() {
       if (memoryInstanceFilterMetadataBuilder_ == null) {
@@ -8136,7 +8136,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.Builder getMemoryInstanceFilterMetadataBuilder() {
       bitField0_ |= 0x00008000;
@@ -8148,7 +8148,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadataOrBuilder getMemoryInstanceFilterMetadataOrBuilder() {
       if (memoryInstanceFilterMetadataBuilder_ != null) {
@@ -8163,7 +8163,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |MEMORY_INSTANCE_FILTER|
      * </pre>
      *
-     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
+     * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata, com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.Builder, com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadataOrBuilder> 
@@ -8187,7 +8187,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      * @return Whether the transportDaemonStartedInfo field is set.
      */
     public boolean hasTransportDaemonStartedInfo() {
@@ -8198,7 +8198,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      * @return The transportDaemonStartedInfo.
      */
     public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo getTransportDaemonStartedInfo() {
@@ -8213,7 +8213,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public Builder setTransportDaemonStartedInfo(com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo value) {
       if (transportDaemonStartedInfoBuilder_ == null) {
@@ -8233,7 +8233,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public Builder setTransportDaemonStartedInfo(
         com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo.Builder builderForValue) {
@@ -8251,7 +8251,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public Builder mergeTransportDaemonStartedInfo(com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo value) {
       if (transportDaemonStartedInfoBuilder_ == null) {
@@ -8275,7 +8275,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public Builder clearTransportDaemonStartedInfo() {
       if (transportDaemonStartedInfoBuilder_ == null) {
@@ -8292,7 +8292,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo.Builder getTransportDaemonStartedInfoBuilder() {
       bitField0_ |= 0x00010000;
@@ -8304,7 +8304,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfoOrBuilder getTransportDaemonStartedInfoOrBuilder() {
       if (transportDaemonStartedInfoBuilder_ != null) {
@@ -8319,7 +8319,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRANSPORT_DAEMON_STARTED|
      * </pre>
      *
-     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
+     * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo, com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo.Builder, com.google.wireless.android.sdk.stats.TransportDaemonStartedInfoOrBuilder> 
@@ -8343,7 +8343,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      * @return Whether the tpdManagerStats field is set.
      */
     public boolean hasTpdManagerStats() {
@@ -8354,7 +8354,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      * @return The tpdManagerStats.
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats getTpdManagerStats() {
@@ -8369,7 +8369,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public Builder setTpdManagerStats(com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats value) {
       if (tpdManagerStatsBuilder_ == null) {
@@ -8389,7 +8389,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public Builder setTpdManagerStats(
         com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats.Builder builderForValue) {
@@ -8407,7 +8407,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public Builder mergeTpdManagerStats(com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats value) {
       if (tpdManagerStatsBuilder_ == null) {
@@ -8431,7 +8431,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public Builder clearTpdManagerStats() {
       if (tpdManagerStatsBuilder_ == null) {
@@ -8448,7 +8448,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats.Builder getTpdManagerStatsBuilder() {
       bitField0_ |= 0x00020000;
@@ -8460,7 +8460,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStatsOrBuilder getTpdManagerStatsOrBuilder() {
       if (tpdManagerStatsBuilder_ != null) {
@@ -8475,7 +8475,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_MANAGER_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats, com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats.Builder, com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStatsOrBuilder> 
@@ -8499,7 +8499,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      * @return Whether the tpdQueryStats field is set.
      */
     public boolean hasTpdQueryStats() {
@@ -8510,7 +8510,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      * @return The tpdQueryStats.
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats getTpdQueryStats() {
@@ -8525,7 +8525,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public Builder setTpdQueryStats(com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats value) {
       if (tpdQueryStatsBuilder_ == null) {
@@ -8545,7 +8545,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public Builder setTpdQueryStats(
         com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.Builder builderForValue) {
@@ -8563,7 +8563,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public Builder mergeTpdQueryStats(com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats value) {
       if (tpdQueryStatsBuilder_ == null) {
@@ -8587,7 +8587,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public Builder clearTpdQueryStats() {
       if (tpdQueryStatsBuilder_ == null) {
@@ -8604,7 +8604,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.Builder getTpdQueryStatsBuilder() {
       bitField0_ |= 0x00040000;
@@ -8616,7 +8616,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStatsOrBuilder getTpdQueryStatsOrBuilder() {
       if (tpdQueryStatsBuilder_ != null) {
@@ -8631,7 +8631,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TPD_QUERY_*|
      * </pre>
      *
-     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
+     * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats, com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.Builder, com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStatsOrBuilder> 
@@ -8655,7 +8655,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      * @return Whether the boxSelectionMetadata field is set.
      */
     public boolean hasBoxSelectionMetadata() {
@@ -8666,7 +8666,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      * @return The boxSelectionMetadata.
      */
     public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata getBoxSelectionMetadata() {
@@ -8681,7 +8681,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public Builder setBoxSelectionMetadata(com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata value) {
       if (boxSelectionMetadataBuilder_ == null) {
@@ -8701,7 +8701,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public Builder setBoxSelectionMetadata(
         com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata.Builder builderForValue) {
@@ -8719,7 +8719,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public Builder mergeBoxSelectionMetadata(com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata value) {
       if (boxSelectionMetadataBuilder_ == null) {
@@ -8743,7 +8743,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public Builder clearBoxSelectionMetadata() {
       if (boxSelectionMetadataBuilder_ == null) {
@@ -8760,7 +8760,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata.Builder getBoxSelectionMetadataBuilder() {
       bitField0_ |= 0x00080000;
@@ -8772,7 +8772,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadataOrBuilder getBoxSelectionMetadataOrBuilder() {
       if (boxSelectionMetadataBuilder_ != null) {
@@ -8787,7 +8787,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |SELECT_BOX|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
+     * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata, com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata.Builder, com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadataOrBuilder> 
@@ -8811,7 +8811,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      * @return Whether the trackGroupMetadata field is set.
      */
     public boolean hasTrackGroupMetadata() {
@@ -8822,7 +8822,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      * @return The trackGroupMetadata.
      */
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata getTrackGroupMetadata() {
@@ -8837,7 +8837,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public Builder setTrackGroupMetadata(com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata value) {
       if (trackGroupMetadataBuilder_ == null) {
@@ -8857,7 +8857,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public Builder setTrackGroupMetadata(
         com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.Builder builderForValue) {
@@ -8875,7 +8875,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public Builder mergeTrackGroupMetadata(com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata value) {
       if (trackGroupMetadataBuilder_ == null) {
@@ -8899,7 +8899,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public Builder clearTrackGroupMetadata() {
       if (trackGroupMetadataBuilder_ == null) {
@@ -8916,7 +8916,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.Builder getTrackGroupMetadataBuilder() {
       bitField0_ |= 0x00100000;
@@ -8928,7 +8928,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadataOrBuilder getTrackGroupMetadataOrBuilder() {
       if (trackGroupMetadataBuilder_ != null) {
@@ -8943,7 +8943,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TRACK_GROUP_METADATA|
      * </pre>
      *
-     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
+     * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata, com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.Builder, com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadataOrBuilder> 
@@ -9022,7 +9022,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      * @return Whether the loading field is set.
      */
     public boolean hasLoading() {
@@ -9033,7 +9033,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      * @return The loading.
      */
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getLoading() {
@@ -9048,7 +9048,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public Builder setLoading(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading value) {
       if (loadingBuilder_ == null) {
@@ -9068,7 +9068,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public Builder setLoading(
         com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder builderForValue) {
@@ -9086,7 +9086,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public Builder mergeLoading(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading value) {
       if (loadingBuilder_ == null) {
@@ -9110,7 +9110,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public Builder clearLoading() {
       if (loadingBuilder_ == null) {
@@ -9127,7 +9127,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder getLoadingBuilder() {
       bitField0_ |= 0x00400000;
@@ -9139,7 +9139,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder() {
       if (loadingBuilder_ != null) {
@@ -9154,7 +9154,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |LOADING|
      * </pre>
      *
-     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder> 
@@ -9178,7 +9178,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      * @return Whether the runWithProfilingMetadata field is set.
      */
     public boolean hasRunWithProfilingMetadata() {
@@ -9189,7 +9189,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      * @return The runWithProfilingMetadata.
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata getRunWithProfilingMetadata() {
@@ -9204,7 +9204,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public Builder setRunWithProfilingMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata value) {
       if (runWithProfilingMetadataBuilder_ == null) {
@@ -9224,7 +9224,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public Builder setRunWithProfilingMetadata(
         com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder builderForValue) {
@@ -9242,7 +9242,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public Builder mergeRunWithProfilingMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata value) {
       if (runWithProfilingMetadataBuilder_ == null) {
@@ -9266,7 +9266,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public Builder clearRunWithProfilingMetadata() {
       if (runWithProfilingMetadataBuilder_ == null) {
@@ -9283,7 +9283,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder getRunWithProfilingMetadataBuilder() {
       bitField0_ |= 0x00800000;
@@ -9295,7 +9295,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder() {
       if (runWithProfilingMetadataBuilder_ != null) {
@@ -9310,7 +9310,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RUN_WITH_PROFILING|
      * </pre>
      *
-     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.RunWithProfilingMetadata, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder, com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder> 
@@ -9334,7 +9334,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      * @return Whether the perfettoSdkHandshakeMetadata field is set.
      */
     public boolean hasPerfettoSdkHandshakeMetadata() {
@@ -9345,7 +9345,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      * @return The perfettoSdkHandshakeMetadata.
      */
     public com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata getPerfettoSdkHandshakeMetadata() {
@@ -9360,7 +9360,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public Builder setPerfettoSdkHandshakeMetadata(com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata value) {
       if (perfettoSdkHandshakeMetadataBuilder_ == null) {
@@ -9380,7 +9380,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public Builder setPerfettoSdkHandshakeMetadata(
         com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata.Builder builderForValue) {
@@ -9398,7 +9398,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public Builder mergePerfettoSdkHandshakeMetadata(com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata value) {
       if (perfettoSdkHandshakeMetadataBuilder_ == null) {
@@ -9422,7 +9422,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public Builder clearPerfettoSdkHandshakeMetadata() {
       if (perfettoSdkHandshakeMetadataBuilder_ == null) {
@@ -9439,7 +9439,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata.Builder getPerfettoSdkHandshakeMetadataBuilder() {
       bitField0_ |= 0x01000000;
@@ -9451,7 +9451,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadataOrBuilder getPerfettoSdkHandshakeMetadataOrBuilder() {
       if (perfettoSdkHandshakeMetadataBuilder_ != null) {
@@ -9466,7 +9466,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |PERFETTO_SDK_HANDSHAKE|
      * </pre>
      *
-     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25;</code>
+     * <code>optional .android_studio.PerfettoSdkHandshakeMetadata perfetto_sdk_handshake_metadata = 25 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata, com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadata.Builder, com.google.wireless.android.sdk.stats.PerfettoSdkHandshakeMetadataOrBuilder> 
@@ -9490,7 +9490,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      * @return Whether the resolveComposeTracingCodeLocationMetadata field is set.
      */
     public boolean hasResolveComposeTracingCodeLocationMetadata() {
@@ -9501,7 +9501,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      * @return The resolveComposeTracingCodeLocationMetadata.
      */
     public com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata getResolveComposeTracingCodeLocationMetadata() {
@@ -9516,7 +9516,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public Builder setResolveComposeTracingCodeLocationMetadata(com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata value) {
       if (resolveComposeTracingCodeLocationMetadataBuilder_ == null) {
@@ -9536,7 +9536,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public Builder setResolveComposeTracingCodeLocationMetadata(
         com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata.Builder builderForValue) {
@@ -9554,7 +9554,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public Builder mergeResolveComposeTracingCodeLocationMetadata(com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata value) {
       if (resolveComposeTracingCodeLocationMetadataBuilder_ == null) {
@@ -9578,7 +9578,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public Builder clearResolveComposeTracingCodeLocationMetadata() {
       if (resolveComposeTracingCodeLocationMetadataBuilder_ == null) {
@@ -9595,7 +9595,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata.Builder getResolveComposeTracingCodeLocationMetadataBuilder() {
       bitField0_ |= 0x02000000;
@@ -9607,7 +9607,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadataOrBuilder getResolveComposeTracingCodeLocationMetadataOrBuilder() {
       if (resolveComposeTracingCodeLocationMetadataBuilder_ != null) {
@@ -9622,7 +9622,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |RESOLVE_COMPOSE_TRACING_CODE_LOCATION|
      * </pre>
      *
-     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26;</code>
+     * <code>optional .android_studio.ResolveComposeTracingCodeLocationMetadata resolve_compose_tracing_code_location_metadata = 26 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata, com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadata.Builder, com.google.wireless.android.sdk.stats.ResolveComposeTracingCodeLocationMetadataOrBuilder> 
@@ -9646,7 +9646,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      * @return Whether the powerProfilerCaptureMetadata field is set.
      */
     public boolean hasPowerProfilerCaptureMetadata() {
@@ -9657,7 +9657,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      * @return The powerProfilerCaptureMetadata.
      */
     public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata getPowerProfilerCaptureMetadata() {
@@ -9672,7 +9672,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public Builder setPowerProfilerCaptureMetadata(com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata value) {
       if (powerProfilerCaptureMetadataBuilder_ == null) {
@@ -9692,7 +9692,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public Builder setPowerProfilerCaptureMetadata(
         com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder builderForValue) {
@@ -9710,7 +9710,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public Builder mergePowerProfilerCaptureMetadata(com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata value) {
       if (powerProfilerCaptureMetadataBuilder_ == null) {
@@ -9734,7 +9734,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public Builder clearPowerProfilerCaptureMetadata() {
       if (powerProfilerCaptureMetadataBuilder_ == null) {
@@ -9751,7 +9751,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder getPowerProfilerCaptureMetadataBuilder() {
       bitField0_ |= 0x04000000;
@@ -9763,7 +9763,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder getPowerProfilerCaptureMetadataOrBuilder() {
       if (powerProfilerCaptureMetadataBuilder_ != null) {
@@ -9778,7 +9778,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |POWER_PROFILER_DATA_CAPTURED|
      * </pre>
      *
-     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27;</code>
+     * <code>optional .android_studio.PowerProfilerCaptureMetadata power_profiler_capture_metadata = 27 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.PowerProfilerCaptureMetadataOrBuilder> 
@@ -9802,7 +9802,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      * @return Whether the taskEnteredMetadata field is set.
      */
     public boolean hasTaskEnteredMetadata() {
@@ -9813,7 +9813,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      * @return The taskEnteredMetadata.
      */
     public com.google.wireless.android.sdk.stats.TaskEnteredMetadata getTaskEnteredMetadata() {
@@ -9828,7 +9828,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public Builder setTaskEnteredMetadata(com.google.wireless.android.sdk.stats.TaskEnteredMetadata value) {
       if (taskEnteredMetadataBuilder_ == null) {
@@ -9848,7 +9848,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public Builder setTaskEnteredMetadata(
         com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder builderForValue) {
@@ -9866,7 +9866,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public Builder mergeTaskEnteredMetadata(com.google.wireless.android.sdk.stats.TaskEnteredMetadata value) {
       if (taskEnteredMetadataBuilder_ == null) {
@@ -9890,7 +9890,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public Builder clearTaskEnteredMetadata() {
       if (taskEnteredMetadataBuilder_ == null) {
@@ -9907,7 +9907,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder getTaskEnteredMetadataBuilder() {
       bitField0_ |= 0x08000000;
@@ -9919,7 +9919,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder getTaskEnteredMetadataOrBuilder() {
       if (taskEnteredMetadataBuilder_ != null) {
@@ -9934,7 +9934,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_ENTERED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28;</code>
+     * <code>optional .android_studio.TaskEnteredMetadata task_entered_metadata = 28 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskEnteredMetadata, com.google.wireless.android.sdk.stats.TaskEnteredMetadata.Builder, com.google.wireless.android.sdk.stats.TaskEnteredMetadataOrBuilder> 
@@ -9958,7 +9958,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      * @return Whether the taskFinishedMetadata field is set.
      */
     public boolean hasTaskFinishedMetadata() {
@@ -9969,7 +9969,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      * @return The taskFinishedMetadata.
      */
     public com.google.wireless.android.sdk.stats.TaskFinishedMetadata getTaskFinishedMetadata() {
@@ -9984,7 +9984,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public Builder setTaskFinishedMetadata(com.google.wireless.android.sdk.stats.TaskFinishedMetadata value) {
       if (taskFinishedMetadataBuilder_ == null) {
@@ -10004,7 +10004,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public Builder setTaskFinishedMetadata(
         com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder builderForValue) {
@@ -10022,7 +10022,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public Builder mergeTaskFinishedMetadata(com.google.wireless.android.sdk.stats.TaskFinishedMetadata value) {
       if (taskFinishedMetadataBuilder_ == null) {
@@ -10046,7 +10046,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public Builder clearTaskFinishedMetadata() {
       if (taskFinishedMetadataBuilder_ == null) {
@@ -10063,7 +10063,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder getTaskFinishedMetadataBuilder() {
       bitField0_ |= 0x10000000;
@@ -10075,7 +10075,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder getTaskFinishedMetadataOrBuilder() {
       if (taskFinishedMetadataBuilder_ != null) {
@@ -10090,7 +10090,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FINISHED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29;</code>
+     * <code>optional .android_studio.TaskFinishedMetadata task_finished_metadata = 29 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskFinishedMetadata, com.google.wireless.android.sdk.stats.TaskFinishedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFinishedMetadataOrBuilder> 
@@ -10114,7 +10114,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      * @return Whether the taskFailedMetadata field is set.
      */
     public boolean hasTaskFailedMetadata() {
@@ -10125,7 +10125,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      * @return The taskFailedMetadata.
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata getTaskFailedMetadata() {
@@ -10140,7 +10140,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public Builder setTaskFailedMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata value) {
       if (taskFailedMetadataBuilder_ == null) {
@@ -10160,7 +10160,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public Builder setTaskFailedMetadata(
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder builderForValue) {
@@ -10178,7 +10178,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public Builder mergeTaskFailedMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata value) {
       if (taskFailedMetadataBuilder_ == null) {
@@ -10202,7 +10202,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public Builder clearTaskFailedMetadata() {
       if (taskFailedMetadataBuilder_ == null) {
@@ -10219,7 +10219,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder getTaskFailedMetadataBuilder() {
       bitField0_ |= 0x20000000;
@@ -10231,7 +10231,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder getTaskFailedMetadataOrBuilder() {
       if (taskFailedMetadataBuilder_ != null) {
@@ -10246,7 +10246,7 @@ private static final long serialVersionUID = 0L;
      * Set if |type| is |TASK_FAILED|
      * </pre>
      *
-     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30;</code>
+     * <code>optional .android_studio.TaskFailedMetadata task_failed_metadata = 30 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadataOrBuilder> 

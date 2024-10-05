@@ -235,4 +235,23 @@ public interface ProductDetailsOrBuilder extends
    * @return The serverFlagsChangelist.
    */
   long getServerFlagsChangelist();
+
+  /**
+   * <pre>
+   * Set to true when Android Studio is running in an IDX docker container.
+   * </pre>
+   *
+   * <code>optional bool running_inside_idx = 10;</code>
+   * @return Whether the runningInsideIdx field is set.
+   */
+  boolean hasRunningInsideIdx();
+  /**
+   * <pre>
+   * Set to true when Android Studio is running in an IDX docker container.
+   * </pre>
+   *
+   * <code>optional bool running_inside_idx = 10;</code>
+   * @return The runningInsideIdx.
+   */
+  boolean getRunningInsideIdx();
 }

@@ -16,12 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.profile.AnalyticsService
-import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.utils.setDisallowChanges
-import org.gradle.api.provider.Property
-import org.gradle.api.services.BuildServiceRegistry
-import org.gradle.api.tasks.Internal
+import org.gradle.api.Task
 
 /** Represents a variant-specific task. */
 interface VariantTask {
@@ -29,21 +24,21 @@ interface VariantTask {
     /** the name of the variant */
     var variantName: String
 
-    @get:Internal
-    val analyticsService: Property<AnalyticsService>
+    object ConfigureAction {
+
+        fun <TaskT> configure(task: TaskT, variantName: String) where TaskT : Task, TaskT : VariantTask {
+            task.variantName = variantName
+        }
+    }
 }
 
 /** Represents a global (non variant-specific) task. */
 interface GlobalTask {
 
-    @get:Internal
-    val analyticsService: Property<AnalyticsService>
-}
+    object ConfigureAction {
 
-fun VariantTask.configureVariantProperties(
-    variantName: String,
-    serviceRegistry: BuildServiceRegistry
-) {
-    this.variantName = variantName
-    this.analyticsService.setDisallowChanges(getBuildService(serviceRegistry))
+        fun <TaskT> configure(task: TaskT) where TaskT : Task, TaskT : GlobalTask {
+            // Nothing to do currently
+        }
+    }
 }

@@ -142,7 +142,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    * @return Whether the metrics field is set.
    */
   boolean hasMetrics();
@@ -152,7 +152,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    * @return The metrics.
    */
   com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics getMetrics();
@@ -162,7 +162,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Will be used to characterize and bucket projects for subgroup analysis.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
+   * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildProjectMetricsOrBuilder getMetricsOrBuilder();
 
@@ -269,7 +269,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    * @return Whether the splits field is set.
    */
   boolean hasSplits();
@@ -278,7 +278,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    * @return The splits.
    */
   com.google.wireless.android.sdk.stats.GradleBuildSplits getSplits();
@@ -287,7 +287,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The split config as defined by the user in the DSL.
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
+   * <code>optional .android_studio.GradleBuildSplits splits = 10 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildSplitsOrBuilder getSplitsOrBuilder();
 
@@ -328,7 +328,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    * @return Whether the options field is set.
    */
   boolean hasOptions();
@@ -337,7 +337,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    * @return The options.
    */
   com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings getOptions();
@@ -346,7 +346,7 @@ public interface GradleBuildProjectOrBuilder extends
    * The project options as set by the user or by studio.
    * </pre>
    *
-   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
+   * <code>optional .android_studio.GradleProjectOptionsSettings options = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleProjectOptionsSettingsOrBuilder getOptionsOrBuilder();
 
@@ -533,7 +533,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    * @return Whether the projectApiUse field is set.
    */
   boolean hasProjectApiUse();
@@ -542,7 +542,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    * @return The projectApiUse.
    */
   com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse();
@@ -551,7 +551,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Records use of APIs used at the sub-project level
    * </pre>
    *
-   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder();
 
@@ -604,7 +604,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    * @return Whether the compileOptions field is set.
    */
   boolean hasCompileOptions();
@@ -613,7 +613,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    * @return The compileOptions.
    */
   com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptions getCompileOptions();
@@ -622,7 +622,7 @@ public interface GradleBuildProjectOrBuilder extends
    * Java compilation options
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20;</code>
+   * <code>optional .android_studio.GradleBuildProject.CompileOptions compile_options = 20 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildProject.CompileOptionsOrBuilder getCompileOptionsOrBuilder();
 
@@ -654,4 +654,23 @@ public interface GradleBuildProjectOrBuilder extends
    */
   com.google.protobuf.ByteString
       getNdkVersionBytes();
+
+  /**
+   * <pre>
+   * Set to true when user requests old variant api
+   * </pre>
+   *
+   * <code>optional bool old_variant_api_in_use = 22;</code>
+   * @return Whether the oldVariantApiInUse field is set.
+   */
+  boolean hasOldVariantApiInUse();
+  /**
+   * <pre>
+   * Set to true when user requests old variant api
+   * </pre>
+   *
+   * <code>optional bool old_variant_api_in_use = 22;</code>
+   * @return The oldVariantApiInUse.
+   */
+  boolean getOldVariantApiInUse();
 }

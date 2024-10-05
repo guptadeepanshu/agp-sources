@@ -772,6 +772,10 @@ public enum BooleanOption
    * <code>SUPPRESS_MANIFEST_PACKAGE_WARNING = 187;</code>
    */
   SUPPRESS_MANIFEST_PACKAGE_WARNING(187),
+  /**
+   * <code>USE_DECLARATIVE_INTERFACES = 188;</code>
+   */
+  USE_DECLARATIVE_INTERFACES(188),
   UNRECOGNIZED(-1),
   ;
 
@@ -1527,6 +1531,10 @@ public enum BooleanOption
    * <code>SUPPRESS_MANIFEST_PACKAGE_WARNING = 187;</code>
    */
   public static final int SUPPRESS_MANIFEST_PACKAGE_WARNING_VALUE = 187;
+  /**
+   * <code>USE_DECLARATIVE_INTERFACES = 188;</code>
+   */
+  public static final int USE_DECLARATIVE_INTERFACES_VALUE = 188;
 
 
   public final int getNumber() {
@@ -1741,6 +1749,7 @@ public enum BooleanOption
       case 185: return GRADLE_MANAGED_DEVICE_INCLUDE_MANAGED_DEVICES_IN_REPORTING;
       case 186: return ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT;
       case 187: return SUPPRESS_MANIFEST_PACKAGE_WARNING;
+      case 188: return USE_DECLARATIVE_INTERFACES;
       default: return null;
     }
   }

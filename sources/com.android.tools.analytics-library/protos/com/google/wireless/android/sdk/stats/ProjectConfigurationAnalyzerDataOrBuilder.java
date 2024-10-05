@@ -57,7 +57,7 @@ public interface ProjectConfigurationAnalyzerDataOrBuilder extends
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    * @return Whether the overallConfigurationData field is set.
    */
   boolean hasOverallConfigurationData();
@@ -67,7 +67,7 @@ public interface ProjectConfigurationAnalyzerDataOrBuilder extends
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    * @return The overallConfigurationData.
    */
   com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData getOverallConfigurationData();
@@ -77,7 +77,7 @@ public interface ProjectConfigurationAnalyzerDataOrBuilder extends
    * build
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder getOverallConfigurationDataOrBuilder();
 }

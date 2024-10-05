@@ -31,7 +31,7 @@ public interface FastPreviewEventOrBuilder extends
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    * @return Whether the compilationResult field is set.
    */
   boolean hasCompilationResult();
@@ -40,7 +40,7 @@ public interface FastPreviewEventOrBuilder extends
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    * @return The compilationResult.
    */
   com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResult getCompilationResult();
@@ -49,7 +49,7 @@ public interface FastPreviewEventOrBuilder extends
    * The compilation result when type = COMPILE
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2;</code>
+   * <code>optional .android_studio.FastPreviewEvent.CompilationResult compilation_result = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FastPreviewEvent.CompilationResultOrBuilder getCompilationResultOrBuilder();
 }

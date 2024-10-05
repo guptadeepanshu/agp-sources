@@ -57,9 +57,9 @@ import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.TestVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
+
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
-import java.util.Collection;
-import javax.inject.Inject;
+
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
@@ -67,6 +67,10 @@ import org.gradle.api.configuration.BuildFeatures;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
+
+import java.util.Collection;
+
+import javax.inject.Inject;
 
 /** Gradle plugin class for 'test' projects. */
 public class TestPlugin
@@ -137,10 +141,14 @@ public class TestPlugin
                         testExtension,
                         forUnitTesting);
 
+        GradleBuildProject.Builder stats =
+                getConfiguratorService().getProjectBuilder(project.getPath());
+
         if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
             // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
             Class<com.android.build.api.dsl.TestExtension> instanceType =
                     (Class) TestExtension.class;
+
             TestExtension android =
                     (TestExtension)
                             project.getExtensions()
@@ -154,7 +162,8 @@ public class TestPlugin
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
                                             extraModelInfo,
-                                            testExtension);
+                                            testExtension,
+                                            stats);
             project.getExtensions()
                     .add(TestExtension.class, "_internal_legacy_android_extension", android);
 
@@ -172,7 +181,8 @@ public class TestPlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                testExtension);
+                                testExtension,
+                                stats);
         initExtensionFromSettings(android);
         return new ExtensionData<>(android, testExtension, bootClasspathConfig);
     }

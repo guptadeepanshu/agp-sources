@@ -66,7 +66,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    * @return Whether the zeroStateDetails field is set.
    */
   boolean hasZeroStateDetails();
@@ -75,7 +75,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    * @return The zeroStateDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails getZeroStateDetails();
@@ -84,7 +84,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ZERO_STATE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetails zero_state_details = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsZeroStateDetailsOrBuilder getZeroStateDetailsOrBuilder();
 
@@ -93,7 +93,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    * @return Whether the fetchDetails field is set.
    */
   boolean hasFetchDetails();
@@ -102,7 +102,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    * @return The fetchDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails getFetchDetails();
@@ -111,7 +111,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASHES_FETCHED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetails fetch_details = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsFetchDetailsOrBuilder getFetchDetailsOrBuilder();
 
@@ -120,7 +120,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    * @return Whether the crashOpenDetails field is set.
    */
   boolean hasCrashOpenDetails();
@@ -129,7 +129,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    * @return The crashOpenDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails getCrashOpenDetails();
@@ -138,7 +138,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = CRASH_LIST_DETAILS_VIEW
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetails crash_open_details = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsCrashOpenDetailsOrBuilder getCrashOpenDetailsOrBuilder();
 
@@ -147,7 +147,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    * @return Whether the stacktraceDetails field is set.
    */
   boolean hasStacktraceDetails();
@@ -156,7 +156,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    * @return The stacktraceDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails getStacktraceDetails();
@@ -165,7 +165,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = STACKTRACE_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetails stacktrace_details = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsStacktraceDetailsOrBuilder getStacktraceDetailsOrBuilder();
 
@@ -174,7 +174,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    * @return Whether the consoleLinkDetails field is set.
    */
   boolean hasConsoleLinkDetails();
@@ -183,7 +183,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    * @return The consoleLinkDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails getConsoleLinkDetails();
@@ -192,7 +192,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = FB_CONSOLE_LINK_CLICKED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetails console_link_details = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsConsoleLinkDetailsOrBuilder getConsoleLinkDetailsOrBuilder();
 
@@ -201,7 +201,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    * @return Whether the matcherDetails field is set.
    */
   boolean hasMatcherDetails();
@@ -210,7 +210,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    * @return The matcherDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails getMatcherDetails();
@@ -219,7 +219,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = MATCHERS_INITIATED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetails matcher_details = 8 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsMatcherDetailsOrBuilder getMatcherDetailsOrBuilder();
 
@@ -228,7 +228,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    * @return Whether the errorDetails field is set.
    */
   boolean hasErrorDetails();
@@ -237,7 +237,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    * @return The errorDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails getErrorDetails();
@@ -246,7 +246,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ERROR
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetails error_details = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsErrorDetailsOrBuilder getErrorDetailsOrBuilder();
 
@@ -255,7 +255,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    * @return Whether the issueChangedDetails field is set.
    */
   boolean hasIssueChangedDetails();
@@ -264,7 +264,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    * @return The issueChangedDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails getIssueChangedDetails();
@@ -273,7 +273,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = ISSUE_STATUS_CHANGED
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetails issue_changed_details = 10 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsIssueChangedDetailsOrBuilder getIssueChangedDetailsOrBuilder();
 
@@ -282,7 +282,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    * @return Whether the notesDetails field is set.
    */
   boolean hasNotesDetails();
@@ -291,7 +291,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    * @return The notesDetails.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails getNotesDetails();
@@ -300,7 +300,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = NOTE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetails notes_details = 11 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.AppQualityInsightsNotesDetailsOrBuilder getNotesDetailsOrBuilder();
 
@@ -366,7 +366,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    * @return Whether the performanceStats field is set.
    */
   boolean hasPerformanceStats();
@@ -375,7 +375,7 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    * @return The performanceStats.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStats getPerformanceStats();
@@ -384,7 +384,61 @@ public interface AppQualityInsightsUsageEventOrBuilder extends
    * set when type = PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.PerformanceStats performance_stats = 15 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.PerformanceStatsOrBuilder getPerformanceStatsOrBuilder();
+
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   * @return Whether the eventDetails field is set.
+   */
+  boolean hasEventDetails();
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   * @return The eventDetails.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetails getEventDetails();
+  /**
+   * <pre>
+   * set when type = EVENT_VIEWED
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.EventDetails event_details = 16 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.EventDetailsOrBuilder getEventDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   * @return Whether the insightSentiment field is set.
+   */
+  boolean hasInsightSentiment();
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   * @return The insightSentiment.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentiment getInsightSentiment();
+  /**
+   * <pre>
+   * set when type = INSIGHT_SENTIMENT
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent.InsightSentiment insight_sentiment = 17 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent.InsightSentimentOrBuilder getInsightSentimentOrBuilder();
 }

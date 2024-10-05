@@ -12,7 +12,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    * @return Whether the gles1Usages field is set.
    */
   boolean hasGles1Usages();
@@ -21,7 +21,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    * @return The gles1Usages.
    */
   com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages getGles1Usages();
@@ -30,7 +30,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 1 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
+   * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorGLEScmUsagesOrBuilder getGles1UsagesOrBuilder();
 
@@ -39,7 +39,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    * @return Whether the gles30Usages field is set.
    */
   boolean hasGles30Usages();
@@ -48,7 +48,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    * @return The gles30Usages.
    */
   com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages getGles30Usages();
@@ -57,7 +57,7 @@ public interface EmulatorGLESUsagesOrBuilder extends
    * GLES 3.0 usage report
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
+   * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorGLESv30UsagesOrBuilder getGles30UsagesOrBuilder();
 }

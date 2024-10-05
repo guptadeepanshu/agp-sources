@@ -167,6 +167,8 @@ open class DefaultAndroidSourceSet @Inject constructor(
     override val annotationProcessorConfigurationName =
         sourceSetName.annotationProcessorConfigurationName
 
+    override val kaptConfigurationName = sourceSetName.kaptConfigurationName
+
     override fun manifest(action: com.android.build.api.dsl.AndroidSourceFile.() -> Unit) {
         action.invoke(manifest)
     }

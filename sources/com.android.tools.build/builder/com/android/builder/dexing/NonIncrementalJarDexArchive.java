@@ -19,7 +19,9 @@ package com.android.builder.dexing;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import com.google.common.base.Preconditions;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;

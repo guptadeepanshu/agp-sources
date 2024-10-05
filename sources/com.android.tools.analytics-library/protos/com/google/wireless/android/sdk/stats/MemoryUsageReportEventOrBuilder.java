@@ -144,7 +144,7 @@ public interface MemoryUsageReportEventOrBuilder extends
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    * @return Whether the metadata field is set.
    */
   boolean hasMetadata();
@@ -153,7 +153,7 @@ public interface MemoryUsageReportEventOrBuilder extends
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    * @return The metadata.
    */
   com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata getMetadata();
@@ -162,7 +162,7 @@ public interface MemoryUsageReportEventOrBuilder extends
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadataOrBuilder getMetadataOrBuilder();
 }

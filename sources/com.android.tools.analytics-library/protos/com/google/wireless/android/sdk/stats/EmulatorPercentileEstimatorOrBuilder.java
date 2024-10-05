@@ -63,7 +63,7 @@ public interface EmulatorPercentileEstimatorOrBuilder extends
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 3 [lazy = true];</code>
    * @return Whether the estimator field is set.
    */
   boolean hasEstimator();
@@ -72,7 +72,7 @@ public interface EmulatorPercentileEstimatorOrBuilder extends
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 3 [lazy = true];</code>
    * @return The estimator.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getEstimator();
@@ -81,7 +81,7 @@ public interface EmulatorPercentileEstimatorOrBuilder extends
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getEstimatorOrBuilder();
 }

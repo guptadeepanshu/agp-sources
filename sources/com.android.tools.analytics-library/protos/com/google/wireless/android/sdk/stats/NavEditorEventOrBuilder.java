@@ -50,7 +50,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    * @return Whether the propertyInfo field is set.
    */
   boolean hasPropertyInfo();
@@ -59,7 +59,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    * @return The propertyInfo.
    */
   com.google.wireless.android.sdk.stats.NavPropertyInfo getPropertyInfo();
@@ -68,7 +68,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavPropertyInfoOrBuilder getPropertyInfoOrBuilder();
 
@@ -77,7 +77,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    * @return Whether the actionInfo field is set.
    */
   boolean hasActionInfo();
@@ -86,7 +86,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    * @return The actionInfo.
    */
   com.google.wireless.android.sdk.stats.NavActionInfo getActionInfo();
@@ -95,7 +95,7 @@ public interface NavEditorEventOrBuilder extends
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavActionInfoOrBuilder getActionInfoOrBuilder();
 
@@ -105,7 +105,7 @@ public interface NavEditorEventOrBuilder extends
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    * @return Whether the destinationInfo field is set.
    */
   boolean hasDestinationInfo();
@@ -115,7 +115,7 @@ public interface NavEditorEventOrBuilder extends
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    * @return The destinationInfo.
    */
   com.google.wireless.android.sdk.stats.NavDestinationInfo getDestinationInfo();
@@ -125,7 +125,7 @@ public interface NavEditorEventOrBuilder extends
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavDestinationInfoOrBuilder getDestinationInfoOrBuilder();
 
@@ -134,7 +134,7 @@ public interface NavEditorEventOrBuilder extends
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    * @return Whether the schemaInfo field is set.
    */
   boolean hasSchemaInfo();
@@ -143,7 +143,7 @@ public interface NavEditorEventOrBuilder extends
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    * @return The schemaInfo.
    */
   com.google.wireless.android.sdk.stats.NavSchemaInfo getSchemaInfo();
@@ -152,7 +152,7 @@ public interface NavEditorEventOrBuilder extends
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavSchemaInfoOrBuilder getSchemaInfoOrBuilder();
 
@@ -161,7 +161,7 @@ public interface NavEditorEventOrBuilder extends
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    * @return Whether the contents field is set.
    */
   boolean hasContents();
@@ -170,7 +170,7 @@ public interface NavEditorEventOrBuilder extends
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    * @return The contents.
    */
   com.google.wireless.android.sdk.stats.NavigationContents getContents();
@@ -179,7 +179,7 @@ public interface NavEditorEventOrBuilder extends
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavigationContentsOrBuilder getContentsOrBuilder();
 

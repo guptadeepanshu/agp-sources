@@ -58,7 +58,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    * @return Whether the successRunTimeMs field is set.
    */
   @java.lang.Override
@@ -70,7 +70,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    * @return The successRunTimeMs.
    */
   @java.lang.Override
@@ -82,7 +82,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times with successful completion
    * </pre>
    *
-   * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+   * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getSuccessRunTimeMsOrBuilder() {
@@ -97,7 +97,7 @@ private static final long serialVersionUID = 0L;
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    * @return Whether the canceledRunTimeMs field is set.
    */
   @java.lang.Override
@@ -110,7 +110,7 @@ private static final long serialVersionUID = 0L;
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    * @return The canceledRunTimeMs.
    */
   @java.lang.Override
@@ -123,7 +123,7 @@ private static final long serialVersionUID = 0L;
    * canceled in favor of a write lock
    * </pre>
    *
-   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+   * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getCanceledRunTimeMsOrBuilder() {
@@ -137,7 +137,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    * @return Whether the failedRunTimeMs field is set.
    */
   @java.lang.Override
@@ -149,7 +149,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    * @return The failedRunTimeMs.
    */
   @java.lang.Override
@@ -161,7 +161,7 @@ private static final long serialVersionUID = 0L;
    * Histogram of run times when execution failed with a parsing or other error
    * </pre>
    *
-   * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+   * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getFailedRunTimeMsOrBuilder() {
@@ -608,7 +608,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      * @return Whether the successRunTimeMs field is set.
      */
     public boolean hasSuccessRunTimeMs() {
@@ -619,7 +619,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      * @return The successRunTimeMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getSuccessRunTimeMs() {
@@ -634,7 +634,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public Builder setSuccessRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (successRunTimeMsBuilder_ == null) {
@@ -654,7 +654,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public Builder setSuccessRunTimeMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -672,7 +672,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public Builder mergeSuccessRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (successRunTimeMsBuilder_ == null) {
@@ -696,7 +696,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public Builder clearSuccessRunTimeMs() {
       if (successRunTimeMsBuilder_ == null) {
@@ -713,7 +713,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getSuccessRunTimeMsBuilder() {
       bitField0_ |= 0x00000001;
@@ -725,7 +725,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getSuccessRunTimeMsOrBuilder() {
       if (successRunTimeMsBuilder_ != null) {
@@ -740,7 +740,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times with successful completion
      * </pre>
      *
-     * <code>optional .android_studio.Histogram success_run_time_ms = 1;</code>
+     * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -765,7 +765,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      * @return Whether the canceledRunTimeMs field is set.
      */
     public boolean hasCanceledRunTimeMs() {
@@ -777,7 +777,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      * @return The canceledRunTimeMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getCanceledRunTimeMs() {
@@ -793,7 +793,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public Builder setCanceledRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (canceledRunTimeMsBuilder_ == null) {
@@ -814,7 +814,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public Builder setCanceledRunTimeMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -833,7 +833,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public Builder mergeCanceledRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (canceledRunTimeMsBuilder_ == null) {
@@ -858,7 +858,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public Builder clearCanceledRunTimeMs() {
       if (canceledRunTimeMsBuilder_ == null) {
@@ -876,7 +876,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getCanceledRunTimeMsBuilder() {
       bitField0_ |= 0x00000002;
@@ -889,7 +889,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getCanceledRunTimeMsOrBuilder() {
       if (canceledRunTimeMsBuilder_ != null) {
@@ -905,7 +905,7 @@ private static final long serialVersionUID = 0L;
      * canceled in favor of a write lock
      * </pre>
      *
-     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2;</code>
+     * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -929,7 +929,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      * @return Whether the failedRunTimeMs field is set.
      */
     public boolean hasFailedRunTimeMs() {
@@ -940,7 +940,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      * @return The failedRunTimeMs.
      */
     public com.google.wireless.android.sdk.stats.Histogram getFailedRunTimeMs() {
@@ -955,7 +955,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public Builder setFailedRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (failedRunTimeMsBuilder_ == null) {
@@ -975,7 +975,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public Builder setFailedRunTimeMs(
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -993,7 +993,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public Builder mergeFailedRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (failedRunTimeMsBuilder_ == null) {
@@ -1017,7 +1017,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public Builder clearFailedRunTimeMs() {
       if (failedRunTimeMsBuilder_ == null) {
@@ -1034,7 +1034,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.Histogram.Builder getFailedRunTimeMsBuilder() {
       bitField0_ |= 0x00000004;
@@ -1046,7 +1046,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getFailedRunTimeMsOrBuilder() {
       if (failedRunTimeMsBuilder_ != null) {
@@ -1061,7 +1061,7 @@ private static final long serialVersionUID = 0L;
      * Histogram of run times when execution failed with a parsing or other error
      * </pre>
      *
-     * <code>optional .android_studio.Histogram failed_run_time_ms = 3;</code>
+     * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 

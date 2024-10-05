@@ -167,47 +167,47 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      * @return Whether the traceStartStatus field is set.
      */
     boolean hasTraceStartStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      * @return The traceStartStatus.
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus getTraceStartStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatusOrBuilder getTraceStartStatusOrBuilder();
 
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      * @return Whether the trackStatus field is set.
      */
     boolean hasTrackStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      * @return The trackStatus.
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus getTrackStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder();
 
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      * @return Whether the heapDumpStartStatus field is set.
      */
     boolean hasHeapDumpStartStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      * @return The heapDumpStartStatus.
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus getHeapDumpStartStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatusOrBuilder getHeapDumpStartStatusOrBuilder();
 
@@ -299,7 +299,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int TRACE_START_STATUS_FIELD_NUMBER = 1;
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      * @return Whether the traceStartStatus field is set.
      */
     @java.lang.Override
@@ -307,7 +307,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 1;
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      * @return The traceStartStatus.
      */
     @java.lang.Override
@@ -318,7 +318,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatusOrBuilder getTraceStartStatusOrBuilder() {
@@ -330,7 +330,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int TRACK_STATUS_FIELD_NUMBER = 2;
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      * @return Whether the trackStatus field is set.
      */
     @java.lang.Override
@@ -338,7 +338,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 2;
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      * @return The trackStatus.
      */
     @java.lang.Override
@@ -349,7 +349,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder() {
@@ -361,7 +361,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int HEAP_DUMP_START_STATUS_FIELD_NUMBER = 3;
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      * @return Whether the heapDumpStartStatus field is set.
      */
     @java.lang.Override
@@ -369,7 +369,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 3;
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      * @return The heapDumpStartStatus.
      */
     @java.lang.Override
@@ -380,7 +380,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatusOrBuilder getHeapDumpStartStatusOrBuilder() {
@@ -830,7 +830,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatusOrBuilder> traceStartStatusBuilder_;
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        * @return Whether the traceStartStatus field is set.
        */
       @java.lang.Override
@@ -838,7 +838,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 1;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        * @return The traceStartStatus.
        */
       @java.lang.Override
@@ -856,7 +856,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       public Builder setTraceStartStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus value) {
         if (traceStartStatusBuilder_ == null) {
@@ -872,7 +872,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       public Builder setTraceStartStatus(
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus.Builder builderForValue) {
@@ -886,7 +886,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       public Builder mergeTraceStartStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus value) {
         if (traceStartStatusBuilder_ == null) {
@@ -908,7 +908,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       public Builder clearTraceStartStatus() {
         if (traceStartStatusBuilder_ == null) {
@@ -927,13 +927,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus.Builder getTraceStartStatusBuilder() {
         return getTraceStartStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatusOrBuilder getTraceStartStatusOrBuilder() {
@@ -947,7 +947,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStartStatus trace_start_status = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStartStatusOrBuilder> 
@@ -971,7 +971,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder> trackStatusBuilder_;
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        * @return Whether the trackStatus field is set.
        */
       @java.lang.Override
@@ -979,7 +979,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 2;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        * @return The trackStatus.
        */
       @java.lang.Override
@@ -997,7 +997,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       public Builder setTrackStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus value) {
         if (trackStatusBuilder_ == null) {
@@ -1013,7 +1013,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       public Builder setTrackStatus(
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder builderForValue) {
@@ -1027,7 +1027,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       public Builder mergeTrackStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus value) {
         if (trackStatusBuilder_ == null) {
@@ -1049,7 +1049,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       public Builder clearTrackStatus() {
         if (trackStatusBuilder_ == null) {
@@ -1068,13 +1068,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder getTrackStatusBuilder() {
         return getTrackStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder() {
@@ -1088,7 +1088,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder> 
@@ -1112,7 +1112,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatusOrBuilder> heapDumpStartStatusBuilder_;
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        * @return Whether the heapDumpStartStatus field is set.
        */
       @java.lang.Override
@@ -1120,7 +1120,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 3;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        * @return The heapDumpStartStatus.
        */
       @java.lang.Override
@@ -1138,7 +1138,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       public Builder setHeapDumpStartStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus value) {
         if (heapDumpStartStatusBuilder_ == null) {
@@ -1154,7 +1154,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       public Builder setHeapDumpStartStatus(
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus.Builder builderForValue) {
@@ -1168,7 +1168,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       public Builder mergeHeapDumpStartStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus value) {
         if (heapDumpStartStatusBuilder_ == null) {
@@ -1190,7 +1190,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       public Builder clearHeapDumpStartStatus() {
         if (heapDumpStartStatusBuilder_ == null) {
@@ -1209,13 +1209,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus.Builder getHeapDumpStartStatusBuilder() {
         return getHeapDumpStartStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatusOrBuilder getHeapDumpStartStatusOrBuilder() {
@@ -1229,7 +1229,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.HeapDumpStatus heap_dump_start_status = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.HeapDumpStatusOrBuilder> 
@@ -1318,47 +1318,47 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return Whether the cpuCaptureMetadata field is set.
      */
     boolean hasCpuCaptureMetadata();
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return The cpuCaptureMetadata.
      */
     com.google.wireless.android.sdk.stats.CpuCaptureMetadata getCpuCaptureMetadata();
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder();
 
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      * @return Whether the traceStopStatus field is set.
      */
     boolean hasTraceStopStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      * @return The traceStopStatus.
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus getTraceStopStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatusOrBuilder getTraceStopStatusOrBuilder();
 
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      * @return Whether the trackStatus field is set.
      */
     boolean hasTrackStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      * @return The trackStatus.
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus getTrackStatus();
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder();
 
@@ -1450,7 +1450,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int CPU_CAPTURE_METADATA_FIELD_NUMBER = 1;
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return Whether the cpuCaptureMetadata field is set.
      */
     @java.lang.Override
@@ -1458,7 +1458,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 1;
     }
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return The cpuCaptureMetadata.
      */
     @java.lang.Override
@@ -1469,7 +1469,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.CpuCaptureMetadata.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
@@ -1481,7 +1481,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int TRACE_STOP_STATUS_FIELD_NUMBER = 2;
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      * @return Whether the traceStopStatus field is set.
      */
     @java.lang.Override
@@ -1489,7 +1489,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 2;
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      * @return The traceStopStatus.
      */
     @java.lang.Override
@@ -1500,7 +1500,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+     * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatusOrBuilder getTraceStopStatusOrBuilder() {
@@ -1512,7 +1512,7 @@ private static final long serialVersionUID = 0L;
 
     public static final int TRACK_STATUS_FIELD_NUMBER = 3;
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      * @return Whether the trackStatus field is set.
      */
     @java.lang.Override
@@ -1520,7 +1520,7 @@ private static final long serialVersionUID = 0L;
       return unionCase_ == 3;
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      * @return The trackStatus.
      */
     @java.lang.Override
@@ -1531,7 +1531,7 @@ private static final long serialVersionUID = 0L;
       return com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.getDefaultInstance();
     }
     /**
-     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder() {
@@ -1981,7 +1981,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata, com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder> cpuCaptureMetadataBuilder_;
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        * @return Whether the cpuCaptureMetadata field is set.
        */
       @java.lang.Override
@@ -1989,7 +1989,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 1;
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        * @return The cpuCaptureMetadata.
        */
       @java.lang.Override
@@ -2007,7 +2007,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder setCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2023,7 +2023,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder setCpuCaptureMetadata(
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder builderForValue) {
@@ -2037,7 +2037,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder mergeCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2059,7 +2059,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder clearCpuCaptureMetadata() {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2078,13 +2078,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder getCpuCaptureMetadataBuilder() {
         return getCpuCaptureMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
@@ -2098,7 +2098,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>.android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata, com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder> 
@@ -2122,7 +2122,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatusOrBuilder> traceStopStatusBuilder_;
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        * @return Whether the traceStopStatus field is set.
        */
       @java.lang.Override
@@ -2130,7 +2130,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 2;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        * @return The traceStopStatus.
        */
       @java.lang.Override
@@ -2148,7 +2148,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       public Builder setTraceStopStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus value) {
         if (traceStopStatusBuilder_ == null) {
@@ -2164,7 +2164,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       public Builder setTraceStopStatus(
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus.Builder builderForValue) {
@@ -2178,7 +2178,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       public Builder mergeTraceStopStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus value) {
         if (traceStopStatusBuilder_ == null) {
@@ -2200,7 +2200,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       public Builder clearTraceStopStatus() {
         if (traceStopStatusBuilder_ == null) {
@@ -2219,13 +2219,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus.Builder getTraceStopStatusBuilder() {
         return getTraceStopStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatusOrBuilder getTraceStopStatusOrBuilder() {
@@ -2239,7 +2239,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2;</code>
+       * <code>.android_studio.TaskFailedMetadata.TraceStopStatus trace_stop_status = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TraceStopStatusOrBuilder> 
@@ -2263,7 +2263,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder> trackStatusBuilder_;
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        * @return Whether the trackStatus field is set.
        */
       @java.lang.Override
@@ -2271,7 +2271,7 @@ private static final long serialVersionUID = 0L;
         return unionCase_ == 3;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        * @return The trackStatus.
        */
       @java.lang.Override
@@ -2289,7 +2289,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       public Builder setTrackStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus value) {
         if (trackStatusBuilder_ == null) {
@@ -2305,7 +2305,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       public Builder setTrackStatus(
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder builderForValue) {
@@ -2319,7 +2319,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       public Builder mergeTrackStatus(com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus value) {
         if (trackStatusBuilder_ == null) {
@@ -2341,7 +2341,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       public Builder clearTrackStatus() {
         if (trackStatusBuilder_ == null) {
@@ -2360,13 +2360,13 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder getTrackStatusBuilder() {
         return getTrackStatusFieldBuilder().getBuilder();
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder getTrackStatusOrBuilder() {
@@ -2380,7 +2380,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3;</code>
+       * <code>.android_studio.TaskFailedMetadata.AllocationTrackStatus track_status = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatus.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.AllocationTrackStatusOrBuilder> 
@@ -2469,17 +2469,17 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return Whether the cpuCaptureMetadata field is set.
      */
     boolean hasCpuCaptureMetadata();
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return The cpuCaptureMetadata.
      */
     com.google.wireless.android.sdk.stats.CpuCaptureMetadata getCpuCaptureMetadata();
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder();
   }
@@ -2527,7 +2527,7 @@ private static final long serialVersionUID = 0L;
     public static final int CPU_CAPTURE_METADATA_FIELD_NUMBER = 1;
     private com.google.wireless.android.sdk.stats.CpuCaptureMetadata cpuCaptureMetadata_;
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return Whether the cpuCaptureMetadata field is set.
      */
     @java.lang.Override
@@ -2535,7 +2535,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      * @return The cpuCaptureMetadata.
      */
     @java.lang.Override
@@ -2543,7 +2543,7 @@ private static final long serialVersionUID = 0L;
       return cpuCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuCaptureMetadata.getDefaultInstance() : cpuCaptureMetadata_;
     }
     /**
-     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+     * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
@@ -2897,14 +2897,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata, com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder> cpuCaptureMetadataBuilder_;
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        * @return Whether the cpuCaptureMetadata field is set.
        */
       public boolean hasCpuCaptureMetadata() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        * @return The cpuCaptureMetadata.
        */
       public com.google.wireless.android.sdk.stats.CpuCaptureMetadata getCpuCaptureMetadata() {
@@ -2915,7 +2915,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder setCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2931,7 +2931,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder setCpuCaptureMetadata(
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder builderForValue) {
@@ -2945,7 +2945,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder mergeCpuCaptureMetadata(com.google.wireless.android.sdk.stats.CpuCaptureMetadata value) {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2965,7 +2965,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public Builder clearCpuCaptureMetadata() {
         if (cpuCaptureMetadataBuilder_ == null) {
@@ -2978,7 +2978,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder getCpuCaptureMetadataBuilder() {
         bitField0_ |= 0x00000001;
@@ -2986,7 +2986,7 @@ private static final long serialVersionUID = 0L;
         return getCpuCaptureMetadataFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
         if (cpuCaptureMetadataBuilder_ != null) {
@@ -2997,7 +2997,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1;</code>
+       * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.CpuCaptureMetadata, com.google.wireless.android.sdk.stats.CpuCaptureMetadata.Builder, com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder> 
@@ -7543,7 +7543,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return Whether the taskData field is set.
    */
   @java.lang.Override
@@ -7555,7 +7555,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return The taskData.
    */
   @java.lang.Override
@@ -7567,7 +7567,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder getTaskDataOrBuilder() {
@@ -7607,7 +7607,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    * @return Whether the taskStartFailureMetadata field is set.
    */
   @java.lang.Override
@@ -7619,7 +7619,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    * @return The taskStartFailureMetadata.
    */
   @java.lang.Override
@@ -7634,7 +7634,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_START|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadataOrBuilder getTaskStartFailureMetadataOrBuilder() {
@@ -7650,7 +7650,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    * @return Whether the taskStopFailureMetadata field is set.
    */
   @java.lang.Override
@@ -7662,7 +7662,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    * @return The taskStopFailureMetadata.
    */
   @java.lang.Override
@@ -7677,7 +7677,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_STOP|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadataOrBuilder getTaskStopFailureMetadataOrBuilder() {
@@ -7693,7 +7693,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    * @return Whether the taskProcessingFailureMetadata field is set.
    */
   @java.lang.Override
@@ -7705,7 +7705,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    * @return The taskProcessingFailureMetadata.
    */
   @java.lang.Override
@@ -7720,7 +7720,7 @@ private static final long serialVersionUID = 0L;
    * Set if |failing_point| is |TASK_PROCESSING|
    * </pre>
    *
-   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+   * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadataOrBuilder getTaskProcessingFailureMetadataOrBuilder() {
@@ -8261,7 +8261,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      * @return Whether the taskData field is set.
      */
     public boolean hasTaskData() {
@@ -8272,7 +8272,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      * @return The taskData.
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata getTaskData() {
@@ -8287,7 +8287,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder setTaskData(com.google.wireless.android.sdk.stats.TaskMetadata value) {
       if (taskDataBuilder_ == null) {
@@ -8307,7 +8307,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder setTaskData(
         com.google.wireless.android.sdk.stats.TaskMetadata.Builder builderForValue) {
@@ -8325,7 +8325,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder mergeTaskData(com.google.wireless.android.sdk.stats.TaskMetadata value) {
       if (taskDataBuilder_ == null) {
@@ -8349,7 +8349,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder clearTaskData() {
       if (taskDataBuilder_ == null) {
@@ -8366,7 +8366,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata.Builder getTaskDataBuilder() {
       bitField0_ |= 0x00000001;
@@ -8378,7 +8378,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder getTaskDataOrBuilder() {
       if (taskDataBuilder_ != null) {
@@ -8393,7 +8393,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskMetadata, com.google.wireless.android.sdk.stats.TaskMetadata.Builder, com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder> 
@@ -8475,7 +8475,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      * @return Whether the taskStartFailureMetadata field is set.
      */
     @java.lang.Override
@@ -8487,7 +8487,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      * @return The taskStartFailureMetadata.
      */
     @java.lang.Override
@@ -8509,7 +8509,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     public Builder setTaskStartFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata value) {
       if (taskStartFailureMetadataBuilder_ == null) {
@@ -8529,7 +8529,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     public Builder setTaskStartFailureMetadata(
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata.Builder builderForValue) {
@@ -8547,7 +8547,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     public Builder mergeTaskStartFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata value) {
       if (taskStartFailureMetadataBuilder_ == null) {
@@ -8573,7 +8573,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     public Builder clearTaskStartFailureMetadata() {
       if (taskStartFailureMetadataBuilder_ == null) {
@@ -8596,7 +8596,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata.Builder getTaskStartFailureMetadataBuilder() {
       return getTaskStartFailureMetadataFieldBuilder().getBuilder();
@@ -8606,7 +8606,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadataOrBuilder getTaskStartFailureMetadataOrBuilder() {
@@ -8624,7 +8624,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_START|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStartFailedMetadata task_start_failure_metadata = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStartFailedMetadataOrBuilder> 
@@ -8652,7 +8652,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      * @return Whether the taskStopFailureMetadata field is set.
      */
     @java.lang.Override
@@ -8664,7 +8664,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      * @return The taskStopFailureMetadata.
      */
     @java.lang.Override
@@ -8686,7 +8686,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     public Builder setTaskStopFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata value) {
       if (taskStopFailureMetadataBuilder_ == null) {
@@ -8706,7 +8706,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     public Builder setTaskStopFailureMetadata(
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata.Builder builderForValue) {
@@ -8724,7 +8724,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     public Builder mergeTaskStopFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata value) {
       if (taskStopFailureMetadataBuilder_ == null) {
@@ -8750,7 +8750,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     public Builder clearTaskStopFailureMetadata() {
       if (taskStopFailureMetadataBuilder_ == null) {
@@ -8773,7 +8773,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata.Builder getTaskStopFailureMetadataBuilder() {
       return getTaskStopFailureMetadataFieldBuilder().getBuilder();
@@ -8783,7 +8783,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadataOrBuilder getTaskStopFailureMetadataOrBuilder() {
@@ -8801,7 +8801,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_STOP|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskStopFailedMetadata task_stop_failure_metadata = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskStopFailedMetadataOrBuilder> 
@@ -8829,7 +8829,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      * @return Whether the taskProcessingFailureMetadata field is set.
      */
     @java.lang.Override
@@ -8841,7 +8841,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      * @return The taskProcessingFailureMetadata.
      */
     @java.lang.Override
@@ -8863,7 +8863,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     public Builder setTaskProcessingFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata value) {
       if (taskProcessingFailureMetadataBuilder_ == null) {
@@ -8883,7 +8883,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     public Builder setTaskProcessingFailureMetadata(
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata.Builder builderForValue) {
@@ -8901,7 +8901,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     public Builder mergeTaskProcessingFailureMetadata(com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata value) {
       if (taskProcessingFailureMetadataBuilder_ == null) {
@@ -8927,7 +8927,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     public Builder clearTaskProcessingFailureMetadata() {
       if (taskProcessingFailureMetadataBuilder_ == null) {
@@ -8950,7 +8950,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata.Builder getTaskProcessingFailureMetadataBuilder() {
       return getTaskProcessingFailureMetadataFieldBuilder().getBuilder();
@@ -8960,7 +8960,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadataOrBuilder getTaskProcessingFailureMetadataOrBuilder() {
@@ -8978,7 +8978,7 @@ private static final long serialVersionUID = 0L;
      * Set if |failing_point| is |TASK_PROCESSING|
      * </pre>
      *
-     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5;</code>
+     * <code>.android_studio.TaskFailedMetadata.TaskProcessingFailedMetadata task_processing_failure_metadata = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadata.Builder, com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadataOrBuilder> 

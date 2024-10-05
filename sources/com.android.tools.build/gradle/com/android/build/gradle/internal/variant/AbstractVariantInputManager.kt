@@ -95,44 +95,40 @@ abstract class AbstractVariantInputManager<
         // So for now we create more than we need and we'll migrate to a better way later.
         // FIXME b/149489432
         val androidTestSourceSet = if (componentType.hasTestComponents) {
-            sourceSetManager.setUpTestSourceSet(
-                computeSourceSetName(
-                    buildType.name, ComponentTypeImpl.ANDROID_TEST
-                )
+            sourceSetManager.setUpSourceSet(
+                computeSourceSetName(buildType.name, ComponentTypeImpl.ANDROID_TEST),
+                ComponentTypeImpl.ANDROID_TEST
             )
         } else null
 
         val unitTestSourceSet = if (componentType.hasTestComponents) {
-            sourceSetManager.setUpTestSourceSet(
-                computeSourceSetName(
-                    buildType.name, ComponentTypeImpl.UNIT_TEST
-                )
+            sourceSetManager.setUpSourceSet(
+                computeSourceSetName(buildType.name, ComponentTypeImpl.UNIT_TEST),
+                ComponentTypeImpl.UNIT_TEST
             )
         } else null
 
         val testFixturesSourceSet =
             if (componentType.hasTestComponents) {
                 sourceSetManager.setUpSourceSet(
-                    computeSourceSetName(
-                        buildType.name, ComponentTypeImpl.TEST_FIXTURES
-                    )
+                    computeSourceSetName(buildType.name, ComponentTypeImpl.TEST_FIXTURES),
+                    ComponentTypeImpl.TEST_FIXTURES
                 )
             } else null
 
         val screenshotTestEnabled = dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]
         val screenshotTestSourceSet = if (screenshotTestEnabled) {
             if (componentType.hasTestComponents) {
-                sourceSetManager.setUpTestSourceSet(
-                    computeSourceSetName(
-                        buildType.name, ComponentTypeImpl.SCREENSHOT_TEST
-                    )
+                sourceSetManager.setUpSourceSet(
+                    computeSourceSetName(buildType.name, ComponentTypeImpl.SCREENSHOT_TEST),
+                    ComponentTypeImpl.SCREENSHOT_TEST
                 )
             } else null
         } else null
 
         buildTypes[name] = BuildTypeData(
             buildType = buildType,
-            sourceSet = sourceSetManager.setUpSourceSet(buildType.name).get(),
+            sourceSet = sourceSetManager.setUpSourceSet(buildType.name, componentType).get(),
             testFixturesSourceSet = testFixturesSourceSet,
             androidTestSourceSet = androidTestSourceSet,
             unitTestSourceSet = unitTestSourceSet,
@@ -154,33 +150,29 @@ abstract class AbstractVariantInputManager<
         if (buildTypes.containsKey(name)) {
             throw RuntimeException("ProductFlavor names cannot collide with BuildType names")
         }
-        val mainSourceSet = sourceSetManager.setUpSourceSet(productFlavor.name)
+        val mainSourceSet = sourceSetManager.setUpSourceSet(productFlavor.name, componentType)
         var testFixturesSourceSet: LazyAndroidSourceSet? = null
         var androidTestSourceSet: LazyAndroidSourceSet? = null
         var unitTestSourceSet: LazyAndroidSourceSet? = null
         var screenshotTestSourceSet: LazyAndroidSourceSet? = null
         if (componentType.hasTestComponents) {
-            androidTestSourceSet = sourceSetManager.setUpTestSourceSet(
-                computeSourceSetName(
-                    productFlavor.name, ComponentTypeImpl.ANDROID_TEST
-                )
+            androidTestSourceSet = sourceSetManager.setUpSourceSet(
+                computeSourceSetName(productFlavor.name, ComponentTypeImpl.ANDROID_TEST),
+                ComponentTypeImpl.ANDROID_TEST
             )
-            unitTestSourceSet = sourceSetManager.setUpTestSourceSet(
-                computeSourceSetName(
-                    productFlavor.name, ComponentTypeImpl.UNIT_TEST
-                )
+            unitTestSourceSet = sourceSetManager.setUpSourceSet(
+                computeSourceSetName(productFlavor.name, ComponentTypeImpl.UNIT_TEST),
+                ComponentTypeImpl.UNIT_TEST
             )
             testFixturesSourceSet = sourceSetManager.setUpSourceSet(
-                computeSourceSetName(
-                    productFlavor.name, ComponentTypeImpl.TEST_FIXTURES
-                )
+                computeSourceSetName(productFlavor.name, ComponentTypeImpl.TEST_FIXTURES),
+                ComponentTypeImpl.TEST_FIXTURES
             )
             val screenshotTestEnabled = dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]
             screenshotTestSourceSet = if (screenshotTestEnabled) {
                 sourceSetManager.setUpSourceSet(
-                    computeSourceSetName(
-                        productFlavor.name, ComponentTypeImpl.SCREENSHOT_TEST
-                    )
+                    computeSourceSetName(productFlavor.name, ComponentTypeImpl.SCREENSHOT_TEST),
+                    ComponentTypeImpl.SCREENSHOT_TEST
                 )
             } else null
         }

@@ -12,7 +12,7 @@ public interface LayoutPaletteEventOrBuilder extends
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    * @return Whether the view field is set.
    */
   boolean hasView();
@@ -21,7 +21,7 @@ public interface LayoutPaletteEventOrBuilder extends
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    * @return The view.
    */
   com.google.wireless.android.sdk.stats.AndroidView getView();
@@ -30,7 +30,7 @@ public interface LayoutPaletteEventOrBuilder extends
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidViewOrBuilder getViewOrBuilder();
 

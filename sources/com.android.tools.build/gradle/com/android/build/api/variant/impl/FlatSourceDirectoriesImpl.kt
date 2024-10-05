@@ -42,12 +42,12 @@ open class FlatSourceDirectoriesImpl(
 
     // For compatibility with the old variant API, we must allow reading the content of this list
     // before it is finalized.
-    private val variantSources = variantServices.newListPropertyForInternalUse(
+    internal val variantSources = variantServices.newListPropertyForInternalUse(
         type = DirectoryEntry::class.java,
     )
 
     // this will contain all the directories
-    private val directories = variantServices.newListPropertyForInternalUse(
+    internal val directories = variantServices.newListPropertyForInternalUse(
         type = Directory::class.java,
     )
 
@@ -63,26 +63,6 @@ open class FlatSourceDirectoriesImpl(
     //
     // Internal APIs.
     //
-    /**
-     * Note: This doesn't preserve task dependencies of internal `directoryEntry` objects as the
-     * provider watched is the one from the outer scope only. Do not use unless necessary.
-     *
-     * https://youtrack.jetbrains.com/issue/KT-59503
-     */
-    @Deprecated("This is only to support kotlin multiplatform")
-    internal fun addStaticSources(sources: Provider<out Collection<DirectoryEntry>>) {
-        variantSources.addAll(sources)
-        directories.addAll(sources.map { directoryEntries ->
-            directoryEntries.flatMap { directoryEntry ->
-                directoryEntry.asFiles(
-                    variantServices.provider {
-                        variantServices.projectInfo.projectDirectory
-                    }
-                ).get()
-            }
-        })
-    }
-
     override fun addSource(directoryEntry: DirectoryEntry){
         variantSources.add(directoryEntry)
         directories.addAll(

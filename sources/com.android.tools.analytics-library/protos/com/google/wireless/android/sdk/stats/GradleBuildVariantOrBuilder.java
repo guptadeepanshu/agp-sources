@@ -304,7 +304,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    * @return Whether the minSdkVersion field is set.
    */
   boolean hasMinSdkVersion();
@@ -314,7 +314,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    * @return The minSdkVersion.
    */
   com.google.wireless.android.sdk.stats.ApiVersion getMinSdkVersion();
@@ -324,7 +324,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMinSdkVersionOrBuilder();
 
@@ -333,7 +333,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    * @return Whether the targetSdkVersion field is set.
    */
   boolean hasTargetSdkVersion();
@@ -342,7 +342,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    * @return The targetSdkVersion.
    */
   com.google.wireless.android.sdk.stats.ApiVersion getTargetSdkVersion();
@@ -351,7 +351,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getTargetSdkVersionOrBuilder();
 
@@ -360,7 +360,7 @@ public interface GradleBuildVariantOrBuilder extends
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    * @return Whether the maxSdkVersion field is set.
    */
   boolean hasMaxSdkVersion();
@@ -369,7 +369,7 @@ public interface GradleBuildVariantOrBuilder extends
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    * @return The maxSdkVersion.
    */
   com.google.wireless.android.sdk.stats.ApiVersion getMaxSdkVersion();
@@ -378,7 +378,7 @@ public interface GradleBuildVariantOrBuilder extends
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMaxSdkVersionOrBuilder();
 
@@ -590,7 +590,7 @@ public interface GradleBuildVariantOrBuilder extends
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    * @return Whether the variantApiAccess field is set.
    */
   boolean hasVariantApiAccess();
@@ -599,7 +599,7 @@ public interface GradleBuildVariantOrBuilder extends
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    * @return The variantApiAccess.
    */
   com.google.wireless.android.sdk.stats.VariantApiUsage getVariantApiAccess();
@@ -608,7 +608,7 @@ public interface GradleBuildVariantOrBuilder extends
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VariantApiUsageOrBuilder getVariantApiAccessOrBuilder();
 
@@ -617,7 +617,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    * @return Whether the kotlinOptions field is set.
    */
   boolean hasKotlinOptions();
@@ -626,7 +626,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    * @return The kotlinOptions.
    */
   com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions getKotlinOptions();
@@ -635,7 +635,7 @@ public interface GradleBuildVariantOrBuilder extends
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptionsOrBuilder getKotlinOptionsOrBuilder();
 
@@ -824,7 +824,7 @@ public interface GradleBuildVariantOrBuilder extends
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    * @return Whether the privacySandboxDependenciesInfo field is set.
    */
   boolean hasPrivacySandboxDependenciesInfo();
@@ -833,7 +833,7 @@ public interface GradleBuildVariantOrBuilder extends
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    * @return The privacySandboxDependenciesInfo.
    */
   com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo getPrivacySandboxDependenciesInfo();
@@ -842,7 +842,7 @@ public interface GradleBuildVariantOrBuilder extends
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfoOrBuilder getPrivacySandboxDependenciesInfoOrBuilder();
 }

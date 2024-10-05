@@ -20,7 +20,7 @@ import com.android.SdkConstants
 import com.android.SdkConstants.FN_ANDROID_MANIFEST_XML
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
@@ -146,7 +146,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
         }
     }
 
-    class CreationAction(private val creationConfig: FusedLibraryVariantScope) :
+    class CreationAction(private val creationConfig: FusedLibraryGlobalScope) :
             AndroidVariantTaskCreationAction<FusedLibraryManifestMergerTask>() {
 
         override val name: String
@@ -167,7 +167,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
                     taskProvider,
                     FusedLibraryManifestMergerTask::reportFile
             ).atLocation(
-                    creationConfig.layout.buildDirectory
+                    creationConfig.projectLayout.buildDirectory
                             .dir("${SdkConstants.FD_OUTPUTS}/${SdkConstants.FD_LOGS}")
             ).withName("manifest-merger-$name-report.txt")
                     .on(FusedLibraryInternalArtifactType.MANIFEST_MERGE_REPORT)
@@ -185,7 +185,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
             task.minSdkVersion.setDisallowChanges(creationConfig.extension.minSdk.toString())
             task.namespace.set(creationConfig.extension.namespace)
             task.tmpDir.setDisallowChanges(
-                    creationConfig.layout.buildDirectory.dir("tmp/FusedLibraryManifestMerger")
+                    creationConfig.projectLayout.buildDirectory.dir("tmp/FusedLibraryManifestMerger")
             )
         }
     }

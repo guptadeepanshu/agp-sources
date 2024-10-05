@@ -27,7 +27,7 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifa
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType.MERGED_PREFAB_PACKAGE
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType.MERGED_PREFAB_PACKAGE_CONFIGURATION
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType.MERGED_RENDERSCRIPT_HEADERS
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
@@ -142,9 +142,9 @@ abstract class FusedLibraryMergeArtifactTask : NonIncrementalTask() {
         }
     }
 
-    class CreateActionFusedLibrary(val creationConfig: FusedLibraryVariantScope,
-            private val androidArtifactType: ArtifactType,
-            private val internalArtifactType: Artifact.Single<*>) :
+    class CreateActionFusedLibrary(val creationConfig: FusedLibraryGlobalScope,
+                                   private val androidArtifactType: ArtifactType,
+                                   private val internalArtifactType: Artifact.Single<*>) :
         AndroidVariantTaskCreationAction<FusedLibraryMergeArtifactTask>() {
 
         override val name: String
@@ -268,7 +268,7 @@ abstract class FusedLibraryMergeArtifactTask : NonIncrementalTask() {
                         ArtifactType.NAVIGATION_JSON to MERGED_NAVIGATION_JSON,
                         ArtifactType.AAR_METADATA to MERGED_AAR_METADATA,
                 )
-        fun getCreationActions(creationConfig: FusedLibraryVariantScope) :
+        fun getCreationActions(creationConfig: FusedLibraryGlobalScope) :
                 List<CreateActionFusedLibrary> {
             return mergeArtifactMap.map { CreateActionFusedLibrary(creationConfig, it.first, it.second) }
         }

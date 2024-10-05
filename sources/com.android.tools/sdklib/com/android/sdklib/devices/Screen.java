@@ -307,7 +307,7 @@ public class Screen {
         Screen s = (Screen) o;
         return s.mScreenSize == mScreenSize
                 && s.mDiagonalLength == mDiagonalLength
-                && s.mPixelDensity == mPixelDensity
+                && s.mPixelDensity.equals(mPixelDensity)
                 && s.mScreenRatio == mScreenRatio
                 && s.mXDimension == mXDimension
                 && s.mYDimension == mYDimension

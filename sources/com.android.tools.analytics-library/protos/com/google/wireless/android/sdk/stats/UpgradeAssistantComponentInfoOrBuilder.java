@@ -51,7 +51,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    * @return Whether the java8DefaultSettings field is set.
    */
   boolean hasJava8DefaultSettings();
@@ -61,7 +61,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    * @return The java8DefaultSettings.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings getJava8DefaultSettings();
@@ -71,7 +71,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * JAVA8_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettingsOrBuilder getJava8DefaultSettingsOrBuilder();
 
@@ -81,7 +81,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    * @return Whether the r8FullModeDefaultSettings field is set.
    */
   boolean hasR8FullModeDefaultSettings();
@@ -91,7 +91,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    * @return The r8FullModeDefaultSettings.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getR8FullModeDefaultSettings();
@@ -101,7 +101,7 @@ public interface UpgradeAssistantComponentInfoOrBuilder extends
    * R8_FULL_MODE_DEFAULT.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder getR8FullModeDefaultSettingsOrBuilder();
 }

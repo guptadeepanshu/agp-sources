@@ -278,17 +278,19 @@ class ArtifactCollections(
 fun getArtifactsForModelBuilder(
     component: ComponentCreationConfig,
     configType: AndroidArtifacts.ConsumedConfigType,
-    root: ResolvedComponentResult
-): Set<ResolvedArtifact> {
+    root: ResolvedComponentResult? = null,
+    dependencyFailureHandler: (Collection<Throwable>) -> Any = {},
+    ): Set<ResolvedArtifact> {
     // For project Android variant dependencies, we don't actually need the AARs or JARs, as just
     // the module path is enough for us to set up dependencies correctly. Here, a filter is created
     // to filter out any project dependencies that only has Android variant dependencies. This
     // results in significant performance improvements for larger builds with many projects.
-    val nonAndroidProjectsFilter = filterProjectDependenciesWithNonAndroidVariants(root)
+    val nonAndroidProjectsFilter = root?.let { filterProjectDependenciesWithNonAndroidVariants(it) }
     return resolveArtifacts(
         component.variantDependencies.aarOrJar(configType, nonAndroidProjectsFilter),
         component.variantDependencies.aarsOrAsars(configType, nonAndroidProjectsFilter),
-        component.variantDependencies.lintJars(configType, externalOnly = true)
+        component.variantDependencies.lintJars(configType, externalOnly = true),
+        dependencyFailureHandler = dependencyFailureHandler
     )
 }
 
@@ -317,7 +319,7 @@ private fun resolveArtifacts(
     aarOrAsar: ArtifactCollection,
     lintJar: ArtifactCollection,
     ignoreUnexpectedArtifactTypes: Boolean = false,
-    dependencyFailureHandler: () -> Any = {},
+    dependencyFailureHandler: (Collection<Throwable>) -> Any = {}
 ): Set<ResolvedArtifact> {
 
     // we need to figure out the following:
@@ -342,7 +344,7 @@ private fun resolveArtifacts(
     }
 
     // collect dependency resolution failures
-    dependencyFailureHandler()
+    dependencyFailureHandler(allArtifacts.failures + aarOrAsar.failures + lintJar.failures)
 
     // build a list of wrapped AAR, and a map of all the exploded-aar artifacts
     val aarWrappedAsProjects =

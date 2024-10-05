@@ -984,6 +984,33 @@ private static final long serialVersionUID = 0L;
     return serverFlagsChangelist_;
   }
 
+  public static final int RUNNING_INSIDE_IDX_FIELD_NUMBER = 10;
+  private boolean runningInsideIdx_;
+  /**
+   * <pre>
+   * Set to true when Android Studio is running in an IDX docker container.
+   * </pre>
+   *
+   * <code>optional bool running_inside_idx = 10;</code>
+   * @return Whether the runningInsideIdx field is set.
+   */
+  @java.lang.Override
+  public boolean hasRunningInsideIdx() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Set to true when Android Studio is running in an IDX docker container.
+   * </pre>
+   *
+   * <code>optional bool running_inside_idx = 10;</code>
+   * @return The runningInsideIdx.
+   */
+  @java.lang.Override
+  public boolean getRunningInsideIdx() {
+    return runningInsideIdx_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1024,6 +1051,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeInt64(9, serverFlagsChangelist_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeBool(10, runningInsideIdx_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -1071,6 +1101,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(9, serverFlagsChangelist_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(10, runningInsideIdx_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -1125,6 +1159,11 @@ private static final long serialVersionUID = 0L;
       if (getServerFlagsChangelist()
           != other.getServerFlagsChangelist()) return false;
     }
+    if (hasRunningInsideIdx() != other.hasRunningInsideIdx()) return false;
+    if (hasRunningInsideIdx()) {
+      if (getRunningInsideIdx()
+          != other.getRunningInsideIdx()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -1173,6 +1212,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SERVER_FLAGS_CHANGELIST_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getServerFlagsChangelist());
+    }
+    if (hasRunningInsideIdx()) {
+      hash = (37 * hash) + RUNNING_INSIDE_IDX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getRunningInsideIdx());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1324,6 +1368,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000080);
       serverFlagsChangelist_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000100);
+      runningInsideIdx_ = false;
+      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1388,6 +1434,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000100) != 0)) {
         result.serverFlagsChangelist_ = serverFlagsChangelist_;
         to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.runningInsideIdx_ = runningInsideIdx_;
+        to_bitField0_ |= 0x00000100;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1475,6 +1525,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasServerFlagsChangelist()) {
         setServerFlagsChangelist(other.getServerFlagsChangelist());
+      }
+      if (other.hasRunningInsideIdx()) {
+        setRunningInsideIdx(other.getRunningInsideIdx());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1576,6 +1629,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000100;
               break;
             } // case 72
+            case 80: {
+              runningInsideIdx_ = input.readBool();
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 80
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -2331,6 +2389,61 @@ private static final long serialVersionUID = 0L;
     public Builder clearServerFlagsChangelist() {
       bitField0_ = (bitField0_ & ~0x00000100);
       serverFlagsChangelist_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private boolean runningInsideIdx_ ;
+    /**
+     * <pre>
+     * Set to true when Android Studio is running in an IDX docker container.
+     * </pre>
+     *
+     * <code>optional bool running_inside_idx = 10;</code>
+     * @return Whether the runningInsideIdx field is set.
+     */
+    @java.lang.Override
+    public boolean hasRunningInsideIdx() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Set to true when Android Studio is running in an IDX docker container.
+     * </pre>
+     *
+     * <code>optional bool running_inside_idx = 10;</code>
+     * @return The runningInsideIdx.
+     */
+    @java.lang.Override
+    public boolean getRunningInsideIdx() {
+      return runningInsideIdx_;
+    }
+    /**
+     * <pre>
+     * Set to true when Android Studio is running in an IDX docker container.
+     * </pre>
+     *
+     * <code>optional bool running_inside_idx = 10;</code>
+     * @param value The runningInsideIdx to set.
+     * @return This builder for chaining.
+     */
+    public Builder setRunningInsideIdx(boolean value) {
+      bitField0_ |= 0x00000200;
+      runningInsideIdx_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set to true when Android Studio is running in an IDX docker container.
+     * </pre>
+     *
+     * <code>optional bool running_inside_idx = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearRunningInsideIdx() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      runningInsideIdx_ = false;
       onChanged();
       return this;
     }

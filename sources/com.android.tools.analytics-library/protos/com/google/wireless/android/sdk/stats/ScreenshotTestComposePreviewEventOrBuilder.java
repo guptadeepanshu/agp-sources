@@ -23,7 +23,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    * @return Whether the previewDiscovery field is set.
    */
   boolean hasPreviewDiscovery();
@@ -32,7 +32,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    * @return The previewDiscovery.
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery getPreviewDiscovery();
@@ -41,7 +41,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscoveryOrBuilder getPreviewDiscoveryOrBuilder();
 
@@ -50,7 +50,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    * @return Whether the previewRendering field is set.
    */
   boolean hasPreviewRendering();
@@ -59,7 +59,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    * @return The previewRendering.
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering getPreviewRendering();
@@ -68,7 +68,7 @@ public interface ScreenshotTestComposePreviewEventOrBuilder extends
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRenderingOrBuilder getPreviewRenderingOrBuilder();
 }

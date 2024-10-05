@@ -121,7 +121,7 @@ public interface EmulatorPerformanceStatsOrBuilder extends
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    * @return Whether the resourceUsage field is set.
    */
   boolean hasResourceUsage();
@@ -130,7 +130,7 @@ public interface EmulatorPerformanceStatsOrBuilder extends
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    * @return The resourceUsage.
    */
   com.google.wireless.android.sdk.stats.EmulatorResourceUsage getResourceUsage();
@@ -139,22 +139,22 @@ public interface EmulatorPerformanceStatsOrBuilder extends
    * Resource usage and latency stats.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
+   * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorResourceUsageOrBuilder getResourceUsageOrBuilder();
 
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    * @return Whether the latencyStats field is set.
    */
   boolean hasLatencyStats();
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    * @return The latencyStats.
    */
   com.google.wireless.android.sdk.stats.EmulatorLatencyStats getLatencyStats();
   /**
-   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
+   * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder getLatencyStatsOrBuilder();
 

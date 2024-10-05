@@ -15,6 +15,8 @@
  */
 package com.android.build.gradle
 
+import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
@@ -30,9 +32,11 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.internal.DefaultDomainObjectSet
+import org.gradle.declarative.dsl.model.annotations.Configuring
 import java.util.Collections
 
 /**
@@ -48,14 +52,16 @@ open class LibraryExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    private val publicExtensionImpl: LibraryExtensionImpl
+    private val publicExtensionImpl: LibraryExtensionImpl,
+    stats: GradleBuildProject.Builder?
 ) : TestedExtension(
     dslServices,
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    false
+    false,
+    stats
 ),
    InternalLibraryExtension by publicExtensionImpl {
 
@@ -96,7 +102,10 @@ open class LibraryExtension(
      * ```
      */
     val libraryVariants: DefaultDomainObjectSet<LibraryVariant>
-        get() = libraryVariantList as DefaultDomainObjectSet<LibraryVariant>
+        get() {
+            recordOldVariantApiUsage()
+            return libraryVariantList as DefaultDomainObjectSet<LibraryVariant>
+        }
 
     override fun addVariant(variant: BaseVariant) {
         libraryVariantList.add(variant as LibraryVariant)
@@ -120,4 +129,17 @@ open class LibraryExtension(
 
     override val libraryRequests: MutableCollection<LibraryRequest>
         get() = publicExtensionImpl.libraryRequests
+
+    override val buildFeatures: LibraryBuildFeatures
+        get() = publicExtensionImpl.buildFeatures
+
+    @Configuring
+    override fun defaultConfig(action: LibraryDefaultConfig.() -> Unit) {
+        action.invoke(defaultConfig)
+    }
+
+    @Configuring
+    override fun buildFeatures(action: LibraryBuildFeatures.() -> Unit) {
+        action.invoke(buildFeatures)
+    }
 }

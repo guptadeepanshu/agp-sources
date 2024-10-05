@@ -64,7 +64,7 @@ public interface GraphicsResourceUsageOrBuilder extends
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    * @return Whether the vulkanResourceUsage field is set.
    */
   boolean hasVulkanResourceUsage();
@@ -73,7 +73,7 @@ public interface GraphicsResourceUsageOrBuilder extends
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    * @return The vulkanResourceUsage.
    */
   com.google.wireless.android.sdk.stats.VulkanResourceUsage getVulkanResourceUsage();
@@ -82,7 +82,7 @@ public interface GraphicsResourceUsageOrBuilder extends
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VulkanResourceUsageOrBuilder getVulkanResourceUsageOrBuilder();
 }

@@ -7,6 +7,7 @@ import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 
@@ -25,14 +26,16 @@ abstract class AbstractAppExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    isBaseModule: Boolean
+    isBaseModule: Boolean,
+    stats: GradleBuildProject.Builder?
 ) : TestedExtension(
     dslServices,
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    isBaseModule
+    isBaseModule,
+    stats
 ) {
 
     /**
@@ -57,10 +60,16 @@ abstract class AbstractAppExtension(
      * }
     </pre> *
      */
-    val applicationVariants: DomainObjectSet<ApplicationVariant> =
+    val applicationVariants: DomainObjectSet<ApplicationVariant>
+        get() {
+            recordOldVariantApiUsage()
+           return _applicationVariants
+        }
+
+    private val _applicationVariants: DomainObjectSet<ApplicationVariant> =
         dslServices.domainObjectSet(ApplicationVariant::class.java)
 
     override fun addVariant(variant: BaseVariant) {
-        applicationVariants.add(variant as ApplicationVariant)
+        _applicationVariants.add(variant as ApplicationVariant)
     }
 }

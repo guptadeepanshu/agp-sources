@@ -257,32 +257,32 @@ public interface AppLinksAssistantEventOrBuilder extends
       getRawProjectIdBytes();
 
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11 [lazy = true];</code>
    * @return Whether the validationSummary field is set.
    */
   boolean hasValidationSummary();
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11 [lazy = true];</code>
    * @return The validationSummary.
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummary getValidationSummary();
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.ValidationSummary validation_summary = 11 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.ValidationSummaryOrBuilder getValidationSummaryOrBuilder();
 
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12 [lazy = true];</code>
    * @return Whether the intentFilterFix field is set.
    */
   boolean hasIntentFilterFix();
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12 [lazy = true];</code>
    * @return The intentFilterFix.
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFix getIntentFilterFix();
   /**
-   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.IntentFilterFix intent_filter_fix = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.IntentFilterFixOrBuilder getIntentFilterFixOrBuilder();
 
@@ -302,7 +302,7 @@ public interface AppLinksAssistantEventOrBuilder extends
    * The information of an interacted link collected for impact tracking.
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14 [lazy = true];</code>
    * @return Whether the linksRecord field is set.
    */
   boolean hasLinksRecord();
@@ -311,7 +311,7 @@ public interface AppLinksAssistantEventOrBuilder extends
    * The information of an interacted link collected for impact tracking.
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14 [lazy = true];</code>
    * @return The linksRecord.
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecord getLinksRecord();
@@ -320,7 +320,7 @@ public interface AppLinksAssistantEventOrBuilder extends
    * The information of an interacted link collected for impact tracking.
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent.LinksRecord links_record = 14 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.LinksRecordOrBuilder getLinksRecordOrBuilder();
 }

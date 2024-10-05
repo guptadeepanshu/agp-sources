@@ -22,39 +22,45 @@ import com.android.build.gradle.internal.profile.PROPERTY_VARIANT_NAME_KEY
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishingSpecs
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR
+import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_JAVA_SOURCES
+import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.KotlinServices
+import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
-class KotlinCompileCreationAction(private val creationConfig: ComponentCreationConfig) {
+class KotlinCompileCreationAction(
+    creationConfig: ComponentCreationConfig,
+    kotlinServices: KotlinServices
+) : KotlinTaskCreationAction<KotlinJvmCompile>(creationConfig) {
 
-    val taskName: String = creationConfig.computeTaskNameInternal("compile", "Kotlin")
+    private val kotlinJvmFactory = kotlinServices.factory
 
-    private fun getTaskFactory(): TaskProvider<out KotlinJvmCompile> {
-        return creationConfig.services
-            .kotlinServices!!
-            .factory
-            .registerKotlinJvmCompileTask(
-                taskName,
-                creationConfig.name
-            )
-    }
+    override val taskName: String = creationConfig.computeTaskNameInternal("compile", "Kotlin")
 
-    private fun handleProvider(task: TaskProvider<out KotlinJvmCompile>) {
+    override fun getTaskProvider(): TaskProvider<out KotlinJvmCompile> =
+        kotlinJvmFactory.registerKotlinJvmCompileTask(taskName, creationConfig.name)
+
+    override fun handleProvider(task: TaskProvider<out KotlinJvmCompile>) {
         val artifacts = creationConfig.artifacts
         artifacts.setInitialProvider(task) { it.destinationDirectory }
             .withName("classes")
-            .on(InternalArtifactType.KOTLINC)
+            .on(InternalArtifactType.BUILT_IN_KOTLINC)
     }
 
-    private fun configureTask(task: KotlinJvmCompile) {
+    override fun configureTask(task: KotlinJvmCompile) {
         creationConfig.sources.kotlin {
             task.source(it.getAsFileTrees())
         }
         creationConfig.sources.java {
             task.source(it.getAsFileTrees())
         }
+        creationConfig.getBuiltInKaptArtifact(BUILT_IN_KAPT_GENERATED_JAVA_SOURCES)?.let { task.source(it) }
+        creationConfig.getBuiltInKaptArtifact(BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES)
+            ?.let { task.source(it) }
 
         val taskClasspath =
             creationConfig.services.fileCollection().from(
@@ -65,14 +71,14 @@ class KotlinCompileCreationAction(private val creationConfig: ComponentCreationC
                 ),
                 creationConfig.global.bootClasspath
             )
+        creationConfig.getBuiltInKaptArtifact(BUILT_IN_KAPT_CLASSES_DIR)?.let { taskClasspath.from(it) }
         task.libraries.setFrom(taskClasspath)
 
         task.sourceSetName.set(creationConfig.name)
         task.useModuleDetection.set(true)
         task.multiPlatformEnabled.set(false)
+        task.pluginClasspath.from(kotlinJvmFactory.getCompilerPlugins())
 
-        task.pluginClasspath
-            .from(creationConfig.services.kotlinServices!!.factory.getCompilerPlugins())
         // TODO(b/259523353) - fix this
         // task.pluginOptions.addAll(creationConfig.kotlinCompilerOptions!!)
 
@@ -95,9 +101,23 @@ class KotlinCompileCreationAction(private val creationConfig: ComponentCreationC
 
         creationConfig.global.kotlinOptions?.let { task.applyJvmOptions(it) }
     }
+}
+
+/** Base class for Built-in Kotlin/Kapt task registration. */
+abstract class KotlinTaskCreationAction<TASK : Task>(
+    protected val creationConfig: ComponentCreationConfig
+) {
+
+    protected abstract val taskName: String
+
+    protected abstract fun getTaskProvider(): TaskProvider<out TASK>
+
+    protected abstract fun handleProvider(task: TaskProvider<out TASK>)
+
+    protected abstract fun configureTask(task: TASK)
 
     fun registerTask() {
-        val taskProvider = getTaskFactory()
+        val taskProvider = getTaskProvider()
         handleProvider(taskProvider)
 
         taskProvider.configure {
@@ -110,7 +130,7 @@ class KotlinCompileCreationAction(private val creationConfig: ComponentCreationC
     }
 }
 
-private fun KotlinJvmCompile.applyJvmOptions(options: KotlinJvmOptions) {
+internal fun KotlinJvmCompile.applyJvmOptions(options: KotlinJvmOptions) {
     kotlinOptions {
         // TODO(b/259523353): Initialize task options from the DSL object, add API in KGP for
         //  automatic copying

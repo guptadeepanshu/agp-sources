@@ -181,6 +181,7 @@ abstract class BundleAllClasses : NonIncrementalTask() {
                 task.inputDirs.from(
                     listOfNotNull(
                         creationConfig.getBuiltInKotlincOutput(),
+                        creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR),
                         creationConfig.artifacts.get(InternalArtifactType.JAVAC),
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
                         creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode

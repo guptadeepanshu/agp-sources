@@ -16,6 +16,7 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.declarative.dsl.model.annotations.Restricted
 import java.io.File
 
 /**
@@ -29,6 +30,7 @@ interface LibraryVariantDimension : VariantDimension {
      *
      * This can be null if the flag is not set, in which case the default value is used.
      */
+    @get:Restricted
     var multiDexEnabled: Boolean?
 
     /**

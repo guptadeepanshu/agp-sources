@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.component.features
 
-import com.android.build.api.variant.AndroidResources
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.builder.model.VectorDrawablesOptions
 import org.gradle.api.file.FileCollection

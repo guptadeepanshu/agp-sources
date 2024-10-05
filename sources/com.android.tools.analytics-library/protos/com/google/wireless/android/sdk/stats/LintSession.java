@@ -279,7 +279,7 @@ private static final long serialVersionUID = 0L;
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    * @return Whether the lintPerformance field is set.
    */
   @java.lang.Override
@@ -291,7 +291,7 @@ private static final long serialVersionUID = 0L;
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    * @return The lintPerformance.
    */
   @java.lang.Override
@@ -303,7 +303,7 @@ private static final long serialVersionUID = 0L;
    * performance metrics regarding this session
    * </pre>
    *
-   * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+   * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintPerformanceOrBuilder getLintPerformanceOrBuilder() {
@@ -1401,7 +1401,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      * @return Whether the lintPerformance field is set.
      */
     public boolean hasLintPerformance() {
@@ -1412,7 +1412,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      * @return The lintPerformance.
      */
     public com.google.wireless.android.sdk.stats.LintPerformance getLintPerformance() {
@@ -1427,7 +1427,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public Builder setLintPerformance(com.google.wireless.android.sdk.stats.LintPerformance value) {
       if (lintPerformanceBuilder_ == null) {
@@ -1447,7 +1447,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public Builder setLintPerformance(
         com.google.wireless.android.sdk.stats.LintPerformance.Builder builderForValue) {
@@ -1465,7 +1465,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public Builder mergeLintPerformance(com.google.wireless.android.sdk.stats.LintPerformance value) {
       if (lintPerformanceBuilder_ == null) {
@@ -1489,7 +1489,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public Builder clearLintPerformance() {
       if (lintPerformanceBuilder_ == null) {
@@ -1506,7 +1506,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LintPerformance.Builder getLintPerformanceBuilder() {
       bitField0_ |= 0x00000002;
@@ -1518,7 +1518,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LintPerformanceOrBuilder getLintPerformanceOrBuilder() {
       if (lintPerformanceBuilder_ != null) {
@@ -1533,7 +1533,7 @@ private static final long serialVersionUID = 0L;
      * performance metrics regarding this session
      * </pre>
      *
-     * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
+     * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LintPerformance, com.google.wireless.android.sdk.stats.LintPerformance.Builder, com.google.wireless.android.sdk.stats.LintPerformanceOrBuilder> 

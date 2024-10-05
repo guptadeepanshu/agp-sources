@@ -506,13 +506,21 @@ private static final long serialVersionUID = 0L;
      */
     UWB(109),
     /**
-     * <pre>
-     * Next tag: 111
-     * </pre>
-     *
      * <code>UX_TEST_2024 = 110;</code>
      */
     UX_TEST_2024(110),
+    /**
+     * <code>GUEST_ANGLE = 111;</code>
+     */
+    GUEST_ANGLE(111),
+    /**
+     * <pre>
+     * Next tag: 113
+     * </pre>
+     *
+     * <code>ANDROID_VIRTUALIZATION_FRAMEWORK = 112;</code>
+     */
+    ANDROID_VIRTUALIZATION_FRAMEWORK(112),
     ;
 
     /**
@@ -960,13 +968,21 @@ private static final long serialVersionUID = 0L;
      */
     public static final int UWB_VALUE = 109;
     /**
-     * <pre>
-     * Next tag: 111
-     * </pre>
-     *
      * <code>UX_TEST_2024 = 110;</code>
      */
     public static final int UX_TEST_2024_VALUE = 110;
+    /**
+     * <code>GUEST_ANGLE = 111;</code>
+     */
+    public static final int GUEST_ANGLE_VALUE = 111;
+    /**
+     * <pre>
+     * Next tag: 113
+     * </pre>
+     *
+     * <code>ANDROID_VIRTUALIZATION_FRAMEWORK = 112;</code>
+     */
+    public static final int ANDROID_VIRTUALIZATION_FRAMEWORK_VALUE = 112;
 
 
     public final int getNumber() {
@@ -1100,6 +1116,8 @@ private static final long serialVersionUID = 0L;
         case 108: return DEVICE_KEYBOARD_QT_RAW_INPUT;
         case 109: return UWB;
         case 110: return UX_TEST_2024;
+        case 111: return GUEST_ANGLE;
+        case 112: return ANDROID_VIRTUALIZATION_FRAMEWORK;
         default: return null;
       }
     }

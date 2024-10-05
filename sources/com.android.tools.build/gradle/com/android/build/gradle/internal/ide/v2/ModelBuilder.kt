@@ -32,25 +32,33 @@ import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.ScopedArtifacts.Scope.ALL
 import com.android.build.api.variant.ScopedArtifacts.Scope.PROJECT
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.api.variant.impl.HasDeviceTestsCreationConfig
 import com.android.build.api.variant.impl.HasHostTestsCreationConfig
 import com.android.build.api.variant.impl.HasTestFixtures
-import com.android.build.api.variant.impl.HasDeviceTestsCreationConfig
 import com.android.build.api.variant.impl.ManifestFilesImpl
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
+import com.android.build.gradle.internal.BuildTypeData
+import com.android.build.gradle.internal.ProductFlavorData
+import com.android.build.gradle.internal.VariantDimensionData
+import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
+import com.android.build.gradle.internal.attributes.VariantAttr
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.dependency.AdditionalArtifactType
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl.GlobalSyncIssueService
 import com.android.build.gradle.internal.ide.DependencyFailureHandler
+import com.android.build.gradle.internal.ide.Utils.getGeneratedAssetsFolders
 import com.android.build.gradle.internal.ide.Utils.getGeneratedResourceFolders
 import com.android.build.gradle.internal.ide.Utils.getGeneratedSourceFolders
 import com.android.build.gradle.internal.ide.Utils.getGeneratedSourceFoldersForUnitTests
+import com.android.build.gradle.internal.ide.dependencies.AdditionalArtifacts
 import com.android.build.gradle.internal.ide.dependencies.FullDependencyGraphBuilder
 import com.android.build.gradle.internal.ide.dependencies.GraphEdgeCache
 import com.android.build.gradle.internal.ide.dependencies.LibraryService
@@ -59,7 +67,9 @@ import com.android.build.gradle.internal.ide.dependencies.getArtifactsForModelBu
 import com.android.build.gradle.internal.ide.dependencies.getVariantName
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecksForModel
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.UNIT_TEST_CONFIG_DIRECTORY
@@ -99,14 +109,20 @@ import com.android.builder.model.v2.models.AndroidDsl
 import com.android.builder.model.v2.models.AndroidProject
 import com.android.builder.model.v2.models.BasicAndroidProject
 import com.android.builder.model.v2.models.ModelBuilderParameter
+import com.android.builder.model.v2.models.ProjectGraph
 import com.android.builder.model.v2.models.ProjectSyncIssues
 import com.android.builder.model.v2.models.VariantDependencies
 import com.android.builder.model.v2.models.VariantDependenciesAdjacencyList
+import com.android.builder.model.v2.models.VariantDependenciesFlatList
 import com.android.builder.model.v2.models.Versions
+import com.android.utils.associateNotNull
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.Project
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.component.ProjectComponentSelector
+import org.gradle.internal.resolve.ModuleVersionResolveException
 import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder
 import java.io.File
 import java.io.FileInputStream
@@ -116,6 +132,8 @@ import javax.xml.namespace.QName
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamException
 import javax.xml.stream.events.EndElement
+import com.android.build.gradle.internal.dsl.BuildType as InternalBuildType
+import com.android.build.gradle.internal.dsl.ProductFlavor as InternalFlavor
 
 class ModelBuilder<
         BuildFeaturesT : BuildFeatures,
@@ -145,8 +163,10 @@ class ModelBuilder<
                 || className == BasicAndroidProject::class.java.name
                 || className == AndroidProject::class.java.name
                 || className == AndroidDsl::class.java.name
+                || className == ProjectGraph::class.java.name
                 || className == VariantDependencies::class.java.name
                 || className == VariantDependenciesAdjacencyList::class.java.name
+                || className == VariantDependenciesFlatList::class.java.name
                 || className == ProjectSyncIssues::class.java.name
     }
 
@@ -160,7 +180,8 @@ class ModelBuilder<
         AndroidDsl::class.java.name -> buildAndroidDslModel(project)
         ProjectSyncIssues::class.java.name -> buildProjectSyncIssueModel(project)
         VariantDependencies::class.java.name,
-        VariantDependenciesAdjacencyList::class.java.name -> throw RuntimeException(
+        VariantDependenciesAdjacencyList::class.java.name,
+        ProjectGraph::class.java.name -> throw RuntimeException(
             "Please use parameterized Tooling API to obtain ${className.split(".").last()} model."
         )
         else -> throw RuntimeException("Does not support model '$className'")
@@ -176,6 +197,8 @@ class ModelBuilder<
     ): Any? = when (className) {
         VariantDependencies::class.java.name -> buildVariantDependenciesModel(project, parameter)
         VariantDependenciesAdjacencyList::class.java.name -> buildVariantDependenciesModel(project, parameter, adjacencyList=true)
+        VariantDependenciesFlatList::class.java.name -> buildVariantDependenciesFlatListModel(project, parameter)
+        ProjectGraph::class.java.name -> buildProjectGraphModel(project, parameter)
         Versions::class.java.name,
         AndroidProject::class.java.name,
         AndroidDsl::class.java.name,
@@ -184,6 +207,42 @@ class ModelBuilder<
         )
         else -> throw RuntimeException("Does not support model '$className'")
     }
+
+    /**
+     * Normally, the dependencies of each app is fetched to figure out which variants to request for
+     * each sub-project, however this initial fetch of dependencies might take a long time (in the
+     * order of 10 seconds) for builds with many subprojects. In this case, AGP provides a lighter
+     * weight graph that only contains the sub-project info. This allows the IDE to parallelize
+     * execution much faster.
+     */
+    private fun buildProjectGraphModel(project: Project, parameter: ModelBuilderParameter): ProjectGraph? {
+        val variantName = parameter.variantName
+        val variant = variantModel.variants.singleOrNull { it.name == variantName } ?: return null
+
+        return ProjectGraphImpl(
+            resolvedVariants = (variant.variantDependencies.getArtifactCollectionForToolingModel(
+                RUNTIME_CLASSPATH, AndroidArtifacts.ArtifactScope.PROJECT, AndroidArtifacts.ArtifactType.JAR
+            ) {
+                // Make a copy of the runtime classpath configuration and replace all non-project
+                // dependencies with a self dependency. This makes sure Gradle skips any resolution
+                // for external libraries.
+                it.copyRecursive().apply {
+                    resolutionStrategy.dependencySubstitution.all {
+                        if (it.requested !is ProjectComponentSelector) {
+                            it.useTarget(project)
+                        }
+                    }
+                }
+            }).artifacts.associateNotNull {
+                // Requesting artifacts because asking for the resolution root is more expensive
+                val resolvedVariantResult = it.variant
+                val projectPath =  (resolvedVariantResult.owner as? ProjectComponentIdentifier)?.projectPath ?: return@associateNotNull null
+                val resolvedVariantName = resolvedVariantResult.attributes.getAttribute(VariantAttr.ATTRIBUTE)?.name ?: return@associateNotNull null
+                projectPath to resolvedVariantName
+            }
+        )
+    }
+
 
     private fun buildModelVersions(): Versions {
         /**
@@ -194,20 +253,17 @@ class ModelBuilder<
         /**
          * The version of the model-producing code (i.e. the model builders in AGP)
          *
-         * The minor version is increased every time an addition is made to the model interfaces,
+         * The major version is increased every time an addition is made to the model interfaces,
          * or other semantic change that the code injected by studio should react to, such as
          * instructing studio to stop calling a method that returns a collection that is no longer
-         * populated.
-         *
-         * The major version is increased, and the minor version reset to 0 every time AGP is
-         * branched to allow for changes in that branch to be modelled.
+         * populated which leaves the minor to be able to be incremented for partial backports.
          *
          * Changes made to the model must always be compatible with the MINIMUM_MODEL_CONSUMER
          * version of Android Studio. To make a breaking change, such as removing an older model
          * method not called by current versions of Studio, the MINIMUM_MODEL_CONSUMER version must
          * be increased to exclude all older versions of Studio that called that method.
          */
-        val modelProducer = VersionImpl(8, 9, humanReadable = "Android Gradle Plugin 8.4")
+        val modelProducer = VersionImpl(12, 0, humanReadable = "Android Gradle Plugin 8.7")
         /**
          * The minimum required model consumer version, to allow AGP to control support for older
          * versions of Android Studio.
@@ -236,7 +292,7 @@ class ModelBuilder<
     /**
      * Indicates the dimensions used for a variant
      */
-    private data class DimensionInformation(
+    internal data class DimensionInformation(
         val buildTypes: Set<String>,
         val flavors: Set<Pair<String, String>>
     ) {
@@ -269,95 +325,22 @@ class ModelBuilder<
         }
 
         val variantInputs = variantModel.inputs
-
         val variants = variantModel.variants
-
-        // compute for each main, androidTest, unitTest and testFixtures which buildType and flavors
-        // they applied to. This will allow excluding from the model sourcesets that are not
-        // used by any of them.
-        // Not doing this is confusing to users as they see folders marked as source that aren't
-        // used by anything.
         val variantDimensionInfo = DimensionInformation.createFrom(variants)
-        val androidTests = DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<DeviceTestCreationConfig>())
-        val unitTests = DimensionInformation.createFrom(variantModel.testComponents.filter {
-            it.componentType == ComponentTypeImpl.UNIT_TEST
-        })
-        val testFixtures = DimensionInformation.createFrom(variants.mapNotNull { (it as? HasTestFixtures)?.testFixtures })
-        val screenshotTests = DimensionInformation.createFrom(variantModel.testComponents.filter {
-            it.componentType == ComponentTypeImpl.SCREENSHOT_TEST
-        })
 
         // for now grab the first buildFeatureValues as they cannot be different.
         val buildFeatures = variantModel.buildFeatures
 
         // gather the default config
-        val defaultConfigData = variantInputs.defaultConfigData
         val defaultConfig = if (variantDimensionInfo.isNotEmpty()) {
-
-            SourceSetContainerImpl(
-                sourceProvider = defaultConfigData.sourceSet.convert(buildFeatures),
-                deviceTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                    defaultConfigData.getSourceSetForModel(ComponentTypeImpl.ANDROID_TEST)
-                        ?.takeIf { androidTests.isNotEmpty() }
-                        ?.convert(buildFeatures)
-                        ?.let { this.put(ComponentTypeImpl.ANDROID_TEST.artifactName, it) }
-                },
-                hostTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                    defaultConfigData.getSourceSetForModel(ComponentTypeImpl.UNIT_TEST)
-                        ?.takeIf { unitTests.isNotEmpty() }
-                        ?.convert(buildFeatures)
-                        ?.let { this.put(ComponentTypeImpl.UNIT_TEST.artifactName, it) }
-                    defaultConfigData.getSourceSetForModel(ComponentTypeImpl.SCREENSHOT_TEST)
-                        ?.takeIf { screenshotTests.isNotEmpty() }
-                        ?.convert(buildFeatures)
-                        ?.let { this.put(ComponentTypeImpl.SCREENSHOT_TEST.artifactName, it) }
-                },
-                testFixturesSourceProvider = defaultConfigData.getSourceSetForModel(ComponentTypeImpl.TEST_FIXTURES)
-                    ?.takeIf { testFixtures.isNotEmpty() }
-                    ?.convert(buildFeatures)
-            )
+            DefaultSourceSetContainerBuilder().build()
         } else null
 
         // gather all the build types
         val buildTypes = mutableListOf<SourceSetContainer>()
         for (buildType in variantInputs.buildTypes.values) {
-            val buildTypeName = buildType.buildType.name
-
-            if (variantDimensionInfo.buildTypes.contains(buildTypeName)) {
-                // Mixin works only when there are no flavours.
-                // When a flavour is there source provider will be initialized
-                // with variant sources.
-                val mixinVariantSources: VariantCreationConfig? =
-                    if (variantInputs.productFlavors.values.isEmpty()) {
-                        variants.find { it.name == buildTypeName }
-                    } else null
-                buildTypes.add(
-                    SourceSetContainerImpl(
-                        sourceProvider = buildType.sourceSet.convert(buildFeatures, mixinVariantSources),
-                        deviceTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                            buildType.getSourceSetForModel(ComponentTypeImpl.ANDROID_TEST)
-                                ?.takeIf { androidTests.buildTypes.contains(buildTypeName) }
-                                ?.convert(buildFeatures)
-                                ?.let {
-                                    this.put(ComponentTypeImpl.ANDROID_TEST.artifactName, it)
-                                }
-                        },
-                        hostTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                            buildType.getSourceSetForModel(ComponentTypeImpl.UNIT_TEST)
-                                ?.takeIf { unitTests.buildTypes.contains(buildTypeName) }
-                                ?.convert(buildFeatures)
-                                ?.let { this.put(ComponentTypeImpl.UNIT_TEST.artifactName, it) }
-                            buildType.getSourceSetForModel(ComponentTypeImpl.SCREENSHOT_TEST)
-                                ?.takeIf { screenshotTests.buildTypes.contains(buildTypeName) }
-                                ?.convert(buildFeatures)
-                                ?.let { this.put(ComponentTypeImpl.SCREENSHOT_TEST.artifactName, it) }
-                        },
-                        testFixturesSourceProvider =
-                        buildType.getSourceSetForModel(ComponentTypeImpl.TEST_FIXTURES)
-                            ?.takeIf { testFixtures.buildTypes.contains(buildTypeName) }
-                            ?.convert(buildFeatures)
-                    )
-                )
+            if (variantDimensionInfo.buildTypes.contains(buildType.buildType.name)) {
+                buildTypes.add(BuildTypeSourceSetBuilder(buildType).build())
             }
         }
 
@@ -365,35 +348,8 @@ class ModelBuilder<
         val productFlavors = mutableListOf<SourceSetContainer>()
         for (flavor in variantInputs.productFlavors.values) {
             val flavorDimensionName = flavor.productFlavor.dimension to flavor.productFlavor.name
-
             if (variantDimensionInfo.flavors.contains(flavorDimensionName)) {
-                productFlavors.add(
-                    SourceSetContainerImpl(
-                        sourceProvider = flavor.sourceSet.convert(buildFeatures),
-                        deviceTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                            flavor.getSourceSetForModel(ComponentTypeImpl.ANDROID_TEST)
-                                ?.takeIf { androidTests.flavors.contains(flavorDimensionName)}
-                                ?.convert(buildFeatures)
-                                ?.let {
-                                    this.put(ComponentTypeImpl.ANDROID_TEST.artifactName, it)
-                                }
-                        },
-                        hostTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
-                            flavor.getSourceSetForModel(ComponentTypeImpl.UNIT_TEST)
-                                ?.takeIf { unitTests.flavors.contains(flavorDimensionName) }
-                                ?.convert(buildFeatures)
-                                ?.let { this.put(ComponentTypeImpl.UNIT_TEST.artifactName, it) }
-                            flavor.getSourceSetForModel(ComponentTypeImpl.SCREENSHOT_TEST)
-                                ?.takeIf { screenshotTests.flavors.contains(flavorDimensionName) }
-                                ?.convert(buildFeatures)
-                                ?.let { this.put(ComponentTypeImpl.SCREENSHOT_TEST.artifactName, it) }
-                        },
-                        testFixturesSourceProvider =
-                        flavor.getSourceSetForModel(ComponentTypeImpl.TEST_FIXTURES)
-                            ?.takeIf { testFixtures.flavors.contains(flavorDimensionName) }
-                            ?.convert(buildFeatures)
-                    )
-                )
+                productFlavors.add(FlavorSourceSetContainerBuilder(flavor).build())
             }
         }
 
@@ -414,6 +370,166 @@ class ModelBuilder<
 
             bootClasspath = bootClasspath,
         )
+    }
+
+    /**
+     * Abstract class for building SourceSetContainer. It has logic to add sourceSets, deviceTestSource,
+     * hostTestSource and fixturesTesSources based on variantModel. This will allow excluding from the model
+     * sourceSets that are not used by any of them.
+     */
+    abstract inner class BaseSourceSetContainerBuilder {
+
+        val buildFeatures: BuildFeatureValues
+            get() = variantModel.buildFeatures
+
+        internal val androidTests =
+            DimensionInformation.createFrom(variantModel.testComponents.filterIsInstance<DeviceTestCreationConfig>())
+        internal val unitTests =
+            DimensionInformation.createFrom(variantModel.testComponents.filter {
+                it.componentType == ComponentTypeImpl.UNIT_TEST
+            })
+        internal val testFixtures =
+            DimensionInformation.createFrom(variantModel.variants.mapNotNull { (it as? HasTestFixtures)?.testFixtures })
+        internal val screenshotTests =
+            DimensionInformation.createFrom(variantModel.testComponents.filter {
+                it.componentType == ComponentTypeImpl.SCREENSHOT_TEST
+            })
+
+        abstract val variantData: VariantDimensionData
+        abstract val defaultSourceSet: DefaultAndroidSourceSet
+
+        private fun getAndroidTestSourceSet() =
+            variantData.getSourceSetForModel(ComponentTypeImpl.ANDROID_TEST)
+        private fun getUnitSourceSet() =
+            variantData.getSourceSetForModel(ComponentTypeImpl.UNIT_TEST)
+        private fun getScreenshotSourceSet() =
+            variantData.getSourceSetForModel(ComponentTypeImpl.SCREENSHOT_TEST)
+        private fun getFixtureSourceSet() =
+            variantData.getSourceSetForModel(ComponentTypeImpl.TEST_FIXTURES)
+
+        abstract fun shouldTakeAndroidTestSourceSet(): Boolean
+        abstract fun shouldTakeUnitSourceSet(): Boolean
+        abstract fun shouldTakeFixtureSourceSet(): Boolean
+        abstract fun shouldTakeScreenshotSourceSet(): Boolean
+
+        open fun additionalDefaultConfig(): List<ComponentCreationConfig> = listOf()
+        open fun additionalAndroidConfig(): List<ComponentCreationConfig> = listOf()
+        open fun additionalUnitConfig(): List<ComponentCreationConfig> = listOf()
+        open fun additionalScreenshotConfig(): List<ComponentCreationConfig> = listOf()
+        open fun additionalFixtureConfig(): List<ComponentCreationConfig> = listOf()
+
+        fun build() =
+            SourceSetContainerImpl(
+                sourceProvider = defaultSourceSet.convert(buildFeatures, additionalDefaultConfig()),
+                deviceTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
+                    getAndroidTestSourceSet()
+                        ?.takeIf { shouldTakeAndroidTestSourceSet() }
+                        ?.convert(buildFeatures, additionalAndroidConfig())
+                        ?.let { this[ComponentTypeImpl.ANDROID_TEST.artifactName] = it }
+                },
+                hostTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
+                    getUnitSourceSet()
+                        ?.takeIf { shouldTakeUnitSourceSet() }
+                        ?.convert(buildFeatures, additionalUnitConfig())
+                        ?.let { this[ComponentTypeImpl.UNIT_TEST.artifactName] = it }
+                    getScreenshotSourceSet()
+                        ?.takeIf { shouldTakeScreenshotSourceSet() }
+                        ?.convert(buildFeatures, additionalScreenshotConfig())
+                        ?.let { this[ComponentTypeImpl.SCREENSHOT_TEST.artifactName] = it }
+                },
+                testFixturesSourceProvider = getFixtureSourceSet()
+                    ?.takeIf { shouldTakeFixtureSourceSet() }
+                    ?.convert(buildFeatures, additionalFixtureConfig())
+            )
+    }
+
+    /**
+     * Build SourceSetContainer for particular build type.
+     *
+     * It also adds user defined static folders (added with variant api)
+     * in case there are no flavours.
+     */
+    inner class BuildTypeSourceSetBuilder(val buildType: BuildTypeData<InternalBuildType>) :
+        BaseSourceSetContainerBuilder() {
+
+        private val buildTypeName = buildType.buildType.name
+        override val defaultSourceSet = buildType.sourceSet
+
+        override fun shouldTakeAndroidTestSourceSet() =
+            androidTests.buildTypes.contains(buildTypeName)
+
+        override fun shouldTakeUnitSourceSet() = unitTests.buildTypes.contains(buildTypeName)
+        override fun shouldTakeFixtureSourceSet() = testFixtures.buildTypes.contains(buildTypeName)
+        override fun shouldTakeScreenshotSourceSet() =
+            screenshotTests.buildTypes.contains(buildTypeName)
+
+        override val variantData: VariantDimensionData = buildType
+
+        private fun isNoVariantProvider() = variantModel.inputs.productFlavors.values.isEmpty()
+
+        // if there is no flavours than variant source provider is empty and we need to add custom
+        // folders to build type
+        override fun additionalDefaultConfig() =
+            if (isNoVariantProvider()) variantModel.variants.filter { it.buildType == buildTypeName } else listOf()
+
+        override fun additionalAndroidConfig(): List<DeviceTestCreationConfig> =
+            additionalDefaultConfig()
+                .filterIsInstance<HasDeviceTestsCreationConfig>()
+                .flatMap { it.deviceTests.values.filterIsInstance<DeviceTestCreationConfig>() }
+
+        override fun additionalUnitConfig() =
+            additionalDefaultConfig()
+                .filterIsInstance<HasHostTestsCreationConfig>()
+                .flatMap { it.hostTests.values }
+                .filter { it.componentType == ComponentTypeImpl.UNIT_TEST }
+
+        override fun additionalScreenshotConfig() =
+            additionalDefaultConfig()
+                .filterIsInstance<HasHostTestsCreationConfig>()
+                .flatMap { it.hostTests.values }
+                .filter { it.componentType == ComponentTypeImpl.SCREENSHOT_TEST }
+
+        override fun additionalFixtureConfig() =
+            additionalDefaultConfig()
+                .filterIsInstance<HasTestFixtures>()
+                .mapNotNull { it.testFixtures }
+    }
+
+    /**
+     * Builds SourceSetContainer for variant defaultConfigData.
+     */
+    inner class DefaultSourceSetContainerBuilder : BaseSourceSetContainerBuilder() {
+
+        val defaultConfigData = variantModel.inputs.defaultConfigData
+        override val defaultSourceSet = defaultConfigData.sourceSet
+        override fun shouldTakeAndroidTestSourceSet() = androidTests.isNotEmpty()
+        override fun shouldTakeUnitSourceSet() = unitTests.isNotEmpty()
+        override fun shouldTakeFixtureSourceSet() = testFixtures.isNotEmpty()
+        override fun shouldTakeScreenshotSourceSet() = screenshotTests.isNotEmpty()
+        override val variantData: VariantDimensionData = defaultConfigData
+    }
+
+    /**
+     * Builds SourceSetContainer for particular flavor.
+     */
+    inner class FlavorSourceSetContainerBuilder(flavor: ProductFlavorData<InternalFlavor>) :
+        BaseSourceSetContainerBuilder() {
+
+        private val flavorDimensionName =
+            flavor.productFlavor.dimension to flavor.productFlavor.name
+
+        override val defaultSourceSet = flavor.sourceSet
+        override fun shouldTakeAndroidTestSourceSet() =
+            androidTests.flavors.contains(flavorDimensionName)
+
+        override fun shouldTakeUnitSourceSet() = unitTests.flavors.contains(flavorDimensionName)
+        override fun shouldTakeFixtureSourceSet() =
+            screenshotTests.flavors.contains(flavorDimensionName)
+
+        override fun shouldTakeScreenshotSourceSet() =
+            testFixtures.flavors.contains(flavorDimensionName)
+
+        override val variantData = flavor
     }
 
     private fun buildAndroidProjectModel(project: Project): AndroidProject {
@@ -564,6 +680,82 @@ class ModelBuilder<
         return ProjectSyncIssuesImpl(issues)
     }
 
+    private fun buildVariantDependenciesFlatListModel(project: Project, parameter: ModelBuilderParameter): VariantDependenciesFlatList? {
+        val variantName = parameter.variantName
+        val variant = variantModel.variants.singleOrNull { it.name == variantName } ?: return null
+
+        val globalLibraryBuildService =
+            getBuildService(
+                project.gradle.sharedServices,
+                GlobalSyncService::class.java
+            ).get()
+
+        val libraryService = LibraryServiceImpl(globalLibraryBuildService.libraryCache)
+
+
+        val deviceTests = (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.values?.filterIsInstance<DeviceTestImpl>()
+        val hostTests = (variant as? HasHostTestsCreationConfig)?.hostTests?.values
+        val testFixtures = (variant as? HasTestFixtures)?.testFixtures
+
+        val components = mutableListOf<ComponentCreationConfig>()
+
+        components.add(variant)
+        deviceTests?.forEach { components.add(it) }
+        hostTests?.forEach { components.add(it) }
+        testFixtures?.let { components.add(it) }
+
+        val configTypes = listOf(COMPILE_CLASSPATH) +
+                if (parameter.dontBuildRuntimeClasspath) {
+                    emptyList()
+                } else {
+                    listOf(RUNTIME_CLASSPATH)
+                }
+
+        val results = components.associateWith { component ->
+            val failures = mutableListOf<Throwable>()
+            val graphs = configTypes.associateWith { configType ->
+                fun getAdditionalArtifacts(type: AdditionalArtifactType) =
+                    if (variant.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL))
+                        variant.variantDependencies.getAdditionalArtifacts(configType, type).artifactFiles.files.single()
+                    else
+                        null
+
+                val artifacts = getArtifactsForModelBuilder(component, configType) {
+                    failures.addAll(it)
+                }
+
+
+                artifacts.map {
+                    val javadoc = getAdditionalArtifacts(AdditionalArtifactType.JAVADOC)
+                    val source = getAdditionalArtifacts(AdditionalArtifactType.SOURCE)
+                    val sample = getAdditionalArtifacts(AdditionalArtifactType.SAMPLE)
+                    val additionalArtifacts = AdditionalArtifacts(javadoc, source, sample)
+                    libraryService.getLibrary(it, additionalArtifacts).key
+                }
+            }
+
+            ArtifactDependenciesFlatListImpl(
+                graphs[COMPILE_CLASSPATH]!!,
+                graphs[RUNTIME_CLASSPATH],
+                failures.map {
+                    // Try and extract the failed component. Unfortunately this is not provided
+                    // by gradle when requesting artifacts.
+                    UnresolvedDependencyImpl((it as? ModuleVersionResolveException)?.selector?.toString() ?: "", it.message)
+                }
+            )
+        }
+
+        return VariantDependenciesFlatListImpl(
+            name = variantName,
+            mainArtifact = results[variant]!!,
+            deviceTestArtifacts = deviceTests?.associate { it.artifactName to results[it]!! } ?: emptyMap(),
+            hostTestArtifacts = hostTests?.associate { it.componentType.artifactName to results[it]!!} ?: emptyMap(),
+            testFixturesArtifact = testFixtures?.let { results[it]!! },
+            libraryService.getAllLibraries()
+        )
+    }
+
+
     private fun buildVariantDependenciesModel(
         project: Project,
         parameter: ModelBuilderParameter,
@@ -586,7 +778,7 @@ class ModelBuilder<
 
         if (adjacencyList) {
             val deviceTestArtifacts = mutableMapOf<String, ArtifactDependenciesAdjacencyList>()
-            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.values?.filterIsInstance<DeviceTestImpl>()?.forEach {
                 deviceTestArtifacts[it.artifactName] =
                     createDependenciesWithAdjacencyList(
                         it,
@@ -628,7 +820,7 @@ class ModelBuilder<
             )
         } else {
             val deviceTestArtifacts = mutableMapOf<String, ArtifactDependencies>()
-            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+            (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.values?.filterIsInstance<DeviceTestImpl>()?.forEach {
                 deviceTestArtifacts[it.artifactName] =
                     createDependencies(
                         it,
@@ -670,7 +862,7 @@ class ModelBuilder<
         features: BuildFeatureValues
     ): BasicVariantImpl {
         val deviceTestArtifacts = mutableMapOf<String, BasicArtifact>()
-        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.values?.filterIsInstance<DeviceTestImpl>()?.forEach {
             deviceTestArtifacts[it.artifactName] = createBasicArtifact(it, features)
         }
         val hostTestArtifacts = mutableMapOf<String, BasicArtifact>()
@@ -711,14 +903,13 @@ class ModelBuilder<
         instantAppResultMap: MutableMap<File, Boolean>
     ): VariantImpl {
         val deviceTestArtifacts = mutableMapOf<String, AndroidArtifact>()
-        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.filterIsInstance<DeviceTestImpl>()?.forEach {
+        (variant as? HasDeviceTestsCreationConfig)?.deviceTests?.values?.filterIsInstance<DeviceTestImpl>()?.forEach {
             deviceTestArtifacts[it.artifactName] = createAndroidArtifact(it)
         }
         val hostTestArtifacts = mutableMapOf<String, JavaArtifact>()
         (variant as? HasHostTestsCreationConfig)?.hostTests?.values?.forEach { hostTest ->
             hostTestArtifacts[hostTest.componentType.artifactName] =
                 createJavaArtifact(hostTest)
-
         }
         return VariantImpl(
             name = variant.name,
@@ -880,6 +1071,7 @@ class ModelBuilder<
             ).files.toList(),
             generatedClassPaths = generatedClassPaths,
             bytecodeTransformations = getBytecodeTransformations(component),
+            generatedAssetsFolders = getGeneratedAssetsFolders(component),
         )
     }
 
@@ -1170,6 +1362,12 @@ class ModelBuilder<
             generatedClassPaths["buildConfigGeneratedClasses"] = buildConfigJar.get().asFile
         }
 
+        val kaptClasses = component.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_CLASSES_DIR)
+        if (kaptClasses != null) {
+            classesFolders.add(kaptClasses.get().asFile)
+            generatedClassPaths["kaptGeneratedClasses"] = kaptClasses.get().asFile
+        }
+
         return generatedClassPaths
     }
 
@@ -1212,6 +1410,10 @@ class ModelBuilder<
             flags.put(
                 BooleanFlag.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS,
                 projectOptions[BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS]
+            )
+            flags.put(
+                BooleanFlag.DATA_BINDING_ENABLED,
+                variants.any { it.buildFeatures.dataBinding }
             )
 
             return AndroidGradlePluginProjectFlagsImpl(flags.build())

@@ -32,7 +32,7 @@ public interface EmulatorStreamScreenshotOrBuilder extends
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    * @return Whether the deliveryDelay field is set.
    */
   boolean hasDeliveryDelay();
@@ -42,7 +42,7 @@ public interface EmulatorStreamScreenshotOrBuilder extends
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    * @return The deliveryDelay.
    */
   com.google.wireless.android.sdk.stats.PercentileEstimator getDeliveryDelay();
@@ -52,7 +52,7 @@ public interface EmulatorStreamScreenshotOrBuilder extends
    * from the emulators perspective, and frames delivered.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator delivery_delay = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeliveryDelayOrBuilder();
 

@@ -20,20 +20,40 @@ package com.android.build.gradle.internal
  * Enums representing Maven coordinates that have usages
  */
 enum class MavenCoordinates (val group: String, val artifact: String,  val defaultVersion: String) {
+    ANDROIDX_PRIVACYSANDBOX_ACTIVITY_ACTIVITY_CORE(
+        "androidx.privacysandbox.activity",
+        "activity-core",
+        "1.0.0-alpha01"
+    ),
+    ANDROIDX_PRIVACYSANDBOX_ACTIVITY_ACTIVITY_PROVIDER(
+        "androidx.privacysandbox.activity",
+        "activity-provider",
+        "1.0.0-alpha01"
+    ),
+    ANDROIDX_PRIVACYSANDBOX_ACTIVITY_ACTIVITY_CLIENT(
+        "androidx.privacysandbox.activity",
+        "activity-client",
+        "1.0.0-alpha01"
+    ),
     ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_APIGENERATOR(
         "androidx.privacysandbox.tools",
         "tools-apigenerator",
-        "1.0.0-alpha08"
+        "1.0.0-alpha09"
     ),
     ANDROIDX_PRIVACYSANDBOX_TOOLS_TOOLS_APIPACKAGER(
         "androidx.privacysandbox.tools",
         "tools-apipackager",
-        "1.0.0-alpha08"
+        "1.0.0-alpha09"
     ),
     ANDROIDX_PRIVACYSANDBOX_UI_UI_CORE(
         "androidx.privacysandbox.ui",
         "ui-core",
         "1.0.0-alpha07"
+    ),
+    ANDROIDX_CORE_CORE_KTX(
+        "androidx.core",
+        "core-ktx",
+        "1.12.0"
     ),
     ANDROIDX_PRIVACYSANDBOX_UI_UI_CLIENT(
         "androidx.privacysandbox.ui",

@@ -648,7 +648,7 @@ private static final long serialVersionUID = 0L;
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    * @return Whether the state field is set.
    */
   @java.lang.Override
@@ -660,7 +660,7 @@ private static final long serialVersionUID = 0L;
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    * @return The state.
    */
   @java.lang.Override
@@ -672,7 +672,7 @@ private static final long serialVersionUID = 0L;
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorStateOrBuilder getStateOrBuilder() {
@@ -686,7 +686,7 @@ private static final long serialVersionUID = 0L;
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    * @return Whether the renderResult field is set.
    */
   @java.lang.Override
@@ -698,7 +698,7 @@ private static final long serialVersionUID = 0L;
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    * @return The renderResult.
    */
   @java.lang.Override
@@ -710,7 +710,7 @@ private static final long serialVersionUID = 0L;
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorRenderResultOrBuilder getRenderResultOrBuilder() {
@@ -724,7 +724,7 @@ private static final long serialVersionUID = 0L;
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    * @return Whether the paletteEvent field is set.
    */
   @java.lang.Override
@@ -736,7 +736,7 @@ private static final long serialVersionUID = 0L;
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    * @return The paletteEvent.
    */
   @java.lang.Override
@@ -748,7 +748,7 @@ private static final long serialVersionUID = 0L;
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutPaletteEventOrBuilder getPaletteEventOrBuilder() {
@@ -762,7 +762,7 @@ private static final long serialVersionUID = 0L;
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    * @return Whether the attributeChangeEvent field is set.
    */
   @java.lang.Override
@@ -774,7 +774,7 @@ private static final long serialVersionUID = 0L;
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    * @return The attributeChangeEvent.
    */
   @java.lang.Override
@@ -786,7 +786,7 @@ private static final long serialVersionUID = 0L;
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEventOrBuilder getAttributeChangeEventOrBuilder() {
@@ -800,7 +800,7 @@ private static final long serialVersionUID = 0L;
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    * @return Whether the favoriteChangeEvent field is set.
    */
   @java.lang.Override
@@ -812,7 +812,7 @@ private static final long serialVersionUID = 0L;
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    * @return The favoriteChangeEvent.
    */
   @java.lang.Override
@@ -824,7 +824,7 @@ private static final long serialVersionUID = 0L;
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEventOrBuilder getFavoriteChangeEventOrBuilder() {
@@ -838,7 +838,7 @@ private static final long serialVersionUID = 0L;
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    * @return Whether the atfAuditResult field is set.
    */
   @java.lang.Override
@@ -850,7 +850,7 @@ private static final long serialVersionUID = 0L;
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    * @return The atfAuditResult.
    */
   @java.lang.Override
@@ -862,7 +862,7 @@ private static final long serialVersionUID = 0L;
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfAuditResultOrBuilder getAtfAuditResultOrBuilder() {
@@ -876,7 +876,7 @@ private static final long serialVersionUID = 0L;
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    * @return Whether the applyAtfFixEvent field is set.
    */
   @java.lang.Override
@@ -888,7 +888,7 @@ private static final long serialVersionUID = 0L;
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    * @return The applyAtfFixEvent.
    */
   @java.lang.Override
@@ -900,7 +900,7 @@ private static final long serialVersionUID = 0L;
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyAtfFixEventOrBuilder getApplyAtfFixEventOrBuilder() {
@@ -914,7 +914,7 @@ private static final long serialVersionUID = 0L;
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    * @return Whether the ignoreAtfResultEvent field is set.
    */
   @java.lang.Override
@@ -926,7 +926,7 @@ private static final long serialVersionUID = 0L;
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    * @return The ignoreAtfResultEvent.
    */
   @java.lang.Override
@@ -938,7 +938,7 @@ private static final long serialVersionUID = 0L;
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.IgnoreAtfResultEventOrBuilder getIgnoreAtfResultEventOrBuilder() {
@@ -952,7 +952,7 @@ private static final long serialVersionUID = 0L;
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    * @return Whether the undoAppliedAtfFixEvent field is set.
    */
   @java.lang.Override
@@ -964,7 +964,7 @@ private static final long serialVersionUID = 0L;
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    * @return The undoAppliedAtfFixEvent.
    */
   @java.lang.Override
@@ -976,7 +976,7 @@ private static final long serialVersionUID = 0L;
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEventOrBuilder getUndoAppliedAtfFixEventOrBuilder() {
@@ -990,7 +990,7 @@ private static final long serialVersionUID = 0L;
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    * @return Whether the animationPreviewEvent field is set.
    */
   @java.lang.Override
@@ -1002,7 +1002,7 @@ private static final long serialVersionUID = 0L;
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    * @return The animationPreviewEvent.
    */
   @java.lang.Override
@@ -1014,7 +1014,7 @@ private static final long serialVersionUID = 0L;
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder getAnimationPreviewEventOrBuilder() {
@@ -1028,7 +1028,7 @@ private static final long serialVersionUID = 0L;
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    * @return Whether the visualLintEvent field is set.
    */
   @java.lang.Override
@@ -1040,7 +1040,7 @@ private static final long serialVersionUID = 0L;
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    * @return The visualLintEvent.
    */
   @java.lang.Override
@@ -1052,7 +1052,7 @@ private static final long serialVersionUID = 0L;
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder() {
@@ -1067,7 +1067,7 @@ private static final long serialVersionUID = 0L;
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    * @return Whether the universalProblemsPanelEvent field is set.
    */
   @java.lang.Override
@@ -1080,7 +1080,7 @@ private static final long serialVersionUID = 0L;
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    * @return The universalProblemsPanelEvent.
    */
   @java.lang.Override
@@ -1093,7 +1093,7 @@ private static final long serialVersionUID = 0L;
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder() {
@@ -2064,7 +2064,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      * @return Whether the state field is set.
      */
     public boolean hasState() {
@@ -2075,7 +2075,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      * @return The state.
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorState getState() {
@@ -2090,7 +2090,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public Builder setState(com.google.wireless.android.sdk.stats.LayoutEditorState value) {
       if (stateBuilder_ == null) {
@@ -2110,7 +2110,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public Builder setState(
         com.google.wireless.android.sdk.stats.LayoutEditorState.Builder builderForValue) {
@@ -2128,7 +2128,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public Builder mergeState(com.google.wireless.android.sdk.stats.LayoutEditorState value) {
       if (stateBuilder_ == null) {
@@ -2152,7 +2152,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public Builder clearState() {
       if (stateBuilder_ == null) {
@@ -2169,7 +2169,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Builder getStateBuilder() {
       bitField0_ |= 0x00000002;
@@ -2181,7 +2181,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorStateOrBuilder getStateOrBuilder() {
       if (stateBuilder_ != null) {
@@ -2196,7 +2196,7 @@ private static final long serialVersionUID = 0L;
      * Layout editor current state
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+     * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LayoutEditorState, com.google.wireless.android.sdk.stats.LayoutEditorState.Builder, com.google.wireless.android.sdk.stats.LayoutEditorStateOrBuilder> 
@@ -2220,7 +2220,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      * @return Whether the renderResult field is set.
      */
     public boolean hasRenderResult() {
@@ -2231,7 +2231,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      * @return The renderResult.
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult getRenderResult() {
@@ -2246,7 +2246,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public Builder setRenderResult(com.google.wireless.android.sdk.stats.LayoutEditorRenderResult value) {
       if (renderResultBuilder_ == null) {
@@ -2266,7 +2266,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public Builder setRenderResult(
         com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Builder builderForValue) {
@@ -2284,7 +2284,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public Builder mergeRenderResult(com.google.wireless.android.sdk.stats.LayoutEditorRenderResult value) {
       if (renderResultBuilder_ == null) {
@@ -2308,7 +2308,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public Builder clearRenderResult() {
       if (renderResultBuilder_ == null) {
@@ -2325,7 +2325,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Builder getRenderResultBuilder() {
       bitField0_ |= 0x00000004;
@@ -2337,7 +2337,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResultOrBuilder getRenderResultOrBuilder() {
       if (renderResultBuilder_ != null) {
@@ -2352,7 +2352,7 @@ private static final long serialVersionUID = 0L;
      * Result of the render when (type = RENDER)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+     * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LayoutEditorRenderResult, com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Builder, com.google.wireless.android.sdk.stats.LayoutEditorRenderResultOrBuilder> 
@@ -2376,7 +2376,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      * @return Whether the paletteEvent field is set.
      */
     public boolean hasPaletteEvent() {
@@ -2387,7 +2387,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      * @return The paletteEvent.
      */
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent getPaletteEvent() {
@@ -2402,7 +2402,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public Builder setPaletteEvent(com.google.wireless.android.sdk.stats.LayoutPaletteEvent value) {
       if (paletteEventBuilder_ == null) {
@@ -2422,7 +2422,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public Builder setPaletteEvent(
         com.google.wireless.android.sdk.stats.LayoutPaletteEvent.Builder builderForValue) {
@@ -2440,7 +2440,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public Builder mergePaletteEvent(com.google.wireless.android.sdk.stats.LayoutPaletteEvent value) {
       if (paletteEventBuilder_ == null) {
@@ -2464,7 +2464,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public Builder clearPaletteEvent() {
       if (paletteEventBuilder_ == null) {
@@ -2481,7 +2481,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.Builder getPaletteEventBuilder() {
       bitField0_ |= 0x00000008;
@@ -2493,7 +2493,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutPaletteEventOrBuilder getPaletteEventOrBuilder() {
       if (paletteEventBuilder_ != null) {
@@ -2508,7 +2508,7 @@ private static final long serialVersionUID = 0L;
      * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+     * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LayoutPaletteEvent, com.google.wireless.android.sdk.stats.LayoutPaletteEvent.Builder, com.google.wireless.android.sdk.stats.LayoutPaletteEventOrBuilder> 
@@ -2532,7 +2532,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      * @return Whether the attributeChangeEvent field is set.
      */
     public boolean hasAttributeChangeEvent() {
@@ -2543,7 +2543,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      * @return The attributeChangeEvent.
      */
     public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent getAttributeChangeEvent() {
@@ -2558,7 +2558,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public Builder setAttributeChangeEvent(com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent value) {
       if (attributeChangeEventBuilder_ == null) {
@@ -2578,7 +2578,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public Builder setAttributeChangeEvent(
         com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.Builder builderForValue) {
@@ -2596,7 +2596,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public Builder mergeAttributeChangeEvent(com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent value) {
       if (attributeChangeEventBuilder_ == null) {
@@ -2620,7 +2620,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public Builder clearAttributeChangeEvent() {
       if (attributeChangeEventBuilder_ == null) {
@@ -2637,7 +2637,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.Builder getAttributeChangeEventBuilder() {
       bitField0_ |= 0x00000010;
@@ -2649,7 +2649,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEventOrBuilder getAttributeChangeEventOrBuilder() {
       if (attributeChangeEventBuilder_ != null) {
@@ -2664,7 +2664,7 @@ private static final long serialVersionUID = 0L;
      * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+     * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent, com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.Builder, com.google.wireless.android.sdk.stats.LayoutAttributeChangeEventOrBuilder> 
@@ -2688,7 +2688,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      * @return Whether the favoriteChangeEvent field is set.
      */
     public boolean hasFavoriteChangeEvent() {
@@ -2699,7 +2699,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      * @return The favoriteChangeEvent.
      */
     public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent getFavoriteChangeEvent() {
@@ -2714,7 +2714,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public Builder setFavoriteChangeEvent(com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent value) {
       if (favoriteChangeEventBuilder_ == null) {
@@ -2734,7 +2734,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public Builder setFavoriteChangeEvent(
         com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent.Builder builderForValue) {
@@ -2752,7 +2752,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public Builder mergeFavoriteChangeEvent(com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent value) {
       if (favoriteChangeEventBuilder_ == null) {
@@ -2776,7 +2776,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public Builder clearFavoriteChangeEvent() {
       if (favoriteChangeEventBuilder_ == null) {
@@ -2793,7 +2793,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent.Builder getFavoriteChangeEventBuilder() {
       bitField0_ |= 0x00000020;
@@ -2805,7 +2805,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEventOrBuilder getFavoriteChangeEventOrBuilder() {
       if (favoriteChangeEventBuilder_ != null) {
@@ -2820,7 +2820,7 @@ private static final long serialVersionUID = 0L;
      * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
      * </pre>
      *
-     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+     * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent, com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent.Builder, com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEventOrBuilder> 
@@ -2844,7 +2844,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      * @return Whether the atfAuditResult field is set.
      */
     public boolean hasAtfAuditResult() {
@@ -2855,7 +2855,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      * @return The atfAuditResult.
      */
     public com.google.wireless.android.sdk.stats.AtfAuditResult getAtfAuditResult() {
@@ -2870,7 +2870,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public Builder setAtfAuditResult(com.google.wireless.android.sdk.stats.AtfAuditResult value) {
       if (atfAuditResultBuilder_ == null) {
@@ -2890,7 +2890,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public Builder setAtfAuditResult(
         com.google.wireless.android.sdk.stats.AtfAuditResult.Builder builderForValue) {
@@ -2908,7 +2908,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public Builder mergeAtfAuditResult(com.google.wireless.android.sdk.stats.AtfAuditResult value) {
       if (atfAuditResultBuilder_ == null) {
@@ -2932,7 +2932,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public Builder clearAtfAuditResult() {
       if (atfAuditResultBuilder_ == null) {
@@ -2949,7 +2949,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfAuditResult.Builder getAtfAuditResultBuilder() {
       bitField0_ |= 0x00000040;
@@ -2961,7 +2961,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfAuditResultOrBuilder getAtfAuditResultOrBuilder() {
       if (atfAuditResultBuilder_ != null) {
@@ -2976,7 +2976,7 @@ private static final long serialVersionUID = 0L;
      * Result of the atf audit (type = ATF_AUDIT_RESULT)
      * </pre>
      *
-     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+     * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AtfAuditResult, com.google.wireless.android.sdk.stats.AtfAuditResult.Builder, com.google.wireless.android.sdk.stats.AtfAuditResultOrBuilder> 
@@ -3000,7 +3000,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      * @return Whether the applyAtfFixEvent field is set.
      */
     public boolean hasApplyAtfFixEvent() {
@@ -3011,7 +3011,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      * @return The applyAtfFixEvent.
      */
     public com.google.wireless.android.sdk.stats.ApplyAtfFixEvent getApplyAtfFixEvent() {
@@ -3026,7 +3026,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public Builder setApplyAtfFixEvent(com.google.wireless.android.sdk.stats.ApplyAtfFixEvent value) {
       if (applyAtfFixEventBuilder_ == null) {
@@ -3046,7 +3046,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public Builder setApplyAtfFixEvent(
         com.google.wireless.android.sdk.stats.ApplyAtfFixEvent.Builder builderForValue) {
@@ -3064,7 +3064,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public Builder mergeApplyAtfFixEvent(com.google.wireless.android.sdk.stats.ApplyAtfFixEvent value) {
       if (applyAtfFixEventBuilder_ == null) {
@@ -3088,7 +3088,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public Builder clearApplyAtfFixEvent() {
       if (applyAtfFixEventBuilder_ == null) {
@@ -3105,7 +3105,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApplyAtfFixEvent.Builder getApplyAtfFixEventBuilder() {
       bitField0_ |= 0x00000080;
@@ -3117,7 +3117,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApplyAtfFixEventOrBuilder getApplyAtfFixEventOrBuilder() {
       if (applyAtfFixEventBuilder_ != null) {
@@ -3132,7 +3132,7 @@ private static final long serialVersionUID = 0L;
      * Details related to applying an atf fix (type = APPLY_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+     * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ApplyAtfFixEvent, com.google.wireless.android.sdk.stats.ApplyAtfFixEvent.Builder, com.google.wireless.android.sdk.stats.ApplyAtfFixEventOrBuilder> 
@@ -3156,7 +3156,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      * @return Whether the ignoreAtfResultEvent field is set.
      */
     public boolean hasIgnoreAtfResultEvent() {
@@ -3167,7 +3167,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      * @return The ignoreAtfResultEvent.
      */
     public com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent getIgnoreAtfResultEvent() {
@@ -3182,7 +3182,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public Builder setIgnoreAtfResultEvent(com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent value) {
       if (ignoreAtfResultEventBuilder_ == null) {
@@ -3202,7 +3202,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public Builder setIgnoreAtfResultEvent(
         com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent.Builder builderForValue) {
@@ -3220,7 +3220,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public Builder mergeIgnoreAtfResultEvent(com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent value) {
       if (ignoreAtfResultEventBuilder_ == null) {
@@ -3244,7 +3244,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public Builder clearIgnoreAtfResultEvent() {
       if (ignoreAtfResultEventBuilder_ == null) {
@@ -3261,7 +3261,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent.Builder getIgnoreAtfResultEventBuilder() {
       bitField0_ |= 0x00000100;
@@ -3273,7 +3273,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.IgnoreAtfResultEventOrBuilder getIgnoreAtfResultEventOrBuilder() {
       if (ignoreAtfResultEventBuilder_ != null) {
@@ -3288,7 +3288,7 @@ private static final long serialVersionUID = 0L;
      * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+     * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent, com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent.Builder, com.google.wireless.android.sdk.stats.IgnoreAtfResultEventOrBuilder> 
@@ -3312,7 +3312,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      * @return Whether the undoAppliedAtfFixEvent field is set.
      */
     public boolean hasUndoAppliedAtfFixEvent() {
@@ -3323,7 +3323,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      * @return The undoAppliedAtfFixEvent.
      */
     public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent getUndoAppliedAtfFixEvent() {
@@ -3338,7 +3338,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public Builder setUndoAppliedAtfFixEvent(com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent value) {
       if (undoAppliedAtfFixEventBuilder_ == null) {
@@ -3358,7 +3358,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public Builder setUndoAppliedAtfFixEvent(
         com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent.Builder builderForValue) {
@@ -3376,7 +3376,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public Builder mergeUndoAppliedAtfFixEvent(com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent value) {
       if (undoAppliedAtfFixEventBuilder_ == null) {
@@ -3400,7 +3400,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public Builder clearUndoAppliedAtfFixEvent() {
       if (undoAppliedAtfFixEventBuilder_ == null) {
@@ -3417,7 +3417,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent.Builder getUndoAppliedAtfFixEventBuilder() {
       bitField0_ |= 0x00000200;
@@ -3429,7 +3429,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEventOrBuilder getUndoAppliedAtfFixEventOrBuilder() {
       if (undoAppliedAtfFixEventBuilder_ != null) {
@@ -3444,7 +3444,7 @@ private static final long serialVersionUID = 0L;
      * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
      * </pre>
      *
-     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+     * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent, com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent.Builder, com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEventOrBuilder> 
@@ -3468,7 +3468,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      * @return Whether the animationPreviewEvent field is set.
      */
     public boolean hasAnimationPreviewEvent() {
@@ -3479,7 +3479,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      * @return The animationPreviewEvent.
      */
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent getAnimationPreviewEvent() {
@@ -3494,7 +3494,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public Builder setAnimationPreviewEvent(com.google.wireless.android.sdk.stats.AnimationPreviewEvent value) {
       if (animationPreviewEventBuilder_ == null) {
@@ -3514,7 +3514,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public Builder setAnimationPreviewEvent(
         com.google.wireless.android.sdk.stats.AnimationPreviewEvent.Builder builderForValue) {
@@ -3532,7 +3532,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public Builder mergeAnimationPreviewEvent(com.google.wireless.android.sdk.stats.AnimationPreviewEvent value) {
       if (animationPreviewEventBuilder_ == null) {
@@ -3556,7 +3556,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public Builder clearAnimationPreviewEvent() {
       if (animationPreviewEventBuilder_ == null) {
@@ -3573,7 +3573,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.Builder getAnimationPreviewEventBuilder() {
       bitField0_ |= 0x00000400;
@@ -3585,7 +3585,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder getAnimationPreviewEventOrBuilder() {
       if (animationPreviewEventBuilder_ != null) {
@@ -3600,7 +3600,7 @@ private static final long serialVersionUID = 0L;
      * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
      * </pre>
      *
-     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+     * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AnimationPreviewEvent, com.google.wireless.android.sdk.stats.AnimationPreviewEvent.Builder, com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder> 
@@ -3624,7 +3624,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      * @return Whether the visualLintEvent field is set.
      */
     public boolean hasVisualLintEvent() {
@@ -3635,7 +3635,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      * @return The visualLintEvent.
      */
     public com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent() {
@@ -3650,7 +3650,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public Builder setVisualLintEvent(com.google.wireless.android.sdk.stats.VisualLintEvent value) {
       if (visualLintEventBuilder_ == null) {
@@ -3670,7 +3670,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public Builder setVisualLintEvent(
         com.google.wireless.android.sdk.stats.VisualLintEvent.Builder builderForValue) {
@@ -3688,7 +3688,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public Builder mergeVisualLintEvent(com.google.wireless.android.sdk.stats.VisualLintEvent value) {
       if (visualLintEventBuilder_ == null) {
@@ -3712,7 +3712,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public Builder clearVisualLintEvent() {
       if (visualLintEventBuilder_ == null) {
@@ -3729,7 +3729,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VisualLintEvent.Builder getVisualLintEventBuilder() {
       bitField0_ |= 0x00000800;
@@ -3741,7 +3741,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder() {
       if (visualLintEventBuilder_ != null) {
@@ -3756,7 +3756,7 @@ private static final long serialVersionUID = 0L;
      * Details related to visual linting (type = VISUAL_LINT)
      * </pre>
      *
-     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VisualLintEvent, com.google.wireless.android.sdk.stats.VisualLintEvent.Builder, com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder> 
@@ -3781,7 +3781,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      * @return Whether the universalProblemsPanelEvent field is set.
      */
     public boolean hasUniversalProblemsPanelEvent() {
@@ -3793,7 +3793,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      * @return The universalProblemsPanelEvent.
      */
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent getUniversalProblemsPanelEvent() {
@@ -3809,7 +3809,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public Builder setUniversalProblemsPanelEvent(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent value) {
       if (universalProblemsPanelEventBuilder_ == null) {
@@ -3830,7 +3830,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public Builder setUniversalProblemsPanelEvent(
         com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder builderForValue) {
@@ -3849,7 +3849,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public Builder mergeUniversalProblemsPanelEvent(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent value) {
       if (universalProblemsPanelEventBuilder_ == null) {
@@ -3874,7 +3874,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public Builder clearUniversalProblemsPanelEvent() {
       if (universalProblemsPanelEventBuilder_ == null) {
@@ -3892,7 +3892,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder getUniversalProblemsPanelEventBuilder() {
       bitField0_ |= 0x00001000;
@@ -3905,7 +3905,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder() {
       if (universalProblemsPanelEventBuilder_ != null) {
@@ -3921,7 +3921,7 @@ private static final long serialVersionUID = 0L;
      * UNIVERSAL_PROBLEMS_PANEL)
      * </pre>
      *
-     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder> 

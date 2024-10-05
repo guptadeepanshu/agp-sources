@@ -38,7 +38,7 @@ abstract class RunUtpWorkAction @Inject constructor(
     override fun execute() {
         val processBuilder = processFactory().invoke(
             listOfNotNull(
-                "${parameters.jvm.asFile.get().absolutePath}",
+                parameters.jvm.asFile.get().absolutePath,
                 "-Djava.awt.headless=true",
                 "-Djava.util.logging.config.file=${
                     parameters.loggingProperties.asFile.get().absolutePath}",

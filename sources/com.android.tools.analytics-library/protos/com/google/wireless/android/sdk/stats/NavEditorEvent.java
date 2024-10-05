@@ -860,7 +860,7 @@ private static final long serialVersionUID = 0L;
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    * @return Whether the propertyInfo field is set.
    */
   @java.lang.Override
@@ -872,7 +872,7 @@ private static final long serialVersionUID = 0L;
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    * @return The propertyInfo.
    */
   @java.lang.Override
@@ -884,7 +884,7 @@ private static final long serialVersionUID = 0L;
    * If the event is property-related, information about the affected property
    * </pre>
    *
-   * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+   * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavPropertyInfoOrBuilder getPropertyInfoOrBuilder() {
@@ -898,7 +898,7 @@ private static final long serialVersionUID = 0L;
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    * @return Whether the actionInfo field is set.
    */
   @java.lang.Override
@@ -910,7 +910,7 @@ private static final long serialVersionUID = 0L;
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    * @return The actionInfo.
    */
   @java.lang.Override
@@ -922,7 +922,7 @@ private static final long serialVersionUID = 0L;
    * If the event is action-related, information about the relevant action
    * </pre>
    *
-   * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+   * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavActionInfoOrBuilder getActionInfoOrBuilder() {
@@ -937,7 +937,7 @@ private static final long serialVersionUID = 0L;
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    * @return Whether the destinationInfo field is set.
    */
   @java.lang.Override
@@ -950,7 +950,7 @@ private static final long serialVersionUID = 0L;
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    * @return The destinationInfo.
    */
   @java.lang.Override
@@ -963,7 +963,7 @@ private static final long serialVersionUID = 0L;
    * destination
    * </pre>
    *
-   * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+   * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavDestinationInfoOrBuilder getDestinationInfoOrBuilder() {
@@ -977,7 +977,7 @@ private static final long serialVersionUID = 0L;
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    * @return Whether the schemaInfo field is set.
    */
   @java.lang.Override
@@ -989,7 +989,7 @@ private static final long serialVersionUID = 0L;
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    * @return The schemaInfo.
    */
   @java.lang.Override
@@ -1001,7 +1001,7 @@ private static final long serialVersionUID = 0L;
    * Information about the current NavigationSchema
    * </pre>
    *
-   * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+   * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSchemaInfoOrBuilder getSchemaInfoOrBuilder() {
@@ -1015,7 +1015,7 @@ private static final long serialVersionUID = 0L;
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    * @return Whether the contents field is set.
    */
   @java.lang.Override
@@ -1027,7 +1027,7 @@ private static final long serialVersionUID = 0L;
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    * @return The contents.
    */
   @java.lang.Override
@@ -1039,7 +1039,7 @@ private static final long serialVersionUID = 0L;
    * Information on the current contents of the navigation file
    * </pre>
    *
-   * <code>optional .android_studio.NavigationContents contents = 7;</code>
+   * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavigationContentsOrBuilder getContentsOrBuilder() {
@@ -1818,7 +1818,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      * @return Whether the propertyInfo field is set.
      */
     public boolean hasPropertyInfo() {
@@ -1829,7 +1829,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      * @return The propertyInfo.
      */
     public com.google.wireless.android.sdk.stats.NavPropertyInfo getPropertyInfo() {
@@ -1844,7 +1844,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public Builder setPropertyInfo(com.google.wireless.android.sdk.stats.NavPropertyInfo value) {
       if (propertyInfoBuilder_ == null) {
@@ -1864,7 +1864,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public Builder setPropertyInfo(
         com.google.wireless.android.sdk.stats.NavPropertyInfo.Builder builderForValue) {
@@ -1882,7 +1882,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public Builder mergePropertyInfo(com.google.wireless.android.sdk.stats.NavPropertyInfo value) {
       if (propertyInfoBuilder_ == null) {
@@ -1906,7 +1906,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public Builder clearPropertyInfo() {
       if (propertyInfoBuilder_ == null) {
@@ -1923,7 +1923,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavPropertyInfo.Builder getPropertyInfoBuilder() {
       bitField0_ |= 0x00000004;
@@ -1935,7 +1935,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavPropertyInfoOrBuilder getPropertyInfoOrBuilder() {
       if (propertyInfoBuilder_ != null) {
@@ -1950,7 +1950,7 @@ private static final long serialVersionUID = 0L;
      * If the event is property-related, information about the affected property
      * </pre>
      *
-     * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
+     * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavPropertyInfo, com.google.wireless.android.sdk.stats.NavPropertyInfo.Builder, com.google.wireless.android.sdk.stats.NavPropertyInfoOrBuilder> 
@@ -1974,7 +1974,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      * @return Whether the actionInfo field is set.
      */
     public boolean hasActionInfo() {
@@ -1985,7 +1985,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      * @return The actionInfo.
      */
     public com.google.wireless.android.sdk.stats.NavActionInfo getActionInfo() {
@@ -2000,7 +2000,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public Builder setActionInfo(com.google.wireless.android.sdk.stats.NavActionInfo value) {
       if (actionInfoBuilder_ == null) {
@@ -2020,7 +2020,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public Builder setActionInfo(
         com.google.wireless.android.sdk.stats.NavActionInfo.Builder builderForValue) {
@@ -2038,7 +2038,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public Builder mergeActionInfo(com.google.wireless.android.sdk.stats.NavActionInfo value) {
       if (actionInfoBuilder_ == null) {
@@ -2062,7 +2062,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public Builder clearActionInfo() {
       if (actionInfoBuilder_ == null) {
@@ -2079,7 +2079,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavActionInfo.Builder getActionInfoBuilder() {
       bitField0_ |= 0x00000008;
@@ -2091,7 +2091,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavActionInfoOrBuilder getActionInfoOrBuilder() {
       if (actionInfoBuilder_ != null) {
@@ -2106,7 +2106,7 @@ private static final long serialVersionUID = 0L;
      * If the event is action-related, information about the relevant action
      * </pre>
      *
-     * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
+     * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavActionInfo, com.google.wireless.android.sdk.stats.NavActionInfo.Builder, com.google.wireless.android.sdk.stats.NavActionInfoOrBuilder> 
@@ -2131,7 +2131,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      * @return Whether the destinationInfo field is set.
      */
     public boolean hasDestinationInfo() {
@@ -2143,7 +2143,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      * @return The destinationInfo.
      */
     public com.google.wireless.android.sdk.stats.NavDestinationInfo getDestinationInfo() {
@@ -2159,7 +2159,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public Builder setDestinationInfo(com.google.wireless.android.sdk.stats.NavDestinationInfo value) {
       if (destinationInfoBuilder_ == null) {
@@ -2180,7 +2180,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public Builder setDestinationInfo(
         com.google.wireless.android.sdk.stats.NavDestinationInfo.Builder builderForValue) {
@@ -2199,7 +2199,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public Builder mergeDestinationInfo(com.google.wireless.android.sdk.stats.NavDestinationInfo value) {
       if (destinationInfoBuilder_ == null) {
@@ -2224,7 +2224,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public Builder clearDestinationInfo() {
       if (destinationInfoBuilder_ == null) {
@@ -2242,7 +2242,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavDestinationInfo.Builder getDestinationInfoBuilder() {
       bitField0_ |= 0x00000010;
@@ -2255,7 +2255,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavDestinationInfoOrBuilder getDestinationInfoOrBuilder() {
       if (destinationInfoBuilder_ != null) {
@@ -2271,7 +2271,7 @@ private static final long serialVersionUID = 0L;
      * destination
      * </pre>
      *
-     * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
+     * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavDestinationInfo, com.google.wireless.android.sdk.stats.NavDestinationInfo.Builder, com.google.wireless.android.sdk.stats.NavDestinationInfoOrBuilder> 
@@ -2295,7 +2295,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      * @return Whether the schemaInfo field is set.
      */
     public boolean hasSchemaInfo() {
@@ -2306,7 +2306,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      * @return The schemaInfo.
      */
     public com.google.wireless.android.sdk.stats.NavSchemaInfo getSchemaInfo() {
@@ -2321,7 +2321,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public Builder setSchemaInfo(com.google.wireless.android.sdk.stats.NavSchemaInfo value) {
       if (schemaInfoBuilder_ == null) {
@@ -2341,7 +2341,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public Builder setSchemaInfo(
         com.google.wireless.android.sdk.stats.NavSchemaInfo.Builder builderForValue) {
@@ -2359,7 +2359,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public Builder mergeSchemaInfo(com.google.wireless.android.sdk.stats.NavSchemaInfo value) {
       if (schemaInfoBuilder_ == null) {
@@ -2383,7 +2383,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public Builder clearSchemaInfo() {
       if (schemaInfoBuilder_ == null) {
@@ -2400,7 +2400,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavSchemaInfo.Builder getSchemaInfoBuilder() {
       bitField0_ |= 0x00000020;
@@ -2412,7 +2412,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavSchemaInfoOrBuilder getSchemaInfoOrBuilder() {
       if (schemaInfoBuilder_ != null) {
@@ -2427,7 +2427,7 @@ private static final long serialVersionUID = 0L;
      * Information about the current NavigationSchema
      * </pre>
      *
-     * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
+     * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavSchemaInfo, com.google.wireless.android.sdk.stats.NavSchemaInfo.Builder, com.google.wireless.android.sdk.stats.NavSchemaInfoOrBuilder> 
@@ -2451,7 +2451,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      * @return Whether the contents field is set.
      */
     public boolean hasContents() {
@@ -2462,7 +2462,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      * @return The contents.
      */
     public com.google.wireless.android.sdk.stats.NavigationContents getContents() {
@@ -2477,7 +2477,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public Builder setContents(com.google.wireless.android.sdk.stats.NavigationContents value) {
       if (contentsBuilder_ == null) {
@@ -2497,7 +2497,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public Builder setContents(
         com.google.wireless.android.sdk.stats.NavigationContents.Builder builderForValue) {
@@ -2515,7 +2515,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public Builder mergeContents(com.google.wireless.android.sdk.stats.NavigationContents value) {
       if (contentsBuilder_ == null) {
@@ -2539,7 +2539,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public Builder clearContents() {
       if (contentsBuilder_ == null) {
@@ -2556,7 +2556,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavigationContents.Builder getContentsBuilder() {
       bitField0_ |= 0x00000040;
@@ -2568,7 +2568,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.NavigationContentsOrBuilder getContentsOrBuilder() {
       if (contentsBuilder_ != null) {
@@ -2583,7 +2583,7 @@ private static final long serialVersionUID = 0L;
      * Information on the current contents of the navigation file
      * </pre>
      *
-     * <code>optional .android_studio.NavigationContents contents = 7;</code>
+     * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.NavigationContents, com.google.wireless.android.sdk.stats.NavigationContents.Builder, com.google.wireless.android.sdk.stats.NavigationContentsOrBuilder> 

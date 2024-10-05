@@ -81,7 +81,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    * @return Whether the javaProcessStats field is set.
    */
   boolean hasJavaProcessStats();
@@ -90,7 +90,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    * @return The javaProcessStats.
    */
   com.google.wireless.android.sdk.stats.JavaProcessStats getJavaProcessStats();
@@ -99,7 +99,7 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * More detailed stats on the current running java process.
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder();
 }

@@ -17,6 +17,8 @@ package com.android.sdklib.internal.avd;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.sdklib.ISystemImage;
+import com.android.sdklib.devices.Abi;
 
 /**
  * Describes the GPU mode settings supported by the emulator.
@@ -27,10 +29,24 @@ public enum GpuMode implements ConfigEnum {
     SWIFT("software"),
     OFF("off");
 
-    private String mySetting;
+    private final String mySetting;
 
     GpuMode(@NonNull String setting) {
         mySetting = setting;
+    }
+
+    @NonNull
+    public static GpuMode getSoftwareGpuMode(@NonNull ISystemImage image) {
+        return emulatorUsesSwiftFor(image) ? SWIFT : OFF;
+    }
+
+    private static boolean emulatorUsesSwiftFor(@NonNull ISystemImage image) {
+        Abi abi = Abi.getEnum(image.getPrimaryAbiType());
+
+        return image.getAndroidVersion().getFeatureLevel() > 22
+                && abi != null
+                && abi.supportsMultipleCpuCores()
+                && image.hasGoogleApis();
     }
 
     @Override

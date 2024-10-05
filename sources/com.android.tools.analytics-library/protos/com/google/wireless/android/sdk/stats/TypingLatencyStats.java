@@ -121,7 +121,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      * @return Whether the histogram field is set.
      */
     boolean hasHistogram();
@@ -130,7 +130,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      * @return The histogram.
      */
     com.google.wireless.android.sdk.stats.Histogram getHistogram();
@@ -139,7 +139,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getHistogramOrBuilder();
   }
@@ -292,7 +292,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      * @return Whether the histogram field is set.
      */
     @java.lang.Override
@@ -304,7 +304,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      * @return The histogram.
      */
     @java.lang.Override
@@ -316,7 +316,7 @@ private static final long serialVersionUID = 0L;
      * Full latency histogram.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram histogram = 5;</code>
+     * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getHistogramOrBuilder() {
@@ -1011,7 +1011,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        * @return Whether the histogram field is set.
        */
       public boolean hasHistogram() {
@@ -1022,7 +1022,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        * @return The histogram.
        */
       public com.google.wireless.android.sdk.stats.Histogram getHistogram() {
@@ -1037,7 +1037,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public Builder setHistogram(com.google.wireless.android.sdk.stats.Histogram value) {
         if (histogramBuilder_ == null) {
@@ -1057,7 +1057,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public Builder setHistogram(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -1075,7 +1075,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public Builder mergeHistogram(com.google.wireless.android.sdk.stats.Histogram value) {
         if (histogramBuilder_ == null) {
@@ -1099,7 +1099,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public Builder clearHistogram() {
         if (histogramBuilder_ == null) {
@@ -1116,7 +1116,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getHistogramBuilder() {
         bitField0_ |= 0x00000010;
@@ -1128,7 +1128,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getHistogramOrBuilder() {
         if (histogramBuilder_ != null) {
@@ -1143,7 +1143,7 @@ private static final long serialVersionUID = 0L;
        * Full latency histogram.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram histogram = 5;</code>
+       * <code>optional .android_studio.Histogram histogram = 5 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 

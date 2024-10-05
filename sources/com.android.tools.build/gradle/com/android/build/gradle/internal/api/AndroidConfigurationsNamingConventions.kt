@@ -33,6 +33,7 @@ data class AndroidSourceSetName(
         private const val CONFIG_NAME_PROVIDED = "provided"
         private const val CONFIG_NAME_WEAR_APP = "wearApp"
         private const val CONFIG_NAME_ANNOTATION_PROCESSOR = "annotationProcessor"
+        private const val CONFIG_NAME_KAPT = "kapt"
         private const val CONFIG_NAME_API = "api"
         private const val CONFIG_NAME_IMPLEMENTATION = "implementation"
         private const val CONFIG_NAME_RUNTIME_ONLY = "runtimeOnly"
@@ -72,6 +73,19 @@ data class AndroidSourceSetName(
 
     val annotationProcessorConfigurationName: String
         get() = getName(CONFIG_NAME_ANNOTATION_PROCESSOR)
+
+    /**
+     * [kaptConfigurationName] matches the naming convention used by JetBrains' KAPT Gradle plugin
+     * (and the KSP Gradle plugin) instead of AGP's configuration naming convention.
+     */
+    val kaptConfigurationName: String
+        get() {
+            return if (name == SourceSet.MAIN_SOURCE_SET_NAME) {
+                CONFIG_NAME_KAPT
+            } else {
+                CONFIG_NAME_KAPT.appendCapitalized(name)
+            }
+        }
 
     val publishedPackageConfigurationName: String
         get() = getName(CONFIG_NAME_PUBLISH)

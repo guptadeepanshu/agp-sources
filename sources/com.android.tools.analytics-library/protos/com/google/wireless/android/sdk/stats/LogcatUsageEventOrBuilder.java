@@ -31,7 +31,7 @@ public interface LogcatUsageEventOrBuilder extends
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the formatDialog field is set.
    */
@@ -41,7 +41,7 @@ public interface LogcatUsageEventOrBuilder extends
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The formatDialog.
    */
@@ -51,7 +51,7 @@ public interface LogcatUsageEventOrBuilder extends
    * Historical, no longer used for writing as of 02/2022
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true];</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfigurationOrBuilder getFormatDialogOrBuilder();
 
@@ -60,7 +60,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    * @return Whether the logcatFilter field is set.
    */
   boolean hasLogcatFilter();
@@ -69,7 +69,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    * @return The logcatFilter.
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent getLogcatFilter();
@@ -78,7 +78,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A logcat filter. Set when type is FILTER_ADDED_TO_HISTORY.
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEventOrBuilder getLogcatFilterOrBuilder();
 
@@ -87,7 +87,7 @@ public interface LogcatUsageEventOrBuilder extends
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    * @return Whether the formatDialogApplied field is set.
    */
   boolean hasFormatDialogApplied();
@@ -96,7 +96,7 @@ public interface LogcatUsageEventOrBuilder extends
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    * @return The formatDialogApplied.
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog getFormatDialogApplied();
@@ -105,7 +105,7 @@ public interface LogcatUsageEventOrBuilder extends
    * The Logcat format configuration set by the format dialog
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialogOrBuilder getFormatDialogAppliedOrBuilder();
 
@@ -114,7 +114,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    * @return Whether the panelAdded field is set.
    */
   boolean hasPanelAdded();
@@ -123,7 +123,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    * @return The panelAdded.
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent getPanelAdded();
@@ -132,7 +132,7 @@ public interface LogcatUsageEventOrBuilder extends
    * A Logcat panel was added
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5;</code>
+   * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEventOrBuilder getPanelAddedOrBuilder();
 }

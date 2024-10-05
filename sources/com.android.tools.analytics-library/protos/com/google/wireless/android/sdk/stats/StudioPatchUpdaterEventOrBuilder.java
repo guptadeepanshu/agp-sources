@@ -23,7 +23,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    * @return Whether the patch field is set.
    */
   boolean hasPatch();
@@ -32,7 +32,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    * @return The patch.
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch getPatch();
@@ -41,7 +41,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Information about the patch itself
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PatchOrBuilder getPatchOrBuilder();
 
@@ -50,7 +50,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    * @return Whether the issueDialog field is set.
    */
   boolean hasIssueDialog();
@@ -59,7 +59,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    * @return The issueDialog.
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog getIssueDialog();
@@ -68,7 +68,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Details about patch updater issues presented to the user.
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogOrBuilder getIssueDialogOrBuilder();
 
@@ -77,7 +77,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    * @return Whether the issueDialogChoices field is set.
    */
   boolean hasIssueDialogChoices();
@@ -86,7 +86,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    * @return The issueDialogChoices.
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices getIssueDialogChoices();
@@ -95,7 +95,7 @@ public interface StudioPatchUpdaterEventOrBuilder extends
    * Options chosen by the user from the
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoicesOrBuilder getIssueDialogChoicesOrBuilder();
 }

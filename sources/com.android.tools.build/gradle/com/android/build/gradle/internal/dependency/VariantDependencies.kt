@@ -65,6 +65,7 @@ import org.gradle.api.attributes.DocsType
 import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.attributes.java.TargetJvmEnvironment
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.specs.Spec
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
@@ -201,12 +202,7 @@ class VariantDependencies internal constructor(
         if (configType == ConsumedConfigType.RUNTIME_CLASSPATH
             && isArtifactTypeExcluded(artifactType)
         ) {
-            val excludedDirectories = computeArtifactCollection(
-                ConsumedConfigType.PROVIDED_CLASSPATH,
-                ArtifactScope.PROJECT,
-                PACKAGED_DEPENDENCIES,
-                null
-            ).artifactFiles
+            val excludedDirectories = computePackagedDependencies()
             artifacts = FilteredArtifactCollection(
                 FilteringSpec(artifacts, excludedDirectories, project.objects)
             )
@@ -304,9 +300,10 @@ class VariantDependencies internal constructor(
         configType: ConsumedConfigType,
         scope: ArtifactScope,
         artifactType: AndroidArtifacts.ArtifactType,
-        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
+        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null,
+        configurationFactory: (Configuration) -> Configuration = { it }
     ): ArtifactCollection {
-        return computeArtifactCollection(configType, scope, artifactType, null, additionalFilter)
+        return computeArtifactCollection(configType, scope, artifactType, null, additionalFilter, configurationFactory)
     }
 
     private fun computeArtifactCollection(
@@ -314,11 +311,12 @@ class VariantDependencies internal constructor(
         scope: ArtifactScope,
         artifactType: AndroidArtifacts.ArtifactType,
         attributes: AndroidAttributes?,
-        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null
+        additionalFilter: ((ComponentIdentifier) -> Boolean)? = null,
+        configurationFactory: (Configuration) -> Configuration = { it }
     ): ArtifactCollection {
         checkComputeArtifactCollectionArguments(configType, scope, artifactType)
 
-        val configuration = getConfiguration(configType)
+        val configuration = configurationFactory(getConfiguration(configType))
         val attributesAction =
             Action { container: AttributeContainer ->
                 container.attribute(AndroidArtifacts.ARTIFACT_TYPE, artifactType.type)
@@ -344,54 +342,28 @@ class VariantDependencies internal constructor(
 
     fun computeLocalFileDependencies(
         services: VariantServices,
-        filePredicate: Predicate<File>
-    ): FileCollection {
-        // Get a list of local file dependencies. There is currently no API to filter the
-        // files here, so we need to filter it in the return statement below. That means that if,
-        // for example, filePredicate filters out all files but jars in the return statement, but an
-        // AarProducerTask produces an aar, then the returned FileCollection contains only jars but
-        // still has AarProducerTask as a dependency.
-        val dependencies = Callable {
-            runtimeClasspath
-                .allDependencies
-                .filterIsInstance<FileCollectionDependency>()
-                // Extract the wrapped FileCollection because FileCollectionDependency will
-                // no longer implement Buildable in 9.0
-                .map { it.files }
+        filePredicate: Predicate<File>,
+    ) : FileCollection {
+        val excludeDirectories = if (componentType.isDynamicFeature) {
+            computePackagedDependencies()
         }
-
-        // Create a file collection builtBy the dependencies.  The files are resolved later.
-        return if (componentType.isDynamicFeature) {
-            val excludedDirectories = computeArtifactCollection(
-                ConsumedConfigType.PROVIDED_CLASSPATH,
-                ArtifactScope.PROJECT,
-                AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES,
-                null
-            ).artifactFiles
-
-            services.fileCollection(
-                Callable {
-                    excludedDirectories.elements.map { excludedDirectoriesSet ->
-                        val excludedDirectoriesContent = excludedDirectoriesSet.asSequence()
-                            .filter { it.asFile.isFile }
-                            .flatMapTo(HashSet()) { it.asFile.readLines(Charsets.UTF_8).asSequence() }
-
-                        dependencies.call()
-                            .flatMap { it.files }
-                            .filter {
-                                filePredicate.test(it) &&
-                                        !excludedDirectoriesContent.contains(it.absolutePath)
-                            }
-                    }
-                }).builtBy(dependencies).builtBy(excludedDirectories.buildDependencies)
-        } else {
-            services.fileCollection(Callable {
-                dependencies.call()
-                    .flatMap { it.files }
-                    .filter { filePredicate.test(it) }
-            }).builtBy(dependencies)
+        else {
+            null
         }
+        return computeLocalFileDependencies(
+            runtimeClasspath,
+            services::fileCollection,
+            filePredicate,
+            excludeDirectories
+        )
     }
+
+    private fun computePackagedDependencies(): FileCollection = computeArtifactCollection(
+        ConsumedConfigType.PROVIDED_CLASSPATH,
+        ArtifactScope.PROJECT,
+        PACKAGED_DEPENDENCIES,
+        null
+    ).artifactFiles
 
     companion object {
         const val CONFIG_NAME_ANDROID_APIS = "androidApis"
@@ -403,6 +375,55 @@ class VariantDependencies internal constructor(
 
         @Deprecated("")
         const val CONFIG_NAME_FEATURE = "feature"
+
+        fun computeLocalFileDependencies(
+            sourceConfiguration: Configuration,
+            fileCollectionBuilder: (Any) -> ConfigurableFileCollection,
+            fileFilterPredicate: Predicate<File>,
+            excludeDirectories: FileCollection? = null
+        ): FileCollection {
+            // Get a list of local file dependencies. There is currently no API to filter the
+            // files here, so we need to filter it in the return statement below. That means that if,
+            // for example, filePredicate filters out all files but jars in the return statement, but an
+            // AarProducerTask produces an aar, then the returned FileCollection contains only jars but
+            // still has AarProducerTask as a dependency.
+            val dependencies = Callable {
+                sourceConfiguration
+                    .allDependencies
+                    .filterIsInstance<FileCollectionDependency>()
+                    // Extract the wrapped FileCollection because FileCollectionDependency will
+                    // no longer implement Buildable in 9.0
+                    .map { it.files }
+            }
+
+            // Create a file collection builtBy the dependencies.  The files are resolved later.
+            return if (excludeDirectories != null) {
+                fileCollectionBuilder(
+                    Callable {
+                        excludeDirectories.elements.map { excludedDirectoriesSet ->
+                            val excludedDirectoriesContent = excludedDirectoriesSet.asSequence()
+                                .filter { it.asFile.isFile }
+                                .flatMapTo(HashSet()) {
+                                    it.asFile.readLines(Charsets.UTF_8)
+                                        .asSequence()
+                                }
+
+                            dependencies.call()
+                                .flatMap { it.files }
+                                .filter {
+                                    fileFilterPredicate.test(it) &&
+                                            !excludedDirectoriesContent.contains(it.absolutePath)
+                                }
+                        }
+                    }).builtBy(dependencies).builtBy(excludeDirectories.buildDependencies)
+            } else {
+                fileCollectionBuilder(Callable {
+                    dependencies.call()
+                        .flatMap { it.files }
+                        .filter { fileFilterPredicate.test(it) }
+                }).builtBy(dependencies)
+            }
+        }
 
         fun createForKotlinMultiplatform(
             project: Project,

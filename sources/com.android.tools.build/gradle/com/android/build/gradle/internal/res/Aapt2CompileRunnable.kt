@@ -51,7 +51,7 @@ fun runAapt2Compile(
     val logger = Logging.getLogger(Aapt2CompileRunnable::class.java)
     val loggerWrapper = LoggerWrapper(logger)
     val daemon = aapt2Input.getLeasingAapt2()
-    val errorFormatMode = aapt2Input.buildService.get().parameters.errorFormatMode.get()
+    val errorFormatMode = aapt2Input.aapt2DaemonBuildService.get().parameters.errorFormatMode.get()
     requests.forEach { request ->
         try {
             daemon.compile(request, loggerWrapper)

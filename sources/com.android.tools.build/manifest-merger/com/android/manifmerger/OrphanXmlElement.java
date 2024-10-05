@@ -16,6 +16,8 @@
 
 package com.android.manifmerger;
 
+import static com.android.manifmerger.FeatureFlag.ATTRIBUTE_NAME;
+import static com.android.manifmerger.FeatureFlag.NAMESPACE_URI;
 import static com.android.manifmerger.ManifestModel.NodeTypes;
 
 import com.android.annotations.NonNull;
@@ -23,12 +25,14 @@ import com.android.annotations.Nullable;
 import com.android.ide.common.blame.SourceFile;
 import com.android.ide.common.blame.SourcePosition;
 import com.android.utils.XmlUtils;
+
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import java.util.Optional;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.util.Optional;
 
 /**
  * An xml element that does not belong to a {@link com.android.manifmerger.XmlDocument}
@@ -102,7 +106,7 @@ public class OrphanXmlElement extends XmlNode {
         return XmlUtils.lookupNamespacePrefix(getXml(), nsUri, defaultPrefix, create);
     }
 
-    @NonNull
+    @Nullable
     public Attr getAttributeNode(String name) {
         return mXml.getAttributeNode(name);
     }
@@ -112,12 +116,32 @@ public class OrphanXmlElement extends XmlNode {
         return mXml.getAttributeNodeNS(namespaceURI, localName);
     }
 
+    /** Retrieves the feature flag from the XML element's featureFlag attribute. */
+    @Nullable
+    public FeatureFlag featureFlag() {
+        Attr featureFlagAttribute = getAttributeNodeNS(NAMESPACE_URI, ATTRIBUTE_NAME);
+        if (featureFlagAttribute != null) {
+            return FeatureFlag.Companion.from(featureFlagAttribute.getValue());
+        }
+        return null;
+    }
+
+    public boolean hasFeatureFlag() {
+        return featureFlag() != null;
+    }
+
     @NonNull
     @Override
     public NodeKey getId() {
-        return new NodeKey(Strings.isNullOrEmpty(getKey())
-                ? getName().toString()
-                : getName().toString() + "#" + getKey());
+        String featureFlagSuffix =
+                Optional.ofNullable(featureFlag())
+                        .map(flag -> "#" + flag.getAttributeValue())
+                        .orElse("");
+        String idPrefix =
+                (getKey() == null || getKey().isEmpty())
+                        ? getName().toString()
+                        : getName() + "#" + getKey();
+        return new NodeKey(idPrefix + featureFlagSuffix);
     }
 
     @NonNull

@@ -17,13 +17,10 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.tasks.GlobalTask
 import com.android.build.gradle.internal.tasks.VariantTask
-import com.android.build.gradle.internal.tasks.configureVariantProperties
-import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 
@@ -55,23 +52,6 @@ abstract class TaskCreationAction<TaskT : Task> :
     }
 }
 
-/** [TaskCreationAction] for [BaseTask]. */
-abstract class BaseTaskCreationAction<TaskT: BaseTask> : TaskCreationAction<TaskT>() {
-
-    override fun configure(task: TaskT) {
-        super.configure(task)
-
-        configureBaseTask(task)
-    }
-
-    companion object {
-
-        fun configureBaseTask(task: BaseTask) {
-            task.projectPath.setDisallowChanges(task.project.path)
-        }
-    }
-}
-
 /** [TaskCreationAction] for a [VariantTask]. */
 abstract class VariantTaskCreationAction<TaskT, CreationConfigT : ComponentCreationConfig>
     @JvmOverloads
@@ -90,10 +70,10 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT : ComponentCreat
         super.configure(task)
 
         if (task is BaseTask) {
-            BaseTaskCreationAction.configureBaseTask(task)
+            BaseTask.ConfigureAction.configure(task)
         }
 
-        task.configureVariantProperties(creationConfig.name, creationConfig.services.buildServiceRegistry)
+        VariantTask.ConfigureAction.configure(task, variantName = creationConfig.name)
 
         if (dependsOnPreBuildTask) {
             task.dependsOn(creationConfig.taskContainer.preBuildTask)
@@ -104,15 +84,18 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT : ComponentCreat
 /**
  * [TaskCreationAction] for an [AndroidVariantTask].
  *
- * IMPORTANT: Use [VariantTaskCreationAction] instead if possible, which allows using
- * [ComponentCreationConfig] to configure the task.
+ * DISCOURAGED USAGE: The use of this class is not recommended because it does not provide a
+ * [variantName] by default. It is typically used when a [ComponentCreationConfig] is not available.
+ * If a [ComponentCreationConfig] is available, use [VariantTaskCreationAction] instead. If you
+ * still need to use this class, try to provide a [variantName] if possible.
  */
-abstract class AndroidVariantTaskCreationAction<TaskT: AndroidVariantTask> : BaseTaskCreationAction<TaskT>() {
+abstract class AndroidVariantTaskCreationAction<TaskT: AndroidVariantTask>(
+    private val variantName: String = ""
+): BaseTask.CreationAction<TaskT>() {
 
     override fun configure(task: TaskT) {
         super.configure(task)
-
-        task.configureVariantProperties("", task.project.gradle.sharedServices)
+        VariantTask.ConfigureAction.configure(task, variantName)
     }
 }
 
@@ -125,12 +108,10 @@ abstract class GlobalTaskCreationAction<TaskT>(
         super.configure(task)
 
         if (task is BaseTask) {
-            BaseTaskCreationAction.configureBaseTask(task)
+            BaseTask.ConfigureAction.configure(task)
         }
 
-        task.analyticsService.setDisallowChanges(
-            getBuildService(creationConfig.services.buildServiceRegistry)
-        )
+        GlobalTask.ConfigureAction.configure(task)
     }
 }
 

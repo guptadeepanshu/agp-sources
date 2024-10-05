@@ -164,6 +164,12 @@ sealed interface ModulePropertyKey<OutputT> {
          * If true - D8 will optimize first dex for optimal startup performance.
          */
         D8_DEX_STARTUP_OPTIMIZATION("android.experimental.d8.dex-startup-optimization", false),
+
+        /**
+         * If false - Android resources will be disabled in kmp
+         * If true - Android resources will be enabled in kmp
+         */
+        KMP_ANDROID_RESOURCES_ENABLED("android.experimental.kmp.enableAndroidResources", false),
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean {
@@ -180,4 +186,3 @@ sealed interface ModulePropertyKey<OutputT> {
 
     val key: String
 }
-

@@ -135,7 +135,7 @@ private static final long serialVersionUID = 0L;
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    * @return Whether the vulkanResourceUsage field is set.
    */
   @java.lang.Override
@@ -147,7 +147,7 @@ private static final long serialVersionUID = 0L;
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    * @return The vulkanResourceUsage.
    */
   @java.lang.Override
@@ -159,7 +159,7 @@ private static final long serialVersionUID = 0L;
    * Vulkan
    * </pre>
    *
-   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+   * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.VulkanResourceUsageOrBuilder getVulkanResourceUsageOrBuilder() {
@@ -810,7 +810,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      * @return Whether the vulkanResourceUsage field is set.
      */
     public boolean hasVulkanResourceUsage() {
@@ -821,7 +821,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      * @return The vulkanResourceUsage.
      */
     public com.google.wireless.android.sdk.stats.VulkanResourceUsage getVulkanResourceUsage() {
@@ -836,7 +836,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public Builder setVulkanResourceUsage(com.google.wireless.android.sdk.stats.VulkanResourceUsage value) {
       if (vulkanResourceUsageBuilder_ == null) {
@@ -856,7 +856,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public Builder setVulkanResourceUsage(
         com.google.wireless.android.sdk.stats.VulkanResourceUsage.Builder builderForValue) {
@@ -874,7 +874,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public Builder mergeVulkanResourceUsage(com.google.wireless.android.sdk.stats.VulkanResourceUsage value) {
       if (vulkanResourceUsageBuilder_ == null) {
@@ -898,7 +898,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public Builder clearVulkanResourceUsage() {
       if (vulkanResourceUsageBuilder_ == null) {
@@ -915,7 +915,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VulkanResourceUsage.Builder getVulkanResourceUsageBuilder() {
       bitField0_ |= 0x00000010;
@@ -927,7 +927,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VulkanResourceUsageOrBuilder getVulkanResourceUsageOrBuilder() {
       if (vulkanResourceUsageBuilder_ != null) {
@@ -942,7 +942,7 @@ private static final long serialVersionUID = 0L;
      * Vulkan
      * </pre>
      *
-     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
+     * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VulkanResourceUsage, com.google.wireless.android.sdk.stats.VulkanResourceUsage.Builder, com.google.wireless.android.sdk.stats.VulkanResourceUsageOrBuilder> 

@@ -27,7 +27,7 @@ data class ShrinkerVersion(private val version: Version) : Serializable, Compara
 
     companion object {
 
-        val R8 by lazy { parse(com.android.tools.r8.Version.getVersionString())!! }
+        val R8 by lazy { parse(com.android.builder.dexing.R8Version.getVersionString())!! }
 
         private val versionPattern = """[^\s.]+(?:\.[^\s.]+)+""".toRegex()
 

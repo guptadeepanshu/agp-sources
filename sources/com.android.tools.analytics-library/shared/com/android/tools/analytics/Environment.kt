@@ -39,7 +39,7 @@ abstract class Environment {
     ANDROID_PREFS_ROOT("ANDROID_PREFS_ROOT"),
     // FIXME b/162859043
     @Deprecated("Use ANDROID_PREFS_ROOT")
-    ANDROID_SDK_HOME("ANDROID_SDK_HOME"),  // former name of ANDROID_PREFS_ROOT
+    ANDROID_SDK_HOME("ANDROID_SDK_HOME"), // former name of ANDROID_PREFS_ROOT
     USER_HOME("user.home"),
     OS_ARCH("os.arch"),
     OS_NAME("os.name"),
@@ -53,13 +53,13 @@ abstract class Environment {
 
   companion object {
     @JvmStatic
-    val SYSTEM: Environment = object : Environment() {
-      override fun getVariable(name: EnvironmentVariable): String? {
-        return System.getenv(name.key)
+    val SYSTEM: Environment =
+      object : Environment() {
+        override fun getVariable(name: EnvironmentVariable): String? {
+          return System.getenv(name.key)
+        }
       }
-    }
 
-    @JvmStatic
-    var instance: Environment = SYSTEM
+    @JvmStatic var instance: Environment = SYSTEM
   }
 }

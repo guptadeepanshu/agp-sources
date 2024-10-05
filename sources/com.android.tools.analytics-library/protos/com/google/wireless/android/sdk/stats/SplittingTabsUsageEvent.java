@@ -1391,7 +1391,7 @@ private static final long serialVersionUID = 0L;
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    * @return Whether the splitType field is set.
    */
   @java.lang.Override
@@ -1403,7 +1403,7 @@ private static final long serialVersionUID = 0L;
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    * @return The splitType.
    */
   @java.lang.Override
@@ -1415,7 +1415,7 @@ private static final long serialVersionUID = 0L;
    * Set if type is PANEL_SPLIT
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitTypeOrBuilder getSplitTypeOrBuilder() {
@@ -1967,7 +1967,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      * @return Whether the splitType field is set.
      */
     public boolean hasSplitType() {
@@ -1978,7 +1978,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      * @return The splitType.
      */
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType getSplitType() {
@@ -1993,7 +1993,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public Builder setSplitType(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType value) {
       if (splitTypeBuilder_ == null) {
@@ -2013,7 +2013,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public Builder setSplitType(
         com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Builder builderForValue) {
@@ -2031,7 +2031,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public Builder mergeSplitType(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType value) {
       if (splitTypeBuilder_ == null) {
@@ -2055,7 +2055,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public Builder clearSplitType() {
       if (splitTypeBuilder_ == null) {
@@ -2072,7 +2072,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Builder getSplitTypeBuilder() {
       bitField0_ |= 0x00000004;
@@ -2084,7 +2084,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitTypeOrBuilder getSplitTypeOrBuilder() {
       if (splitTypeBuilder_ != null) {
@@ -2099,7 +2099,7 @@ private static final long serialVersionUID = 0L;
      * Set if type is PANEL_SPLIT
      * </pre>
      *
-     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3;</code>
+     * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType, com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Builder, com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitTypeOrBuilder> 

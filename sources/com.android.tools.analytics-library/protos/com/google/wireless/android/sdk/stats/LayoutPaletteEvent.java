@@ -674,7 +674,7 @@ private static final long serialVersionUID = 0L;
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    * @return Whether the view field is set.
    */
   @java.lang.Override
@@ -686,7 +686,7 @@ private static final long serialVersionUID = 0L;
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    * @return The view.
    */
   @java.lang.Override
@@ -698,7 +698,7 @@ private static final long serialVersionUID = 0L;
    * The View that was dropped onto the design surface from the palette.
    * </pre>
    *
-   * <code>optional .android_studio.AndroidView view = 1;</code>
+   * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidViewOrBuilder getViewOrBuilder() {
@@ -1312,7 +1312,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      * @return Whether the view field is set.
      */
     public boolean hasView() {
@@ -1323,7 +1323,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      * @return The view.
      */
     public com.google.wireless.android.sdk.stats.AndroidView getView() {
@@ -1338,7 +1338,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public Builder setView(com.google.wireless.android.sdk.stats.AndroidView value) {
       if (viewBuilder_ == null) {
@@ -1358,7 +1358,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public Builder setView(
         com.google.wireless.android.sdk.stats.AndroidView.Builder builderForValue) {
@@ -1376,7 +1376,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public Builder mergeView(com.google.wireless.android.sdk.stats.AndroidView value) {
       if (viewBuilder_ == null) {
@@ -1400,7 +1400,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public Builder clearView() {
       if (viewBuilder_ == null) {
@@ -1417,7 +1417,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidView.Builder getViewBuilder() {
       bitField0_ |= 0x00000001;
@@ -1429,7 +1429,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidViewOrBuilder getViewOrBuilder() {
       if (viewBuilder_ != null) {
@@ -1444,7 +1444,7 @@ private static final long serialVersionUID = 0L;
      * The View that was dropped onto the design surface from the palette.
      * </pre>
      *
-     * <code>optional .android_studio.AndroidView view = 1;</code>
+     * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidView, com.google.wireless.android.sdk.stats.AndroidView.Builder, com.google.wireless.android.sdk.stats.AndroidViewOrBuilder> 

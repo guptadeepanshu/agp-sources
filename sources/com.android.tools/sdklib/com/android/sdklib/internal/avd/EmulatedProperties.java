@@ -19,10 +19,16 @@ package com.android.sdklib.internal.avd;
 import static com.android.resources.Density.ANYDPI;
 import static com.android.resources.Density.NODPI;
 
+import static com.google.common.collect.Comparators.min;
+
+import static java.util.Comparator.comparing;
+
 import com.android.annotations.NonNull;
 import com.android.resources.Density;
 import com.android.resources.ScreenSize;
+import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.Storage;
+
 import java.util.Map;
 
 public class EmulatedProperties {
@@ -53,34 +59,11 @@ public class EmulatedProperties {
     public static final AvdNetworkLatency DEFAULT_NETWORK_LATENCY = AvdNetworkLatency.NONE;
     public static final Storage DEFAULT_SDCARD_SIZE = new Storage(512, Storage.Unit.MiB);
 
-    // Limit the default RAM size. Although the physical device probably has more RAM than this,
-    // using more than this amount is usually detrimental to development system performance and
-    // most likely is not needed by the emulated app. The value here is intended to let the
-    // hardware run smoothly with lots of services and apps running simultaneously.
-    public static final Storage MAX_DEFAULT_RAM_SIZE = new Storage(1536, Storage.Unit.MiB);
+    // The maximum default RAM size; see #defaultRamSize().
+    public static final Storage MAX_DEFAULT_RAM_SIZE = new Storage(2, Storage.Unit.GiB);
 
-    /**
-     * Return the default RAM size. This is a function of the screen size.
-     * (See external/qemu/android/android-emu/android/main-common.c)
-     */
-    @NonNull
-    public static Storage defaultRamStorage(int numPixels) {
-        int ramInMb;
-
-        if (numPixels <= 250_000) {
-            ramInMb = 96;
-        } else if (numPixels <= 500_000) {
-            ramInMb = 128;
-        } else {
-            ramInMb = 256;
-        }
-        return new Storage(ramInMb, Storage.Unit.MiB);
-    }
-
-    /**
-     * Limit the RAM size to MAX_DEFAULT_RAM_SIZE
-     */
-    public static void restrictDefaultRamSize(@NonNull Map<String, String>deviceConfig) {
+    /** Limit the RAM size to MAX_DEFAULT_RAM_SIZE */
+    public static void restrictDefaultRamSize(@NonNull Map<String, String> deviceConfig) {
         Storage ramSize = Storage.getStorageFromString(deviceConfig.get(RAM_STORAGE_KEY));
         if (ramSize != null && MAX_DEFAULT_RAM_SIZE.lessThan(ramSize)) {
             deviceConfig.put(RAM_STORAGE_KEY, MAX_DEFAULT_RAM_SIZE.toIniString());
@@ -88,21 +71,46 @@ public class EmulatedProperties {
     }
 
     /**
-     * Set the default VM heap size.
-     * This is based on the Android CDD minimums for each screen size and density.
+     * Get the default amount of ram to use for an AVD based on the given Device. The user may set a
+     * higher amount of RAM if warranted.
+     *
+     * <p>With modern devices, this is typically a lower limit than the physical hardware, since
+     * more than that is usually detrimental to development system performance and most likely not
+     * needed by the emulated app (e.g. it's intended to let the hardware run smoothly with lots of
+     * services and apps running simultaneously)
+     */
+    public static Storage defaultRamSize(@NonNull Device device) {
+        return min(
+                device.getDefaultHardware().getRam(),
+                MAX_DEFAULT_RAM_SIZE,
+                comparing(Storage::getSize));
+    }
+
+    /** Returns the default VM heap size for the given device. */
+    public static Storage defaultVmHeapSize(@NonNull Device device) {
+        return minimumVmHeapSize(
+                ScreenSize.getScreenSize(
+                        device.getDefaultHardware().getScreen().getDiagonalLength()),
+                device.getDefaultHardware().getScreen().getPixelDensity(),
+                Device.isWear(device));
+    }
+
+    /**
+     * Returns the "minimum application memory" as defined by the Android 14 Compatibility
+     * Definition Document, section 3.7, "Runtime Compatibility."
      */
     @NonNull
-    public static Storage calculateDefaultVmHeapSize(@NonNull ScreenSize screenSize, @NonNull Density screenDensity, boolean isWear) {
+    public static Storage minimumVmHeapSize(
+            @NonNull ScreenSize screenSize, @NonNull Density screenDensity, boolean isWear) {
         int vmHeapSize;
 
-        // These values are taken from Android 8.1 Compatibility Definition,
-        // dated December 5, 2017, section 3.7, "Runtime Compatibility."
-        // (Here I treat ANYDPI and NODPI as MEDIUM.)
+        // Treat ANYDPI and NODPI as Density.MEDIUM (160 dpi).
+        if (screenDensity == ANYDPI || screenDensity == NODPI) {
+            screenDensity = Density.MEDIUM;
+        }
 
         if (isWear) {
-            if (screenDensity == ANYDPI || screenDensity == NODPI) {
-                vmHeapSize = 32;
-            } else if (screenDensity.getDpiValue() <= 220) {
+            if (screenDensity.getDpiValue() <= 220) {
                 vmHeapSize = 32;
             } else if (screenDensity.getDpiValue() <= 280) {
                 vmHeapSize = 36;
@@ -124,9 +132,7 @@ public class EmulatedProperties {
                 default:
                 case SMALL:
                 case NORMAL:
-                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
-                        vmHeapSize = 32;
-                    } else if (screenDensity.getDpiValue() <= 160) {
+                    if (screenDensity.getDpiValue() <= 160) {
                         vmHeapSize = 32;
                     } else if (screenDensity.getDpiValue() <= 280) {
                         vmHeapSize = 48;
@@ -134,7 +140,7 @@ public class EmulatedProperties {
                         vmHeapSize = 80;
                     } else if (screenDensity.getDpiValue() <= 400) {
                         vmHeapSize = 96;
-                    } else if (screenDensity.getDpiValue() <= 440) {
+                    } else if (screenDensity.getDpiValue() <= 420) {
                         vmHeapSize = 112;
                     } else if (screenDensity.getDpiValue() <= 480) {
                         vmHeapSize = 128;
@@ -145,9 +151,7 @@ public class EmulatedProperties {
                     }
                     break;
                 case LARGE:
-                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
-                        vmHeapSize = 48;
-                    } else if (screenDensity.getDpiValue() <= 120) {
+                    if (screenDensity.getDpiValue() <= 120) {
                         vmHeapSize = 32;
                     } else if (screenDensity.getDpiValue() <= 160) {
                         vmHeapSize = 48;
@@ -161,6 +165,8 @@ public class EmulatedProperties {
                         vmHeapSize = 160;
                     } else if (screenDensity.getDpiValue() <= 400) {
                         vmHeapSize = 192;
+                    } else if (screenDensity.getDpiValue() <= 420) {
+                        vmHeapSize = 228;
                     } else if (screenDensity.getDpiValue() <= 480) {
                         vmHeapSize = 256;
                     } else if (screenDensity.getDpiValue() <= 560) {
@@ -170,9 +176,7 @@ public class EmulatedProperties {
                     }
                     break;
                 case XLARGE:
-                    if (screenDensity == ANYDPI || screenDensity == NODPI) {
-                        vmHeapSize = 80;
-                    } else if (screenDensity.getDpiValue() <= 120) {
+                    if (screenDensity.getDpiValue() <= 120) {
                         vmHeapSize = 48;
                     } else if (screenDensity.getDpiValue() <= 160) {
                         vmHeapSize = 80;
@@ -186,7 +190,7 @@ public class EmulatedProperties {
                         vmHeapSize = 240;
                     } else if (screenDensity.getDpiValue() <= 400) {
                         vmHeapSize = 288;
-                    } else if (screenDensity.getDpiValue() <= 440) {
+                    } else if (screenDensity.getDpiValue() <= 420) {
                         vmHeapSize = 336;
                     } else if (screenDensity.getDpiValue() <= 480) {
                         vmHeapSize = 384;
@@ -199,5 +203,9 @@ public class EmulatedProperties {
             }
         }
         return new Storage(vmHeapSize, Storage.Unit.MiB);
+    }
+
+    public static Storage defaultInternalStorage(@NonNull Device device) {
+        return DEFAULT_INTERNAL_STORAGE;
     }
 }

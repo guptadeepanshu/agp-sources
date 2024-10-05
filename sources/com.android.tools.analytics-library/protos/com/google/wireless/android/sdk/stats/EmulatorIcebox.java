@@ -600,7 +600,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      * @return Whether the snapshot field is set.
      */
     boolean hasSnapshot();
@@ -609,7 +609,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      * @return The snapshot.
      */
     com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot();
@@ -618,7 +618,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder();
   }
@@ -674,7 +674,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      * @return Whether the snapshot field is set.
      */
     @java.lang.Override
@@ -686,7 +686,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      * @return The snapshot.
      */
     @java.lang.Override
@@ -698,7 +698,7 @@ private static final long serialVersionUID = 0L;
      * The snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
@@ -1060,7 +1060,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        * @return Whether the snapshot field is set.
        */
       public boolean hasSnapshot() {
@@ -1071,7 +1071,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        * @return The snapshot.
        */
       public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot() {
@@ -1086,7 +1086,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public Builder setSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
         if (snapshotBuilder_ == null) {
@@ -1106,7 +1106,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public Builder setSnapshot(
           com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder builderForValue) {
@@ -1124,7 +1124,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public Builder mergeSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
         if (snapshotBuilder_ == null) {
@@ -1148,7 +1148,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public Builder clearSnapshot() {
         if (snapshotBuilder_ == null) {
@@ -1165,7 +1165,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder getSnapshotBuilder() {
         bitField0_ |= 0x00000001;
@@ -1177,7 +1177,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
         if (snapshotBuilder_ != null) {
@@ -1192,7 +1192,7 @@ private static final long serialVersionUID = 0L;
        * The snapshot.
        * </pre>
        *
-       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1;</code>
+       * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.EmulatorSnapshot, com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder, com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder> 
@@ -1992,7 +1992,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int START_ICEBOX_FIELD_NUMBER = 1;
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    * @return Whether the startIcebox field is set.
    */
   @java.lang.Override
@@ -2000,7 +2000,7 @@ private static final long serialVersionUID = 0L;
     return kindCase_ == 1;
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    * @return The startIcebox.
    */
   @java.lang.Override
@@ -2011,7 +2011,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIceboxOrBuilder getStartIceboxOrBuilder() {
@@ -2023,7 +2023,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int TAKE_SNAPSHOT_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    * @return Whether the takeSnapshot field is set.
    */
   @java.lang.Override
@@ -2031,7 +2031,7 @@ private static final long serialVersionUID = 0L;
     return kindCase_ == 2;
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    * @return The takeSnapshot.
    */
   @java.lang.Override
@@ -2042,7 +2042,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshotOrBuilder getTakeSnapshotOrBuilder() {
@@ -2054,7 +2054,7 @@ private static final long serialVersionUID = 0L;
 
   public static final int FINISH_ICEBOX_FIELD_NUMBER = 3;
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    * @return Whether the finishIcebox field is set.
    */
   @java.lang.Override
@@ -2062,7 +2062,7 @@ private static final long serialVersionUID = 0L;
     return kindCase_ == 3;
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    * @return The finishIcebox.
    */
   @java.lang.Override
@@ -2073,7 +2073,7 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder getFinishIceboxOrBuilder() {
@@ -2527,7 +2527,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox, com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIceboxOrBuilder> startIceboxBuilder_;
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      * @return Whether the startIcebox field is set.
      */
     @java.lang.Override
@@ -2535,7 +2535,7 @@ private static final long serialVersionUID = 0L;
       return kindCase_ == 1;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      * @return The startIcebox.
      */
     @java.lang.Override
@@ -2553,7 +2553,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     public Builder setStartIcebox(com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox value) {
       if (startIceboxBuilder_ == null) {
@@ -2569,7 +2569,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     public Builder setStartIcebox(
         com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox.Builder builderForValue) {
@@ -2583,7 +2583,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     public Builder mergeStartIcebox(com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox value) {
       if (startIceboxBuilder_ == null) {
@@ -2605,7 +2605,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     public Builder clearStartIcebox() {
       if (startIceboxBuilder_ == null) {
@@ -2624,13 +2624,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox.Builder getStartIceboxBuilder() {
       return getStartIceboxFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIceboxOrBuilder getStartIceboxOrBuilder() {
@@ -2644,7 +2644,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+     * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox, com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIceboxOrBuilder> 
@@ -2668,7 +2668,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot, com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshotOrBuilder> takeSnapshotBuilder_;
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      * @return Whether the takeSnapshot field is set.
      */
     @java.lang.Override
@@ -2676,7 +2676,7 @@ private static final long serialVersionUID = 0L;
       return kindCase_ == 2;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      * @return The takeSnapshot.
      */
     @java.lang.Override
@@ -2694,7 +2694,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     public Builder setTakeSnapshot(com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot value) {
       if (takeSnapshotBuilder_ == null) {
@@ -2710,7 +2710,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     public Builder setTakeSnapshot(
         com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot.Builder builderForValue) {
@@ -2724,7 +2724,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     public Builder mergeTakeSnapshot(com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot value) {
       if (takeSnapshotBuilder_ == null) {
@@ -2746,7 +2746,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     public Builder clearTakeSnapshot() {
       if (takeSnapshotBuilder_ == null) {
@@ -2765,13 +2765,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot.Builder getTakeSnapshotBuilder() {
       return getTakeSnapshotFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshotOrBuilder getTakeSnapshotOrBuilder() {
@@ -2785,7 +2785,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+     * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot, com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshotOrBuilder> 
@@ -2809,7 +2809,7 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox, com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder> finishIceboxBuilder_;
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      * @return Whether the finishIcebox field is set.
      */
     @java.lang.Override
@@ -2817,7 +2817,7 @@ private static final long serialVersionUID = 0L;
       return kindCase_ == 3;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      * @return The finishIcebox.
      */
     @java.lang.Override
@@ -2835,7 +2835,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     public Builder setFinishIcebox(com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox value) {
       if (finishIceboxBuilder_ == null) {
@@ -2851,7 +2851,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     public Builder setFinishIcebox(
         com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox.Builder builderForValue) {
@@ -2865,7 +2865,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     public Builder mergeFinishIcebox(com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox value) {
       if (finishIceboxBuilder_ == null) {
@@ -2887,7 +2887,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     public Builder clearFinishIcebox() {
       if (finishIceboxBuilder_ == null) {
@@ -2906,13 +2906,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox.Builder getFinishIceboxBuilder() {
       return getFinishIceboxFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder getFinishIceboxOrBuilder() {
@@ -2926,7 +2926,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+     * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox, com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox.Builder, com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder> 

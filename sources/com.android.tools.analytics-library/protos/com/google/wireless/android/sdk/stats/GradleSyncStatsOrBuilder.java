@@ -313,7 +313,7 @@ public interface GradleSyncStatsOrBuilder extends
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    * @return Whether the downloadsData field is set.
    */
   boolean hasDownloadsData();
@@ -322,7 +322,7 @@ public interface GradleSyncStatsOrBuilder extends
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    * @return The downloadsData.
    */
   com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsData();
@@ -331,7 +331,7 @@ public interface GradleSyncStatsOrBuilder extends
    * Data on downloads happened during sync.
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsDataOrBuilder();
 

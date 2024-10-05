@@ -63,6 +63,7 @@ import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig;
 import com.android.build.gradle.internal.testing.utp.RetentionConfig;
 import com.android.build.gradle.internal.testing.utp.UtpDependencies;
 import com.android.build.gradle.internal.testing.utp.UtpDependencyUtilsKt;
+import com.android.build.gradle.internal.testing.utp.UtpRunProfileManager;
 import com.android.build.gradle.internal.testing.utp.UtpTestResultListener;
 import com.android.build.gradle.internal.testing.utp.UtpTestRunner;
 import com.android.build.gradle.options.BooleanOption;
@@ -77,24 +78,13 @@ import com.android.builder.testing.api.DeviceProvider;
 import com.android.ide.common.workers.ExecutorServiceAdapter;
 import com.android.utils.FileUtils;
 import com.android.utils.StringHelper;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.JavaVersion;
@@ -126,6 +116,21 @@ import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.process.ExecOperations;
 import org.gradle.work.DisableCachingByDefault;
 import org.gradle.workers.WorkerExecutor;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 /** Run instrumentation tests for a given variant */
 @DisableCachingByDefault
@@ -215,7 +220,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         TestRunner createTestRunner(
                 WorkerExecutor workerExecutor,
                 ExecutorServiceAdapter executorServiceAdapter,
-                @Nullable UtpTestResultListener utpTestResultListener) {
+                @Nullable UtpTestResultListener utpTestResultListener,
+                UtpRunProfileManager utpRunProfileManager) {
 
             boolean useOrchestrator =
                     (getExecutionEnum().get() == ANDROID_TEST_ORCHESTRATOR
@@ -241,7 +247,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                     utpLoggingLevel(),
                     getInstallApkTimeout().getOrNull(),
                     getTargetIsSplitApk().getOrElse(false),
-                    !getKeepInstalledApks().get());
+                    !getKeepInstalledApks().get(),
+                    utpRunProfileManager);
         }
 
         private Level utpLoggingLevel() {
@@ -373,6 +380,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         FileUtils.cleanOutputDir(coverageDir);
 
         boolean success;
+
+        UtpRunProfileManager runProfileManager = new UtpRunProfileManager();
+
         // If there are tests to run, and the test runner returns with no results, we fail (since
         // this is most likely a problem with the device setup). If no, the task will succeed.
         if (!testsFound) {
@@ -384,7 +394,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         } else {
             TestRunner testRunner =
                     testRunnerFactory.createTestRunner(
-                            workerExecutor, executorServiceAdapter, utpTestResultListener);
+                            workerExecutor,
+                            executorServiceAdapter,
+                            utpTestResultListener,
+                            runProfileManager);
             success =
                     runTestsWithTestRunner(
                             testRunner,
@@ -403,7 +416,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                             privacySandboxSdkApkFiles,
                             dependencies,
                             targetSerials,
-                            testRunnerFactory.getExecutionEnum().get());
+                            testRunnerFactory.getExecutionEnum().get(),
+                            runProfileManager);
         }
 
         // run the report from the results.
@@ -418,7 +432,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 testRunnerFactory.getExecutionEnum().get(),
                 enableCoverage,
                 results.getTestCount(),
-                analyticsService);
+                analyticsService,
+                runProfileManager);
 
         if (!success) {
             String reportUrl = new ConsoleRenderer().asClickableFileUrl(
@@ -449,7 +464,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             @NonNull Set<File> privacySandboxSdkApkFiles,
             @NonNull ArtifactCollection dependencies,
             List<String> targetSerials,
-            Execution execution)
+            Execution execution,
+            @NonNull UtpRunProfileManager utpRunProfileManager)
             throws DeviceException, ExecutionException {
 
         return deviceProvider.use(
@@ -477,12 +493,15 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                 new LoggerWrapper(logger));
                     } catch (Exception e) {
                         TestsAnalytics.recordCrashedInstrumentedTestRun(
-                                dependencies, execution, enableCoverage, analyticsService);
+                                dependencies,
+                                execution,
+                                enableCoverage,
+                                analyticsService,
+                                utpRunProfileManager);
                         throw e;
                     }
                 });
     }
-
 
     public static void checkForNonApks(
             @NonNull Collection<File> buddyApksFiles, @NonNull Consumer<String> errorHandler) {
@@ -849,7 +868,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                     creationConfig.getServices().getBuildServiceRegistry(),
                                     SdkComponentsBuildService.class));
 
-            SdkComponentsKt.initialize(task.getTestRunnerFactory().getBuildTools(), creationConfig);
+            SdkComponentsKt.initialize(
+                    task.getTestRunnerFactory().getBuildTools(), task, creationConfig);
 
             task.getTestRunnerFactory()
                     .getExecutionEnum()

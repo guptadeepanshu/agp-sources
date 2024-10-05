@@ -261,7 +261,7 @@ private static final long serialVersionUID = 0L;
    * Error information if the attach failed
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
    * @return Whether the errorInfo field is set.
    */
   @java.lang.Override
@@ -273,7 +273,7 @@ private static final long serialVersionUID = 0L;
    * Error information if the attach failed
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
    * @return The errorInfo.
    */
   @java.lang.Override
@@ -285,7 +285,7 @@ private static final long serialVersionUID = 0L;
    * Error information if the attach failed
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder() {
@@ -1241,7 +1241,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      * @return Whether the errorInfo field is set.
      */
     public boolean hasErrorInfo() {
@@ -1252,7 +1252,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      * @return The errorInfo.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo getErrorInfo() {
@@ -1267,7 +1267,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public Builder setErrorInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo value) {
       if (errorInfoBuilder_ == null) {
@@ -1287,7 +1287,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public Builder setErrorInfo(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder builderForValue) {
@@ -1305,7 +1305,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public Builder mergeErrorInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo value) {
       if (errorInfoBuilder_ == null) {
@@ -1329,7 +1329,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public Builder clearErrorInfo() {
       if (errorInfoBuilder_ == null) {
@@ -1346,7 +1346,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder getErrorInfoBuilder() {
       bitField0_ |= 0x00000004;
@@ -1358,7 +1358,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder() {
       if (errorInfoBuilder_ != null) {
@@ -1373,7 +1373,7 @@ private static final long serialVersionUID = 0L;
      * Error information if the attach failed
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder> 

@@ -926,7 +926,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    * @return Whether the createFirebaseProjectDetails field is set.
    */
   @java.lang.Override
@@ -938,7 +938,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    * @return The createFirebaseProjectDetails.
    */
   @java.lang.Override
@@ -950,7 +950,7 @@ private static final long serialVersionUID = 0L;
    * Set when type = CREATE_FIREBASE_PROJECT
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+   * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetailsOrBuilder getCreateFirebaseProjectDetailsOrBuilder() {
@@ -1532,7 +1532,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      * @return Whether the createFirebaseProjectDetails field is set.
      */
     public boolean hasCreateFirebaseProjectDetails() {
@@ -1543,7 +1543,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      * @return The createFirebaseProjectDetails.
      */
     public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails getCreateFirebaseProjectDetails() {
@@ -1558,7 +1558,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public Builder setCreateFirebaseProjectDetails(com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails value) {
       if (createFirebaseProjectDetailsBuilder_ == null) {
@@ -1578,7 +1578,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public Builder setCreateFirebaseProjectDetails(
         com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.Builder builderForValue) {
@@ -1596,7 +1596,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public Builder mergeCreateFirebaseProjectDetails(com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails value) {
       if (createFirebaseProjectDetailsBuilder_ == null) {
@@ -1620,7 +1620,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public Builder clearCreateFirebaseProjectDetails() {
       if (createFirebaseProjectDetailsBuilder_ == null) {
@@ -1637,7 +1637,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.Builder getCreateFirebaseProjectDetailsBuilder() {
       bitField0_ |= 0x00000004;
@@ -1649,7 +1649,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetailsOrBuilder getCreateFirebaseProjectDetailsOrBuilder() {
       if (createFirebaseProjectDetailsBuilder_ != null) {
@@ -1664,7 +1664,7 @@ private static final long serialVersionUID = 0L;
      * Set when type = CREATE_FIREBASE_PROJECT
      * </pre>
      *
-     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3;</code>
+     * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails, com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.Builder, com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetailsOrBuilder> 

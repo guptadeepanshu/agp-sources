@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.res
 
 import com.android.SdkConstants
-import com.android.SdkConstants.FN_RES_BASE
 import com.android.SdkConstants.FN_R_CLASS_JAR
 import com.android.SdkConstants.RES_QUALIFIER_SEP
 import com.android.build.api.artifact.SingleArtifact
@@ -84,6 +83,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
+import org.gradle.api.services.BuildServiceParameters
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
@@ -631,9 +631,12 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             task.manifestMergeBlameFile = creationConfig.artifacts.get(
                 InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
             )
-            creationConfig.services.initializeAapt2Input(task.aapt2)
-            task.symbolTableBuildService.set(getBuildService(creationConfig.services.buildServiceRegistry))
-            task.androidJarInput.initialize(creationConfig)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
+            getBuildService<SymbolTableBuildService, BuildServiceParameters.None>(creationConfig.services.buildServiceRegistry).let {
+                task.symbolTableBuildService.setDisallowChanges(it)
+                task.usesService(it)
+            }
+            task.androidJarInput.initialize(task, creationConfig)
 
             task.useStableIds = projectOptions[BooleanOption.ENABLE_STABLE_IDS]
 

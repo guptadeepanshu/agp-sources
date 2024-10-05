@@ -26,6 +26,7 @@ import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.BaselineProfile
 import com.android.build.api.dsl.Bundle
 import com.android.build.api.dsl.BundleAbi
+import com.android.build.api.dsl.BundleAiModelVersion
 import com.android.build.api.dsl.BundleCodeTransparency
 import com.android.build.api.dsl.BundleCountrySet
 import com.android.build.api.dsl.BundleDensity
@@ -73,6 +74,7 @@ import com.android.build.gradle.internal.dsl.ApplicationPublishingImpl
 import com.android.build.gradle.internal.dsl.AssetPackBundleExtensionImpl
 import com.android.build.gradle.internal.dsl.BundleOptions
 import com.android.build.gradle.internal.dsl.BundleOptionsAbi
+import com.android.build.gradle.internal.dsl.BundleOptionsAiModelVersion
 import com.android.build.gradle.internal.dsl.BundleOptionsCodeTransparency
 import com.android.build.gradle.internal.dsl.BundleOptionsCountrySet
 import com.android.build.gradle.internal.dsl.BundleOptionsDensity
@@ -132,6 +134,7 @@ val AGP_SUPPORTED_PROPERTY_TYPES: List<SupportedPropertyType> = listOf(
     SupportedPropertyType.Block(AssetPackBundleExtension::class.java, AssetPackBundleExtensionImpl::class.java),
     SupportedPropertyType.Block(Bundle::class.java, BundleOptions::class.java),
     SupportedPropertyType.Block(BundleAbi::class.java, BundleOptionsAbi::class.java),
+    SupportedPropertyType.Block(BundleAiModelVersion::class.java, BundleOptionsAiModelVersion::class.java),
     SupportedPropertyType.Block(BundleDensity::class.java, BundleOptionsDensity::class.java),
     SupportedPropertyType.Block(BundleDeviceTier::class.java, BundleOptionsDeviceTier::class.java),
     SupportedPropertyType.Block(BundleCountrySet::class.java, BundleOptionsCountrySet::class.java),

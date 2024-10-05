@@ -1154,7 +1154,7 @@ private static final long serialVersionUID = 0L;
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    * @return Whether the performanceEvent field is set.
    */
   @java.lang.Override
@@ -1167,7 +1167,7 @@ private static final long serialVersionUID = 0L;
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    * @return The performanceEvent.
    */
   @java.lang.Override
@@ -1180,7 +1180,7 @@ private static final long serialVersionUID = 0L;
    * should only be set if `event_category` is `PERFORMANCE_EVENT`.
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+   * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEventOrBuilder getPerformanceEventOrBuilder() {
@@ -1717,7 +1717,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      * @return Whether the performanceEvent field is set.
      */
     public boolean hasPerformanceEvent() {
@@ -1729,7 +1729,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      * @return The performanceEvent.
      */
     public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent getPerformanceEvent() {
@@ -1745,7 +1745,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public Builder setPerformanceEvent(com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent value) {
       if (performanceEventBuilder_ == null) {
@@ -1766,7 +1766,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public Builder setPerformanceEvent(
         com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent.Builder builderForValue) {
@@ -1785,7 +1785,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public Builder mergePerformanceEvent(com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent value) {
       if (performanceEventBuilder_ == null) {
@@ -1810,7 +1810,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public Builder clearPerformanceEvent() {
       if (performanceEventBuilder_ == null) {
@@ -1828,7 +1828,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent.Builder getPerformanceEventBuilder() {
       bitField0_ |= 0x00000004;
@@ -1841,7 +1841,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEventOrBuilder getPerformanceEventOrBuilder() {
       if (performanceEventBuilder_ != null) {
@@ -1857,7 +1857,7 @@ private static final long serialVersionUID = 0L;
      * should only be set if `event_category` is `PERFORMANCE_EVENT`.
      * </pre>
      *
-     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
+     * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent, com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent.Builder, com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEventOrBuilder> 

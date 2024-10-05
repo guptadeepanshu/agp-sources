@@ -31,7 +31,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    * @return Whether the state field is set.
    */
   boolean hasState();
@@ -40,7 +40,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    * @return The state.
    */
   com.google.wireless.android.sdk.stats.LayoutEditorState getState();
@@ -49,7 +49,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Layout editor current state
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorState state = 2;</code>
+   * <code>optional .android_studio.LayoutEditorState state = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutEditorStateOrBuilder getStateOrBuilder();
 
@@ -58,7 +58,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    * @return Whether the renderResult field is set.
    */
   boolean hasRenderResult();
@@ -67,7 +67,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    * @return The renderResult.
    */
   com.google.wireless.android.sdk.stats.LayoutEditorRenderResult getRenderResult();
@@ -76,7 +76,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the render when (type = RENDER)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
+   * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutEditorRenderResultOrBuilder getRenderResultOrBuilder();
 
@@ -85,7 +85,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    * @return Whether the paletteEvent field is set.
    */
   boolean hasPaletteEvent();
@@ -94,7 +94,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    * @return The paletteEvent.
    */
   com.google.wireless.android.sdk.stats.LayoutPaletteEvent getPaletteEvent();
@@ -103,7 +103,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to using the palette (type = DROP_VIEW_FROM_PALETTE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
+   * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutPaletteEventOrBuilder getPaletteEventOrBuilder();
 
@@ -112,7 +112,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    * @return Whether the attributeChangeEvent field is set.
    */
   boolean hasAttributeChangeEvent();
@@ -121,7 +121,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    * @return The attributeChangeEvent.
    */
   com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent getAttributeChangeEvent();
@@ -130,7 +130,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to changing an attribute (type = ATTRIBUTE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
+   * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutAttributeChangeEventOrBuilder getAttributeChangeEventOrBuilder();
 
@@ -139,7 +139,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    * @return Whether the favoriteChangeEvent field is set.
    */
   boolean hasFavoriteChangeEvent();
@@ -148,7 +148,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    * @return The favoriteChangeEvent.
    */
   com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent getFavoriteChangeEvent();
@@ -157,7 +157,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to favorite attribute changes (type = FAVORITE_CHANGE)
    * </pre>
    *
-   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
+   * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEventOrBuilder getFavoriteChangeEventOrBuilder();
 
@@ -166,7 +166,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    * @return Whether the atfAuditResult field is set.
    */
   boolean hasAtfAuditResult();
@@ -175,7 +175,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    * @return The atfAuditResult.
    */
   com.google.wireless.android.sdk.stats.AtfAuditResult getAtfAuditResult();
@@ -184,7 +184,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Result of the atf audit (type = ATF_AUDIT_RESULT)
    * </pre>
    *
-   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
+   * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AtfAuditResultOrBuilder getAtfAuditResultOrBuilder();
 
@@ -193,7 +193,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    * @return Whether the applyAtfFixEvent field is set.
    */
   boolean hasApplyAtfFixEvent();
@@ -202,7 +202,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    * @return The applyAtfFixEvent.
    */
   com.google.wireless.android.sdk.stats.ApplyAtfFixEvent getApplyAtfFixEvent();
@@ -211,7 +211,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to applying an atf fix (type = APPLY_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
+   * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApplyAtfFixEventOrBuilder getApplyAtfFixEventOrBuilder();
 
@@ -220,7 +220,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    * @return Whether the ignoreAtfResultEvent field is set.
    */
   boolean hasIgnoreAtfResultEvent();
@@ -229,7 +229,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    * @return The ignoreAtfResultEvent.
    */
   com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent getIgnoreAtfResultEvent();
@@ -238,7 +238,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to ignoring an atf result (type = IGNORE_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
+   * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IgnoreAtfResultEventOrBuilder getIgnoreAtfResultEventOrBuilder();
 
@@ -247,7 +247,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    * @return Whether the undoAppliedAtfFixEvent field is set.
    */
   boolean hasUndoAppliedAtfFixEvent();
@@ -256,7 +256,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    * @return The undoAppliedAtfFixEvent.
    */
   com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent getUndoAppliedAtfFixEvent();
@@ -265,7 +265,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to undoing an applied atf fix (type = UNDO_APPLIED_ATF_FIX)
    * </pre>
    *
-   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
+   * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEventOrBuilder getUndoAppliedAtfFixEventOrBuilder();
 
@@ -274,7 +274,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    * @return Whether the animationPreviewEvent field is set.
    */
   boolean hasAnimationPreviewEvent();
@@ -283,7 +283,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    * @return The animationPreviewEvent.
    */
   com.google.wireless.android.sdk.stats.AnimationPreviewEvent getAnimationPreviewEvent();
@@ -292,7 +292,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to interacting animation preview (type = ANIMATION_PREVIEW)
    * </pre>
    *
-   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
+   * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder getAnimationPreviewEventOrBuilder();
 
@@ -301,7 +301,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    * @return Whether the visualLintEvent field is set.
    */
   boolean hasVisualLintEvent();
@@ -310,7 +310,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    * @return The visualLintEvent.
    */
   com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent();
@@ -319,7 +319,7 @@ public interface LayoutEditorEventOrBuilder extends
    * Details related to visual linting (type = VISUAL_LINT)
    * </pre>
    *
-   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder();
 
@@ -329,7 +329,7 @@ public interface LayoutEditorEventOrBuilder extends
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    * @return Whether the universalProblemsPanelEvent field is set.
    */
   boolean hasUniversalProblemsPanelEvent();
@@ -339,7 +339,7 @@ public interface LayoutEditorEventOrBuilder extends
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    * @return The universalProblemsPanelEvent.
    */
   com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent getUniversalProblemsPanelEvent();
@@ -349,7 +349,7 @@ public interface LayoutEditorEventOrBuilder extends
    * UNIVERSAL_PROBLEMS_PANEL)
    * </pre>
    *
-   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder();
 

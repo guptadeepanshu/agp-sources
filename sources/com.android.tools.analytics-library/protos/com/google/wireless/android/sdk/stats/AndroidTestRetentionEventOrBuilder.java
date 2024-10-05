@@ -8,17 +8,17 @@ public interface AndroidTestRetentionEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    * @return Whether the snapshotCompatibility field is set.
    */
   boolean hasSnapshotCompatibility();
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    * @return The snapshotCompatibility.
    */
   com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility getSnapshotCompatibility();
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder getSnapshotCompatibilityOrBuilder();
 }

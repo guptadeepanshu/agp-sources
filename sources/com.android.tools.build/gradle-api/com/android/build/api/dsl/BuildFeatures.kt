@@ -17,6 +17,7 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.declarative.dsl.model.annotations.Restricted
 
 /**
  * A list of build features that can be disabled or enabled in an Android project.
@@ -32,6 +33,7 @@ interface BuildFeatures : ExtensionAware {
      *
      * More information about this feature at: TBD
      */
+    @get:Restricted
     var aidl: Boolean?
 
     /**
@@ -42,6 +44,7 @@ interface BuildFeatures : ExtensionAware {
      *
      * More information available about this feature at: TBD
      **/
+    @get:Restricted
     var compose: Boolean?
 
     /**
@@ -52,6 +55,7 @@ interface BuildFeatures : ExtensionAware {
      *
      * More information about this feature at: TBD
      */
+    @get:Restricted
     var buildConfig: Boolean?
 
     /**
@@ -94,6 +98,7 @@ interface BuildFeatures : ExtensionAware {
 
      * More information about this feature at: TBD
      */
+    @get:Restricted
     var resValues: Boolean?
 
     /**
@@ -122,5 +127,6 @@ interface BuildFeatures : ExtensionAware {
 
      * More information about this feature at: TBD
      */
+    @get:Restricted
     var viewBinding: Boolean?
 }

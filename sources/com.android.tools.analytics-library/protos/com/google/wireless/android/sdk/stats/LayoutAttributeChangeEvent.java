@@ -167,7 +167,7 @@ private static final long serialVersionUID = 0L;
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    * @return Whether the attribute field is set.
    */
   @java.lang.Override
@@ -179,7 +179,7 @@ private static final long serialVersionUID = 0L;
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    * @return The attribute.
    */
   @java.lang.Override
@@ -191,7 +191,7 @@ private static final long serialVersionUID = 0L;
    * The attribute changed by this event
    * </pre>
    *
-   * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+   * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAttributeOrBuilder() {
@@ -808,7 +808,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      * @return Whether the attribute field is set.
      */
     public boolean hasAttribute() {
@@ -819,7 +819,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      * @return The attribute.
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute getAttribute() {
@@ -834,7 +834,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public Builder setAttribute(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (attributeBuilder_ == null) {
@@ -854,7 +854,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public Builder setAttribute(
         com.google.wireless.android.sdk.stats.AndroidAttribute.Builder builderForValue) {
@@ -872,7 +872,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public Builder mergeAttribute(com.google.wireless.android.sdk.stats.AndroidAttribute value) {
       if (attributeBuilder_ == null) {
@@ -896,7 +896,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public Builder clearAttribute() {
       if (attributeBuilder_ == null) {
@@ -913,7 +913,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttribute.Builder getAttributeBuilder() {
       bitField0_ |= 0x00000001;
@@ -925,7 +925,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAttributeOrBuilder() {
       if (attributeBuilder_ != null) {
@@ -940,7 +940,7 @@ private static final long serialVersionUID = 0L;
      * The attribute changed by this event
      * </pre>
      *
-     * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
+     * <code>optional .android_studio.AndroidAttribute attribute = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidAttribute, com.google.wireless.android.sdk.stats.AndroidAttribute.Builder, com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder> 

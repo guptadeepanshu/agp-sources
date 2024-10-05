@@ -29,12 +29,14 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.SOURCE_PUBLICATION;
 import static com.android.build.gradle.internal.utils.KgpUtils.isKotlinAndroidPluginApplied;
 import static com.android.build.gradle.internal.utils.KgpUtils.isKotlinPluginAppliedInTheSameClassloader;
-import static java.util.Objects.requireNonNull;
+
 import static org.gradle.api.attributes.Bundling.BUNDLING_ATTRIBUTE;
 import static org.gradle.api.attributes.Bundling.EXTERNAL;
 import static org.gradle.api.attributes.Category.CATEGORY_ATTRIBUTE;
 import static org.gradle.api.attributes.LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE;
 import static org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE;
+
+import static java.util.Objects.requireNonNull;
 
 import com.android.Version;
 import com.android.annotations.NonNull;
@@ -63,15 +65,11 @@ import com.android.builder.core.ComponentType;
 import com.android.builder.core.ComponentTypeImpl;
 import com.android.builder.errors.IssueReporter;
 import com.android.utils.StringHelper;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ConfigurationContainer;
@@ -87,6 +85,13 @@ import org.gradle.api.attributes.Usage;
 import org.gradle.api.attributes.java.TargetJvmEnvironment;
 import org.gradle.api.capabilities.Capability;
 import org.gradle.api.model.ObjectFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Object that represents the dependencies of variant.
@@ -211,6 +216,10 @@ public class VariantDependenciesBuilder {
 
             annotationConfigs.add(
                     configs.getByName(sourceSet.getAnnotationProcessorConfigurationName()));
+            Configuration kaptConfig = configs.findByName(sourceSet.getKaptConfigurationName());
+            if (kaptConfig != null) {
+                annotationConfigs.add(kaptConfig);
+            }
             wearAppConfigs.add(configs.getByName(sourceSet.getWearAppConfigurationName()));
         }
 

@@ -55,7 +55,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return Whether the atfResult field is set.
    */
   @java.lang.Override
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    * @return The atfResult.
    */
   @java.lang.Override
@@ -79,7 +79,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF result which has been fixed
    * </pre>
    *
-   * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+   * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder() {
@@ -93,7 +93,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    * @return Whether the atfFix field is set.
    */
   @java.lang.Override
@@ -105,7 +105,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    * @return The atfFix.
    */
   @java.lang.Override
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
    * Details related to the ATF fix which has been applied
    * </pre>
    *
-   * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+   * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder getAtfFixOrBuilder() {
@@ -520,7 +520,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      * @return Whether the atfResult field is set.
      */
     public boolean hasAtfResult() {
@@ -531,7 +531,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      * @return The atfResult.
      */
     public com.google.wireless.android.sdk.stats.AtfResultDetail getAtfResult() {
@@ -546,7 +546,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public Builder setAtfResult(com.google.wireless.android.sdk.stats.AtfResultDetail value) {
       if (atfResultBuilder_ == null) {
@@ -566,7 +566,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public Builder setAtfResult(
         com.google.wireless.android.sdk.stats.AtfResultDetail.Builder builderForValue) {
@@ -584,7 +584,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public Builder mergeAtfResult(com.google.wireless.android.sdk.stats.AtfResultDetail value) {
       if (atfResultBuilder_ == null) {
@@ -608,7 +608,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public Builder clearAtfResult() {
       if (atfResultBuilder_ == null) {
@@ -625,7 +625,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfResultDetail.Builder getAtfResultBuilder() {
       bitField0_ |= 0x00000001;
@@ -637,7 +637,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder() {
       if (atfResultBuilder_ != null) {
@@ -652,7 +652,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF result which has been fixed
      * </pre>
      *
-     * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
+     * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AtfResultDetail, com.google.wireless.android.sdk.stats.AtfResultDetail.Builder, com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder> 
@@ -676,7 +676,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      * @return Whether the atfFix field is set.
      */
     public boolean hasAtfFix() {
@@ -687,7 +687,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      * @return The atfFix.
      */
     public com.google.wireless.android.sdk.stats.AtfFixDetail getAtfFix() {
@@ -702,7 +702,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public Builder setAtfFix(com.google.wireless.android.sdk.stats.AtfFixDetail value) {
       if (atfFixBuilder_ == null) {
@@ -722,7 +722,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public Builder setAtfFix(
         com.google.wireless.android.sdk.stats.AtfFixDetail.Builder builderForValue) {
@@ -740,7 +740,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public Builder mergeAtfFix(com.google.wireless.android.sdk.stats.AtfFixDetail value) {
       if (atfFixBuilder_ == null) {
@@ -764,7 +764,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public Builder clearAtfFix() {
       if (atfFixBuilder_ == null) {
@@ -781,7 +781,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfFixDetail.Builder getAtfFixBuilder() {
       bitField0_ |= 0x00000002;
@@ -793,7 +793,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder getAtfFixOrBuilder() {
       if (atfFixBuilder_ != null) {
@@ -808,7 +808,7 @@ private static final long serialVersionUID = 0L;
      * Details related to the ATF fix which has been applied
      * </pre>
      *
-     * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
+     * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AtfFixDetail, com.google.wireless.android.sdk.stats.AtfFixDetail.Builder, com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder> 

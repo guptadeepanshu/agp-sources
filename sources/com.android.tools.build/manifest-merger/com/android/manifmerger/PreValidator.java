@@ -27,13 +27,16 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.xml.AndroidManifest;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+
+import org.w3c.dom.Attr;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.w3c.dom.Attr;
 
 /**
  * Validates a loaded {@link XmlDocument} and check for potential inconsistencies in the model due
@@ -106,7 +109,7 @@ public class PreValidator {
         checkSelectorPresence(mergingReport, xmlElement);
 
         // create a temporary hash map of children indexed by key to ensure key uniqueness.
-        Map<NodeKey, XmlElement> childrenKeys = new HashMap<NodeKey, XmlElement>();
+        Map<NodeKey, XmlElement> childrenKeys = new HashMap<>();
         for (XmlElement childElement : xmlElement.getMergeableElements()) {
 
             // if this element is tagged with 'tools:node=removeAll', ensure it has no other
@@ -119,11 +122,13 @@ public class PreValidator {
                     if (twin != null && !childElement.getType().areMultipleDeclarationAllowed()) {
                         // we have 2 elements with the same identity, if they are equals,
                         // issue a warning, if not, issue an error.
-                        String message = String.format(
-                                "Element %1$s at %2$s duplicated with element declared at %3$s",
-                                childElement.getId(),
-                                childElement.printPosition(),
-                                childrenKeys.get(childElement.getId()).printPosition());
+                        String message =
+                                String.format(
+                                        "Element %1$s at %2$s duplicated with element declared at"
+                                                + " %3$s",
+                                        childElement.getId(),
+                                        childElement.printPosition(),
+                                        childrenKeys.get(childElement.getId()).printPosition());
                         if (twin.compareTo(childElement).isPresent()) {
                             mergingReport.addMessage(childElement, ERROR, message);
                         } else {

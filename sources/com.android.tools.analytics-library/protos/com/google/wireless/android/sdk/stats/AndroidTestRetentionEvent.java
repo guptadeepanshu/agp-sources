@@ -888,7 +888,7 @@ private static final long serialVersionUID = 0L;
   public static final int SNAPSHOT_COMPATIBILITY_FIELD_NUMBER = 1;
   private com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility snapshotCompatibility_;
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    * @return Whether the snapshotCompatibility field is set.
    */
   @java.lang.Override
@@ -896,7 +896,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    * @return The snapshotCompatibility.
    */
   @java.lang.Override
@@ -904,7 +904,7 @@ private static final long serialVersionUID = 0L;
     return snapshotCompatibility_ == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.getDefaultInstance() : snapshotCompatibility_;
   }
   /**
-   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder getSnapshotCompatibilityOrBuilder() {
@@ -1262,14 +1262,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility, com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Builder, com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder> snapshotCompatibilityBuilder_;
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      * @return Whether the snapshotCompatibility field is set.
      */
     public boolean hasSnapshotCompatibility() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      * @return The snapshotCompatibility.
      */
     public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility getSnapshotCompatibility() {
@@ -1280,7 +1280,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public Builder setSnapshotCompatibility(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility value) {
       if (snapshotCompatibilityBuilder_ == null) {
@@ -1296,7 +1296,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public Builder setSnapshotCompatibility(
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Builder builderForValue) {
@@ -1310,7 +1310,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public Builder mergeSnapshotCompatibility(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility value) {
       if (snapshotCompatibilityBuilder_ == null) {
@@ -1330,7 +1330,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public Builder clearSnapshotCompatibility() {
       if (snapshotCompatibilityBuilder_ == null) {
@@ -1343,7 +1343,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Builder getSnapshotCompatibilityBuilder() {
       bitField0_ |= 0x00000001;
@@ -1351,7 +1351,7 @@ private static final long serialVersionUID = 0L;
       return getSnapshotCompatibilityFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder getSnapshotCompatibilityOrBuilder() {
       if (snapshotCompatibilityBuilder_ != null) {
@@ -1362,7 +1362,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
+     * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility, com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Builder, com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder> 

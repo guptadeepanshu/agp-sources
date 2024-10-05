@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_JAR
-import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifact
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.TaskManager

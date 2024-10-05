@@ -102,7 +102,7 @@ internal class TestProjectVariantDslInfoImpl(
         get() = instrumentedTestDelegate.handleProfiling
     override val functionalTest: Provider<Boolean>
         get() = instrumentedTestDelegate.functionalTest
-    override val testLabel: Provider<String?>
+    override val testLabel: Provider<String>
         get() = instrumentedTestDelegate.testLabel
 
     override val dexingDslInfo: DexingDslInfo by lazy {

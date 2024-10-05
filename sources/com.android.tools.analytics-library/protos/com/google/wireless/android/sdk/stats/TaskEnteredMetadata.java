@@ -55,7 +55,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return Whether the taskData field is set.
    */
   @java.lang.Override
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    * @return The taskData.
    */
   @java.lang.Override
@@ -79,7 +79,7 @@ private static final long serialVersionUID = 0L;
    * The task data.
    * </pre>
    *
-   * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+   * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder getTaskDataOrBuilder() {
@@ -441,7 +441,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      * @return Whether the taskData field is set.
      */
     public boolean hasTaskData() {
@@ -452,7 +452,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      * @return The taskData.
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata getTaskData() {
@@ -467,7 +467,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder setTaskData(com.google.wireless.android.sdk.stats.TaskMetadata value) {
       if (taskDataBuilder_ == null) {
@@ -487,7 +487,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder setTaskData(
         com.google.wireless.android.sdk.stats.TaskMetadata.Builder builderForValue) {
@@ -505,7 +505,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder mergeTaskData(com.google.wireless.android.sdk.stats.TaskMetadata value) {
       if (taskDataBuilder_ == null) {
@@ -529,7 +529,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public Builder clearTaskData() {
       if (taskDataBuilder_ == null) {
@@ -546,7 +546,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadata.Builder getTaskDataBuilder() {
       bitField0_ |= 0x00000001;
@@ -558,7 +558,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder getTaskDataOrBuilder() {
       if (taskDataBuilder_ != null) {
@@ -573,7 +573,7 @@ private static final long serialVersionUID = 0L;
      * The task data.
      * </pre>
      *
-     * <code>optional .android_studio.TaskMetadata task_data = 1;</code>
+     * <code>optional .android_studio.TaskMetadata task_data = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskMetadata, com.google.wireless.android.sdk.stats.TaskMetadata.Builder, com.google.wireless.android.sdk.stats.TaskMetadataOrBuilder> 

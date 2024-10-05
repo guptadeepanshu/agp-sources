@@ -20,9 +20,11 @@ import com.android.annotations.NonNull;
 import com.android.tools.r8.ClassFileResourceProvider;
 import com.android.tools.r8.DirectoryClassFileProvider;
 import com.android.tools.r8.ProgramResource;
+
 import com.google.common.base.Suppliers;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;

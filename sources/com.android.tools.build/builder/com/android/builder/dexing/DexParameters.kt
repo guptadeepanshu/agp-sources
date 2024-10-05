@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,7 @@
 
 package com.android.builder.dexing
 
-import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.ide.common.blame.MessageReceiver
-import java.io.File
 
 /** Parameters required for dexing (with D8). */
 class DexParameters(
@@ -26,8 +24,8 @@ class DexParameters(
     val debuggable: Boolean,
     val dexPerClass: Boolean,
     val withDesugaring: Boolean,
-    val desugarBootclasspath: ClassFileProviderFactory,
-    val desugarClasspath: ClassFileProviderFactory,
+    val desugarBootclasspath: com.android.builder.dexing.r8.ClassFileProviderFactory,
+    val desugarClasspath: com.android.builder.dexing.r8.ClassFileProviderFactory,
     val coreLibDesugarConfig: String?,
     val enableApiModeling: Boolean,
     val messageReceiver: MessageReceiver

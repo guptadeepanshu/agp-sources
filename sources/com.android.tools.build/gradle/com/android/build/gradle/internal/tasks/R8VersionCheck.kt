@@ -17,15 +17,16 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.dependency.ShrinkerVersion
+import com.android.builder.dexing.R8Version
 import com.android.builder.errors.IssueReporter
 
 fun checkIfR8VersionMatches(issueReporter: IssueReporter) {
     try {
         val versionInClasspath =
-            ShrinkerVersion.parse(com.android.tools.r8.Version.getVersionString()) ?: return
+            ShrinkerVersion.parse(R8Version.getVersionString()) ?: return
         // Compiler inlines constants, so this retrieves R8 version at compile time (from AGP).
         // This may differ from the R8 version available at runtime.
-        val versionAgpWasShippedWith = ShrinkerVersion.parse(com.android.tools.r8.Version.LABEL) ?: return
+        val versionAgpWasShippedWith = ShrinkerVersion.parse(R8Version.VERSION_AGP_WAS_SHIPPED_WITH) ?: return
         if (versionInClasspath < versionAgpWasShippedWith) {
             throw R8VersionCheckException(versionAgpWasShippedWith, versionInClasspath)
         }

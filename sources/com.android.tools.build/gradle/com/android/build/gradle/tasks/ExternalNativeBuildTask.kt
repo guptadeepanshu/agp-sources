@@ -64,14 +64,12 @@ abstract class ExternalNativeBuildTask :
     protected abstract fun getExecOperations(): ExecOperations
 
     override fun doTaskAction() {
-        recordTaskAction(analyticsService.get()) {
-            IssueReporterLoggingEnvironment(
-                DefaultIssueReporter(LoggerWrapper(logger)),
-                analyticsService.get(),
-                variant
-            ).use {
-                builder.build(getExecOperations())
-            }
+        IssueReporterLoggingEnvironment(
+            DefaultIssueReporter(LoggerWrapper(logger)),
+            analyticsService.get(),
+            variant
+        ).use {
+            builder.build(getExecOperations())
         }
     }
 }

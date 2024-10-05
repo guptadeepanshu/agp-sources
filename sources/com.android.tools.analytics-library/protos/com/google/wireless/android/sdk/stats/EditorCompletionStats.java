@@ -72,7 +72,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      * @return Whether the popupLatency field is set.
      */
     boolean hasPopupLatency();
@@ -81,7 +81,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      * @return The popupLatency.
      */
     com.google.wireless.android.sdk.stats.Histogram getPopupLatency();
@@ -90,7 +90,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getPopupLatencyOrBuilder();
 
@@ -99,7 +99,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      * @return Whether the fullCompletionLatency field is set.
      */
     boolean hasFullCompletionLatency();
@@ -108,7 +108,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      * @return The fullCompletionLatency.
      */
     com.google.wireless.android.sdk.stats.Histogram getFullCompletionLatency();
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getFullCompletionLatencyOrBuilder();
 
@@ -126,7 +126,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      * @return Whether the insertionLatency field is set.
      */
     boolean hasInsertionLatency();
@@ -135,7 +135,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      * @return The insertionLatency.
      */
     com.google.wireless.android.sdk.stats.Histogram getInsertionLatency();
@@ -144,7 +144,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.HistogramOrBuilder getInsertionLatencyOrBuilder();
   }
@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      * @return Whether the popupLatency field is set.
      */
     @java.lang.Override
@@ -236,7 +236,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      * @return The popupLatency.
      */
     @java.lang.Override
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to show initial completion popup.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+     * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPopupLatencyOrBuilder() {
@@ -262,7 +262,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      * @return Whether the fullCompletionLatency field is set.
      */
     @java.lang.Override
@@ -274,7 +274,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      * @return The fullCompletionLatency.
      */
     @java.lang.Override
@@ -286,7 +286,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to fill *all* completion results.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+     * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getFullCompletionLatencyOrBuilder() {
@@ -300,7 +300,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      * @return Whether the insertionLatency field is set.
      */
     @java.lang.Override
@@ -312,7 +312,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      * @return The insertionLatency.
      */
     @java.lang.Override
@@ -324,7 +324,7 @@ private static final long serialVersionUID = 0L;
      * Time in milliseconds to insert a selected completion item.
      * </pre>
      *
-     * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+     * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getInsertionLatencyOrBuilder() {
@@ -859,7 +859,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        * @return Whether the popupLatency field is set.
        */
       public boolean hasPopupLatency() {
@@ -870,7 +870,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        * @return The popupLatency.
        */
       public com.google.wireless.android.sdk.stats.Histogram getPopupLatency() {
@@ -885,7 +885,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public Builder setPopupLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (popupLatencyBuilder_ == null) {
@@ -905,7 +905,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public Builder setPopupLatency(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -923,7 +923,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public Builder mergePopupLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (popupLatencyBuilder_ == null) {
@@ -947,7 +947,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public Builder clearPopupLatency() {
         if (popupLatencyBuilder_ == null) {
@@ -964,7 +964,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getPopupLatencyBuilder() {
         bitField0_ |= 0x00000002;
@@ -976,7 +976,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPopupLatencyOrBuilder() {
         if (popupLatencyBuilder_ != null) {
@@ -991,7 +991,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to show initial completion popup.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram popup_latency = 2;</code>
+       * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -1015,7 +1015,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        * @return Whether the fullCompletionLatency field is set.
        */
       public boolean hasFullCompletionLatency() {
@@ -1026,7 +1026,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        * @return The fullCompletionLatency.
        */
       public com.google.wireless.android.sdk.stats.Histogram getFullCompletionLatency() {
@@ -1041,7 +1041,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public Builder setFullCompletionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (fullCompletionLatencyBuilder_ == null) {
@@ -1061,7 +1061,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public Builder setFullCompletionLatency(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -1079,7 +1079,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public Builder mergeFullCompletionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (fullCompletionLatencyBuilder_ == null) {
@@ -1103,7 +1103,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public Builder clearFullCompletionLatency() {
         if (fullCompletionLatencyBuilder_ == null) {
@@ -1120,7 +1120,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getFullCompletionLatencyBuilder() {
         bitField0_ |= 0x00000004;
@@ -1132,7 +1132,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getFullCompletionLatencyOrBuilder() {
         if (fullCompletionLatencyBuilder_ != null) {
@@ -1147,7 +1147,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to fill *all* completion results.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
+       * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 
@@ -1171,7 +1171,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        * @return Whether the insertionLatency field is set.
        */
       public boolean hasInsertionLatency() {
@@ -1182,7 +1182,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        * @return The insertionLatency.
        */
       public com.google.wireless.android.sdk.stats.Histogram getInsertionLatency() {
@@ -1197,7 +1197,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public Builder setInsertionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (insertionLatencyBuilder_ == null) {
@@ -1217,7 +1217,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public Builder setInsertionLatency(
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
@@ -1235,7 +1235,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public Builder mergeInsertionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (insertionLatencyBuilder_ == null) {
@@ -1259,7 +1259,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public Builder clearInsertionLatency() {
         if (insertionLatencyBuilder_ == null) {
@@ -1276,7 +1276,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.Histogram.Builder getInsertionLatencyBuilder() {
         bitField0_ |= 0x00000008;
@@ -1288,7 +1288,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.HistogramOrBuilder getInsertionLatencyOrBuilder() {
         if (insertionLatencyBuilder_ != null) {
@@ -1303,7 +1303,7 @@ private static final long serialVersionUID = 0L;
        * Time in milliseconds to insert a selected completion item.
        * </pre>
        *
-       * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
+       * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.Histogram, com.google.wireless.android.sdk.stats.Histogram.Builder, com.google.wireless.android.sdk.stats.HistogramOrBuilder> 

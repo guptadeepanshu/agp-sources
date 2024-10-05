@@ -20,6 +20,7 @@ import static com.android.SdkConstants.DOT_JAVA;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.android.SdkConstants;
@@ -39,18 +40,13 @@ import com.android.build.gradle.internal.utils.AndroidXDependency;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.buildanalyzer.common.TaskCategory;
 import com.android.utils.FileUtils;
+
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 import kotlin.Unit;
+
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
@@ -78,6 +74,15 @@ import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskProvider;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Task which extracts annotations from the source files, and writes them to one of two possible
@@ -374,7 +379,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                             .getServices()
                             .fileCollection(creationConfig.getGlobal().getFilteredBootClasspath()));
 
-            task.getLintTool().initialize(creationConfig.getServices(), task.getName());
+            task.getLintTool().initialize(creationConfig.getServices(), task);
 
             ConfigurableFileCollection files = creationConfig.getServices().fileCollection();
             creationConfig

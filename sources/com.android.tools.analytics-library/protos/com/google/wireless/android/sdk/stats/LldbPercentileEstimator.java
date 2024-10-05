@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
    * @return Whether the estimator field is set.
    */
   @java.lang.Override
@@ -236,7 +236,7 @@ private static final long serialVersionUID = 0L;
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
    * @return The estimator.
    */
   @java.lang.Override
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
    * Estimator for metric.
    * </pre>
    *
-   * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+   * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getEstimatorOrBuilder() {
@@ -701,7 +701,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      * @return Whether the estimator field is set.
      */
     public boolean hasEstimator() {
@@ -712,7 +712,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      * @return The estimator.
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator getEstimator() {
@@ -727,7 +727,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public Builder setEstimator(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (estimatorBuilder_ == null) {
@@ -747,7 +747,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public Builder setEstimator(
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
@@ -765,7 +765,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public Builder mergeEstimator(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (estimatorBuilder_ == null) {
@@ -789,7 +789,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public Builder clearEstimator() {
       if (estimatorBuilder_ == null) {
@@ -806,7 +806,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimator.Builder getEstimatorBuilder() {
       bitField0_ |= 0x00000002;
@@ -818,7 +818,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getEstimatorOrBuilder() {
       if (estimatorBuilder_ != null) {
@@ -833,7 +833,7 @@ private static final long serialVersionUID = 0L;
      * Estimator for metric.
      * </pre>
      *
-     * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
+     * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.PercentileEstimator, com.google.wireless.android.sdk.stats.PercentileEstimator.Builder, com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder> 

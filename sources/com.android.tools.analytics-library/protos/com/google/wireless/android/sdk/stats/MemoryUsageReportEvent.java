@@ -735,7 +735,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      * @return Whether the totalStats field is set.
      */
     boolean hasTotalStats();
@@ -744,7 +744,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      * @return The totalStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getTotalStats();
@@ -753,7 +753,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getTotalStatsOrBuilder();
 
@@ -762,7 +762,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the newGenerationStats field is set.
      */
@@ -772,7 +772,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The newGenerationStats.
      */
@@ -782,7 +782,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getNewGenerationStatsOrBuilder();
 
@@ -835,7 +835,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      * @return Whether the platformObjectsStats field is set.
      */
     boolean hasPlatformObjectsStats();
@@ -844,7 +844,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      * @return The platformObjectsStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getPlatformObjectsStats();
@@ -853,7 +853,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformObjectsStatsOrBuilder();
 
@@ -863,7 +863,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      * @return Whether the platformRetainedStats field is set.
      */
     boolean hasPlatformRetainedStats();
@@ -873,7 +873,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      * @return The platformRetainedStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getPlatformRetainedStats();
@@ -883,7 +883,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformRetainedStatsOrBuilder();
   }
@@ -946,7 +946,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      * @return Whether the totalStats field is set.
      */
     @java.lang.Override
@@ -958,7 +958,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      * @return The totalStats.
      */
     @java.lang.Override
@@ -970,7 +970,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of a subtree objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getTotalStatsOrBuilder() {
@@ -984,7 +984,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return Whether the newGenerationStats field is set.
      */
@@ -997,7 +997,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated
      * @return The newGenerationStats.
      */
@@ -1010,7 +1010,7 @@ private static final long serialVersionUID = 0L;
      * Historical: we no longer track object creation timestamps
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getNewGenerationStatsOrBuilder() {
@@ -1084,7 +1084,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      * @return Whether the platformObjectsStats field is set.
      */
     @java.lang.Override
@@ -1096,7 +1096,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      * @return The platformObjectsStats.
      */
     @java.lang.Override
@@ -1108,7 +1108,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of IntelliJ platform declared objects from the subtree.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformObjectsStatsOrBuilder() {
@@ -1123,7 +1123,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      * @return Whether the platformRetainedStats field is set.
      */
     @java.lang.Override
@@ -1136,7 +1136,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      * @return The platformRetainedStats.
      */
     @java.lang.Override
@@ -1149,7 +1149,7 @@ private static final long serialVersionUID = 0L;
      * IntelliJ platform declared objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformRetainedStatsOrBuilder() {
@@ -1709,7 +1709,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        * @return Whether the totalStats field is set.
        */
       public boolean hasTotalStats() {
@@ -1720,7 +1720,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        * @return The totalStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getTotalStats() {
@@ -1735,7 +1735,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public Builder setTotalStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (totalStatsBuilder_ == null) {
@@ -1755,7 +1755,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public Builder setTotalStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
@@ -1773,7 +1773,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public Builder mergeTotalStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (totalStatsBuilder_ == null) {
@@ -1797,7 +1797,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public Builder clearTotalStats() {
         if (totalStatsBuilder_ == null) {
@@ -1814,7 +1814,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder getTotalStatsBuilder() {
         bitField0_ |= 0x00000001;
@@ -1826,7 +1826,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getTotalStatsOrBuilder() {
         if (totalStatsBuilder_ != null) {
@@ -1841,7 +1841,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of a subtree objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder> 
@@ -1865,7 +1865,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return Whether the newGenerationStats field is set.
        */
@@ -1877,7 +1877,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        * @deprecated
        * @return The newGenerationStats.
        */
@@ -1893,7 +1893,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setNewGenerationStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (newGenerationStatsBuilder_ == null) {
@@ -1913,7 +1913,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder setNewGenerationStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
@@ -1931,7 +1931,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder mergeNewGenerationStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (newGenerationStatsBuilder_ == null) {
@@ -1955,7 +1955,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearNewGenerationStats() {
         if (newGenerationStatsBuilder_ == null) {
@@ -1972,7 +1972,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder getNewGenerationStatsBuilder() {
         bitField0_ |= 0x00000002;
@@ -1984,7 +1984,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getNewGenerationStatsOrBuilder() {
         if (newGenerationStatsBuilder_ != null) {
@@ -1999,7 +1999,7 @@ private static final long serialVersionUID = 0L;
        * Historical: we no longer track object creation timestamps
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true];</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder> 
@@ -2335,7 +2335,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        * @return Whether the platformObjectsStats field is set.
        */
       public boolean hasPlatformObjectsStats() {
@@ -2346,7 +2346,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        * @return The platformObjectsStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getPlatformObjectsStats() {
@@ -2361,7 +2361,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public Builder setPlatformObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformObjectsStatsBuilder_ == null) {
@@ -2381,7 +2381,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public Builder setPlatformObjectsStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
@@ -2399,7 +2399,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public Builder mergePlatformObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformObjectsStatsBuilder_ == null) {
@@ -2423,7 +2423,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public Builder clearPlatformObjectsStats() {
         if (platformObjectsStatsBuilder_ == null) {
@@ -2440,7 +2440,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder getPlatformObjectsStatsBuilder() {
         bitField0_ |= 0x00000008;
@@ -2452,7 +2452,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformObjectsStatsOrBuilder() {
         if (platformObjectsStatsBuilder_ != null) {
@@ -2467,7 +2467,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of IntelliJ platform declared objects from the subtree.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder> 
@@ -2492,7 +2492,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        * @return Whether the platformRetainedStats field is set.
        */
       public boolean hasPlatformRetainedStats() {
@@ -2504,7 +2504,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        * @return The platformRetainedStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getPlatformRetainedStats() {
@@ -2520,7 +2520,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public Builder setPlatformRetainedStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformRetainedStatsBuilder_ == null) {
@@ -2541,7 +2541,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public Builder setPlatformRetainedStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
@@ -2560,7 +2560,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public Builder mergePlatformRetainedStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformRetainedStatsBuilder_ == null) {
@@ -2585,7 +2585,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public Builder clearPlatformRetainedStats() {
         if (platformRetainedStatsBuilder_ == null) {
@@ -2603,7 +2603,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder getPlatformRetainedStatsBuilder() {
         bitField0_ |= 0x00000010;
@@ -2616,7 +2616,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder getPlatformRetainedStatsOrBuilder() {
         if (platformRetainedStatsBuilder_ != null) {
@@ -2632,7 +2632,7 @@ private static final long serialVersionUID = 0L;
        * IntelliJ platform declared objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatisticsOrBuilder> 
@@ -2720,7 +2720,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      * @return Whether the ownedClusterStats field is set.
      */
     boolean hasOwnedClusterStats();
@@ -2729,7 +2729,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      * @return The ownedClusterStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getOwnedClusterStats();
@@ -2738,7 +2738,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getOwnedClusterStatsOrBuilder();
 
@@ -2747,7 +2747,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      * @return Whether the retainedClusterStats field is set.
      */
     boolean hasRetainedClusterStats();
@@ -2756,7 +2756,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      * @return The retainedClusterStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getRetainedClusterStats();
@@ -2765,7 +2765,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getRetainedClusterStatsOrBuilder();
   }
@@ -2822,7 +2822,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      * @return Whether the ownedClusterStats field is set.
      */
     @java.lang.Override
@@ -2834,7 +2834,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      * @return The ownedClusterStats.
      */
     @java.lang.Override
@@ -2846,7 +2846,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree owned by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getOwnedClusterStatsOrBuilder() {
@@ -2860,7 +2860,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      * @return Whether the retainedClusterStats field is set.
      */
     @java.lang.Override
@@ -2872,7 +2872,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      * @return The retainedClusterStats.
      */
     @java.lang.Override
@@ -2884,7 +2884,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the subtree retained by the cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getRetainedClusterStatsOrBuilder() {
@@ -3288,7 +3288,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        * @return Whether the ownedClusterStats field is set.
        */
       public boolean hasOwnedClusterStats() {
@@ -3299,7 +3299,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        * @return The ownedClusterStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getOwnedClusterStats() {
@@ -3314,7 +3314,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public Builder setOwnedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (ownedClusterStatsBuilder_ == null) {
@@ -3334,7 +3334,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public Builder setOwnedClusterStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
@@ -3352,7 +3352,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public Builder mergeOwnedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (ownedClusterStatsBuilder_ == null) {
@@ -3376,7 +3376,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public Builder clearOwnedClusterStats() {
         if (ownedClusterStatsBuilder_ == null) {
@@ -3393,7 +3393,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder getOwnedClusterStatsBuilder() {
         bitField0_ |= 0x00000001;
@@ -3405,7 +3405,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getOwnedClusterStatsOrBuilder() {
         if (ownedClusterStatsBuilder_ != null) {
@@ -3420,7 +3420,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree owned by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder> 
@@ -3444,7 +3444,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        * @return Whether the retainedClusterStats field is set.
        */
       public boolean hasRetainedClusterStats() {
@@ -3455,7 +3455,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        * @return The retainedClusterStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getRetainedClusterStats() {
@@ -3470,7 +3470,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public Builder setRetainedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (retainedClusterStatsBuilder_ == null) {
@@ -3490,7 +3490,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public Builder setRetainedClusterStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
@@ -3508,7 +3508,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public Builder mergeRetainedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (retainedClusterStatsBuilder_ == null) {
@@ -3532,7 +3532,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public Builder clearRetainedClusterStats() {
         if (retainedClusterStatsBuilder_ == null) {
@@ -3549,7 +3549,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder getRetainedClusterStatsBuilder() {
         bitField0_ |= 0x00000002;
@@ -3561,7 +3561,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getRetainedClusterStatsOrBuilder() {
         if (retainedClusterStatsBuilder_ != null) {
@@ -3576,7 +3576,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the subtree retained by the cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder> 
@@ -3693,7 +3693,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      * @return Whether the stats field is set.
      */
     boolean hasStats();
@@ -3702,7 +3702,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      * @return The stats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics getStats();
@@ -3711,7 +3711,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatisticsOrBuilder getStatsOrBuilder();
 
@@ -3899,7 +3899,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      * @return Whether the stats field is set.
      */
     @java.lang.Override
@@ -3911,7 +3911,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      * @return The stats.
      */
     @java.lang.Override
@@ -3923,7 +3923,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the cluster objects.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatisticsOrBuilder getStatsOrBuilder() {
@@ -4582,7 +4582,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        * @return Whether the stats field is set.
        */
       public boolean hasStats() {
@@ -4593,7 +4593,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        * @return The stats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics getStats() {
@@ -4608,7 +4608,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public Builder setStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics value) {
         if (statsBuilder_ == null) {
@@ -4628,7 +4628,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public Builder setStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.Builder builderForValue) {
@@ -4646,7 +4646,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public Builder mergeStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics value) {
         if (statsBuilder_ == null) {
@@ -4670,7 +4670,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public Builder clearStats() {
         if (statsBuilder_ == null) {
@@ -4687,7 +4687,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.Builder getStatsBuilder() {
         bitField0_ |= 0x00000002;
@@ -4699,7 +4699,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatisticsOrBuilder getStatsOrBuilder() {
         if (statsBuilder_ != null) {
@@ -4714,7 +4714,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the cluster objects.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatisticsOrBuilder> 
@@ -4994,7 +4994,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      * @return Whether the stats field is set.
      */
     boolean hasStats();
@@ -5003,7 +5003,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      * @return The stats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getStats();
@@ -5012,7 +5012,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getStatsOrBuilder();
   }
@@ -5110,7 +5110,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      * @return Whether the stats field is set.
      */
     @java.lang.Override
@@ -5122,7 +5122,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      * @return The stats.
      */
     @java.lang.Override
@@ -5134,7 +5134,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the objects from the shared cluster.
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getStatsOrBuilder() {
@@ -5665,7 +5665,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        * @return Whether the stats field is set.
        */
       public boolean hasStats() {
@@ -5676,7 +5676,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        * @return The stats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getStats() {
@@ -5691,7 +5691,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public Builder setStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (statsBuilder_ == null) {
@@ -5711,7 +5711,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public Builder setStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
@@ -5729,7 +5729,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public Builder mergeStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (statsBuilder_ == null) {
@@ -5753,7 +5753,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public Builder clearStats() {
         if (statsBuilder_ == null) {
@@ -5770,7 +5770,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder getStatsBuilder() {
         bitField0_ |= 0x00000002;
@@ -5782,7 +5782,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getStatsOrBuilder() {
         if (statsBuilder_ != null) {
@@ -5797,7 +5797,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the objects from the shared cluster.
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder> 
@@ -5904,7 +5904,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      * @return Whether the totalHeapObjectsStats field is set.
      */
     boolean hasTotalHeapObjectsStats();
@@ -5913,7 +5913,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      * @return The totalHeapObjectsStats.
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getTotalHeapObjectsStats();
@@ -5922,7 +5922,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getTotalHeapObjectsStatsOrBuilder();
 
@@ -6404,7 +6404,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      * @return Whether the totalHeapObjectsStats field is set.
      */
     @java.lang.Override
@@ -6416,7 +6416,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      * @return The totalHeapObjectsStats.
      */
     @java.lang.Override
@@ -6428,7 +6428,7 @@ private static final long serialVersionUID = 0L;
      * Statistics of the total memory used by Android Studio
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getTotalHeapObjectsStatsOrBuilder() {
@@ -7412,7 +7412,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        * @return Whether the totalHeapObjectsStats field is set.
        */
       public boolean hasTotalHeapObjectsStats() {
@@ -7423,7 +7423,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        * @return The totalHeapObjectsStats.
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics getTotalHeapObjectsStats() {
@@ -7438,7 +7438,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public Builder setTotalHeapObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (totalHeapObjectsStatsBuilder_ == null) {
@@ -7458,7 +7458,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public Builder setTotalHeapObjectsStats(
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
@@ -7476,7 +7476,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public Builder mergeTotalHeapObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (totalHeapObjectsStatsBuilder_ == null) {
@@ -7500,7 +7500,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public Builder clearTotalHeapObjectsStats() {
         if (totalHeapObjectsStatsBuilder_ == null) {
@@ -7517,7 +7517,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder getTotalHeapObjectsStatsBuilder() {
         bitField0_ |= 0x00000002;
@@ -7529,7 +7529,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder getTotalHeapObjectsStatsOrBuilder() {
         if (totalHeapObjectsStatsBuilder_ != null) {
@@ -7544,7 +7544,7 @@ private static final long serialVersionUID = 0L;
        * Statistics of the total memory used by Android Studio
        * </pre>
        *
-       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2;</code>
+       * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatisticsOrBuilder> 
@@ -8322,7 +8322,7 @@ private static final long serialVersionUID = 0L;
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    * @return Whether the metadata field is set.
    */
   @java.lang.Override
@@ -8334,7 +8334,7 @@ private static final long serialVersionUID = 0L;
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    * @return The metadata.
    */
   @java.lang.Override
@@ -8346,7 +8346,7 @@ private static final long serialVersionUID = 0L;
    * Report collection metadata
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadataOrBuilder getMetadataOrBuilder() {
@@ -9851,7 +9851,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      * @return Whether the metadata field is set.
      */
     public boolean hasMetadata() {
@@ -9862,7 +9862,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      * @return The metadata.
      */
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata getMetadata() {
@@ -9877,7 +9877,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public Builder setMetadata(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata value) {
       if (metadataBuilder_ == null) {
@@ -9897,7 +9897,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public Builder setMetadata(
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.Builder builderForValue) {
@@ -9915,7 +9915,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public Builder mergeMetadata(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata value) {
       if (metadataBuilder_ == null) {
@@ -9939,7 +9939,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public Builder clearMetadata() {
       if (metadataBuilder_ == null) {
@@ -9956,7 +9956,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.Builder getMetadataBuilder() {
       bitField0_ |= 0x00000008;
@@ -9968,7 +9968,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadataOrBuilder getMetadataOrBuilder() {
       if (metadataBuilder_ != null) {
@@ -9983,7 +9983,7 @@ private static final long serialVersionUID = 0L;
      * Report collection metadata
      * </pre>
      *
-     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6;</code>
+     * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.Builder, com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadataOrBuilder> 

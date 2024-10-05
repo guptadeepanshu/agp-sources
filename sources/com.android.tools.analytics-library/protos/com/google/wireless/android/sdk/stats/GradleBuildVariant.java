@@ -6536,7 +6536,7 @@ private static final long serialVersionUID = 0L;
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    * @return Whether the minSdkVersion field is set.
    */
   @java.lang.Override
@@ -6549,7 +6549,7 @@ private static final long serialVersionUID = 0L;
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    * @return The minSdkVersion.
    */
   @java.lang.Override
@@ -6562,7 +6562,7 @@ private static final long serialVersionUID = 0L;
    * Minimum supported.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+   * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMinSdkVersionOrBuilder() {
@@ -6576,7 +6576,7 @@ private static final long serialVersionUID = 0L;
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    * @return Whether the targetSdkVersion field is set.
    */
   @java.lang.Override
@@ -6588,7 +6588,7 @@ private static final long serialVersionUID = 0L;
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    * @return The targetSdkVersion.
    */
   @java.lang.Override
@@ -6600,7 +6600,7 @@ private static final long serialVersionUID = 0L;
    * Target sdk version.
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+   * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getTargetSdkVersionOrBuilder() {
@@ -6614,7 +6614,7 @@ private static final long serialVersionUID = 0L;
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    * @return Whether the maxSdkVersion field is set.
    */
   @java.lang.Override
@@ -6626,7 +6626,7 @@ private static final long serialVersionUID = 0L;
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    * @return The maxSdkVersion.
    */
   @java.lang.Override
@@ -6638,7 +6638,7 @@ private static final long serialVersionUID = 0L;
    * The maximum sdk version
    * </pre>
    *
-   * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+   * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMaxSdkVersionOrBuilder() {
@@ -6966,7 +6966,7 @@ private static final long serialVersionUID = 0L;
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    * @return Whether the variantApiAccess field is set.
    */
   @java.lang.Override
@@ -6978,7 +6978,7 @@ private static final long serialVersionUID = 0L;
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    * @return The variantApiAccess.
    */
   @java.lang.Override
@@ -6990,7 +6990,7 @@ private static final long serialVersionUID = 0L;
    * container for variant api accesses if the variant api was used.
    * </pre>
    *
-   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+   * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.VariantApiUsageOrBuilder getVariantApiAccessOrBuilder() {
@@ -7004,7 +7004,7 @@ private static final long serialVersionUID = 0L;
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    * @return Whether the kotlinOptions field is set.
    */
   @java.lang.Override
@@ -7016,7 +7016,7 @@ private static final long serialVersionUID = 0L;
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    * @return The kotlinOptions.
    */
   @java.lang.Override
@@ -7028,7 +7028,7 @@ private static final long serialVersionUID = 0L;
    * Kotlin-specific options in build files
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+   * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptionsOrBuilder getKotlinOptionsOrBuilder() {
@@ -7289,7 +7289,7 @@ private static final long serialVersionUID = 0L;
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    * @return Whether the privacySandboxDependenciesInfo field is set.
    */
   @java.lang.Override
@@ -7301,7 +7301,7 @@ private static final long serialVersionUID = 0L;
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    * @return The privacySandboxDependenciesInfo.
    */
   @java.lang.Override
@@ -7313,7 +7313,7 @@ private static final long serialVersionUID = 0L;
    * information about the privacy sandbox SDKs this project consumes
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+   * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfoOrBuilder getPrivacySandboxDependenciesInfoOrBuilder() {
@@ -9985,7 +9985,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      * @return Whether the minSdkVersion field is set.
      */
     public boolean hasMinSdkVersion() {
@@ -9997,7 +9997,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      * @return The minSdkVersion.
      */
     public com.google.wireless.android.sdk.stats.ApiVersion getMinSdkVersion() {
@@ -10013,7 +10013,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public Builder setMinSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (minSdkVersionBuilder_ == null) {
@@ -10034,7 +10034,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public Builder setMinSdkVersion(
         com.google.wireless.android.sdk.stats.ApiVersion.Builder builderForValue) {
@@ -10053,7 +10053,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public Builder mergeMinSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (minSdkVersionBuilder_ == null) {
@@ -10078,7 +10078,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public Builder clearMinSdkVersion() {
       if (minSdkVersionBuilder_ == null) {
@@ -10096,7 +10096,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersion.Builder getMinSdkVersionBuilder() {
       bitField0_ |= 0x00000800;
@@ -10109,7 +10109,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMinSdkVersionOrBuilder() {
       if (minSdkVersionBuilder_ != null) {
@@ -10125,7 +10125,7 @@ private static final long serialVersionUID = 0L;
      * Minimum supported.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion min_sdk_version = 12;</code>
+     * <code>optional .android_studio.ApiVersion min_sdk_version = 12 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ApiVersion, com.google.wireless.android.sdk.stats.ApiVersion.Builder, com.google.wireless.android.sdk.stats.ApiVersionOrBuilder> 
@@ -10149,7 +10149,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      * @return Whether the targetSdkVersion field is set.
      */
     public boolean hasTargetSdkVersion() {
@@ -10160,7 +10160,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      * @return The targetSdkVersion.
      */
     public com.google.wireless.android.sdk.stats.ApiVersion getTargetSdkVersion() {
@@ -10175,7 +10175,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public Builder setTargetSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (targetSdkVersionBuilder_ == null) {
@@ -10195,7 +10195,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public Builder setTargetSdkVersion(
         com.google.wireless.android.sdk.stats.ApiVersion.Builder builderForValue) {
@@ -10213,7 +10213,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public Builder mergeTargetSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (targetSdkVersionBuilder_ == null) {
@@ -10237,7 +10237,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public Builder clearTargetSdkVersion() {
       if (targetSdkVersionBuilder_ == null) {
@@ -10254,7 +10254,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersion.Builder getTargetSdkVersionBuilder() {
       bitField0_ |= 0x00001000;
@@ -10266,7 +10266,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getTargetSdkVersionOrBuilder() {
       if (targetSdkVersionBuilder_ != null) {
@@ -10281,7 +10281,7 @@ private static final long serialVersionUID = 0L;
      * Target sdk version.
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion target_sdk_version = 13;</code>
+     * <code>optional .android_studio.ApiVersion target_sdk_version = 13 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ApiVersion, com.google.wireless.android.sdk.stats.ApiVersion.Builder, com.google.wireless.android.sdk.stats.ApiVersionOrBuilder> 
@@ -10305,7 +10305,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      * @return Whether the maxSdkVersion field is set.
      */
     public boolean hasMaxSdkVersion() {
@@ -10316,7 +10316,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      * @return The maxSdkVersion.
      */
     public com.google.wireless.android.sdk.stats.ApiVersion getMaxSdkVersion() {
@@ -10331,7 +10331,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public Builder setMaxSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (maxSdkVersionBuilder_ == null) {
@@ -10351,7 +10351,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public Builder setMaxSdkVersion(
         com.google.wireless.android.sdk.stats.ApiVersion.Builder builderForValue) {
@@ -10369,7 +10369,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public Builder mergeMaxSdkVersion(com.google.wireless.android.sdk.stats.ApiVersion value) {
       if (maxSdkVersionBuilder_ == null) {
@@ -10393,7 +10393,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public Builder clearMaxSdkVersion() {
       if (maxSdkVersionBuilder_ == null) {
@@ -10410,7 +10410,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersion.Builder getMaxSdkVersionBuilder() {
       bitField0_ |= 0x00002000;
@@ -10422,7 +10422,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ApiVersionOrBuilder getMaxSdkVersionOrBuilder() {
       if (maxSdkVersionBuilder_ != null) {
@@ -10437,7 +10437,7 @@ private static final long serialVersionUID = 0L;
      * The maximum sdk version
      * </pre>
      *
-     * <code>optional .android_studio.ApiVersion max_sdk_version = 14;</code>
+     * <code>optional .android_studio.ApiVersion max_sdk_version = 14 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ApiVersion, com.google.wireless.android.sdk.stats.ApiVersion.Builder, com.google.wireless.android.sdk.stats.ApiVersionOrBuilder> 
@@ -11297,7 +11297,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      * @return Whether the variantApiAccess field is set.
      */
     public boolean hasVariantApiAccess() {
@@ -11308,7 +11308,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      * @return The variantApiAccess.
      */
     public com.google.wireless.android.sdk.stats.VariantApiUsage getVariantApiAccess() {
@@ -11323,7 +11323,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public Builder setVariantApiAccess(com.google.wireless.android.sdk.stats.VariantApiUsage value) {
       if (variantApiAccessBuilder_ == null) {
@@ -11343,7 +11343,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public Builder setVariantApiAccess(
         com.google.wireless.android.sdk.stats.VariantApiUsage.Builder builderForValue) {
@@ -11361,7 +11361,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public Builder mergeVariantApiAccess(com.google.wireless.android.sdk.stats.VariantApiUsage value) {
       if (variantApiAccessBuilder_ == null) {
@@ -11385,7 +11385,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public Builder clearVariantApiAccess() {
       if (variantApiAccessBuilder_ == null) {
@@ -11402,7 +11402,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VariantApiUsage.Builder getVariantApiAccessBuilder() {
       bitField0_ |= 0x01000000;
@@ -11414,7 +11414,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VariantApiUsageOrBuilder getVariantApiAccessOrBuilder() {
       if (variantApiAccessBuilder_ != null) {
@@ -11429,7 +11429,7 @@ private static final long serialVersionUID = 0L;
      * container for variant api accesses if the variant api was used.
      * </pre>
      *
-     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25;</code>
+     * <code>optional .android_studio.VariantApiUsage variant_api_access = 25 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VariantApiUsage, com.google.wireless.android.sdk.stats.VariantApiUsage.Builder, com.google.wireless.android.sdk.stats.VariantApiUsageOrBuilder> 
@@ -11453,7 +11453,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      * @return Whether the kotlinOptions field is set.
      */
     public boolean hasKotlinOptions() {
@@ -11464,7 +11464,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      * @return The kotlinOptions.
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions getKotlinOptions() {
@@ -11479,7 +11479,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public Builder setKotlinOptions(com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions value) {
       if (kotlinOptionsBuilder_ == null) {
@@ -11499,7 +11499,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public Builder setKotlinOptions(
         com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions.Builder builderForValue) {
@@ -11517,7 +11517,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public Builder mergeKotlinOptions(com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions value) {
       if (kotlinOptionsBuilder_ == null) {
@@ -11541,7 +11541,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public Builder clearKotlinOptions() {
       if (kotlinOptionsBuilder_ == null) {
@@ -11558,7 +11558,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions.Builder getKotlinOptionsBuilder() {
       bitField0_ |= 0x02000000;
@@ -11570,7 +11570,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptionsOrBuilder getKotlinOptionsOrBuilder() {
       if (kotlinOptionsBuilder_ != null) {
@@ -11585,7 +11585,7 @@ private static final long serialVersionUID = 0L;
      * Kotlin-specific options in build files
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26;</code>
+     * <code>optional .android_studio.GradleBuildVariant.KotlinOptions kotlin_options = 26 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions, com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptions.Builder, com.google.wireless.android.sdk.stats.GradleBuildVariant.KotlinOptionsOrBuilder> 
@@ -12519,7 +12519,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      * @return Whether the privacySandboxDependenciesInfo field is set.
      */
     public boolean hasPrivacySandboxDependenciesInfo() {
@@ -12530,7 +12530,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      * @return The privacySandboxDependenciesInfo.
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo getPrivacySandboxDependenciesInfo() {
@@ -12545,7 +12545,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public Builder setPrivacySandboxDependenciesInfo(com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo value) {
       if (privacySandboxDependenciesInfoBuilder_ == null) {
@@ -12565,7 +12565,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public Builder setPrivacySandboxDependenciesInfo(
         com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo.Builder builderForValue) {
@@ -12583,7 +12583,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public Builder mergePrivacySandboxDependenciesInfo(com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo value) {
       if (privacySandboxDependenciesInfoBuilder_ == null) {
@@ -12607,7 +12607,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public Builder clearPrivacySandboxDependenciesInfo() {
       if (privacySandboxDependenciesInfoBuilder_ == null) {
@@ -12624,7 +12624,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo.Builder getPrivacySandboxDependenciesInfoBuilder() {
       bitField1_ |= 0x00000001;
@@ -12636,7 +12636,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfoOrBuilder getPrivacySandboxDependenciesInfoOrBuilder() {
       if (privacySandboxDependenciesInfoBuilder_ != null) {
@@ -12651,7 +12651,7 @@ private static final long serialVersionUID = 0L;
      * information about the privacy sandbox SDKs this project consumes
      * </pre>
      *
-     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33;</code>
+     * <code>optional .android_studio.GradleBuildVariant.PrivacySandboxDependenciesInfo privacy_sandbox_dependencies_info = 33 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo, com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfo.Builder, com.google.wireless.android.sdk.stats.GradleBuildVariant.PrivacySandboxDependenciesInfoOrBuilder> 

@@ -55,7 +55,7 @@ private static final long serialVersionUID = 0L;
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    * @return Whether the live field is set.
    */
   @java.lang.Override
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    * @return The live.
    */
   @java.lang.Override
@@ -79,7 +79,7 @@ private static final long serialVersionUID = 0L;
    * Session data around live versus refresh mode
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveModeOrBuilder getLiveOrBuilder() {
@@ -93,7 +93,7 @@ private static final long serialVersionUID = 0L;
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    * @return Whether the rotation field is set.
    */
   @java.lang.Override
@@ -105,7 +105,7 @@ private static final long serialVersionUID = 0L;
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    * @return The rotation.
    */
   @java.lang.Override
@@ -117,7 +117,7 @@ private static final long serialVersionUID = 0L;
    * Session data around 3D rotation
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotationOrBuilder getRotationOrBuilder() {
@@ -131,7 +131,7 @@ private static final long serialVersionUID = 0L;
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    * @return Whether the memory field is set.
    */
   @java.lang.Override
@@ -143,7 +143,7 @@ private static final long serialVersionUID = 0L;
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    * @return The memory.
    */
   @java.lang.Override
@@ -155,7 +155,7 @@ private static final long serialVersionUID = 0L;
    * Session data around memory usage
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemoryOrBuilder getMemoryOrBuilder() {
@@ -169,7 +169,7 @@ private static final long serialVersionUID = 0L;
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    * @return Whether the compose field is set.
    */
   @java.lang.Override
@@ -181,7 +181,7 @@ private static final long serialVersionUID = 0L;
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    * @return The compose.
    */
   @java.lang.Override
@@ -193,7 +193,7 @@ private static final long serialVersionUID = 0L;
    * Session data around compose
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorComposeOrBuilder getComposeOrBuilder() {
@@ -207,7 +207,7 @@ private static final long serialVersionUID = 0L;
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    * @return Whether the system field is set.
    */
   @java.lang.Override
@@ -219,7 +219,7 @@ private static final long serialVersionUID = 0L;
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    * @return The system.
    */
   @java.lang.Override
@@ -231,7 +231,7 @@ private static final long serialVersionUID = 0L;
    * Session data around the system view toggle
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder getSystemOrBuilder() {
@@ -245,7 +245,7 @@ private static final long serialVersionUID = 0L;
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    * @return Whether the gotoDeclaration field is set.
    */
   @java.lang.Override
@@ -257,7 +257,7 @@ private static final long serialVersionUID = 0L;
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    * @return The gotoDeclaration.
    */
   @java.lang.Override
@@ -269,7 +269,7 @@ private static final long serialVersionUID = 0L;
    * Session data around goto declaration
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder() {
@@ -283,7 +283,7 @@ private static final long serialVersionUID = 0L;
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    * @return Whether the attach field is set.
    */
   @java.lang.Override
@@ -295,7 +295,7 @@ private static final long serialVersionUID = 0L;
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    * @return The attach.
    */
   @java.lang.Override
@@ -307,7 +307,7 @@ private static final long serialVersionUID = 0L;
    * Session data around attachment to process
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder() {
@@ -915,7 +915,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      * @return Whether the live field is set.
      */
     public boolean hasLive() {
@@ -926,7 +926,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      * @return The live.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode getLive() {
@@ -941,7 +941,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public Builder setLive(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode value) {
       if (liveBuilder_ == null) {
@@ -961,7 +961,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public Builder setLive(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.Builder builderForValue) {
@@ -979,7 +979,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public Builder mergeLive(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode value) {
       if (liveBuilder_ == null) {
@@ -1003,7 +1003,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public Builder clearLive() {
       if (liveBuilder_ == null) {
@@ -1020,7 +1020,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.Builder getLiveBuilder() {
       bitField0_ |= 0x00000001;
@@ -1032,7 +1032,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveModeOrBuilder getLiveOrBuilder() {
       if (liveBuilder_ != null) {
@@ -1047,7 +1047,7 @@ private static final long serialVersionUID = 0L;
      * Session data around live versus refresh mode
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveModeOrBuilder> 
@@ -1071,7 +1071,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      * @return Whether the rotation field is set.
      */
     public boolean hasRotation() {
@@ -1082,7 +1082,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      * @return The rotation.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation getRotation() {
@@ -1097,7 +1097,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public Builder setRotation(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation value) {
       if (rotationBuilder_ == null) {
@@ -1117,7 +1117,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public Builder setRotation(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.Builder builderForValue) {
@@ -1135,7 +1135,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public Builder mergeRotation(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation value) {
       if (rotationBuilder_ == null) {
@@ -1159,7 +1159,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public Builder clearRotation() {
       if (rotationBuilder_ == null) {
@@ -1176,7 +1176,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.Builder getRotationBuilder() {
       bitField0_ |= 0x00000002;
@@ -1188,7 +1188,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotationOrBuilder getRotationOrBuilder() {
       if (rotationBuilder_ != null) {
@@ -1203,7 +1203,7 @@ private static final long serialVersionUID = 0L;
      * Session data around 3D rotation
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotationOrBuilder> 
@@ -1227,7 +1227,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      * @return Whether the memory field is set.
      */
     public boolean hasMemory() {
@@ -1238,7 +1238,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      * @return The memory.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory getMemory() {
@@ -1253,7 +1253,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public Builder setMemory(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory value) {
       if (memoryBuilder_ == null) {
@@ -1273,7 +1273,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public Builder setMemory(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Builder builderForValue) {
@@ -1291,7 +1291,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public Builder mergeMemory(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory value) {
       if (memoryBuilder_ == null) {
@@ -1315,7 +1315,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public Builder clearMemory() {
       if (memoryBuilder_ == null) {
@@ -1332,7 +1332,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Builder getMemoryBuilder() {
       bitField0_ |= 0x00000004;
@@ -1344,7 +1344,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemoryOrBuilder getMemoryOrBuilder() {
       if (memoryBuilder_ != null) {
@@ -1359,7 +1359,7 @@ private static final long serialVersionUID = 0L;
      * Session data around memory usage
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemoryOrBuilder> 
@@ -1383,7 +1383,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      * @return Whether the compose field is set.
      */
     public boolean hasCompose() {
@@ -1394,7 +1394,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      * @return The compose.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose getCompose() {
@@ -1409,7 +1409,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public Builder setCompose(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose value) {
       if (composeBuilder_ == null) {
@@ -1429,7 +1429,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public Builder setCompose(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.Builder builderForValue) {
@@ -1447,7 +1447,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public Builder mergeCompose(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose value) {
       if (composeBuilder_ == null) {
@@ -1471,7 +1471,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public Builder clearCompose() {
       if (composeBuilder_ == null) {
@@ -1488,7 +1488,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.Builder getComposeBuilder() {
       bitField0_ |= 0x00000008;
@@ -1500,7 +1500,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorComposeOrBuilder getComposeOrBuilder() {
       if (composeBuilder_ != null) {
@@ -1515,7 +1515,7 @@ private static final long serialVersionUID = 0L;
      * Session data around compose
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorComposeOrBuilder> 
@@ -1539,7 +1539,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      * @return Whether the system field is set.
      */
     public boolean hasSystem() {
@@ -1550,7 +1550,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      * @return The system.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode getSystem() {
@@ -1565,7 +1565,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public Builder setSystem(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode value) {
       if (systemBuilder_ == null) {
@@ -1585,7 +1585,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public Builder setSystem(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.Builder builderForValue) {
@@ -1603,7 +1603,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public Builder mergeSystem(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode value) {
       if (systemBuilder_ == null) {
@@ -1627,7 +1627,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public Builder clearSystem() {
       if (systemBuilder_ == null) {
@@ -1644,7 +1644,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.Builder getSystemBuilder() {
       bitField0_ |= 0x00000010;
@@ -1656,7 +1656,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder getSystemOrBuilder() {
       if (systemBuilder_ != null) {
@@ -1671,7 +1671,7 @@ private static final long serialVersionUID = 0L;
      * Session data around the system view toggle
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder> 
@@ -1695,7 +1695,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      * @return Whether the gotoDeclaration field is set.
      */
     public boolean hasGotoDeclaration() {
@@ -1706,7 +1706,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      * @return The gotoDeclaration.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration() {
@@ -1721,7 +1721,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public Builder setGotoDeclaration(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration value) {
       if (gotoDeclarationBuilder_ == null) {
@@ -1741,7 +1741,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public Builder setGotoDeclaration(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder builderForValue) {
@@ -1759,7 +1759,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public Builder mergeGotoDeclaration(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration value) {
       if (gotoDeclarationBuilder_ == null) {
@@ -1783,7 +1783,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public Builder clearGotoDeclaration() {
       if (gotoDeclarationBuilder_ == null) {
@@ -1800,7 +1800,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder getGotoDeclarationBuilder() {
       bitField0_ |= 0x00000020;
@@ -1812,7 +1812,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder() {
       if (gotoDeclarationBuilder_ != null) {
@@ -1827,7 +1827,7 @@ private static final long serialVersionUID = 0L;
      * Session data around goto declaration
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder> 
@@ -1851,7 +1851,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      * @return Whether the attach field is set.
      */
     public boolean hasAttach() {
@@ -1862,7 +1862,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      * @return The attach.
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess getAttach() {
@@ -1877,7 +1877,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public Builder setAttach(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess value) {
       if (attachBuilder_ == null) {
@@ -1897,7 +1897,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public Builder setAttach(
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder builderForValue) {
@@ -1915,7 +1915,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public Builder mergeAttach(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess value) {
       if (attachBuilder_ == null) {
@@ -1939,7 +1939,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public Builder clearAttach() {
       if (attachBuilder_ == null) {
@@ -1956,7 +1956,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder getAttachBuilder() {
       bitField0_ |= 0x00000040;
@@ -1968,7 +1968,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder() {
       if (attachBuilder_ != null) {
@@ -1983,7 +1983,7 @@ private static final long serialVersionUID = 0L;
      * Session data around attachment to process
      * </pre>
      *
-     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder> 

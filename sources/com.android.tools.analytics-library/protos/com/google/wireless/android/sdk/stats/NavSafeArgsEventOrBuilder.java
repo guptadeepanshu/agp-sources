@@ -19,17 +19,17 @@ public interface NavSafeArgsEventOrBuilder extends
   com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext getEventContext();
 
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    * @return Whether the projectMetadata field is set.
    */
   boolean hasProjectMetadata();
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    * @return The projectMetadata.
    */
   com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata getProjectMetadata();
   /**
-   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder getProjectMetadataOrBuilder();
 }

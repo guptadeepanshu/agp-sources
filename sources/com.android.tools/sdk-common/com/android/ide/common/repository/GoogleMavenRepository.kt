@@ -29,6 +29,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.nio.file.Path
 import java.util.HashMap
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 
@@ -166,17 +167,19 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         return packageInfo.findArtifact(artifactId)
     }
 
-    private fun getPackageMap(): MutableMap<String, PackageInfo> {
+    protected open fun getPackageMap(): Map<String, PackageInfo> {
         if (packageMap == null) {
             val map = Maps.newHashMapWithExpectedSize<String, PackageInfo>(28)
-            findData("master-index.xml")?.use { readMasterIndex(it, map) }
+            findData("master-index.xml")?.use {
+                readMasterIndex(it, map) { tag -> PackageInfo(tag) }
+            }
             packageMap = map
         }
 
         return packageMap!!
     }
 
-    private data class ArtifactInfo(val id: String, val versions: String) {
+    protected data class ArtifactInfo(val id: String, val versions: String) {
 
         private val dependencyInfo by lazy { HashMap<Version, List<Dependency>>() }
 
@@ -220,8 +223,11 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         return GoogleMavenRepository::class.java.getResourceAsStream("/versions-offline/$relative")
     }
 
-    private fun readMasterIndex(stream: InputStream, map: MutableMap<String, PackageInfo>) =
-        try {
+    protected fun <T : PackageInfo> readMasterIndex(
+        stream: InputStream,
+        map: MutableMap<String, T>,
+        factory: (String) -> T
+    ) = try {
             stream.use {
                 val parser = KXmlParser()
                 parser.setInput(it, SdkConstants.UTF_8)
@@ -229,7 +235,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                     val eventType = parser.eventType
                     if (eventType == XmlPullParser.END_TAG && parser.depth > 1) {
                         val tag = parser.name
-                        val packageInfo = PackageInfo(tag)
+                        val packageInfo = factory(tag)
                         map[tag] = packageInfo
                     } else if (eventType != XmlPullParser.START_TAG) {
                         continue
@@ -243,16 +249,14 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
             error(e, null)
         }
 
-    private inner class PackageInfo(val pkg: String) {
-        private val artifacts: Map<String, ArtifactInfo> by lazy {
-            val map = HashMap<String, ArtifactInfo>()
-            initializeIndex(map)
-            map
-        }
+    protected open inner class PackageInfo(private val pkg: String) {
+         private val artifacts: Map<String, ArtifactInfo> by lazy {
+            initializeIndex()
+         }
 
-        fun artifacts(): Set<String> = artifacts.values.map { it.id }.toSet()
+        open fun artifacts(): Set<String> = artifacts.values.map { it.id }.toSet()
 
-        fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
+        open fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
 
         fun loadCompileDependencies(id: String, version: Version): List<Dependency> {
             val file = "${pkg.replace('.', '/')}/$id/$version/$id-$version.pom"
@@ -260,12 +264,14 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
             return stream?.use { readCompileDependenciesFromPomFile(stream, file) } ?: emptyList()
         }
 
-        private fun initializeIndex(map: MutableMap<String, ArtifactInfo>) {
+        private fun initializeIndex(): Map<String, ArtifactInfo> {
+            val map = mutableMapOf<String, ArtifactInfo>()
             val stream = findData("${pkg.replace('.', '/')}/group-index.xml")
             stream?.use { readGroupData(stream, map) }
+            return map
         }
 
-        private fun readGroupData(stream: InputStream, map: MutableMap<String, ArtifactInfo>) =
+        protected fun readGroupData(stream: InputStream, map: MutableMap<String, ArtifactInfo>) =
             try {
                 val parser = KXmlParser()
                 parser.setInput(stream, SdkConstants.UTF_8)

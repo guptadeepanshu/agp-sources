@@ -332,14 +332,23 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
 
         override fun configure(task: BundleLibraryClassesJar) {
             super.configure(task)
+            val packageRClass =
+                publishedType == PublishedConfigType.API_ELEMENTS && creationConfig.buildFeatures.androidResources
+
             task.namespace.setDisallowChanges(creationConfig.namespace)
-            task.classes.fromDisallowChanges(
+            task.classes.from(
                 creationConfig
                 .artifacts
                 .forScope(ScopedArtifacts.Scope.PROJECT)
                 .getFinalArtifacts(ScopedArtifact.CLASSES)
             )
-            task.packageRClass.setDisallowChanges(false)
+            if (packageRClass) {
+                task.classes.from(
+                    creationConfig.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR)
+                )
+            }
+            task.classes.disallowChanges()
+            task.packageRClass.setDisallowChanges(packageRClass)
         }
     }
 }

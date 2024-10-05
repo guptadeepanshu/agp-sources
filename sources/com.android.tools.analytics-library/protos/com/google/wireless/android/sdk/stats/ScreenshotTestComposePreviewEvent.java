@@ -1913,7 +1913,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    * @return Whether the previewDiscovery field is set.
    */
   @java.lang.Override
@@ -1925,7 +1925,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    * @return The previewDiscovery.
    */
   @java.lang.Override
@@ -1937,7 +1937,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_DISCOVERY.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscoveryOrBuilder getPreviewDiscoveryOrBuilder() {
@@ -1951,7 +1951,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    * @return Whether the previewRendering field is set.
    */
   @java.lang.Override
@@ -1963,7 +1963,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    * @return The previewRendering.
    */
   @java.lang.Override
@@ -1975,7 +1975,7 @@ private static final long serialVersionUID = 0L;
    * This message is populated when the type is PREVIEW_RENDERING.
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRenderingOrBuilder getPreviewRenderingOrBuilder() {
@@ -2453,7 +2453,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      * @return Whether the previewDiscovery field is set.
      */
     public boolean hasPreviewDiscovery() {
@@ -2464,7 +2464,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      * @return The previewDiscovery.
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery getPreviewDiscovery() {
@@ -2479,7 +2479,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public Builder setPreviewDiscovery(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery value) {
       if (previewDiscoveryBuilder_ == null) {
@@ -2499,7 +2499,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public Builder setPreviewDiscovery(
         com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery.Builder builderForValue) {
@@ -2517,7 +2517,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public Builder mergePreviewDiscovery(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery value) {
       if (previewDiscoveryBuilder_ == null) {
@@ -2541,7 +2541,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public Builder clearPreviewDiscovery() {
       if (previewDiscoveryBuilder_ == null) {
@@ -2558,7 +2558,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery.Builder getPreviewDiscoveryBuilder() {
       bitField0_ |= 0x00000002;
@@ -2570,7 +2570,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscoveryOrBuilder getPreviewDiscoveryOrBuilder() {
       if (previewDiscoveryBuilder_ != null) {
@@ -2585,7 +2585,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_DISCOVERY.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewDiscovery preview_discovery = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscovery.Builder, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewDiscoveryOrBuilder> 
@@ -2609,7 +2609,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      * @return Whether the previewRendering field is set.
      */
     public boolean hasPreviewRendering() {
@@ -2620,7 +2620,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      * @return The previewRendering.
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering getPreviewRendering() {
@@ -2635,7 +2635,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public Builder setPreviewRendering(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering value) {
       if (previewRenderingBuilder_ == null) {
@@ -2655,7 +2655,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public Builder setPreviewRendering(
         com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering.Builder builderForValue) {
@@ -2673,7 +2673,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public Builder mergePreviewRendering(com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering value) {
       if (previewRenderingBuilder_ == null) {
@@ -2697,7 +2697,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public Builder clearPreviewRendering() {
       if (previewRenderingBuilder_ == null) {
@@ -2714,7 +2714,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering.Builder getPreviewRenderingBuilder() {
       bitField0_ |= 0x00000004;
@@ -2726,7 +2726,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRenderingOrBuilder getPreviewRenderingOrBuilder() {
       if (previewRenderingBuilder_ != null) {
@@ -2741,7 +2741,7 @@ private static final long serialVersionUID = 0L;
      * This message is populated when the type is PREVIEW_RENDERING.
      * </pre>
      *
-     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3;</code>
+     * <code>optional .android_studio.ScreenshotTestComposePreviewEvent.PreviewRendering preview_rendering = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRendering.Builder, com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent.PreviewRenderingOrBuilder> 

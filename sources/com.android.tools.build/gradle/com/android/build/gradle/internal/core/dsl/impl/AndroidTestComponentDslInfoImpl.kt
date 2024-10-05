@@ -121,6 +121,6 @@ internal class AndroidTestComponentDslInfoImpl(
         get() = instrumentedTestDelegate.handleProfiling
     override val functionalTest: Provider<Boolean>
         get() = instrumentedTestDelegate.functionalTest
-    override val testLabel: Provider<String?>
+    override val testLabel: Provider<String>
         get() = instrumentedTestDelegate.testLabel
 }

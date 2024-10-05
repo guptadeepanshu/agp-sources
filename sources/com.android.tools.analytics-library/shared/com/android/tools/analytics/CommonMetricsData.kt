@@ -29,7 +29,7 @@ import java.util.regex.Pattern
 
 private const val TRANSLATED = 1
 
-/** Calculates common pieces of metrics data, used in various Android DevTools.  */
+/** Calculates common pieces of metrics data, used in various Android DevTools. */
 object CommonMetricsData {
 
   const val VM_OPTION_XMS = "-Xms"
@@ -57,27 +57,34 @@ object CommonMetricsData {
   val garbageCollectionStatsCache: HashMap<String, GarbageCollectionStatsDiffs> = HashMap()
 
   /**
-   * Detects and returns the OS architecture: x86, x86_64, ppc, arm, or arm on jvm.
-   * This may differ or be equal to the JVM architecture in the sense that a 64-bit
-   * OS can run a 32-bit JVM.
+   * Detects and returns the OS architecture: x86, x86_64, ppc, arm, or arm on jvm. This may differ
+   * or be equal to the JVM architecture in the sense that a 64-bit OS can run a 32-bit JVM.
    */
   @JvmStatic
   val osArchitecture: ProductDetails.CpuArchitecture
     get() {
       val jvmArchitecture = jvmArchitecture
-      val os = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)!!.toLowerCase()
+      val os =
+        Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)!!.toLowerCase()
 
-      // An x86 jvm running on an M1 chip will be translated to ARM using Rosetta. Checking for Rosetta
-      // requires jna. The current version of jna (net.java.dev.jna:jna-5.6.0)  will fail if we're running
+      // An x86 jvm running on an M1 chip will be translated to ARM using Rosetta. Checking for
+      // Rosetta
+      // requires jna. The current version of jna (net.java.dev.jna:jna-5.6.0)  will fail if we're
+      // running
       // on an arm jvm. Only call isRosetta if we're using an x86 jvm
-      if (jvmArchitecture == ProductDetails.CpuArchitecture.X86_64 && os.startsWith("mac") && isRosetta()) {
+      if (
+        jvmArchitecture == ProductDetails.CpuArchitecture.X86_64 &&
+          os.startsWith("mac") &&
+          isRosetta()
+      ) {
         return ProductDetails.CpuArchitecture.X86_ON_ARM
       }
 
       if (jvmArchitecture == ProductDetails.CpuArchitecture.X86) {
 
         if (os.startsWith("win")) {
-          val w6432 = Environment.instance.getVariable(Environment.EnvironmentVariable.PROCESSOR_ARCHITEW6432)
+          val w6432 =
+            Environment.instance.getVariable(Environment.EnvironmentVariable.PROCESSOR_ARCHITEW6432)
           // This is the misleading case: the JVM is 32-bit but the OS
           // might be either 32 or 64. We can't tell just from this
           // property.
@@ -90,8 +97,7 @@ object CommonMetricsData {
           if (w6432 != null && w6432.contains("64")) {
             return ProductDetails.CpuArchitecture.X86_64
           }
-        }
-        else if (os.startsWith("linux")) {
+        } else if (os.startsWith("linux")) {
           val s = Environment.instance.getVariable(Environment.EnvironmentVariable.HOSTTYPE)
           return cpuArchitectureFromString(s)
         }
@@ -100,7 +106,8 @@ object CommonMetricsData {
     }
 
   /**
-   * Gets the JVM Architecture, NOTE this might not be the same as OS architecture. See [ ][.getOsArchitecture] if OS architecture is needed.
+   * Gets the JVM Architecture, NOTE this might not be the same as OS architecture. See
+   * [ ][.getOsArchitecture] if OS architecture is needed.
    */
   @JvmStatic
   val jvmArchitecture: ProductDetails.CpuArchitecture
@@ -109,7 +116,7 @@ object CommonMetricsData {
       return cpuArchitectureFromString(arch)
     }
 
-  /** Gets a normalized version of the os name that this code is running on.  */
+  /** Gets a normalized version of the os name that this code is running on. */
   // Unknown -- send it verbatim so we can see it
   // but protect against arbitrarily long values
   @JvmStatic
@@ -128,7 +135,7 @@ object CommonMetricsData {
         osLower.startsWith("win") -> os = OS_NAME_WINDOWS
         osLower.startsWith("linux") -> {
           if (File("/dev/.cros_milestone").exists()) {
-           os = OS_NAME_CHROMIUM
+            os = OS_NAME_CHROMIUM
           } else {
             os = OS_NAME_LINUX
           }
@@ -138,9 +145,7 @@ object CommonMetricsData {
       return os
     }
 
-  /**
-   * Extracts the major os version that this code is running on in the form of '[0-9]+\.[0-9]+'
-   */
+  /** Extracts the major os version that this code is running on in the form of '[0-9]+\.[0-9]+' */
   @JvmStatic
   val majorOsVersion: String?
     get() {
@@ -159,16 +164,17 @@ object CommonMetricsData {
       return null
     }
 
-  /** Gets information about the jvm this code is running in.  */
+  /** Gets information about the jvm this code is running in. */
   @JvmStatic
   val jvmDetails: JvmDetails
     get() {
       val runtime = HostData.runtimeBean!!
 
-      val builder = JvmDetails.newBuilder()
-        .setName(Strings.nullToEmpty(runtime.vmName))
-        .setVendor(Strings.nullToEmpty(runtime.vmVendor))
-        .setVersion(Strings.nullToEmpty(runtime.vmVersion))
+      val builder =
+        JvmDetails.newBuilder()
+          .setName(Strings.nullToEmpty(runtime.vmName))
+          .setVendor(Strings.nullToEmpty(runtime.vmVendor))
+          .setVersion(Strings.nullToEmpty(runtime.vmVersion))
 
       for (vmOption in runtime.inputArguments) {
         parseVmOption(vmOption, builder)
@@ -177,7 +183,7 @@ object CommonMetricsData {
       return builder.build()
     }
 
-  /** Gets stats about the current process java runtime.  */
+  /** Gets stats about the current process java runtime. */
   @JvmStatic
   val javaProcessStats: JavaProcessStats
     get() {
@@ -194,8 +200,8 @@ object CommonMetricsData {
     }
 
   /**
-   * Gets stats about the current process' Garbage Collectors. Instead of returning cumulative
-   * data since process was started, it reports stats since the last call to this method.
+   * Gets stats about the current process' Garbage Collectors. Instead of returning cumulative data
+   * since process was started, it reports stats since the last call to this method.
    */
   @JvmStatic
   @VisibleForTesting
@@ -221,18 +227,17 @@ object CommonMetricsData {
             .setName(gc.name)
             .setGcCollections(collectionsDiff)
             .setGcTime(timeDiff)
-            .build())
+            .build()
+        )
       }
       return stats
     }
 
-  /** Used to calculate diffs between different reports of Garbage Collection stats.  */
+  /** Used to calculate diffs between different reports of Garbage Collection stats. */
   @VisibleForTesting
   class GarbageCollectionStatsDiffs {
-    @Volatile
-    var collections: Long = 0
-    @Volatile
-    var time: Long = 0
+    @Volatile var collections: Long = 0
+    @Volatile var time: Long = 0
   }
 
   /**
@@ -245,9 +250,11 @@ object CommonMetricsData {
       return ProductDetails.CpuArchitecture.UNKNOWN_CPU_ARCHITECTURE
     }
 
-    if (cpuArchitecture.equals("x86_64", ignoreCase = true)
-        || cpuArchitecture.equals("ia64", ignoreCase = true)
-        || cpuArchitecture.equals("amd64", ignoreCase = true)) {
+    if (
+      cpuArchitecture.equals("x86_64", ignoreCase = true) ||
+        cpuArchitecture.equals("ia64", ignoreCase = true) ||
+        cpuArchitecture.equals("amd64", ignoreCase = true)
+    ) {
       return ProductDetails.CpuArchitecture.X86_64
     }
 
@@ -259,13 +266,12 @@ object CommonMetricsData {
       return ProductDetails.CpuArchitecture.ARM
     }
 
-    return if (cpuArchitecture.length == 4
-               && cpuArchitecture[0] == 'i'
-               && cpuArchitecture.indexOf("86") == 2) {
+    return if (
+      cpuArchitecture.length == 4 && cpuArchitecture[0] == 'i' && cpuArchitecture.indexOf("86") == 2
+    ) {
       // Any variation of iX86 counts as x86 (i386, i486, i686).
       ProductDetails.CpuArchitecture.X86
-    }
-    else ProductDetails.CpuArchitecture.UNKNOWN_CPU_ARCHITECTURE
+    } else ProductDetails.CpuArchitecture.UNKNOWN_CPU_ARCHITECTURE
   }
 
   @JvmStatic
@@ -287,31 +293,37 @@ object CommonMetricsData {
     }
   }
 
-  /** Parses known VM options into a [JvmDetails.Builder]  */
+  /** Parses known VM options into a [JvmDetails.Builder] */
   @JvmStatic
-  private fun parseVmOption(
-    vmOption: String, builder: JvmDetails.Builder) {
+  private fun parseVmOption(vmOption: String, builder: JvmDetails.Builder) {
     when {
-      vmOption.startsWith(VM_OPTION_XMS) -> builder.minimumHeapSize = parseVmOptionSize(vmOption.substring(VM_OPTION_XMS.length))
-      vmOption.startsWith(VM_OPTION_XMX) -> builder.maximumHeapSize = parseVmOptionSize(vmOption.substring(VM_OPTION_XMX.length))
-      vmOption.startsWith(VM_OPTION_MAX_PERM_SIZE) -> builder.maximumPermanentSpaceSize = parseVmOptionSize(
-        vmOption.substring(VM_OPTION_MAX_PERM_SIZE.length))
-      vmOption.startsWith(VM_OPTION_RESERVED_CODE_CACHE_SIZE) -> builder.maximumCodeCacheSize = parseVmOptionSize(
-        vmOption.substring(VM_OPTION_RESERVED_CODE_CACHE_SIZE.length))
-      vmOption.startsWith(VM_OPTION_SOFT_REF_LRU_POLICY_MS_PER_MB) -> builder.softReferenceLruPolicy = parseVmOptionSize(
-        vmOption.substring(VM_OPTION_SOFT_REF_LRU_POLICY_MS_PER_MB.length))
+      vmOption.startsWith(VM_OPTION_XMS) ->
+        builder.minimumHeapSize = parseVmOptionSize(vmOption.substring(VM_OPTION_XMS.length))
+      vmOption.startsWith(VM_OPTION_XMX) ->
+        builder.maximumHeapSize = parseVmOptionSize(vmOption.substring(VM_OPTION_XMX.length))
+      vmOption.startsWith(VM_OPTION_MAX_PERM_SIZE) ->
+        builder.maximumPermanentSpaceSize =
+          parseVmOptionSize(vmOption.substring(VM_OPTION_MAX_PERM_SIZE.length))
+      vmOption.startsWith(VM_OPTION_RESERVED_CODE_CACHE_SIZE) ->
+        builder.maximumCodeCacheSize =
+          parseVmOptionSize(vmOption.substring(VM_OPTION_RESERVED_CODE_CACHE_SIZE.length))
+      vmOption.startsWith(VM_OPTION_SOFT_REF_LRU_POLICY_MS_PER_MB) ->
+        builder.softReferenceLruPolicy =
+          parseVmOptionSize(vmOption.substring(VM_OPTION_SOFT_REF_LRU_POLICY_MS_PER_MB.length))
     }
 
     when (vmOption) {
-      "-XX:+UseConcMarkSweepGC" -> builder.garbageCollector = JvmDetails.GarbageCollector.CONCURRENT_MARK_SWEEP_GC
+      "-XX:+UseConcMarkSweepGC" ->
+        builder.garbageCollector = JvmDetails.GarbageCollector.CONCURRENT_MARK_SWEEP_GC
       "-XX:+UseParallelGC" -> builder.garbageCollector = JvmDetails.GarbageCollector.PARALLEL_GC
-      "-XX:+UseParallelOldGC" -> builder.garbageCollector = JvmDetails.GarbageCollector.PARALLEL_OLD_GC
+      "-XX:+UseParallelOldGC" ->
+        builder.garbageCollector = JvmDetails.GarbageCollector.PARALLEL_OLD_GC
       "-XX:+UseSerialGC" -> builder.garbageCollector = JvmDetails.GarbageCollector.SERIAL_GC
       "-XX:+UseG1GC" -> builder.garbageCollector = JvmDetails.GarbageCollector.SERIAL_GC
     }
   }
 
-  /** Parses VM options size formatted as "[0-9]+[GgMmKk]?" into a long.  */
+  /** Parses VM options size formatted as "[0-9]+[GgMmKk]?" into a long. */
   @VisibleForTesting
   @JvmStatic
   fun parseVmOptionSize(vmOptionSize: String): Long {
@@ -328,17 +340,20 @@ object CommonMetricsData {
           val digits = vmOptionSize.substring(0, i)
           val value = java.lang.Long.parseLong(digits)
           return when (c) {
-            't', 'T' -> value * TERABYTE
-            'g', 'G' -> value * GIGABYTE
-            'm', 'M' -> value * MEGABYTE
-            'k', 'K' -> value * KILOBYTE
+            't',
+            'T' -> value * TERABYTE
+            'g',
+            'G' -> value * GIGABYTE
+            'm',
+            'M' -> value * MEGABYTE
+            'k',
+            'K' -> value * KILOBYTE
             else -> INVALID_POSTFIX.toLong()
           }
         }
       }
       return java.lang.Long.parseLong(vmOptionSize)
-    }
-    catch (e: NumberFormatException) {
+    } catch (e: NumberFormatException) {
       return INVALID_NUMBER.toLong()
     }
   }
@@ -348,53 +363,57 @@ object CommonMetricsData {
  * Determines if the current process is being translated to ARM by Rosetta.
  *
  * Processes running under Rosetta translation return 1 when sysctlbyname is called with
- * sysctl.proc_translated
- * ref: https://developer.apple.com/documentation/apple_silicon/about_the_rosetta_translation_environment
+ * sysctl.proc_translated ref:
+ * https://developer.apple.com/documentation/apple_silicon/about_the_rosetta_translation_environment
  */
-fun isRosetta() : Boolean {
-  val clazz = try {
-    @Suppress("UNCHECKED_CAST")
-    Class.forName("com.sun.jna.platform.mac.SystemB") as? Class<Library> ?: return false
-  }
-  catch (e: ClassNotFoundException) {
-    return false
-  }
-  catch(e: LinkageError) {
-    return false
-  }
+fun isRosetta(): Boolean {
+  val clazz =
+    try {
+      @Suppress("UNCHECKED_CAST")
+      Class.forName("com.sun.jna.platform.mac.SystemB") as? Class<Library> ?: return false
+    } catch (e: ClassNotFoundException) {
+      return false
+    } catch (e: LinkageError) {
+      return false
+    }
 
-  val instanceField = try {
-    clazz.getField("INSTANCE")
-  }
-  catch (e: NoSuchFieldException) {
-    return false
-  }
+  val instanceField =
+    try {
+      clazz.getField("INSTANCE")
+    } catch (e: NoSuchFieldException) {
+      return false
+    }
 
-  val instance = try {
-    instanceField.get(null)
-  }
-  catch (e: IllegalArgumentException) {
-    return false
-  }
+  val instance =
+    try {
+      instanceField.get(null)
+    } catch (e: IllegalArgumentException) {
+      return false
+    }
 
-  val sysctlbyname = try {
-    clazz.getMethod("sysctlbyname", String::class.java, Pointer::class.java, IntByReference::class.java, Pointer::class.java, Int::class.java)
-  }
-  catch(e: NoSuchMethodException) {
-    return false
-  }
+  val sysctlbyname =
+    try {
+      clazz.getMethod(
+        "sysctlbyname",
+        String::class.java,
+        Pointer::class.java,
+        IntByReference::class.java,
+        Pointer::class.java,
+        Int::class.java,
+      )
+    } catch (e: NoSuchMethodException) {
+      return false
+    }
 
   val memory = Memory(4)
   val retSize = IntByReference(4)
 
-  val errorCode = try {
-    sysctlbyname.invoke(instance, "sysctl.proc_translated", memory, retSize, null, 0)
-  }
-  catch(e: Exception) {
-    return false
-  }
+  val errorCode =
+    try {
+      sysctlbyname.invoke(instance, "sysctl.proc_translated", memory, retSize, null, 0)
+    } catch (e: Exception) {
+      return false
+    }
 
   return errorCode == 0 && memory.getInt(0) == TRANSLATED
 }
-
-

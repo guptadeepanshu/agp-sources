@@ -178,10 +178,9 @@ private fun addToElement(
     to: XmlElement
 ) {
     to.setAttribute(elementAttribute.toCamelCase(), value)
-    val xmlAttribute = XmlAttribute(
-        to,
-        to.getAttributeNode(elementAttribute.toCamelCase()), null
-    )
+    val xmlAttribute = to.getAttributeNode(elementAttribute.toCamelCase())
+        ?.let { XmlAttribute(to, it, null) }
+        ?: throw IllegalStateException("Cannot get attribute ${elementAttribute.toCamelCase()} on element ${to.printPosition()}")
     recordElementInjectionAction(actionRecorder, to, xmlAttribute)
 }
 

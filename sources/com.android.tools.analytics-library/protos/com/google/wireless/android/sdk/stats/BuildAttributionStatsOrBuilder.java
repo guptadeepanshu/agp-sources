@@ -12,7 +12,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    * @return Whether the buildAttributionAnalyzersData field is set.
    */
   boolean hasBuildAttributionAnalyzersData();
@@ -21,7 +21,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    * @return The buildAttributionAnalyzersData.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersData getBuildAttributionAnalyzersData();
@@ -30,7 +30,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Data from build attribution analyzers
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1;</code>
+   * <code>optional .android_studio.BuildAttributionAnalyzersData build_attribution_analyzers_data = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionAnalyzersDataOrBuilder getBuildAttributionAnalyzersDataOrBuilder();
 
@@ -39,7 +39,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    * @return Whether the buildAttributionPerformanceStats field is set.
    */
   boolean hasBuildAttributionPerformanceStats();
@@ -48,7 +48,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    * @return The buildAttributionPerformanceStats.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats getBuildAttributionPerformanceStats();
@@ -57,7 +57,7 @@ public interface BuildAttributionStatsOrBuilder extends
    * Stats about the performance of build attribution
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPerformanceStats build_attribution_performance_stats = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStatsOrBuilder getBuildAttributionPerformanceStatsOrBuilder();
 

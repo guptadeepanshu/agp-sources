@@ -117,7 +117,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    * @return Whether the transform field is set.
    */
   boolean hasTransform();
@@ -128,7 +128,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    * @return The transform.
    */
   com.google.wireless.android.sdk.stats.GradleTransformExecution getTransform();
@@ -139,7 +139,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * TASK_TRANSFORM.
    * </pre>
    *
-   * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
+   * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleTransformExecutionOrBuilder getTransformOrBuilder();
 
@@ -149,7 +149,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    * @return Whether the task field is set.
    */
   boolean hasTask();
@@ -159,7 +159,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    * @return The task.
    */
   com.google.wireless.android.sdk.stats.GradleTaskExecution getTask();
@@ -169,7 +169,7 @@ public interface GradleBuildProfileSpanOrBuilder extends
    * Only used when executionType is TASK_EXECUTION
    * </pre>
    *
-   * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
+   * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleTaskExecutionOrBuilder getTaskOrBuilder();
 

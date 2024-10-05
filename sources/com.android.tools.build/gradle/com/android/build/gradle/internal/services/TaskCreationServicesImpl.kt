@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.internal.lint.LintFromMaven
 import org.gradle.api.Action
 import org.gradle.api.Named
+import org.gradle.api.Task
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.ConfigurableFileCollection
@@ -59,8 +60,8 @@ class TaskCreationServicesImpl(projectServices: ProjectServices) : BaseServicesI
     override fun fileCollection(vararg files: Any): ConfigurableFileCollection =
         projectServices.objectFactory.fileCollection().from(*files)
 
-    override fun initializeAapt2Input(aapt2Input: Aapt2Input) {
-        projectServices.initializeAapt2Input(aapt2Input)
+    override fun initializeAapt2Input(aapt2Input: Aapt2Input, task: Task) {
+        projectServices.initializeAapt2Input(aapt2Input, task)
     }
 
     override fun createEmptyTask(name: String): TaskProvider<*> =

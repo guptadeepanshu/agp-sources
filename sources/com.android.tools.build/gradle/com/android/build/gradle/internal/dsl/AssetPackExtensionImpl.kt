@@ -22,7 +22,7 @@ import org.gradle.api.Action
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
-abstract class AssetPackExtensionImpl @Inject constructor(objectFactory: ObjectFactory) : AssetPackExtension{
+abstract class AssetPackExtensionImpl @Inject constructor(objectFactory: ObjectFactory) : AssetPackExtension {
     override val dynamicDelivery: DynamicDelivery = objectFactory.newInstance(
         DynamicDeliveryImpl::class.java)
 

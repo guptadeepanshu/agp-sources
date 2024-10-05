@@ -51,16 +51,22 @@ import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.LibraryVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
+
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
-import java.util.Collection;
-import javax.inject.Inject;
+
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.api.configuration.BuildFeatures;
+import org.gradle.api.internal.plugins.software.SoftwareType;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
+
+import java.util.Collection;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 /** Gradle plugin class for 'library' projects. */
 public class LibraryPlugin
@@ -77,6 +83,14 @@ public class LibraryPlugin
                 LibraryVariantDslInfo,
                 LibraryCreationConfig,
                 LibraryVariant> {
+
+    @SoftwareType(
+            name = "androidLibrary",
+            modelPublicType = com.android.build.gradle.LibraryExtension.class)
+    public com.android.build.gradle.LibraryExtension getAndroidLibrary() {
+        return ((com.android.build.gradle.LibraryExtension)
+                Objects.requireNonNull(project).getExtensions().getByName("android"));
+    }
 
     @Inject
     public LibraryPlugin(
@@ -122,6 +136,9 @@ public class LibraryPlugin
                         libraryExtension,
                         forUnitTesting);
 
+        GradleBuildProject.Builder stats =
+                getConfiguratorService().getProjectBuilder(project.getPath());
+
         if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
             // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
             Class<LibraryExtension> instanceType =
@@ -141,7 +158,8 @@ public class LibraryPlugin
                                                     buildOutputs,
                                                     dslContainers.getSourceSetManager(),
                                                     extraModelInfo,
-                                                    libraryExtension);
+                                                    libraryExtension,
+                                                    stats);
             project.getExtensions()
                     .add(
                             com.android.build.gradle.LibraryExtension.class,
@@ -163,7 +181,8 @@ public class LibraryPlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                libraryExtension);
+                                libraryExtension,
+                                stats);
         initExtensionFromSettings(android);
 
         return new ExtensionData<>(android, libraryExtension, bootClasspathConfig);

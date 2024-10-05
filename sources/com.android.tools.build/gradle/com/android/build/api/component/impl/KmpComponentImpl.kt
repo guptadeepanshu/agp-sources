@@ -19,6 +19,7 @@ package com.android.build.api.component.impl
 import com.android.SdkConstants
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
 import com.android.build.api.component.impl.features.InstrumentationCreationConfigImpl
 import com.android.build.api.component.impl.features.PrivacySandboxCreationConfigImpl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
@@ -32,14 +33,17 @@ import com.android.build.api.variant.ManifestFiles
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.SourceDirectories
 import com.android.build.api.variant.impl.AndroidResourcesImpl
+import com.android.build.api.variant.impl.DirectoryEntries
 import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.KotlinMultiplatformFlatSourceDirectoriesImpl
+import com.android.build.api.variant.impl.KotlinMultiplatformResSourceDirectoriesImpl
 import com.android.build.api.variant.impl.LayeredSourceDirectoriesImpl
 import com.android.build.api.variant.impl.ManifestFilesImpl
 import com.android.build.api.variant.impl.ProviderBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.SourceType
 import com.android.build.api.variant.impl.SourcesImpl
+import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
@@ -136,12 +140,14 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         get() = dslInfo.minSdkVersion
 
     final override val useBuiltInKotlinSupport = false
+    final override val useBuiltInKaptSupport = false
 
     override val sources = KmpSourcesImpl(
         dslInfo,
         internalServices,
         manifestFile,
-        androidKotlinCompilation
+        androidKotlinCompilation,
+        buildFeatures
     )
 
     final override fun getJavaClasspath(
@@ -207,10 +213,32 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
 
     override val lifecycleTasks = LifecycleTasksImpl()
 
-    // Unsupported features
+    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
+        if (buildFeatures.androidResources) {
+            AndroidResourcesCreationConfigImpl(
+                this,
+                dslInfo,
+                dslInfo.androidResourcesDsl!!,
+                internalServices,
+            )
+        } else {
+            null
+        }
+    }
 
-    override val androidResources: AndroidResourcesImpl? = null
-    override val androidResourcesCreationConfig: AndroidResourcesCreationConfig? = null
+    override val androidResources: AndroidResourcesImpl? by lazy(LazyThreadSafetyMode.NONE) {
+        if (buildFeatures.androidResources) {
+            initializeAaptOptionsFromDsl(
+                dslInfo.androidResourcesDsl!!.androidResources,
+                buildFeatures,
+                internalServices,
+            )
+        } else {
+            null
+        }
+    }
+
+    // Unsupported features
     override val resValuesCreationConfig: ResValuesCreationConfig? = null
     override val buildConfigCreationConfig: BuildConfigCreationConfig? = null
     override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig? = null
@@ -239,7 +267,8 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         dslInfo: KmpComponentDslInfo,
         variantServices: VariantServices,
         manifestFile: File,
-        compilation: KotlinMultiplatformAndroidCompilation
+        compilation: KotlinMultiplatformAndroidCompilation,
+        buildFeatures: BuildFeatureValues
     ): InternalSources {
 
         override val java = if (dslInfo.withJava) {
@@ -273,6 +302,15 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
             compilation = compilation
         )
 
+        override val res = if (buildFeatures.androidResources) {
+            KotlinMultiplatformResSourceDirectoriesImpl(
+                name = SourceType.RES.folder,
+                variantServices = variantServices,
+                variantDslFilters = PatternSet(),
+                compilation = compilation
+            )
+        } else null
+
         override fun resources(action: (FlatSourceDirectoriesImpl) -> Unit) {
             action(resources)
         }
@@ -283,6 +321,10 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
 
         override fun java(action: (FlatSourceDirectoriesImpl) -> Unit) {
             java?.let(action)
+        }
+
+        override fun res(action: (LayeredSourceDirectoriesImpl) -> Unit) {
+            res?.let(action)
         }
 
         override val manifestFile: Provider<File> = variantServices.provider {
@@ -301,8 +343,6 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         override fun getByName(name: String): SourceDirectories.Flat = extras.maybeCreate(name)
 
         // Not supported
-
-        override val res = null
         override val assets = null
         override val jniLibs = null
         override val shaders = null
@@ -314,7 +354,6 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
 
         override fun aidl(action: (FlatSourceDirectoriesImpl) -> Unit) {}
         override fun renderscript(action: (FlatSourceDirectoriesImpl) -> Unit) {}
-        override fun res(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
         override fun assets(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
         override fun jniLibs(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
         override fun shaders(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
@@ -334,6 +373,8 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
     }
 
     open fun syncAndroidAndKmpClasspathAndSources() {
+        val projectDir = services.projectInfo.projectDirectory
+
         artifacts
             .forScope(ScopedArtifacts.Scope.PROJECT)
             .getScopedArtifactsContainer(ScopedArtifact.CLASSES)
@@ -350,7 +391,6 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
 
         // Include all kotlin sourceSets (the ones added directly to the compilation and the ones
         // that added transitively through a dependsOn dependency).
-
         sources.kotlin.addStaticSources(
             services.provider {
                 androidKotlinCompilation.allKotlinSourceSets.flatMap { sourceSet ->
@@ -380,7 +420,7 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
                 }
             }
         )
-        val projectDir = services.projectInfo.projectDirectory
+
         sources.resources.addStaticSources(
             services.provider {
                 androidKotlinCompilation.allKotlinSourceSets.map { sourceSet ->
@@ -388,6 +428,25 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
                         name = "Java resources",
                         elements = sourceSet.resources.sourceDirectories.getDirectories(projectDir),
                         filter = PatternSet().exclude("**/*.java", "**/*.kt"),
+                    )
+                }
+            }
+        )
+
+        sources.res?.addStaticSources(
+            services.provider {
+                // only add androidMain source set resources instead of for all source sets
+                // in the compilation (e.g. commonMain and any intermediate source set)
+                androidKotlinCompilation.defaultSourceSet.let { sourceSet ->
+                    DirectoryEntries(
+                        sourceSet.name,
+                        sourceSet.resources.srcDirs.map { srcDir ->
+                            FileBasedDirectoryEntryImpl(
+                                name = sourceSet.name,
+                                // Android resources are located under androidMain/res
+                                directory = File(srcDir.parentFile, "res")
+                            )
+                        }.toMutableList()
                     )
                 }
             }

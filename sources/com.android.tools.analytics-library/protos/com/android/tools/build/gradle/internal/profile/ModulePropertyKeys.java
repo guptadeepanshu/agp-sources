@@ -92,6 +92,10 @@ public enum ModulePropertyKeys
    * <code>MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE = 20;</code>
    */
   MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE(20),
+  /**
+   * <code>MODULE_KMP_ANDROID_RESOURCES_ENABLED = 21;</code>
+   */
+  MODULE_KMP_ANDROID_RESOURCES_ENABLED(21),
   UNRECOGNIZED(-1),
   ;
 
@@ -179,6 +183,10 @@ public enum ModulePropertyKeys
    * <code>MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE = 20;</code>
    */
   public static final int MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE_VALUE = 20;
+  /**
+   * <code>MODULE_KMP_ANDROID_RESOURCES_ENABLED = 21;</code>
+   */
+  public static final int MODULE_KMP_ANDROID_RESOURCES_ENABLED_VALUE = 21;
 
 
   public final int getNumber() {
@@ -226,6 +234,7 @@ public enum ModulePropertyKeys
       case 18: return MODULE_D8_DEX_STARTUP_OPTIMIZATION;
       case 19: return MODULE_ANDROID_PRIVACY_SANDBOX_R8_OPTIMIZATION;
       case 20: return MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE;
+      case 21: return MODULE_KMP_ANDROID_RESOURCES_ENABLED;
       default: return null;
     }
   }

@@ -18,7 +18,7 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.NamespaceRewriter
 import com.android.build.gradle.internal.services.SymbolTableBuildService
@@ -123,7 +123,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
             .addAll(dependencySymbolTables.flatMap { it.symbols.values() }.toSet()).build()
     }
 
-    class CreationAction(val creationConfig: FusedLibraryVariantScope) :
+    class CreationAction(val creationConfig: FusedLibraryGlobalScope) :
         AndroidVariantTaskCreationAction<FusedLibraryClassesRewriteTask>() {
 
         override val name: String

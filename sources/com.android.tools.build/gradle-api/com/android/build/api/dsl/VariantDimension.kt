@@ -17,6 +17,7 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
+import org.gradle.declarative.dsl.model.annotations.Adding
 import java.io.File
 
 /**
@@ -200,6 +201,7 @@ interface VariantDimension {
      * @param name the name of the field
      * @param value the value of the field
      */
+    @Adding
     fun buildConfigField(type: String, name: String, value: String)
 
     /**

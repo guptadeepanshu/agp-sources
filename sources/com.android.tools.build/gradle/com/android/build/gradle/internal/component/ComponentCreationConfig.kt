@@ -77,6 +77,7 @@ interface ComponentCreationConfig : ComponentIdentity {
     val minSdk: AndroidVersion
 
     val useBuiltInKotlinSupport: Boolean
+    val useBuiltInKaptSupport: Boolean
 
     // ---------------------------------------------------------------------------------------------
     // OPTIONAL FEATURES
@@ -153,7 +154,16 @@ interface ComponentCreationConfig : ComponentIdentity {
      * Returns the Kotlinc output directory if built-in Kotlin support is enabled, or null if not.
      */
     fun getBuiltInKotlincOutput(): Provider<Directory>? =
-        artifacts.get(InternalArtifactType.KOTLINC).takeIf { useBuiltInKotlinSupport }
+        artifacts.get(InternalArtifactType.BUILT_IN_KOTLINC).takeIf { useBuiltInKotlinSupport }
+
+    /**
+     * Returns the directory for the [internalArtifactType] if built-in KAPT support is enabled, or
+     * null if not.
+     */
+    fun getBuiltInKaptArtifact(
+        internalArtifactType: InternalArtifactType<Directory>
+    ): Provider<Directory>? =
+        artifacts.get(internalArtifactType).takeIf { useBuiltInKaptSupport }
 
     // ---------------------------------------------------------------------------------------------
     // LEGACY SUPPORT

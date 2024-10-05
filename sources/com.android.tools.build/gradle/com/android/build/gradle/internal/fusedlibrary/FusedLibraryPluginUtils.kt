@@ -139,3 +139,16 @@ fun configureElements(
         }
     }
 }
+
+
+internal fun Configuration.failForDatabindingDependencies() {
+    resolutionStrategy { resolutionStrategy ->
+            resolutionStrategy.eachDependency {
+                if (it.requested.group == "androidx.databinding"
+                    || it.requested.group == "com.android.databinding"
+                ) {
+                    error("Fused Library plugin does not allow dependencies with databinding.")
+                }
+            }
+    }
+}

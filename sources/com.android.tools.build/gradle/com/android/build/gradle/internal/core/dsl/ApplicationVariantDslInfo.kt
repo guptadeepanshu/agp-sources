@@ -41,9 +41,9 @@ interface ApplicationVariantDslInfo:
      * or, if not, it could be coming from the manifest. A suffix may be specified by the build
      * type.
      *
-     * @return the version name or null if none defined
+     * @return the version name or "" if none defined
      */
-    val versionName: Provider<String?>
+    val versionName: Provider<String>
 
     /**
      * Returns the version code for this variant. This could be specified by the product flavors,
@@ -51,7 +51,7 @@ interface ApplicationVariantDslInfo:
      *
      * @return the version code or -1 if there was none defined.
      */
-    val versionCode: Provider<Int?>
+    val versionCode: Provider<Int>
 
     val isWearAppUnbundled: Boolean?
 

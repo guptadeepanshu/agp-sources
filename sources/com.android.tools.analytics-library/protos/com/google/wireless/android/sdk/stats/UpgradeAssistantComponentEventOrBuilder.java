@@ -157,7 +157,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    * @return Whether the componentInfo field is set.
    */
   boolean hasComponentInfo();
@@ -166,7 +166,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    * @return The componentInfo.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo getComponentInfo();
@@ -175,7 +175,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the component involved in the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfoOrBuilder getComponentInfoOrBuilder();
 
@@ -184,7 +184,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    * @return Whether the eventInfo field is set.
    */
   boolean hasEventInfo();
@@ -193,7 +193,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    * @return The eventInfo.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo getEventInfo();
@@ -202,7 +202,7 @@ public interface UpgradeAssistantComponentEventOrBuilder extends
    * Information about the event.
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
+   * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfoOrBuilder getEventInfoOrBuilder();
 }

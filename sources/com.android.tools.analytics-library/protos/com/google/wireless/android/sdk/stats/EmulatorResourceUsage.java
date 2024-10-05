@@ -337,7 +337,7 @@ private static final long serialVersionUID = 0L;
   public static final int MAIN_LOOP_SLICE_FIELD_NUMBER = 2;
   private com.google.wireless.android.sdk.stats.CpuTimeSlice mainLoopSlice_;
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    * @return Whether the mainLoopSlice field is set.
    */
   @java.lang.Override
@@ -345,7 +345,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    * @return The mainLoopSlice.
    */
   @java.lang.Override
@@ -353,7 +353,7 @@ private static final long serialVersionUID = 0L;
     return mainLoopSlice_ == null ? com.google.wireless.android.sdk.stats.CpuTimeSlice.getDefaultInstance() : mainLoopSlice_;
   }
   /**
-   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+   * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getMainLoopSliceOrBuilder() {
@@ -482,7 +482,7 @@ private static final long serialVersionUID = 0L;
   public static final int MEMORY_USAGE_FIELD_NUMBER = 6;
   private com.google.wireless.android.sdk.stats.EmulatorMemoryUsage memoryUsage_;
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    * @return Whether the memoryUsage field is set.
    */
   @java.lang.Override
@@ -490,7 +490,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    * @return The memoryUsage.
    */
   @java.lang.Override
@@ -498,7 +498,7 @@ private static final long serialVersionUID = 0L;
     return memoryUsage_ == null ? com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.getDefaultInstance() : memoryUsage_;
   }
   /**
-   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+   * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder getMemoryUsageOrBuilder() {
@@ -508,7 +508,7 @@ private static final long serialVersionUID = 0L;
   public static final int GRAPHICS_RESOURCE_USAGE_FIELD_NUMBER = 7;
   private com.google.wireless.android.sdk.stats.GraphicsResourceUsage graphicsResourceUsage_;
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    * @return Whether the graphicsResourceUsage field is set.
    */
   @java.lang.Override
@@ -516,7 +516,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    * @return The graphicsResourceUsage.
    */
   @java.lang.Override
@@ -524,7 +524,7 @@ private static final long serialVersionUID = 0L;
     return graphicsResourceUsage_ == null ? com.google.wireless.android.sdk.stats.GraphicsResourceUsage.getDefaultInstance() : graphicsResourceUsage_;
   }
   /**
-   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+   * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder getGraphicsResourceUsageOrBuilder() {
@@ -1244,14 +1244,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuTimeSlice, com.google.wireless.android.sdk.stats.CpuTimeSlice.Builder, com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder> mainLoopSliceBuilder_;
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      * @return Whether the mainLoopSlice field is set.
      */
     public boolean hasMainLoopSlice() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      * @return The mainLoopSlice.
      */
     public com.google.wireless.android.sdk.stats.CpuTimeSlice getMainLoopSlice() {
@@ -1262,7 +1262,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public Builder setMainLoopSlice(com.google.wireless.android.sdk.stats.CpuTimeSlice value) {
       if (mainLoopSliceBuilder_ == null) {
@@ -1278,7 +1278,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public Builder setMainLoopSlice(
         com.google.wireless.android.sdk.stats.CpuTimeSlice.Builder builderForValue) {
@@ -1292,7 +1292,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public Builder mergeMainLoopSlice(com.google.wireless.android.sdk.stats.CpuTimeSlice value) {
       if (mainLoopSliceBuilder_ == null) {
@@ -1312,7 +1312,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public Builder clearMainLoopSlice() {
       if (mainLoopSliceBuilder_ == null) {
@@ -1325,7 +1325,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuTimeSlice.Builder getMainLoopSliceBuilder() {
       bitField0_ |= 0x00000002;
@@ -1333,7 +1333,7 @@ private static final long serialVersionUID = 0L;
       return getMainLoopSliceFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getMainLoopSliceOrBuilder() {
       if (mainLoopSliceBuilder_ != null) {
@@ -1344,7 +1344,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
+     * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuTimeSlice, com.google.wireless.android.sdk.stats.CpuTimeSlice.Builder, com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder> 
@@ -1930,14 +1930,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorMemoryUsage, com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.Builder, com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder> memoryUsageBuilder_;
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      * @return Whether the memoryUsage field is set.
      */
     public boolean hasMemoryUsage() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      * @return The memoryUsage.
      */
     public com.google.wireless.android.sdk.stats.EmulatorMemoryUsage getMemoryUsage() {
@@ -1948,7 +1948,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public Builder setMemoryUsage(com.google.wireless.android.sdk.stats.EmulatorMemoryUsage value) {
       if (memoryUsageBuilder_ == null) {
@@ -1964,7 +1964,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public Builder setMemoryUsage(
         com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.Builder builderForValue) {
@@ -1978,7 +1978,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public Builder mergeMemoryUsage(com.google.wireless.android.sdk.stats.EmulatorMemoryUsage value) {
       if (memoryUsageBuilder_ == null) {
@@ -1998,7 +1998,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public Builder clearMemoryUsage() {
       if (memoryUsageBuilder_ == null) {
@@ -2011,7 +2011,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.Builder getMemoryUsageBuilder() {
       bitField0_ |= 0x00000020;
@@ -2019,7 +2019,7 @@ private static final long serialVersionUID = 0L;
       return getMemoryUsageFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder getMemoryUsageOrBuilder() {
       if (memoryUsageBuilder_ != null) {
@@ -2030,7 +2030,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
+     * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorMemoryUsage, com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.Builder, com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder> 
@@ -2050,14 +2050,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GraphicsResourceUsage, com.google.wireless.android.sdk.stats.GraphicsResourceUsage.Builder, com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder> graphicsResourceUsageBuilder_;
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      * @return Whether the graphicsResourceUsage field is set.
      */
     public boolean hasGraphicsResourceUsage() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      * @return The graphicsResourceUsage.
      */
     public com.google.wireless.android.sdk.stats.GraphicsResourceUsage getGraphicsResourceUsage() {
@@ -2068,7 +2068,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public Builder setGraphicsResourceUsage(com.google.wireless.android.sdk.stats.GraphicsResourceUsage value) {
       if (graphicsResourceUsageBuilder_ == null) {
@@ -2084,7 +2084,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public Builder setGraphicsResourceUsage(
         com.google.wireless.android.sdk.stats.GraphicsResourceUsage.Builder builderForValue) {
@@ -2098,7 +2098,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public Builder mergeGraphicsResourceUsage(com.google.wireless.android.sdk.stats.GraphicsResourceUsage value) {
       if (graphicsResourceUsageBuilder_ == null) {
@@ -2118,7 +2118,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public Builder clearGraphicsResourceUsage() {
       if (graphicsResourceUsageBuilder_ == null) {
@@ -2131,7 +2131,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GraphicsResourceUsage.Builder getGraphicsResourceUsageBuilder() {
       bitField0_ |= 0x00000040;
@@ -2139,7 +2139,7 @@ private static final long serialVersionUID = 0L;
       return getGraphicsResourceUsageFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder getGraphicsResourceUsageOrBuilder() {
       if (graphicsResourceUsageBuilder_ != null) {
@@ -2150,7 +2150,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
+     * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.GraphicsResourceUsage, com.google.wireless.android.sdk.stats.GraphicsResourceUsage.Builder, com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder> 

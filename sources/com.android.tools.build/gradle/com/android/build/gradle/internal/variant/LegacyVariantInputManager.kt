@@ -34,6 +34,7 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 import org.gradle.api.NamedDomainObjectContainer
 
 /**
@@ -85,20 +86,32 @@ class LegacyVariantInputManager(
         var screenshotTestSourceSet: LazyAndroidSourceSet? = null
         if (componentType.hasTestComponents) {
             androidTestSourceSet =
-                sourceSetManager.setUpTestSourceSet(ComponentType.ANDROID_TEST_PREFIX)
+                sourceSetManager.setUpSourceSet(
+                    ComponentType.ANDROID_TEST_PREFIX,
+                    ComponentTypeImpl.ANDROID_TEST
+                )
             unitTestSourceSet =
-                sourceSetManager.setUpTestSourceSet(ComponentType.UNIT_TEST_PREFIX)
+                sourceSetManager.setUpSourceSet(
+                    ComponentType.UNIT_TEST_PREFIX,
+                    ComponentTypeImpl.UNIT_TEST
+                )
             testFixturesSourceSet =
-                sourceSetManager.setUpSourceSet(ComponentType.TEST_FIXTURES_PREFIX)
+                sourceSetManager.setUpSourceSet(
+                    ComponentType.TEST_FIXTURES_PREFIX,
+                    ComponentTypeImpl.TEST_FIXTURES
+                )
             screenshotTestSourceSet =
                 if (dslServices.projectOptions[BooleanOption.ENABLE_SCREENSHOT_TEST]) {
-                    sourceSetManager.setUpSourceSet(ComponentType.SCREENSHOT_TEST_PREFIX)
+                    sourceSetManager.setUpSourceSet(
+                        ComponentType.SCREENSHOT_TEST_PREFIX,
+                        ComponentTypeImpl.SCREENSHOT_TEST
+                    )
                 } else null
         }
 
         defaultConfigData = DefaultConfigData(
             defaultConfig = defaultConfig,
-            sourceSet = sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN).get(),
+            sourceSet = sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN, componentType).get(),
             testFixturesSourceSet = testFixturesSourceSet,
             androidTestSourceSet = androidTestSourceSet,
             unitTestSourceSet = unitTestSourceSet,

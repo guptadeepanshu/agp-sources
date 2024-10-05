@@ -7,6 +7,7 @@ import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
+import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.file.FileCollection
@@ -24,14 +25,16 @@ abstract class TestedExtension(
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    isBaseModule: Boolean
+    isBaseModule: Boolean,
+    stats: GradleBuildProject.Builder?
 ) : BaseExtension(
     dslServices,
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    isBaseModule
+    isBaseModule,
+    stats
 ), TestedAndroidConfig, com.android.build.api.dsl.TestedExtension {
 
     private val testVariantList: DomainObjectSet<TestVariant> =
@@ -54,7 +57,10 @@ abstract class TestedExtension(
      * [Test your app](https://developer.android.com/studio/test/index.html)
      */
     override val testVariants: DomainObjectSet<TestVariant>
-        get() = testVariantList
+        get() {
+            recordOldVariantApiUsage()
+            return testVariantList
+        }
 
     fun addTestVariant(testVariant: TestVariant) {
         testVariantList.add(testVariant)
@@ -74,7 +80,10 @@ abstract class TestedExtension(
      * [Test your app](https://developer.android.com/studio/test/index.html)
      */
     override val unitTestVariants: DomainObjectSet<UnitTestVariant>
-        get() = unitTestVariantList
+        get() {
+            recordOldVariantApiUsage()
+            return unitTestVariantList
+        }
 
     fun addUnitTestVariant(testVariant: UnitTestVariant) {
         unitTestVariantList.add(testVariant)

@@ -20,6 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.PROPERTY_VARIANT_NAME_KEY
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANNOTATION_PROCESSOR_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.AP_GENERATED_SOURCES
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
@@ -265,12 +266,14 @@ fun computeJavaSourceWithoutDependencies(creationConfig: ComponentCreationConfig
     val javaSourcesFilter = PatternSet().include("**/*.java")
     return creationConfig.services.fileCollection().also { fileCollection ->
         // do not resolve the provider before execution phase, b/117161463.
-       creationConfig.sources.java { javaSources ->
-           // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
-           // configuration time which requires us to pass the old variant API version.
-           // see b/259343260
-           fileCollection.from(javaSources.getAsFileTreesForOldVariantAPI())
-       }
+        creationConfig.sources.java { javaSources ->
+            // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
+            // configuration time which requires us to pass the old variant API version.
+            // see b/259343260
+            fileCollection.from(javaSources.getAsFileTreesForOldVariantAPI())
+        }
+        creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_GENERATED_JAVA_SOURCES)
+            ?.let { fileCollection.from(it) }
     }.asFileTree.matching(javaSourcesFilter)
 }
 
@@ -295,6 +298,8 @@ fun computeJavaSource(creationConfig: ComponentCreationConfig, includeKotlinSour
             // see b/259343260
             fileCollection.from(javaSources.getAsFileTrees())
         }
+        creationConfig.getBuiltInKaptArtifact(InternalArtifactType.BUILT_IN_KAPT_GENERATED_JAVA_SOURCES)
+            ?.let { fileCollection.from(it) }
     }.asFileTree.matching(javaSourcesFilter)
 }
 

@@ -221,14 +221,23 @@ class VariantManager<
 
         val globalConfig = GlobalVariantBuilderConfigImpl(dslExtension)
 
-        // loop on all the new variant objects to create the legacy ones.
+        // loop on all the new variant objects to create the public instances (both legacy and new
+        // API). Store the finalization blocks to invoke them later synchronously.
+        val finalizationBlocks = mutableListOf<() -> Unit>()
         for (variant in variants) {
-            createVariantsFromCombination(
+            val block = createVariantsFromCombination(
                     variant,
                     testBuildTypeData,
                     globalConfig
             )
+            finalizationBlocks.add(block)
         }
+
+        // all variant builders and variants have been created, leading to all beforeVariants being
+        // called before any onVariants block started being called so now can invoke the onVariants
+        // API and finalize the variant instance.
+        finalizationBlocks.forEach { it.invoke() }
+
 
         // FIXME we should lock the variant API properties after all the beforeVariants, and
         // before any onVariants to avoid cross access between the two.
@@ -308,7 +317,7 @@ class VariantManager<
                         profileEnabledVariantBuilder,
                 )
 
-        // execute the Variant API
+        // execute the beforeVariants Variant API
         variantApiOperationsRegistrar.variantBuilderOperations.executeOperations(userVisibleVariantBuilder)
         if (!variantBuilder.enable) {
             return null
@@ -417,21 +426,26 @@ class VariantManager<
             dslInfoBuilder: DslInfoBuilder<CommonExtensionT, DslInfoT>) {
         val componentType = dslInfoBuilder.componentType
         if (productFlavorList.isNotEmpty() /* && !variantConfig.getType().isSingleBuildType()*/) {
-            val variantSourceSet = variantInputModel
+            val variantSourceSet =
+                variantInputModel
                     .sourceSetManager
                     .setUpSourceSet(
-                            computeSourceSetName(dslInfoBuilder.name, componentType),
-                            componentType.isTestComponent).get()
+                        computeSourceSetName(dslInfoBuilder.name, componentType),
+                        componentType
+                    )
+                    .get()
             addExtraSourceSets(variantSourceSet)
             dslInfoBuilder.variantSourceProvider = variantSourceSet
         }
         if (productFlavorList.size > 1) {
-            val multiFlavorSourceSet = variantInputModel
+            val multiFlavorSourceSet =
+                variantInputModel
                     .sourceSetManager
                     .setUpSourceSet(
-                            computeSourceSetName(dslInfoBuilder.flavorName,
-                                                    componentType),
-                            componentType.isTestComponent).get()
+                        computeSourceSetName(dslInfoBuilder.flavorName, componentType),
+                        componentType
+                    )
+                    .get()
             addExtraSourceSets(multiFlavorSourceSet)
             dslInfoBuilder.multiFlavorSourceProvider = multiFlavorSourceSet
         }
@@ -785,6 +799,7 @@ class VariantManager<
     /**
      * Creates Variant objects for a specific [ComponentIdentity]
      *
+     * Return the variant object finalization block.
      *
      * This will create both the prod and the androidTest/unitTest variants.
      */
@@ -792,7 +807,7 @@ class VariantManager<
         dimensionCombination: DimensionCombination,
         testBuildTypeData: BuildTypeData<BuildType>?,
         globalConfig: GlobalVariantBuilderConfig,
-    ) {
+    ): () -> Unit {
         val componentType = variantFactory.componentType
 
         // first run the old variantFilter API
@@ -819,185 +834,207 @@ class VariantManager<
             }
             ignore = variantFilter.ignore
         }
-        if (!ignore) {
-            // create the prod variant
-            createVariant(
-                    dimensionCombination,
-                    buildTypeData,
-                    productFlavorDataList,
-                    componentType,
-                    globalConfig
-            )?.let { variantInfo ->
-                addVariant(variantInfo)
-                val variant = variantInfo.variant
-                val variantBuilder = variantInfo.variantBuilder
-                val minSdkVersion = variant.minSdk
-                val targetSdkVersion = when (variant) {
-                    is ApkCreationConfig -> variant.targetSdk
-                    is LibraryCreationConfig -> variant.targetSdk
-                    else -> minSdkVersion
-                }
-                if (buildTypeData.buildType.isDebuggable && buildTypeData.buildType.isMinifyEnabled) {
-                    val warningMsg = """BuildType '${buildType.name}' is both debuggable and has 'isMinifyEnabled' set to true.
-                    |All code optimizations and obfuscation are disabled for debuggable builds.
-                """.trimMargin()
-                    dslServices.issueReporter.reportWarning(
-                        IssueReporter.Type.GENERIC,
-                        warningMsg
-                    )
-                }
-                if (minSdkVersion.apiLevel > targetSdkVersion.apiLevel) {
-                    projectServices
-                        .issueReporter
-                        .reportWarning(
-                            IssueReporter.Type.GENERIC, String.format(
-                                Locale.US,
-                                "minSdkVersion (%d) is greater than targetSdkVersion"
-                                        + " (%d) for variant \"%s\". Please change the"
-                                        + " values such that minSdkVersion is less than or"
-                                        + " equal to targetSdkVersion.",
-                                minSdkVersion.apiLevel,
-                                targetSdkVersion.apiLevel,
-                                variant.name))
-                }
 
-                val testFixturesEnabledForVariant =
-                    variantBuilder is HasTestFixturesBuilder &&
-                            (variantBuilder as HasTestFixturesBuilder)
-                            .enableTestFixtures
+        if (ignore) {
+            return { }
+        }
 
-                if (testFixturesEnabledForVariant) {
-                    val testFixtures = createTestFixturesComponent(
+        // create the prod variant
+        val variantInfo = createVariant(
+                dimensionCombination,
+                buildTypeData,
+                productFlavorDataList,
+                componentType,
+                globalConfig
+        ) ?: return { }
+
+        addVariant(variantInfo)
+        val variant = variantInfo.variant
+        val variantBuilder = variantInfo.variantBuilder
+        val minSdkVersion = variant.minSdk
+        val targetSdkVersion = when (variant) {
+            is ApkCreationConfig -> variant.targetSdk
+            is LibraryCreationConfig -> variant.targetSdk
+            else -> minSdkVersion
+        }
+        if (buildTypeData.buildType.isDebuggable && buildTypeData.buildType.isMinifyEnabled) {
+            val warningMsg = """BuildType '${buildType.name}' is both debuggable and has 'isMinifyEnabled' set to true.
+            |All code optimizations and obfuscation are disabled for debuggable builds.
+        """.trimMargin()
+            dslServices.issueReporter.reportWarning(
+                IssueReporter.Type.GENERIC,
+                warningMsg
+            )
+        }
+        if (minSdkVersion.apiLevel > targetSdkVersion.apiLevel) {
+            projectServices
+                .issueReporter
+                .reportWarning(
+                    IssueReporter.Type.GENERIC, String.format(
+                        Locale.US,
+                        "minSdkVersion (%d) is greater than targetSdkVersion"
+                                + " (%d) for variant \"%s\". Please change the"
+                                + " values such that minSdkVersion is less than or"
+                                + " equal to targetSdkVersion.",
+                        minSdkVersion.apiLevel,
+                        targetSdkVersion.apiLevel,
+                        variant.name))
+        }
+
+        val testFixturesEnabledForVariant =
+            variantBuilder is HasTestFixturesBuilder &&
+                    (variantBuilder as HasTestFixturesBuilder)
+                    .enableTestFixtures
+
+        if (testFixturesEnabledForVariant) {
+            val testFixtures = createTestFixturesComponent(
+                dimensionCombination,
+                buildTypeData,
+                productFlavorDataList,
+                variantInfo
+            )
+            addTestFixturesComponent(testFixtures)
+            (variant as HasTestFixtures).testFixtures = testFixtures as TestFixturesImpl
+        }
+
+        if (variantFactory.componentType.hasTestComponents) {
+            (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests?.values
+                ?.filter { it.enable && buildTypeData == testBuildTypeData }
+                ?.forEach { deviceTestBuilder ->
+                    val deviceTest = createTestComponents<AndroidTestComponentDslInfo>(
                         dimensionCombination,
                         buildTypeData,
                         productFlavorDataList,
-                        variantInfo
+                        variantInfo,
+                        ComponentTypeImpl.ANDROID_TEST,
+                        testFixturesEnabledForVariant,
+                        deviceTestBuilder,
                     )
-                    addTestFixturesComponent(testFixtures)
-                    (variant as HasTestFixtures).testFixtures = testFixtures as TestFixturesImpl
+                    addTestComponent(deviceTest)
+                    (variant as HasDeviceTestsCreationConfig).addDeviceTest(
+                        DeviceTestBuilder.ANDROID_TEST_TYPE,
+                        deviceTest as DeviceTestImpl
+                    )
+            }
+
+            (variantBuilder as? HasHostTestsBuilder)?.hostTests
+                ?.filterValues { it.enable }
+                ?.forEach { (_, hostTestBuilder) ->
+                    val testComponent = createTestComponents<HostTestComponentDslInfo>(
+                        dimensionCombination,
+                        buildTypeData,
+                        productFlavorDataList,
+                        variantInfo,
+                        (hostTestBuilder as HostTestBuilderImpl).componentType,
+                        testFixturesEnabledForVariant,
+                        hostTestBuilder
+                    )
+                    addTestComponent(testComponent)
+                    (variant as HasHostTestsCreationConfig)
+                        .addTestComponent(hostTestBuilder.type, testComponent as HostTestCreationConfig)
+            }
+        }
+
+        // Now that unitTest and/or androidTest have been created and added to the main
+        // user visible variant object, we can run the onVariants() actions
+        val userVisibleVariant = variant.createUserVisibleVariantObject<Variant>(
+            variantInfo.stats
+        )
+
+        // The variant object is created, let's create the user extension variant scoped objects
+        // and store them in our newly created variant object.
+        val variantExtensionConfig = object: VariantExtensionConfig<Variant> {
+            override val variant: Variant
+                get() = userVisibleVariant
+
+            override fun <T> projectExtension(extensionType: Class<T>): T {
+                // we need to make DefaultConfig or CommonExtension implement ExtensionAware.
+                throw RuntimeException("No global extension DSL element implements ExtensionAware.")
+            }
+
+            override fun <T> buildTypeExtension(extensionType: Class<T>): T =
+                buildTypeData.buildType.extensions.getByType(extensionType)
+
+            override fun <T> productFlavorsExtensions(extensionType: Class<T>): List<T> =
+                productFlavorDataList.map { productFlavorData ->
+                    productFlavorData.productFlavor.extensions.getByType(extensionType)
                 }
+        }
 
-                if (variantFactory.componentType.hasTestComponents) {
-                    (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests
-                        ?.filter { it.enable && buildTypeData == testBuildTypeData }
-                        ?.forEach { deviceTestBuilder ->
-                            val deviceTest = createTestComponents<AndroidTestComponentDslInfo>(
-                                dimensionCombination,
-                                buildTypeData,
-                                productFlavorDataList,
-                                variantInfo,
-                                ComponentTypeImpl.ANDROID_TEST,
-                                testFixturesEnabledForVariant,
-                                deviceTestBuilder,
-                            )
-                            addTestComponent(deviceTest)
-                            (variant as HasDeviceTestsCreationConfig).addDeviceTest(deviceTest as DeviceTestImpl)
-                    }
-
-                    (variantBuilder as? HasHostTestsBuilder)?.hostTests
-                        ?.filterValues { it.enable }
-                        ?.forEach { (_, hostTestBuilder) ->
-                            val testComponent = createTestComponents<HostTestComponentDslInfo>(
-                                dimensionCombination,
-                                buildTypeData,
-                                productFlavorDataList,
-                                variantInfo,
-                                (hostTestBuilder as HostTestBuilderImpl).componentType,
-                                testFixturesEnabledForVariant,
-                                hostTestBuilder
-                            )
-                            addTestComponent(testComponent)
-                            (variant as HasHostTestsCreationConfig)
-                                .addTestComponent(hostTestBuilder.type, testComponent as HostTestCreationConfig)
-                    }
-                }
-
-                // Now that unitTest and/or androidTest have been created and added to the main
-                // user visible variant object, we can run the onVariants() actions
-                val userVisibleVariant = variant.createUserVisibleVariantObject<Variant>(
-                    variantInfo.stats
-                )
-
-                // The variant object is created, let's create the user extension variant scoped objects
-                // and store them in our newly created variant object.
-                val variantExtensionConfig = object: VariantExtensionConfig<Variant> {
-                    override val variant: Variant
-                        get() = userVisibleVariant
-
-                    override fun <T> projectExtension(extensionType: Class<T>): T {
-                        // we need to make DefaultConfig or CommonExtension implement ExtensionAware.
-                        throw RuntimeException("No global extension DSL element implements ExtensionAware.")
-                    }
-
-                    override fun <T> buildTypeExtension(extensionType: Class<T>): T =
-                        buildTypeData.buildType.extensions.getByType(extensionType)
-
-                    override fun <T> productFlavorsExtensions(extensionType: Class<T>): List<T> =
-                        productFlavorDataList.map { productFlavorData ->
-                            productFlavorData.productFlavor.extensions.getByType(extensionType)
-                        }
-                }
-
-                variantApiOperationsRegistrar.dslExtensions.forEach { registeredExtension ->
-                    registeredExtension.configurator.invoke(variantExtensionConfig).let {
-                        variantBuilder.registerExtension(
-                            if (it is GeneratedSubclass) it.publicType() else it.javaClass,
-                            it
-                        )
-                    }
-                }
-
-                // execute the public variant API callbacks.
-                variantApiOperationsRegistrar.variantOperations.executeOperations(userVisibleVariant)
-
-                // all the variant public APIs have run, we can now safely fill the analytics with
-                // the final values that will be used throughout the task creation and execution.
-                val variantAnalytics = variantInfo.stats
-                variantAnalytics?.let {
+        variantApiOperationsRegistrar.dslExtensions.forEach { registeredExtension ->
+            registeredExtension.configurator.invoke(variantExtensionConfig).let {
+                variantBuilder.registerExtension(
+                    if (it is GeneratedSubclass) it.publicType() else it.javaClass,
                     it
-                        .setIsDebug(buildType.isDebuggable)
-                        .setMinSdkVersion(AnalyticsUtil.toProto(variant.minSdk))
-                        .setMinifyEnabled(variant.optimizationCreationConfig.minifiedEnabled)
-                        .setVariantType(variant.componentType.analyticsVariantType)
-                        .setDexBuilder(GradleBuildVariant.DexBuilderTool.D8_DEXER)
-                        .setDexMerger(GradleBuildVariant.DexMergerTool.D8_MERGER)
-                        .setHasUnitTest((variant as? HasHostTests)?.hostTests
-                            ?.containsKey(HostTestBuilder.UNIT_TEST_TYPE) ?: false)
-                         // TODO(karimai): Add tracking for ScreenshotTests
-                        .setHasAndroidTest((variant as? HasDeviceTests)?.deviceTests?.isNotEmpty() ?: false)
-                        .setHasTestFixtures((variant as? HasTestFixtures)?.testFixtures != null)
+                )
+            }
+        }
 
-                    it.testExecution = AnalyticsUtil.toProto(dslExtension.testOptions.execution.toExecutionEnum() ?: TestOptions.Execution.HOST)
+        // return the finalization block which will call the onVariants API for this variant
+        // and finalize instances once all the public APIs have run.
+        return {
 
-                    if (variant is ApkCreationConfig) {
-                        it.useLegacyMultidex = variant.dexing.dexingType.isLegacyMultiDex
-                        it.coreLibraryDesugaringEnabled = variant.dexing.isCoreLibraryDesugaringEnabled
-                        it.useMultidex = variant.dexing.dexingType.isMultiDex
+            // call the onVariants API.
+            variantApiOperationsRegistrar.variantOperations.executeOperations(userVisibleVariant)
 
-                        val supportType = variant.dexing.java8LangSupportType
-                        if (supportType != Java8LangSupport.INVALID
-                            && supportType != Java8LangSupport.UNUSED) {
-                            variantAnalytics.java8LangSupport = AnalyticsUtil.toProto(supportType)
-                        }
-                        variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
-                            variant.targetSdk
-                        )
-                    } else if (variant is LibraryCreationConfig) {
-                        // Report the targetSdkVersion in libraries so that we can track the usage
-                        // of the deprecated API.
-                        variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
-                            variant.targetSdk
-                        )
+            // all the variant public APIs have run, we can now safely fill the analytics with
+            // the final values that will be used throughout the task creation and execution.
+            val variantAnalytics = variantInfo.stats
+            variantAnalytics?.let {
+                it
+                    .setIsDebug(buildType.isDebuggable)
+                    .setMinSdkVersion(AnalyticsUtil.toProto(variant.minSdk))
+                    .setMinifyEnabled(variant.optimizationCreationConfig.minifiedEnabled)
+                    .setVariantType(variant.componentType.analyticsVariantType)
+                    .setDexBuilder(GradleBuildVariant.DexBuilderTool.D8_DEXER)
+                    .setDexMerger(GradleBuildVariant.DexMergerTool.D8_MERGER)
+                    .setHasUnitTest(
+                        (variant as? HasHostTests)?.hostTests
+                            ?.containsKey(HostTestBuilder.UNIT_TEST_TYPE) ?: false
+                    )
+                    // TODO(karimai): Add tracking for ScreenshotTests
+                    .setHasAndroidTest(
+                        (variant as? HasDeviceTests)?.deviceTests?.isNotEmpty() ?: false
+                    )
+                    .setHasTestFixtures((variant as? HasTestFixtures)?.testFixtures != null)
+
+                it.testExecution =
+                    AnalyticsUtil.toProto(
+                        dslExtension.testOptions.execution.toExecutionEnum()
+                            ?: TestOptions.Execution.HOST
+                    )
+
+                if (variant is ApkCreationConfig) {
+                    it.useLegacyMultidex = variant.dexing.dexingType.isLegacyMultiDex
+                    it.coreLibraryDesugaringEnabled =
+                        variant.dexing.isCoreLibraryDesugaringEnabled
+                    it.useMultidex = variant.dexing.dexingType.isMultiDex
+
+                    val supportType = variant.dexing.java8LangSupportType
+                    if (supportType != Java8LangSupport.INVALID
+                        && supportType != Java8LangSupport.UNUSED
+                    ) {
+                        variantAnalytics.java8LangSupport = AnalyticsUtil.toProto(supportType)
                     }
+                    variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
+                        variant.targetSdk
+                    )
+                } else if (variant is LibraryCreationConfig) {
+                    // Report the targetSdkVersion in libraries so that we can track the usage
+                    // of the deprecated API.
+                    variantAnalytics.targetSdkVersion = AnalyticsUtil.toProto(
+                        variant.targetSdk
+                    )
+                }
 
-                    if (variant.optimizationCreationConfig.minifiedEnabled) {
-                        // If code shrinker is used, it can only be R8
-                        variantAnalytics.codeShrinker = GradleBuildVariant.CodeShrinkerTool.R8
-                    }
-                    variant.maxSdk?.let { version ->
-                        variantAnalytics.setMaxSdkVersion(
-                            ApiVersion.newBuilder().setApiLevel(version.toLong()))
-                    }
+                if (variant.optimizationCreationConfig.minifiedEnabled) {
+                    // If code shrinker is used, it can only be R8
+                    variantAnalytics.codeShrinker = GradleBuildVariant.CodeShrinkerTool.R8
+                }
+                variant.maxSdk?.let { version ->
+                    variantAnalytics.setMaxSdkVersion(
+                        ApiVersion.newBuilder().setApiLevel(version.toLong())
+                    )
                 }
             }
         }

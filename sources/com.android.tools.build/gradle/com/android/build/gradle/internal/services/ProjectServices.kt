@@ -23,6 +23,7 @@ import com.android.build.gradle.internal.res.Aapt2FromMaven
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.ProjectOptions
+import org.gradle.api.Task
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.file.ProjectLayout
@@ -66,9 +67,17 @@ class ProjectServices constructor(
     val emptyTaskCreator: (String) -> TaskProvider<*>,
     val plugins: PluginManager,
 ) {
-    fun initializeAapt2Input(aapt2Input: Aapt2Input) {
-        aapt2Input.buildService.setDisallowChanges(getBuildService(buildServiceRegistry))
-        aapt2Input.threadPoolBuildService.setDisallowChanges(getBuildService(buildServiceRegistry))
+    fun initializeAapt2Input(
+        aapt2Input: Aapt2Input,
+        task: Task? // null iff the caller is a transform
+    ) {
+        if (task != null) {
+            aapt2Input.initializeAapt2DaemonBuildService(task)
+            aapt2Input.initializeAapt2ThreadPoolBuildService(task)
+        } else {
+            aapt2Input.aapt2DaemonBuildService.setDisallowChanges(getBuildService(buildServiceRegistry))
+            aapt2Input.aapt2ThreadPoolBuildService.setDisallowChanges(getBuildService(buildServiceRegistry))
+        }
         aapt2Input.binaryDirectory.from(aapt2FromMaven?.aapt2Directory)
         aapt2Input.binaryDirectory.disallowChanges()
         aapt2Input.version.setDisallowChanges(aapt2FromMaven?.version)

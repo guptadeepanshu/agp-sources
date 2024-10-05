@@ -165,7 +165,7 @@ class OldVariantApiLegacySupportImpl(
         val versionCodeProperty = if (component is DynamicFeatureCreationConfig) {
             component.baseModuleVersionCode
         } else {
-            internalServices.nullablePropertyOf(Int::class.java, null).also {
+            internalServices.propertyOf(Int::class.java, -1).also {
                 it.disallowChanges()
             }
         }
@@ -173,7 +173,7 @@ class OldVariantApiLegacySupportImpl(
         val versionNameProperty = if (component is DynamicFeatureCreationConfig) {
             component.baseModuleVersionName
         } else {
-            internalServices.nullablePropertyOf(String::class.java, null).also {
+            internalServices.propertyOf(String::class.java, "").also {
                 it.disallowChanges()
             }
         }
@@ -189,8 +189,8 @@ class OldVariantApiLegacySupportImpl(
 
     private fun getVariantOutputs(
         variantOutputConfiguration: VariantOutputConfiguration,
-        versionCodeProperty: Property<Int?>,
-        versionNameProperty: Property<String?>,
+        versionCodeProperty: Property<Int>,
+        versionNameProperty: Property<String>,
         outputFileName: Property<String>?
     ): List<VariantOutputImpl> {
 

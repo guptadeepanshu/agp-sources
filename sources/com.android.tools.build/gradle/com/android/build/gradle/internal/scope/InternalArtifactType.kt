@@ -50,7 +50,21 @@ InternalArtifactType<T : FileSystemLocation>(
     // Javac task output.
     object JAVAC: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // Kotlin Built-in Support compile task output
-    object KOTLINC: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    object BUILT_IN_KOTLINC: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+
+    // The directory containing the Built-in KAPT generated stubs
+    object BUILT_IN_KAPT_STUBS: InternalArtifactType<Directory>(DIRECTORY)
+    // The directory containing incremental data for the Built-in KaptGenerateStubsTask
+    object BUILT_IN_KAPT_STUBS_INCREMENTAL_DATA: InternalArtifactType<Directory>(DIRECTORY)
+
+    // Built-in KAPT generated Java sources
+    object BUILT_IN_KAPT_GENERATED_JAVA_SOURCES : InternalArtifactType<Directory>(DIRECTORY, Category.GENERATED), Replaceable
+    // Built-in KAPT generated Kotlin sources
+    object BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES : InternalArtifactType<Directory>(DIRECTORY, Category.GENERATED), Replaceable
+    // Built-in KAPT incremental cache
+    object BUILT_IN_KAPT_INCREMENTAL_CACHE : InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // Built-in KAPT generated classes
+    object BUILT_IN_KAPT_CLASSES_DIR : InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     // --- Published classes ---
     // Class-type task output for tasks that generate published classes.
@@ -218,6 +232,9 @@ InternalArtifactType<T : FileSystemLocation>(
 
     /** Linked resources (output of `aapt2 link`) in binary format. */
     object LINKED_RESOURCES_BINARY_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
+
+    /** Linked resources (output of `aapt2 link`) in proto format. */
+    object LINKED_RESOURCES_PROTO_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
 
     /** Linked resources (output of `aapt2 link`) in proto format, used when building a bundle. */
     object LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT: InternalArtifactType<RegularFile>(FILE)
@@ -575,6 +592,9 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // File containing app metadata to be included in the APK and .aab files for analytics.
     object APP_METADATA: InternalArtifactType<RegularFile>(FILE), Replaceable
+
+    /** Metadata file included in the app bundle as output from R8 */
+    object R8_METADATA: InternalArtifactType<RegularFile>(FILE)
 
     // Micro APK manifest file
     object MICRO_APK_MANIFEST_FILE: InternalArtifactType<RegularFile>(FILE)

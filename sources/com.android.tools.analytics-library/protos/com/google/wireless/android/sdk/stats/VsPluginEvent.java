@@ -307,47 +307,47 @@ private static final long serialVersionUID = 0L;
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildEventType getType();
 
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      * @return Whether the buildCompleteInfo field is set.
      */
     boolean hasBuildCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      * @return The buildCompleteInfo.
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo getBuildCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfoOrBuilder getBuildCompleteInfoOrBuilder();
 
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      * @return Whether the compileCompleteInfo field is set.
      */
     boolean hasCompileCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      * @return The compileCompleteInfo.
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo getCompileCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfoOrBuilder getCompileCompleteInfoOrBuilder();
 
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      * @return Whether the linkCompleteInfo field is set.
      */
     boolean hasLinkCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      * @return The linkCompleteInfo.
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo getLinkCompleteInfo();
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      */
     com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfoOrBuilder getLinkCompleteInfoOrBuilder();
 
@@ -4681,7 +4681,7 @@ private static final long serialVersionUID = 0L;
     public static final int BUILD_COMPLETE_INFO_FIELD_NUMBER = 9;
     private com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo buildCompleteInfo_;
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      * @return Whether the buildCompleteInfo field is set.
      */
     @java.lang.Override
@@ -4689,7 +4689,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000200) != 0);
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      * @return The buildCompleteInfo.
      */
     @java.lang.Override
@@ -4697,7 +4697,7 @@ private static final long serialVersionUID = 0L;
       return buildCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo.getDefaultInstance() : buildCompleteInfo_;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfoOrBuilder getBuildCompleteInfoOrBuilder() {
@@ -4707,7 +4707,7 @@ private static final long serialVersionUID = 0L;
     public static final int COMPILE_COMPLETE_INFO_FIELD_NUMBER = 10;
     private com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo compileCompleteInfo_;
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      * @return Whether the compileCompleteInfo field is set.
      */
     @java.lang.Override
@@ -4715,7 +4715,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000400) != 0);
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      * @return The compileCompleteInfo.
      */
     @java.lang.Override
@@ -4723,7 +4723,7 @@ private static final long serialVersionUID = 0L;
       return compileCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo.getDefaultInstance() : compileCompleteInfo_;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfoOrBuilder getCompileCompleteInfoOrBuilder() {
@@ -4733,7 +4733,7 @@ private static final long serialVersionUID = 0L;
     public static final int LINK_COMPLETE_INFO_FIELD_NUMBER = 11;
     private com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo linkCompleteInfo_;
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      * @return Whether the linkCompleteInfo field is set.
      */
     @java.lang.Override
@@ -4741,7 +4741,7 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000800) != 0);
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      * @return The linkCompleteInfo.
      */
     @java.lang.Override
@@ -4749,7 +4749,7 @@ private static final long serialVersionUID = 0L;
       return linkCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo.getDefaultInstance() : linkCompleteInfo_;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfoOrBuilder getLinkCompleteInfoOrBuilder() {
@@ -6128,14 +6128,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfoOrBuilder> buildCompleteInfoBuilder_;
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        * @return Whether the buildCompleteInfo field is set.
        */
       public boolean hasBuildCompleteInfo() {
         return ((bitField0_ & 0x00000200) != 0);
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        * @return The buildCompleteInfo.
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo getBuildCompleteInfo() {
@@ -6146,7 +6146,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public Builder setBuildCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo value) {
         if (buildCompleteInfoBuilder_ == null) {
@@ -6162,7 +6162,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public Builder setBuildCompleteInfo(
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo.Builder builderForValue) {
@@ -6176,7 +6176,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public Builder mergeBuildCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo value) {
         if (buildCompleteInfoBuilder_ == null) {
@@ -6196,7 +6196,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public Builder clearBuildCompleteInfo() {
         if (buildCompleteInfoBuilder_ == null) {
@@ -6209,7 +6209,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo.Builder getBuildCompleteInfoBuilder() {
         bitField0_ |= 0x00000200;
@@ -6217,7 +6217,7 @@ private static final long serialVersionUID = 0L;
         return getBuildCompleteInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfoOrBuilder getBuildCompleteInfoOrBuilder() {
         if (buildCompleteInfoBuilder_ != null) {
@@ -6228,7 +6228,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.BuildCompleteInfoOrBuilder> 
@@ -6248,14 +6248,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfoOrBuilder> compileCompleteInfoBuilder_;
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        * @return Whether the compileCompleteInfo field is set.
        */
       public boolean hasCompileCompleteInfo() {
         return ((bitField0_ & 0x00000400) != 0);
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        * @return The compileCompleteInfo.
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo getCompileCompleteInfo() {
@@ -6266,7 +6266,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public Builder setCompileCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo value) {
         if (compileCompleteInfoBuilder_ == null) {
@@ -6282,7 +6282,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public Builder setCompileCompleteInfo(
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo.Builder builderForValue) {
@@ -6296,7 +6296,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public Builder mergeCompileCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo value) {
         if (compileCompleteInfoBuilder_ == null) {
@@ -6316,7 +6316,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public Builder clearCompileCompleteInfo() {
         if (compileCompleteInfoBuilder_ == null) {
@@ -6329,7 +6329,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo.Builder getCompileCompleteInfoBuilder() {
         bitField0_ |= 0x00000400;
@@ -6337,7 +6337,7 @@ private static final long serialVersionUID = 0L;
         return getCompileCompleteInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfoOrBuilder getCompileCompleteInfoOrBuilder() {
         if (compileCompleteInfoBuilder_ != null) {
@@ -6348,7 +6348,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.CompileCompleteInfoOrBuilder> 
@@ -6368,14 +6368,14 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfoOrBuilder> linkCompleteInfoBuilder_;
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        * @return Whether the linkCompleteInfo field is set.
        */
       public boolean hasLinkCompleteInfo() {
         return ((bitField0_ & 0x00000800) != 0);
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        * @return The linkCompleteInfo.
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo getLinkCompleteInfo() {
@@ -6386,7 +6386,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public Builder setLinkCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo value) {
         if (linkCompleteInfoBuilder_ == null) {
@@ -6402,7 +6402,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public Builder setLinkCompleteInfo(
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo.Builder builderForValue) {
@@ -6416,7 +6416,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public Builder mergeLinkCompleteInfo(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo value) {
         if (linkCompleteInfoBuilder_ == null) {
@@ -6436,7 +6436,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public Builder clearLinkCompleteInfo() {
         if (linkCompleteInfoBuilder_ == null) {
@@ -6449,7 +6449,7 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo.Builder getLinkCompleteInfoBuilder() {
         bitField0_ |= 0x00000800;
@@ -6457,7 +6457,7 @@ private static final long serialVersionUID = 0L;
         return getLinkCompleteInfoFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfoOrBuilder getLinkCompleteInfoOrBuilder() {
         if (linkCompleteInfoBuilder_ != null) {
@@ -6468,7 +6468,7 @@ private static final long serialVersionUID = 0L;
         }
       }
       /**
-       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
+       * <code>optional .android_studio.VsPluginEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11 [lazy = true];</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfo.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.LinkCompleteInfoOrBuilder> 
@@ -8275,7 +8275,7 @@ private static final long serialVersionUID = 0L;
   public static final int BUILD_EVENT_FIELD_NUMBER = 2;
   private com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent buildEvent_;
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    * @return Whether the buildEvent field is set.
    */
   @java.lang.Override
@@ -8283,7 +8283,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    * @return The buildEvent.
    */
   @java.lang.Override
@@ -8291,7 +8291,7 @@ private static final long serialVersionUID = 0L;
     return buildEvent_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.getDefaultInstance() : buildEvent_;
   }
   /**
-   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+   * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEventOrBuilder getBuildEventOrBuilder() {
@@ -8301,7 +8301,7 @@ private static final long serialVersionUID = 0L;
   public static final int DEBUG_EVENT_FIELD_NUMBER = 3;
   private com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent debugEvent_;
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    * @return Whether the debugEvent field is set.
    */
   @java.lang.Override
@@ -8309,7 +8309,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    * @return The debugEvent.
    */
   @java.lang.Override
@@ -8317,7 +8317,7 @@ private static final long serialVersionUID = 0L;
     return debugEvent_ == null ? com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent.getDefaultInstance() : debugEvent_;
   }
   /**
-   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+   * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEventOrBuilder getDebugEventOrBuilder() {
@@ -8791,14 +8791,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEventOrBuilder> buildEventBuilder_;
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      * @return Whether the buildEvent field is set.
      */
     public boolean hasBuildEvent() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      * @return The buildEvent.
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent getBuildEvent() {
@@ -8809,7 +8809,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public Builder setBuildEvent(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent value) {
       if (buildEventBuilder_ == null) {
@@ -8825,7 +8825,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public Builder setBuildEvent(
         com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.Builder builderForValue) {
@@ -8839,7 +8839,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public Builder mergeBuildEvent(com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent value) {
       if (buildEventBuilder_ == null) {
@@ -8859,7 +8859,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public Builder clearBuildEvent() {
       if (buildEventBuilder_ == null) {
@@ -8872,7 +8872,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.Builder getBuildEventBuilder() {
       bitField0_ |= 0x00000002;
@@ -8880,7 +8880,7 @@ private static final long serialVersionUID = 0L;
       return getBuildEventFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEventOrBuilder getBuildEventOrBuilder() {
       if (buildEventBuilder_ != null) {
@@ -8891,7 +8891,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2;</code>
+     * <code>optional .android_studio.VsPluginEvent.BuildEvent build_event = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.BuildEventOrBuilder> 
@@ -8911,14 +8911,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEventOrBuilder> debugEventBuilder_;
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      * @return Whether the debugEvent field is set.
      */
     public boolean hasDebugEvent() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      * @return The debugEvent.
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent getDebugEvent() {
@@ -8929,7 +8929,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public Builder setDebugEvent(com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent value) {
       if (debugEventBuilder_ == null) {
@@ -8945,7 +8945,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public Builder setDebugEvent(
         com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent.Builder builderForValue) {
@@ -8959,7 +8959,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public Builder mergeDebugEvent(com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent value) {
       if (debugEventBuilder_ == null) {
@@ -8979,7 +8979,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public Builder clearDebugEvent() {
       if (debugEventBuilder_ == null) {
@@ -8992,7 +8992,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent.Builder getDebugEventBuilder() {
       bitField0_ |= 0x00000004;
@@ -9000,7 +9000,7 @@ private static final long serialVersionUID = 0L;
       return getDebugEventFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEventOrBuilder getDebugEventOrBuilder() {
       if (debugEventBuilder_ != null) {
@@ -9011,7 +9011,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3;</code>
+     * <code>optional .android_studio.VsPluginEvent.DebugEvent debug_event = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent, com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEvent.Builder, com.google.wireless.android.sdk.stats.VsPluginEvent.DebugEventOrBuilder> 

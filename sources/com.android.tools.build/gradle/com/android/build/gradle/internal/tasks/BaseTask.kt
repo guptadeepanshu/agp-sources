@@ -18,6 +18,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.caching.DisabledCachingReason
 import com.android.build.gradle.internal.profile.AnalyticsService
+import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
@@ -35,15 +37,12 @@ import javax.inject.Inject
  * - [NonIncrementalGlobalTask] -- non variant aware task
  */
 @DisableCachingByDefault(because = DisabledCachingReason.BASE_TASK)
-abstract class BaseTask : DefaultTask() {
+abstract class BaseTask : DefaultTask(), UsesAnalytics {
     @get:Internal("only for task execution")
     abstract val projectPath: Property<String>
 
     @get:Inject
     abstract val workerExecutor: WorkerExecutor
-
-    @get:Internal
-    abstract val analyticsService: Property<AnalyticsService>
 
     /**
      * Called by subclasses that want to record something.
@@ -51,14 +50,27 @@ abstract class BaseTask : DefaultTask() {
      * The task execution will use [GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_ALL_PHASES]
      * as the span type to record the [AndroidVariantTask.recordedTaskAction].
      */
-    protected inline fun recordTaskAction(
-        analyticsService: AnalyticsService?,
-        crossinline block: () -> Unit
-    ) {
+    protected inline fun recordTaskAction(crossinline block: () -> Unit) {
         Blocks.recordSpan<Exception>(
             path,
             GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_ALL_PHASES,
-            analyticsService
+            analyticsService.get()
         ) { block() }
+    }
+
+    abstract class CreationAction<TaskT: BaseTask> : TaskCreationAction<TaskT>() {
+
+        override fun configure(task: TaskT) {
+            super.configure(task)
+            ConfigureAction.configure(task)
+        }
+    }
+
+    object ConfigureAction {
+
+        fun configure(task: BaseTask) {
+            UsesAnalytics.ConfigureAction.configure(task)
+            task.projectPath.setDisallowChanges(task.project.path)
+        }
     }
 }

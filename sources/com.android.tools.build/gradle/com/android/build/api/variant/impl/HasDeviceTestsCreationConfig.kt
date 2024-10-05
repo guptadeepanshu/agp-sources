@@ -34,7 +34,7 @@ interface HasDeviceTestsCreationConfig: HasDeviceTests, com.android.build.api.va
     //
     // Public API implementation
     //
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
 
     //
     // Private APIs
@@ -43,10 +43,10 @@ interface HasDeviceTestsCreationConfig: HasDeviceTests, com.android.build.api.va
     /**
      * Adds a new [DeviceTest] to this component/variant.
      */
-    fun addDeviceTest(deviceTest: DeviceTest)
+    fun addDeviceTest(testTypeName: String, deviceTest: DeviceTest)
 
     val defaultDeviceTest: DeviceTest?
-        get() = deviceTests.find {
+        get() = deviceTests.values.find {
             if (it is DeviceTestImpl) {
                 return@find it.componentType == ComponentTypeImpl.ANDROID_TEST
             }
@@ -76,7 +76,7 @@ interface HasDeviceTestsCreationConfig: HasDeviceTests, com.android.build.api.va
      * be figured out at the same time.
      */
     fun getByName(name: String): DeviceTest? =
-        deviceTests.find { deviceTest -> deviceTest.name == name }
+        deviceTests.values.find { deviceTest -> deviceTest.name == name }
 
 
     /**

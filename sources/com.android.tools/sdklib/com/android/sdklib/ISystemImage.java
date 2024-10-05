@@ -16,51 +16,21 @@
 
 package com.android.sdklib;
 
-import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.repository.Revision;
 import com.android.repository.api.RepoPackage;
 import com.android.sdklib.devices.Abi;
 import com.android.sdklib.repository.IdDisplay;
+
 import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Describes a system image as used by an {@link IAndroidTarget}.
- * A system image has an installation path, a location type and an ABI type.
+ * Describes a system image as used by an {@link IAndroidTarget}. A system image has an installation
+ * path, a location type and an ABI type.
  */
-public interface ISystemImage extends Comparable<ISystemImage> {
-
-    /** Indicates the type of location for the system image folder in the SDK. */
-    enum LocationType {
-        /**
-         * The system image is located in the legacy platform's {@link SdkConstants#FD_IMAGES}
-         * folder.
-         * <p>
-         * Used by both platform and add-ons.
-         */
-        IN_LEGACY_FOLDER,
-
-        /**
-         * The system image is located in a sub-directory of the platform's
-         * {@link SdkConstants#FD_IMAGES} folder, allowing for multiple system
-         * images within the platform.
-         * <p>
-         * Used by both platform and add-ons.
-         */
-        IN_IMAGES_SUBFOLDER,
-
-        /**
-         * The system image is located in the new SDK's {@link SdkConstants#FD_SYSTEM_IMAGES}
-         * folder. Supported as of Tools R14 and Repository XSD version 5.
-         * <p>
-         * Used <em>only</em> by both platform up to Tools R22.6.
-         * Supported for add-ons as of Tools R22.8.
-         */
-        IN_SYSTEM_IMAGE,
-    }
-
+public interface ISystemImage {
     /** A Wear-for-China images must reside a package with this string in its path. */
     String WEAR_CN_DIRECTORY = "android-wear-cn";
 
@@ -83,7 +53,7 @@ public interface ISystemImage extends Comparable<ISystemImage> {
     @NonNull
     List<IdDisplay> getTags();
 
-    /** Returns the vendor for an add-on's system image, or null for a platform system-image. */
+    /** Returns the vendor for an add-on system image, or null for a platform system-image. */
     @Nullable
     IdDisplay getAddonVendor();
 
@@ -109,9 +79,9 @@ public interface ISystemImage extends Comparable<ISystemImage> {
     List<String> getTranslatedAbiTypes();
 
     /**
-     * Returns the skins embedded in the system image. <br>
-     * Only supported by system images using {@link LocationType#IN_SYSTEM_IMAGE}. <br>
-     * The skins listed here are merged in the {@link IAndroidTarget#getSkins()} list.
+     * Returns the skins embedded in the system image. Only supported by images in the SDK
+     * system-images directory. The skins listed here are merged in the {@link
+     * IAndroidTarget#getSkins()} list.
      *
      * @return A non-null skin list, possibly empty.
      */

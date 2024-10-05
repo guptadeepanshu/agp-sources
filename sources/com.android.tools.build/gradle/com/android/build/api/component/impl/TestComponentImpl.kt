@@ -44,7 +44,7 @@ abstract class TestComponentImpl<DslInfoT: TestComponentDslInfo> @Inject constru
     artifacts: ArtifactsImpl,
     variantData: BaseVariantData,
     taskContainer: MutableTaskContainer,
-    override val mainVariant: VariantCreationConfig,
+    final override val mainVariant: VariantCreationConfig,
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig,

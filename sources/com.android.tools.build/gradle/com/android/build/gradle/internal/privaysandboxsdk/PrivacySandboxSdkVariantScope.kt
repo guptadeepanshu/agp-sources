@@ -25,7 +25,6 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.builder.model.ApiVersion
 import com.android.sdklib.AndroidVersion
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.file.ProjectLayout
@@ -44,6 +43,7 @@ interface PrivacySandboxSdkVariantScope {
     val mergeSpec: Spec<ComponentIdentifier>
     val compileSdkVersion: String
     val minSdkVersion: AndroidVersion
+    val targetSdkVersion: AndroidVersion
     val bootClasspath: Provider<List<RegularFile>>
     val bundle: PrivacySandboxSdkBundleImpl
     val services: TaskCreationServices

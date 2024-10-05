@@ -20,8 +20,7 @@ import org.gradle.api.Incubating
 
 /**
  * Interface to turn on or off host tests. Host tests run on the development machine,
- * [HasHostTestsBuilder.UNIT_TEST_TYPE] or [HasHostTestsBuilder.SCREENSHOT_TEST_TYPE] are
- * examples of host tests.
+ * [UNIT_TEST_TYPE] or [SCREENSHOT_TEST_TYPE] are examples of host tests.
  */
 @Incubating
 interface HostTestBuilder {

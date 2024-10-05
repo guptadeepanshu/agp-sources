@@ -19,17 +19,17 @@ public interface GoogleLoginPluginEventOrBuilder extends
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind getEvent();
 
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    * @return Whether the features field is set.
    */
   boolean hasFeatures();
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    * @return The features.
    */
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures getFeatures();
   /**
-   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeaturesOrBuilder getFeaturesOrBuilder();
 

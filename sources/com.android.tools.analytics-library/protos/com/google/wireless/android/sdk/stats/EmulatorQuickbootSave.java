@@ -129,6 +129,14 @@ private static final long serialVersionUID = 0L;
      * <code>EMULATOR_QUICKBOOT_SAVE_SKIPPED_NOT_BOOTED = 8;</code>
      */
     EMULATOR_QUICKBOOT_SAVE_SKIPPED_NOT_BOOTED(8),
+    /**
+     * <pre>
+     * Successful saving with Vulkan.
+     * </pre>
+     *
+     * <code>EMULATOR_QUICKBOOT_SAVE_SUCCEEDED_WITH_VULKAN = 9;</code>
+     */
+    EMULATOR_QUICKBOOT_SAVE_SUCCEEDED_WITH_VULKAN(9),
     ;
 
     /**
@@ -203,6 +211,14 @@ private static final long serialVersionUID = 0L;
      * <code>EMULATOR_QUICKBOOT_SAVE_SKIPPED_NOT_BOOTED = 8;</code>
      */
     public static final int EMULATOR_QUICKBOOT_SAVE_SKIPPED_NOT_BOOTED_VALUE = 8;
+    /**
+     * <pre>
+     * Successful saving with Vulkan.
+     * </pre>
+     *
+     * <code>EMULATOR_QUICKBOOT_SAVE_SUCCEEDED_WITH_VULKAN = 9;</code>
+     */
+    public static final int EMULATOR_QUICKBOOT_SAVE_SUCCEEDED_WITH_VULKAN_VALUE = 9;
 
 
     public final int getNumber() {
@@ -234,6 +250,7 @@ private static final long serialVersionUID = 0L;
         case 6: return EMULATOR_QUICKBOOT_SAVE_SKIPPED_LOW_UPTIME;
         case 7: return EMULATOR_QUICKBOOT_SAVE_DISABLED_UI;
         case 8: return EMULATOR_QUICKBOOT_SAVE_SKIPPED_NOT_BOOTED;
+        case 9: return EMULATOR_QUICKBOOT_SAVE_SUCCEEDED_WITH_VULKAN;
         default: return null;
       }
     }
@@ -345,7 +362,7 @@ private static final long serialVersionUID = 0L;
    * Information about the saved snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    * @return Whether the snapshot field is set.
    */
   @java.lang.Override
@@ -357,7 +374,7 @@ private static final long serialVersionUID = 0L;
    * Information about the saved snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    * @return The snapshot.
    */
   @java.lang.Override
@@ -369,7 +386,7 @@ private static final long serialVersionUID = 0L;
    * Information about the saved snapshot.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+   * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
@@ -970,7 +987,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      * @return Whether the snapshot field is set.
      */
     public boolean hasSnapshot() {
@@ -981,7 +998,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      * @return The snapshot.
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot() {
@@ -996,7 +1013,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public Builder setSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
       if (snapshotBuilder_ == null) {
@@ -1016,7 +1033,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public Builder setSnapshot(
         com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder builderForValue) {
@@ -1034,7 +1051,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public Builder mergeSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
       if (snapshotBuilder_ == null) {
@@ -1058,7 +1075,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public Builder clearSnapshot() {
       if (snapshotBuilder_ == null) {
@@ -1075,7 +1092,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder getSnapshotBuilder() {
       bitField0_ |= 0x00000004;
@@ -1087,7 +1104,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
       if (snapshotBuilder_ != null) {
@@ -1102,7 +1119,7 @@ private static final long serialVersionUID = 0L;
      * Information about the saved snapshot.
      * </pre>
      *
-     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
+     * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.EmulatorSnapshot, com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder, com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder> 

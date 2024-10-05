@@ -202,7 +202,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    * @return Whether the guestGl field is set.
    */
   boolean hasGuestGl();
@@ -211,7 +211,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    * @return The guestGl.
    */
   com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo getGuestGl();
@@ -220,7 +220,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the gl implementation in the guest image.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
+   * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorGuestGlInfoOrBuilder getGuestGlOrBuilder();
 
@@ -340,7 +340,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    * @return Whether the usedFeatures field is set.
    */
   boolean hasUsedFeatures();
@@ -349,7 +349,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    * @return The usedFeatures.
    */
   com.google.wireless.android.sdk.stats.EmulatorFeatures getUsedFeatures();
@@ -358,7 +358,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Flags for the used UI features.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
+   * <code>optional .android_studio.EmulatorFeatures used_features = 17 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorFeaturesOrBuilder getUsedFeaturesOrBuilder();
 
@@ -367,7 +367,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    * @return Whether the avdInfo field is set.
    */
   boolean hasAvdInfo();
@@ -376,7 +376,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    * @return The avdInfo.
    */
   com.google.wireless.android.sdk.stats.EmulatorAvdInfo getAvdInfo();
@@ -385,7 +385,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about the currently loaded AVD.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
+   * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorAvdInfoOrBuilder getAvdInfoOrBuilder();
 
@@ -394,7 +394,7 @@ public interface EmulatorDetailsOrBuilder extends
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    * @return Whether the featureFlagState field is set.
    */
   boolean hasFeatureFlagState();
@@ -403,7 +403,7 @@ public interface EmulatorDetailsOrBuilder extends
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    * @return The featureFlagState.
    */
   com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState getFeatureFlagState();
@@ -412,7 +412,7 @@ public interface EmulatorDetailsOrBuilder extends
    * State tracking emulator feature flag enable/disable.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
+   * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorFeatureFlagStateOrBuilder getFeatureFlagStateOrBuilder();
 
@@ -440,7 +440,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    * @return Whether the quickbootLoad field is set.
    */
   boolean hasQuickbootLoad();
@@ -449,7 +449,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    * @return The quickbootLoad.
    */
   com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad getQuickbootLoad();
@@ -458,22 +458,22 @@ public interface EmulatorDetailsOrBuilder extends
    * Information about quickboot status of the current session.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
+   * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorQuickbootLoadOrBuilder getQuickbootLoadOrBuilder();
 
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    * @return Whether the quickbootSave field is set.
    */
   boolean hasQuickbootSave();
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    * @return The quickbootSave.
    */
   com.google.wireless.android.sdk.stats.EmulatorQuickbootSave getQuickbootSave();
   /**
-   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
+   * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder getQuickbootSaveOrBuilder();
 
@@ -482,7 +482,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    * @return Whether the glesUsages field is set.
    */
   boolean hasGlesUsages();
@@ -491,7 +491,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    * @return The glesUsages.
    */
   com.google.wireless.android.sdk.stats.EmulatorGLESUsages getGlesUsages();
@@ -500,7 +500,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Track GLES command usages
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
+   * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorGLESUsagesOrBuilder getGlesUsagesOrBuilder();
 
@@ -577,7 +577,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    * @return Whether the snapshotUiCounts field is set.
    */
   boolean hasSnapshotUiCounts();
@@ -586,7 +586,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    * @return The snapshotUiCounts.
    */
   com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts getSnapshotUiCounts();
@@ -595,7 +595,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on all snapshot UI.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
+   * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorSnapshotUICountsOrBuilder getSnapshotUiCountsOrBuilder();
 
@@ -604,7 +604,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    * @return Whether the camera field is set.
    */
   boolean hasCamera();
@@ -613,7 +613,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    * @return The camera.
    */
   com.google.wireless.android.sdk.stats.EmulatorCameraSession getCamera();
@@ -622,7 +622,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics on camera usage.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
+   * <code>optional .android_studio.EmulatorCameraSession camera = 27 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorCameraSessionOrBuilder getCameraOrBuilder();
 
@@ -631,7 +631,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    * @return Whether the virtualScene field is set.
    */
   boolean hasVirtualScene();
@@ -640,7 +640,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    * @return The virtualScene.
    */
   com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession getVirtualScene();
@@ -649,7 +649,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for virtual scene camera sessions.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
+   * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSessionOrBuilder getVirtualSceneOrBuilder();
 
@@ -658,7 +658,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    * @return Whether the bootInfo field is set.
    */
   boolean hasBootInfo();
@@ -667,7 +667,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    * @return The bootInfo.
    */
   com.google.wireless.android.sdk.stats.EmulatorBootInfo getBootInfo();
@@ -676,7 +676,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for emulator boot status and time.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
+   * <code>optional .android_studio.EmulatorBootInfo boot_info = 29 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorBootInfoOrBuilder getBootInfoOrBuilder();
 
@@ -685,7 +685,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    * @return Whether the automation field is set.
    */
   boolean hasAutomation();
@@ -694,7 +694,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    * @return The automation.
    */
   com.google.wireless.android.sdk.stats.EmulatorAutomation getAutomation();
@@ -703,7 +703,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for automation/macros.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
+   * <code>optional .android_studio.EmulatorAutomation automation = 30 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorAutomationOrBuilder getAutomationOrBuilder();
 
@@ -712,7 +712,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    * @return Whether the multiDisplay field is set.
    */
   boolean hasMultiDisplay();
@@ -721,7 +721,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    * @return The multiDisplay.
    */
   com.google.wireless.android.sdk.stats.EmulatorMultiDisplay getMultiDisplay();
@@ -730,7 +730,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for multi-display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
+   * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorMultiDisplayOrBuilder getMultiDisplayOrBuilder();
 
@@ -739,7 +739,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    * @return Whether the grpc field is set.
    */
   boolean hasGrpc();
@@ -748,7 +748,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    * @return The grpc.
    */
   com.google.wireless.android.sdk.stats.EmulatorGrpc getGrpc();
@@ -757,7 +757,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for gRPC invocation
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
+   * <code>optional .android_studio.EmulatorGrpc grpc = 32 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorGrpcOrBuilder getGrpcOrBuilder();
 
@@ -766,7 +766,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    * @return Whether the locationV2 field is set.
    */
   boolean hasLocationV2();
@@ -775,7 +775,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    * @return The locationV2.
    */
   com.google.wireless.android.sdk.stats.EmulatorLocationV2 getLocationV2();
@@ -784,7 +784,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for LocationUiV2
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
+   * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorLocationV2OrBuilder getLocationV2OrBuilder();
 
@@ -793,7 +793,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    * @return Whether the screenshot field is set.
    */
   boolean hasScreenshot();
@@ -802,7 +802,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    * @return The screenshot.
    */
   com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot getScreenshot();
@@ -811,7 +811,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for streamScreenshot
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
+   * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorStreamScreenshotOrBuilder getScreenshotOrBuilder();
 
@@ -864,7 +864,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    * @return Whether the resizableDisplay field is set.
    */
   boolean hasResizableDisplay();
@@ -873,7 +873,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    * @return The resizableDisplay.
    */
   com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay();
@@ -882,7 +882,7 @@ public interface EmulatorDetailsOrBuilder extends
    * Metrics for resizable display
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder();
 

@@ -315,7 +315,7 @@ private static final long serialVersionUID = 0L;
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    * @return Whether the deviceInfo field is set.
    */
   @java.lang.Override
@@ -327,7 +327,7 @@ private static final long serialVersionUID = 0L;
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    * @return The deviceInfo.
    */
   @java.lang.Override
@@ -339,7 +339,7 @@ private static final long serialVersionUID = 0L;
    * Device on which the debuggable app is running.
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder() {
@@ -1266,7 +1266,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      * @return Whether the deviceInfo field is set.
      */
     public boolean hasDeviceInfo() {
@@ -1277,7 +1277,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      * @return The deviceInfo.
      */
     public com.google.wireless.android.sdk.stats.DeviceInfo getDeviceInfo() {
@@ -1292,7 +1292,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public Builder setDeviceInfo(com.google.wireless.android.sdk.stats.DeviceInfo value) {
       if (deviceInfoBuilder_ == null) {
@@ -1312,7 +1312,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public Builder setDeviceInfo(
         com.google.wireless.android.sdk.stats.DeviceInfo.Builder builderForValue) {
@@ -1330,7 +1330,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public Builder mergeDeviceInfo(com.google.wireless.android.sdk.stats.DeviceInfo value) {
       if (deviceInfoBuilder_ == null) {
@@ -1354,7 +1354,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public Builder clearDeviceInfo() {
       if (deviceInfoBuilder_ == null) {
@@ -1371,7 +1371,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DeviceInfo.Builder getDeviceInfoBuilder() {
       bitField0_ |= 0x00000010;
@@ -1383,7 +1383,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder() {
       if (deviceInfoBuilder_ != null) {
@@ -1398,7 +1398,7 @@ private static final long serialVersionUID = 0L;
      * Device on which the debuggable app is running.
      * </pre>
      *
-     * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
+     * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DeviceInfo, com.google.wireless.android.sdk.stats.DeviceInfo.Builder, com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder> 

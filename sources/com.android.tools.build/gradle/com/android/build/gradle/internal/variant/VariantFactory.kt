@@ -24,6 +24,7 @@ import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.HostTestBuilderImpl
+import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.component.DeviceTestCreationConfig
@@ -49,7 +50,6 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
-import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.ComponentType
 import org.gradle.api.Project
 

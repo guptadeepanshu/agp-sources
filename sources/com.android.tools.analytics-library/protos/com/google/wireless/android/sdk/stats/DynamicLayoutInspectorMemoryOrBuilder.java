@@ -12,7 +12,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    * @return Whether the initialSnapshot field is set.
    */
   boolean hasInitialSnapshot();
@@ -21,7 +21,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    * @return The initialSnapshot.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getInitialSnapshot();
@@ -30,7 +30,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the first image rendered
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getInitialSnapshotOrBuilder();
 
@@ -39,7 +39,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    * @return Whether the largestSnapshot field is set.
    */
   boolean hasLargestSnapshot();
@@ -48,7 +48,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    * @return The largestSnapshot.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getLargestSnapshot();
@@ -57,7 +57,7 @@ public interface DynamicLayoutInspectorMemoryOrBuilder extends
    * Memory snapshot for the image requiring the most memory in the session
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getLargestSnapshotOrBuilder();
 }

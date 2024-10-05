@@ -90,6 +90,10 @@ interface PrivacySandboxSdkExtension {
     @set:Incubating
     var minSdkPreview: String?
 
+    @get:Incubating
+    @set:Incubating
+    var targetSdk: Int?
+
     @get:Deprecated(message = "namespace is replaced with applicationId in bundle block", replaceWith = ReplaceWith("bundle.applicationId"))
     @get:Incubating
     @set:Deprecated(message = "namespace is replaced with applicationId in bundle block", replaceWith = ReplaceWith("bundle.applicationId"))

@@ -79,20 +79,19 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
             _enableMultiDex = value
         }
 
-    override val deviceTests: List<DeviceTestBuilderImpl> =
-        dslInfo.dslDefinedDeviceTests.map { deviceTest ->
-            DeviceTestBuilderImpl(
-                variantBuilderServices,
-                globalVariantBuilderConfig,
-                this,
-                _enableMultiDex,
-                deviceTest.codeCoverageEnabled
-            )
-        }
+    override val deviceTests: Map<String, DeviceTestBuilderImpl> =
+        DeviceTestBuilderImpl.create(
+            dslInfo.dslDefinedDeviceTests,
+            variantBuilderServices,
+            globalVariantBuilderConfig,
+            { targetSdkVersion },
+            _enableMultiDex,
+        )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {
         AndroidTestBuilderImpl(
-            deviceTests.single()
+            deviceTests.get(DeviceTestBuilder.ANDROID_TEST_TYPE)
+                ?: throw RuntimeException("No androidTest component defined on this variant")
         )
     }
 

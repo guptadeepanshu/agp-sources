@@ -82,7 +82,7 @@ private static final long serialVersionUID = 0L;
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    * @return Whether the alwaysRunTasksAnalyzerData field is set.
    */
   @java.lang.Override
@@ -94,7 +94,7 @@ private static final long serialVersionUID = 0L;
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    * @return The alwaysRunTasksAnalyzerData.
    */
   @java.lang.Override
@@ -106,7 +106,7 @@ private static final long serialVersionUID = 0L;
    * Data from the always running tasks analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+   * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerDataOrBuilder getAlwaysRunTasksAnalyzerDataOrBuilder() {
@@ -120,7 +120,7 @@ private static final long serialVersionUID = 0L;
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    * @return Whether the annotationProcessorsAnalyzerData field is set.
    */
   @java.lang.Override
@@ -132,7 +132,7 @@ private static final long serialVersionUID = 0L;
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    * @return The annotationProcessorsAnalyzerData.
    */
   @java.lang.Override
@@ -144,7 +144,7 @@ private static final long serialVersionUID = 0L;
    * Data from the annotation processors analyzer
    * </pre>
    *
-   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+   * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerDataOrBuilder getAnnotationProcessorsAnalyzerDataOrBuilder() {
@@ -158,7 +158,7 @@ private static final long serialVersionUID = 0L;
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    * @return Whether the criticalPathAnalyzerData field is set.
    */
   @java.lang.Override
@@ -170,7 +170,7 @@ private static final long serialVersionUID = 0L;
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    * @return The criticalPathAnalyzerData.
    */
   @java.lang.Override
@@ -182,7 +182,7 @@ private static final long serialVersionUID = 0L;
    * Data from the critical path analyzer
    * </pre>
    *
-   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+   * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerDataOrBuilder getCriticalPathAnalyzerDataOrBuilder() {
@@ -196,7 +196,7 @@ private static final long serialVersionUID = 0L;
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    * @return Whether the projectConfigurationAnalyzerData field is set.
    */
   @java.lang.Override
@@ -208,7 +208,7 @@ private static final long serialVersionUID = 0L;
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    * @return The projectConfigurationAnalyzerData.
    */
   @java.lang.Override
@@ -220,7 +220,7 @@ private static final long serialVersionUID = 0L;
    * Data from the project configuration analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+   * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerDataOrBuilder getProjectConfigurationAnalyzerDataOrBuilder() {
@@ -234,7 +234,7 @@ private static final long serialVersionUID = 0L;
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    * @return Whether the tasksConfigurationIssuesAnalyzerData field is set.
    */
   @java.lang.Override
@@ -246,7 +246,7 @@ private static final long serialVersionUID = 0L;
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    * @return The tasksConfigurationIssuesAnalyzerData.
    */
   @java.lang.Override
@@ -258,7 +258,7 @@ private static final long serialVersionUID = 0L;
    * Data from the tasks configuration issues analyzer
    * </pre>
    *
-   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+   * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerDataOrBuilder getTasksConfigurationIssuesAnalyzerDataOrBuilder() {
@@ -272,7 +272,7 @@ private static final long serialVersionUID = 0L;
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    * @return Whether the configurationCacheCompatibilityData field is set.
    */
   @java.lang.Override
@@ -284,7 +284,7 @@ private static final long serialVersionUID = 0L;
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    * @return The configurationCacheCompatibilityData.
    */
   @java.lang.Override
@@ -296,7 +296,7 @@ private static final long serialVersionUID = 0L;
    * Data from configuration caching compatibility analyzer
    * </pre>
    *
-   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+   * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder getConfigurationCacheCompatibilityDataOrBuilder() {
@@ -310,7 +310,7 @@ private static final long serialVersionUID = 0L;
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    * @return Whether the jetifierUsageData field is set.
    */
   @java.lang.Override
@@ -322,7 +322,7 @@ private static final long serialVersionUID = 0L;
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    * @return The jetifierUsageData.
    */
   @java.lang.Override
@@ -334,7 +334,7 @@ private static final long serialVersionUID = 0L;
    * Data from jetifier usage analyzer
    * </pre>
    *
-   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder() {
@@ -348,7 +348,7 @@ private static final long serialVersionUID = 0L;
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    * @return Whether the downloadsAnalysisData field is set.
    */
   @java.lang.Override
@@ -360,7 +360,7 @@ private static final long serialVersionUID = 0L;
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    * @return The downloadsAnalysisData.
    */
   @java.lang.Override
@@ -372,7 +372,7 @@ private static final long serialVersionUID = 0L;
    * Data from downloads analyzer
    * </pre>
    *
-   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder() {
@@ -386,7 +386,7 @@ private static final long serialVersionUID = 0L;
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    * @return Whether the taskCategoryIssuesData field is set.
    */
   @java.lang.Override
@@ -398,7 +398,7 @@ private static final long serialVersionUID = 0L;
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    * @return The taskCategoryIssuesData.
    */
   @java.lang.Override
@@ -410,7 +410,7 @@ private static final long serialVersionUID = 0L;
    * Data from task category issues
    * </pre>
    *
-   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+   * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder() {
@@ -1186,7 +1186,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      * @return Whether the alwaysRunTasksAnalyzerData field is set.
      */
     public boolean hasAlwaysRunTasksAnalyzerData() {
@@ -1197,7 +1197,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      * @return The alwaysRunTasksAnalyzerData.
      */
     public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData getAlwaysRunTasksAnalyzerData() {
@@ -1212,7 +1212,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public Builder setAlwaysRunTasksAnalyzerData(com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData value) {
       if (alwaysRunTasksAnalyzerDataBuilder_ == null) {
@@ -1232,7 +1232,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public Builder setAlwaysRunTasksAnalyzerData(
         com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.Builder builderForValue) {
@@ -1250,7 +1250,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public Builder mergeAlwaysRunTasksAnalyzerData(com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData value) {
       if (alwaysRunTasksAnalyzerDataBuilder_ == null) {
@@ -1274,7 +1274,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public Builder clearAlwaysRunTasksAnalyzerData() {
       if (alwaysRunTasksAnalyzerDataBuilder_ == null) {
@@ -1291,7 +1291,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.Builder getAlwaysRunTasksAnalyzerDataBuilder() {
       bitField0_ |= 0x00000002;
@@ -1303,7 +1303,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerDataOrBuilder getAlwaysRunTasksAnalyzerDataOrBuilder() {
       if (alwaysRunTasksAnalyzerDataBuilder_ != null) {
@@ -1318,7 +1318,7 @@ private static final long serialVersionUID = 0L;
      * Data from the always running tasks analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
+     * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData, com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.Builder, com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerDataOrBuilder> 
@@ -1342,7 +1342,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      * @return Whether the annotationProcessorsAnalyzerData field is set.
      */
     public boolean hasAnnotationProcessorsAnalyzerData() {
@@ -1353,7 +1353,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      * @return The annotationProcessorsAnalyzerData.
      */
     public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData getAnnotationProcessorsAnalyzerData() {
@@ -1368,7 +1368,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public Builder setAnnotationProcessorsAnalyzerData(com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData value) {
       if (annotationProcessorsAnalyzerDataBuilder_ == null) {
@@ -1388,7 +1388,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public Builder setAnnotationProcessorsAnalyzerData(
         com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.Builder builderForValue) {
@@ -1406,7 +1406,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public Builder mergeAnnotationProcessorsAnalyzerData(com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData value) {
       if (annotationProcessorsAnalyzerDataBuilder_ == null) {
@@ -1430,7 +1430,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public Builder clearAnnotationProcessorsAnalyzerData() {
       if (annotationProcessorsAnalyzerDataBuilder_ == null) {
@@ -1447,7 +1447,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.Builder getAnnotationProcessorsAnalyzerDataBuilder() {
       bitField0_ |= 0x00000004;
@@ -1459,7 +1459,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerDataOrBuilder getAnnotationProcessorsAnalyzerDataOrBuilder() {
       if (annotationProcessorsAnalyzerDataBuilder_ != null) {
@@ -1474,7 +1474,7 @@ private static final long serialVersionUID = 0L;
      * Data from the annotation processors analyzer
      * </pre>
      *
-     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
+     * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData, com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.Builder, com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerDataOrBuilder> 
@@ -1498,7 +1498,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      * @return Whether the criticalPathAnalyzerData field is set.
      */
     public boolean hasCriticalPathAnalyzerData() {
@@ -1509,7 +1509,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      * @return The criticalPathAnalyzerData.
      */
     public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData getCriticalPathAnalyzerData() {
@@ -1524,7 +1524,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public Builder setCriticalPathAnalyzerData(com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData value) {
       if (criticalPathAnalyzerDataBuilder_ == null) {
@@ -1544,7 +1544,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public Builder setCriticalPathAnalyzerData(
         com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.Builder builderForValue) {
@@ -1562,7 +1562,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public Builder mergeCriticalPathAnalyzerData(com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData value) {
       if (criticalPathAnalyzerDataBuilder_ == null) {
@@ -1586,7 +1586,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public Builder clearCriticalPathAnalyzerData() {
       if (criticalPathAnalyzerDataBuilder_ == null) {
@@ -1603,7 +1603,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.Builder getCriticalPathAnalyzerDataBuilder() {
       bitField0_ |= 0x00000008;
@@ -1615,7 +1615,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerDataOrBuilder getCriticalPathAnalyzerDataOrBuilder() {
       if (criticalPathAnalyzerDataBuilder_ != null) {
@@ -1630,7 +1630,7 @@ private static final long serialVersionUID = 0L;
      * Data from the critical path analyzer
      * </pre>
      *
-     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
+     * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData, com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.Builder, com.google.wireless.android.sdk.stats.CriticalPathAnalyzerDataOrBuilder> 
@@ -1654,7 +1654,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      * @return Whether the projectConfigurationAnalyzerData field is set.
      */
     public boolean hasProjectConfigurationAnalyzerData() {
@@ -1665,7 +1665,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      * @return The projectConfigurationAnalyzerData.
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData getProjectConfigurationAnalyzerData() {
@@ -1680,7 +1680,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public Builder setProjectConfigurationAnalyzerData(com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData value) {
       if (projectConfigurationAnalyzerDataBuilder_ == null) {
@@ -1700,7 +1700,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public Builder setProjectConfigurationAnalyzerData(
         com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.Builder builderForValue) {
@@ -1718,7 +1718,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public Builder mergeProjectConfigurationAnalyzerData(com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData value) {
       if (projectConfigurationAnalyzerDataBuilder_ == null) {
@@ -1742,7 +1742,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public Builder clearProjectConfigurationAnalyzerData() {
       if (projectConfigurationAnalyzerDataBuilder_ == null) {
@@ -1759,7 +1759,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.Builder getProjectConfigurationAnalyzerDataBuilder() {
       bitField0_ |= 0x00000010;
@@ -1771,7 +1771,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerDataOrBuilder getProjectConfigurationAnalyzerDataOrBuilder() {
       if (projectConfigurationAnalyzerDataBuilder_ != null) {
@@ -1786,7 +1786,7 @@ private static final long serialVersionUID = 0L;
      * Data from the project configuration analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
+     * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData, com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.Builder, com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerDataOrBuilder> 
@@ -1810,7 +1810,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      * @return Whether the tasksConfigurationIssuesAnalyzerData field is set.
      */
     public boolean hasTasksConfigurationIssuesAnalyzerData() {
@@ -1821,7 +1821,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      * @return The tasksConfigurationIssuesAnalyzerData.
      */
     public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData getTasksConfigurationIssuesAnalyzerData() {
@@ -1836,7 +1836,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public Builder setTasksConfigurationIssuesAnalyzerData(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData value) {
       if (tasksConfigurationIssuesAnalyzerDataBuilder_ == null) {
@@ -1856,7 +1856,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public Builder setTasksConfigurationIssuesAnalyzerData(
         com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.Builder builderForValue) {
@@ -1874,7 +1874,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public Builder mergeTasksConfigurationIssuesAnalyzerData(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData value) {
       if (tasksConfigurationIssuesAnalyzerDataBuilder_ == null) {
@@ -1898,7 +1898,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public Builder clearTasksConfigurationIssuesAnalyzerData() {
       if (tasksConfigurationIssuesAnalyzerDataBuilder_ == null) {
@@ -1915,7 +1915,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.Builder getTasksConfigurationIssuesAnalyzerDataBuilder() {
       bitField0_ |= 0x00000020;
@@ -1927,7 +1927,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerDataOrBuilder getTasksConfigurationIssuesAnalyzerDataOrBuilder() {
       if (tasksConfigurationIssuesAnalyzerDataBuilder_ != null) {
@@ -1942,7 +1942,7 @@ private static final long serialVersionUID = 0L;
      * Data from the tasks configuration issues analyzer
      * </pre>
      *
-     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
+     * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData, com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.Builder, com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerDataOrBuilder> 
@@ -1966,7 +1966,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      * @return Whether the configurationCacheCompatibilityData field is set.
      */
     public boolean hasConfigurationCacheCompatibilityData() {
@@ -1977,7 +1977,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      * @return The configurationCacheCompatibilityData.
      */
     public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData getConfigurationCacheCompatibilityData() {
@@ -1992,7 +1992,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public Builder setConfigurationCacheCompatibilityData(com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData value) {
       if (configurationCacheCompatibilityDataBuilder_ == null) {
@@ -2012,7 +2012,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public Builder setConfigurationCacheCompatibilityData(
         com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.Builder builderForValue) {
@@ -2030,7 +2030,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public Builder mergeConfigurationCacheCompatibilityData(com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData value) {
       if (configurationCacheCompatibilityDataBuilder_ == null) {
@@ -2054,7 +2054,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public Builder clearConfigurationCacheCompatibilityData() {
       if (configurationCacheCompatibilityDataBuilder_ == null) {
@@ -2071,7 +2071,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.Builder getConfigurationCacheCompatibilityDataBuilder() {
       bitField0_ |= 0x00000040;
@@ -2083,7 +2083,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder getConfigurationCacheCompatibilityDataOrBuilder() {
       if (configurationCacheCompatibilityDataBuilder_ != null) {
@@ -2098,7 +2098,7 @@ private static final long serialVersionUID = 0L;
      * Data from configuration caching compatibility analyzer
      * </pre>
      *
-     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
+     * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData, com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.Builder, com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder> 
@@ -2122,7 +2122,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      * @return Whether the jetifierUsageData field is set.
      */
     public boolean hasJetifierUsageData() {
@@ -2133,7 +2133,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      * @return The jetifierUsageData.
      */
     public com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData() {
@@ -2148,7 +2148,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public Builder setJetifierUsageData(com.google.wireless.android.sdk.stats.JetifierUsageData value) {
       if (jetifierUsageDataBuilder_ == null) {
@@ -2168,7 +2168,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public Builder setJetifierUsageData(
         com.google.wireless.android.sdk.stats.JetifierUsageData.Builder builderForValue) {
@@ -2186,7 +2186,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public Builder mergeJetifierUsageData(com.google.wireless.android.sdk.stats.JetifierUsageData value) {
       if (jetifierUsageDataBuilder_ == null) {
@@ -2210,7 +2210,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public Builder clearJetifierUsageData() {
       if (jetifierUsageDataBuilder_ == null) {
@@ -2227,7 +2227,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JetifierUsageData.Builder getJetifierUsageDataBuilder() {
       bitField0_ |= 0x00000080;
@@ -2239,7 +2239,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder() {
       if (jetifierUsageDataBuilder_ != null) {
@@ -2254,7 +2254,7 @@ private static final long serialVersionUID = 0L;
      * Data from jetifier usage analyzer
      * </pre>
      *
-     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.JetifierUsageData, com.google.wireless.android.sdk.stats.JetifierUsageData.Builder, com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder> 
@@ -2278,7 +2278,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      * @return Whether the downloadsAnalysisData field is set.
      */
     public boolean hasDownloadsAnalysisData() {
@@ -2289,7 +2289,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      * @return The downloadsAnalysisData.
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsAnalysisData() {
@@ -2304,7 +2304,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public Builder setDownloadsAnalysisData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
       if (downloadsAnalysisDataBuilder_ == null) {
@@ -2324,7 +2324,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public Builder setDownloadsAnalysisData(
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder builderForValue) {
@@ -2342,7 +2342,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public Builder mergeDownloadsAnalysisData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
       if (downloadsAnalysisDataBuilder_ == null) {
@@ -2366,7 +2366,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public Builder clearDownloadsAnalysisData() {
       if (downloadsAnalysisDataBuilder_ == null) {
@@ -2383,7 +2383,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder getDownloadsAnalysisDataBuilder() {
       bitField0_ |= 0x00000100;
@@ -2395,7 +2395,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder() {
       if (downloadsAnalysisDataBuilder_ != null) {
@@ -2410,7 +2410,7 @@ private static final long serialVersionUID = 0L;
      * Data from downloads analyzer
      * </pre>
      *
-     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> 
@@ -2434,7 +2434,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      * @return Whether the taskCategoryIssuesData field is set.
      */
     public boolean hasTaskCategoryIssuesData() {
@@ -2445,7 +2445,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      * @return The taskCategoryIssuesData.
      */
     public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData getTaskCategoryIssuesData() {
@@ -2460,7 +2460,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public Builder setTaskCategoryIssuesData(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData value) {
       if (taskCategoryIssuesDataBuilder_ == null) {
@@ -2480,7 +2480,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public Builder setTaskCategoryIssuesData(
         com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder builderForValue) {
@@ -2498,7 +2498,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public Builder mergeTaskCategoryIssuesData(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData value) {
       if (taskCategoryIssuesDataBuilder_ == null) {
@@ -2522,7 +2522,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public Builder clearTaskCategoryIssuesData() {
       if (taskCategoryIssuesDataBuilder_ == null) {
@@ -2539,7 +2539,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder getTaskCategoryIssuesDataBuilder() {
       bitField0_ |= 0x00000200;
@@ -2551,7 +2551,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder getTaskCategoryIssuesDataOrBuilder() {
       if (taskCategoryIssuesDataBuilder_ != null) {
@@ -2566,7 +2566,7 @@ private static final long serialVersionUID = 0L;
      * Data from task category issues
      * </pre>
      *
-     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10;</code>
+     * <code>optional .android_studio.TaskCategoryIssuesData task_category_issues_data = 10 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TaskCategoryIssuesData, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.Builder, com.google.wireless.android.sdk.stats.TaskCategoryIssuesDataOrBuilder> 

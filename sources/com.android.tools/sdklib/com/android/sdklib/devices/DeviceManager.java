@@ -28,6 +28,7 @@ import com.android.prefs.AndroidLocationsProvider;
 import com.android.repository.api.RepoManager;
 import com.android.resources.KeyboardState;
 import com.android.resources.Navigation;
+import com.android.sdklib.internal.avd.AvdInfo;
 import com.android.sdklib.internal.avd.AvdManager;
 import com.android.sdklib.internal.avd.ConfigKey;
 import com.android.sdklib.internal.avd.HardwareProperties;
@@ -228,6 +229,11 @@ public class DeviceManager {
         }
         d = mSdkVendorDevices.get(id, manufacturer);
         return d;
+    }
+
+    @Nullable
+    public Device getDevice(@NonNull AvdInfo avdInfo) {
+        return getDevice(avdInfo.getDeviceName(), avdInfo.getDeviceManufacturer());
     }
 
     /**

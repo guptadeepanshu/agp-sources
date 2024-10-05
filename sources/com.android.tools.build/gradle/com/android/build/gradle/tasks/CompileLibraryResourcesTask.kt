@@ -270,7 +270,7 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
             task.crunchPng.setDisallowChanges(androidResourcesCreationConfig.isCrunchPngs)
             task.excludeValuesFiles.setDisallowChanges(true)
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
             task.partialRDirectory.disallowChanges()
         }
     }
@@ -315,7 +315,7 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
             task.excludeValuesFiles.set(false)
             task.dependsOn(creationConfig.taskContainer.resourceGenTask)
 
-            creationConfig.services.initializeAapt2Input(task.aapt2)
+            creationConfig.services.initializeAapt2Input(task.aapt2, task)
         }
     }
 }

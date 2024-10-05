@@ -51,7 +51,7 @@ private static final long serialVersionUID = 0L;
   public static final int PROFILING_CONFIG_FIELD_NUMBER = 1;
   private com.google.wireless.android.sdk.stats.CpuProfilingConfig profilingConfig_;
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    * @return Whether the profilingConfig field is set.
    */
   @java.lang.Override
@@ -59,7 +59,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    * @return The profilingConfig.
    */
   @java.lang.Override
@@ -67,7 +67,7 @@ private static final long serialVersionUID = 0L;
     return profilingConfig_ == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance() : profilingConfig_;
   }
   /**
-   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+   * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getProfilingConfigOrBuilder() {
@@ -425,14 +425,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuProfilingConfig, com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder, com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder> profilingConfigBuilder_;
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      * @return Whether the profilingConfig field is set.
      */
     public boolean hasProfilingConfig() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      * @return The profilingConfig.
      */
     public com.google.wireless.android.sdk.stats.CpuProfilingConfig getProfilingConfig() {
@@ -443,7 +443,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public Builder setProfilingConfig(com.google.wireless.android.sdk.stats.CpuProfilingConfig value) {
       if (profilingConfigBuilder_ == null) {
@@ -459,7 +459,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public Builder setProfilingConfig(
         com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder builderForValue) {
@@ -473,7 +473,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public Builder mergeProfilingConfig(com.google.wireless.android.sdk.stats.CpuProfilingConfig value) {
       if (profilingConfigBuilder_ == null) {
@@ -493,7 +493,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public Builder clearProfilingConfig() {
       if (profilingConfigBuilder_ == null) {
@@ -506,7 +506,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder getProfilingConfigBuilder() {
       bitField0_ |= 0x00000001;
@@ -514,7 +514,7 @@ private static final long serialVersionUID = 0L;
       return getProfilingConfigFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getProfilingConfigOrBuilder() {
       if (profilingConfigBuilder_ != null) {
@@ -525,7 +525,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
+     * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.CpuProfilingConfig, com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder, com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder> 

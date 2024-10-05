@@ -2709,7 +2709,7 @@ private static final long serialVersionUID = 0L;
   public static final int BREAKPOINT_ADDED_FIELD_NUMBER = 2;
   private com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded breakpointAdded_;
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    * @return Whether the breakpointAdded field is set.
    */
   @java.lang.Override
@@ -2717,7 +2717,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    * @return The breakpointAdded.
    */
   @java.lang.Override
@@ -2725,7 +2725,7 @@ private static final long serialVersionUID = 0L;
     return breakpointAdded_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.getDefaultInstance() : breakpointAdded_;
   }
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAddedOrBuilder getBreakpointAddedOrBuilder() {
@@ -2735,7 +2735,7 @@ private static final long serialVersionUID = 0L;
   public static final int FRAMES_VIEW_UPDATED_FIELD_NUMBER = 3;
   private com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated framesViewUpdated_;
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    * @return Whether the framesViewUpdated field is set.
    */
   @java.lang.Override
@@ -2743,7 +2743,7 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    * @return The framesViewUpdated.
    */
   @java.lang.Override
@@ -2751,7 +2751,7 @@ private static final long serialVersionUID = 0L;
     return framesViewUpdated_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.getDefaultInstance() : framesViewUpdated_;
   }
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder getFramesViewUpdatedOrBuilder() {
@@ -3241,14 +3241,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded, com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAddedOrBuilder> breakpointAddedBuilder_;
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      * @return Whether the breakpointAdded field is set.
      */
     public boolean hasBreakpointAdded() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      * @return The breakpointAdded.
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded getBreakpointAdded() {
@@ -3259,7 +3259,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public Builder setBreakpointAdded(com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded value) {
       if (breakpointAddedBuilder_ == null) {
@@ -3275,7 +3275,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public Builder setBreakpointAdded(
         com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.Builder builderForValue) {
@@ -3289,7 +3289,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public Builder mergeBreakpointAdded(com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded value) {
       if (breakpointAddedBuilder_ == null) {
@@ -3309,7 +3309,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public Builder clearBreakpointAdded() {
       if (breakpointAddedBuilder_ == null) {
@@ -3322,7 +3322,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.Builder getBreakpointAddedBuilder() {
       bitField0_ |= 0x00000002;
@@ -3330,7 +3330,7 @@ private static final long serialVersionUID = 0L;
       return getBreakpointAddedFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAddedOrBuilder getBreakpointAddedOrBuilder() {
       if (breakpointAddedBuilder_ != null) {
@@ -3341,7 +3341,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+     * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded, com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAddedOrBuilder> 
@@ -3361,14 +3361,14 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated, com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder> framesViewUpdatedBuilder_;
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      * @return Whether the framesViewUpdated field is set.
      */
     public boolean hasFramesViewUpdated() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      * @return The framesViewUpdated.
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated getFramesViewUpdated() {
@@ -3379,7 +3379,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public Builder setFramesViewUpdated(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated value) {
       if (framesViewUpdatedBuilder_ == null) {
@@ -3395,7 +3395,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public Builder setFramesViewUpdated(
         com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.Builder builderForValue) {
@@ -3409,7 +3409,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public Builder mergeFramesViewUpdated(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated value) {
       if (framesViewUpdatedBuilder_ == null) {
@@ -3429,7 +3429,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public Builder clearFramesViewUpdated() {
       if (framesViewUpdatedBuilder_ == null) {
@@ -3442,7 +3442,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.Builder getFramesViewUpdatedBuilder() {
       bitField0_ |= 0x00000004;
@@ -3450,7 +3450,7 @@ private static final long serialVersionUID = 0L;
       return getFramesViewUpdatedFieldBuilder().getBuilder();
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder getFramesViewUpdatedOrBuilder() {
       if (framesViewUpdatedBuilder_ != null) {
@@ -3461,7 +3461,7 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+     * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated, com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder> 

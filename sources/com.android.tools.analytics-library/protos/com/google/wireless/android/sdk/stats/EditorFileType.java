@@ -140,6 +140,22 @@ public enum EditorFileType
    * <code>CMAKE = 26;</code>
    */
   CMAKE(26),
+  /**
+   * <pre>
+   * .proto
+   * </pre>
+   *
+   * <code>PROTO = 27;</code>
+   */
+  PROTO(27),
+  /**
+   * <pre>
+   * .proto (if Protocol Buffers plugin is missing)
+   * </pre>
+   *
+   * <code>PROTO_WITHOUT_PLUGIN = 28;</code>
+   */
+  PROTO_WITHOUT_PLUGIN(28),
   ;
 
   /**
@@ -274,6 +290,22 @@ public enum EditorFileType
    * <code>CMAKE = 26;</code>
    */
   public static final int CMAKE_VALUE = 26;
+  /**
+   * <pre>
+   * .proto
+   * </pre>
+   *
+   * <code>PROTO = 27;</code>
+   */
+  public static final int PROTO_VALUE = 27;
+  /**
+   * <pre>
+   * .proto (if Protocol Buffers plugin is missing)
+   * </pre>
+   *
+   * <code>PROTO_WITHOUT_PLUGIN = 28;</code>
+   */
+  public static final int PROTO_WITHOUT_PLUGIN_VALUE = 28;
 
 
   public final int getNumber() {
@@ -323,6 +355,8 @@ public enum EditorFileType
       case 24: return KOTLIN_COMPOSE;
       case 25: return TOML;
       case 26: return CMAKE;
+      case 27: return PROTO;
+      case 28: return PROTO_WITHOUT_PLUGIN;
       default: return null;
     }
   }

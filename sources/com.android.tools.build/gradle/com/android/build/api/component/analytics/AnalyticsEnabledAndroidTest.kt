@@ -69,7 +69,7 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
                 VariantPropertiesMethodType.FUNCTIONAL_TEST_VALUE
             return delegate.functionalTest
         }
-    override val testLabel: Property<String?>
+    override val testLabel: Property<String>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.TEST_LABEL_VALUE

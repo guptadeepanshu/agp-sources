@@ -8,47 +8,47 @@ public interface EmulatorIceboxOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    * @return Whether the startIcebox field is set.
    */
   boolean hasStartIcebox();
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    * @return The startIcebox.
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox getStartIcebox();
   /**
-   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1;</code>
+   * <code>.android_studio.EmulatorIcebox.StartIcebox start_icebox = 1 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIceboxOrBuilder getStartIceboxOrBuilder();
 
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    * @return Whether the takeSnapshot field is set.
    */
   boolean hasTakeSnapshot();
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    * @return The takeSnapshot.
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot getTakeSnapshot();
   /**
-   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2;</code>
+   * <code>.android_studio.EmulatorIcebox.TakeSnapshot take_snapshot = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshotOrBuilder getTakeSnapshotOrBuilder();
 
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    * @return Whether the finishIcebox field is set.
    */
   boolean hasFinishIcebox();
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    * @return The finishIcebox.
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox getFinishIcebox();
   /**
-   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3;</code>
+   * <code>.android_studio.EmulatorIcebox.FinishIcebox finish_icebox = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder getFinishIceboxOrBuilder();
 

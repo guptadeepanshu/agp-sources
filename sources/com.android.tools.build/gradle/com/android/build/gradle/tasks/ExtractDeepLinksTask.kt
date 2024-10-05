@@ -23,8 +23,6 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.blame.SourceFilePosition
@@ -128,8 +126,6 @@ abstract class ExtractDeepLinksTask: NonIncrementalTask() {
     abstract class BaseCreationAction(
         creationConfig: ComponentCreationConfig
     ) : VariantTaskCreationAction<ExtractDeepLinksTask, ComponentCreationConfig>(
-        creationConfig
-    ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
         creationConfig
     ) {
 

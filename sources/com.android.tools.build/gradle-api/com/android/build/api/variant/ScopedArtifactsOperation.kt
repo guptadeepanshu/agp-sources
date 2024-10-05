@@ -16,6 +16,7 @@
 
 package com.android.build.api.variant
 
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ScopedArtifact
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
@@ -44,10 +45,11 @@ interface ScopedArtifactsOperation<T: Task> {
      * element. The [Property] value will be automatically set by the Android Gradle Plugin and its
      * location should not be considered part of the API and can change in the future.
      */
-    fun toAppend(
-        to: ScopedArtifact,
+    fun <ArtifactT> toAppend(
+        to: ArtifactT,
         with: (T) -> Property<out FileSystemLocation>,
-    )
+    ) where ArtifactT: ScopedArtifact,
+            ArtifactT: Artifact.Appendable
 
     /**
      * Set the final version of the [type] artifact to the input fields of the [Task] [T].
@@ -83,25 +85,32 @@ interface ScopedArtifactsOperation<T: Task> {
      * element. The [Property] value will be automatically set by the Android Gradle Plugin and its
      * location should not be considered part of the API and can change in the future.
      */
-    fun toTransform(
-        type: ScopedArtifact,
+    fun <ArtifactT> toTransform(
+        type: ArtifactT,
         inputJars: (T) -> ListProperty<RegularFile>,
         inputDirectories: (T) -> ListProperty<Directory>,
-        into: (T) -> RegularFileProperty)
+        into: (T) -> RegularFileProperty
+    ) where ArtifactT: ScopedArtifact,
+            ArtifactT: Artifact.Transformable
 
     /**
-     * Transform the current version of the [type] artifact into a new version. The order in which
-     * the replace [Task]s are applied is directly set by the order of this method call. Last one
-     * wins and none of the previously set append/transform/replace registered [Task]s will be
-     * invoked since this [Task] [T] replace the final version.
+     * Replace the current version of the [type] artifact with a new version.
+     *
+     * The main difference with the [toTransform] method is that the previously set of producers of
+     * this [ScopedArtifact] will not be invoked.
+     *
+     * The order in which the replace [Task]s are applied is directly set by the order of this
+     * method call. Last one wins and none of the previously set append/transform/replace registered
+     * [Task]s will be invoked since this [Task] [T] replace the final version.
      *
      * @param type the [ScopedArtifact] to replace.
      * @param into lambda that returns the [Property] used by the [Task] to save the replaced
      * element. The [Property] value will be automatically set by the Android Gradle Plugin and its
      * location should not be considered part of the API and can change in the future.
      */
-    fun toReplace(
-        type: ScopedArtifact,
+    fun <ArtifactT> toReplace(
+        type: ArtifactT,
         into: (T) -> RegularFileProperty
-    )
+    ) where ArtifactT: ScopedArtifact,
+            ArtifactT: Artifact.Replaceable
 }

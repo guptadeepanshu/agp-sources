@@ -27,32 +27,32 @@ public interface DebuggerEventOrBuilder extends
   com.google.wireless.android.sdk.stats.DebuggerEvent.Type getType();
 
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    * @return Whether the breakpointAdded field is set.
    */
   boolean hasBreakpointAdded();
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    * @return The breakpointAdded.
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded getBreakpointAdded();
   /**
-   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2;</code>
+   * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAddedOrBuilder getBreakpointAddedOrBuilder();
 
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    * @return Whether the framesViewUpdated field is set.
    */
   boolean hasFramesViewUpdated();
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    * @return The framesViewUpdated.
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated getFramesViewUpdated();
   /**
-   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3;</code>
+   * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder getFramesViewUpdatedOrBuilder();
 }

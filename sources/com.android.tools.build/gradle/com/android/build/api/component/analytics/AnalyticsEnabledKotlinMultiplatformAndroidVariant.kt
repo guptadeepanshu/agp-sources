@@ -17,6 +17,7 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.artifact.Artifacts
+import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.HostTest
@@ -107,18 +108,18 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             return delegate.nestedComponents
         }
 
-    override val deviceTests: List<DeviceTest>
+    override val deviceTests: Map<String, DeviceTest>
         get()  {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.DEVICE_TESTS_VALUE
             // return a new list everytime as items may eventually be added through future APIs.
-            // we may consider returning a live list instead.
-            return  delegate.deviceTests.map {
-                @Suppress("DEPRECATION")
-                if (it is com.android.build.api.variant.AndroidTest) {
-                    AnalyticsEnabledAndroidTest(it, stats, objectFactory)
+            // we may consider returning a live map instead.
+            return  delegate.deviceTests.mapValues {
+                val value = it.value
+                if (value is AndroidTest) {
+                    AnalyticsEnabledAndroidTest(value, stats, objectFactory)
                 } else {
-                    AnalyticsEnabledDeviceTest(it, stats, objectFactory)
+                    AnalyticsEnabledDeviceTest(value, stats, objectFactory)
                 }
             }
         }
@@ -128,7 +129,7 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.HOST_TESTS_VALUE
             // return a new list everytime as items may eventually be added through future APIs.
-            // we may consider returning a live list instead.
+            // we may consider returning a live map instead.
             return  delegate.hostTests.mapValues {
                 AnalyticsEnabledHostTest(it.value, stats, objectFactory)
             }

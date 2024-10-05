@@ -22,6 +22,7 @@ import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.core.MergedFlavor
@@ -152,6 +153,7 @@ internal abstract class ComponentDslInfoImpl internal constructor(
     override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> =
         listOf(
             ComponentDslInfo.DslDefinedDeviceTest(
+                DeviceTestBuilder.ANDROID_TEST_TYPE,
                 buildTypeObj.enableAndroidTestCoverage || buildTypeObj.isTestCoverageEnabled
             )
         )

@@ -95,7 +95,7 @@ public interface AndroidStudioEventOrBuilder extends
    * The version field is set for most messages.
    * </pre>
    *
-   * <code>optional .android_studio.ProductDetails product_details = 4;</code>
+   * <code>optional .android_studio.ProductDetails product_details = 4 [lazy = true];</code>
    * @return Whether the productDetails field is set.
    */
   boolean hasProductDetails();
@@ -111,7 +111,7 @@ public interface AndroidStudioEventOrBuilder extends
    * The version field is set for most messages.
    * </pre>
    *
-   * <code>optional .android_studio.ProductDetails product_details = 4;</code>
+   * <code>optional .android_studio.ProductDetails product_details = 4 [lazy = true];</code>
    * @return The productDetails.
    */
   com.google.wireless.android.sdk.stats.ProductDetails getProductDetails();
@@ -127,7 +127,7 @@ public interface AndroidStudioEventOrBuilder extends
    * The version field is set for most messages.
    * </pre>
    *
-   * <code>optional .android_studio.ProductDetails product_details = 4;</code>
+   * <code>optional .android_studio.ProductDetails product_details = 4 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ProductDetailsOrBuilder getProductDetailsOrBuilder();
 
@@ -309,7 +309,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = AppInspectionEvent and AppInspectionEvent.Type = PROCESS_SELECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 12 [lazy = true];</code>
    * @return Whether the deviceInfo field is set.
    */
   boolean hasDeviceInfo();
@@ -328,7 +328,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = AppInspectionEvent and AppInspectionEvent.Type = PROCESS_SELECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 12 [lazy = true];</code>
    * @return The deviceInfo.
    */
   com.google.wireless.android.sdk.stats.DeviceInfo getDeviceInfo();
@@ -347,7 +347,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = AppInspectionEvent and AppInspectionEvent.Type = PROCESS_SELECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
+   * <code>optional .android_studio.DeviceInfo device_info = 12 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder();
 
@@ -510,7 +510,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_CRASH
    * </pre>
    *
-   * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
+   * <code>optional .android_studio.StudioCrash studio_crash = 19 [lazy = true];</code>
    * @return Whether the studioCrash field is set.
    */
   boolean hasStudioCrash();
@@ -519,7 +519,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_CRASH
    * </pre>
    *
-   * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
+   * <code>optional .android_studio.StudioCrash studio_crash = 19 [lazy = true];</code>
    * @return The studioCrash.
    */
   com.google.wireless.android.sdk.stats.StudioCrash getStudioCrash();
@@ -528,7 +528,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_CRASH
    * </pre>
    *
-   * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
+   * <code>optional .android_studio.StudioCrash studio_crash = 19 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioCrashOrBuilder getStudioCrashOrBuilder();
 
@@ -538,7 +538,7 @@ public interface AndroidStudioEventOrBuilder extends
    * In the case of INSTANT_RUN, only the plugin version information is included
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
+   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20 [lazy = true];</code>
    * @return Whether the gradleBuildDetails field is set.
    */
   boolean hasGradleBuildDetails();
@@ -548,7 +548,7 @@ public interface AndroidStudioEventOrBuilder extends
    * In the case of INSTANT_RUN, only the plugin version information is included
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
+   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20 [lazy = true];</code>
    * @return The gradleBuildDetails.
    */
   com.google.wireless.android.sdk.stats.GradleBuildDetails getGradleBuildDetails();
@@ -558,7 +558,7 @@ public interface AndroidStudioEventOrBuilder extends
    * In the case of INSTANT_RUN, only the plugin version information is included
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
+   * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildDetailsOrBuilder getGradleBuildDetailsOrBuilder();
 
@@ -567,7 +567,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INSTANT_RUN
    * </pre>
    *
-   * <code>optional .android_studio.InstantRun instant_run = 21;</code>
+   * <code>optional .android_studio.InstantRun instant_run = 21 [lazy = true];</code>
    * @return Whether the instantRun field is set.
    */
   boolean hasInstantRun();
@@ -576,7 +576,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INSTANT_RUN
    * </pre>
    *
-   * <code>optional .android_studio.InstantRun instant_run = 21;</code>
+   * <code>optional .android_studio.InstantRun instant_run = 21 [lazy = true];</code>
    * @return The instantRun.
    */
   com.google.wireless.android.sdk.stats.InstantRun getInstantRun();
@@ -585,7 +585,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INSTANT_RUN
    * </pre>
    *
-   * <code>optional .android_studio.InstantRun instant_run = 21;</code>
+   * <code>optional .android_studio.InstantRun instant_run = 21 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.InstantRunOrBuilder getInstantRunOrBuilder();
 
@@ -594,7 +594,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = META_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
+   * <code>optional .android_studio.MetaMetrics meta_metrics = 22 [lazy = true];</code>
    * @return Whether the metaMetrics field is set.
    */
   boolean hasMetaMetrics();
@@ -603,7 +603,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = META_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
+   * <code>optional .android_studio.MetaMetrics meta_metrics = 22 [lazy = true];</code>
    * @return The metaMetrics.
    */
   com.google.wireless.android.sdk.stats.MetaMetrics getMetaMetrics();
@@ -612,7 +612,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = META_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
+   * <code>optional .android_studio.MetaMetrics meta_metrics = 22 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MetaMetricsOrBuilder getMetaMetricsOrBuilder();
 
@@ -621,7 +621,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PING
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
+   * <code>optional .android_studio.EmulatorDetails emulator_details = 23 [lazy = true];</code>
    * @return Whether the emulatorDetails field is set.
    */
   boolean hasEmulatorDetails();
@@ -630,7 +630,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PING
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
+   * <code>optional .android_studio.EmulatorDetails emulator_details = 23 [lazy = true];</code>
    * @return The emulatorDetails.
    */
   com.google.wireless.android.sdk.stats.EmulatorDetails getEmulatorDetails();
@@ -639,7 +639,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PING
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
+   * <code>optional .android_studio.EmulatorDetails emulator_details = 23 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorDetailsOrBuilder getEmulatorDetailsOrBuilder();
 
@@ -648,7 +648,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RUN
    * </pre>
    *
-   * <code>optional .android_studio.TestRun test_run = 24;</code>
+   * <code>optional .android_studio.TestRun test_run = 24 [lazy = true];</code>
    * @return Whether the testRun field is set.
    */
   boolean hasTestRun();
@@ -657,7 +657,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RUN
    * </pre>
    *
-   * <code>optional .android_studio.TestRun test_run = 24;</code>
+   * <code>optional .android_studio.TestRun test_run = 24 [lazy = true];</code>
    * @return The testRun.
    */
   com.google.wireless.android.sdk.stats.TestRun getTestRun();
@@ -666,7 +666,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RUN
    * </pre>
    *
-   * <code>optional .android_studio.TestRun test_run = 24;</code>
+   * <code>optional .android_studio.TestRun test_run = 24 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestRunOrBuilder getTestRunOrBuilder();
 
@@ -676,7 +676,7 @@ public interface AndroidStudioEventOrBuilder extends
    * field emulator_ui_events instead.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the emulatorUiEvent field is set.
    */
@@ -687,7 +687,7 @@ public interface AndroidStudioEventOrBuilder extends
    * field emulator_ui_events instead.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The emulatorUiEvent.
    */
@@ -698,7 +698,7 @@ public interface AndroidStudioEventOrBuilder extends
    * field emulator_ui_events instead.
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
+   * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.EmulatorUiEventOrBuilder getEmulatorUiEventOrBuilder();
 
@@ -707,7 +707,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HYPERVISOR
    * </pre>
    *
-   * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
+   * <code>optional .android_studio.Hypervisor hypervisor = 26 [lazy = true];</code>
    * @return Whether the hypervisor field is set.
    */
   boolean hasHypervisor();
@@ -716,7 +716,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HYPERVISOR
    * </pre>
    *
-   * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
+   * <code>optional .android_studio.Hypervisor hypervisor = 26 [lazy = true];</code>
    * @return The hypervisor.
    */
   com.google.wireless.android.sdk.stats.Hypervisor getHypervisor();
@@ -725,7 +725,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HYPERVISOR
    * </pre>
    *
-   * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
+   * <code>optional .android_studio.Hypervisor hypervisor = 26 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HypervisorOrBuilder getHypervisorOrBuilder();
 
@@ -734,7 +734,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_HOST
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
+   * <code>optional .android_studio.EmulatorHost emulator_host = 27 [lazy = true];</code>
    * @return Whether the emulatorHost field is set.
    */
   boolean hasEmulatorHost();
@@ -743,7 +743,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_HOST
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
+   * <code>optional .android_studio.EmulatorHost emulator_host = 27 [lazy = true];</code>
    * @return The emulatorHost.
    */
   com.google.wireless.android.sdk.stats.EmulatorHost getEmulatorHost();
@@ -752,7 +752,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_HOST
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
+   * <code>optional .android_studio.EmulatorHost emulator_host = 27 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorHostOrBuilder getEmulatorHostOrBuilder();
 
@@ -761,7 +761,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_BUILD_PROFILE
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
+   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28 [lazy = true];</code>
    * @return Whether the gradleBuildProfile field is set.
    */
   boolean hasGradleBuildProfile();
@@ -770,7 +770,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_BUILD_PROFILE
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
+   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28 [lazy = true];</code>
    * @return The gradleBuildProfile.
    */
   com.google.wireless.android.sdk.stats.GradleBuildProfile getGradleBuildProfile();
@@ -779,7 +779,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_BUILD_PROFILE
    * </pre>
    *
-   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
+   * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleBuildProfileOrBuilder getGradleBuildProfileOrBuilder();
 
@@ -788,7 +788,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_FRONTEND_EXITED
    * </pre>
    *
-   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
+   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29 [lazy = true];</code>
    * @return Whether the lldbFrontendDetails field is set.
    */
   boolean hasLldbFrontendDetails();
@@ -797,7 +797,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_FRONTEND_EXITED
    * </pre>
    *
-   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
+   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29 [lazy = true];</code>
    * @return The lldbFrontendDetails.
    */
   com.google.wireless.android.sdk.stats.LLDBFrontendDetails getLldbFrontendDetails();
@@ -806,7 +806,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_FRONTEND_EXITED
    * </pre>
    *
-   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
+   * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LLDBFrontendDetailsOrBuilder getLldbFrontendDetailsOrBuilder();
 
@@ -816,7 +816,7 @@ public interface AndroidStudioEventOrBuilder extends
    * kind FIREBASE_ASSISTANT_SILENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
+   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30 [lazy = true];</code>
    * @return Whether the firebaseErrorDetails field is set.
    */
   boolean hasFirebaseErrorDetails();
@@ -826,7 +826,7 @@ public interface AndroidStudioEventOrBuilder extends
    * kind FIREBASE_ASSISTANT_SILENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
+   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30 [lazy = true];</code>
    * @return The firebaseErrorDetails.
    */
   com.google.wireless.android.sdk.stats.FirebaseErrorDetails getFirebaseErrorDetails();
@@ -836,7 +836,7 @@ public interface AndroidStudioEventOrBuilder extends
    * kind FIREBASE_ASSISTANT_SILENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
+   * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FirebaseErrorDetailsOrBuilder getFirebaseErrorDetailsOrBuilder();
 
@@ -883,7 +883,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GFX_TRACE_*
    * </pre>
    *
-   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
+   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32 [lazy = true];</code>
    * @return Whether the gfxTracingDetails field is set.
    */
   boolean hasGfxTracingDetails();
@@ -892,7 +892,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GFX_TRACE_*
    * </pre>
    *
-   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
+   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32 [lazy = true];</code>
    * @return The gfxTracingDetails.
    */
   com.google.wireless.android.sdk.stats.GfxTracingDetails getGfxTracingDetails();
@@ -901,7 +901,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GFX_TRACE_*
    * </pre>
    *
-   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
+   * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GfxTracingDetailsOrBuilder getGfxTracingDetailsOrBuilder();
 
@@ -910,7 +910,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RECORDER_GENERATE_TEST_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
+   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33 [lazy = true];</code>
    * @return Whether the testRecorderDetails field is set.
    */
   boolean hasTestRecorderDetails();
@@ -919,7 +919,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RECORDER_GENERATE_TEST_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
+   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33 [lazy = true];</code>
    * @return The testRecorderDetails.
    */
   com.google.wireless.android.sdk.stats.TestRecorderDetails getTestRecorderDetails();
@@ -928,7 +928,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_RECORDER_GENERATE_TEST_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
+   * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestRecorderDetailsOrBuilder getTestRecorderDetailsOrBuilder();
 
@@ -937,7 +937,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
+   * <code>optional .android_studio.UIActionStats ui_action_stats = 34 [lazy = true];</code>
    * @return Whether the uiActionStats field is set.
    */
   boolean hasUiActionStats();
@@ -946,7 +946,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
+   * <code>optional .android_studio.UIActionStats ui_action_stats = 34 [lazy = true];</code>
    * @return The uiActionStats.
    */
   com.google.wireless.android.sdk.stats.UIActionStats getUiActionStats();
@@ -955,7 +955,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
+   * <code>optional .android_studio.UIActionStats ui_action_stats = 34 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UIActionStatsOrBuilder getUiActionStatsOrBuilder();
 
@@ -964,7 +964,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
+   * <code>optional .android_studio.MachineDetails machine_details = 35 [lazy = true];</code>
    * @return Whether the machineDetails field is set.
    */
   boolean hasMachineDetails();
@@ -973,7 +973,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
+   * <code>optional .android_studio.MachineDetails machine_details = 35 [lazy = true];</code>
    * @return The machineDetails.
    */
   com.google.wireless.android.sdk.stats.MachineDetails getMachineDetails();
@@ -982,7 +982,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
+   * <code>optional .android_studio.MachineDetails machine_details = 35 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MachineDetailsOrBuilder getMachineDetailsOrBuilder();
 
@@ -991,7 +991,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
+   * <code>optional .android_studio.JvmDetails jvm_details = 36 [lazy = true];</code>
    * @return Whether the jvmDetails field is set.
    */
   boolean hasJvmDetails();
@@ -1000,7 +1000,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
+   * <code>optional .android_studio.JvmDetails jvm_details = 36 [lazy = true];</code>
    * @return The jvmDetails.
    */
   com.google.wireless.android.sdk.stats.JvmDetails getJvmDetails();
@@ -1009,7 +1009,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PING
    * </pre>
    *
-   * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
+   * <code>optional .android_studio.JvmDetails jvm_details = 36 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JvmDetailsOrBuilder getJvmDetailsOrBuilder();
 
@@ -1021,7 +1021,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = STUDIO_LOW_MEMORY_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37 [lazy = true];</code>
    * @return Whether the javaProcessStats field is set.
    */
   boolean hasJavaProcessStats();
@@ -1033,7 +1033,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = STUDIO_LOW_MEMORY_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37 [lazy = true];</code>
    * @return The javaProcessStats.
    */
   com.google.wireless.android.sdk.stats.JavaProcessStats getJavaProcessStats();
@@ -1045,7 +1045,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = STUDIO_LOW_MEMORY_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
+   * <code>optional .android_studio.JavaProcessStats java_process_stats = 37 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder();
 
@@ -1054,7 +1054,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
+   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38 [lazy = true];</code>
    * @return Whether the studioPerformanceStats field is set.
    */
   boolean hasStudioPerformanceStats();
@@ -1063,7 +1063,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
+   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38 [lazy = true];</code>
    * @return The studioPerformanceStats.
    */
   com.google.wireless.android.sdk.stats.StudioPerformanceStats getStudioPerformanceStats();
@@ -1072,7 +1072,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
+   * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioPerformanceStatsOrBuilder getStudioPerformanceStatsOrBuilder();
 
@@ -1081,7 +1081,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
+   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39 [lazy = true];</code>
    * @return Whether the lldbPerformanceStats field is set.
    */
   boolean hasLldbPerformanceStats();
@@ -1090,7 +1090,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
+   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39 [lazy = true];</code>
    * @return The lldbPerformanceStats.
    */
   com.google.wireless.android.sdk.stats.LldbPerformanceStats getLldbPerformanceStats();
@@ -1099,7 +1099,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
+   * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LldbPerformanceStatsOrBuilder getLldbPerformanceStatsOrBuilder();
 
@@ -1108,7 +1108,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PROJECT_OPENED or STUDIO_PROJECT_CLOSED
    * </pre>
    *
-   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
+   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40 [lazy = true];</code>
    * @return Whether the studioProjectChange field is set.
    */
   boolean hasStudioProjectChange();
@@ -1117,7 +1117,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PROJECT_OPENED or STUDIO_PROJECT_CLOSED
    * </pre>
    *
-   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
+   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40 [lazy = true];</code>
    * @return The studioProjectChange.
    */
   com.google.wireless.android.sdk.stats.StudioProjectChange getStudioProjectChange();
@@ -1126,7 +1126,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PROJECT_OPENED or STUDIO_PROJECT_CLOSED
    * </pre>
    *
-   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
+   * <code>optional .android_studio.StudioProjectChange studio_project_change = 40 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioProjectChangeOrBuilder getStudioProjectChangeOrBuilder();
 
@@ -1135,7 +1135,7 @@ public interface AndroidStudioEventOrBuilder extends
    * optionally set when kind = FIREBASE_ASSISTANT_* (except for errors).
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
+   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41 [lazy = true];</code>
    * @return Whether the firebaseContextDetails field is set.
    */
   boolean hasFirebaseContextDetails();
@@ -1144,7 +1144,7 @@ public interface AndroidStudioEventOrBuilder extends
    * optionally set when kind = FIREBASE_ASSISTANT_* (except for errors).
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
+   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41 [lazy = true];</code>
    * @return The firebaseContextDetails.
    */
   com.google.wireless.android.sdk.stats.FirebaseContextDetails getFirebaseContextDetails();
@@ -1153,7 +1153,7 @@ public interface AndroidStudioEventOrBuilder extends
    * optionally set when kind = FIREBASE_ASSISTANT_* (except for errors).
    * </pre>
    *
-   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
+   * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FirebaseContextDetailsOrBuilder getFirebaseContextDetailsOrBuilder();
 
@@ -1162,7 +1162,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
+   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42 [lazy = true];</code>
    * @return Whether the layoutEditorEvent field is set.
    */
   boolean hasLayoutEditorEvent();
@@ -1171,7 +1171,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
+   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42 [lazy = true];</code>
    * @return The layoutEditorEvent.
    */
   com.google.wireless.android.sdk.stats.LayoutEditorEvent getLayoutEditorEvent();
@@ -1180,7 +1180,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
+   * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutEditorEventOrBuilder getLayoutEditorEventOrBuilder();
 
@@ -1189,7 +1189,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_LINKS_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43 [lazy = true];</code>
    * @return Whether the appLinksAssistantEvent field is set.
    */
   boolean hasAppLinksAssistantEvent();
@@ -1198,7 +1198,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_LINKS_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43 [lazy = true];</code>
    * @return The appLinksAssistantEvent.
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEvent getAppLinksAssistantEvent();
@@ -1207,7 +1207,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_LINKS_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
+   * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppLinksAssistantEventOrBuilder getAppLinksAssistantEventOrBuilder();
 
@@ -1216,7 +1216,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
+   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44 [lazy = true];</code>
    * @return Whether the emulatorPerformanceStats field is set.
    */
   boolean hasEmulatorPerformanceStats();
@@ -1225,7 +1225,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
+   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44 [lazy = true];</code>
    * @return The emulatorPerformanceStats.
    */
   com.google.wireless.android.sdk.stats.EmulatorPerformanceStats getEmulatorPerformanceStats();
@@ -1234,7 +1234,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EMULATOR_PERFORMANCE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
+   * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorPerformanceStatsOrBuilder getEmulatorPerformanceStatsOrBuilder();
 
@@ -1243,7 +1243,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
+   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45 [lazy = true];</code>
    * @return Whether the adbAssistantStats field is set.
    */
   boolean hasAdbAssistantStats();
@@ -1252,7 +1252,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
+   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45 [lazy = true];</code>
    * @return The adbAssistantStats.
    */
   com.google.wireless.android.sdk.stats.AdbAssistantStats getAdbAssistantStats();
@@ -1261,7 +1261,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_ASSISTANT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
+   * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AdbAssistantStatsOrBuilder getAdbAssistantStatsOrBuilder();
 
@@ -1270,7 +1270,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
+   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46 [lazy = true];</code>
    * @return Whether the lldbSessionStartDetails field is set.
    */
   boolean hasLldbSessionStartDetails();
@@ -1279,7 +1279,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
+   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46 [lazy = true];</code>
    * @return The lldbSessionStartDetails.
    */
   com.google.wireless.android.sdk.stats.LldbSessionStartDetails getLldbSessionStartDetails();
@@ -1288,7 +1288,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_STARTED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
+   * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LldbSessionStartDetailsOrBuilder getLldbSessionStartDetailsOrBuilder();
 
@@ -1297,7 +1297,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
+   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47 [lazy = true];</code>
    * @return Whether the lldbSessionEndDetails field is set.
    */
   boolean hasLldbSessionEndDetails();
@@ -1306,7 +1306,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
+   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47 [lazy = true];</code>
    * @return The lldbSessionEndDetails.
    */
   com.google.wireless.android.sdk.stats.LldbSessionEndDetails getLldbSessionEndDetails();
@@ -1315,7 +1315,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LLDB_SESSION_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
+   * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LldbSessionEndDetailsOrBuilder getLldbSessionEndDetailsOrBuilder();
 
@@ -1324,7 +1324,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48 [lazy = true];</code>
    * @return Whether the androidProfilerEvent field is set.
    */
   boolean hasAndroidProfilerEvent();
@@ -1333,7 +1333,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48 [lazy = true];</code>
    * @return The androidProfilerEvent.
    */
   com.google.wireless.android.sdk.stats.AndroidProfilerEvent getAndroidProfilerEvent();
@@ -1342,7 +1342,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
+   * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidProfilerEventOrBuilder getAndroidProfilerEventOrBuilder();
 
@@ -1351,7 +1351,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APK_ANALYZER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
+   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49 [lazy = true];</code>
    * @return Whether the apkAnalyzerStats field is set.
    */
   boolean hasApkAnalyzerStats();
@@ -1360,7 +1360,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APK_ANALYZER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
+   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49 [lazy = true];</code>
    * @return The apkAnalyzerStats.
    */
   com.google.wireless.android.sdk.stats.ApkAnalyzerStats getApkAnalyzerStats();
@@ -1369,7 +1369,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APK_ANALYZER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
+   * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApkAnalyzerStatsOrBuilder getApkAnalyzerStatsOrBuilder();
 
@@ -1380,7 +1380,7 @@ public interface AndroidStudioEventOrBuilder extends
    * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
-   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
+   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50 [lazy = true];</code>
    * @return Whether the gradleSyncStats field is set.
    */
   boolean hasGradleSyncStats();
@@ -1391,7 +1391,7 @@ public interface AndroidStudioEventOrBuilder extends
    * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
-   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
+   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50 [lazy = true];</code>
    * @return The gradleSyncStats.
    */
   com.google.wireless.android.sdk.stats.GradleSyncStats getGradleSyncStats();
@@ -1402,7 +1402,7 @@ public interface AndroidStudioEventOrBuilder extends
    * GRADLE_SYNC_SKIPPED, GRADLE_SYNC_FAILURE_DETAILS, GRADLE_SYNC_ISSUES
    * </pre>
    *
-   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
+   * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleSyncStatsOrBuilder getGradleSyncStatsOrBuilder();
 
@@ -1411,7 +1411,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_CPP_SYNC_COMPLETED
    * </pre>
    *
-   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
+   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113 [lazy = true];</code>
    * @return Whether the gradleCppSyncStats field is set.
    */
   boolean hasGradleCppSyncStats();
@@ -1420,7 +1420,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_CPP_SYNC_COMPLETED
    * </pre>
    *
-   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
+   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113 [lazy = true];</code>
    * @return The gradleCppSyncStats.
    */
   com.google.wireless.android.sdk.stats.GradleCppSyncStats getGradleCppSyncStats();
@@ -1429,7 +1429,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_CPP_SYNC_COMPLETED
    * </pre>
    *
-   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
+   * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleCppSyncStatsOrBuilder getGradleCppSyncStatsOrBuilder();
 
@@ -1438,7 +1438,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when category = APK_DEBUG
    * </pre>
    *
-   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
+   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51 [lazy = true];</code>
    * @return Whether the apkDebugProject field is set.
    */
   boolean hasApkDebugProject();
@@ -1447,7 +1447,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when category = APK_DEBUG
    * </pre>
    *
-   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
+   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51 [lazy = true];</code>
    * @return The apkDebugProject.
    */
   com.google.wireless.android.sdk.stats.ApkDebugProject getApkDebugProject();
@@ -1456,7 +1456,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when category = APK_DEBUG
    * </pre>
    *
-   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
+   * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApkDebugProjectOrBuilder getApkDebugProjectOrBuilder();
 
@@ -1465,7 +1465,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
+   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52 [lazy = true];</code>
    * @return Whether the layoutInspectorEvent field is set.
    */
   boolean hasLayoutInspectorEvent();
@@ -1474,7 +1474,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
+   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52 [lazy = true];</code>
    * @return The layoutInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.LayoutInspectorEvent getLayoutInspectorEvent();
@@ -1483,7 +1483,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
+   * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LayoutInspectorEventOrBuilder getLayoutInspectorEventOrBuilder();
 
@@ -1492,7 +1492,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER_DB_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
+   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53 [lazy = true];</code>
    * @return Whether the androidProfilerDbStats field is set.
    */
   boolean hasAndroidProfilerDbStats();
@@ -1501,7 +1501,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER_DB_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
+   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53 [lazy = true];</code>
    * @return The androidProfilerDbStats.
    */
   com.google.wireless.android.sdk.stats.AndroidProfilerDbStats getAndroidProfilerDbStats();
@@ -1510,7 +1510,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_PROFILER_DB_STATS
    * </pre>
    *
-   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
+   * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidProfilerDbStatsOrBuilder getAndroidProfilerDbStatsOrBuilder();
 
@@ -1520,7 +1520,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = GRADLE_SYNC_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
+   * <code>optional .android_studio.KotlinSupport kotlin_support = 54 [lazy = true];</code>
    * @return Whether the kotlinSupport field is set.
    */
   boolean hasKotlinSupport();
@@ -1530,7 +1530,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = GRADLE_SYNC_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
+   * <code>optional .android_studio.KotlinSupport kotlin_support = 54 [lazy = true];</code>
    * @return The kotlinSupport.
    */
   com.google.wireless.android.sdk.stats.KotlinSupport getKotlinSupport();
@@ -1540,7 +1540,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = GRADLE_SYNC_ENDED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
+   * <code>optional .android_studio.KotlinSupport kotlin_support = 54 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.KotlinSupportOrBuilder getKotlinSupportOrBuilder();
 
@@ -1549,7 +1549,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CONNECTION_ASSISTANT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
+   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55 [lazy = true];</code>
    * @return Whether the connectionAssistantEvent field is set.
    */
   boolean hasConnectionAssistantEvent();
@@ -1558,7 +1558,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CONNECTION_ASSISTANT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
+   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55 [lazy = true];</code>
    * @return The connectionAssistantEvent.
    */
   com.google.wireless.android.sdk.stats.ConnectionAssistantEvent getConnectionAssistantEvent();
@@ -1567,7 +1567,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CONNECTION_ASSISTANT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
+   * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ConnectionAssistantEventOrBuilder getConnectionAssistantEventOrBuilder();
 
@@ -1576,7 +1576,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_OOM_DIALOG_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
+   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56 [lazy = true];</code>
    * @return Whether the oomDialogEvent field is set.
    */
   boolean hasOomDialogEvent();
@@ -1585,7 +1585,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_OOM_DIALOG_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
+   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56 [lazy = true];</code>
    * @return The oomDialogEvent.
    */
   com.google.wireless.android.sdk.stats.OomDialogEvent getOomDialogEvent();
@@ -1594,7 +1594,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_UI_OOM_DIALOG_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
+   * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.OomDialogEventOrBuilder getOomDialogEventOrBuilder();
 
@@ -1603,7 +1603,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CMAKE_EDITING_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
+   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57 [lazy = true];</code>
    * @return Whether the cmakeEditingEvent field is set.
    */
   boolean hasCmakeEditingEvent();
@@ -1612,7 +1612,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CMAKE_EDITING_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
+   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57 [lazy = true];</code>
    * @return The cmakeEditingEvent.
    */
   com.google.wireless.android.sdk.stats.CMakeEditingEvent getCmakeEditingEvent();
@@ -1621,7 +1621,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CMAKE_EDITING_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
+   * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CMakeEditingEventOrBuilder getCmakeEditingEventOrBuilder();
 
@@ -1649,7 +1649,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CPP_HEADERS_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
+   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59 [lazy = true];</code>
    * @return Whether the cppHeadersViewEvent field is set.
    */
   boolean hasCppHeadersViewEvent();
@@ -1658,7 +1658,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CPP_HEADERS_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
+   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59 [lazy = true];</code>
    * @return The cppHeadersViewEvent.
    */
   com.google.wireless.android.sdk.stats.CppHeadersViewEvent getCppHeadersViewEvent();
@@ -1667,7 +1667,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CPP_HEADERS_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
+   * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CppHeadersViewEventOrBuilder getCppHeadersViewEventOrBuilder();
 
@@ -1677,7 +1677,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Deprecated since 3.6.0.8, replaced with WhatsNewAssistantUpdateEvent
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the whatsNewAssistantEvent field is set.
    */
@@ -1688,7 +1688,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Deprecated since 3.6.0.8, replaced with WhatsNewAssistantUpdateEvent
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The whatsNewAssistantEvent.
    */
@@ -1699,7 +1699,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Deprecated since 3.6.0.8, replaced with WhatsNewAssistantUpdateEvent
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
+   * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.WhatsNewAssistantEventOrBuilder getWhatsNewAssistantEventOrBuilder();
 
@@ -1746,7 +1746,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_INDEXING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
+   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62 [lazy = true];</code>
    * @return Whether the intellijIndexingStats field is set.
    */
   boolean hasIntellijIndexingStats();
@@ -1755,7 +1755,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_INDEXING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
+   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62 [lazy = true];</code>
    * @return The intellijIndexingStats.
    */
   com.google.wireless.android.sdk.stats.IntellijIndexingStats getIntellijIndexingStats();
@@ -1764,7 +1764,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_INDEXING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
+   * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IntellijIndexingStatsOrBuilder getIntellijIndexingStatsOrBuilder();
 
@@ -1773,7 +1773,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.LintSession lint_session = 63;</code>
+   * <code>optional .android_studio.LintSession lint_session = 63 [lazy = true];</code>
    * @return Whether the lintSession field is set.
    */
   boolean hasLintSession();
@@ -1782,7 +1782,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.LintSession lint_session = 63;</code>
+   * <code>optional .android_studio.LintSession lint_session = 63 [lazy = true];</code>
    * @return The lintSession.
    */
   com.google.wireless.android.sdk.stats.LintSession getLintSession();
@@ -1791,7 +1791,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.LintSession lint_session = 63;</code>
+   * <code>optional .android_studio.LintSession lint_session = 63 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LintSessionOrBuilder getLintSessionOrBuilder();
 
@@ -1800,7 +1800,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.LintAction lint_action = 64;</code>
+   * <code>optional .android_studio.LintAction lint_action = 64 [lazy = true];</code>
    * @return Whether the lintAction field is set.
    */
   boolean hasLintAction();
@@ -1809,7 +1809,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.LintAction lint_action = 64;</code>
+   * <code>optional .android_studio.LintAction lint_action = 64 [lazy = true];</code>
    * @return The lintAction.
    */
   com.google.wireless.android.sdk.stats.LintAction getLintAction();
@@ -1818,7 +1818,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == LINT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.LintAction lint_action = 64;</code>
+   * <code>optional .android_studio.LintAction lint_action = 64 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LintActionOrBuilder getLintActionOrBuilder();
 
@@ -1827,7 +1827,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the studioRunEvent field is set.
    */
@@ -1837,7 +1837,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The studioRunEvent.
    */
@@ -1847,7 +1847,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
+   * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.StudioRunEventOrBuilder getStudioRunEventOrBuilder();
 
@@ -1900,7 +1900,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_TOOL_WINDOW_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
+   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67 [lazy = true];</code>
    * @return Whether the studioToolWindowActionStats field is set.
    */
   boolean hasStudioToolWindowActionStats();
@@ -1909,7 +1909,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_TOOL_WINDOW_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
+   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67 [lazy = true];</code>
    * @return The studioToolWindowActionStats.
    */
   com.google.wireless.android.sdk.stats.StudioToolWindowActionStats getStudioToolWindowActionStats();
@@ -1918,7 +1918,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_TOOL_WINDOW_ACTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
+   * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioToolWindowActionStatsOrBuilder getStudioToolWindowActionStatsOrBuilder();
 
@@ -1927,7 +1927,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_STRUCTURE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
+   * <code>optional .android_studio.PSDEvent psd_event = 68 [lazy = true];</code>
    * @return Whether the psdEvent field is set.
    */
   boolean hasPsdEvent();
@@ -1936,7 +1936,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_STRUCTURE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
+   * <code>optional .android_studio.PSDEvent psd_event = 68 [lazy = true];</code>
    * @return The psdEvent.
    */
   com.google.wireless.android.sdk.stats.PSDEvent getPsdEvent();
@@ -1945,7 +1945,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_STRUCTURE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
+   * <code>optional .android_studio.PSDEvent psd_event = 68 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PSDEventOrBuilder getPsdEventOrBuilder();
 
@@ -1977,7 +1977,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == JNI_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
+   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70 [lazy = true];</code>
    * @return Whether the jniInspectionEvent field is set.
    */
   boolean hasJniInspectionEvent();
@@ -1986,7 +1986,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == JNI_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
+   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70 [lazy = true];</code>
    * @return The jniInspectionEvent.
    */
   com.google.wireless.android.sdk.stats.JniInspectionEvent getJniInspectionEvent();
@@ -1995,7 +1995,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == JNI_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
+   * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.JniInspectionEventOrBuilder getJniInspectionEventOrBuilder();
 
@@ -2004,7 +2004,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == USER_SENTIMENT
    * </pre>
    *
-   * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
+   * <code>optional .android_studio.UserSentiment user_sentiment = 71 [lazy = true];</code>
    * @return Whether the userSentiment field is set.
    */
   boolean hasUserSentiment();
@@ -2013,7 +2013,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == USER_SENTIMENT
    * </pre>
    *
-   * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
+   * <code>optional .android_studio.UserSentiment user_sentiment = 71 [lazy = true];</code>
    * @return The userSentiment.
    */
   com.google.wireless.android.sdk.stats.UserSentiment getUserSentiment();
@@ -2022,7 +2022,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind == USER_SENTIMENT
    * </pre>
    *
-   * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
+   * <code>optional .android_studio.UserSentiment user_sentiment = 71 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UserSentimentOrBuilder getUserSentimentOrBuilder();
 
@@ -2031,7 +2031,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RunEvent run_event = 72;</code>
+   * <code>optional .android_studio.RunEvent run_event = 72 [lazy = true];</code>
    * @return Whether the runEvent field is set.
    */
   boolean hasRunEvent();
@@ -2040,7 +2040,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RunEvent run_event = 72;</code>
+   * <code>optional .android_studio.RunEvent run_event = 72 [lazy = true];</code>
    * @return The runEvent.
    */
   com.google.wireless.android.sdk.stats.RunEvent getRunEvent();
@@ -2049,7 +2049,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RunEvent run_event = 72;</code>
+   * <code>optional .android_studio.RunEvent run_event = 72 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.RunEventOrBuilder getRunEventOrBuilder();
 
@@ -2058,7 +2058,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
+   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73 [lazy = true];</code>
    * @return Whether the navEditorEvent field is set.
    */
   boolean hasNavEditorEvent();
@@ -2067,7 +2067,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
+   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73 [lazy = true];</code>
    * @return The navEditorEvent.
    */
   com.google.wireless.android.sdk.stats.NavEditorEvent getNavEditorEvent();
@@ -2076,7 +2076,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
+   * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavEditorEventOrBuilder getNavEditorEventOrBuilder();
 
@@ -2085,7 +2085,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIALOG_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
+   * <code>optional .android_studio.DialogStats dialog_stats = 74 [lazy = true];</code>
    * @return Whether the dialogStats field is set.
    */
   boolean hasDialogStats();
@@ -2094,7 +2094,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIALOG_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
+   * <code>optional .android_studio.DialogStats dialog_stats = 74 [lazy = true];</code>
    * @return The dialogStats.
    */
   com.google.wireless.android.sdk.stats.DialogStats getDialogStats();
@@ -2103,7 +2103,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIALOG_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
+   * <code>optional .android_studio.DialogStats dialog_stats = 74 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DialogStatsOrBuilder getDialogStatsOrBuilder();
 
@@ -2112,7 +2112,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_UPGRADE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
+   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75 [lazy = true];</code>
    * @return Whether the gradlePluginUpgradeDialog field is set.
    */
   boolean hasGradlePluginUpgradeDialog();
@@ -2121,7 +2121,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_UPGRADE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
+   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75 [lazy = true];</code>
    * @return The gradlePluginUpgradeDialog.
    */
   com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats getGradlePluginUpgradeDialog();
@@ -2130,7 +2130,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_UPGRADE_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
+   * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStatsOrBuilder getGradlePluginUpgradeDialogOrBuilder();
 
@@ -2139,7 +2139,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DATA_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
+   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76 [lazy = true];</code>
    * @return Whether the dataBindingEvent field is set.
    */
   boolean hasDataBindingEvent();
@@ -2148,7 +2148,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DATA_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
+   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76 [lazy = true];</code>
    * @return The dataBindingEvent.
    */
   com.google.wireless.android.sdk.stats.DataBindingEvent getDataBindingEvent();
@@ -2157,7 +2157,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DATA_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
+   * <code>optional .android_studio.DataBindingEvent data_binding_event = 76 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DataBindingEventOrBuilder getDataBindingEventOrBuilder();
 
@@ -2166,7 +2166,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TYPING_LATENCY_STATS
    * </pre>
    *
-   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
+   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77 [lazy = true];</code>
    * @return Whether the typingLatencyStats field is set.
    */
   boolean hasTypingLatencyStats();
@@ -2175,7 +2175,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TYPING_LATENCY_STATS
    * </pre>
    *
-   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
+   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77 [lazy = true];</code>
    * @return The typingLatencyStats.
    */
   com.google.wireless.android.sdk.stats.TypingLatencyStats getTypingLatencyStats();
@@ -2184,7 +2184,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TYPING_LATENCY_STATS
    * </pre>
    *
-   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
+   * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TypingLatencyStatsOrBuilder getTypingLatencyStatsOrBuilder();
 
@@ -2272,7 +2272,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PATCH_UPDATER
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80 [lazy = true];</code>
    * @return Whether the studioPatchUpdaterEvent field is set.
    */
   boolean hasStudioPatchUpdaterEvent();
@@ -2281,7 +2281,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PATCH_UPDATER
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80 [lazy = true];</code>
    * @return The studioPatchUpdaterEvent.
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent getStudioPatchUpdaterEvent();
@@ -2290,7 +2290,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STUDIO_PATCH_UPDATER
    * </pre>
    *
-   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
+   * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioPatchUpdaterEventOrBuilder getStudioPatchUpdaterEventOrBuilder();
 
@@ -2299,7 +2299,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = RESOURCE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
+   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81 [lazy = true];</code>
    * @return Whether the resourceManagerEvent field is set.
    */
   boolean hasResourceManagerEvent();
@@ -2308,7 +2308,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = RESOURCE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
+   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81 [lazy = true];</code>
    * @return The resourceManagerEvent.
    */
   com.google.wireless.android.sdk.stats.ResourceManagerEvent getResourceManagerEvent();
@@ -2317,7 +2317,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = RESOURCE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
+   * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ResourceManagerEventOrBuilder getResourceManagerEventOrBuilder();
 
@@ -2326,7 +2326,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = IDE_PLUGIN_INFO
    * </pre>
    *
-   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
+   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82 [lazy = true];</code>
    * @return Whether the idePluginInfo field is set.
    */
   boolean hasIdePluginInfo();
@@ -2335,7 +2335,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = IDE_PLUGIN_INFO
    * </pre>
    *
-   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
+   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82 [lazy = true];</code>
    * @return The idePluginInfo.
    */
   com.google.wireless.android.sdk.stats.IdePluginInfo getIdePluginInfo();
@@ -2344,7 +2344,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = IDE_PLUGIN_INFO
    * </pre>
    *
-   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
+   * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IdePluginInfoOrBuilder getIdePluginInfoOrBuilder();
 
@@ -2353,7 +2353,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = EDITOR_HIGHLIGHTING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
+   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83 [lazy = true];</code>
    * @return Whether the editorHighlightingStats field is set.
    */
   boolean hasEditorHighlightingStats();
@@ -2362,7 +2362,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = EDITOR_HIGHLIGHTING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
+   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83 [lazy = true];</code>
    * @return The editorHighlightingStats.
    */
   com.google.wireless.android.sdk.stats.EditorHighlightingStats getEditorHighlightingStats();
@@ -2371,7 +2371,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = EDITOR_HIGHLIGHTING_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
+   * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EditorHighlightingStatsOrBuilder getEditorHighlightingStatsOrBuilder();
 
@@ -2380,7 +2380,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = WINDOWS_DEFENDER_STATUS
    * </pre>
    *
-   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
+   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84 [lazy = true];</code>
    * @return Whether the windowsDefenderStatus field is set.
    */
   boolean hasWindowsDefenderStatus();
@@ -2389,7 +2389,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = WINDOWS_DEFENDER_STATUS
    * </pre>
    *
-   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
+   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84 [lazy = true];</code>
    * @return The windowsDefenderStatus.
    */
   com.google.wireless.android.sdk.stats.WindowsDefenderStatus getWindowsDefenderStatus();
@@ -2398,7 +2398,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = WINDOWS_DEFENDER_STATUS
    * </pre>
    *
-   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
+   * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.WindowsDefenderStatusOrBuilder getWindowsDefenderStatusOrBuilder();
 
@@ -2407,7 +2407,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = MEMORY_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
+   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85 [lazy = true];</code>
    * @return Whether the memorySettingsEvent field is set.
    */
   boolean hasMemorySettingsEvent();
@@ -2416,7 +2416,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = MEMORY_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
+   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85 [lazy = true];</code>
    * @return The memorySettingsEvent.
    */
   com.google.wireless.android.sdk.stats.MemorySettingsEvent getMemorySettingsEvent();
@@ -2425,7 +2425,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = MEMORY_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
+   * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemorySettingsEventOrBuilder getMemorySettingsEventOrBuilder();
 
@@ -2434,7 +2434,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = STUDIO_UPDATE_FLOW
    * </pre>
    *
-   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
+   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86 [lazy = true];</code>
    * @return Whether the studioUpdateFlowEvent field is set.
    */
   boolean hasStudioUpdateFlowEvent();
@@ -2443,7 +2443,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = STUDIO_UPDATE_FLOW
    * </pre>
    *
-   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
+   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86 [lazy = true];</code>
    * @return The studioUpdateFlowEvent.
    */
   com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent getStudioUpdateFlowEvent();
@@ -2452,7 +2452,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind = STUDIO_UPDATE_FLOW
    * </pre>
    *
-   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
+   * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StudioUpdateFlowEventOrBuilder getStudioUpdateFlowEventOrBuilder();
 
@@ -2461,7 +2461,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_WINDOW_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
+   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87 [lazy = true];</code>
    * @return Whether the buildOutputWindowStats field is set.
    */
   boolean hasBuildOutputWindowStats();
@@ -2470,7 +2470,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_WINDOW_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
+   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87 [lazy = true];</code>
    * @return The buildOutputWindowStats.
    */
   com.google.wireless.android.sdk.stats.BuildOutputWindowStats getBuildOutputWindowStats();
@@ -2479,7 +2479,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_WINDOW_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
+   * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildOutputWindowStatsOrBuilder getBuildOutputWindowStatsOrBuilder();
 
@@ -2488,7 +2488,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_DSL_USAGE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
+   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88 [lazy = true];</code>
    * @return Whether the gradlePluginDslUsageStats field is set.
    */
   boolean hasGradlePluginDslUsageStats();
@@ -2497,7 +2497,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_DSL_USAGE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
+   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88 [lazy = true];</code>
    * @return The gradlePluginDslUsageStats.
    */
   com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats getGradlePluginDslUsageStats();
@@ -2506,7 +2506,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_PLUGIN_DSL_USAGE_STATS
    * </pre>
    *
-   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
+   * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradlePluginDslUsageStatsOrBuilder getGradlePluginDslUsageStatsOrBuilder();
 
@@ -2515,7 +2515,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WHATS_NEW_ASSISTANT_UPDATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
+   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89 [lazy = true];</code>
    * @return Whether the whatsNewAssistantUpdateEvent field is set.
    */
   boolean hasWhatsNewAssistantUpdateEvent();
@@ -2524,7 +2524,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WHATS_NEW_ASSISTANT_UPDATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
+   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89 [lazy = true];</code>
    * @return The whatsNewAssistantUpdateEvent.
    */
   com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent getWhatsNewAssistantUpdateEvent();
@@ -2533,7 +2533,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WHATS_NEW_ASSISTANT_UPDATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
+   * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEventOrBuilder getWhatsNewAssistantUpdateEventOrBuilder();
 
@@ -2542,7 +2542,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEFAULT_ACTIVITY_LOCATOR_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
+   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90 [lazy = true];</code>
    * @return Whether the defaultActivityLocatorStats field is set.
    */
   boolean hasDefaultActivityLocatorStats();
@@ -2551,7 +2551,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEFAULT_ACTIVITY_LOCATOR_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
+   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90 [lazy = true];</code>
    * @return The defaultActivityLocatorStats.
    */
   com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats getDefaultActivityLocatorStats();
@@ -2560,7 +2560,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEFAULT_ACTIVITY_LOCATOR_STATS
    * </pre>
    *
-   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
+   * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DefaultActivityLocatorStatsOrBuilder getDefaultActivityLocatorStatsOrBuilder();
 
@@ -2569,7 +2569,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MOTION_LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
+   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91 [lazy = true];</code>
    * @return Whether the motionLayoutEditorEvent field is set.
    */
   boolean hasMotionLayoutEditorEvent();
@@ -2578,7 +2578,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MOTION_LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
+   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91 [lazy = true];</code>
    * @return The motionLayoutEditorEvent.
    */
   com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent getMotionLayoutEditorEvent();
@@ -2587,7 +2587,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MOTION_LAYOUT_EDITOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
+   * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MotionLayoutEditorEventOrBuilder getMotionLayoutEditorEventOrBuilder();
 
@@ -2598,7 +2598,7 @@ public interface AndroidStudioEventOrBuilder extends
    * imported through the sample browser UI or cloned and opened manually
    * </pre>
    *
-   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
+   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92 [lazy = true];</code>
    * @return Whether the composeSampleEvent field is set.
    */
   boolean hasComposeSampleEvent();
@@ -2609,7 +2609,7 @@ public interface AndroidStudioEventOrBuilder extends
    * imported through the sample browser UI or cloned and opened manually
    * </pre>
    *
-   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
+   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92 [lazy = true];</code>
    * @return The composeSampleEvent.
    */
   com.google.wireless.android.sdk.stats.ComposeSampleEvent getComposeSampleEvent();
@@ -2620,7 +2620,7 @@ public interface AndroidStudioEventOrBuilder extends
    * imported through the sample browser UI or cloned and opened manually
    * </pre>
    *
-   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
+   * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposeSampleEventOrBuilder getComposeSampleEventOrBuilder();
 
@@ -2631,7 +2631,7 @@ public interface AndroidStudioEventOrBuilder extends
    * e.g. android/user-interface-samples/TextStyling
    * </pre>
    *
-   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
+   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93 [lazy = true];</code>
    * @return Whether the importSampleEvent field is set.
    */
   boolean hasImportSampleEvent();
@@ -2642,7 +2642,7 @@ public interface AndroidStudioEventOrBuilder extends
    * e.g. android/user-interface-samples/TextStyling
    * </pre>
    *
-   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
+   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93 [lazy = true];</code>
    * @return The importSampleEvent.
    */
   com.google.wireless.android.sdk.stats.ImportSampleEvent getImportSampleEvent();
@@ -2653,7 +2653,7 @@ public interface AndroidStudioEventOrBuilder extends
    * e.g. android/user-interface-samples/TextStyling
    * </pre>
    *
-   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
+   * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ImportSampleEventOrBuilder getImportSampleEventOrBuilder();
 
@@ -2662,7 +2662,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DYNAMIC_LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94 [lazy = true];</code>
    * @return Whether the dynamicLayoutInspectorEvent field is set.
    */
   boolean hasDynamicLayoutInspectorEvent();
@@ -2671,7 +2671,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DYNAMIC_LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94 [lazy = true];</code>
    * @return The dynamicLayoutInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent getDynamicLayoutInspectorEvent();
@@ -2680,7 +2680,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DYNAMIC_LAYOUT_INSPECTOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
+   * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEventOrBuilder getDynamicLayoutInspectorEventOrBuilder();
 
@@ -2689,7 +2689,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
+   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95 [lazy = true];</code>
    * @return Whether the buildAttributionStats field is set.
    */
   boolean hasBuildAttributionStats();
@@ -2698,7 +2698,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
+   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95 [lazy = true];</code>
    * @return The buildAttributionStats.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionStats getBuildAttributionStats();
@@ -2707,7 +2707,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
+   * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionStatsOrBuilder getBuildAttributionStatsOrBuilder();
 
@@ -2716,7 +2716,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_COMPLETION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
+   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96 [lazy = true];</code>
    * @return Whether the editorCompletionStats field is set.
    */
   boolean hasEditorCompletionStats();
@@ -2725,7 +2725,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_COMPLETION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
+   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96 [lazy = true];</code>
    * @return The editorCompletionStats.
    */
   com.google.wireless.android.sdk.stats.EditorCompletionStats getEditorCompletionStats();
@@ -2734,7 +2734,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_COMPLETION_STATS
    * </pre>
    *
-   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
+   * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EditorCompletionStatsOrBuilder getEditorCompletionStatsOrBuilder();
 
@@ -2743,7 +2743,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MULTI_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
+   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97 [lazy = true];</code>
    * @return Whether the multiViewEvent field is set.
    */
   boolean hasMultiViewEvent();
@@ -2752,7 +2752,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MULTI_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
+   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97 [lazy = true];</code>
    * @return The multiViewEvent.
    */
   com.google.wireless.android.sdk.stats.MultiViewEvent getMultiViewEvent();
@@ -2761,7 +2761,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MULTI_VIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
+   * <code>optional .android_studio.MultiViewEvent multi_view_event = 97 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MultiViewEventOrBuilder getMultiViewEventOrBuilder();
 
@@ -2770,7 +2770,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_UI_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98 [lazy = true];</code>
    * @return Whether the buildAttributionUiEvent field is set.
    */
   boolean hasBuildAttributionUiEvent();
@@ -2779,7 +2779,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_UI_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98 [lazy = true];</code>
    * @return The buildAttributionUiEvent.
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEvent getBuildAttributionUiEvent();
@@ -2788,7 +2788,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_ATTRIBUTION_UI_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
+   * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildAttributionUiEventOrBuilder getBuildAttributionUiEventOrBuilder();
 
@@ -2797,7 +2797,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99 [lazy = true];</code>
    * @return Whether the vsPluginEvent field is set.
    */
   boolean hasVsPluginEvent();
@@ -2806,7 +2806,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99 [lazy = true];</code>
    * @return The vsPluginEvent.
    */
   com.google.wireless.android.sdk.stats.VsPluginEvent getVsPluginEvent();
@@ -2815,7 +2815,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VS_PLUGIN
    * </pre>
    *
-   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99;</code>
+   * <code>optional .android_studio.VsPluginEvent vs_plugin_event = 99 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VsPluginEventOrBuilder getVsPluginEventOrBuilder();
 
@@ -2824,7 +2824,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DESIGN_EDITOR_HELP_PANEL_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
+   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100 [lazy = true];</code>
    * @return Whether the designEditorHelpPanelEvent field is set.
    */
   boolean hasDesignEditorHelpPanelEvent();
@@ -2833,7 +2833,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DESIGN_EDITOR_HELP_PANEL_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
+   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100 [lazy = true];</code>
    * @return The designEditorHelpPanelEvent.
    */
   com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent getDesignEditorHelpPanelEvent();
@@ -2842,7 +2842,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DESIGN_EDITOR_HELP_PANEL_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
+   * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEventOrBuilder getDesignEditorHelpPanelEventOrBuilder();
 
@@ -2851,7 +2851,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
+   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101 [lazy = true];</code>
    * @return Whether the appInspectionEvent field is set.
    */
   boolean hasAppInspectionEvent();
@@ -2860,7 +2860,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
+   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101 [lazy = true];</code>
    * @return The appInspectionEvent.
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent getAppInspectionEvent();
@@ -2869,7 +2869,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_INSPECTION
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
+   * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppInspectionEventOrBuilder getAppInspectionEventOrBuilder();
 
@@ -2878,7 +2878,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ML_MODEL_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
+   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102 [lazy = true];</code>
    * @return Whether the mlModelBindingEvent field is set.
    */
   boolean hasMlModelBindingEvent();
@@ -2887,7 +2887,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ML_MODEL_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
+   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102 [lazy = true];</code>
    * @return The mlModelBindingEvent.
    */
   com.google.wireless.android.sdk.stats.MlModelBindingEvent getMlModelBindingEvent();
@@ -2896,7 +2896,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ML_MODEL_BINDING
    * </pre>
    *
-   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
+   * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MlModelBindingEventOrBuilder getMlModelBindingEventOrBuilder();
 
@@ -2905,7 +2905,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEPLOYMENT_TO_EMULATOR
    * </pre>
    *
-   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
+   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103 [lazy = true];</code>
    * @return Whether the avdLaunchEvent field is set.
    */
   boolean hasAvdLaunchEvent();
@@ -2914,7 +2914,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEPLOYMENT_TO_EMULATOR
    * </pre>
    *
-   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
+   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103 [lazy = true];</code>
    * @return The avdLaunchEvent.
    */
   com.google.wireless.android.sdk.stats.AvdLaunchEvent getAvdLaunchEvent();
@@ -2923,7 +2923,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEPLOYMENT_TO_EMULATOR
    * </pre>
    *
-   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
+   * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AvdLaunchEventOrBuilder getAvdLaunchEventOrBuilder();
 
@@ -2932,7 +2932,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_SAFE_ARGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104 [lazy = true];</code>
    * @return Whether the navSafeArgsEvent field is set.
    */
   boolean hasNavSafeArgsEvent();
@@ -2941,7 +2941,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_SAFE_ARGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104 [lazy = true];</code>
    * @return The navSafeArgsEvent.
    */
   com.google.wireless.android.sdk.stats.NavSafeArgsEvent getNavSafeArgsEvent();
@@ -2950,7 +2950,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = NAV_SAFE_ARGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
+   * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NavSafeArgsEventOrBuilder getNavSafeArgsEventOrBuilder();
 
@@ -2959,7 +2959,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DAGGER_EDITOR
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
+   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105 [lazy = true];</code>
    * @return Whether the daggerEditorEvent field is set.
    */
   boolean hasDaggerEditorEvent();
@@ -2968,7 +2968,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DAGGER_EDITOR
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
+   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105 [lazy = true];</code>
    * @return The daggerEditorEvent.
    */
   com.google.wireless.android.sdk.stats.DaggerEditorEvent getDaggerEditorEvent();
@@ -2977,7 +2977,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DAGGER_EDITOR
    * </pre>
    *
-   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
+   * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DaggerEditorEventOrBuilder getDaggerEditorEventOrBuilder();
 
@@ -2986,7 +2986,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PARALLEL_ANDROID_TEST_REPORT_UI
    * </pre>
    *
-   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
+   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106 [lazy = true];</code>
    * @return Whether the parallelAndroidTestReportUiEvent field is set.
    */
   boolean hasParallelAndroidTestReportUiEvent();
@@ -2995,7 +2995,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PARALLEL_ANDROID_TEST_REPORT_UI
    * </pre>
    *
-   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
+   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106 [lazy = true];</code>
    * @return The parallelAndroidTestReportUiEvent.
    */
   com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent getParallelAndroidTestReportUiEvent();
@@ -3004,7 +3004,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PARALLEL_ANDROID_TEST_REPORT_UI
    * </pre>
    *
-   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
+   * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEventOrBuilder getParallelAndroidTestReportUiEventOrBuilder();
 
@@ -3013,7 +3013,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APPLY_CHANGES_AGENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
+   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107 [lazy = true];</code>
    * @return Whether the applyChangesAgentError field is set.
    */
   boolean hasApplyChangesAgentError();
@@ -3022,7 +3022,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APPLY_CHANGES_AGENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
+   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107 [lazy = true];</code>
    * @return The applyChangesAgentError.
    */
   com.google.wireless.android.sdk.stats.ApplyChangesAgentError getApplyChangesAgentError();
@@ -3031,7 +3031,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APPLY_CHANGES_AGENT_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
+   * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ApplyChangesAgentErrorOrBuilder getApplyChangesAgentErrorOrBuilder();
 
@@ -3040,7 +3040,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WIZARD_TEMPLATES_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
+   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108 [lazy = true];</code>
    * @return Whether the templateUsage field is set.
    */
   boolean hasTemplateUsage();
@@ -3049,7 +3049,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WIZARD_TEMPLATES_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
+   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108 [lazy = true];</code>
    * @return The templateUsage.
    */
   com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage getTemplateUsage();
@@ -3058,7 +3058,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WIZARD_TEMPLATES_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
+   * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsageOrBuilder getTemplateUsageOrBuilder();
 
@@ -3067,7 +3067,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_COMPONENT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109 [lazy = true];</code>
    * @return Whether the upgradeAssistantComponentEvent field is set.
    */
   boolean hasUpgradeAssistantComponentEvent();
@@ -3076,7 +3076,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_COMPONENT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109 [lazy = true];</code>
    * @return The upgradeAssistantComponentEvent.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent getUpgradeAssistantComponentEvent();
@@ -3085,7 +3085,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_COMPONENT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
+   * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEventOrBuilder getUpgradeAssistantComponentEventOrBuilder();
 
@@ -3094,7 +3094,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_PROCESSOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
+   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110 [lazy = true];</code>
    * @return Whether the upgradeAssistantProcessorEvent field is set.
    */
   boolean hasUpgradeAssistantProcessorEvent();
@@ -3103,7 +3103,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_PROCESSOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
+   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110 [lazy = true];</code>
    * @return The upgradeAssistantProcessorEvent.
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent getUpgradeAssistantProcessorEvent();
@@ -3112,7 +3112,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ASSISTANT_PROCESSOR_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
+   * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEventOrBuilder getUpgradeAssistantProcessorEventOrBuilder();
 
@@ -3121,7 +3121,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTERACTIVE_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
+   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111 [lazy = true];</code>
    * @return Whether the interactivePreviewEvent field is set.
    */
   boolean hasInteractivePreviewEvent();
@@ -3130,7 +3130,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTERACTIVE_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
+   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111 [lazy = true];</code>
    * @return The interactivePreviewEvent.
    */
   com.google.wireless.android.sdk.stats.InteractivePreviewEvent getInteractivePreviewEvent();
@@ -3139,7 +3139,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTERACTIVE_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
+   * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.InteractivePreviewEventOrBuilder getInteractivePreviewEventOrBuilder();
 
@@ -3148,7 +3148,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_ANIMATION_TOOLING
    * </pre>
    *
-   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
+   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112 [lazy = true];</code>
    * @return Whether the composeAnimationToolingEvent field is set.
    */
   boolean hasComposeAnimationToolingEvent();
@@ -3157,7 +3157,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_ANIMATION_TOOLING
    * </pre>
    *
-   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
+   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112 [lazy = true];</code>
    * @return The composeAnimationToolingEvent.
    */
   com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent getComposeAnimationToolingEvent();
@@ -3166,7 +3166,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_ANIMATION_TOOLING
    * </pre>
    *
-   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
+   * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposeAnimationToolingEventOrBuilder getComposeAnimationToolingEventOrBuilder();
 
@@ -3219,7 +3219,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SURVEY_RESPONSE
    * </pre>
    *
-   * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
+   * <code>optional .android_studio.SurveyResponse survey_response = 115 [lazy = true];</code>
    * @return Whether the surveyResponse field is set.
    */
   boolean hasSurveyResponse();
@@ -3228,7 +3228,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SURVEY_RESPONSE
    * </pre>
    *
-   * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
+   * <code>optional .android_studio.SurveyResponse survey_response = 115 [lazy = true];</code>
    * @return The surveyResponse.
    */
   com.google.wireless.android.sdk.stats.SurveyResponse getSurveyResponse();
@@ -3237,7 +3237,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SURVEY_RESPONSE
    * </pre>
    *
-   * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
+   * <code>optional .android_studio.SurveyResponse survey_response = 115 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SurveyResponseOrBuilder getSurveyResponseOrBuilder();
 
@@ -3246,7 +3246,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_DEPLOY
    * </pre>
    *
-   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
+   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116 [lazy = true];</code>
    * @return Whether the composeDeployEvent field is set.
    */
   boolean hasComposeDeployEvent();
@@ -3255,7 +3255,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_DEPLOY
    * </pre>
    *
-   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
+   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116 [lazy = true];</code>
    * @return The composeDeployEvent.
    */
   com.google.wireless.android.sdk.stats.ComposeDeployEvent getComposeDeployEvent();
@@ -3264,7 +3264,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_DEPLOY
    * </pre>
    *
-   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
+   * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposeDeployEventOrBuilder getComposeDeployEventOrBuilder();
 
@@ -3274,7 +3274,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = AUTO_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return Whether the autoImportEvent field is set.
    */
@@ -3285,7 +3285,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = AUTO_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true, lazy = true];</code>
    * @deprecated
    * @return The autoImportEvent.
    */
@@ -3296,7 +3296,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = AUTO_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
+   * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.AutoImportEventOrBuilder getAutoImportEventOrBuilder();
 
@@ -3305,7 +3305,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.FileUsage file_usage = 118;</code>
+   * <code>optional .android_studio.FileUsage file_usage = 118 [lazy = true];</code>
    * @return Whether the fileUsage field is set.
    */
   boolean hasFileUsage();
@@ -3314,7 +3314,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.FileUsage file_usage = 118;</code>
+   * <code>optional .android_studio.FileUsage file_usage = 118 [lazy = true];</code>
    * @return The fileUsage.
    */
   com.google.wireless.android.sdk.stats.FileUsage getFileUsage();
@@ -3323,7 +3323,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.FileUsage file_usage = 118;</code>
+   * <code>optional .android_studio.FileUsage file_usage = 118 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FileUsageOrBuilder getFileUsageOrBuilder();
 
@@ -3332,7 +3332,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_LITERALS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
+   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119 [lazy = true];</code>
    * @return Whether the liveLiteralsEvent field is set.
    */
   boolean hasLiveLiteralsEvent();
@@ -3341,7 +3341,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_LITERALS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
+   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119 [lazy = true];</code>
    * @return The liveLiteralsEvent.
    */
   com.google.wireless.android.sdk.stats.LiveLiteralsEvent getLiveLiteralsEvent();
@@ -3350,7 +3350,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_LITERALS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
+   * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LiveLiteralsEventOrBuilder getLiveLiteralsEventOrBuilder();
 
@@ -3359,7 +3359,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MIGRATE_TO_NON_TRANSITIVE_R_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
+   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120 [lazy = true];</code>
    * @return Whether the nonTransitiveRClassMigrationEvent field is set.
    */
   boolean hasNonTransitiveRClassMigrationEvent();
@@ -3368,7 +3368,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MIGRATE_TO_NON_TRANSITIVE_R_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
+   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120 [lazy = true];</code>
    * @return The nonTransitiveRClassMigrationEvent.
    */
   com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent getNonTransitiveRClassMigrationEvent();
@@ -3377,7 +3377,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MIGRATE_TO_NON_TRANSITIVE_R_CLASS
    * </pre>
    *
-   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
+   * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEventOrBuilder getNonTransitiveRClassMigrationEventOrBuilder();
 
@@ -3386,7 +3386,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_TEST_RETENTION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121 [lazy = true];</code>
    * @return Whether the androidTestRetentionEvent field is set.
    */
   boolean hasAndroidTestRetentionEvent();
@@ -3395,7 +3395,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_TEST_RETENTION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121 [lazy = true];</code>
    * @return The androidTestRetentionEvent.
    */
   com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent getAndroidTestRetentionEvent();
@@ -3404,7 +3404,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ANDROID_TEST_RETENTION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
+   * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AndroidTestRetentionEventOrBuilder getAndroidTestRetentionEventOrBuilder();
 
@@ -3413,7 +3413,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SUGGESTED_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
+   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122 [lazy = true];</code>
    * @return Whether the suggestedImportEvent field is set.
    */
   boolean hasSuggestedImportEvent();
@@ -3422,7 +3422,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SUGGESTED_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
+   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122 [lazy = true];</code>
    * @return The suggestedImportEvent.
    */
   com.google.wireless.android.sdk.stats.SuggestedImportEvent getSuggestedImportEvent();
@@ -3431,7 +3431,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SUGGESTED_IMPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
+   * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SuggestedImportEventOrBuilder getSuggestedImportEventOrBuilder();
 
@@ -3440,7 +3440,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VFS_REFRESH
    * </pre>
    *
-   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
+   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123 [lazy = true];</code>
    * @return Whether the vfsRefresh field is set.
    */
   boolean hasVfsRefresh();
@@ -3449,7 +3449,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VFS_REFRESH
    * </pre>
    *
-   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
+   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123 [lazy = true];</code>
    * @return The vfsRefresh.
    */
   com.google.wireless.android.sdk.stats.VfsRefresh getVfsRefresh();
@@ -3458,7 +3458,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = VFS_REFRESH
    * </pre>
    *
-   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
+   * <code>optional .android_studio.VfsRefresh vfs_refresh = 123 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.VfsRefreshOrBuilder getVfsRefreshOrBuilder();
 
@@ -3467,7 +3467,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
    * </pre>
    *
-   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124 [lazy = true];</code>
    * @return Whether the signingWizardEvent field is set.
    */
   boolean hasSigningWizardEvent();
@@ -3476,7 +3476,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
    * </pre>
    *
-   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124 [lazy = true];</code>
    * @return The signingWizardEvent.
    */
   com.google.wireless.android.sdk.stats.SigningWizardEvent getSigningWizardEvent();
@@ -3485,7 +3485,7 @@ public interface AndroidStudioEventOrBuilder extends
    * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
    * </pre>
    *
-   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SigningWizardEventOrBuilder getSigningWizardEventOrBuilder();
 
@@ -3494,7 +3494,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_TYPE
    * </pre>
    *
-   * <code>optional .android_studio.FileType file_type = 125;</code>
+   * <code>optional .android_studio.FileType file_type = 125 [lazy = true];</code>
    * @return Whether the fileType field is set.
    */
   boolean hasFileType();
@@ -3503,7 +3503,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_TYPE
    * </pre>
    *
-   * <code>optional .android_studio.FileType file_type = 125;</code>
+   * <code>optional .android_studio.FileType file_type = 125 [lazy = true];</code>
    * @return The fileType.
    */
   com.google.wireless.android.sdk.stats.FileType getFileType();
@@ -3512,7 +3512,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FILE_TYPE
    * </pre>
    *
-   * <code>optional .android_studio.FileType file_type = 125;</code>
+   * <code>optional .android_studio.FileType file_type = 125 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FileTypeOrBuilder getFileTypeOrBuilder();
 
@@ -3521,7 +3521,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind is KOTLIN_PROJECT_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126 [lazy = true];</code>
    * @return Whether the kotlinProjectConfiguration field is set.
    */
   boolean hasKotlinProjectConfiguration();
@@ -3530,7 +3530,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind is KOTLIN_PROJECT_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126 [lazy = true];</code>
    * @return The kotlinProjectConfiguration.
    */
   com.google.wireless.android.sdk.stats.KotlinProjectConfiguration getKotlinProjectConfiguration();
@@ -3539,7 +3539,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind is KOTLIN_PROJECT_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.KotlinProjectConfigurationOrBuilder getKotlinProjectConfigurationOrBuilder();
 
@@ -3548,7 +3548,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_START_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   * <code>optional .android_studio.RunStartData run_start_data = 127 [lazy = true];</code>
    * @return Whether the runStartData field is set.
    */
   boolean hasRunStartData();
@@ -3557,7 +3557,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_START_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   * <code>optional .android_studio.RunStartData run_start_data = 127 [lazy = true];</code>
    * @return The runStartData.
    */
   com.google.wireless.android.sdk.stats.RunStartData getRunStartData();
@@ -3566,7 +3566,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_START_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   * <code>optional .android_studio.RunStartData run_start_data = 127 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.RunStartDataOrBuilder getRunStartDataOrBuilder();
 
@@ -3575,7 +3575,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_FINISH_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128 [lazy = true];</code>
    * @return Whether the runFinishData field is set.
    */
   boolean hasRunFinishData();
@@ -3584,7 +3584,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_FINISH_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128 [lazy = true];</code>
    * @return The runFinishData.
    */
   com.google.wireless.android.sdk.stats.RunFinishData getRunFinishData();
@@ -3593,7 +3593,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RUN_FINISH_DATA
    * </pre>
    *
-   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.RunFinishDataOrBuilder getRunFinishDataOrBuilder();
 
@@ -3602,7 +3602,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129 [lazy = true];</code>
    * @return Whether the deviceManagerEvent field is set.
    */
   boolean hasDeviceManagerEvent();
@@ -3611,7 +3611,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129 [lazy = true];</code>
    * @return The deviceManagerEvent.
    */
   com.google.wireless.android.sdk.stats.DeviceManagerEvent getDeviceManagerEvent();
@@ -3620,7 +3620,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MANAGER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceManagerEventOrBuilder getDeviceManagerEventOrBuilder();
 
@@ -3629,7 +3629,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_PAIRING
    * </pre>
    *
-   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130 [lazy = true];</code>
    * @return Whether the wearPairingEvent field is set.
    */
   boolean hasWearPairingEvent();
@@ -3638,7 +3638,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_PAIRING
    * </pre>
    *
-   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130 [lazy = true];</code>
    * @return The wearPairingEvent.
    */
   com.google.wireless.android.sdk.stats.WearPairingEvent getWearPairingEvent();
@@ -3647,7 +3647,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_PAIRING
    * </pre>
    *
-   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.WearPairingEventOrBuilder getWearPairingEventOrBuilder();
 
@@ -3656,7 +3656,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_INVALID
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131 [lazy = true];</code>
    * @return Whether the gradleJdkInvalidEvent field is set.
    */
   boolean hasGradleJdkInvalidEvent();
@@ -3665,7 +3665,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_INVALID
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131 [lazy = true];</code>
    * @return The gradleJdkInvalidEvent.
    */
   com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent getGradleJdkInvalidEvent();
@@ -3674,7 +3674,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_INVALID
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleJdkInvalidEventOrBuilder getGradleJdkInvalidEventOrBuilder();
 
@@ -3683,7 +3683,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_EXPLORER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132 [lazy = true];</code>
    * @return Whether the deviceExplorerEvent field is set.
    */
   boolean hasDeviceExplorerEvent();
@@ -3692,7 +3692,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_EXPLORER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132 [lazy = true];</code>
    * @return The deviceExplorerEvent.
    */
   com.google.wireless.android.sdk.stats.DeviceExplorerEvent getDeviceExplorerEvent();
@@ -3701,7 +3701,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_EXPLORER
    * </pre>
    *
-   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceExplorerEventOrBuilder getDeviceExplorerEventOrBuilder();
 
@@ -3710,7 +3710,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTIN_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133 [lazy = true];</code>
    * @return Whether the optInToMetrics field is set.
    */
   boolean hasOptInToMetrics();
@@ -3719,7 +3719,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTIN_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133 [lazy = true];</code>
    * @return The optInToMetrics.
    */
   com.google.wireless.android.sdk.stats.OptInToMetrics getOptInToMetrics();
@@ -3728,7 +3728,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTIN_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.OptInToMetricsOrBuilder getOptInToMetricsOrBuilder();
 
@@ -3737,7 +3737,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTOUT_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134 [lazy = true];</code>
    * @return Whether the optOutOfMetrics field is set.
    */
   boolean hasOptOutOfMetrics();
@@ -3746,7 +3746,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTOUT_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134 [lazy = true];</code>
    * @return The optOutOfMetrics.
    */
   com.google.wireless.android.sdk.stats.OptOutOfMetrics getOptOutOfMetrics();
@@ -3755,7 +3755,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OPTOUT_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.OptOutOfMetricsOrBuilder getOptOutOfMetricsOrBuilder();
 
@@ -3764,7 +3764,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_VERSION_CATALOG_DETECTOR
    * </pre>
    *
-   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135 [lazy = true];</code>
    * @return Whether the gradleVersionCatalogDetectorEvent field is set.
    */
   boolean hasGradleVersionCatalogDetectorEvent();
@@ -3773,7 +3773,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_VERSION_CATALOG_DETECTOR
    * </pre>
    *
-   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135 [lazy = true];</code>
    * @return The gradleVersionCatalogDetectorEvent.
    */
   com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent getGradleVersionCatalogDetectorEvent();
@@ -3782,7 +3782,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_VERSION_CATALOG_DETECTOR
    * </pre>
    *
-   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
+   * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEventOrBuilder getGradleVersionCatalogDetectorEventOrBuilder();
 
@@ -3791,7 +3791,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COROUTINE_DEBUGGER
    * </pre>
    *
-   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
+   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136 [lazy = true];</code>
    * @return Whether the coroutineDebuggerEvent field is set.
    */
   boolean hasCoroutineDebuggerEvent();
@@ -3800,7 +3800,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COROUTINE_DEBUGGER
    * </pre>
    *
-   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
+   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136 [lazy = true];</code>
    * @return The coroutineDebuggerEvent.
    */
   com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent getCoroutineDebuggerEvent();
@@ -3809,7 +3809,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COROUTINE_DEBUGGER
    * </pre>
    *
-   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
+   * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CoroutineDebuggerEventOrBuilder getCoroutineDebuggerEventOrBuilder();
 
@@ -3818,7 +3818,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SPLITTING_TABS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137 [lazy = true];</code>
    * @return Whether the splittingTabsUsageEvent field is set.
    */
   boolean hasSplittingTabsUsageEvent();
@@ -3827,7 +3827,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SPLITTING_TABS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137 [lazy = true];</code>
    * @return The splittingTabsUsageEvent.
    */
   com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent getSplittingTabsUsageEvent();
@@ -3836,7 +3836,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SPLITTING_TABS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder getSplittingTabsUsageEventOrBuilder();
 
@@ -3845,7 +3845,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LOGCAT_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138 [lazy = true];</code>
    * @return Whether the logcatUsageEvent field is set.
    */
   boolean hasLogcatUsageEvent();
@@ -3854,7 +3854,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LOGCAT_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138 [lazy = true];</code>
    * @return The logcatUsageEvent.
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEvent getLogcatUsageEvent();
@@ -3863,7 +3863,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LOGCAT_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder getLogcatUsageEventOrBuilder();
 
@@ -3970,7 +3970,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OS_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * <code>optional .android_studio.OSMetrics os_metrics = 141 [lazy = true];</code>
    * @return Whether the osMetrics field is set.
    */
   boolean hasOsMetrics();
@@ -3979,7 +3979,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OS_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * <code>optional .android_studio.OSMetrics os_metrics = 141 [lazy = true];</code>
    * @return The osMetrics.
    */
   com.google.wireless.android.sdk.stats.OSMetrics getOsMetrics();
@@ -3988,37 +3988,40 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = OS_METRICS
    * </pre>
    *
-   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * <code>optional .android_studio.OSMetrics os_metrics = 141 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.OSMetricsOrBuilder getOsMetricsOrBuilder();
 
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
    * @return Whether the sdkIndexLibraryDetails field is set.
    */
   boolean hasSdkIndexLibraryDetails();
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
    * @return The sdkIndexLibraryDetails.
    */
   com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails getSdkIndexLibraryDetails();
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder getSdkIndexLibraryDetailsOrBuilder();
 
@@ -4027,7 +4030,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_PICKER
    * </pre>
    *
-   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143 [lazy = true];</code>
    * @return Whether the editorPickerEvent field is set.
    */
   boolean hasEditorPickerEvent();
@@ -4036,7 +4039,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_PICKER
    * </pre>
    *
-   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143 [lazy = true];</code>
    * @return The editorPickerEvent.
    */
   com.google.wireless.android.sdk.stats.EditorPickerEvent getEditorPickerEvent();
@@ -4045,7 +4048,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_PICKER
    * </pre>
    *
-   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder getEditorPickerEventOrBuilder();
 
@@ -4054,7 +4057,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_MULTI_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144 [lazy = true];</code>
    * @return Whether the composeMultiPreviewEvent field is set.
    */
   boolean hasComposeMultiPreviewEvent();
@@ -4063,7 +4066,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_MULTI_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144 [lazy = true];</code>
    * @return The composeMultiPreviewEvent.
    */
   com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent getComposeMultiPreviewEvent();
@@ -4072,7 +4075,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_MULTI_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder getComposeMultiPreviewEventOrBuilder();
 
@@ -4081,7 +4084,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_EDIT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145 [lazy = true];</code>
    * @return Whether the liveEditEvent field is set.
    */
   boolean hasLiveEditEvent();
@@ -4090,7 +4093,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_EDIT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145 [lazy = true];</code>
    * @return The liveEditEvent.
    */
   com.google.wireless.android.sdk.stats.LiveEditEvent getLiveEditEvent();
@@ -4099,7 +4102,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LIVE_EDIT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LiveEditEventOrBuilder getLiveEditEventOrBuilder();
 
@@ -4108,7 +4111,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STOP_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   * <code>optional .android_studio.StopEvent stop_event = 146 [lazy = true];</code>
    * @return Whether the stopEvent field is set.
    */
   boolean hasStopEvent();
@@ -4117,7 +4120,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STOP_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   * <code>optional .android_studio.StopEvent stop_event = 146 [lazy = true];</code>
    * @return The stopEvent.
    */
   com.google.wireless.android.sdk.stats.StopEvent getStopEvent();
@@ -4126,7 +4129,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = STOP_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   * <code>optional .android_studio.StopEvent stop_event = 146 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.StopEventOrBuilder getStopEventOrBuilder();
 
@@ -4135,7 +4138,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_QUALITY_INSIGHTS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147 [lazy = true];</code>
    * @return Whether the appQualityInsightsUsageEvent field is set.
    */
   boolean hasAppQualityInsightsUsageEvent();
@@ -4144,7 +4147,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_QUALITY_INSIGHTS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147 [lazy = true];</code>
    * @return The appQualityInsightsUsageEvent.
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent getAppQualityInsightsUsageEvent();
@@ -4153,7 +4156,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = APP_QUALITY_INSIGHTS_USAGE
    * </pre>
    *
-   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEventOrBuilder getAppQualityInsightsUsageEventOrBuilder();
 
@@ -4162,7 +4165,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GOOGLE_LOGIN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148 [lazy = true];</code>
    * @return Whether the googleLoginEvent field is set.
    */
   boolean hasGoogleLoginEvent();
@@ -4171,7 +4174,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GOOGLE_LOGIN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148 [lazy = true];</code>
    * @return The googleLoginEvent.
    */
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent getGoogleLoginEvent();
@@ -4180,7 +4183,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GOOGLE_LOGIN_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEventOrBuilder getGoogleLoginEventOrBuilder();
 
@@ -4189,7 +4192,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149 [lazy = true];</code>
    * @return Whether the deviceMirroringSession field is set.
    */
   boolean hasDeviceMirroringSession();
@@ -4198,7 +4201,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149 [lazy = true];</code>
    * @return The deviceMirroringSession.
    */
   com.google.wireless.android.sdk.stats.DeviceMirroringSession getDeviceMirroringSession();
@@ -4207,7 +4210,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_SESSION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceMirroringSessionOrBuilder getDeviceMirroringSessionOrBuilder();
 
@@ -4216,7 +4219,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FAST_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150 [lazy = true];</code>
    * @return Whether the fastPreviewEvent field is set.
    */
   boolean hasFastPreviewEvent();
@@ -4225,7 +4228,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FAST_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150 [lazy = true];</code>
    * @return The fastPreviewEvent.
    */
   com.google.wireless.android.sdk.stats.FastPreviewEvent getFastPreviewEvent();
@@ -4234,7 +4237,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = FAST_PREVIEW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.FastPreviewEventOrBuilder getFastPreviewEventOrBuilder();
 
@@ -4243,7 +4246,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MEMORY_USAGE_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151 [lazy = true];</code>
    * @return Whether the memoryUsageReportEvent field is set.
    */
   boolean hasMemoryUsageReportEvent();
@@ -4252,7 +4255,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MEMORY_USAGE_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151 [lazy = true];</code>
    * @return The memoryUsageReportEvent.
    */
   com.google.wireless.android.sdk.stats.MemoryUsageReportEvent getMemoryUsageReportEvent();
@@ -4261,7 +4264,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MEMORY_USAGE_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.MemoryUsageReportEventOrBuilder getMemoryUsageReportEventOrBuilder();
 
@@ -4272,7 +4275,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152 [lazy = true];</code>
    * @return Whether the sdkIndexLoadingDetails field is set.
    */
   boolean hasSdkIndexLoadingDetails();
@@ -4283,7 +4286,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152 [lazy = true];</code>
    * @return The sdkIndexLoadingDetails.
    */
   com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails getSdkIndexLoadingDetails();
@@ -4294,7 +4297,7 @@ public interface AndroidStudioEventOrBuilder extends
    * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SdkIndexLoadingDetailsOrBuilder getSdkIndexLoadingDetailsOrBuilder();
 
@@ -4303,7 +4306,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MANIFEST_MERGER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153 [lazy = true];</code>
    * @return Whether the manifestMergerStats field is set.
    */
   boolean hasManifestMergerStats();
@@ -4312,7 +4315,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MANIFEST_MERGER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153 [lazy = true];</code>
    * @return The manifestMergerStats.
    */
   com.google.wireless.android.sdk.stats.ManifestMergerStats getManifestMergerStats();
@@ -4321,7 +4324,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = MANIFEST_MERGER_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153;</code>
+   * <code>optional .android_studio.ManifestMergerStats manifest_merger_stats = 153 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ManifestMergerStatsOrBuilder getManifestMergerStatsOrBuilder();
 
@@ -4330,7 +4333,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = THREADING_AGENT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154 [lazy = true];</code>
    * @return Whether the threadingAgentUsageEvent field is set.
    */
   boolean hasThreadingAgentUsageEvent();
@@ -4339,7 +4342,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = THREADING_AGENT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154 [lazy = true];</code>
    * @return The threadingAgentUsageEvent.
    */
   com.google.wireless.android.sdk.stats.ThreadingAgentUsageEvent getThreadingAgentUsageEvent();
@@ -4348,7 +4351,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = THREADING_AGENT_STATS
    * </pre>
    *
-   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154;</code>
+   * <code>optional .android_studio.ThreadingAgentUsageEvent threading_agent_usage_event = 154 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ThreadingAgentUsageEventOrBuilder getThreadingAgentUsageEventOrBuilder();
 
@@ -4357,7 +4360,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155 [lazy = true];</code>
    * @return Whether the projectViewSelectionChangeEvent field is set.
    */
   boolean hasProjectViewSelectionChangeEvent();
@@ -4366,7 +4369,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155 [lazy = true];</code>
    * @return The projectViewSelectionChangeEvent.
    */
   com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent getProjectViewSelectionChangeEvent();
@@ -4375,7 +4378,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PROJECT_VIEW_SELECTION_CHANGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155;</code>
+   * <code>optional .android_studio.ProjectViewSelectionChangeEvent project_view_selection_change_event = 155 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEventOrBuilder getProjectViewSelectionChangeEventOrBuilder();
 
@@ -4384,7 +4387,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HEAP_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156 [lazy = true];</code>
    * @return Whether the heapReportEvent field is set.
    */
   boolean hasHeapReportEvent();
@@ -4393,7 +4396,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HEAP_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156 [lazy = true];</code>
    * @return The heapReportEvent.
    */
   com.google.wireless.android.sdk.stats.HeapReportEvent getHeapReportEvent();
@@ -4402,7 +4405,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = HEAP_REPORT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156;</code>
+   * <code>optional .android_studio.HeapReportEvent heap_report_event = 156 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.HeapReportEventOrBuilder getHeapReportEventOrBuilder();
 
@@ -4411,7 +4414,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157 [lazy = true];</code>
    * @return Whether the createDiagnosticReportActionEvent field is set.
    */
   boolean hasCreateDiagnosticReportActionEvent();
@@ -4420,7 +4423,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157 [lazy = true];</code>
    * @return The createDiagnosticReportActionEvent.
    */
   com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction getCreateDiagnosticReportActionEvent();
@@ -4429,7 +4432,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = CREATE_DIAGNOSTIC_REPORT_ACTION
    * </pre>
    *
-   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157;</code>
+   * <code>optional .android_studio.CreateDiagnosticReportAction create_diagnostic_report_action_event = 157 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.CreateDiagnosticReportActionOrBuilder getCreateDiagnosticReportActionEventOrBuilder();
 
@@ -4438,7 +4441,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIRECT_ACCESS_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158 [lazy = true];</code>
    * @return Whether the directAccessUsageEvent field is set.
    */
   boolean hasDirectAccessUsageEvent();
@@ -4447,7 +4450,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIRECT_ACCESS_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158 [lazy = true];</code>
    * @return The directAccessUsageEvent.
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent getDirectAccessUsageEvent();
@@ -4456,7 +4459,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DIRECT_ACCESS_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158;</code>
+   * <code>optional .android_studio.DirectAccessUsageEvent direct_access_usage_event = 158 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEventOrBuilder getDirectAccessUsageEventOrBuilder();
 
@@ -4465,7 +4468,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SAFE_MODE_STATS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159 [lazy = true];</code>
    * @return Whether the safeModeStatsEvent field is set.
    */
   boolean hasSafeModeStatsEvent();
@@ -4474,7 +4477,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SAFE_MODE_STATS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159 [lazy = true];</code>
    * @return The safeModeStatsEvent.
    */
   com.google.wireless.android.sdk.stats.SafeModeStatsEvent getSafeModeStatsEvent();
@@ -4483,7 +4486,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SAFE_MODE_STATS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159;</code>
+   * <code>optional .android_studio.SafeModeStatsEvent safe_mode_stats_event = 159 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SafeModeStatsEventOrBuilder getSafeModeStatsEventOrBuilder();
 
@@ -4492,7 +4495,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TSDKUA_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160 [lazy = true];</code>
    * @return Whether the tsdkUaEvent field is set.
    */
   boolean hasTsdkUaEvent();
@@ -4501,7 +4504,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TSDKUA_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160 [lazy = true];</code>
    * @return The tsdkUaEvent.
    */
   com.google.wireless.android.sdk.stats.TSdkUAEvent getTsdkUaEvent();
@@ -4510,7 +4513,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TSDKUA_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160;</code>
+   * <code>optional .android_studio.TSdkUAEvent tsdk_ua_event = 160 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TSdkUAEventOrBuilder getTsdkUaEventOrBuilder();
 
@@ -4519,7 +4522,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161 [lazy = true];</code>
    * @return Whether the intellijNewUiStateEvent field is set.
    */
   boolean hasIntellijNewUiStateEvent();
@@ -4528,7 +4531,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161 [lazy = true];</code>
    * @return The intellijNewUiStateEvent.
    */
   com.google.wireless.android.sdk.stats.IntelliJNewUIState getIntellijNewUiStateEvent();
@@ -4537,7 +4540,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_STATE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161;</code>
+   * <code>optional .android_studio.IntelliJNewUIState intellij_new_ui_state_event = 161 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IntelliJNewUIStateOrBuilder getIntellijNewUiStateEventOrBuilder();
 
@@ -4546,7 +4549,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_GRADLE_PERFORMANCE
    * </pre>
    *
-   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162 [lazy = true];</code>
    * @return Whether the kotlinGradlePerformanceEvent field is set.
    */
   boolean hasKotlinGradlePerformanceEvent();
@@ -4555,7 +4558,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_GRADLE_PERFORMANCE
    * </pre>
    *
-   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162 [lazy = true];</code>
    * @return The kotlinGradlePerformanceEvent.
    */
   com.google.wireless.android.sdk.stats.KotlinGradlePerformance getKotlinGradlePerformanceEvent();
@@ -4564,7 +4567,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_GRADLE_PERFORMANCE
    * </pre>
    *
-   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162;</code>
+   * <code>optional .android_studio.KotlinGradlePerformance kotlin_gradle_performance_event = 162 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.KotlinGradlePerformanceOrBuilder getKotlinGradlePerformanceEventOrBuilder();
 
@@ -4573,7 +4576,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163 [lazy = true];</code>
    * @return Whether the buildOutputDownloadsInfoEvent field is set.
    */
   boolean hasBuildOutputDownloadsInfoEvent();
@@ -4582,7 +4585,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163 [lazy = true];</code>
    * @return The buildOutputDownloadsInfoEvent.
    */
   com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEvent getBuildOutputDownloadsInfoEvent();
@@ -4591,7 +4594,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = BUILD_OUTPUT_DOWNLOADS_INFO_USER_INTERACTION
    * </pre>
    *
-   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163;</code>
+   * <code>optional .android_studio.BuildOutputDownloadsInfoEvent build_output_downloads_info_event = 163 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.BuildOutputDownloadsInfoEventOrBuilder getBuildOutputDownloadsInfoEventOrBuilder();
 
@@ -4600,7 +4603,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164 [lazy = true];</code>
    * @return Whether the deviceMirroringAbnormalAgentTermination field is set.
    */
   boolean hasDeviceMirroringAbnormalAgentTermination();
@@ -4609,7 +4612,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164 [lazy = true];</code>
    * @return The deviceMirroringAbnormalAgentTermination.
    */
   com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTermination getDeviceMirroringAbnormalAgentTermination();
@@ -4618,7 +4621,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_MIRRORING_ABNORMAL_AGENT_TERMINATION
    * </pre>
    *
-   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164;</code>
+   * <code>optional .android_studio.DeviceMirroringAbnormalAgentTermination device_mirroring_abnormal_agent_termination = 164 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceMirroringAbnormalAgentTerminationOrBuilder getDeviceMirroringAbnormalAgentTerminationOrBuilder();
 
@@ -4627,7 +4630,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SYSTEM_HEALTH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165 [lazy = true];</code>
    * @return Whether the systemHealthEvent field is set.
    */
   boolean hasSystemHealthEvent();
@@ -4636,7 +4639,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SYSTEM_HEALTH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165 [lazy = true];</code>
    * @return The systemHealthEvent.
    */
   com.google.wireless.android.sdk.stats.SystemHealthEvent getSystemHealthEvent();
@@ -4645,7 +4648,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SYSTEM_HEALTH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165;</code>
+   * <code>optional .android_studio.SystemHealthEvent system_health_event = 165 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SystemHealthEventOrBuilder getSystemHealthEventOrBuilder();
 
@@ -4654,7 +4657,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166 [lazy = true];</code>
    * @return Whether the composePreviewCanvasEvent field is set.
    */
   boolean hasComposePreviewCanvasEvent();
@@ -4663,7 +4666,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166 [lazy = true];</code>
    * @return The composePreviewCanvasEvent.
    */
   com.google.wireless.android.sdk.stats.ComposePreviewCanvasEvent getComposePreviewCanvasEvent();
@@ -4672,7 +4675,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_CANVAS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166;</code>
+   * <code>optional .android_studio.ComposePreviewCanvasEvent compose_preview_canvas_event = 166 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposePreviewCanvasEventOrBuilder getComposePreviewCanvasEventOrBuilder();
 
@@ -4681,7 +4684,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167 [lazy = true];</code>
    * @return Whether the smlCompletionEvent field is set.
    */
   boolean hasSmlCompletionEvent();
@@ -4690,7 +4693,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167 [lazy = true];</code>
    * @return The smlCompletionEvent.
    */
   com.google.wireless.android.sdk.stats.SmlCompletionEvent getSmlCompletionEvent();
@@ -4699,7 +4702,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167;</code>
+   * <code>optional .android_studio.SmlCompletionEvent sml_completion_event = 167 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlCompletionEventOrBuilder getSmlCompletionEventOrBuilder();
 
@@ -4708,7 +4711,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CODE_TRANSFORMATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168 [lazy = true];</code>
    * @return Whether the smlTransformEvent field is set.
    */
   boolean hasSmlTransformEvent();
@@ -4717,7 +4720,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CODE_TRANSFORMATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168 [lazy = true];</code>
    * @return The smlTransformEvent.
    */
   com.google.wireless.android.sdk.stats.SmlTransformEvent getSmlTransformEvent();
@@ -4726,7 +4729,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CODE_TRANSFORMATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168;</code>
+   * <code>optional .android_studio.SmlTransformEvent sml_transform_event = 168 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlTransformEventOrBuilder getSmlTransformEventOrBuilder();
 
@@ -4735,7 +4738,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CHATBOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169 [lazy = true];</code>
    * @return Whether the smlChatBotEvent field is set.
    */
   boolean hasSmlChatBotEvent();
@@ -4744,7 +4747,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CHATBOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169 [lazy = true];</code>
    * @return The smlChatBotEvent.
    */
   com.google.wireless.android.sdk.stats.SmlChatBotEvent getSmlChatBotEvent();
@@ -4753,7 +4756,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CHATBOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169;</code>
+   * <code>optional .android_studio.SmlChatBotEvent sml_chat_bot_event = 169 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlChatBotEventOrBuilder getSmlChatBotEventOrBuilder();
 
@@ -4762,7 +4765,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CONFIGURATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170 [lazy = true];</code>
    * @return Whether the smlConfigurationEvent field is set.
    */
   boolean hasSmlConfigurationEvent();
@@ -4771,7 +4774,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CONFIGURATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170 [lazy = true];</code>
    * @return The smlConfigurationEvent.
    */
   com.google.wireless.android.sdk.stats.SmlConfigurationEvent getSmlConfigurationEvent();
@@ -4780,7 +4783,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_CONFIGURATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170;</code>
+   * <code>optional .android_studio.SmlConfigurationEvent sml_configuration_event = 170 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlConfigurationEventOrBuilder getSmlConfigurationEventOrBuilder();
 
@@ -4789,7 +4792,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_SUPPORT_DECLINED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171 [lazy = true];</code>
    * @return Whether the kotlinSupportDeclined field is set.
    */
   boolean hasKotlinSupportDeclined();
@@ -4798,7 +4801,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_SUPPORT_DECLINED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171 [lazy = true];</code>
    * @return The kotlinSupportDeclined.
    */
   com.google.wireless.android.sdk.stats.KotlinSupportDeclined getKotlinSupportDeclined();
@@ -4807,7 +4810,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = KOTLIN_SUPPORT_DECLINED
    * </pre>
    *
-   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171;</code>
+   * <code>optional .android_studio.KotlinSupportDeclined kotlin_support_declined = 171 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.KotlinSupportDeclinedOrBuilder getKotlinSupportDeclinedOrBuilder();
 
@@ -4816,7 +4819,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_SCREENSHOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172 [lazy = true];</code>
    * @return Whether the deviceScreenshotEvent field is set.
    */
   boolean hasDeviceScreenshotEvent();
@@ -4825,7 +4828,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_SCREENSHOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172 [lazy = true];</code>
    * @return The deviceScreenshotEvent.
    */
   com.google.wireless.android.sdk.stats.DeviceScreenshotEvent getDeviceScreenshotEvent();
@@ -4834,7 +4837,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEVICE_SCREENSHOT_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172;</code>
+   * <code>optional .android_studio.DeviceScreenshotEvent device_screenshot_event = 172 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceScreenshotEventOrBuilder getDeviceScreenshotEventOrBuilder();
 
@@ -4843,7 +4846,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_NOTIFICATION
    * </pre>
    *
-   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * <code>optional .android_studio.EditorNotification editor_notification = 173 [lazy = true];</code>
    * @return Whether the editorNotification field is set.
    */
   boolean hasEditorNotification();
@@ -4852,7 +4855,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_NOTIFICATION
    * </pre>
    *
-   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * <code>optional .android_studio.EditorNotification editor_notification = 173 [lazy = true];</code>
    * @return The editorNotification.
    */
   com.google.wireless.android.sdk.stats.EditorNotification getEditorNotification();
@@ -4861,7 +4864,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = EDITOR_NOTIFICATION
    * </pre>
    *
-   * <code>optional .android_studio.EditorNotification editor_notification = 173;</code>
+   * <code>optional .android_studio.EditorNotification editor_notification = 173 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EditorNotificationOrBuilder getEditorNotificationOrBuilder();
 
@@ -4870,7 +4873,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_LITE_MODE
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174 [lazy = true];</code>
    * @return Whether the composePreviewLiteModeEvent field is set.
    */
   boolean hasComposePreviewLiteModeEvent();
@@ -4879,7 +4882,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_LITE_MODE
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174 [lazy = true];</code>
    * @return The composePreviewLiteModeEvent.
    */
   com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEvent getComposePreviewLiteModeEvent();
@@ -4888,7 +4891,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = COMPOSE_PREVIEW_LITE_MODE
    * </pre>
    *
-   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174;</code>
+   * <code>optional .android_studio.ComposePreviewLiteModeEvent compose_preview_lite_mode_event = 174 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ComposePreviewLiteModeEventOrBuilder getComposePreviewLiteModeEventOrBuilder();
 
@@ -4897,7 +4900,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175 [lazy = true];</code>
    * @return Whether the upgradeAndroidStudioDialog field is set.
    */
   boolean hasUpgradeAndroidStudioDialog();
@@ -4906,7 +4909,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175 [lazy = true];</code>
    * @return The upgradeAndroidStudioDialog.
    */
   com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStats getUpgradeAndroidStudioDialog();
@@ -4915,7 +4918,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UPGRADE_ANDROID_STUDIO_DIALOG
    * </pre>
    *
-   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175;</code>
+   * <code>optional .android_studio.UpgradeAndroidStudioDialogStats upgrade_android_studio_dialog = 175 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UpgradeAndroidStudioDialogStatsOrBuilder getUpgradeAndroidStudioDialogOrBuilder();
 
@@ -4924,7 +4927,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEBUGGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176 [lazy = true];</code>
    * @return Whether the debuggerEvent field is set.
    */
   boolean hasDebuggerEvent();
@@ -4933,7 +4936,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEBUGGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176 [lazy = true];</code>
    * @return The debuggerEvent.
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent getDebuggerEvent();
@@ -4942,7 +4945,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = DEBUGGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.DebuggerEvent debugger_event = 176;</code>
+   * <code>optional .android_studio.DebuggerEvent debugger_event = 176 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DebuggerEventOrBuilder getDebuggerEventOrBuilder();
 
@@ -4951,7 +4954,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SOONG_SYNC_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177 [lazy = true];</code>
    * @return Whether the soongSyncStats field is set.
    */
   boolean hasSoongSyncStats();
@@ -4960,7 +4963,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SOONG_SYNC_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177 [lazy = true];</code>
    * @return The soongSyncStats.
    */
   com.google.wireless.android.sdk.stats.SoongSyncStats getSoongSyncStats();
@@ -4969,7 +4972,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SOONG_SYNC_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177;</code>
+   * <code>optional .android_studio.SoongSyncStats soong_sync_stats = 177 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SoongSyncStatsOrBuilder getSoongSyncStatsOrBuilder();
 
@@ -4978,7 +4981,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_SWITCH
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178 [lazy = true];</code>
    * @return Whether the intellijNewUiSwitch field is set.
    */
   boolean hasIntellijNewUiSwitch();
@@ -4987,7 +4990,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_SWITCH
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178 [lazy = true];</code>
    * @return The intellijNewUiSwitch.
    */
   com.google.wireless.android.sdk.stats.IntelliJNewUISwitch getIntellijNewUiSwitch();
@@ -4996,7 +4999,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = INTELLIJ_NEW_UI_SWITCH
    * </pre>
    *
-   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178;</code>
+   * <code>optional .android_studio.IntelliJNewUISwitch intellij_new_ui_switch = 178 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IntelliJNewUISwitchOrBuilder getIntellijNewUiSwitchOrBuilder();
 
@@ -5005,7 +5008,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ESSENTIALS_MODE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179 [lazy = true];</code>
    * @return Whether the essentialsModeEvent field is set.
    */
   boolean hasEssentialsModeEvent();
@@ -5014,7 +5017,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ESSENTIALS_MODE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179 [lazy = true];</code>
    * @return The essentialsModeEvent.
    */
   com.google.wireless.android.sdk.stats.EssentialsModeEvent getEssentialsModeEvent();
@@ -5023,7 +5026,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ESSENTIALS_MODE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179;</code>
+   * <code>optional .android_studio.EssentialsModeEvent essentials_mode_event = 179 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.EssentialsModeEventOrBuilder getEssentialsModeEventOrBuilder();
 
@@ -5032,7 +5035,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LINT_TOOLTIP_LINK_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180 [lazy = true];</code>
    * @return Whether the lintTooltipLinkEvent field is set.
    */
   boolean hasLintTooltipLinkEvent();
@@ -5041,7 +5044,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LINT_TOOLTIP_LINK_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180 [lazy = true];</code>
    * @return The lintTooltipLinkEvent.
    */
   com.google.wireless.android.sdk.stats.LintTooltipLinkEvent getLintTooltipLinkEvent();
@@ -5050,7 +5053,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = LINT_TOOLTIP_LINK_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180;</code>
+   * <code>optional .android_studio.LintTooltipLinkEvent lint_tooltip_link_event = 180 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.LintTooltipLinkEventOrBuilder getLintTooltipLinkEventOrBuilder();
 
@@ -5059,7 +5062,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_AI_EXCLUDE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181 [lazy = true];</code>
    * @return Whether the smlAiExcludeEvent field is set.
    */
   boolean hasSmlAiExcludeEvent();
@@ -5068,7 +5071,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_AI_EXCLUDE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181 [lazy = true];</code>
    * @return The smlAiExcludeEvent.
    */
   com.google.wireless.android.sdk.stats.SmlAiExcludeEvent getSmlAiExcludeEvent();
@@ -5077,7 +5080,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_AI_EXCLUDE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181;</code>
+   * <code>optional .android_studio.SmlAiExcludeEvent sml_ai_exclude_event = 181 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlAiExcludeEventOrBuilder getSmlAiExcludeEventOrBuilder();
 
@@ -5086,7 +5089,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = I_DEVICE_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182 [lazy = true];</code>
    * @return Whether the iDeviceUsageEvent field is set.
    */
   boolean hasIDeviceUsageEvent();
@@ -5095,7 +5098,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = I_DEVICE_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182 [lazy = true];</code>
    * @return The iDeviceUsageEvent.
    */
   com.google.wireless.android.sdk.stats.IDeviceUsageEvent getIDeviceUsageEvent();
@@ -5104,7 +5107,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = I_DEVICE_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182;</code>
+   * <code>optional .android_studio.IDeviceUsageEvent i_device_usage_event = 182 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.IDeviceUsageEventOrBuilder getIDeviceUsageEventOrBuilder();
 
@@ -5113,7 +5116,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183 [lazy = true];</code>
    * @return Whether the gradleJdkConfigurationEvent field is set.
    */
   boolean hasGradleJdkConfigurationEvent();
@@ -5122,7 +5125,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183 [lazy = true];</code>
    * @return The gradleJdkConfigurationEvent.
    */
   com.google.wireless.android.sdk.stats.GradleJdkConfigurationEvent getGradleJdkConfigurationEvent();
@@ -5131,7 +5134,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = GRADLE_JDK_CONFIGURATION
    * </pre>
    *
-   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183;</code>
+   * <code>optional .android_studio.GradleJdkConfigurationEvent gradle_jdk_configuration_event = 183 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.GradleJdkConfigurationEventOrBuilder getGradleJdkConfigurationEventOrBuilder();
 
@@ -5140,7 +5143,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RENDER_SECURITY_MANAGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184 [lazy = true];</code>
    * @return Whether the renderSecurityManagerEvent field is set.
    */
   boolean hasRenderSecurityManagerEvent();
@@ -5149,7 +5152,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RENDER_SECURITY_MANAGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184 [lazy = true];</code>
    * @return The renderSecurityManagerEvent.
    */
   com.google.wireless.android.sdk.stats.RenderSecurityManagerEvent getRenderSecurityManagerEvent();
@@ -5158,7 +5161,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = RENDER_SECURITY_MANAGER_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184;</code>
+   * <code>optional .android_studio.RenderSecurityManagerEvent render_security_manager_event = 184 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.RenderSecurityManagerEventOrBuilder getRenderSecurityManagerEventOrBuilder();
 
@@ -5167,7 +5170,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PREVIEW_REFRESH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185 [lazy = true];</code>
    * @return Whether the previewRefreshEvent field is set.
    */
   boolean hasPreviewRefreshEvent();
@@ -5176,7 +5179,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PREVIEW_REFRESH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185 [lazy = true];</code>
    * @return The previewRefreshEvent.
    */
   com.google.wireless.android.sdk.stats.PreviewRefreshEvent getPreviewRefreshEvent();
@@ -5185,7 +5188,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = PREVIEW_REFRESH_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185;</code>
+   * <code>optional .android_studio.PreviewRefreshEvent preview_refresh_event = 185 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.PreviewRefreshEventOrBuilder getPreviewRefreshEventOrBuilder();
 
@@ -5194,7 +5197,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186 [lazy = true];</code>
    * @return Whether the wearHealthServicesEvent field is set.
    */
   boolean hasWearHealthServicesEvent();
@@ -5203,7 +5206,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186 [lazy = true];</code>
    * @return The wearHealthServicesEvent.
    */
   com.google.wireless.android.sdk.stats.WearHealthServicesEvent getWearHealthServicesEvent();
@@ -5212,7 +5215,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = WEAR_HEALTH_SERVICES_TOOL_WINDOW_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186;</code>
+   * <code>optional .android_studio.WearHealthServicesEvent wear_health_services_event = 186 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.WearHealthServicesEventOrBuilder getWearHealthServicesEventOrBuilder();
 
@@ -5221,7 +5224,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UI_DEVICE_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187 [lazy = true];</code>
    * @return Whether the uiDeviceSettingsEvent field is set.
    */
   boolean hasUiDeviceSettingsEvent();
@@ -5230,7 +5233,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UI_DEVICE_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187 [lazy = true];</code>
    * @return The uiDeviceSettingsEvent.
    */
   com.google.wireless.android.sdk.stats.UiDeviceSettingsEvent getUiDeviceSettingsEvent();
@@ -5239,7 +5242,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = UI_DEVICE_SETTINGS_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187;</code>
+   * <code>optional .android_studio.UiDeviceSettingsEvent ui_device_settings_event = 187 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.UiDeviceSettingsEventOrBuilder getUiDeviceSettingsEventOrBuilder();
 
@@ -5248,7 +5251,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188 [lazy = true];</code>
    * @return Whether the adbUsageEvent field is set.
    */
   boolean hasAdbUsageEvent();
@@ -5257,7 +5260,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188 [lazy = true];</code>
    * @return The adbUsageEvent.
    */
   com.google.wireless.android.sdk.stats.AdbUsageEvent getAdbUsageEvent();
@@ -5266,7 +5269,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_USAGE_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188;</code>
+   * <code>optional .android_studio.AdbUsageEvent adb_usage_event = 188 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AdbUsageEventOrBuilder getAdbUsageEventOrBuilder();
 
@@ -5275,7 +5278,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_GEOLOCATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189 [lazy = true];</code>
    * @return Whether the smlGeolocationEvent field is set.
    */
   boolean hasSmlGeolocationEvent();
@@ -5284,7 +5287,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_GEOLOCATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189 [lazy = true];</code>
    * @return The smlGeolocationEvent.
    */
   com.google.wireless.android.sdk.stats.SmlGeolocationEvent getSmlGeolocationEvent();
@@ -5293,7 +5296,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_GEOLOCATION_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189;</code>
+   * <code>optional .android_studio.SmlGeolocationEvent sml_geolocation_event = 189 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlGeolocationEventOrBuilder getSmlGeolocationEventOrBuilder();
 
@@ -5302,7 +5305,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_REQUEST_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190 [lazy = true];</code>
    * @return Whether the smlCompletionRequestError field is set.
    */
   boolean hasSmlCompletionRequestError();
@@ -5311,7 +5314,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_REQUEST_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190 [lazy = true];</code>
    * @return The smlCompletionRequestError.
    */
   com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEvent getSmlCompletionRequestError();
@@ -5320,7 +5323,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SML_COMPLETION_REQUEST_ERROR
    * </pre>
    *
-   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190;</code>
+   * <code>optional .android_studio.SmlCompletionRequestErrorEvent sml_completion_request_error = 190 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SmlCompletionRequestErrorEventOrBuilder getSmlCompletionRequestErrorOrBuilder();
 
@@ -5329,7 +5332,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_DEVICE_CONNECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191 [lazy = true];</code>
    * @return Whether the deviceConnected field is set.
    */
   boolean hasDeviceConnected();
@@ -5338,7 +5341,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_DEVICE_CONNECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191 [lazy = true];</code>
    * @return The deviceConnected.
    */
   com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent getDeviceConnected();
@@ -5347,7 +5350,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = ADB_DEVICE_CONNECTED
    * </pre>
    *
-   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191;</code>
+   * <code>optional .android_studio.DeviceConnectedNotificationEvent device_connected = 191 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEventOrBuilder getDeviceConnectedOrBuilder();
 
@@ -5356,7 +5359,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192 [lazy = true];</code>
    * @return Whether the screenshotTestComposePreviewEvent field is set.
    */
   boolean hasScreenshotTestComposePreviewEvent();
@@ -5365,7 +5368,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192 [lazy = true];</code>
    * @return The screenshotTestComposePreviewEvent.
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEvent getScreenshotTestComposePreviewEvent();
@@ -5374,7 +5377,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = SCREENSHOT_TEST_COMPOSE_PREVIEW
    * </pre>
    *
-   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192;</code>
+   * <code>optional .android_studio.ScreenshotTestComposePreviewEvent screenshot_test_compose_preview_event = 192 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ScreenshotTestComposePreviewEventOrBuilder getScreenshotTestComposePreviewEventOrBuilder();
 
@@ -5383,7 +5386,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_SCENARIO_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193 [lazy = true];</code>
    * @return Whether the testScenarioEvent field is set.
    */
   boolean hasTestScenarioEvent();
@@ -5392,7 +5395,7 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_SCENARIO_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193 [lazy = true];</code>
    * @return The testScenarioEvent.
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent getTestScenarioEvent();
@@ -5401,34 +5404,37 @@ public interface AndroidStudioEventOrBuilder extends
    * set when kind = TEST_SCENARIO_EVENT
    * </pre>
    *
-   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193;</code>
+   * <code>optional .android_studio.TestScenarioEvent test_scenario_event = 193 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.TestScenarioEventOrBuilder getTestScenarioEventOrBuilder();
 
   /**
    * <pre>
    * set when kind = ADB_SERVER_STATE
+   * OBSOLETE, use ADB_SERVER_STATUS instead.
    * </pre>
    *
-   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194 [lazy = true];</code>
    * @return Whether the adbServerState field is set.
    */
   boolean hasAdbServerState();
   /**
    * <pre>
    * set when kind = ADB_SERVER_STATE
+   * OBSOLETE, use ADB_SERVER_STATUS instead.
    * </pre>
    *
-   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194 [lazy = true];</code>
    * @return The adbServerState.
    */
   com.google.wireless.android.sdk.stats.AdbServerState getAdbServerState();
   /**
    * <pre>
    * set when kind = ADB_SERVER_STATE
+   * OBSOLETE, use ADB_SERVER_STATUS instead.
    * </pre>
    *
-   * <code>optional .android_studio.AdbServerState adb_server_state = 194;</code>
+   * <code>optional .android_studio.AdbServerState adb_server_state = 194 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.AdbServerStateOrBuilder getAdbServerStateOrBuilder();
 
@@ -5458,4 +5464,301 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.FirebaseManagementEvent firebase_management_event = 195;</code>
    */
   com.google.wireless.android.sdk.stats.FirebaseManagementEventOrBuilder getFirebaseManagementEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATUS
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerStatus adb_server_status = 196;</code>
+   * @return Whether the adbServerStatus field is set.
+   */
+  boolean hasAdbServerStatus();
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATUS
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerStatus adb_server_status = 196;</code>
+   * @return The adbServerStatus.
+   */
+  com.google.wireless.android.sdk.stats.AdbServerStatus getAdbServerStatus();
+  /**
+   * <pre>
+   * set when kind = ADB_SERVER_STATUS
+   * </pre>
+   *
+   * <code>optional .android_studio.AdbServerStatus adb_server_status = 196;</code>
+   */
+  com.google.wireless.android.sdk.stats.AdbServerStatusOrBuilder getAdbServerStatusOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = WEAR_TILE_ANIMATION_TOOLING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearTileAnimationToolingEvent wear_tile_animation_tooling_event = 197 [lazy = true];</code>
+   * @return Whether the wearTileAnimationToolingEvent field is set.
+   */
+  boolean hasWearTileAnimationToolingEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_TILE_ANIMATION_TOOLING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearTileAnimationToolingEvent wear_tile_animation_tooling_event = 197 [lazy = true];</code>
+   * @return The wearTileAnimationToolingEvent.
+   */
+  com.google.wireless.android.sdk.stats.WearTileAnimationToolingEvent getWearTileAnimationToolingEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_TILE_ANIMATION_TOOLING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearTileAnimationToolingEvent wear_tile_animation_tooling_event = 197 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.WearTileAnimationToolingEventOrBuilder getWearTileAnimationToolingEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = BACKUP_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.BackupUsageEvent backup_usage_event = 198 [lazy = true];</code>
+   * @return Whether the backupUsageEvent field is set.
+   */
+  boolean hasBackupUsageEvent();
+  /**
+   * <pre>
+   * set when kind = BACKUP_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.BackupUsageEvent backup_usage_event = 198 [lazy = true];</code>
+   * @return The backupUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.BackupUsageEvent getBackupUsageEvent();
+  /**
+   * <pre>
+   * set when kind = BACKUP_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.BackupUsageEvent backup_usage_event = 198 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.BackupUsageEventOrBuilder getBackupUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STARTUP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupEvent startup_event = 199 [lazy = true];</code>
+   * @return Whether the startupEvent field is set.
+   */
+  boolean hasStartupEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupEvent startup_event = 199 [lazy = true];</code>
+   * @return The startupEvent.
+   */
+  com.google.wireless.android.sdk.stats.StartupEvent getStartupEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupEvent startup_event = 199 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StartupEventOrBuilder getStartupEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FIRST_UI_SHOWN
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent startup_performance_first_ui_shown_event = 200 [lazy = true];</code>
+   * @return Whether the startupPerformanceFirstUiShownEvent field is set.
+   */
+  boolean hasStartupPerformanceFirstUiShownEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FIRST_UI_SHOWN
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent startup_performance_first_ui_shown_event = 200 [lazy = true];</code>
+   * @return The startupPerformanceFirstUiShownEvent.
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent getStartupPerformanceFirstUiShownEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FIRST_UI_SHOWN
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent startup_performance_first_ui_shown_event = 200 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEventOrBuilder getStartupPerformanceFirstUiShownEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_VISIBLE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent startup_performance_frame_became_visible_event = 201 [lazy = true];</code>
+   * @return Whether the startupPerformanceFrameBecameVisibleEvent field is set.
+   */
+  boolean hasStartupPerformanceFrameBecameVisibleEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_VISIBLE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent startup_performance_frame_became_visible_event = 201 [lazy = true];</code>
+   * @return The startupPerformanceFrameBecameVisibleEvent.
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFrameBecameVisibleEvent getStartupPerformanceFrameBecameVisibleEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_VISIBLE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent startup_performance_frame_became_visible_event = 201 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFrameBecameVisibleEventOrBuilder getStartupPerformanceFrameBecameVisibleEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_INTERACTIVE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameInteractiveEvent startup_performance_frame_became_interactive_event = 202 [lazy = true];</code>
+   * @return Whether the startupPerformanceFrameBecameInteractiveEvent field is set.
+   */
+  boolean hasStartupPerformanceFrameBecameInteractiveEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_INTERACTIVE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameInteractiveEvent startup_performance_frame_became_interactive_event = 202 [lazy = true];</code>
+   * @return The startupPerformanceFrameBecameInteractiveEvent.
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFrameBecameInteractiveEvent getStartupPerformanceFrameBecameInteractiveEvent();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_FRAME_BECAME_INTERACTIVE
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceFrameBecameInteractiveEvent startup_performance_frame_became_interactive_event = 202 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceFrameBecameInteractiveEventOrBuilder getStartupPerformanceFrameBecameInteractiveEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_CODE_LOADED_AND_VISIBLE_IN_EDITOR
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor startup_performance_code_loaded_and_visible_in_editor = 203 [lazy = true];</code>
+   * @return Whether the startupPerformanceCodeLoadedAndVisibleInEditor field is set.
+   */
+  boolean hasStartupPerformanceCodeLoadedAndVisibleInEditor();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_CODE_LOADED_AND_VISIBLE_IN_EDITOR
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor startup_performance_code_loaded_and_visible_in_editor = 203 [lazy = true];</code>
+   * @return The startupPerformanceCodeLoadedAndVisibleInEditor.
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor getStartupPerformanceCodeLoadedAndVisibleInEditor();
+  /**
+   * <pre>
+   * set when kind = STARTUP_PERFORMANCE_CODE_LOADED_AND_VISIBLE_IN_EDITOR
+   * </pre>
+   *
+   * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor startup_performance_code_loaded_and_visible_in_editor = 203 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditorOrBuilder getStartupPerformanceCodeLoadedAndVisibleInEditorOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = UI_TOOLS_PREFERENCES
+   * </pre>
+   *
+   * <code>optional .android_studio.UiToolsPreferencesEvent ui_tools_preferences_event = 204 [lazy = true];</code>
+   * @return Whether the uiToolsPreferencesEvent field is set.
+   */
+  boolean hasUiToolsPreferencesEvent();
+  /**
+   * <pre>
+   * set when kind = UI_TOOLS_PREFERENCES
+   * </pre>
+   *
+   * <code>optional .android_studio.UiToolsPreferencesEvent ui_tools_preferences_event = 204 [lazy = true];</code>
+   * @return The uiToolsPreferencesEvent.
+   */
+  com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent getUiToolsPreferencesEvent();
+  /**
+   * <pre>
+   * set when kind = UI_TOOLS_PREFERENCES
+   * </pre>
+   *
+   * <code>optional .android_studio.UiToolsPreferencesEvent ui_tools_preferences_event = 204 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.UiToolsPreferencesEventOrBuilder getUiToolsPreferencesEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_PROJECT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexProjectStats sdk_index_project_stats = 205 [lazy = true];</code>
+   * @return Whether the sdkIndexProjectStats field is set.
+   */
+  boolean hasSdkIndexProjectStats();
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_PROJECT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexProjectStats sdk_index_project_stats = 205 [lazy = true];</code>
+   * @return The sdkIndexProjectStats.
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexProjectStats getSdkIndexProjectStats();
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_PROJECT_STATS
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexProjectStats sdk_index_project_stats = 205 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexProjectStatsOrBuilder getSdkIndexProjectStatsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SOONG_RUN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongRunEvent soong_run_event = 206 [lazy = true];</code>
+   * @return Whether the soongRunEvent field is set.
+   */
+  boolean hasSoongRunEvent();
+  /**
+   * <pre>
+   * set when kind = SOONG_RUN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongRunEvent soong_run_event = 206 [lazy = true];</code>
+   * @return The soongRunEvent.
+   */
+  com.google.wireless.android.sdk.stats.SoongRunEvent getSoongRunEvent();
+  /**
+   * <pre>
+   * set when kind = SOONG_RUN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.SoongRunEvent soong_run_event = 206 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.SoongRunEventOrBuilder getSoongRunEventOrBuilder();
 }

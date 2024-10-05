@@ -4,6 +4,10 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * DO NOT USE: OBSOLETE
+ * </pre>
+ *
  * Protobuf type {@code android_studio.AdbServerState}
  */
 public final class AdbServerState extends
@@ -587,6 +591,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * DO NOT USE: OBSOLETE
+   * </pre>
+   *
    * Protobuf type {@code android_studio.AdbServerState}
    */
   public static final class Builder extends

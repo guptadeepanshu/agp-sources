@@ -119,7 +119,7 @@ private static final long serialVersionUID = 0L;
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    * @return Whether the originPlugin field is set.
    */
   @java.lang.Override
@@ -131,7 +131,7 @@ private static final long serialVersionUID = 0L;
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    * @return The originPlugin.
    */
   @java.lang.Override
@@ -143,7 +143,7 @@ private static final long serialVersionUID = 0L;
    * The plugin that registered this task
    * </pre>
    *
-   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+   * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
    */
   @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getOriginPluginOrBuilder() {
@@ -650,7 +650,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      * @return Whether the originPlugin field is set.
      */
     public boolean hasOriginPlugin() {
@@ -661,7 +661,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      * @return The originPlugin.
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getOriginPlugin() {
@@ -676,7 +676,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public Builder setOriginPlugin(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
       if (originPluginBuilder_ == null) {
@@ -696,7 +696,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public Builder setOriginPlugin(
         com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder builderForValue) {
@@ -714,7 +714,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public Builder mergeOriginPlugin(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
       if (originPluginBuilder_ == null) {
@@ -738,7 +738,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public Builder clearOriginPlugin() {
       if (originPluginBuilder_ == null) {
@@ -755,7 +755,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder getOriginPluginBuilder() {
       bitField0_ |= 0x00000002;
@@ -767,7 +767,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getOriginPluginOrBuilder() {
       if (originPluginBuilder_ != null) {
@@ -782,7 +782,7 @@ private static final long serialVersionUID = 0L;
      * The plugin that registered this task
      * </pre>
      *
-     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
+     * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder, com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder> 

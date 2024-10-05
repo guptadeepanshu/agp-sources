@@ -22,7 +22,6 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.SingleArtifact;
 import com.android.build.api.dsl.Installation;
-import com.android.build.api.variant.impl.BuiltArtifactImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
 import com.android.build.api.variant.impl.VariantApiExtensionsKt;
@@ -46,24 +45,13 @@ import com.android.sdklib.AndroidVersion;
 import com.android.tools.profgen.ArtProfileKt;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
+
 import org.gradle.api.GradleException;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
@@ -79,6 +67,21 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.DisableCachingByDefault;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
 
 /**
  * Task installing an app variant. It looks at connected device and install the best matching
@@ -170,7 +173,10 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                             BuiltArtifactsSplitOutputMatcher.INSTANCE.computeBestOutput(
                                     deviceConfigProvider, builtArtifacts, supportedAbis));
                 }
-                if (device.getSupportsPrivacySandbox()) {
+                boolean privacySandboxSdksPresent =
+                        !privacySandboxSdksApksFiles.isEmpty()
+                                || additionalSupportedSdkApkSplits.isPresent();
+                if (privacySandboxSdksPresent && device.getSupportsPrivacySandbox()) {
                     privacySandboxSdksApksFiles.forEach(
                             file -> {
                                 List<File> sdkApkFiles =
@@ -189,7 +195,8 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                                 } catch (DeviceException e) {
                                     logger.error(
                                             String.format(
-                                                    "Failed to install privacy sandbox SDK APKs from %s",
+                                                    "Failed to install privacy sandbox SDK APKs"
+                                                        + " from %s",
                                                     file.toPath()),
                                             e);
                                 }
@@ -430,7 +437,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             task.setTimeOutInMs(installationOptions.getTimeOutInMs());
             task.setInstallOptions(installationOptions.getInstallOptions());
 
-            SdkComponentsKt.initialize(task.getBuildTools(), creationConfig);
+            SdkComponentsKt.initialize(task.getBuildTools(), task, creationConfig);
 
             task.getDexMetadataDirectory()
                     .set(

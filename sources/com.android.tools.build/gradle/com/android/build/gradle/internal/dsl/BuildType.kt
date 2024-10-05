@@ -242,7 +242,10 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         enableUnitTestCoverage = thatBuildType.enableUnitTestCoverage
         enableAndroidTestCoverage = thatBuildType.enableAndroidTestCoverage
         externalNativeBuildOptions._initWith(thatBuildType.externalNativeBuildOptions)
-        _postProcessing.initWith(that._postProcessing)
+        postProcessingBlockUsed = thatBuildType.postProcessingBlockUsed
+        if (postProcessingBlockUsed) {
+            _postProcessing.initWith(that._postProcessing)
+        }
         isCrunchPngs = thatBuildType.isCrunchPngs
         isCrunchPngsDefault = thatBuildType.isCrunchPngsDefault
         setMatchingFallbacks(thatBuildType.matchingFallbacks)
