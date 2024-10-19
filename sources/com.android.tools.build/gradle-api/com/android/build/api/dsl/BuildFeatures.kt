@@ -31,7 +31,7 @@ interface BuildFeatures : ExtensionAware {
      * Setting the value to `null` resets to the default value.
      * Default value is `false`.
      *
-     * More information about this feature at: TBD
+     * See [AIDL](http://developer.android.com/r/tools/reference/dsl/buildfeatures/aidl).
      */
     @get:Restricted
     var aidl: Boolean?
@@ -42,7 +42,7 @@ interface BuildFeatures : ExtensionAware {
      *
      * Default value is `false`.
      *
-     * More information available about this feature at: TBD
+     * See [Compose](http://developer.android.com/compose).
      **/
     @get:Restricted
     var compose: Boolean?
@@ -53,7 +53,7 @@ interface BuildFeatures : ExtensionAware {
      * Setting the value to `null` resets to the default value.
      * Default value is `false`.
      *
-     * More information about this feature at: TBD
+     * See [build config fields](http://developer.android.com/r/tools/build-config-fields).
      */
     @get:Restricted
     var buildConfig: Boolean?
@@ -72,7 +72,7 @@ interface BuildFeatures : ExtensionAware {
      *     }
      * in the module's build.gradle file.
      *
-     * More information about this feature at: TBD
+     * See [Prefab](http://developer.android.com/r/tools/prefab).
      */
     var prefab: Boolean?
 
@@ -82,7 +82,6 @@ interface BuildFeatures : ExtensionAware {
      * Setting the value to `null` resets to the default value.
      * Default value is `false`.
      *
-     * More information about this feature at: TBD
      */
     var renderScript: Boolean?
 
@@ -96,7 +95,7 @@ interface BuildFeatures : ExtensionAware {
      *     `android.defaults.buildfeatures.resvalues=true`
      * in the gradle.properties file at the root project of your build.
 
-     * More information about this feature at: TBD
+     * See [Resources](http://developer.android.com/r/tools/res-values).
      */
     @get:Restricted
     var resValues: Boolean?
@@ -110,8 +109,8 @@ interface BuildFeatures : ExtensionAware {
      * You can override the default for this for all projects in your build by adding the line
      *     `android.defaults.buildfeatures.shaders=true`
      * in the gradle.properties file at the root project of your build.
-
-     * More information about this feature at: TBD
+     *
+     * See [Shader Compilers](https://developer.android.com/r/tools/shader-compilers)
      */
     var shaders: Boolean?
 
@@ -124,8 +123,8 @@ interface BuildFeatures : ExtensionAware {
      * You can override the default for this for all projects in your build by adding the line
      *     `android.defaults.buildfeatures.viewbinding=true`
      * in the gradle.properties file at the root project of your build.
-
-     * More information about this feature at: TBD
+     *
+     * See [View Binding Library](https://developer.android.com/viewbinding)
      */
     @get:Restricted
     var viewBinding: Boolean?
