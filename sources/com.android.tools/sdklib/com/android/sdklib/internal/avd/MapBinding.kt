@@ -131,13 +131,28 @@ internal object StringConverter : ValueConverter<String> {
   override fun toString(value: String): String = value
 }
 
-internal class StorageConverter(val defaultUnit: Storage.Unit = Storage.Unit.MiB) :
-  ValueConverter<Storage> {
+/**
+ * Converts Storage to/from strings.
+ *
+ * @param defaultUnit the unit to assume if no suffix is present when reading; when writing, this
+ *   unit will be left implicit
+ * @param allowUnitSuffix if false, all values will be converted into [defaultUnit] and no suffix
+ *   will be written; otherwise, the suffix will be determined by [Storage.getAppropriateUnits].
+ */
+internal class StorageConverter(
+  val defaultUnit: Storage.Unit = Storage.Unit.MiB,
+  val allowUnitSuffix: Boolean = true,
+) : ValueConverter<Storage> {
+  init {
+    check(defaultUnit != Storage.Unit.TiB)
+  }
+
   override fun fromString(string: String): Storage? =
     Storage.getStorageFromString(string, defaultUnit)
 
   override fun toString(value: Storage): String {
-    val unit = value.appropriateUnits
+    val unit =
+      if (allowUnitSuffix) value.appropriateUnits.coerceAtMost(Storage.Unit.GiB) else defaultUnit
     val unitString = if (unit == defaultUnit) "" else unit.toString().substring(0, 1)
     return "${value.getSizeAsUnit(unit)}$unitString"
   }

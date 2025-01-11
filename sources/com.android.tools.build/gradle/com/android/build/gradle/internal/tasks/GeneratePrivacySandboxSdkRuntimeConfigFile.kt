@@ -57,7 +57,7 @@ abstract class GeneratePrivacySandboxSdkRuntimeConfigFile : NonIncrementalTask()
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.privacySandboxSdkRuntimeConfigFile.set(privacySandboxSdkRuntimeConfigFile)
             it.generatedRPackage.set(generatedRPackage)
             it.sdkArchiveMetadata.from(sdkArchiveMetadata)

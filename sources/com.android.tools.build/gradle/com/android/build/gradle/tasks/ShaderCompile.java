@@ -39,17 +39,10 @@ import com.android.builder.internal.compiler.ShaderProcessor;
 import com.android.ide.common.process.LoggedProcessOutputHandler;
 import com.android.repository.Revision;
 import com.android.utils.FileUtils;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.inject.Inject;
+
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.provider.ListProperty;
@@ -68,6 +61,17 @@ import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.util.PatternSet;
 import org.gradle.process.ExecOperations;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.inject.Inject;
 
 /** Task to compile Shaders. */
 @CacheableTask
@@ -164,7 +168,7 @@ public abstract class ShaderCompile extends NonIncrementalTask {
                             .submit(
                                     WorkAction.class,
                                     params -> {
-                                        params.initializeFromAndroidVariantTask(this);
+                                        params.initializeFromBaseTask(this);
                                         params.getSourceFolder().set(getSourceDir());
                                         params.getOutputFolder().set(getOutputDir().dir("shaders"));
                                         params.getDefaultArgs().set(defaultArgs);

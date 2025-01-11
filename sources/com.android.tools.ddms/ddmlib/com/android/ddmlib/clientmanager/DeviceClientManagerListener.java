@@ -46,8 +46,8 @@ public interface DeviceClientManagerListener {
             @NonNull AndroidDebugBridge bridge, @NonNull DeviceClientManager deviceClientManager);
 
     /**
-     * Invoked when {@link ClientData#getPackageName()} or {@link ClientData#getClientDescription()}
-     * of the given {@link Client} has changed.
+     * Invoked when {@link ClientData#getPackageName()} or {@link ClientData#getProcessName()} of
+     * the given {@link Client} has changed.
      */
     void processNameUpdated(
             @NonNull AndroidDebugBridge bridge,

@@ -16,11 +16,14 @@
 package com.android.build.gradle
 
 import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.LibraryVariant
+import com.android.build.gradle.internal.CompileOptionsInternal
+import com.android.build.gradle.internal.DependenciesExtension
 import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
@@ -33,11 +36,44 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
 import com.google.wireless.android.sdk.stats.GradleBuildProject
+import org.gradle.api.Action
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.internal.DefaultDomainObjectSet
 import org.gradle.declarative.dsl.model.annotations.Configuring
 import java.util.Collections
+
+open class LibraryExtensionInternal(
+    dslServices: DslServices,
+    bootClasspathConfig: BootClasspathConfig,
+    buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
+    sourceSetManager: SourceSetManager,
+    extraModelInfo: ExtraModelInfo,
+    private val publicExtensionImpl: LibraryExtensionImpl,
+    stats: GradleBuildProject.Builder?
+) : LibraryExtension(
+    dslServices,
+    bootClasspathConfig,
+    buildOutputs,
+    sourceSetManager,
+    extraModelInfo,
+    publicExtensionImpl,
+    stats,
+) {
+    @Configuring
+    fun compileOptionsDcl(action: CompileOptionsInternal.() -> Unit) {
+        super.compileOptions(action)
+    }
+
+    val dependenciesDcl: DependenciesExtension by lazy {
+        dslServices.newInstance(DependenciesExtension::class.java)
+    }
+
+    @Configuring
+    fun dependenciesDcl(configure: DependenciesExtension.() -> Unit) {
+        configure.invoke(dependenciesDcl)
+    }
+}
 
 /**
  * The {@code android} extension for {@code com.android.library} projects.

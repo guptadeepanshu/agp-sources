@@ -1238,7 +1238,7 @@ class ModelBuilder<
         }.get().filter { it.isFile }
         )
 
-        val mainManifest = component.sources.manifestFile.get()
+        val mainManifest = component.sources.manifestFile
         if (mainManifest.isFile) {
             manifests.add(mainManifest)
         }

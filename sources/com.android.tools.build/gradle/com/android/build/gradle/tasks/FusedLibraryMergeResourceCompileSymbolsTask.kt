@@ -23,18 +23,14 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.symbols.processLibraryMainSymbolTable
 import com.android.ide.common.symbols.IdProvider
-import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
-import com.android.ide.common.symbols.mergeAndRenumberSymbols
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
@@ -49,7 +45,7 @@ import org.gradle.api.tasks.TaskProvider
 
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, [TaskCategory.MERGING])
 @CacheableTask
-abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalTask() {
+abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalGlobalTask() {
 
     @get:Input
     abstract val namespace: Property<String>
@@ -78,8 +74,8 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalTask(
         )
     }
 
-    class CreationAction(val creationConfig: FusedLibraryGlobalScope) :
-        AndroidVariantTaskCreationAction<FusedLibraryMergeResourceCompileSymbolsTask>() {
+    class CreationAction(private val creationConfig: FusedLibraryGlobalScope) :
+        GlobalTaskCreationAction<FusedLibraryMergeResourceCompileSymbolsTask>() {
 
         override val name: String
             get() = "fusedLibraryMergeResourceCompileSymbols"
@@ -103,8 +99,7 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalTask(
                 getBuildService(creationConfig.services.buildServiceRegistry))
             task.symbolDependencyTables.fromDisallowChanges(
                 creationConfig.dependencies.getArtifactFileCollection(
-                    Usage.JAVA_RUNTIME,
-                    creationConfig.mergeSpec,
+                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
                 )
             )

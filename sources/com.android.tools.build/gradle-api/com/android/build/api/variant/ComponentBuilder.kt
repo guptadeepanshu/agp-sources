@@ -52,6 +52,6 @@ interface ComponentBuilder: ComponentIdentity {
      */
     var enable: Boolean
 
-    @Deprecated("Will be removed in 9.0")
+    @Deprecated("Will be removed in 9.0") // b/368602406
     var enabled: Boolean
 }

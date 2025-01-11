@@ -23,7 +23,16 @@ import com.android.build.api.variant.impl.VariantOutputList
 
 interface ApplicationCreationConfig: ApkCreationConfig, VariantCreationConfig, PublishableCreationConfig {
     val profileable: Boolean
-    val consumesFeatureJars: Boolean
+
+    /**
+     * Whether this is the base module in a bundle, and the base module needs to consume dynamic
+     * feature modules (i.e., the bundle has dynamic features and shrinking is enabled).
+     *
+     * This property is needed because under the above condition, AGP has a different pipeline for
+     * publishing/consuming artifacts between the base module and the dynamic feature modules.
+     */
+    val consumesDynamicFeatures: Boolean
+
     val needAssetPackTasks: Boolean
     val isWearAppUnbundled: Boolean?
     val includeVcsInfo: Boolean?

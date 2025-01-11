@@ -37,7 +37,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.PrintWriter
 import java.nio.file.Files
-import java.util.ArrayList
 import java.util.Locale
 import java.util.Objects
 
@@ -290,9 +289,14 @@ fun makeLinkCommand(config: AaptPackageConfig): ImmutableList<String> {
         preferredDensity = Iterables.getOnlyElement(densityResourceConfigs)
     }
 
-    if (otherResourceConfigs.isNotEmpty()) {
+    val localeFilters = ArrayList(config.localeFilters)
+    if (otherResourceConfigs.isNotEmpty() || localeFilters.isNotEmpty()) {
         val joiner = Joiner.on(',')
-        builder.add("-c", joiner.join(otherResourceConfigs))
+        if (config.pseudoLocalesEnabled) {
+            localeFilters.add(SdkConstants.EN_XA)
+            localeFilters.add(SdkConstants.AR_XB)
+        }
+        builder.add("-c", joiner.join(otherResourceConfigs + localeFilters))
     }
 
     if (preferredDensity != null) {

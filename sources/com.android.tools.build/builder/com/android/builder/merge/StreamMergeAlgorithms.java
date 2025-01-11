@@ -17,11 +17,14 @@
 package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.base.Preconditions;
 import com.google.common.io.Closer;
+
 import java.io.InputStream;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * File merge algorithms.
@@ -40,10 +43,10 @@ public final class StreamMergeAlgorithms {
      */
     @NonNull
     public static StreamMergeAlgorithm pickFirst() {
-        return (@NonNull String path, @NonNull List<InputStream> from, @NonNull Closer closer) -> {
+        return (@NonNull String path, @NonNull List<MergeInput> from, @NonNull Closer closer) -> {
             Preconditions.checkArgument(!from.isEmpty(), "from.isEmpty()");
-            from.forEach(closer::register);
-            return from.get(0);
+            from.forEach(mergeInput -> closer.register(mergeInput.getStream()));
+            return from.get(0).getStream();
         };
     }
 
@@ -54,7 +57,7 @@ public final class StreamMergeAlgorithms {
      */
     @NonNull
     public static StreamMergeAlgorithm concat() {
-        return (@NonNull String path, @NonNull List<InputStream> from, @NonNull Closer closer) -> {
+        return (@NonNull String path, @NonNull List<MergeInput> from, @NonNull Closer closer) -> {
             InputStream mergedStream = new CombinedInputStream(from, true);
             closer.register(mergedStream);
             return mergedStream;
@@ -68,13 +71,14 @@ public final class StreamMergeAlgorithms {
      * @return the algorithm
      */
     public static StreamMergeAlgorithm acceptOnlyOne() {
-        return (@NonNull String path, @NonNull List<InputStream> from, @NonNull Closer closer) -> {
+        return (@NonNull String path, @NonNull List<MergeInput> from, @NonNull Closer closer) -> {
             Preconditions.checkArgument(!from.isEmpty(), "from.isEmpty()");
-            from.forEach(closer::register);
+            from.forEach(mergeInput -> closer.register(mergeInput.getStream()));
             if (from.size() > 1) {
-                throw new DuplicateRelativeFileException(path, from.size());
+                throw new DuplicateRelativeFileException(
+                        path, from.stream().map(MergeInput::getName).collect(Collectors.toList()));
             }
-            return from.get(0);
+            return from.get(0).getStream();
         };
     }
 
@@ -89,7 +93,7 @@ public final class StreamMergeAlgorithms {
     @NonNull
     public static StreamMergeAlgorithm select(@NonNull
             Function<String, StreamMergeAlgorithm> select) {
-        return (@NonNull String path, @NonNull List<InputStream> from, @NonNull Closer closer) -> {
+        return (@NonNull String path, @NonNull List<MergeInput> from, @NonNull Closer closer) -> {
             StreamMergeAlgorithm algorithm = select.apply(path);
             assert algorithm != null;
             return algorithm.merge(path, from, closer);

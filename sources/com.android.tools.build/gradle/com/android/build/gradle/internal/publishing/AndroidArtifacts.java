@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.publishing;
 
+import static com.android.SdkConstants.FN_RESOURCE_STATIC_LIBRARY;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.REVERSE_METADATA_ELEMENTS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS;
@@ -23,6 +24,7 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
+
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
 import org.gradle.api.attributes.Attribute;
 
@@ -79,6 +81,8 @@ public class AndroidArtifacts {
     private static final String TYPE_ANDROID_RES_STATIC_LIBRARY = "android-res-static-library";
     private static final String TYPE_ANDROID_RES_SHARED_STATIC_LIBRARY =
             "android-res-shared-static-library";
+    private static final String TYPE_ANDROID_RES_SHARED_OEM_LIBRARY =
+            "android-res-shared-oem-library";
     private static final String TYPE_ANDROID_RES_BUNDLE = "android-res-for-bundle";
     private static final String TYPE_ASSETS = "android-assets";
     private static final String TYPE_SHARED_ASSETS = "android-shared-assets";
@@ -212,6 +216,9 @@ public class AndroidArtifacts {
     private static final String TYPE_SUPPORTED_LOCALE_LIST = "supported-locale-list";
     private static final String TYPE_R_CLASS_JAR = "r-class-jar";
     private static final String TYPE_MERGED_TEST_ONLY_NATIVE_LIBS = "merged-test-only-native-libs";
+
+    public static final String PATH_SHARED_LIBRARY_RESOURCES_APK =
+            "shared/" + FN_RESOURCE_STATIC_LIBRARY;
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -391,6 +398,7 @@ public class AndroidArtifacts {
         RES_STATIC_LIBRARY(TYPE_ANDROID_RES_STATIC_LIBRARY),
         RES_SHARED_STATIC_LIBRARY(TYPE_ANDROID_RES_SHARED_STATIC_LIBRARY),
         RES_BUNDLE(TYPE_ANDROID_RES_BUNDLE),
+        RES_SHARED_OEM_TOKEN_LIBRARY(TYPE_ANDROID_RES_SHARED_OEM_LIBRARY),
 
         // API only elements.
         AIDL(TYPE_AIDL),

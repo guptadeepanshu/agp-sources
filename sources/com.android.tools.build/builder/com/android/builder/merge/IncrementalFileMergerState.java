@@ -17,9 +17,11 @@
 package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,13 +66,14 @@ public final class IncrementalFileMergerState implements Serializable {
 
     /**
      * Maps an input set name to all OS-independent paths to whom it contributed inputs for. This
-     * map can be build from {@link #origin}: its key are all different values of all lists in the
-     * value set of {@link #origin}. For each key in {@link #byInput}, its values are all keys
-     * in {@link #origin} whose value contains the key.
+     * map can be built from {@link #origin}: its key are all different values of all lists in the
+     * value set of {@link #origin}. For each key in {@link #byInput}, its values are all keys in
+     * {@link #origin} whose value contains the key.
      *
      * <p>However, for performance reasons, this is precomputed.
      *
      * <p>For example, if we have a structure of:
+     *
      * <pre>
      * input1:
      *   - path1
@@ -82,6 +85,7 @@ public final class IncrementalFileMergerState implements Serializable {
      * </pre>
      *
      * <p>{@link #origin} would contain:
+     *
      * <pre>
      * path1 -> input1, input2
      * path2 -> input1
@@ -89,13 +93,13 @@ public final class IncrementalFileMergerState implements Serializable {
      * </pre>
      *
      * <p>{@link #byInput} would contains:
+     *
      * <pre>
      * input1 -> path1, path2
      * input2 -> path1, path3
      * </pre>
      */
-    @NonNull
-    private final ImmutableMap<String, ImmutableSet<String>> byInput;
+    @NonNull private final ImmutableMap<String, ImmutableSet<String>> byInput;
 
     /**
      * Creates a new, empty, state. This is useful to create a full build as a full build is an

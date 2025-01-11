@@ -116,6 +116,10 @@ public enum VariantMethodType
    * <code>DEVICE_TEST_ENABLE_CODE_COVERAGE = 25;</code>
    */
   DEVICE_TEST_ENABLE_CODE_COVERAGE(25),
+  /**
+   * <code>DEVICE_TEST_DEBUGGABLE = 26;</code>
+   */
+  DEVICE_TEST_DEBUGGABLE(26),
   UNRECOGNIZED(-1),
   ;
 
@@ -227,6 +231,10 @@ public enum VariantMethodType
    * <code>DEVICE_TEST_ENABLE_CODE_COVERAGE = 25;</code>
    */
   public static final int DEVICE_TEST_ENABLE_CODE_COVERAGE_VALUE = 25;
+  /**
+   * <code>DEVICE_TEST_DEBUGGABLE = 26;</code>
+   */
+  public static final int DEVICE_TEST_DEBUGGABLE_VALUE = 26;
 
 
   public final int getNumber() {
@@ -279,6 +287,7 @@ public enum VariantMethodType
       case 23: return HOST_TEST_TYPE;
       case 24: return HOST_TEST_ENABLE_CODE_COVERAGE;
       case 25: return DEVICE_TEST_ENABLE_CODE_COVERAGE;
+      case 26: return DEVICE_TEST_DEBUGGABLE;
       default: return null;
     }
   }

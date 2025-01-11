@@ -22,10 +22,10 @@ package com.android.build.api.dsl
  * See [APK Splits](https://developer.android.com/studio/build/configure-apk-splits.html).
  */
 @Deprecated(
-    "Density-based apk split feature is deprecated and will be removed in AGP 9.0." +
+    "Density-based apk split feature is deprecated and will be removed in AGP 10.0." +
             "Use Android App Bundle (https://developer.android.com/guide/app-bundle)" +
             "to generate optimized APKs."
-)
+) // b/264833076
 interface DensitySplit : Split {
     /** TODO: Document. */
     var isStrict: Boolean

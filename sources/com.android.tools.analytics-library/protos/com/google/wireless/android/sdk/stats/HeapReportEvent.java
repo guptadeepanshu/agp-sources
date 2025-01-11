@@ -122,6 +122,18 @@ private static final long serialVersionUID = 0L;
      * <code>REPORT_UPLOAD_FAILED = 17;</code>
      */
     REPORT_UPLOAD_FAILED(17),
+    /**
+     * <code>DISABLED_SYSTEM_PROPERTY = 18;</code>
+     */
+    DISABLED_SYSTEM_PROPERTY(18),
+    /**
+     * <code>DISABLED_SERVER_FLAG = 19;</code>
+     */
+    DISABLED_SERVER_FLAG(19),
+    /**
+     * <code>DISABLED_NOT_64_BIT = 20;</code>
+     */
+    DISABLED_NOT_64_BIT(20),
     ;
 
     /**
@@ -196,6 +208,18 @@ private static final long serialVersionUID = 0L;
      * <code>REPORT_UPLOAD_FAILED = 17;</code>
      */
     public static final int REPORT_UPLOAD_FAILED_VALUE = 17;
+    /**
+     * <code>DISABLED_SYSTEM_PROPERTY = 18;</code>
+     */
+    public static final int DISABLED_SYSTEM_PROPERTY_VALUE = 18;
+    /**
+     * <code>DISABLED_SERVER_FLAG = 19;</code>
+     */
+    public static final int DISABLED_SERVER_FLAG_VALUE = 19;
+    /**
+     * <code>DISABLED_NOT_64_BIT = 20;</code>
+     */
+    public static final int DISABLED_NOT_64_BIT_VALUE = 20;
 
 
     public final int getNumber() {
@@ -236,6 +260,9 @@ private static final long serialVersionUID = 0L;
         case 15: return REVIEW_DECLINED;
         case 16: return REPORT_UPLOADED;
         case 17: return REPORT_UPLOAD_FAILED;
+        case 18: return DISABLED_SYSTEM_PROPERTY;
+        case 19: return DISABLED_SERVER_FLAG;
+        case 20: return DISABLED_NOT_64_BIT;
         default: return null;
       }
     }

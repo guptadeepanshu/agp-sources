@@ -19,6 +19,7 @@ package com.android.build.gradle.internal
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.testing.QemuExecutor
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
@@ -74,8 +75,9 @@ abstract class AvdComponentsBuildService @Inject constructor(
         } else {
             null
         }
+        val avdFolder = parameters.avdLocation.get().asFile
         AvdManager(
-            parameters.avdLocation.get().asFile,
+            avdFolder,
             versionedSdkLoader,
             AndroidSdkHandler.getInstance(
                 locationsService,
@@ -86,7 +88,8 @@ abstract class AvdComponentsBuildService @Inject constructor(
                 parameters.showEmulatorKernelLogging.get(),
                 snapshotTimeoutSecs,
                 adbHelper,
-                emulatorDirectory
+                emulatorDirectory,
+                QemuExecutor(emulatorDirectory)
             ),
             ManagedVirtualDeviceLockManager(
                 locationsService,

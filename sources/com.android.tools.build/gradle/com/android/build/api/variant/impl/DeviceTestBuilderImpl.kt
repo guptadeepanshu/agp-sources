@@ -32,6 +32,7 @@ open class DeviceTestBuilderImpl(
     val componentType: ComponentType,
     enableMultiDex: Boolean?,
     enableCodeCoverage: Boolean,
+    override var debuggable: Boolean,
 ): DeviceTestBuilder {
 
     companion object {
@@ -41,6 +42,7 @@ open class DeviceTestBuilderImpl(
             globalVariantBuilderConfig: GlobalVariantBuilderConfig,
             defaultTargetSdkVersionProvider: () -> AndroidVersion,
             enableMultiDex: Boolean?,
+            debuggable: Boolean,
         ): Map<String, DeviceTestBuilderImpl> =
             dslDefinedDeviceTests.associate { dslDeviceTest ->
                 dslDeviceTest.type to
@@ -52,6 +54,7 @@ open class DeviceTestBuilderImpl(
                             ComponentTypeImpl.ANDROID_TEST,
                             enableMultiDex,
                             dslDeviceTest.codeCoverageEnabled,
+                            debuggable,
                         )
                     } else {
                         throw RuntimeException("Unknown device test type : ${dslDeviceTest.type}")

@@ -19,6 +19,7 @@ package com.android.build.api.component.impl
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.UnitTest
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
+import com.android.build.api.component.impl.features.BuildConfigCreationConfigImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.HostTest
@@ -120,10 +121,15 @@ abstract class HostTestImpl @Inject constructor(
                 dslInfo.mainVariantDslInfo.manifestPlaceholdersDslInfo?.placeholders)
     }
 
-    /**
-     * There is no build config fields for host tests.
-     */
-    override val buildConfigCreationConfig: BuildConfigCreationConfig? = null
+    override val buildConfigCreationConfig: BuildConfigCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
+        if (buildFeatures.buildConfig) {
+            dslInfo.mainVariantDslInfo.buildConfigDslInfo?.let {
+                BuildConfigCreationConfigImpl(this, it, internalServices)
+            }
+        } else {
+            null
+        }
+    }
 
     private val testTaskConfigActions = mutableListOf<(Test) -> Unit>()
 

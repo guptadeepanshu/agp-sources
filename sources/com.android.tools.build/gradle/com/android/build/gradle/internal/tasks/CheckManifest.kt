@@ -21,6 +21,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
@@ -42,20 +43,20 @@ abstract class CheckManifest : NonIncrementalTask() {
     private var manifestRequired: Boolean = false
 
     /** The path to the manifest file. */
-    private lateinit var manifestFile: Provider<File>
+    private lateinit var manifestFile: RegularFileProperty
 
     /** A fake output directory, used for task dependencies and UP-TO-DATE purposes. */
     @get:OutputDirectory
     abstract val fakeOutputDir: DirectoryProperty
 
     @Input
-    fun isManifestRequiredButNotPresent() = manifestRequired && !manifestFile.get().isFile
+    fun isManifestRequiredButNotPresent() = manifestRequired && !manifestFile.asFile.get().isFile
 
     override fun doTaskAction() {
         if (isManifestRequiredButNotPresent()) {
             error(
                 "Main manifest is missing for variant $variantName." +
-                        " Expected path: ${manifestFile.get().absolutePath}"
+                        " Expected path: ${manifestFile.asFile.get().absolutePath}"
             )
         }
     }
@@ -89,7 +90,7 @@ abstract class CheckManifest : NonIncrementalTask() {
             super.configure(task)
 
             task.manifestRequired = creationConfig.componentType.requiresManifest
-            task.manifestFile = creationConfig.sources.manifestFile
+            task.manifestFile = creationConfig.services.regularFileProperty()
         }
     }
 }

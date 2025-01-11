@@ -133,6 +133,9 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
     override val targetSdk: AndroidVersion
         get() = generatesApk.targetSdk
 
+    override val minSdk: AndroidVersion
+        get() = generatesApk.minSdk
+
     override val targetSdkVersion: AndroidVersion
         get() = generatesApk.targetSdkVersion
 

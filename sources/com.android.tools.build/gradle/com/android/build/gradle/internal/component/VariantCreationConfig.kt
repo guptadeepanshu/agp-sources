@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.Component
 import com.android.build.gradle.internal.dsl.ModulePropertyKey.OptionalBoolean
+import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.parseBoolean
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -44,13 +45,21 @@ interface VariantCreationConfig: ConsumableCreationConfig {
      * version is at least 2.0.
      */
     val lintUseK2UastManualSetting: Provider<Boolean> get() {
-        val ret: Provider<Boolean> = experimentalProperties.getting(OptionalBoolean.LINT_USE_K2_UAST.key).map {
-            parseBoolean(OptionalBoolean.LINT_USE_K2_UAST.key, it)
-        }
+        return getLintUseK2UastManualSetting(experimentalProperties, services)
+    }
 
-        services.projectOptions.get(OptionalBooleanOption.LINT_USE_K2_UAST)?.let {
-            return ret.orElse(it)
+    companion object {
+        fun getLintUseK2UastManualSetting(
+            experimentalProperties: MapProperty<String, Any>,
+            services: TaskCreationServices): Provider<Boolean> {
+            val ret: Provider<Boolean> = experimentalProperties.getting(OptionalBoolean.LINT_USE_K2_UAST.key).map {
+                parseBoolean(OptionalBoolean.LINT_USE_K2_UAST.key, it)
+            }
+
+            services.projectOptions.get(OptionalBooleanOption.LINT_USE_K2_UAST)?.let {
+                return ret.orElse(it)
+            }
+            return ret
         }
-        return ret
     }
 }

@@ -83,6 +83,14 @@ private static final long serialVersionUID = 0L;
      * <code>ANALYSIS_FAILURE = 3;</code>
      */
     ANALYSIS_FAILURE(3),
+    /**
+     * <pre>
+     * Build analyzer received cancellation exception during post-processing.
+     * </pre>
+     *
+     * <code>ANALYSIS_CANCELED = 4;</code>
+     */
+    ANALYSIS_CANCELED(4),
     ;
 
     /**
@@ -113,6 +121,14 @@ private static final long serialVersionUID = 0L;
      * <code>ANALYSIS_FAILURE = 3;</code>
      */
     public static final int ANALYSIS_FAILURE_VALUE = 3;
+    /**
+     * <pre>
+     * Build analyzer received cancellation exception during post-processing.
+     * </pre>
+     *
+     * <code>ANALYSIS_CANCELED = 4;</code>
+     */
+    public static final int ANALYSIS_CANCELED_VALUE = 4;
 
 
     public final int getNumber() {
@@ -139,6 +155,7 @@ private static final long serialVersionUID = 0L;
         case 1: return SUCCESS;
         case 2: return BUILD_FAILURE;
         case 3: return ANALYSIS_FAILURE;
+        case 4: return ANALYSIS_CANCELED;
         default: return null;
       }
     }

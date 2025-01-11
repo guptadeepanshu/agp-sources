@@ -51,7 +51,7 @@ abstract class FeatureGlobalSyntheticsMergeTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             FeatureGlobalSyntheticsMergeWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.globalSyntheticsInputs.from(globalSyntheticsInputs)
             it.outputDir.set(mergedGlobalSynthetics)
         }

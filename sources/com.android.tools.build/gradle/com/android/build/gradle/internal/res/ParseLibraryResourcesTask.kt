@@ -109,7 +109,7 @@ abstract class ParseLibraryResourcesTask : NewIncrementalTask() {
             listOf()
         }
         workerExecutor.noIsolation().submit(ParseResourcesRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputResDir.set(inputResourcesDir)
             it.platformAttrsRTxt.set(platformAttrRTxt.get().singleFile)
             it.librarySymbolsFile.set(librarySymbolsFile)

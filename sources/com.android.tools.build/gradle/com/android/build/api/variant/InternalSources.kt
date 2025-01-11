@@ -104,8 +104,8 @@ interface InternalSources: Sources {
      */
     fun mlModels(action: (LayeredSourceDirectoriesImpl) -> Unit)
 
-    val artProfile: Provider<File>?
-    val manifestFile: Provider<File>
+    val artProfile: File?
+    val manifestFile: File
     // it's ordered from less to most prioritized
     val manifestOverlayFiles: Provider<List<File>>
 

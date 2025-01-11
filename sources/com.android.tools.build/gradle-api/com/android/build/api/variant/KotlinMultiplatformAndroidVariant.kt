@@ -38,6 +38,12 @@ interface KotlinMultiplatformAndroidVariant: HasDeviceTests, HasAndroidTest, Has
     @get:Incubating
     val artifacts: Artifacts
 
+    /*
+    * Access to variant's source files.
+    */
+    @get:Incubating
+    val sources: Sources
+
     /**
      * Access to the variant's instrumentation options.
      */

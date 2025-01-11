@@ -16,18 +16,16 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
-import com.android.utils.FileUtils
-import org.gradle.api.DefaultTask
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.DuplicateFileCopyingException
@@ -35,7 +33,6 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.io.File
@@ -47,7 +44,7 @@ import java.util.jar.JarFile
  */
 @DisableCachingByDefault(because = "No calculation is made, merging classes. ")
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.MERGING, TaskCategory.FUSING])
-abstract class FusedLibraryMergeClasses: DefaultTask() {
+abstract class FusedLibraryMergeClasses: NonIncrementalGlobalTask() {
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
@@ -56,10 +53,7 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val incoming: ConfigurableFileCollection
 
-    @TaskAction
-    fun taskAction() {
-        FileUtils.cleanOutputDir(outputDirectory.get().asFile)
-
+    override fun doTaskAction() {
         incoming.files.forEach { file ->
             logger.info("Merging file: ${file.absolutePath}")
             JarFile(file).use { jarFile ->
@@ -84,8 +78,9 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         }
     }
 
-    class FusedLibraryCreationAction(val creationConfig: FusedLibraryGlobalScope) :
-            TaskCreationAction<FusedLibraryMergeClasses>() {
+    class FusedLibraryCreationAction(private val creationConfig: FusedLibraryGlobalScope) :
+        GlobalTaskCreationAction<FusedLibraryMergeClasses>() {
+
         override val name: String
             get() = "mergeClasses"
         override val type: Class<FusedLibraryMergeClasses>
@@ -100,17 +95,17 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         }
 
         override fun configure(task: FusedLibraryMergeClasses) {
+            super.configure(task)
             task.incoming.setFrom(
                     creationConfig.dependencies.getArtifactFileCollection(
-                            Usage.JAVA_RUNTIME,
-                            creationConfig.mergeSpec,
-                            AndroidArtifacts.ArtifactType.CLASSES_JAR)
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR)
             )
         }
     }
 
     class PrivacySandboxSdkCreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            TaskCreationAction<FusedLibraryMergeClasses>() {
+            GlobalTaskCreationAction<FusedLibraryMergeClasses>() {
         override val name: String
             get() = "mergeClasses"
         override val type: Class<FusedLibraryMergeClasses>
@@ -125,10 +120,10 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         }
 
         override fun configure(task: FusedLibraryMergeClasses) {
+            super.configure(task)
             task.incoming.from(
                     creationConfig.dependencies.getArtifactFileCollection(
-                            Usage.JAVA_RUNTIME,
-                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                             AndroidArtifacts.ArtifactType.CLASSES_JAR)
             )
             task.incoming.from(creationConfig.artifacts.get(PrivacySandboxSdkInternalArtifactType.RUNTIME_R_CLASS))

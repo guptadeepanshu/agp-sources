@@ -128,4 +128,34 @@ interface PrivacySandboxSdkExtension {
     @Incubating
     fun optimization(action: PrivacySandboxSdkOptimization.() -> Unit)
 
+    /**
+     * Specifies options for the lint tool.
+     *
+     * Android Studio and the Android SDK provide a code scanning tool called lint that can help
+     * you to identify and correct problems with the structural quality of your code without having
+     * to execute the app or write test cases. Each problem the tool detects is reported with a
+     * description message and a severity level, so that you can quickly prioritize the critical
+     * improvements that need to be made.
+     *
+     *
+     * This property allows you to configure certain lint options, such as which checks to run or
+     * ignore. If you're using Android Studio, you can
+     * [configure similar lint options](https://developer.android.com/studio/write/lint.html#cis)
+     * from the IDE.
+     *
+     * To learn more about using and running lint, read
+     * [Improve Your Code with Lint](https://developer.android.com/studio/write/lint.html).
+     *
+     * @see com.android.build.gradle.internal.dsl.LintOptions
+     */
+    @get:Incubating
+    val lint: Lint
+
+    /**
+     * Specifies options for the lint tool.
+     *
+     * For more information about the properties you can configure in this block, see [Lint].
+     */
+    @Incubating
+    fun lint(action: Lint.() -> Unit)
 }

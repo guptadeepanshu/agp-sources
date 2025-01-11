@@ -16,8 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 /**
  * Local installation options for the adb tool.
  */
@@ -29,10 +27,10 @@ interface Installation {
     val installOptions: MutableList<String>
 
     /** Sets the list of FULL_APK installation options */
-    @Deprecated("To be removed in AGP 9.0")
+    @Deprecated("To be removed in AGP 9.0") // b/368484483
     fun installOptions(option: String)
 
     /** Sets the list of FULL_APK installation options */
-    @Deprecated("To be removed in AGP 9.0")
+    @Deprecated("To be removed in AGP 9.0") // b/368484483
     fun installOptions(vararg options: String)
 }

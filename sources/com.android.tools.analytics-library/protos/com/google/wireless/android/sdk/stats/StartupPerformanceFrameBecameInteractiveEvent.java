@@ -4,6 +4,11 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Event describing how long it takes for the main IDE frame to become
+ * interactive.
+ * </pre>
+ *
  * Protobuf type {@code android_studio.StartupPerformanceFrameBecameInteractiveEvent}
  */
 public final class StartupPerformanceFrameBecameInteractiveEvent extends
@@ -47,6 +52,10 @@ private static final long serialVersionUID = 0L;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
   private int durationMs_;
   /**
+   * <pre>
+   * How long it takes for the main IDE frame to become interactive.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
@@ -55,6 +64,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
+   * <pre>
+   * How long it takes for the main IDE frame to become interactive.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
@@ -224,6 +237,11 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Event describing how long it takes for the main IDE frame to become
+   * interactive.
+   * </pre>
+   *
    * Protobuf type {@code android_studio.StartupPerformanceFrameBecameInteractiveEvent}
    */
   public static final class Builder extends
@@ -392,6 +410,10 @@ private static final long serialVersionUID = 0L;
 
     private int durationMs_ ;
     /**
+     * <pre>
+     * How long it takes for the main IDE frame to become interactive.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
@@ -400,6 +422,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * How long it takes for the main IDE frame to become interactive.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return The durationMs.
      */
@@ -408,6 +434,10 @@ private static final long serialVersionUID = 0L;
       return durationMs_;
     }
     /**
+     * <pre>
+     * How long it takes for the main IDE frame to become interactive.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @param value The durationMs to set.
      * @return This builder for chaining.
@@ -419,6 +449,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * How long it takes for the main IDE frame to become interactive.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return This builder for chaining.
      */

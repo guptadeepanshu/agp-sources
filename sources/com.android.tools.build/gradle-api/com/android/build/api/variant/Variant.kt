@@ -56,7 +56,7 @@ interface Variant : Component, HasAndroidResources {
     @get:Deprecated(
             "Will be removed in v9.0",
             replaceWith = ReplaceWith("minSdk")
-    )
+    ) // b/368604254
     val minSdkVersion: AndroidVersion
 
     /**
@@ -67,7 +67,7 @@ interface Variant : Component, HasAndroidResources {
     @get:Deprecated(
             "Will be removed in v9.0",
             replaceWith = ReplaceWith("maxSdk")
-    )
+    ) // b/368604254
     val maxSdkVersion: Int?
 
     /**
@@ -76,7 +76,7 @@ interface Variant : Component, HasAndroidResources {
     @get:Deprecated(
         "Will be removed in v9.0",
         replaceWith = ReplaceWith("GeneratesApk.targetSdk")
-    )
+    ) // b/368604254
     val targetSdkVersion: AndroidVersion
 
     /**
@@ -111,7 +111,7 @@ interface Variant : Component, HasAndroidResources {
     @get:Deprecated(
         "Will be removed in v9.0",
         replaceWith = ReplaceWith("(Variant.Subtype).unitTest where available")
-    )
+    ) // b/368607542
     val unitTest: UnitTest?
 
     /**

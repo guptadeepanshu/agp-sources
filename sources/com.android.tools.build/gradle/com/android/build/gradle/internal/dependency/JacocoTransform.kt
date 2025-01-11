@@ -35,8 +35,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import java.io.BufferedOutputStream
@@ -69,7 +67,7 @@ abstract class JacocoTransform : TransformAction<JacocoTransform.Params> {
     abstract val inputChanges: InputChanges
 
     @get:InputArtifact
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Classpath
     @get:Incremental
     abstract val inputArtifact: Provider<FileSystemLocation>
 

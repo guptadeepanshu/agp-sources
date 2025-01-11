@@ -27,11 +27,15 @@ import com.android.ide.common.rendering.api.RenderResources;
 import com.android.ide.common.rendering.api.ResourceNamespace;
 import com.android.ide.common.rendering.api.ResourceReference;
 import com.android.ide.common.rendering.api.ResourceValue;
+import com.android.ide.common.rendering.api.StyleItemResourceValue;
 import com.android.ide.common.rendering.api.StyleResourceValue;
 import com.android.ide.common.resources.configuration.FolderConfiguration;
 import com.android.resources.ResourceUrl;
-import java.util.List;
+
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * Like {@link ResourceResolver} but for a single item, so it does not need the full resource maps
@@ -45,8 +49,6 @@ public class ResourceItemResolver extends RenderResources {
     private final ILayoutLog myLogger;
     private final ResourceProvider myResourceProvider;
     private ResourceResolver myResolver;
-    private ResourceRepository myFrameworkResources;
-    private ResourceRepository myAppResources;
     @Nullable private List<ResourceValue> myLookupChain;
 
     public ResourceItemResolver(
@@ -64,11 +66,25 @@ public class ResourceItemResolver extends RenderResources {
             @NonNull ResourceRepository frameworkResources,
             @NonNull ResourceRepository appResources,
             @Nullable ILayoutLog logger) {
-        myConfiguration = configuration;
-        myResourceProvider = null;
-        myLogger = logger;
-        myFrameworkResources = frameworkResources;
-        myAppResources = appResources;
+        this(
+                configuration,
+                new ResourceProvider() {
+                    @Override
+                    public @Nullable ResourceResolver getResolver(boolean createIfNecessary) {
+                        return null;
+                    }
+
+                    @Override
+                    public @NotNull ResourceRepository getFrameworkResources() {
+                        return frameworkResources;
+                    }
+
+                    @Override
+                    public @NotNull ResourceRepository getAppResources() {
+                        return appResources;
+                    }
+                },
+                logger);
     }
 
     @Contract("!null -> !null")
@@ -111,9 +127,11 @@ public class ResourceItemResolver extends RenderResources {
         }
 
         if (myLogger != null) {
-            String msg = referenceToItself
-                         ? "Infinite cycle trying to resolve '%s': Render may not be accurate."
-                         : "Potential infinite cycle trying to resolve '%s': Render may not be accurate.";
+            String msg =
+                    referenceToItself
+                            ? "Infinite cycle trying to resolve '%s': Render may not be accurate."
+                            : "Potential infinite cycle trying to resolve '%s': Render may not be"
+                                    + " accurate.";
             myLogger.error(
                     ILayoutLog.TAG_BROKEN,
                     String.format(msg, resValue.getValue()),
@@ -168,16 +186,13 @@ public class ResourceItemResolver extends RenderResources {
         // map of ResourceValue for the given type
         // if allowed, search in the project resources first.
         if (!url.isFramework()) {
-            if (myAppResources == null) {
-                assert myResourceProvider != null;
-                myAppResources = myResourceProvider.getAppResources();
-                if (myAppResources == null) {
-                    return null;
-                }
+            ResourceRepository appResources = myResourceProvider.getAppResources();
+            if (appResources == null) {
+                return null;
             }
             ResourceValue item =
                     ResourceRepositoryUtil.getConfiguredValue(
-                            myAppResources, url.type, url.name, myConfiguration);
+                            appResources, url.type, url.name, myConfiguration);
             if (item != null) {
                 if (myLookupChain != null) {
                     myLookupChain.add(item);
@@ -185,17 +200,13 @@ public class ResourceItemResolver extends RenderResources {
                 return item;
             }
         } else {
-            if (myFrameworkResources == null) {
-                assert myResourceProvider != null;
-                myFrameworkResources = myResourceProvider.getFrameworkResources();
-                if (myFrameworkResources == null) {
-                    return null;
-                }
+            ResourceRepository frameworkResources = myResourceProvider.getFrameworkResources();
+            if (frameworkResources == null) {
+                return null;
             }
             // Now search in the framework resources.
             List<ResourceItem> items =
-                    myFrameworkResources.getResources(
-                            ResourceNamespace.ANDROID, url.type, url.name);
+                    frameworkResources.getResources(ResourceNamespace.ANDROID, url.type, url.name);
             if (!items.isEmpty()) {
                 ResourceValue value = items.get(0).getResourceValue();
                 if (value != null && myLookupChain != null) {
@@ -235,7 +246,7 @@ public class ResourceItemResolver extends RenderResources {
 
     @Override
     @Nullable
-    public ResourceValue findItemInStyle(
+    public StyleItemResourceValue findItemInStyle(
             @NonNull StyleResourceValue style, @NonNull ResourceReference attr) {
         ResourceResolver resolver = getFullResolver();
         return resolver != null ? resolver.findItemInStyle(style, attr) : null;
@@ -262,6 +273,13 @@ public class ResourceItemResolver extends RenderResources {
 
         }
         return myResolver;
+    }
+
+    @Override
+    public @Nullable ResourceValue getUnresolvedResource(@NotNull ResourceReference reference) {
+        ResourceResolver fullResolver = getFullResolver();
+        if (fullResolver == null) return null;
+        return fullResolver.getUnresolvedResource(reference);
     }
 
     /**

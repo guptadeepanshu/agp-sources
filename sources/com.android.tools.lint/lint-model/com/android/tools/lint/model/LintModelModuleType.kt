@@ -25,4 +25,5 @@ enum class LintModelModuleType {
   FEATURE,
   DYNAMIC_FEATURE,
   JAVA_LIBRARY,
+  PRIVACY_SANDBOX_SDK,
 }

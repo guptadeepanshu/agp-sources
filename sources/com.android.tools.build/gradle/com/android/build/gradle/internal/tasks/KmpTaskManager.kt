@@ -45,8 +45,8 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.factory.registerTask
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.tasks.BundleAar
-import com.android.build.gradle.tasks.ExtractDeepLinksTask
 import com.android.build.gradle.tasks.MergeResources
+import com.android.build.gradle.tasks.MergeSourceSetFolders
 import com.android.build.gradle.tasks.ProcessLibraryManifest
 import com.android.build.gradle.tasks.ZipMergingTask
 import com.android.builder.core.ComponentTypeImpl
@@ -125,10 +125,16 @@ class KmpTaskManager(
                     }
                 }
             )
-            taskFactory.register(ParseLibraryResourcesTask.CreateAction(variant))
+            registerParseLibraryResourcesTask(variant)
             taskFactory.register(GenerateLibraryRFileTask.CreationAction(variant))
-        }
 
+            // tasks to package assets in the library aar
+            variant
+                .taskContainer
+                .assetGenTask =
+                taskFactory.register(variant.computeTaskNameInternal("generate", "Assets"))
+            taskFactory.register(MergeSourceSetFolders.LibraryAssetCreationAction(variant))
+        }
 
         project.tasks.registerTask(
             BundleLibraryClassesJar.KotlinMultiplatformCreationAction(

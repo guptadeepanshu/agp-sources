@@ -275,6 +275,34 @@ private static final long serialVersionUID = 0L;
      * <code>FIX_ONE_DOMAIN_WEB_CHECKS_SAVE_JSON_BUTTON = 39;</code>
      */
     FIX_ONE_DOMAIN_WEB_CHECKS_SAVE_JSON_BUTTON(39),
+    /**
+     * <pre>
+     * Intention action.
+     * </pre>
+     *
+     * <code>LAUNCH_APP_LINKS_ASSISTANT = 40;</code>
+     */
+    LAUNCH_APP_LINKS_ASSISTANT(40),
+    /**
+     * <pre>
+     * Play Dynamic Filters
+     * </pre>
+     *
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION = 41;</code>
+     */
+    PLAY_DYNAMIC_FILTERS_INSPECTION(41),
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_IN_SETTINGS = 42;</code>
+     */
+    PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_IN_SETTINGS(42),
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_FILE = 43;</code>
+     */
+    PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_FILE(43),
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_TAG = 44;</code>
+     */
+    PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_TAG(44),
     ;
 
     /**
@@ -489,6 +517,34 @@ private static final long serialVersionUID = 0L;
      * <code>FIX_ONE_DOMAIN_WEB_CHECKS_SAVE_JSON_BUTTON = 39;</code>
      */
     public static final int FIX_ONE_DOMAIN_WEB_CHECKS_SAVE_JSON_BUTTON_VALUE = 39;
+    /**
+     * <pre>
+     * Intention action.
+     * </pre>
+     *
+     * <code>LAUNCH_APP_LINKS_ASSISTANT = 40;</code>
+     */
+    public static final int LAUNCH_APP_LINKS_ASSISTANT_VALUE = 40;
+    /**
+     * <pre>
+     * Play Dynamic Filters
+     * </pre>
+     *
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION = 41;</code>
+     */
+    public static final int PLAY_DYNAMIC_FILTERS_INSPECTION_VALUE = 41;
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_IN_SETTINGS = 42;</code>
+     */
+    public static final int PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_IN_SETTINGS_VALUE = 42;
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_FILE = 43;</code>
+     */
+    public static final int PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_FILE_VALUE = 43;
+    /**
+     * <code>PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_TAG = 44;</code>
+     */
+    public static final int PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_TAG_VALUE = 44;
 
 
     public final int getNumber() {
@@ -552,6 +608,11 @@ private static final long serialVersionUID = 0L;
         case 35: return VALIDATION;
         case 38: return FIX_ONE_DOMAIN_PAGE;
         case 39: return FIX_ONE_DOMAIN_WEB_CHECKS_SAVE_JSON_BUTTON;
+        case 40: return LAUNCH_APP_LINKS_ASSISTANT;
+        case 41: return PLAY_DYNAMIC_FILTERS_INSPECTION;
+        case 42: return PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_IN_SETTINGS;
+        case 43: return PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_FILE;
+        case 44: return PLAY_DYNAMIC_FILTERS_INSPECTION_DISABLE_FOR_TAG;
         default: return null;
       }
     }

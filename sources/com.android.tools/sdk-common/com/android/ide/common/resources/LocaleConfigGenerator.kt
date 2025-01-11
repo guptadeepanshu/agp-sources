@@ -124,9 +124,14 @@ fun validateLocale(locale: String): String? {
     return localeQualifier?.run { generateLocaleString(localeQualifier) }
 }
 
-fun writeLocaleConfig(output: File, locales: Set<String>) {
+fun writeLocaleConfig(output: File, locales: Set<String>, defaultLocale: String? = null) {
     val outLines = mutableListOf<String>()
-    outLines.add("<locale-config xmlns:android=\"http://schemas.android.com/apk/res/android\">")
+    if (!defaultLocale.isNullOrBlank()) {
+        outLines.add("<locale-config xmlns:android=\"http://schemas.android.com/apk/res/android\" " +
+            "android:defaultLocale=\"$defaultLocale\">")
+    } else {
+        outLines.add("<locale-config xmlns:android=\"http://schemas.android.com/apk/res/android\">")
+    }
     locales.forEach { localeString ->
         outLines.add("    <locale android:name=\"$localeString\"/>")
     }

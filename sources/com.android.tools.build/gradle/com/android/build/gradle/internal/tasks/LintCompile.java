@@ -21,6 +21,7 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.buildanalyzer.common.TaskCategory;
 import com.android.utils.FileUtils;
+
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.work.DisableCachingByDefault;
@@ -45,8 +46,11 @@ public abstract class LintCompile extends NonIncrementalGlobalTask {
 
     public static class CreationAction extends GlobalTaskCreationAction<LintCompile> {
 
+        private final GlobalTaskCreationConfig creationConfig;
+
         public CreationAction(@NonNull GlobalTaskCreationConfig creationConfig) {
-            super(creationConfig);
+            super();
+            this.creationConfig = creationConfig;
         }
 
         @NonNull

@@ -20,7 +20,6 @@ import com.android.build.api.dsl.AarMetadata
 import com.android.build.api.dsl.AbiSplit
 import com.android.build.api.dsl.AndroidTest
 import com.android.build.api.dsl.AnnotationProcessorOptions
-import com.android.build.api.dsl.ApplicationInstallation
 import com.android.build.api.dsl.ApplicationPublishing
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.BaselineProfile

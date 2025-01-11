@@ -44,6 +44,8 @@ import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.UsesLibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.getDependencyGraphBuilder
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_RES
@@ -399,6 +401,29 @@ abstract class ProjectInputs {
         compileTarget.setDisallowChanges(globalConfig.compileSdkHashString)
         // `neverShrinking` is about all variants, so look back to the DSL
         neverShrinking.setDisallowChanges(globalConfig.hasNoBuildTypeMinified)
+    }
+
+    internal fun initialize(variantScope: PrivacySandboxSdkVariantScope, lintMode: LintMode) {
+
+        initializeFromProject(variantScope.services.projectInfo, lintMode)
+        projectType.setDisallowChanges(LintModelModuleType.PRIVACY_SANDBOX_SDK)
+
+        // This is always true for PrivacySandboxSdk module because it does not have any source and
+        // we should report lint issues from dependencies.
+        variantScope.lintOptions.checkDependencies = true
+
+        lintOptions.initialize(variantScope.lintOptions, lintMode)
+        resourcePrefix.setDisallowChanges("")
+
+        dynamicFeatures.setDisallowChanges(setOf())
+
+        bootClasspath.fromDisallowChanges(variantScope.bootClasspath)
+        // TODO: Change java version to something reasonable
+        javaSourceLevel.setDisallowChanges(JavaVersion.VERSION_HIGHER)
+
+        compileTarget.setDisallowChanges(variantScope.compileSdkVersion)
+
+        neverShrinking.setDisallowChanges(true)
     }
 
     internal fun initializeForStandalone(
@@ -936,6 +961,61 @@ abstract class VariantInputs : UsesLibraryDependencyCacheBuildService {
             includeMainArtifact = true,
             isPerComponentLintAnalysis = false
         )
+    }
+
+    fun initialize(
+        task: Task,
+        variantScope: PrivacySandboxSdkVariantScope,
+        projectOptions: ProjectOptions,
+        useModuleDependencyLintModels: Boolean,
+        lintMode: LintMode,
+        fatalOnly: Boolean,
+    ) {
+        name.setDisallowChanges(variantScope.name)
+        this.useModuleDependencyLintModels.setDisallowChanges(useModuleDependencyLintModels)
+        mainArtifact.setDisallowChanges(
+            variantScope.services.newInstance(AndroidArtifactInput::class.java)
+                .initializeForPrivacySandboxSdk(
+                    task.project,
+                    variantScope,
+                    projectOptions,
+                    lintMode,
+                    useModuleDependencyLintModels,
+                    fatalOnly
+                ))
+        mainSourceProvider.set(
+            task.project.objects
+                .newInstance(SourceProviderInput::class.java)
+                .initializeForPrivacySandboxSdk()
+        )
+        testArtifact.disallowChanges()
+        hostTestSourceProvider.disallowChanges()
+        androidTestArtifact.disallowChanges()
+        testFixturesArtifact.disallowChanges()
+        namespace.setDisallowChanges("")
+        minSdkVersion.initialize(variantScope.minSdkVersion.apiLevel, variantScope.minSdkVersion.codename)
+        targetSdkVersion.initialize(variantScope.targetSdkVersion.apiLevel, variantScope.targetSdkVersion.codename)
+        manifestPlaceholders.disallowChanges()
+        resourceConfigurations.disallowChanges()
+        debuggable.setDisallowChanges(true)
+        shrinkable.setDisallowChanges(false)
+        useSupportLibraryVectorDrawables.setDisallowChanges(false)
+        mergedManifest.setDisallowChanges(variantScope.artifacts.get(
+            PrivacySandboxSdkInternalArtifactType.SANDBOX_MANIFEST
+        ))
+        manifestMergeReport.setDisallowChanges(null)
+        sourceProviders.add(mainSourceProvider)
+        sourceProviders.disallowChanges()
+        androidTestSourceProvider.disallowChanges()
+        testFixturesSourceProvider.disallowChanges()
+        buildFeatures.initializeForStandalone()
+        initializeLibraryDependencyCacheBuildService(task)
+        mavenCoordinatesCache.setDisallowChanges(getBuildService(task.project.gradle.sharedServices))
+        proguardFiles.add(variantScope.artifacts.get(PrivacySandboxSdkInternalArtifactType.GENERATED_PROGUARD_FILE))
+        proguardFiles.disallowChanges()
+        extractedProguardFiles.setDisallowChanges(null)
+        consumerProguardFiles.setDisallowChanges(null)
+        resValues.disallowChanges()
     }
 
     fun initialize(
@@ -1575,7 +1655,7 @@ abstract class SourceProviderInput {
         instrumentationTestOnly: Boolean = false,
         testFixtureOnly: Boolean = false
     ): SourceProviderInput {
-        this.manifestFilePath.fileProvider(sources.manifestFile)
+        this.manifestFilePath.set(sources.manifestFile)
         this.manifestFilePath.disallowChanges()
         this.manifestOverlayFilePaths.setDisallowChanges(sources.manifestOverlayFiles)
 
@@ -1687,6 +1767,22 @@ abstract class SourceProviderInput {
         this.assetsDirectoriesClasspath.disallowChanges()
         this.debugOnly.setDisallowChanges(false)
         this.unitTestOnly.setDisallowChanges(unitTestOnly)
+        this.instrumentationTestOnly.setDisallowChanges(false)
+        this.testFixtureOnly.setDisallowChanges(false)
+        return this
+    }
+
+    internal fun initializeForPrivacySandboxSdk(): SourceProviderInput {
+        this.manifestFilePath.disallowChanges()
+        this.manifestOverlayFilePaths.disallowChanges()
+        this.javaDirectories.disallowChanges()
+        this.resDirectories.disallowChanges()
+        this.assetsDirectories.disallowChanges()
+        this.javaDirectoriesClasspath.disallowChanges()
+        this.resDirectoriesClasspath.disallowChanges()
+        this.assetsDirectoriesClasspath.disallowChanges()
+        this.debugOnly.setDisallowChanges(false)
+        this.unitTestOnly.setDisallowChanges(false)
         this.instrumentationTestOnly.setDisallowChanges(false)
         this.testFixtureOnly.setDisallowChanges(false)
         return this
@@ -1960,6 +2056,58 @@ abstract class AndroidArtifactInput : ArtifactInput() {
                 variantDependencies = variantDependencies,
                 projectPath = project.path,
                 variantName = compilation.name,
+                runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
+            )
+        )
+        initializeProjectDependencyLintArtifacts(
+            useModuleDependencyLintModels,
+            variantDependencies,
+            lintMode,
+            isMainArtifact = true,
+            fatalOnly,
+            projectOptions[BooleanOption.LINT_ANALYSIS_PER_COMPONENT]
+        )
+        return this
+    }
+
+    fun initializeForPrivacySandboxSdk(
+        project: Project,
+        variantScope: PrivacySandboxSdkVariantScope,
+        projectOptions: ProjectOptions,
+        lintMode: LintMode,
+        useModuleDependencyLintModels: Boolean,
+        fatalOnly: Boolean
+    ): AndroidArtifactInput {
+        applicationId.setDisallowChanges("")
+        generatedSourceFolders.disallowChanges()
+        generatedResourceFolders.disallowChanges()
+        desugaredMethodsFiles.disallowChanges()
+        classesOutputDirectories.fromDisallowChanges(project.objects.fileCollection())
+        warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
+        ignoreUnexpectedArtifactTypes.setDisallowChanges(true)
+        val variantDependencies = VariantDependencies(
+            variantName = variantScope.name,
+            componentType = ComponentTypeImpl.PRIVACY_SANDBOX_SDK,
+            compileClasspath = project.configurations.getByName("includeApiClasspath"),
+            runtimeClasspath = project.configurations.getByName("includeRuntimeClasspath"),
+            sourceSetRuntimeConfigurations = listOf(),
+            sourceSetImplementationConfigurations = listOf(),
+            elements = mapOf(),
+            providedClasspath = null,
+            annotationProcessorConfiguration = null,
+            reverseMetadataValuesConfiguration = null,
+            wearAppConfiguration = null,
+            testedVariant = null,
+            project = project,
+            projectOptions = projectOptions,
+            isLibraryConstraintsApplied = false,
+            isSelfInstrumenting = false,
+        )
+        artifactCollectionsInputs.setDisallowChanges(
+            ArtifactCollectionsInputsImpl(
+                variantDependencies = variantDependencies,
+                projectPath = project.path,
+                variantName = variantScope.name,
                 runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
             )
         )
@@ -2610,6 +2758,10 @@ abstract class UastInputs  {
                 "compile".appendCapitalized(variant.name, "Kotlin")
             }
         initializeFromKotlinCompileTask(kotlinCompileTaskName, project)
+    }
+
+    fun initialize(variantScope: PrivacySandboxSdkVariantScope) {
+        this.useK2UastManualSetting.setDisallowChanges(variantScope.lintUseK2UastManualSetting)
     }
 
     fun initializeForStandalone(

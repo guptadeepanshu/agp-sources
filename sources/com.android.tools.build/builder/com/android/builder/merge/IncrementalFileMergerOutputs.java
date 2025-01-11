@@ -17,8 +17,10 @@
 package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -82,15 +84,15 @@ public final class IncrementalFileMergerOutputs {
                     @NonNull List<IncrementalFileMergerInput> inputs,
                     boolean compress) {
                 try (Closer closer = Closer.create()) {
-                    List<InputStream> inStreams =
-                            inputs.stream().map(i -> i.openPath(path)).collect(Collectors.toList());
+                    List<MergeInput> inStreams =
+                            inputs.stream()
+                                    .map(i -> new MergeInput(i.openPath(path), i.getName()))
+                                    .collect(Collectors.toList());
                     InputStream mergedStream =
                             algorithm.merge(path, ImmutableList.copyOf(inStreams), closer);
                     writer.create(path, mergedStream, compress);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
-                } catch (DuplicateRelativeFileException e) {
-                    throw new DuplicateRelativeFileException(inputs, e);
                 }
             }
 
@@ -101,8 +103,10 @@ public final class IncrementalFileMergerOutputs {
                     @NonNull List<IncrementalFileMergerInput> inputs,
                     boolean compress) {
                 try (Closer closer = Closer.create()) {
-                    List<InputStream> inStreams =
-                            inputs.stream().map(i -> i.openPath(path)).collect(Collectors.toList());
+                    List<MergeInput> inStreams =
+                            inputs.stream()
+                                    .map(i -> new MergeInput(i.openPath(path), i.getName()))
+                                    .collect(Collectors.toList());
                     InputStream mergedStream =
                             algorithm.merge(path, ImmutableList.copyOf(inStreams), closer);
                     writer.replace(path, mergedStream, compress);

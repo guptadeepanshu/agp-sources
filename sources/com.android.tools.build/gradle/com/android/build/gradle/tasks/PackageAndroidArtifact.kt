@@ -827,7 +827,7 @@ abstract class PackageAndroidArtifact : NewIncrementalTask() {
             fun getDexFolders(creationConfig: ApkCreationConfig): FileCollection {
                 val artifacts = creationConfig.artifacts
                 return if (creationConfig is ApplicationCreationConfig
-                        && creationConfig.consumesFeatureJars) {
+                        && creationConfig.consumesDynamicFeatures) {
                     creationConfig
                             .services
                             .fileCollection(

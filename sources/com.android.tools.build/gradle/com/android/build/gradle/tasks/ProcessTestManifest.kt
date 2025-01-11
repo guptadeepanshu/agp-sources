@@ -498,8 +498,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val project = task.project
-            task.testManifestFile
-                .fileProvider(creationConfig.sources.manifestFile)
+            task.testManifestFile.set(creationConfig.sources.manifestFile)
             task.testManifestFile.disallowChanges()
             task.manifestOverlayFilePaths.setDisallowChanges(creationConfig.sources.manifestOverlayFiles)
             task.componentType.setDisallowChanges(creationConfig.componentType.toString())

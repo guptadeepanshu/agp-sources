@@ -30,10 +30,15 @@ import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryImpl
 import com.android.build.gradle.options.BooleanOption
+import com.android.builder.errors.IssueReporter
 import com.android.builder.model.v2.ide.ProjectType
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.ModuleVersionIdentifier
+import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.transform.TransformSpec
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
 import org.gradle.api.attributes.Usage
@@ -41,6 +46,10 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 
 const val NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED = false
+
+object FusedLibraryConstants {
+    const val INCLUDE_CONFIGURATION_NAME = "include"
+}
 
 internal fun createTasks(
         project: Project,
@@ -140,15 +149,67 @@ fun configureElements(
     }
 }
 
+/**
+ * Intended to provide a list of Dependency from a list of ModuleVersionIdentifier.
+ *
+ * @param project The Gradle project used to create the dependencies.
+ * @return A provider of a List<Dependency>.
+ *
+ */
+internal fun Provider<Set<ModuleVersionIdentifier>>.toDependenciesProvider(
+    project: Project,
+): Provider<List<Dependency>> {
+    return map { moduleVersionIdentifierSet ->
+        moduleVersionIdentifierSet.map { id: ModuleVersionIdentifier ->
+            project.dependencies.create(id.toString())
+        }
+    }
+}
 
-internal fun Configuration.failForDatabindingDependencies() {
-    resolutionStrategy { resolutionStrategy ->
-            resolutionStrategy.eachDependency {
-                if (it.requested.group == "androidx.databinding"
-                    || it.requested.group == "com.android.databinding"
-                ) {
-                    error("Fused Library plugin does not allow dependencies with databinding.")
-                }
-            }
+/**
+ * For determining dependencies that are not included in the Fused Library AAR.
+ *
+ * As transitive dependencies are used for fused library publication and consumption, they must be
+ * added to these dependencies to each directly to each configuration that requires them.
+ *
+ * @param sourceConfiguration
+ *        configuration containing all dependencies (included in artifacts and dependencies).
+ *        Direct/first level dependencies will be assumed to be packaged in the aar artifact.
+ * @param issueReporter The issue reporter used to report any validation errors.
+ * @return A provider of a Set<ModuleVersionIdentifier>.
+ */
+internal fun getFusedLibraryDependencyModuleVersionIdentifiers(
+    sourceConfiguration: Configuration,
+    issueReporter: IssueReporter
+) : Provider<Set<ModuleVersionIdentifier>> {
+    return sourceConfiguration.incoming.resolutionResult.rootComponent.map { sourceRootComponent ->
+        val dependenciesIncludedInFusedAar: Set<ModuleVersionIdentifier> =
+            sourceRootComponent.dependencies
+                .map { (it as ResolvedDependencyResult).selected }
+                .mapNotNull(ResolvedComponentResult::getModuleVersion)
+                .toSet()
+
+        val moduleVersionVersionIds = sourceConfiguration.incoming.resolutionResult.allComponents
+            // ResolvedComponentResult's subclasses don't define `equals()` methods so we need to
+            // compare `ResolvedComponentResult`s through `ComponentIdentifier`s (which has `equals()`
+            // defined in their subclasses).
+            .asSequence()
+            .mapNotNull(ResolvedComponentResult::getModuleVersion)
+            .minus(dependenciesIncludedInFusedAar)
+            .minus(sourceRootComponent.moduleVersion)
+            .toSet() as Set<ModuleVersionIdentifier>
+
+        moduleVersionVersionIds.also {
+            it.forEach { it.validate(issueReporter) }
+        }
+    }
+}
+
+private fun ModuleVersionIdentifier.validate(issueReporter: IssueReporter) {
+    if (group in setOf("androidx.databinding", "com.android.databinding")) {
+        issueReporter.reportError(
+            IssueReporter.Type.GENERIC,
+                "Fused Library plugin does not allow dependencies with databinding."
+        )
     }
 }

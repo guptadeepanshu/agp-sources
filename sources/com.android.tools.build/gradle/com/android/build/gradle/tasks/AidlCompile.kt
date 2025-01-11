@@ -279,7 +279,7 @@ abstract class AidlCompile : NonIncrementalTask() {
         ) {
             for (dir in sourceFolders) {
                 workerExecutor.noIsolation().submit(AidlCompileRunnable::class.java) {
-                    it.initializeFromAndroidVariantTask(instantiator)
+                    it.initializeFromBaseTask(instantiator)
                     it.aidlExecutable.set(aidlExecutable)
                     it.frameworkLocation.set(frameworkLocation)
                     it.importFolders.from(fullImportList)

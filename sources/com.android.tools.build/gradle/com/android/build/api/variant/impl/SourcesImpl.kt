@@ -251,13 +251,9 @@ class SourcesImpl(
     override fun shaders(action: (LayeredSourceDirectoriesImpl) -> Unit) { shaders?.let(action) }
     override fun mlModels(action: (LayeredSourceDirectoriesImpl) -> Unit) { mlModels?.let(action) }
 
-    override val artProfile = variantServices.provider {
-        defaultSourceProvider.artProfile
-    }
+    override val artProfile = defaultSourceProvider.artProfile
 
-    override val manifestFile = variantServices.provider {
-        defaultSourceProvider.mainManifestFile
-    }
+    override val manifestFile = defaultSourceProvider.mainManifestFile
 
     override val manifestOverlayFiles: Provider<List<File>> = manifests.all.map {
         // `all` is ordered from most prioritized to less prioritizes (main manifest)

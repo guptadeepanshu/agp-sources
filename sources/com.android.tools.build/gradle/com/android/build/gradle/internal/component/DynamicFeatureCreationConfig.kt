@@ -27,4 +27,5 @@ interface DynamicFeatureCreationConfig: VariantCreationConfig, ApkCreationConfig
     val baseModuleDebuggable: Provider<Boolean>
     val baseModuleVersionCode: Property<Int>
     val baseModuleVersionName: Property<String>
+    val baseModuleLocaleFilters: Provider<List<String>>
 }

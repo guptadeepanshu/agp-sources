@@ -23,11 +23,13 @@ import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.Aapt2FromMaven
 import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.Workers
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.workers.WorkerExecutorFacade
@@ -55,7 +57,7 @@ import org.gradle.api.tasks.TaskProvider
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.MERGING])
-abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
+abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalGlobalTask() {
 
     @get:OutputDirectory
     abstract val mergedResources: DirectoryProperty
@@ -112,7 +114,7 @@ abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            AndroidVariantTaskCreationAction<PrivacySandboxSdkMergeResourcesTask>() {
+            GlobalTaskCreationAction<PrivacySandboxSdkMergeResourcesTask>() {
 
         override val name: String
             get() = "mergeAndCompileResources"
@@ -154,9 +156,8 @@ abstract class PrivacySandboxSdkMergeResourcesTask : NonIncrementalTask() {
             task.minSdk.setDisallowChanges(creationConfig.minSdkVersion.apiLevel)
             task.resourceSets.setFrom(
                     creationConfig.dependencies.getArtifactFileCollection(
-                            Usage.JAVA_RUNTIME,
-                            creationConfig.mergeSpec,
-                            AndroidArtifacts.ArtifactType.ANDROID_RES
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                        AndroidArtifacts.ArtifactType.ANDROID_RES
                     )
             )
         }

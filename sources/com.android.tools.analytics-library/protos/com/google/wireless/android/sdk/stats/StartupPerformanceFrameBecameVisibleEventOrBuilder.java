@@ -8,33 +8,59 @@ public interface StartupPerformanceFrameBecameVisibleEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * How long did it take to show the main IDE frame since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
   boolean hasDurationMs();
   /**
+   * <pre>
+   * How long did it take to show the main IDE frame since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
   int getDurationMs();
 
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 2;</code>
    * @return Whether the hasSettings field is set.
    */
   boolean hasHasSettings();
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 2;</code>
    * @return The hasSettings.
    */
   boolean getHasSettings();
 
   /**
+   * <pre>
+   * Type of the project opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
    * @return Whether the projectType field is set.
    */
   boolean hasProjectType();
   /**
+   * <pre>
+   * Type of the project opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
    * @return The projectType.
    */

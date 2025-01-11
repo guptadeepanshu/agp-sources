@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.aapt.WorkerExecutorResourceCompilationService
@@ -24,6 +25,7 @@ import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask.Companion.validLocale
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
@@ -32,6 +34,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.buildanalyzer.common.TaskCategory
@@ -46,6 +49,7 @@ import com.android.ide.common.resources.generateLocaleString
 import com.android.ide.common.resources.readSupportedLocales
 import com.android.ide.common.resources.writeLocaleConfig
 import com.android.utils.FileUtils
+import com.google.common.collect.ImmutableSet
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -103,6 +107,10 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
     @get:Input
     abstract val resConfigs: SetProperty<String>
 
+    @get:Optional
+    @get:Input
+    abstract val localeFilters: SetProperty<String>
+
     @get:Internal
     abstract val resApkDir: DirectoryProperty
 
@@ -111,6 +119,13 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
 
     @get:Internal
     abstract val compiledResOutput: DirectoryProperty
+
+    @get:Input
+    @get:Optional
+    abstract val compileSdk: Property<Int>
+
+    @get:Input
+    abstract val pseudoLocalesEnabled: Property<Boolean>
 
     // These properties are only used with res configs as well, but they cannot be optional because
     // they use `Nested` And `Inject`
@@ -126,16 +141,19 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
     public override fun doTaskAction() {
 
         workerExecutor.noIsolation().submit(GenerateLocaleWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.appLocales.set(appLocales)
             it.dependencyLocales.setFrom(dependencyLocales)
             it.localeConfig.set(localeConfig)
             it.resConfigs.set(resConfigs)
+            it.localeFilters.set(localeFilters)
             it.aapt2.set(aapt2)
             it.resApkDir.set(resApkDir)
             it.compiledResOutput.set(compiledResOutput)
             it.tempProjectDir.set(tempProjectDir)
             it.androidJarInput.set(androidJarInput)
+            it.compileSdk.set(compileSdk)
+            it.pseudoLocalesEnabled.set(pseudoLocalesEnabled)
         }
     }
 
@@ -146,11 +164,14 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
         abstract val dependencyLocales: ConfigurableFileCollection
         abstract val localeConfig: DirectoryProperty
         abstract val resConfigs: ListProperty<String>
+        abstract val localeFilters: ListProperty<String>
         abstract val aapt2: Property<Aapt2Input>
         abstract val resApkDir: DirectoryProperty
         abstract val compiledResOutput: DirectoryProperty
         abstract val tempProjectDir: DirectoryProperty
         abstract val androidJarInput: Property<AndroidJarInput>
+        abstract val compileSdk: Property<Int>
+        abstract val pseudoLocalesEnabled: Property<Boolean>
     }
 
     abstract class GenerateLocaleWorkAction: ProfileAwareWorkAction<GenerateLocaleWorkParameters>() {
@@ -180,9 +201,12 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
                 finalLocales.add(generateLocaleString(it))
             }
 
-            if (parameters.resConfigs.isPresent && parameters.resConfigs.get().isNotEmpty()) {
+            val localeResConfigs = parameters.localeFilters.get().ifEmpty {
+                parameters.resConfigs.get().filter { validLocale(it) }
+            }
+            if (localeResConfigs.isNotEmpty()) {
                 compileResFilesWithAapt2(folderLocales)
-                runAapt2Link()
+                runAapt2Link(localeResConfigs)
 
                 // Get the contents of the res apk and extract the locales
                 val parser = ApkInfoParser(
@@ -205,7 +229,13 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
                 File(localeConfigFolder, "xml${File.separator}$LOCALE_CONFIG_FILE_NAME.xml")
             localeConfigFile.parentFile.mkdirs()
 
-            writeLocaleConfig(output = localeConfigFile, finalLocales)
+            // Starting with API 35, add the default locale in the config
+            val compileSdk = parameters.compileSdk.orNull
+            if (compileSdk != null && compileSdk >= 35) {
+                writeLocaleConfig(output = localeConfigFile, finalLocales, appLocales.defaultLocale)
+            } else {
+                writeLocaleConfig(output = localeConfigFile, finalLocales)
+            }
         }
 
         // Create temp res files from the project and dependencies and compiles with AAPT2 to
@@ -262,7 +292,7 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
         }
 
         // Runs AAPT2 link with a temp manifest which generates the res APK within this task
-        private fun runAapt2Link() {
+        private fun runAapt2Link(localeResConfigs: List<String>) {
             val manifest = File(parameters.tempProjectDir.get().asFile, "AndroidManifest.xml")
             manifest.parentFile.mkdirs()
             manifest.createNewFile()
@@ -277,14 +307,16 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
             )
 
             val resApk = parameters.resApkDir.get().file("res.apk").asFile
+
             val aaptPackageConfig = AaptPackageConfig.Builder()
                 .setManifestFile(manifest)
                 .setOptions(AaptOptions())
                 .setComponentType(ComponentTypeImpl.BASE_APK)
                 .setAndroidJarPath(parameters.androidJarInput.get().getAndroidJar().get().absolutePath)
-                .setResourceConfigs(parameters.resConfigs.get().toImmutableSet())
+                .setResourceConfigs(localeResConfigs.toImmutableSet())
                 .setResourceOutputApk(resApk)
                 .addResourceDir(parameters.compiledResOutput.get().asFile)
+                .setPseudoLocalesEnabled(parameters.pseudoLocalesEnabled.get())
                 .build()
 
             val logger = Logging.getLogger(GenerateLocaleConfigTask::class.java)
@@ -336,19 +368,27 @@ abstract class GenerateLocaleConfigTask : NonIncrementalTask() {
             creationConfig.services.initializeAapt2Input(task.aapt2, task)
             task.androidJarInput.initialize(task, creationConfig)
 
-            val resConfigs = creationConfig.androidResourcesCreationConfig?.resourceConfigurations
-            if (!resConfigs.isNullOrEmpty()) {
-                val nonDensityResConfigs = AaptUtils.getNonDensityResConfigs(resConfigs).toSet()
-                if (nonDensityResConfigs.isNotEmpty()) {
-                    task.resConfigs.setDisallowChanges(nonDensityResConfigs)
-                    task.compiledResOutput.set(
-                        creationConfig.paths.getIncrementalDir("${task.name}_compiledResOutput"))
-                    task.resApkDir.set(
-                        creationConfig.paths.getIncrementalDir("${task.name}_resApkDir"))
-                    task.tempProjectDir.set(
-                        creationConfig.paths.getIncrementalDir("${task.name}_tempProject"))
-                }
+            task.compileSdk.setDisallowChanges(
+                parseTargetHash(creationConfig.global.compileSdkHashString).apiLevel
+            )
+
+            val applicationAndroidResources =
+                creationConfig.androidResources as ApplicationAndroidResources
+            task.localeFilters.setDisallowChanges(applicationAndroidResources.localeFilters)
+            val resConfigs = creationConfig.androidResourcesCreationConfig?.resourceConfigurations ?: ImmutableSet.of()
+            val filteredResConfigs = AaptUtils.getNonDensityResConfigs(resConfigs).toSet()
+            task.resConfigs.setDisallowChanges(filteredResConfigs)
+            task.compiledResOutput.set(
+                creationConfig.paths.getIncrementalDir("${task.name}_compiledResOutput"))
+            task.resApkDir.set(
+                creationConfig.paths.getIncrementalDir("${task.name}_resApkDir"))
+            task.tempProjectDir.set(
+                creationConfig.paths.getIncrementalDir("${task.name}_tempProject"))
+
+            creationConfig.androidResourcesCreationConfig?.let {
+                task.pseudoLocalesEnabled.set(it.pseudoLocalesEnabled)
             }
+            task.pseudoLocalesEnabled.disallowChanges()
         }
     }
 }

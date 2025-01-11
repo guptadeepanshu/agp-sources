@@ -74,7 +74,7 @@ abstract class DataBindingMergeDependencyArtifactsTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(MergeArtifactsRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.outFolder.set(outFolder)
             it.compileTimeDependencies.set(compileTimeDependencies.asFileTree.files)
             it.runtimeDependencies.set(runtimeDependencies.asFileTree.files)

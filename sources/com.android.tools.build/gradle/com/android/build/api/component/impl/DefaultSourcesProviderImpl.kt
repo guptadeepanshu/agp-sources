@@ -140,7 +140,9 @@ class DefaultSourcesProviderImpl(
         )
 
         // for the other, there's no duplicate so no issue.
-        if (buildConfigCreationConfig?.buildConfigType == BuildConfigType.JAVA_SOURCE) {
+        if (buildConfigCreationConfig?.buildConfigType == BuildConfigType.JAVA_SOURCE &&
+            this !is HostTestCreationConfig
+        ) {
             sourceSets.add(
                 TaskProviderBasedDirectoryEntryImpl(
                     "generated_build_config",

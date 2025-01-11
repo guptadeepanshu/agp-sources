@@ -18,8 +18,12 @@ package com.android.build.gradle.internal.publishing
 
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import org.gradle.api.Named
+import org.gradle.api.artifacts.component.ComponentIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.Category
+import org.gradle.api.specs.Spec
 
 fun AndroidArtifacts.ArtifactType.getAttributes(
     named: (Class<out Named>, String) -> Named
@@ -43,3 +47,15 @@ fun AndroidArtifacts.ArtifactType.getAttributes(
         )
     } ?: emptyMap())
 )
+
+fun AndroidArtifacts.ArtifactScope.getComponentFilter(): Spec<ComponentIdentifier> {
+    return when (this) {
+        AndroidArtifacts.ArtifactScope.ALL -> Spec { true }
+        AndroidArtifacts.ArtifactScope.EXTERNAL -> Spec { it !is ProjectComponentIdentifier }
+        AndroidArtifacts.ArtifactScope.PROJECT -> Spec { it is ProjectComponentIdentifier }
+        AndroidArtifacts.ArtifactScope.REPOSITORY_MODULE -> Spec { it is ModuleComponentIdentifier }
+        AndroidArtifacts.ArtifactScope.FILE -> Spec {
+            !(it is ProjectComponentIdentifier || it is ModuleComponentIdentifier)
+        }
+    }
+}

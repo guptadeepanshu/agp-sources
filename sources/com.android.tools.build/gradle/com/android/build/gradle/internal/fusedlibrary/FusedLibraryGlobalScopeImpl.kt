@@ -21,18 +21,15 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.FusedLibraryExtension
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.AarMetadataImpl
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import org.gradle.api.Project
-import org.gradle.api.artifacts.component.ComponentIdentifier
-import org.gradle.api.artifacts.component.ProjectComponentIdentifier
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
-import org.gradle.api.specs.Spec
 
-open class FusedLibraryGlobalScopeImpl(
+class FusedLibraryGlobalScopeImpl(
     project: Project,
     private val projectServices: ProjectServices,
     extensionProvider: () -> FusedLibraryExtension
@@ -41,16 +38,11 @@ open class FusedLibraryGlobalScopeImpl(
     override val aarMetadata: AarMetadataImpl
         get() = extension.aarMetadata as AarMetadataImpl
     override val artifacts= ArtifactsImpl(project, "single")
-    override val incomingConfigurations = FusedLibraryConfigurations()
-    override val outgoingConfigurations = FusedLibraryConfigurations()
-    override val dependencies = FusedLibraryDependencies(incomingConfigurations)
+    override val dependencies = FusedLibraryDependencies()
+    override val incomingConfigurations = dependencies.configurations
 
     override val extension: FusedLibraryExtension by lazy {
         extensionProvider.invoke()
-    }
-
-    override val mergeSpec = Spec { componentIdentifier: ComponentIdentifier ->
-        componentIdentifier is ProjectComponentIdentifier
     }
 
     override val projectLayout: ProjectLayout = project.layout
@@ -59,7 +51,8 @@ open class FusedLibraryGlobalScopeImpl(
 
     override fun getLocalJars(): FileCollection {
         return VariantDependencies.computeLocalFileDependencies(
-            incomingConfigurations.getConfiguration(Usage.JAVA_RUNTIME),
+            incomingConfigurations.getByConfigType(
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH),
             services::fileCollection,
             { file -> file.extension == EXT_JAR }
         )

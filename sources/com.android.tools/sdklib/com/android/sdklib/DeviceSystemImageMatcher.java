@@ -28,10 +28,21 @@ public final class DeviceSystemImageMatcher {
     public static boolean matches(@NonNull Device device, @NonNull ISystemImage image) {
         Collection<IdDisplay> tags = image.getTags();
 
-        if (!Device.isTablet(device)) {
-            if (tags.contains(SystemImageTags.TABLET_TAG)) {
-                return false;
-            }
+        if (image.hasPlayStore() && !device.hasPlayStore()) {
+            return false;
+        }
+
+        int apiLevel = image.getAndroidVersion().getApiLevel();
+        if (device.getAllSoftware().stream()
+                .noneMatch(
+                        software ->
+                                software.getMinSdkLevel() <= apiLevel
+                                        && apiLevel <= software.getMaxSdkLevel())) {
+            return false;
+        }
+
+        if (!Device.isTablet(device) && SystemImageTags.isTabletImage(tags)) {
+            return false;
         }
 
         Object id = device.getTagId();

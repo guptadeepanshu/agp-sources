@@ -380,59 +380,44 @@ public class DeviceSchema {
      * @return 1+ for a valid schema version
      *         or 0 if no schema could be found.
      */
-    public static int getXmlSchemaVersion(InputStream xml) {
-        if (xml == null) {
-            return 0;
+    public static int getXmlSchemaVersion(InputStream xml)
+            throws ParserConfigurationException, IOException, SAXException {
+        xml.reset();
+
+        if (!(xml instanceof NonClosingInputStream)) {
+            xml = new NonClosingInputStream(xml);
+            ((NonClosingInputStream) xml).setCloseBehavior(CloseBehavior.RESET);
         }
 
-        // Get an XML document
-        Document doc = null;
-        try {
-            assert xml.markSupported();
-            xml.reset();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringComments(false);
+        factory.setValidating(false);
 
-            if (!(xml instanceof NonClosingInputStream)) {
-                xml = new NonClosingInputStream(xml);
-                ((NonClosingInputStream) xml).setCloseBehavior(CloseBehavior.RESET);
+        // Parse the document using a non namespace aware builder
+        factory.setNamespaceAware(false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        // We don't want the default handler which prints errors to stderr.
+        builder.setErrorHandler(new ErrorHandler() {
+            @Override
+            public void warning(SAXParseException e) throws SAXException {
+                // pass
             }
+            @Override
+            public void fatalError(SAXParseException e) throws SAXException {
+                throw e;
+            }
+            @Override
+            public void error(SAXParseException e) throws SAXException {
+                throw e;
+            }
+        });
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setIgnoringComments(false);
-            factory.setValidating(false);
+        Document doc = builder.parse(xml);
 
-            // Parse the document using a non namespace aware builder
-            factory.setNamespaceAware(false);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-
-            // We don't want the default handler which prints errors to stderr.
-            builder.setErrorHandler(new ErrorHandler() {
-                @Override
-                public void warning(SAXParseException e) throws SAXException {
-                    // pass
-                }
-                @Override
-                public void fatalError(SAXParseException e) throws SAXException {
-                    throw e;
-                }
-                @Override
-                public void error(SAXParseException e) throws SAXException {
-                    throw e;
-                }
-            });
-
-            doc = builder.parse(xml);
-
-            // Prepare a new document using a namespace aware builder
-            factory.setNamespaceAware(true);
-            builder = factory.newDocumentBuilder();
-
-        } catch (Exception e) {
-            // Failed to reset XML stream
-            // Failed to get builder factor
-            // Failed to create XML document builder
-            // Failed to parse XML document
-            // Failed to read XML document
-        }
+        // Prepare a new document using a namespace aware builder
+        factory.setNamespaceAware(true);
+        builder = factory.newDocumentBuilder();
 
         if (doc == null) {
             return 0;

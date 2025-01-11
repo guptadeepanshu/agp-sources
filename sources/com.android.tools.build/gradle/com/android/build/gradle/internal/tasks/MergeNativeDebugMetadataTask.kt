@@ -72,7 +72,7 @@ abstract class MergeNativeDebugMetadataTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             MergeNativeDebugMetadataWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputFiles.from(inputFiles)
             it.outputFile.set(outputFile)
         }

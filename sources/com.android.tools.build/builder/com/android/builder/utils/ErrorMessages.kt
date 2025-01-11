@@ -16,12 +16,7 @@
 
 package com.android.builder.utils
 
-import com.android.Version
-
-/** The version used on developer.android.com */
-val agpReferenceDocsVersion = Version.ANDROID_GRADLE_PLUGIN_VERSION.substringBeforeLast('.')
-
-private val agpReferenceDocsSitePrefix = "https://developer.android.com/reference/tools/gradle-api/$agpReferenceDocsVersion/"
+private const val agpReferenceDocsSitePrefix = "https://developer.android.com/reference/tools/gradle-api/"
 
 fun agpReferenceDocsUrl(path: String): String {
     return agpReferenceDocsSitePrefix + path

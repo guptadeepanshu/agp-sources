@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.utils.isValidZipEntryName
@@ -33,9 +34,9 @@ import com.google.common.base.Joiner
 import com.google.common.base.Preconditions
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.InputFiles
@@ -71,8 +72,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
 
     @get:Classpath
     @get:Optional
-    abstract var localJarsNativeLibs: FileCollection?
-        protected set
+    abstract val localJarsNativeLibs: ConfigurableFileCollection
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
@@ -80,7 +80,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
     override fun doTaskAction() {
         LibraryJniLibsDelegate(
             projectNativeLibs.get().asFile,
-            localJarsNativeLibs?.files ?: listOf(),
+            localJarsNativeLibs.files,
             outputDirectory.get().asFile,
             workerExecutor,
             this
@@ -99,7 +99,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             val inputFiles = listOf(projectNativeLibs) + localJarsNativeLibs.toList()
             for (inputFile in inputFiles) {
                 workers.noIsolation().submit(LibraryJniLibsRunnable::class.java) {
-                    it.initializeFromAndroidVariantTask(instantiator)
+                    it.initializeFromBaseTask(instantiator)
                     it.inputFile.set(inputFile)
                     it.outputDirectory.set(outputDirectory)
 
@@ -166,7 +166,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             task.projectNativeLibs.setDisallowChanges(
                 creationConfig.artifacts.get(MERGED_NATIVE_LIBS)
             )
-            task.localJarsNativeLibs = null
+            task.localJarsNativeLibs.disallowChanges()
         }
     }
 
@@ -183,7 +183,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             task.projectNativeLibs.setDisallowChanges(
                 creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS)
             )
-            task.localJarsNativeLibs = creationConfig.computeLocalPackagedJars()
+            task.localJarsNativeLibs.fromDisallowChanges(creationConfig.computeLocalPackagedJars())
         }
     }
 }
@@ -205,7 +205,7 @@ private fun copyFromFolder(from: File, outputDirectory: File, pathSegments: Muta
                 copyFromFolder(child, outputDirectory, pathSegments)
             } else if (child.isFile) {
                 if (pattern.matcher(Joiner.on('/').join(pathSegments)).matches()) {
-                    // copy the file. However we do want to skip the first segment ('lib') here
+                    // copy the file. However, we do want to skip the first segment ('lib') here
                     // since the 'jni' folder is representing the same concept.
                     val to = FileUtils.join(outputDirectory, pathSegments.subList(1, 3))
                     FileUtils.mkdirs(to.parentFile)

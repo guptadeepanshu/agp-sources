@@ -97,7 +97,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ProcessLibWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.variantName.set(variantName)
             it.aaptFriendlyManifestOutputFile.set(aaptFriendlyManifestOutputFile)
             it.namespaced.set(isNamespaced)
@@ -293,7 +293,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             creationConfig.manifestPlaceholdersCreationConfig?.placeholders?.let {
                 task.manifestPlaceholders.setDisallowChanges(it)
             }
-            task.mainManifest.fileProvider(creationConfig.sources.manifestFile)
+            task.mainManifest.set(creationConfig.sources.manifestFile)
             task.mainManifest.disallowChanges()
             task.manifestOverlayFilePaths.setDisallowChanges(creationConfig.sources.manifestOverlayFiles)
             task.namespace.setDisallowChanges(creationConfig.namespace)

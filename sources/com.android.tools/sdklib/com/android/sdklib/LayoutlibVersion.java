@@ -22,6 +22,7 @@ import com.android.annotations.NonNull;
  *
  * @deprecated Only the api level is relevant, and so should be represented by a single int.
  */
+@Deprecated
 public class LayoutlibVersion implements Comparable<LayoutlibVersion> {
 
     private final int mApi;

@@ -131,7 +131,7 @@ abstract class AbstractTestDataImpl(
         override fun findApks(deviceConfigProvider: DeviceConfigProvider): List<File> {
             testedApkBuiltArtifacts ?: return emptyList()
             val apks = mutableListOf<File>()
-            apks += computeBestOutput(deviceConfigProvider, testedApkBuiltArtifacts, supportedAbis)
+            apks += computeBestOutput(deviceConfigProvider.abis, testedApkBuiltArtifacts, supportedAbis)
             // Add additional splits
             if (deviceConfigProvider.supportsPrivacySandbox) {
                 additionalSdkSupportApkSplitsBuiltArtifacts?.let {

@@ -54,7 +54,7 @@ abstract class GlobalSyntheticsMergeTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(DexMergingTaskDelegate::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.initialize(
                 sharedParams = sharedParams,
                 numberOfBuckets = 1,

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal
 
+import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -34,7 +35,9 @@ interface UsesSdkComponentsBuildService {
         getBuildService<SdkComponentsBuildService, SdkComponentsBuildService.Parameters>(task.project.gradle.sharedServices).let {
             sdkComponentsBuildService.setDisallowChanges(it)
             task.usesService(it)
-            // SdkComponentsBuildService uses AndroidLocationsBuildService, so we also need to set the following
+            // SdkComponentsBuildService uses GlobalSyncIssueService and
+            // AndroidLocationsBuildService, so we also need to set the following
+            task.usesService(getBuildService<SyncIssueReporterImpl.GlobalSyncIssueService, SyncIssueReporterImpl.GlobalSyncIssueService.Parameters>(task.project.gradle.sharedServices))
             task.usesService(getBuildService<AndroidLocationsBuildService, BuildServiceParameters.None>(task.project.gradle.sharedServices))
         }
     }

@@ -109,7 +109,7 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             L8DexWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.desugarLibJar.from(desugarLibJar)
             it.desugarLibDex.set(desugarLibDex)
             it.libConfiguration.set(libConfiguration)
@@ -174,7 +174,7 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
                     task.keepRulesConfigurations.set(listOf("-dontobfuscate", "-dontoptimize"))
                 }
 
-                if (creationConfig is ApplicationCreationConfig && creationConfig.consumesFeatureJars) {
+                if (creationConfig is ApplicationCreationConfig && creationConfig.consumesDynamicFeatures) {
                     task.dexFiles.from(creationConfig.artifacts.get(InternalArtifactType.BASE_DEX))
                 } else {
                     task.dexFiles.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))

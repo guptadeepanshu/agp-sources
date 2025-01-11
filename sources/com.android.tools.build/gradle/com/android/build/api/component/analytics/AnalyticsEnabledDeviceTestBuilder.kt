@@ -58,10 +58,18 @@ open class AnalyticsEnabledDeviceTestBuilder(
 
 
     override var enableCodeCoverage: Boolean
-        get() =  throw PropertyAccessNotAllowedException("enableCodeCoverage", "AndroidTestBuilder")
+        get() =  throw PropertyAccessNotAllowedException("enableCodeCoverage", "DeviceTestBuilder")
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.DEVICE_TEST_ENABLE_CODE_COVERAGE_VALUE
             delegate.enableCodeCoverage = value
+        }
+
+    override var debuggable: Boolean
+        get() = throw PropertyAccessNotAllowedException("debuggable", "DeviceTestBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.DEVICE_TEST_DEBUGGABLE_VALUE
+            delegate.debuggable = value
         }
 }

@@ -27,11 +27,12 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.res.Aapt2FromMaven.Companion.create
 import com.android.build.gradle.internal.res.namespaced.Aapt2LinkRunnable
 import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getLeasingAapt2
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.ComponentTypeImpl
@@ -61,7 +62,7 @@ import java.io.File
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.LINKING])
-abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() {
+abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalGlobalTask() {
 
     @get:Input
     abstract val minSdk: Property<Int>
@@ -89,7 +90,7 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
     override fun doTaskAction() {
         workerExecutor.noIsolation()
                 .submit(PrivacySandboxSdkLinkAndroidResourcesWorkerAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.aapt2.setDisallowChanges(aapt2)
             it.androidJar.set(androidJarInput.getAndroidJar().get())
             it.manifestFile.setDisallowChanges(manifestFile)
@@ -148,7 +149,7 @@ abstract class PrivacySandboxSdkLinkAndroidResourcesTask : NonIncrementalTask() 
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            AndroidVariantTaskCreationAction<PrivacySandboxSdkLinkAndroidResourcesTask>() {
+            GlobalTaskCreationAction<PrivacySandboxSdkLinkAndroidResourcesTask>() {
 
         override val name: String
             get() = "linkPrivacySandboxResources"

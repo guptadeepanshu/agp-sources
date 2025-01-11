@@ -329,7 +329,7 @@ abstract class SymbolTable protected constructor() {
     }
 
     companion object {
-        val EMPTY: SymbolTable = builder().build()
+        val EMPTY: SymbolTable by lazy(LazyThreadSafetyMode.NONE) { builder().build() }
 
         /**
          * Merges each [SymbolTable] in [tables] into a single [SymbolTable].

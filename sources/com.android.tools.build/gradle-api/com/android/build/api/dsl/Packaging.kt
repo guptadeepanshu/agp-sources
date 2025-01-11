@@ -25,6 +25,8 @@ package com.android.build.api.dsl
  *     }
  * }
  * ```
+ *
+ * This interface provide controls over what file gets packaged in case of conflicts.
  */
 interface Packaging {
     /** The set of excluded paths.*/

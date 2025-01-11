@@ -181,13 +181,18 @@ interface BaseFlavor : VariantDimension {
      * To learn more, see
      * [Remove unused alternative resources](https://d.android.com/studio/build/shrink-code.html#unused-alt-resources).
      */
+    @Deprecated("Support for resource configurations will be removed. For language " +
+        "resource configurations in applications, use androidResources.localeFilters.")
     val resourceConfigurations: MutableSet<String>
 
-    @Deprecated("Replaced by resourceConfigurations field")
+    @Deprecated("Support for resource configurations will be removed. For language " +
+        "resource configurations in applications, use androidResources.localeFilters.")
     fun resConfigs(config: Collection<String>)
-    @Deprecated("Replaced by resourceConfigurations field")
+    @Deprecated("Support for resource configurations will be removed. For language " +
+        "resource configurations in applications, use androidResources.localeFilters.")
     fun resConfig(config: String)
-    @Deprecated("Replaced by resourceConfigurations field")
+    @Deprecated("Support for resource configurations will be removed. For language " +
+        "resource configurations in applications, use androidResources.localeFilters.")
     fun resConfigs(vararg config: String)
 
     /** Options to configure the build-time support for `vector` drawables. */

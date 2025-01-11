@@ -504,6 +504,25 @@ public interface RunEventOrBuilder extends
 
   /**
    * <pre>
+   * Whether the user configured Run to take advantage of assume-verified.
+   * </pre>
+   *
+   * <code>optional bool use_assume_verified = 28;</code>
+   * @return Whether the useAssumeVerified field is set.
+   */
+  boolean hasUseAssumeVerified();
+  /**
+   * <pre>
+   * Whether the user configured Run to take advantage of assume-verified.
+   * </pre>
+   *
+   * <code>optional bool use_assume_verified = 28;</code>
+   * @return The useAssumeVerified.
+   */
+  boolean getUseAssumeVerified();
+
+  /**
+   * <pre>
    * Type of AppComponent user wants to run
    * </pre>
    *

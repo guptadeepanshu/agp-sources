@@ -31,6 +31,6 @@ open class AnalyticsEnabledApplicationAndroidResourcesBuilder(
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.GENERATE_LOCALE_CONFIG_BUILDER_VALUE
-            delegate.generateLocaleConfig= value
+            delegate.generateLocaleConfig = value
         }
 }

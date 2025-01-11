@@ -19,6 +19,7 @@ package com.android.build.gradle.internal
 import com.android.build.gradle.internal.testing.getEmulatorMetadata
 import com.android.build.gradle.internal.testing.AdbHelper
 import com.android.build.gradle.internal.testing.EmulatorVersionMetadata
+import com.android.build.gradle.internal.testing.QemuExecutor
 import com.android.sdklib.internal.avd.AvdManager
 import com.android.testing.utils.createSetupDeviceId
 import com.android.utils.FileUtils
@@ -36,7 +37,6 @@ import java.io.IOException
 
 private const val EMULATOR_EXECUTABLE = "emulator"
 private const val DEFAULT_DEVICE_BOOT_AND_SNAPSHOT_CHECK_TIMEOUT_SEC = 600L
-private const val SNAPSHOTS_DIR = AvdManager.SNAPSHOTS_DIRECTORY
 private const val TARGET_SNAPSHOT_NAME = "default_boot"
 
 // This is an extra wait time after the AVD boot completed before taking system snapshot image
@@ -53,6 +53,7 @@ class AvdSnapshotHandler(
     private val deviceBootAndSnapshotCheckTimeoutSec: Long?,
     private val adbHelper: AdbHelper,
     private val emulatorDir: Provider<Directory>,
+    private val qemuExecutor: QemuExecutor,
     private val extraWaitAfterBootCompleteMs: Long = WAIT_AFTER_BOOT_MS,
     private val executor: Executor = Executors.newSingleThreadExecutor(),
     private val metadataFactory: (File) -> EmulatorVersionMetadata = ::getEmulatorMetadata,
@@ -281,17 +282,14 @@ class AvdSnapshotHandler(
     ) {
         val avdDir = avdManager.getAvd(deviceName, /* validAvdOnly = */false)
             ?.dataFolderPath?.toFile() ?: return
-        val gmdSnapshot = FileUtils.join(avdDir, SNAPSHOTS_DIR, TARGET_SNAPSHOT_NAME)
-        if (gmdSnapshot.exists() && gmdSnapshot.isDirectory) {
-            try {
-                logger.warning("Deleting unbootable snapshot for device: $deviceName")
-                FileUtils.deleteRecursivelyIfExists(gmdSnapshot)
-            } catch (ioException: IOException) {
-                logger.error(
-                    ioException,
-                    "Could not delete snapshot at location: ${gmdSnapshot.absolutePath}."
-                )
-            }
+        try {
+            logger.warning("Deleting unbootable snapshot for device: $deviceName")
+            qemuExecutor.deleteSnapshot(deviceName, avdDir, TARGET_SNAPSHOT_NAME, logger)
+        } catch (ioException: IOException) {
+            logger.error(
+                ioException,
+                "Could not delete snapshot $TARGET_SNAPSHOT_NAME for device $deviceName."
+            )
         }
     }
 

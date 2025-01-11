@@ -16,7 +16,7 @@
 
 package com.android.build.api.extension.impl
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import org.gradle.api.Action
 import java.util.concurrent.atomic.AtomicBoolean
@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  * variant API related operations in KMP Android plugin
  */
 class MultiplatformVariantApiOperationsRegistrar(
-    extension: KotlinMultiplatformAndroidExtension,
-) : DslLifecycleComponentsOperationsRegistrar<KotlinMultiplatformAndroidExtension>(extension) {
+    extension: KotlinMultiplatformAndroidLibraryExtension,
+) : DslLifecycleComponentsOperationsRegistrar<KotlinMultiplatformAndroidLibraryExtension>(extension) {
 
     internal val variantOperations = KotlinMultiplatformOperationsRegistrar()
 }

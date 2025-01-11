@@ -52,9 +52,7 @@ class UnitTestTaskManager(
 
         if (includeAndroidResources) {
             setupAndroidRequiredTasks(testedVariant, hostTestCreationConfig)
-
             setupCompilationTaskDependencies(hostTestCreationConfig, taskContainer)
-
         } else {
             if (testedVariant.componentType.isAar && testedVariant.buildFeatures.androidResources) {
                 // With compile classpath R classes, we need to generate a dummy R class for unit
@@ -68,8 +66,13 @@ class UnitTestTaskManager(
             }
         }
 
-        setupAssembleAndJavaCompilationTasks(
-            hostTestCreationConfig, taskContainer, testedVariant, ASSEMBLE_UNIT_TEST)
+        setupAssembleTasks(hostTestCreationConfig, taskContainer, ASSEMBLE_UNIT_TEST)
+
+        setupJavaCompilationTasks(hostTestCreationConfig, taskContainer, testedVariant)
+
+        maybeCreateTransformClassesWithAsmTask(hostTestCreationConfig)
+
+        setupLintTasks(hostTestCreationConfig)
 
         // TODO: use merged java res for unit tests (bug 118690729)
         super.createRunHostTestTask(

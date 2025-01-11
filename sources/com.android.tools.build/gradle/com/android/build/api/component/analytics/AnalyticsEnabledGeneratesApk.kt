@@ -109,4 +109,11 @@ open class AnalyticsEnabledGeneratesApk(
                 VariantPropertiesMethodType.DEXING_VALUE
             return delegate.dexing
         }
+
+    override val minSdk: AndroidVersion
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.MIN_SDK_VALUE
+            return delegate.minSdk
+        }
 }

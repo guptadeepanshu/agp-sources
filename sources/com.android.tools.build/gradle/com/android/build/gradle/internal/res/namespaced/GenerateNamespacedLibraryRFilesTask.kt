@@ -81,7 +81,7 @@ abstract class GenerateNamespacedLibraryRFilesTask @Inject constructor(objects: 
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(TaskAction::class.java) { parameters ->
-            parameters.initializeFromAndroidVariantTask(this)
+            parameters.initializeFromBaseTask(this)
             parameters.partialRFiles.set(partialRFiles)
             parameters.namespace.set(namespace)
             parameters.rJarFile.set(rJarFile)

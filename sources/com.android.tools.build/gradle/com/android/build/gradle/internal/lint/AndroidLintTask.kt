@@ -30,6 +30,9 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.lint.AndroidLintTask.SingleVariantCreationAction.Companion.registerLintReportArtifacts
+import com.android.build.gradle.internal.lint.AndroidLintTask.VariantCreationAction.Companion.registerLintIntermediateArtifacts
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
@@ -48,6 +51,7 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getLintParallelBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -489,14 +493,58 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             }
         }
     }
+    /** Creates the lint Report Task for Privacy Sandbox Sdk. */
+    class PrivacySandboxSdkReportingCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope)
+        : PrivacySandboxSdkLintTaskCreationAction(variantScope) {
 
-    /** Creates the lintFix task. . */
+        override val name: String = "lintReport"
+        override val fatalOnly: Boolean get() = false
+        override val autoFix: Boolean get() = false
+        override val lintMode: LintMode get() = LintMode.REPORTING
+        override val description: String get() = "Run lint on the Privacy Sandbox Sdk"
+
+        override fun handleProvider(taskProvider: TaskProvider<AndroidLintTask>) {
+            registerLintIntermediateArtifacts(
+                taskProvider,
+                variantScope.artifacts,
+                false,
+                variantScope.name
+            )
+            registerLintReportArtifacts(
+                taskProvider = taskProvider,
+                artifacts = variantScope.artifacts,
+                variantName = variantScope.name,
+                reportsDirectory = variantScope.services.projectInfo.getReportsDir()
+            )
+        }
+
+        override fun configureOutputSettings(task: AndroidLintTask) {
+            task.configureOutputSettings(variantScope.lintOptions)
+        }
+    }
+    /** Creates the lintFix task. */
     class FixSingleVariantCreationAction(variant: VariantWithTests) : VariantCreationAction(variant) {
         override val name: String = creationConfig.computeTaskNameInternal("lintFix")
         override val fatalOnly: Boolean get() = false
         override val autoFix: Boolean get() = true
         override val lintMode: LintMode get() = LintMode.REPORTING
         override val description: String get() = "Fix lint on the ${creationConfig.name} variant"
+
+        override fun configureOutputSettings(task: AndroidLintTask) {
+            task.textReportToStdOut.setDisallowChanges(true)
+        }
+    }
+
+    /** Creates the lintFix task for Privacy Sandbox SDK . */
+    class PrivacySandboxSdkFixCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope)
+        : PrivacySandboxSdkLintTaskCreationAction(variantScope) {
+        override val name: String = "lintFix"
+        override val fatalOnly: Boolean get() = false
+        override val autoFix: Boolean get() = true
+        override val lintMode: LintMode get() = LintMode.REPORTING
+        override val description: String get() = "Fix lint on the Privacy Sandbox Sdk Module"
 
         override fun configureOutputSettings(task: AndroidLintTask) {
             task.textReportToStdOut.setDisallowChanges(true)
@@ -531,6 +579,30 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         }
     }
 
+    /** CreationAction for the lintVital task for Privacy Sandbox Sdk. */
+    class PrivacySandboxLintVitalCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope) :
+        PrivacySandboxSdkLintTaskCreationAction(variantScope) {
+        override val name: String = "lintVitalReport"
+        override val fatalOnly: Boolean get() = true
+        override val autoFix: Boolean get() = false
+        override val lintMode: LintMode get() = LintMode.REPORTING
+        override val description: String get() = "Run lint with only the fatal issues enabled on the Privacy Sandbox Sdk Module"
+
+        override fun handleProvider(taskProvider: TaskProvider<AndroidLintTask>) {
+            registerLintIntermediateArtifacts(
+                taskProvider,
+                variantScope.artifacts,
+                fatalOnly = true,
+                variantName = variantScope.name
+            )
+        }
+
+        override fun configureOutputSettings(task: AndroidLintTask) {
+            // do nothing
+        }
+    }
+
     /** Creates the updateLintBaseline task. */
     class UpdateBaselineCreationAction(variant: VariantWithTests) : VariantCreationAction(variant) {
         override val name: String = creationConfig.computeTaskNameInternal("updateLintBaseline")
@@ -543,6 +615,139 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         override fun configureOutputSettings(task: AndroidLintTask) {
             // do nothing
         }
+    }
+
+    class PrivacySandboxSdkUpdateBaselineCreationAction(
+        variantScope: PrivacySandboxSdkVariantScope,
+    ) : PrivacySandboxSdkLintTaskCreationAction(variantScope) {
+        override val name: String = "updateLintBaseline"
+        override val fatalOnly: Boolean get() = false
+        override val autoFix: Boolean get() = false
+        override val lintMode: LintMode get() = LintMode.UPDATE_BASELINE
+        override val description: String
+            get() = "Update the lint baseline using the Privacy Sandbox Sdk"
+
+        override fun configureOutputSettings(task: AndroidLintTask) {
+            // do nothing
+        }
+    }
+
+    abstract class PrivacySandboxSdkLintTaskCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope)
+        : PrivacySandboxSdkVariantTaskCreationAction<AndroidLintTask>() {
+        final override val type: Class<AndroidLintTask> get() = AndroidLintTask::class.java
+
+        abstract val fatalOnly: Boolean
+        abstract val autoFix: Boolean
+        abstract val description: String
+        abstract val lintMode: LintMode
+        final override fun configure(task: AndroidLintTask) {
+            super.configure(task)
+            task.description = description
+
+            task.initializeGlobalInputs(
+                variantScope.services,
+                isAndroid = true,
+                lintMode
+            )
+            variantScope.customLintConfiguration?.let {
+                task.lintRuleJars.from(getLocalCustomLintChecks(it))
+            }
+            task.lintRuleJars.addRuntimeAndCompileArtifacts(
+                variantScope,
+                ArtifactType.LINT
+            )
+            task.lintRuleJars.disallowChanges()
+            task.fatalOnly.setDisallowChanges(fatalOnly)
+            task.autoFix.setDisallowChanges(autoFix)
+            task.lintMode.setDisallowChanges(lintMode)
+            if (autoFix) {
+                task.lintFixBuildService.set(getBuildService(variantScope.services.buildServiceRegistry))
+            }
+            task.lintFixBuildService.disallowChanges()
+            task.checkOnly.setDisallowChanges(variantScope.services.provider {
+                variantScope.lintOptions.checkOnly
+            })
+            task.projectInputs.initialize(variantScope, lintMode)
+            task.outputs.upToDateWhen {
+                // Workaround for b/193244776
+                // Ensure the task runs if inputBaselineFile is set and the file doesn't exist,
+                // unless missingBaselineIsEmptyBaseline is true.
+                task.projectInputs.lintOptions.baseline.orNull?.asFile?.exists() ?: true
+                        || task.missingBaselineIsEmptyBaseline.get()
+            }
+            task.partialResults.from(
+                if (fatalOnly) {
+                    variantScope.artifacts.get(InternalArtifactType.LINT_VITAL_PARTIAL_RESULTS)
+                } else {
+                    variantScope.artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS)
+                }
+            )
+            task.partialResults.disallowChanges()
+            task.lintModels.fromDisallowChanges(
+                if (fatalOnly) {
+                    variantScope.artifacts.getAll(LINT_VITAL_REPORT_LINT_MODEL)
+                } else {
+                    variantScope.artifacts.getAll(LINT_REPORT_LINT_MODEL)
+                }
+            )
+            val lintModelArtifactType =
+                if (fatalOnly) {
+                    ArtifactType.LINT_VITAL_LINT_MODEL
+                } else {
+                    ArtifactType.LINT_MODEL
+                }
+            val lintPartialResultsArtifactType =
+                if (fatalOnly) {
+                    ArtifactType.LINT_VITAL_PARTIAL_RESULTS
+                } else {
+                    ArtifactType.LINT_PARTIAL_RESULTS
+                }
+            task.dependencyPartialResults.addRuntimeAndCompileArtifacts(
+                variantScope,
+                lintPartialResultsArtifactType
+            )
+            task.dependencyPartialResults.disallowChanges()
+
+            task.mainDependencyLintModels.addRuntimeAndCompileArtifacts(
+                variantScope,
+                lintModelArtifactType
+            )
+            task.mainDependencyLintModels.disallowChanges()
+            task.nestedComponentLintModels.disallowChanges()
+            task.dynamicFeatureLintModels.disallowChanges()
+            task.nestedComponentPartialResults.disallowChanges()
+            task.lintTool.initialize(variantScope.services, task)
+            if (autoFix) {
+                task.outputs.upToDateWhen {
+                    it.logger.debug("Lint fix task potentially modifies sources so cannot be up-to-date")
+                    false
+                }
+            }
+            if (lintMode == LintMode.UPDATE_BASELINE) {
+                // The updateLintBaseline task should never be UP-TO-DATE because the baseline file
+                // is not annotated as an output
+                task.outputs.upToDateWhen { false }
+            }
+            task.initializeOutputTypesConvention()
+
+            configureOutputSettings(task)
+            task.finalizeOutputTypes()
+            task.missingBaselineIsEmptyBaseline
+                .setDisallowChanges(
+                    variantScope.services
+                        .projectOptions
+                        .getProvider(BooleanOption.MISSING_LINT_BASELINE_IS_EMPTY_BASELINE)
+                )
+            task.baselineOmitLineNumbers
+                .setDisallowChanges(
+                    variantScope.services
+                        .projectOptions
+                        .getProvider(BooleanOption.LINT_BASELINE_OMIT_LINE_NUMBERS)
+                )
+            task.uastInputs.initialize(variantScope)
+        }
+        abstract fun configureOutputSettings(task: AndroidLintTask)
     }
 
     abstract class VariantCreationAction(val variant: VariantWithTests) :
@@ -1048,6 +1253,22 @@ abstract class AndroidLintTask : NonIncrementalTask() {
                 )
             )
         }
-
+        private fun ConfigurableFileCollection.addRuntimeAndCompileArtifacts(
+            variantScope: PrivacySandboxSdkVariantScope,
+            artifactType: ArtifactType
+        ) {
+            from(
+                variantScope.dependencies.getArtifactFileCollection(
+                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                    artifactType
+                )
+            )
+            from(
+                variantScope.dependencies.getArtifactFileCollection(
+                    AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                    artifactType
+                )
+            )
+        }
     }
 }

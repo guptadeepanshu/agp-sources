@@ -22,7 +22,7 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ddmlib.HeapSegment.HeapSegmentElement;
 import com.android.ddmlib.internal.ClientImpl;
-import com.android.ddmlib.internal.DeviceImpl;
+
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -525,15 +525,24 @@ public class ClientData {
     }
 
     /**
-     * Returns the client description.
+     * @deprecated Use {@link #getProcessName} instead.
+     */
+    @Deprecated()
+    @Nullable
+    public String getClientDescription() {
+        return getProcessName();
+    }
+
+    /**
+     * Returns the process name.
      *
      * <p>This is generally the name of the package defined in the <code>AndroidManifest.xml</code>.
      *
-     * @return the client description or <code>null</code> if not the description was not yet sent
+     * @return the process name or <code>null</code> if not the process name was not yet sent
      *     by the client.
      */
     @Nullable
-    public String getClientDescription() {
+    public String getProcessName() {
         return mClientNames.mProcessName;
     }
 

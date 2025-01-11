@@ -156,6 +156,10 @@ public enum EditorFileType
    * <code>PROTO_WITHOUT_PLUGIN = 28;</code>
    */
   PROTO_WITHOUT_PLUGIN(28),
+  /**
+   * <code>DART = 29;</code>
+   */
+  DART(29),
   ;
 
   /**
@@ -306,6 +310,10 @@ public enum EditorFileType
    * <code>PROTO_WITHOUT_PLUGIN = 28;</code>
    */
   public static final int PROTO_WITHOUT_PLUGIN_VALUE = 28;
+  /**
+   * <code>DART = 29;</code>
+   */
+  public static final int DART_VALUE = 29;
 
 
   public final int getNumber() {
@@ -357,6 +365,7 @@ public enum EditorFileType
       case 26: return CMAKE;
       case 27: return PROTO;
       case 28: return PROTO_WITHOUT_PLUGIN;
+      case 29: return DART;
       default: return null;
     }
   }

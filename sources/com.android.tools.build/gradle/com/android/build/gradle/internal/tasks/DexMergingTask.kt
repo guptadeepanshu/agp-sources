@@ -204,6 +204,10 @@ abstract class DexMergingTask : NewIncrementalTask() {
     @get:OutputFile
     abstract val mainDexListOutput: RegularFileProperty
 
+    @get:Optional
+    @get:OutputFile
+    abstract val d8Metadata: RegularFileProperty
+
     override fun doTaskAction(inputChanges: InputChanges) {
         // There are two sources of input dex files:
         //   - dexDirs: These directories contain dex files and possibly also jars of dex files
@@ -232,11 +236,13 @@ abstract class DexMergingTask : NewIncrementalTask() {
         }
 
         workerExecutor.noIsolation().submit(DexMergingTaskDelegate::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.initialize(
                 sharedParams, numberOfBuckets.get(), dexDirsOrJars, globalSynthetics, outputDir,
                 inputChanges.isIncremental, fileChanges?.toSerializable(),
-                mainDexListOutput = mainDexListOutput, inputProfileForDexStartupOptimization
+                mainDexListOutput = mainDexListOutput,
+                d8Metadata = d8Metadata,
+                inputProfileForDexStartupOptimization
             )
         }
     }
@@ -277,6 +283,11 @@ abstract class DexMergingTask : NewIncrementalTask() {
                     .setInitialProvider(taskProvider, DexMergingTask::mainDexListOutput)
                     .withName("mainDexList.txt")
                     .on(InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST)
+            }
+            if (action == MERGE_ALL) {
+                creationConfig.artifacts.setInitialProvider(
+                    taskProvider, DexMergingTask::d8Metadata
+                ).on(InternalArtifactType.D8_METADATA)
             }
         }
 
@@ -580,6 +591,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
         abstract val globalSynthetics: ConfigurableFileCollection
         abstract val outputDir: DirectoryProperty
         abstract val inputProfileForDexStartupOptimization: RegularFileProperty
+        abstract val d8Metadata: RegularFileProperty
         abstract val mainDexListOutput: RegularFileProperty
 
         abstract val incremental: Property<Boolean>
@@ -594,6 +606,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
             incremental: Boolean,
             fileChanges: SerializableFileChanges?,
             mainDexListOutput: RegularFileProperty?,
+            d8Metadata: RegularFileProperty? = null,
             inputProfileForDexStartupOptimization: RegularFileProperty? = null
         ) {
             this.sharedParams.set(sharedParams)
@@ -604,6 +617,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
             this.incremental.set(incremental)
             this.fileChanges.set(fileChanges)
             mainDexListOutput?.let { this.mainDexListOutput.set(it) }
+            d8Metadata?.let { this.d8Metadata.set(it) }
             inputProfileForDexStartupOptimization?.let {
                 this.inputProfileForDexStartupOptimization.set(it)
             }
@@ -650,6 +664,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
                         globalSynthetics,
                         outputDirForBucket = outputDirForBucket,
                         mainDexListOutput = mainDexListOutput.asFile.orNull,
+                        d8Metadata = d8Metadata.orNull?.asFile,
                         inputProfileForDexStartupOptimization =
                             inputProfileForDexStartupOptimization.asFile.orNull
                     )
@@ -809,6 +824,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
         abstract val outputDirForBucket: DirectoryProperty
         abstract val inputProfileForDexStartupOptimization: RegularFileProperty
         abstract val mainDexListOutput: RegularFileProperty
+        abstract val d8Metadata: RegularFileProperty
 
         fun initialize(
             sharedParams: Property<DexMergingTask.SharedParams>,
@@ -817,6 +833,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
             globalSynthetics: ConfigurableFileCollection,
             outputDirForBucket: File,
             mainDexListOutput: File?,
+            d8Metadata: File?,
             inputProfileForDexStartupOptimization: File?
         ) {
             this.sharedParams.set(sharedParams)
@@ -825,6 +842,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
             this.globalSynthetics.from(globalSynthetics)
             this.outputDirForBucket.set(outputDirForBucket)
             this.mainDexListOutput.set(mainDexListOutput)
+            this.d8Metadata.set(d8Metadata)
             this.inputProfileForDexStartupOptimization.set(inputProfileForDexStartupOptimization)
         }
     }
@@ -850,6 +868,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 globalSynthetics,
                 parameters.outputDirForBucket.get().asFile,
                 parameters.mainDexListOutput.asFile.orNull?.toPath(),
+                parameters.d8Metadata.asFile.orNull?.toPath(),
                 parameters.inputProfileForDexStartupOptimization.asFile.orNull?.toPath()
             )
         } finally {
@@ -865,6 +884,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
         globalSynthetics: List<Path>,
         outputDir: File,
         mainDexListOutput: Path?,
+        d8Metadata: Path?,
         inputProfileForDexStartupOptimization: Path?
     ) {
         val logger = LoggerWrapper.getLogger(DexMergingWorkAction::class.java)
@@ -900,7 +920,8 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 sharedParams.mainDexListConfig.userMultidexKeepFile.orNull?.asFile?.toPath(),
                 sharedParams.mainDexListConfig.libraryClasses.map { it.toPath() },
                 inputProfileForDexStartupOptimization,
-                mainDexListOutput
+                mainDexListOutput,
+                d8Metadata,
             )
         } catch (e: Exception) {
             PluginCrashReporter.maybeReportException(e)

@@ -21,6 +21,7 @@ import com.android.build.gradle.options.OptionalBooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.parseBoolean
 import org.gradle.api.artifacts.Dependency
+import java.io.File
 
 sealed interface ModulePropertyKey<OutputT> {
 
@@ -78,6 +79,11 @@ sealed interface ModulePropertyKey<OutputT> {
          * Whether to enable various R8 optimization on the code
          */
         ANDROID_PRIVACY_SANDBOX_R8_OPTIMIZATION("android.experimental.privacysandboxsdk.optimize"),
+
+        /**
+         * Whether to configure the DEVICE_GROUP split dimension.
+         */
+        DTTV2_DEVICE_GROUP_ENABLE_SPLIT("android_experimental_bundle_deviceGroup_enableSplit"),
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean? {
@@ -115,6 +121,11 @@ sealed interface ModulePropertyKey<OutputT> {
          * Supported values are "4k", "16k", and "64k". The default is "16k".
          */
         NATIVE_LIBRARY_PAGE_SIZE("android.nativeLibraryAlignmentPageSize"),
+
+        /**
+         * The default device group name for Device Group targeting.
+         */
+        DTTV2_DEVICE_GROUP_DEFAULT_GROUP("android_experimental_bundle_deviceGroup_defaultGroup"),
         ;
 
         override fun getValue(properties: Map<String, Any>): String? {
@@ -178,6 +189,28 @@ sealed interface ModulePropertyKey<OutputT> {
 
         companion object {
             private val keyToModulePropertyKey = BooleanWithDefault.values().associateBy { it.key }
+            internal operator fun get(value: String) = keyToModulePropertyKey[value]
+        }
+    }
+
+    enum class OptionalFile(override val key: String) : ModulePropertyKey<File?> {
+
+        /**
+         * Optional config file for device groups and country sets.
+         */
+        DTTV2_DEVICE_GROUP_CONFIG("android_experimental_bundle_deviceGroupConfig"),
+        ;
+
+        override fun getValue(properties: Map<String, Any>): File? {
+            return when(val value = properties[key]) {
+                null -> null
+                is File -> value
+                else -> throw IllegalArgumentException("Unexpected type ${value::class.qualifiedName} for property $key")
+            }
+        }
+
+        companion object {
+            private val keyToModulePropertyKey = OptionalBoolean.values().associateBy { it.key }
             internal operator fun get(value: String) = keyToModulePropertyKey[value]
         }
     }

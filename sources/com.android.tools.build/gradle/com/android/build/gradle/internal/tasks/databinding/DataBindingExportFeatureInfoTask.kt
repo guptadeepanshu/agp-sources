@@ -74,7 +74,7 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ExportFeatureInfoRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.outFolder.set(outFolder)
             it.resOffset.set(resOffset)
             it.directDependencies.set(directDependencies.asFileTree.files)

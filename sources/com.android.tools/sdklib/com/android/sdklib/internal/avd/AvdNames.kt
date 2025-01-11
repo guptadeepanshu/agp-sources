@@ -17,39 +17,40 @@ package com.android.sdklib.internal.avd
 
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.devices.Device
+import com.google.common.base.CharMatcher.anyOf
+import com.google.common.base.CharMatcher.inRange
+import com.google.common.base.CharMatcher.`is`
+import java.nio.file.Files
+import java.nio.file.Path
 
 object AvdNames {
-  private const val ALLOWED_CHARS = "0-9a-zA-Z-_. ()"
+
+  private val ALLOWED_FILENAME_CHARS =
+    inRange('a', 'z').or(inRange('A', 'Z')).or(inRange('0', '9')).or(anyOf(".-"))
+  private val ALLOWED_DISPLAY_NAME_CHARS = ALLOWED_FILENAME_CHARS.or(anyOf("_ ()"))
   private const val ALLOWED_CHARS_READABLE = "a-z A-Z 0-9 . _ - ( )"
 
   @JvmStatic
   fun isValid(candidateName: String): Boolean {
-    // The name is valid if it has one or more allowed characters
-    // and only allowed characters
-    return candidateName.matches("^[$ALLOWED_CHARS]+$".toRegex())
+    return candidateName.isNotEmpty() && ALLOWED_DISPLAY_NAME_CHARS.matchesAllOf(candidateName)
   }
 
   @JvmStatic
-  internal fun stripBadCharacters(candidateName: String): String {
-    // Remove any invalid characters.
-    return candidateName.replace("[^$ALLOWED_CHARS]".toRegex(), " ")
+  fun cleanDisplayName(candidateName: String): String {
+    return ALLOWED_DISPLAY_NAME_CHARS.negate().or(`is`(' ')).trimAndCollapseFrom(candidateName, ' ')
   }
 
   @JvmStatic fun humanReadableAllowedCharacters(): String = ALLOWED_CHARS_READABLE
 
   /**
    * Get a version of `avdName` modified such that it is an allowed AVD filename. (This may be more
-   * restrictive than what the underlying filesystem requires.) Remove leading and trailing spaces.
-   * Replace consecutive disallowed characters, spaces, parentheses, and underscores by a single
+   * restrictive than what the underlying filesystem requires.) Remove leading and trailing
+   * disallowed characters. Replace consecutive internal disallowed characters by a single
    * underscore. If the result is empty, "myavd" will be returned.
    */
   @JvmStatic
   fun cleanAvdName(avdName: String): String {
-    return avdName
-      .replace("[^$ALLOWED_CHARS]".toRegex(), " ")
-      .trim()
-      .replace("[ ()_]+".toRegex(), "_")
-      .ifBlank { "myavd" }
+    return ALLOWED_FILENAME_CHARS.negate().trimAndCollapseFrom(avdName, '_').ifBlank { "myavd" }
   }
 
   /**
@@ -59,7 +60,7 @@ object AvdNames {
   fun getDefaultDeviceDisplayName(device: Device, version: AndroidVersion): String {
     // A device name might include the device's screen size as, e.g., 7". The " is not allowed in
     // a display name. Ensure that the display name does not include any forbidden characters.
-    return stripBadCharacters(device.displayName) + " API " + version.apiStringWithExtension
+    return cleanDisplayName(device.displayName) + " API " + version.apiStringWithExtension
   }
 
   fun uniquify(name: String, separator: String, isPresent: (String) -> Boolean): String {
@@ -85,3 +86,12 @@ fun AvdManager.uniquifyAvdName(avdName: String): String =
  */
 fun AvdManager.uniquifyDisplayName(displayName: String): String =
   AvdNames.uniquify(displayName, " ") { findAvdWithDisplayName(it) != null }
+
+/**
+ * Finds an available AVD folder with the given basename, appending a suffix _n to the given name as
+ * required to make it unique.
+ */
+fun AvdManager.uniquifyAvdFolder(name: String): Path =
+  baseAvdFolder.resolve(
+    AvdNames.uniquify(name, "_") { Files.exists(baseAvdFolder.resolve("$it.avd")) } + ".avd"
+  )

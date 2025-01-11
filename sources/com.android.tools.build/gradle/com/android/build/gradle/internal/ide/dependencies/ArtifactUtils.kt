@@ -454,7 +454,9 @@ private fun filterProjectDependenciesWithNonAndroidVariants(root: ResolvedCompon
         dependencies
             .forEach {
                 if (it is ResolvedDependencyResult
-                    && it.resolvedVariant.owner is ProjectComponentIdentifier
+                    // ResolvedVariantResult getResolvedVariant() should not return null, but there seems to be
+                    // some corner cases when it is null. https://issuetracker.google.com/214259374
+                    && (it.resolvedVariant == null || it.resolvedVariant.owner is ProjectComponentIdentifier)
                     && it.selected !in seen) {
                     it.selected.traverse()
                 }
@@ -463,11 +465,11 @@ private fun filterProjectDependenciesWithNonAndroidVariants(root: ResolvedCompon
     root.traverse()
     val androidProjects = mutableSetOf<String>();
     seen.forEach {
-      it.variants.forEach {
-        if (it.owner is ProjectComponentIdentifier && it.isAndroidProjectDependency()) {
+      it.variants.forEach { variant ->
+        if (variant.owner is ProjectComponentIdentifier && variant.isAndroidProjectDependency()) {
             // If any of the resolved variants is Android for a project, we consider that a single
             // project dependency as we don't really handle this case properly in the IDE side.
-            androidProjects.add((it.owner as ProjectComponentIdentifier).getIdString())
+            androidProjects.add((variant.owner as ProjectComponentIdentifier).getIdString())
         }
       }
     }

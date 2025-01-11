@@ -333,6 +333,7 @@ public final class DetailsTypes {
          * @deprecated This is only supported in pre-v4. Set the results from {@link #getAbis()}
          *     instead. Sets the abi type (x86, armeabi-v7a, etc.) for this package.
          */
+        @Deprecated
         default void setAbi(@NonNull String abi) {
             List<String> abis = getAbis();
             abis.clear();
@@ -343,6 +344,7 @@ public final class DetailsTypes {
          * @deprecated This is only supported in pre-v4. Call to {@link #isValidAbis(String)}
          *     instead. Checks whether {@code value} is a valid abi type.
          */
+        @Deprecated
         default boolean isValidAbi(@Nullable String value) {
             return isValidAbis(value);
         }
@@ -351,6 +353,7 @@ public final class DetailsTypes {
          * @deprecated This is only supported in pre-v4. Call to {@link #getAbis()} instead.
          *     <p>Gets the abi type (x86, armeabi-v7a, etc.) for this package.
          */
+        @Deprecated
         @NonNull
         default String getAbi() {
             // Default implementation supports v4+, since v1-v3 will have this method overridden.
@@ -440,6 +443,7 @@ public final class DetailsTypes {
          *
          * @deprecated This is only supported in v1. Use {@link #getTags()} instead.
          */
+        @Deprecated
         @Nullable
         default IdDisplay getTag() {
             // This should be overridden in v1 and shouldn't be called after that
@@ -447,6 +451,7 @@ public final class DetailsTypes {
         }
 
         /** @deprecated This is only supported in v1. Add to {@link #getTags()} instead. */
+        @Deprecated
         default void setTag(@Nullable IdDisplay tag) {
             // This should be overridden in v1 and shouldn't be called after that
             throw new UnsupportedOperationException();

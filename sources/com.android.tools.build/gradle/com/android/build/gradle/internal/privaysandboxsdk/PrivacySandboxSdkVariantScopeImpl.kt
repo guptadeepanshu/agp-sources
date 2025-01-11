@@ -17,12 +17,12 @@
 package com.android.build.gradle.internal.privaysandboxsdk
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import com.android.build.api.dsl.SigningConfig
+import com.android.build.gradle.internal.dependency.PluginConfigurations
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkOptimizationImpl
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
 import com.android.build.gradle.internal.fusedlibrary.NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
@@ -35,19 +35,19 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.sdklib.AndroidVersion
 import org.gradle.api.Project
-import org.gradle.api.artifacts.component.ComponentIdentifier
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
-import org.gradle.api.specs.Spec
 
 class PrivacySandboxSdkVariantScopeImpl(
     project: Project,
     val dslServices: DslServices,
     private val projectServices: ProjectServices,
     private val extensionProvider: () -> PrivacySandboxSdkExtension,
-    private val bootClasspathConfigProvider: () -> BootClasspathConfig
+    private val bootClasspathConfigProvider: () -> BootClasspathConfig,
+    override val customLintConfiguration: Configuration?
 ): PrivacySandboxSdkVariantScope{
 
     override val services: TaskCreationServices
@@ -56,16 +56,12 @@ class PrivacySandboxSdkVariantScopeImpl(
 
     override val layout: ProjectLayout = project.layout
     override val artifacts: ArtifactsImpl = ArtifactsImpl(project, "single")
-    override val incomingConfigurations: FusedLibraryConfigurations = FusedLibraryConfigurations()
-    override val outgoingConfigurations: FusedLibraryConfigurations = FusedLibraryConfigurations()
-    override val dependencies: FusedLibraryDependencies = FusedLibraryDependencies(incomingConfigurations)
+    override val name: String = PrivacySandboxSdkConstants.DEFAULT_VARIANT_NAME
+    override val dependencies: PrivacySandboxSdkDependencies = PrivacySandboxSdkDependencies()
+    override val incomingConfigurations: PluginConfigurations = dependencies.configurations
 
     override val extension: PrivacySandboxSdkExtension by lazy {
         extensionProvider.invoke()
-    }
-
-    override val mergeSpec = Spec { componentIdentifier: ComponentIdentifier ->
-        true // so far, all dependencies are consumed by the sdk library plugin.
     }
 
     override val compileSdkVersion: String by lazy {
@@ -101,6 +97,9 @@ class PrivacySandboxSdkVariantScopeImpl(
             projectServices.projectOptions,
             namespacedAndroidResources = NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED
         )
+
+    override val lintOptions: Lint
+        get() = extension.lint
 
     private fun getCompileSdkApiVersion(extension: PrivacySandboxSdkExtension): AndroidVersion {
         return maybeGetCompileSdkPreview(extension)

@@ -873,6 +873,7 @@ class AvdManagerCli extends CommandLineParser {
 
             if (getParamSdCard() != null) {
                 hardwareConfig.put(HardwareProperties.HW_SDCARD, HardwareProperties.BOOLEAN_YES);
+                hardwareConfig.remove(ConfigKey.SDCARD_SIZE);
             }
             updateUninitializedDynamicParameters(hardwareConfig);
             String skinName = getParamSkin();

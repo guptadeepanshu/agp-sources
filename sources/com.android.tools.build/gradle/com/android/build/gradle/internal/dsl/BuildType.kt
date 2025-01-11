@@ -40,6 +40,7 @@ import org.gradle.api.Incubating
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
+import org.gradle.declarative.dsl.model.annotations.Restricted
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import java.io.File
 import java.io.Serializable
@@ -451,6 +452,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         action.invoke(shaders)
     }
 
+    @get:Restricted
     override var isMinifyEnabled: Boolean
         get() =
             // Try to return a sensible value for the model and other Gradle plugins inspecting the DSL.

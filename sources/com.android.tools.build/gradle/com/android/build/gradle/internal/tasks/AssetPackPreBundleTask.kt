@@ -73,7 +73,7 @@ abstract class AssetPackPreBundleTask : NonIncrementalTask() {
             val assetPackName = manifestFile.parentFile.name
             val packDir = outputDir.dir(assetPackName).get()
             workerExecutor.noIsolation().submit(AssetPackPreBundleTaskRunnable::class.java) {
-                it.initializeFromAndroidVariantTask(this)
+                it.initializeFromBaseTask(this)
                 it.packDir.set(packDir)
                 it.packFile.set(packDir.file("${assetPackName}.zip"))
                 it.assetsFilesPath.set(assetsFiles.filter { assetPack ->

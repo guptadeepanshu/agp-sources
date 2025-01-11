@@ -76,12 +76,12 @@ abstract class CheckJetifierTask : NonIncrementalGlobalTask() {
     abstract val resolutionUnit: ListProperty<ResolutionUnit>
 
     class CreationAction(
-        creationConfig: GlobalTaskCreationConfig,
+        private val creationConfig: GlobalTaskCreationConfig,
         private val checkJetifierBuildService: Provider<CheckJetifierBuildService>,
         variants: Collection<ComponentInfo<*, *>>,
         testComponents: Collection<TestComponentCreationConfig>,
         testFixturesComponents: Collection<TestFixturesCreationConfig>
-    ) : GlobalTaskCreationAction<CheckJetifierTask>(creationConfig) {
+    ) : GlobalTaskCreationAction<CheckJetifierTask>() {
 
         override val name = "checkJetifier"
         override val type = CheckJetifierTask::class.java

@@ -3995,8 +3995,8 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
-   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT,
+   * SDK_INDEX_LIBRARY_HAS_VULNERABILITIES, SDK_INDEX_LIBRARY_UPDATED
    * </pre>
    *
    * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
@@ -4006,8 +4006,8 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
-   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT,
+   * SDK_INDEX_LIBRARY_HAS_VULNERABILITIES, SDK_INDEX_LIBRARY_UPDATED
    * </pre>
    *
    * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
@@ -4017,8 +4017,8 @@ public interface AndroidStudioEventOrBuilder extends
   /**
    * <pre>
    * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
-   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
-   * or SDK_INDEX_LIBRARY_HAS_VULNERABILITIES
+   * SDK_INDEX_LIBRARY_IS_OUTDATED, SDK_INDEX_LIBRARY_IS_NON_COMPLIANT,
+   * SDK_INDEX_LIBRARY_HAS_VULNERABILITIES, SDK_INDEX_LIBRARY_UPDATED
    * </pre>
    *
    * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142 [lazy = true];</code>
@@ -5761,4 +5761,193 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.SoongRunEvent soong_run_event = 206 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SoongRunEventOrBuilder getSoongRunEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STUDIO_CORE_GEMINI_ACTIONS
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioCoreGeminiActionsEvent android_studio_core_gemini_actions_event = 207 [lazy = true];</code>
+   * @return Whether the androidStudioCoreGeminiActionsEvent field is set.
+   */
+  boolean hasAndroidStudioCoreGeminiActionsEvent();
+  /**
+   * <pre>
+   * set when kind = STUDIO_CORE_GEMINI_ACTIONS
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioCoreGeminiActionsEvent android_studio_core_gemini_actions_event = 207 [lazy = true];</code>
+   * @return The androidStudioCoreGeminiActionsEvent.
+   */
+  com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent getAndroidStudioCoreGeminiActionsEvent();
+  /**
+   * <pre>
+   * set when kind = STUDIO_CORE_GEMINI_ACTIONS
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioCoreGeminiActionsEvent android_studio_core_gemini_actions_event = 207 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEventOrBuilder getAndroidStudioCoreGeminiActionsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = VIRTUALIZATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.VirtualizationEvent virtualization_event = 208 [lazy = true];</code>
+   * @return Whether the virtualizationEvent field is set.
+   */
+  boolean hasVirtualizationEvent();
+  /**
+   * <pre>
+   * set when kind = VIRTUALIZATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.VirtualizationEvent virtualization_event = 208 [lazy = true];</code>
+   * @return The virtualizationEvent.
+   */
+  com.google.wireless.android.sdk.stats.VirtualizationEvent getVirtualizationEvent();
+  /**
+   * <pre>
+   * set when kind = VIRTUALIZATION_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.VirtualizationEvent virtualization_event = 208 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.VirtualizationEventOrBuilder getVirtualizationEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DAEMON_CODE_ANALYZER_FINISHED_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DaemonCodeAnalyzerFinishedEvent daemon_code_analyzer_finished_event = 209 [lazy = true];</code>
+   * @return Whether the daemonCodeAnalyzerFinishedEvent field is set.
+   */
+  boolean hasDaemonCodeAnalyzerFinishedEvent();
+  /**
+   * <pre>
+   * set when kind = DAEMON_CODE_ANALYZER_FINISHED_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DaemonCodeAnalyzerFinishedEvent daemon_code_analyzer_finished_event = 209 [lazy = true];</code>
+   * @return The daemonCodeAnalyzerFinishedEvent.
+   */
+  com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent getDaemonCodeAnalyzerFinishedEvent();
+  /**
+   * <pre>
+   * set when kind = DAEMON_CODE_ANALYZER_FINISHED_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.DaemonCodeAnalyzerFinishedEvent daemon_code_analyzer_finished_event = 209 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEventOrBuilder getDaemonCodeAnalyzerFinishedEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = EDITING_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EditingMetricsEvent editing_metrics_event = 210 [lazy = true];</code>
+   * @return Whether the editingMetricsEvent field is set.
+   */
+  boolean hasEditingMetricsEvent();
+  /**
+   * <pre>
+   * set when kind = EDITING_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EditingMetricsEvent editing_metrics_event = 210 [lazy = true];</code>
+   * @return The editingMetricsEvent.
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEvent getEditingMetricsEvent();
+  /**
+   * <pre>
+   * set when kind = EDITING_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.EditingMetricsEvent editing_metrics_event = 210 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEventOrBuilder getEditingMetricsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STUDIO_LABS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioLabsEvent studio_labs_event = 211 [lazy = true];</code>
+   * @return Whether the studioLabsEvent field is set.
+   */
+  boolean hasStudioLabsEvent();
+  /**
+   * <pre>
+   * set when kind = STUDIO_LABS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioLabsEvent studio_labs_event = 211 [lazy = true];</code>
+   * @return The studioLabsEvent.
+   */
+  com.google.wireless.android.sdk.stats.StudioLabsEvent getStudioLabsEvent();
+  /**
+   * <pre>
+   * set when kind = STUDIO_LABS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioLabsEvent studio_labs_event = 211 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.StudioLabsEventOrBuilder getStudioLabsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = PROMPT_LIBRARY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PromptLibraryEvent prompt_library_event = 212 [lazy = true];</code>
+   * @return Whether the promptLibraryEvent field is set.
+   */
+  boolean hasPromptLibraryEvent();
+  /**
+   * <pre>
+   * set when kind = PROMPT_LIBRARY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PromptLibraryEvent prompt_library_event = 212 [lazy = true];</code>
+   * @return The promptLibraryEvent.
+   */
+  com.google.wireless.android.sdk.stats.PromptLibraryEvent getPromptLibraryEvent();
+  /**
+   * <pre>
+   * set when kind = PROMPT_LIBRARY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.PromptLibraryEvent prompt_library_event = 212 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.PromptLibraryEventOrBuilder getPromptLibraryEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleFailureDetails gradle_failure_details = 213 [lazy = true];</code>
+   * @return Whether the gradleFailureDetails field is set.
+   */
+  boolean hasGradleFailureDetails();
+  /**
+   * <pre>
+   * set when kind = GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleFailureDetails gradle_failure_details = 213 [lazy = true];</code>
+   * @return The gradleFailureDetails.
+   */
+  com.google.wireless.android.sdk.stats.GradleFailureDetails getGradleFailureDetails();
+  /**
+   * <pre>
+   * set when kind = GRADLE_SYNC_FAILURE_DETAILS
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleFailureDetails gradle_failure_details = 213 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleFailureDetailsOrBuilder getGradleFailureDetailsOrBuilder();
 }

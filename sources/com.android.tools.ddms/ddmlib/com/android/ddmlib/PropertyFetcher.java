@@ -112,7 +112,7 @@ public final class PropertyFetcher {
                 }
 
                 Matcher endPattern = GETPROP_END_LINE_PATTERN.matcher(line);
-                if (endPattern.matches()) {
+                if (multiLineLabel != null && endPattern.matches()) {
                     multiLineValue += "\n" + endPattern.group(1);
                     mCollectedProperties.put(multiLineLabel, multiLineValue);
                     multiLineLabel = null;

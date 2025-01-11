@@ -30,6 +30,8 @@ public class ServiceReceiver extends MultiLineReceiver {
     private static final Pattern serviceLinePattern =
             Pattern.compile("[\\d+]\\s+(\\S+):\\s+\\[(.*?)]");
 
+    private static final String FOUND_SERVICES_HEADER = "Found \\d+ services:";
+
     private final LinkedHashMap<String, ServiceInfo> runningServices = new LinkedHashMap<>();
 
     @NonNull
@@ -39,9 +41,10 @@ public class ServiceReceiver extends MultiLineReceiver {
 
     @Override
     public void processNewLines(@NonNull String[] lines) {
-        // Skip line 'Found X services:' and start at offset 1
-        for (int n = 1; n <= lines.length - 1; n++) {
-            String line = lines[n];
+        for (String line : lines) {
+            if (line.matches(FOUND_SERVICES_HEADER) || line.trim().isEmpty()) {
+                continue; // Skip header or empty line
+            }
             // Line example: ", 1       SurfaceFlinger: [android.ui.ISurfaceComposer]\n"
             Matcher matcher = serviceLinePattern.matcher(line);
             if (!matcher.find()) {

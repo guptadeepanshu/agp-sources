@@ -8,31 +8,46 @@ public interface AdbUsageEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <pre>
-   * Add other types of events, e.g. attaching debugger, etc
-   * </pre>
-   *
    * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return Whether the processPropertiesEvent field is set.
    */
   boolean hasProcessPropertiesEvent();
   /**
-   * <pre>
-   * Add other types of events, e.g. attaching debugger, etc
-   * </pre>
-   *
    * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return The processPropertiesEvent.
    */
   com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent getProcessPropertiesEvent();
   /**
+   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder getProcessPropertiesEventOrBuilder();
+
+  /**
    * <pre>
    * Add other types of events, e.g. attaching debugger, etc
    * </pre>
    *
-   * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   * @return Whether the deviceStateChangeEvent field is set.
    */
-  com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder getProcessPropertiesEventOrBuilder();
+  boolean hasDeviceStateChangeEvent();
+  /**
+   * <pre>
+   * Add other types of events, e.g. attaching debugger, etc
+   * </pre>
+   *
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   * @return The deviceStateChangeEvent.
+   */
+  com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDeviceStateChangeEvent();
+  /**
+   * <pre>
+   * Add other types of events, e.g. attaching debugger, etc
+   * </pre>
+   *
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder getDeviceStateChangeEventOrBuilder();
 
   public com.google.wireless.android.sdk.stats.AdbUsageEvent.EventCase getEventCase();
 }

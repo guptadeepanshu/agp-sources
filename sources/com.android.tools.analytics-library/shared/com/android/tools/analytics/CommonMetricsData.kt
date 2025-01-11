@@ -21,13 +21,20 @@ import com.google.wireless.android.sdk.stats.*
 import com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface
 import com.sun.jna.Library
 import com.sun.jna.Memory
+import com.sun.jna.Native
 import com.sun.jna.Pointer
+import com.sun.jna.platform.win32.Kernel32
+import com.sun.jna.platform.win32.WinDef
+import com.sun.jna.platform.win32.WinNT
 import com.sun.jna.ptr.IntByReference
+import com.sun.jna.win32.StdCallLibrary
+import com.sun.jna.win32.W32APIOptions
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
 private const val TRANSLATED = 1
+private const val IMAGE_FILE_MACHINE_ARM64 = 0xAA64
 
 /** Calculates common pieces of metrics data, used in various Android DevTools. */
 object CommonMetricsData {
@@ -65,19 +72,17 @@ object CommonMetricsData {
     get() {
       val jvmArchitecture = jvmArchitecture
       val os =
-        Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)!!.toLowerCase()
+        Environment.instance
+          .getSystemProperty(Environment.SystemProperty.OS_NAME)!!
+          .lowercase(Locale.getDefault())
 
-      // An x86 jvm running on an M1 chip will be translated to ARM using Rosetta. Checking for
-      // Rosetta
-      // requires jna. The current version of jna (net.java.dev.jna:jna-5.6.0)  will fail if we're
-      // running
-      // on an arm jvm. Only call isRosetta if we're using an x86 jvm
-      if (
-        jvmArchitecture == ProductDetails.CpuArchitecture.X86_64 &&
-          os.startsWith("mac") &&
-          isRosetta()
-      ) {
-        return ProductDetails.CpuArchitecture.X86_ON_ARM
+      if (jvmArchitecture == ProductDetails.CpuArchitecture.X86_64) {
+        // An x86 jvm running on an M1 chip will be translated to ARM using Rosetta. Checking for
+        // Rosetta requires jna. The current version of jna (net.java.dev.jna:jna-5.6.0)  will
+        // fail if we're running on an ARM jvm. Only call isRosetta if we're using an x86 jvm
+        if ((os.startsWith("mac") && isRosetta()) || (os.startsWith("win") && isWindowsArm64())) {
+          return ProductDetails.CpuArchitecture.X86_ON_ARM
+        }
       }
 
       if (jvmArchitecture == ProductDetails.CpuArchitecture.X86) {
@@ -416,4 +421,29 @@ fun isRosetta(): Boolean {
     }
 
   return errorCode == 0 && memory.getInt(0) == TRANSLATED
+}
+
+fun isWindowsArm64(): Boolean {
+  try {
+    // https://learn.microsoft.com/en-us/windows/arm/apps-on-arm-x86-emulation#detecting-emulation
+    val pidHandle = Kernel32.INSTANCE.GetCurrentProcess()
+    val lib = Native.load("kernel32", NativeIsWow64::class.java, W32APIOptions.DEFAULT_OPTIONS);
+    val processMachine = WinDef.USHORTByReference()
+    val nativeMachine = WinDef.USHORTByReference()
+    val result = lib.IsWow64Process2(pidHandle, processMachine, nativeMachine)
+
+    // https://learn.microsoft.com/en-us/windows/win32/sysinfo/image-file-machine-constants
+    return result && (nativeMachine.value.toInt() == IMAGE_FILE_MACHINE_ARM64)
+  } catch (_: Throwable) {
+    return false
+  }
+}
+
+private interface NativeIsWow64 : StdCallLibrary {
+
+  fun IsWow64Process2(
+    hProcess: WinNT.HANDLE,
+    processMachine: WinDef.USHORTByReference,
+    nativeMachine: WinDef.USHORTByReference
+  ): Boolean
 }

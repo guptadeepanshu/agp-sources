@@ -37,7 +37,7 @@ class BuiltArtifactsLoaderImpl: BuiltArtifactsLoader {
 
     fun load(folder: FileSystemLocation): BuiltArtifactsImpl? {
         return loadFromFile(
-            File(folder.asFile, BuiltArtifactsImpl.METADATA_FILE_NAME)
+            getMetadataFile(folder)
         )
     }
 
@@ -83,6 +83,11 @@ class BuiltArtifactsLoaderImpl: BuiltArtifactsLoader {
                     it.newOutput(relativePathToUse.resolve(Paths.get(it.outputFile)).normalize())
                 }
             )
+        }
+
+        @JvmStatic
+        fun getMetadataFile(folder: FileSystemLocation): File {
+            return File(folder.asFile, BuiltArtifactsImpl.METADATA_FILE_NAME)
         }
     }
 }

@@ -51,8 +51,13 @@ class ScreenshotTestTaskManager(
 
         setupCompilationTaskDependencies(screenshotTestCreationConfig, taskContainer)
 
-        setupAssembleAndJavaCompilationTasks(
-            screenshotTestCreationConfig, taskContainer, testedVariant, ASSEMBLE_SCREENSHOT_TEST)
+        setupAssembleTasks(screenshotTestCreationConfig, taskContainer, ASSEMBLE_SCREENSHOT_TEST)
+
+        setupJavaCompilationTasks(screenshotTestCreationConfig, taskContainer, testedVariant)
+
+        maybeCreateTransformClassesWithAsmTask(screenshotTestCreationConfig)
+
+        setupLintTasks(screenshotTestCreationConfig)
 
         createRunHostTestTask(
             screenshotTestCreationConfig,

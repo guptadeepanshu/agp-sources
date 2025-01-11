@@ -16,8 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 /**
  * DSL object for configuring metadata that is embedded in the AAR.
  *

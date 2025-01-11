@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkConstants
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.tasks.GlobalTask
@@ -99,10 +100,14 @@ abstract class AndroidVariantTaskCreationAction<TaskT: AndroidVariantTask>(
     }
 }
 
+/** [TaskCreationAction] for a PrivacySandboxSdkTask. */
+abstract class PrivacySandboxSdkVariantTaskCreationAction<TaskT>
+    : AndroidVariantTaskCreationAction<TaskT>(PrivacySandboxSdkConstants.DEFAULT_VARIANT_NAME)
+        where TaskT: AndroidVariantTask
+
 /** [TaskCreationAction] for a [GlobalTask]. */
-abstract class GlobalTaskCreationAction<TaskT>(
-    @JvmField protected val creationConfig: GlobalTaskCreationConfig
-) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: GlobalTask {
+abstract class GlobalTaskCreationAction<TaskT>
+    : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: GlobalTask {
 
     override fun configure(task: TaskT) {
         super.configure(task)

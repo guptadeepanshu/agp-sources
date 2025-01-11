@@ -16,12 +16,17 @@
 
 package com.android.build.api.variant.impl
 
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariant
 import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ApkInstallGroup
+import com.android.build.api.variant.ApkOutput
+import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
+import com.android.build.api.variant.DeviceSpec
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
 import com.android.build.gradle.internal.component.HostTestCreationConfig
@@ -37,12 +42,18 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.testing.TestData
+import com.android.build.gradle.internal.utils.ApkSources
+import com.android.build.gradle.internal.utils.DefaultDeviceApkOutput
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.Task
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
 import javax.inject.Inject
 
 open class TestVariantImpl @Inject constructor(
@@ -269,4 +280,57 @@ open class TestVariantImpl @Inject constructor(
         get() = experimentalProperties.map {
             ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
         }.getOrElse(false)
+
+    override val outputProviders: ApkOutputProviders
+        get() = object: ApkOutputProviders {
+            override fun <TaskT: Task> provideApkOutputToTask(
+                taskProvider: TaskProvider<TaskT>,
+                taskInput: (TaskT) -> Property<ApkOutput>,
+                deviceSpec: DeviceSpec
+            ) {
+                taskProvider.configure { task ->
+                    provideApkOutputToTask(task, taskInput, deviceSpec)
+                }
+            }
+        }
+
+    private fun <TaskT: Task> provideApkOutputToTask(
+        task: TaskT,
+        taskInput: (TaskT) -> Property<ApkOutput>,
+        deviceSpec: DeviceSpec
+    ) {
+        val apkSources = getApkSources()
+        val deviceApkOutput = DefaultDeviceApkOutput(
+            apkSources, nativeBuildCreationConfig.supportedAbis, minSdk.toSharedAndroidVersion(),
+            baseName, services.projectInfo.path)
+        task.inputs.files(DefaultDeviceApkOutput.getApkInputs(apkSources, deviceSpec))
+        val testingApk = artifacts.get(SingleArtifact.APK)
+        task.inputs.files(testingApk)
+        fun fetchTestingApk(): ApkInstallGroup {
+            val testingApks = listOf(RegularFile { TestData.getTestingApk(testingApk.get()) })
+            return DefaultDeviceApkOutput.DefaultApkInstallGroup(testingApks, "Testing Apk")
+        }
+        val apkOutput = services.provider {
+            object: ApkOutput {
+                override val apkInstallGroups: List<ApkInstallGroup>
+                    get() = deviceApkOutput.getApks(deviceSpec) + fetchTestingApk()
+            }
+        }
+        taskInput(task).set(apkOutput)
+    }
+
+    private fun getApkSources(): ApkSources {
+        val privacySandboxSdksApksFiles = variantDependencies
+                .getArtifactFileCollection(
+                    AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
+                    AndroidArtifacts.ArtifactScope.ALL,
+                    AndroidArtifacts.ArtifactType
+                        .ANDROID_PRIVACY_SANDBOX_SDK_APKS)
+
+        return ApkSources(
+            mainApkArtifact = testedApks,
+            privacySandboxSdksApksFiles =  privacySandboxSdksApksFiles,
+            additionalSupportedSdkApkSplits = usesSdkLibrarySplitForLocalDeployment,
+            privacySandboxSdkSplitApksForLegacy = privacySandboxCompatApks)
+    }
 }

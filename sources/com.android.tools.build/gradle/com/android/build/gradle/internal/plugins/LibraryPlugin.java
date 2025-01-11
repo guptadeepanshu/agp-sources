@@ -15,6 +15,8 @@
  */
 package com.android.build.gradle.internal.plugins;
 
+import static com.android.build.gradle.internal.utils.KgpUtils.ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID;
+
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
 import com.android.build.api.dsl.LibraryBuildFeatures;
@@ -27,6 +29,7 @@ import com.android.build.api.variant.LibraryAndroidComponentsExtension;
 import com.android.build.api.variant.LibraryVariant;
 import com.android.build.api.variant.LibraryVariantBuilder;
 import com.android.build.gradle.BaseExtension;
+import com.android.build.gradle.LibraryExtensionInternal;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.LibraryTaskManager;
@@ -86,9 +89,9 @@ public class LibraryPlugin
 
     @SoftwareType(
             name = "androidLibrary",
-            modelPublicType = com.android.build.gradle.LibraryExtension.class)
-    public com.android.build.gradle.LibraryExtension getAndroidLibrary() {
-        return ((com.android.build.gradle.LibraryExtension)
+            modelPublicType = com.android.build.gradle.LibraryExtensionInternal.class)
+    public com.android.build.gradle.LibraryExtensionInternal getAndroidLibrary() {
+        return ((com.android.build.gradle.LibraryExtensionInternal)
                 Objects.requireNonNull(project).getExtensions().getByName("android"));
     }
 
@@ -139,27 +142,53 @@ public class LibraryPlugin
         GradleBuildProject.Builder stats =
                 getConfiguratorService().getProjectBuilder(project.getPath());
 
+        if (getProjectServices()
+                .getProjectOptions()
+                .get(BooleanOption.USE_DECLARATIVE_INTERFACES)) {
+
+            project.getPlugins().apply(ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID);
+
+            // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
+            Class<LibraryExtension> instanceType =
+                    (Class) com.android.build.gradle.LibraryExtensionInternal.class;
+            com.android.build.gradle.LibraryExtensionInternal android =
+                    (com.android.build.gradle.LibraryExtensionInternal)
+                            project.getExtensions()
+                                    .create(
+                                            new TypeOf<>() {},
+                                            "android",
+                                            instanceType,
+                                            dslServices,
+                                            bootClasspathConfig,
+                                            buildOutputs,
+                                            dslContainers.getSourceSetManager(),
+                                            extraModelInfo,
+                                            libraryExtension,
+                                            stats);
+
+            initExtensionFromSettings(libraryExtension);
+            setupDependencies(android);
+            return new ExtensionData<>(android, libraryExtension, bootClasspathConfig);
+        }
+
         if (getProjectServices().getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
             // noinspection unchecked,rawtypes: Hacks to make the parameterized types make sense
             Class<LibraryExtension> instanceType =
                     (Class) com.android.build.gradle.LibraryExtension.class;
             com.android.build.gradle.LibraryExtension android =
                     (com.android.build.gradle.LibraryExtension)
-                            (Object)
-                                    project.getExtensions()
-                                            .create(
-                                                    new TypeOf<
-                                                            com.android.build.api.dsl
-                                                                    .LibraryExtension>() {},
-                                                    "android",
-                                                    instanceType,
-                                                    dslServices,
-                                                    bootClasspathConfig,
-                                                    buildOutputs,
-                                                    dslContainers.getSourceSetManager(),
-                                                    extraModelInfo,
-                                                    libraryExtension,
-                                                    stats);
+                            project.getExtensions()
+                                    .create(
+                                            new TypeOf<>() {},
+                                            "android",
+                                            instanceType,
+                                            dslServices,
+                                            bootClasspathConfig,
+                                            buildOutputs,
+                                            dslContainers.getSourceSetManager(),
+                                            extraModelInfo,
+                                            libraryExtension,
+                                            stats);
             project.getExtensions()
                     .add(
                             com.android.build.gradle.LibraryExtension.class,
@@ -186,6 +215,24 @@ public class LibraryPlugin
         initExtensionFromSettings(android);
 
         return new ExtensionData<>(android, libraryExtension, bootClasspathConfig);
+    }
+
+    private void setupDependencies(LibraryExtensionInternal android) {
+        project.getConfigurations()
+                .getByName("api")
+                .fromDependencyCollector(android.getDependenciesDcl().getApi());
+        project.getConfigurations()
+                .getByName("implementation")
+                .fromDependencyCollector(android.getDependenciesDcl().getImplementation());
+
+        project.getConfigurations()
+                .getByName("testImplementation")
+                .fromDependencyCollector(android.getDependenciesDcl().getTestImplementation());
+
+        project.getConfigurations()
+                .getByName("androidTestImplementation")
+                .fromDependencyCollector(
+                        android.getDependenciesDcl().getAndroidTestImplementation());
     }
 
     /**

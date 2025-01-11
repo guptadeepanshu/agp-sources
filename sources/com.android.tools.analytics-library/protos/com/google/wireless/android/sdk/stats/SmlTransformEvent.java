@@ -4421,6 +4421,618 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface TransformRejectedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.SmlTransformEvent.TransformRejected)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     * @return Whether the metadata field is set.
+     */
+    boolean hasMetadata();
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     * @return The metadata.
+     */
+    com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata();
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     */
+    com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder();
+  }
+  /**
+   * Protobuf type {@code android_studio.SmlTransformEvent.TransformRejected}
+   */
+  public static final class TransformRejected extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.SmlTransformEvent.TransformRejected)
+      TransformRejectedOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TransformRejected.newBuilder() to construct.
+    private TransformRejected(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TransformRejected() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TransformRejected();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlTransformEvent_TransformRejected_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlTransformEvent_TransformRejected_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.class, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int METADATA_FIELD_NUMBER = 1;
+    private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     * @return Whether the metadata field is set.
+     */
+    @java.lang.Override
+    public boolean hasMetadata() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     * @return The metadata.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+      return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
+    }
+    /**
+     * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+      return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeMessage(1, getMetadata());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getMetadata());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected other = (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) obj;
+
+      if (hasMetadata() != other.hasMetadata()) return false;
+      if (hasMetadata()) {
+        if (!getMetadata()
+            .equals(other.getMetadata())) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMetadata()) {
+        hash = (37 * hash) + METADATA_FIELD_NUMBER;
+        hash = (53 * hash) + getMetadata().hashCode();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.SmlTransformEvent.TransformRejected}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.SmlTransformEvent.TransformRejected)
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlTransformEvent_TransformRejected_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlTransformEvent_TransformRejected_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.class, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getMetadataFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (metadataBuilder_ == null) {
+          metadata_ = null;
+        } else {
+          metadataBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlTransformEvent_TransformRejected_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected build() {
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected buildPartial() {
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected result = new com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          if (metadataBuilder_ == null) {
+            result.metadata_ = metadata_;
+          } else {
+            result.metadata_ = metadataBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected other) {
+        if (other == com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance()) return this;
+        if (other.hasMetadata()) {
+          mergeMetadata(other.getMetadata());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                input.readMessage(
+                    getMetadataFieldBuilder().getBuilder(),
+                    extensionRegistry);
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 10
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.wireless.android.sdk.stats.SmlResponseMetadata metadata_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> metadataBuilder_;
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       * @return Whether the metadata field is set.
+       */
+      public boolean hasMetadata() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       * @return The metadata.
+       */
+      public com.google.wireless.android.sdk.stats.SmlResponseMetadata getMetadata() {
+        if (metadataBuilder_ == null) {
+          return metadata_ == null ? com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
+        } else {
+          return metadataBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public Builder setMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+        if (metadataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          metadata_ = value;
+          onChanged();
+        } else {
+          metadataBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public Builder setMetadata(
+          com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
+        if (metadataBuilder_ == null) {
+          metadata_ = builderForValue.build();
+          onChanged();
+        } else {
+          metadataBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
+        if (metadataBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0) &&
+              metadata_ != null &&
+              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            metadata_ =
+              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+          } else {
+            metadata_ = value;
+          }
+          onChanged();
+        } else {
+          metadataBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public Builder clearMetadata() {
+        if (metadataBuilder_ == null) {
+          metadata_ = null;
+          onChanged();
+        } else {
+          metadataBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder getMetadataBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getMetadataFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder getMetadataOrBuilder() {
+        if (metadataBuilder_ != null) {
+          return metadataBuilder_.getMessageOrBuilder();
+        } else {
+          return metadata_ == null ?
+              com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance() : metadata_;
+        }
+      }
+      /**
+       * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder> 
+          getMetadataFieldBuilder() {
+        if (metadataBuilder_ == null) {
+          metadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.SmlResponseMetadata, com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder, com.google.wireless.android.sdk.stats.SmlResponseMetadataOrBuilder>(
+                  getMetadata(),
+                  getParentForChildren(),
+                  isClean());
+          metadata_ = null;
+        }
+        return metadataBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.SmlTransformEvent.TransformRejected)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.SmlTransformEvent.TransformRejected)
+    private static final com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected();
+    }
+
+    public static com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<TransformRejected>
+        PARSER = new com.google.protobuf.AbstractParser<TransformRejected>() {
+      @java.lang.Override
+      public TransformRejected parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<TransformRejected> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TransformRejected> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   private int transformCase_ = 0;
   private java.lang.Object transform_;
@@ -4431,6 +5043,7 @@ private static final long serialVersionUID = 0L;
     RESPONSE(2),
     SHOWN(3),
     ACCEPTED(4),
+    REJECTED(6),
     TRANSFORM_NOT_SET(0);
     private final int value;
     private TransformCase(int value) {
@@ -4452,6 +5065,7 @@ private static final long serialVersionUID = 0L;
         case 2: return RESPONSE;
         case 3: return SHOWN;
         case 4: return ACCEPTED;
+        case 6: return REJECTED;
         case 0: return TRANSFORM_NOT_SET;
         default: return null;
       }
@@ -4591,6 +5205,37 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted.getDefaultInstance();
   }
 
+  public static final int REJECTED_FIELD_NUMBER = 6;
+  /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   * @return Whether the rejected field is set.
+   */
+  @java.lang.Override
+  public boolean hasRejected() {
+    return transformCase_ == 6;
+  }
+  /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   * @return The rejected.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getRejected() {
+    if (transformCase_ == 6) {
+       return (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_;
+    }
+    return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+  }
+  /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder getRejectedOrBuilder() {
+    if (transformCase_ == 6) {
+       return (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_;
+    }
+    return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+  }
+
   public static final int TRANSFORM_KIND_FIELD_NUMBER = 5;
   private int transformKind_;
   /**
@@ -4603,7 +5248,7 @@ private static final long serialVersionUID = 0L;
    * @return Whether the transformKind field is set.
    */
   @java.lang.Override public boolean hasTransformKind() {
-    return ((bitField0_ & 0x00000010) != 0);
+    return ((bitField0_ & 0x00000020) != 0);
   }
   /**
    * <pre>
@@ -4633,7 +5278,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasSessionId() {
-    return ((bitField0_ & 0x00000020) != 0);
+    return ((bitField0_ & 0x00000040) != 0);
   }
   /**
    * <pre>
@@ -4694,7 +5339,7 @@ private static final long serialVersionUID = 0L;
    * @return Whether the transformPhase field is set.
    */
   @java.lang.Override public boolean hasTransformPhase() {
-    return ((bitField0_ & 0x00000040) != 0);
+    return ((bitField0_ & 0x00000080) != 0);
   }
   /**
    * <pre>
@@ -4736,13 +5381,16 @@ private static final long serialVersionUID = 0L;
     if (transformCase_ == 4) {
       output.writeMessage(4, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted) transform_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000020) != 0)) {
       output.writeEnum(5, transformKind_);
     }
-    if (((bitField0_ & 0x00000020) != 0)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sessionId_);
+    if (transformCase_ == 6) {
+      output.writeMessage(6, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_);
     }
     if (((bitField0_ & 0x00000040) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 7, sessionId_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
       output.writeEnum(8, transformPhase_);
     }
     getUnknownFields().writeTo(output);
@@ -4770,14 +5418,18 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAccepted) transform_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(5, transformKind_);
     }
-    if (((bitField0_ & 0x00000020) != 0)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, sessionId_);
+    if (transformCase_ == 6) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_);
     }
     if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, sessionId_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(8, transformPhase_);
     }
@@ -4827,6 +5479,10 @@ private static final long serialVersionUID = 0L;
         if (!getAccepted()
             .equals(other.getAccepted())) return false;
         break;
+      case 6:
+        if (!getRejected()
+            .equals(other.getRejected())) return false;
+        break;
       case 0:
       default:
     }
@@ -4869,6 +5525,10 @@ private static final long serialVersionUID = 0L;
       case 4:
         hash = (37 * hash) + ACCEPTED_FIELD_NUMBER;
         hash = (53 * hash) + getAccepted().hashCode();
+        break;
+      case 6:
+        hash = (37 * hash) + REJECTED_FIELD_NUMBER;
+        hash = (53 * hash) + getRejected().hashCode();
         break;
       case 0:
       default:
@@ -5013,12 +5673,15 @@ private static final long serialVersionUID = 0L;
       if (acceptedBuilder_ != null) {
         acceptedBuilder_.clear();
       }
+      if (rejectedBuilder_ != null) {
+        rejectedBuilder_.clear();
+      }
       transformKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      sessionId_ = "";
       bitField0_ = (bitField0_ & ~0x00000020);
-      transformPhase_ = 0;
+      sessionId_ = "";
       bitField0_ = (bitField0_ & ~0x00000040);
+      transformPhase_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000080);
       transformCase_ = 0;
       transform_ = null;
       return this;
@@ -5077,16 +5740,23 @@ private static final long serialVersionUID = 0L;
           result.transform_ = acceptedBuilder_.build();
         }
       }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
+      if (transformCase_ == 6) {
+        if (rejectedBuilder_ == null) {
+          result.transform_ = transform_;
+        } else {
+          result.transform_ = rejectedBuilder_.build();
+        }
       }
-      result.transformKind_ = transformKind_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
         to_bitField0_ |= 0x00000020;
       }
-      result.sessionId_ = sessionId_;
+      result.transformKind_ = transformKind_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         to_bitField0_ |= 0x00000040;
+      }
+      result.sessionId_ = sessionId_;
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        to_bitField0_ |= 0x00000080;
       }
       result.transformPhase_ = transformPhase_;
       result.bitField0_ = to_bitField0_;
@@ -5143,7 +5813,7 @@ private static final long serialVersionUID = 0L;
         setTransformKind(other.getTransformKind());
       }
       if (other.hasSessionId()) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         sessionId_ = other.sessionId_;
         onChanged();
       }
@@ -5165,6 +5835,10 @@ private static final long serialVersionUID = 0L;
         }
         case ACCEPTED: {
           mergeAccepted(other.getAccepted());
+          break;
+        }
+        case REJECTED: {
+          mergeRejected(other.getRejected());
           break;
         }
         case TRANSFORM_NOT_SET: {
@@ -5233,13 +5907,20 @@ private static final long serialVersionUID = 0L;
                 mergeUnknownVarintField(5, tmpRaw);
               } else {
                 transformKind_ = tmpRaw;
-                bitField0_ |= 0x00000010;
+                bitField0_ |= 0x00000020;
               }
               break;
             } // case 40
+            case 50: {
+              input.readMessage(
+                  getRejectedFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              transformCase_ = 6;
+              break;
+            } // case 50
             case 58: {
               sessionId_ = input.readBytes();
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               break;
             } // case 58
             case 64: {
@@ -5250,7 +5931,7 @@ private static final long serialVersionUID = 0L;
                 mergeUnknownVarintField(8, tmpRaw);
               } else {
                 transformPhase_ = tmpRaw;
-                bitField0_ |= 0x00000040;
+                bitField0_ |= 0x00000080;
               }
               break;
             } // case 64
@@ -5850,6 +6531,147 @@ private static final long serialVersionUID = 0L;
       return acceptedBuilder_;
     }
 
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder> rejectedBuilder_;
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     * @return Whether the rejected field is set.
+     */
+    @java.lang.Override
+    public boolean hasRejected() {
+      return transformCase_ == 6;
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     * @return The rejected.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getRejected() {
+      if (rejectedBuilder_ == null) {
+        if (transformCase_ == 6) {
+          return (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_;
+        }
+        return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+      } else {
+        if (transformCase_ == 6) {
+          return rejectedBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    public Builder setRejected(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected value) {
+      if (rejectedBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        transform_ = value;
+        onChanged();
+      } else {
+        rejectedBuilder_.setMessage(value);
+      }
+      transformCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    public Builder setRejected(
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder builderForValue) {
+      if (rejectedBuilder_ == null) {
+        transform_ = builderForValue.build();
+        onChanged();
+      } else {
+        rejectedBuilder_.setMessage(builderForValue.build());
+      }
+      transformCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    public Builder mergeRejected(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected value) {
+      if (rejectedBuilder_ == null) {
+        if (transformCase_ == 6 &&
+            transform_ != com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance()) {
+          transform_ = com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.newBuilder((com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          transform_ = value;
+        }
+        onChanged();
+      } else {
+        if (transformCase_ == 6) {
+          rejectedBuilder_.mergeFrom(value);
+        }
+        rejectedBuilder_.setMessage(value);
+      }
+      transformCase_ = 6;
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    public Builder clearRejected() {
+      if (rejectedBuilder_ == null) {
+        if (transformCase_ == 6) {
+          transformCase_ = 0;
+          transform_ = null;
+          onChanged();
+        }
+      } else {
+        if (transformCase_ == 6) {
+          transformCase_ = 0;
+          transform_ = null;
+        }
+        rejectedBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder getRejectedBuilder() {
+      return getRejectedFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder getRejectedOrBuilder() {
+      if ((transformCase_ == 6) && (rejectedBuilder_ != null)) {
+        return rejectedBuilder_.getMessageOrBuilder();
+      } else {
+        if (transformCase_ == 6) {
+          return (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_;
+        }
+        return com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder> 
+        getRejectedFieldBuilder() {
+      if (rejectedBuilder_ == null) {
+        if (!(transformCase_ == 6)) {
+          transform_ = com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.getDefaultInstance();
+        }
+        rejectedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected.Builder, com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder>(
+                (com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected) transform_,
+                getParentForChildren(),
+                isClean());
+        transform_ = null;
+      }
+      transformCase_ = 6;
+      onChanged();;
+      return rejectedBuilder_;
+    }
+
     private int transformKind_ = 0;
     /**
      * <pre>
@@ -5861,7 +6683,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the transformKind field is set.
      */
     @java.lang.Override public boolean hasTransformKind() {
-      return ((bitField0_ & 0x00000010) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -5892,7 +6714,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000020;
       transformKind_ = value.getNumber();
       onChanged();
       return this;
@@ -5907,7 +6729,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTransformKind() {
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000020);
       transformKind_ = 0;
       onChanged();
       return this;
@@ -5924,7 +6746,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the sessionId field is set.
      */
     public boolean hasSessionId() {
-      return ((bitField0_ & 0x00000020) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
      * <pre>
@@ -5986,7 +6808,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
       sessionId_ = value;
       onChanged();
       return this;
@@ -6001,7 +6823,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSessionId() {
-      bitField0_ = (bitField0_ & ~0x00000020);
+      bitField0_ = (bitField0_ & ~0x00000040);
       sessionId_ = getDefaultInstance().getSessionId();
       onChanged();
       return this;
@@ -6021,7 +6843,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000020;
+  bitField0_ |= 0x00000040;
       sessionId_ = value;
       onChanged();
       return this;
@@ -6037,7 +6859,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the transformPhase field is set.
      */
     @java.lang.Override public boolean hasTransformPhase() {
-      return ((bitField0_ & 0x00000040) != 0);
+      return ((bitField0_ & 0x00000080) != 0);
     }
     /**
      * <pre>
@@ -6066,7 +6888,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      bitField0_ |= 0x00000040;
+      bitField0_ |= 0x00000080;
       transformPhase_ = value.getNumber();
       onChanged();
       return this;
@@ -6080,7 +6902,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTransformPhase() {
-      bitField0_ = (bitField0_ & ~0x00000040);
+      bitField0_ = (bitField0_ & ~0x00000080);
       transformPhase_ = 0;
       onChanged();
       return this;

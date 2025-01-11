@@ -119,7 +119,7 @@ interface VariantBuilder: ComponentBuilder {
     @Deprecated(
         "Will be removed in AGP 9.0 - " +
                 "Use (variantBuilder as HasHostTestsBuilder).get(HasHostTestsBuilder.UNIT_TEST_TYPE).enable",
-    )
+    ) // b/368607542
     var unitTestEnabled: Boolean
 
     /**
@@ -129,7 +129,7 @@ interface VariantBuilder: ComponentBuilder {
     @Deprecated(
         "Will be removed in AGP 9.0 - " +
             "Use (variantBuilder as HasHostTestsBuilder).get(HasHostTestsBuilder.UNIT_TEST_TYPE).enable",
-    )
+    ) // b/368607542
     var enableUnitTest: Boolean
 
     /**

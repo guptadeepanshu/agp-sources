@@ -43,6 +43,116 @@ private static final long serialVersionUID = 0L;
             com.google.wireless.android.sdk.stats.TestScenarioEvent.class, com.google.wireless.android.sdk.stats.TestScenarioEvent.Builder.class);
   }
 
+  /**
+   * <pre>
+   * Specifies whether user is creating a new test file or adding tests to
+   * existing tests.
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.TestScenarioEvent.GenerationType}
+   */
+  public enum GenerationType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>GENERATION_TYPE_UNDEFINED = 0;</code>
+     */
+    GENERATION_TYPE_UNDEFINED(0),
+    /**
+     * <code>NEW_FILE = 1;</code>
+     */
+    NEW_FILE(1),
+    /**
+     * <code>EXISTING_FILE = 2;</code>
+     */
+    EXISTING_FILE(2),
+    ;
+
+    /**
+     * <code>GENERATION_TYPE_UNDEFINED = 0;</code>
+     */
+    public static final int GENERATION_TYPE_UNDEFINED_VALUE = 0;
+    /**
+     * <code>NEW_FILE = 1;</code>
+     */
+    public static final int NEW_FILE_VALUE = 1;
+    /**
+     * <code>EXISTING_FILE = 2;</code>
+     */
+    public static final int EXISTING_FILE_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static GenerationType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static GenerationType forNumber(int value) {
+      switch (value) {
+        case 0: return GENERATION_TYPE_UNDEFINED;
+        case 1: return NEW_FILE;
+        case 2: return EXISTING_FILE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<GenerationType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        GenerationType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<GenerationType>() {
+            public GenerationType findValueByNumber(int number) {
+              return GenerationType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.TestScenarioEvent.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final GenerationType[] VALUES = values();
+
+    public static GenerationType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private GenerationType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.TestScenarioEvent.GenerationType)
+  }
+
   public interface TestScenarioRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.TestScenarioEvent.TestScenarioRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -1418,35 +1528,47 @@ private static final long serialVersionUID = 0L;
 
     /**
      * <pre>
-     * This is only logged if the number of test scenarios and actual test
-     * signatures do not match.
+     * Deprecated. This is only logged if the number of test scenarios
+     * and actual test signatures do not match.
      * </pre>
      *
-     * <code>optional int32 test_scenarios_count = 1;</code>
+     * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the testScenariosCount field is set.
      */
-    boolean hasTestScenariosCount();
+    @java.lang.Deprecated boolean hasTestScenariosCount();
     /**
      * <pre>
-     * This is only logged if the number of test scenarios and actual test
-     * signatures do not match.
+     * Deprecated. This is only logged if the number of test scenarios
+     * and actual test signatures do not match.
      * </pre>
      *
-     * <code>optional int32 test_scenarios_count = 1;</code>
+     * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The testScenariosCount.
      */
-    int getTestScenariosCount();
+    @java.lang.Deprecated int getTestScenariosCount();
 
     /**
-     * <code>optional int32 test_signatures_count = 2;</code>
+     * <pre>
+     * Deprecated.
+     * </pre>
+     *
+     * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the testSignaturesCount field is set.
      */
-    boolean hasTestSignaturesCount();
+    @java.lang.Deprecated boolean hasTestSignaturesCount();
     /**
-     * <code>optional int32 test_signatures_count = 2;</code>
+     * <pre>
+     * Deprecated.
+     * </pre>
+     *
+     * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The testSignaturesCount.
      */
-    int getTestSignaturesCount();
+    @java.lang.Deprecated int getTestSignaturesCount();
   }
   /**
    * Protobuf type {@code android_studio.TestScenarioEvent.InconsistentCount}
@@ -1493,47 +1615,59 @@ private static final long serialVersionUID = 0L;
     private int testScenariosCount_;
     /**
      * <pre>
-     * This is only logged if the number of test scenarios and actual test
-     * signatures do not match.
+     * Deprecated. This is only logged if the number of test scenarios
+     * and actual test signatures do not match.
      * </pre>
      *
-     * <code>optional int32 test_scenarios_count = 1;</code>
+     * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the testScenariosCount field is set.
      */
     @java.lang.Override
-    public boolean hasTestScenariosCount() {
+    @java.lang.Deprecated public boolean hasTestScenariosCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
-     * This is only logged if the number of test scenarios and actual test
-     * signatures do not match.
+     * Deprecated. This is only logged if the number of test scenarios
+     * and actual test signatures do not match.
      * </pre>
      *
-     * <code>optional int32 test_scenarios_count = 1;</code>
+     * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The testScenariosCount.
      */
     @java.lang.Override
-    public int getTestScenariosCount() {
+    @java.lang.Deprecated public int getTestScenariosCount() {
       return testScenariosCount_;
     }
 
     public static final int TEST_SIGNATURES_COUNT_FIELD_NUMBER = 2;
     private int testSignaturesCount_;
     /**
-     * <code>optional int32 test_signatures_count = 2;</code>
+     * <pre>
+     * Deprecated.
+     * </pre>
+     *
+     * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the testSignaturesCount field is set.
      */
     @java.lang.Override
-    public boolean hasTestSignaturesCount() {
+    @java.lang.Deprecated public boolean hasTestSignaturesCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional int32 test_signatures_count = 2;</code>
+     * <pre>
+     * Deprecated.
+     * </pre>
+     *
+     * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The testSignaturesCount.
      */
     @java.lang.Override
-    public int getTestSignaturesCount() {
+    @java.lang.Deprecated public int getTestSignaturesCount() {
       return testSignaturesCount_;
     }
 
@@ -1897,41 +2031,44 @@ private static final long serialVersionUID = 0L;
       private int testScenariosCount_ ;
       /**
        * <pre>
-       * This is only logged if the number of test scenarios and actual test
-       * signatures do not match.
+       * Deprecated. This is only logged if the number of test scenarios
+       * and actual test signatures do not match.
        * </pre>
        *
-       * <code>optional int32 test_scenarios_count = 1;</code>
+       * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the testScenariosCount field is set.
        */
       @java.lang.Override
-      public boolean hasTestScenariosCount() {
+      @java.lang.Deprecated public boolean hasTestScenariosCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
-       * This is only logged if the number of test scenarios and actual test
-       * signatures do not match.
+       * Deprecated. This is only logged if the number of test scenarios
+       * and actual test signatures do not match.
        * </pre>
        *
-       * <code>optional int32 test_scenarios_count = 1;</code>
+       * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The testScenariosCount.
        */
       @java.lang.Override
-      public int getTestScenariosCount() {
+      @java.lang.Deprecated public int getTestScenariosCount() {
         return testScenariosCount_;
       }
       /**
        * <pre>
-       * This is only logged if the number of test scenarios and actual test
-       * signatures do not match.
+       * Deprecated. This is only logged if the number of test scenarios
+       * and actual test signatures do not match.
        * </pre>
        *
-       * <code>optional int32 test_scenarios_count = 1;</code>
+       * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The testScenariosCount to set.
        * @return This builder for chaining.
        */
-      public Builder setTestScenariosCount(int value) {
+      @java.lang.Deprecated public Builder setTestScenariosCount(int value) {
         bitField0_ |= 0x00000001;
         testScenariosCount_ = value;
         onChanged();
@@ -1939,14 +2076,15 @@ private static final long serialVersionUID = 0L;
       }
       /**
        * <pre>
-       * This is only logged if the number of test scenarios and actual test
-       * signatures do not match.
+       * Deprecated. This is only logged if the number of test scenarios
+       * and actual test signatures do not match.
        * </pre>
        *
-       * <code>optional int32 test_scenarios_count = 1;</code>
+       * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearTestScenariosCount() {
+      @java.lang.Deprecated public Builder clearTestScenariosCount() {
         bitField0_ = (bitField0_ & ~0x00000001);
         testScenariosCount_ = 0;
         onChanged();
@@ -1955,37 +2093,57 @@ private static final long serialVersionUID = 0L;
 
       private int testSignaturesCount_ ;
       /**
-       * <code>optional int32 test_signatures_count = 2;</code>
+       * <pre>
+       * Deprecated.
+       * </pre>
+       *
+       * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the testSignaturesCount field is set.
        */
       @java.lang.Override
-      public boolean hasTestSignaturesCount() {
+      @java.lang.Deprecated public boolean hasTestSignaturesCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional int32 test_signatures_count = 2;</code>
+       * <pre>
+       * Deprecated.
+       * </pre>
+       *
+       * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The testSignaturesCount.
        */
       @java.lang.Override
-      public int getTestSignaturesCount() {
+      @java.lang.Deprecated public int getTestSignaturesCount() {
         return testSignaturesCount_;
       }
       /**
-       * <code>optional int32 test_signatures_count = 2;</code>
+       * <pre>
+       * Deprecated.
+       * </pre>
+       *
+       * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The testSignaturesCount to set.
        * @return This builder for chaining.
        */
-      public Builder setTestSignaturesCount(int value) {
+      @java.lang.Deprecated public Builder setTestSignaturesCount(int value) {
         bitField0_ |= 0x00000002;
         testSignaturesCount_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 test_signatures_count = 2;</code>
+       * <pre>
+       * Deprecated.
+       * </pre>
+       *
+       * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearTestSignaturesCount() {
+      @java.lang.Deprecated public Builder clearTestSignaturesCount() {
         bitField0_ = (bitField0_ & ~0x00000002);
         testSignaturesCount_ = 0;
         onChanged();
@@ -2055,6 +2213,962 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface TestScenarioResultOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.TestScenarioEvent.TestScenarioResult)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Number of misformatted model response
+     * </pre>
+     *
+     * <code>optional uint32 misformatted_response_count = 1;</code>
+     * @return Whether the misformattedResponseCount field is set.
+     */
+    boolean hasMisformattedResponseCount();
+    /**
+     * <pre>
+     * Number of misformatted model response
+     * </pre>
+     *
+     * <code>optional uint32 misformatted_response_count = 1;</code>
+     * @return The misformattedResponseCount.
+     */
+    int getMisformattedResponseCount();
+
+    /**
+     * <pre>
+     * Indicates whether user is creating new tests or enhancing existing
+     * tests.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+     * @return Whether the generationType field is set.
+     */
+    boolean hasGenerationType();
+    /**
+     * <pre>
+     * Indicates whether user is creating new tests or enhancing existing
+     * tests.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+     * @return The generationType.
+     */
+    com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType getGenerationType();
+
+    /**
+     * <pre>
+     * Number of accepted test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_accept = 3;</code>
+     * @return Whether the numAccept field is set.
+     */
+    boolean hasNumAccept();
+    /**
+     * <pre>
+     * Number of accepted test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_accept = 3;</code>
+     * @return The numAccept.
+     */
+    int getNumAccept();
+
+    /**
+     * <pre>
+     * Number of declined test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_decline = 4;</code>
+     * @return Whether the numDecline field is set.
+     */
+    boolean hasNumDecline();
+    /**
+     * <pre>
+     * Number of declined test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_decline = 4;</code>
+     * @return The numDecline.
+     */
+    int getNumDecline();
+  }
+  /**
+   * <pre>
+   * Logged for every test scenario geneartion result
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.TestScenarioEvent.TestScenarioResult}
+   */
+  public static final class TestScenarioResult extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.TestScenarioEvent.TestScenarioResult)
+      TestScenarioResultOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use TestScenarioResult.newBuilder() to construct.
+    private TestScenarioResult(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private TestScenarioResult() {
+      generationType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new TestScenarioResult();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.class, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int MISFORMATTED_RESPONSE_COUNT_FIELD_NUMBER = 1;
+    private int misformattedResponseCount_;
+    /**
+     * <pre>
+     * Number of misformatted model response
+     * </pre>
+     *
+     * <code>optional uint32 misformatted_response_count = 1;</code>
+     * @return Whether the misformattedResponseCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasMisformattedResponseCount() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Number of misformatted model response
+     * </pre>
+     *
+     * <code>optional uint32 misformatted_response_count = 1;</code>
+     * @return The misformattedResponseCount.
+     */
+    @java.lang.Override
+    public int getMisformattedResponseCount() {
+      return misformattedResponseCount_;
+    }
+
+    public static final int GENERATION_TYPE_FIELD_NUMBER = 2;
+    private int generationType_;
+    /**
+     * <pre>
+     * Indicates whether user is creating new tests or enhancing existing
+     * tests.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+     * @return Whether the generationType field is set.
+     */
+    @java.lang.Override public boolean hasGenerationType() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Indicates whether user is creating new tests or enhancing existing
+     * tests.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+     * @return The generationType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType getGenerationType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.valueOf(generationType_);
+      return result == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.GENERATION_TYPE_UNDEFINED : result;
+    }
+
+    public static final int NUM_ACCEPT_FIELD_NUMBER = 3;
+    private int numAccept_;
+    /**
+     * <pre>
+     * Number of accepted test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_accept = 3;</code>
+     * @return Whether the numAccept field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumAccept() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Number of accepted test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_accept = 3;</code>
+     * @return The numAccept.
+     */
+    @java.lang.Override
+    public int getNumAccept() {
+      return numAccept_;
+    }
+
+    public static final int NUM_DECLINE_FIELD_NUMBER = 4;
+    private int numDecline_;
+    /**
+     * <pre>
+     * Number of declined test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_decline = 4;</code>
+     * @return Whether the numDecline field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumDecline() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Number of declined test scenarios
+     * </pre>
+     *
+     * <code>optional uint32 num_decline = 4;</code>
+     * @return The numDecline.
+     */
+    @java.lang.Override
+    public int getNumDecline() {
+      return numDecline_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeUInt32(1, misformattedResponseCount_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, generationType_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeUInt32(3, numAccept_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeUInt32(4, numDecline_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, misformattedResponseCount_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, generationType_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, numAccept_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, numDecline_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult other = (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) obj;
+
+      if (hasMisformattedResponseCount() != other.hasMisformattedResponseCount()) return false;
+      if (hasMisformattedResponseCount()) {
+        if (getMisformattedResponseCount()
+            != other.getMisformattedResponseCount()) return false;
+      }
+      if (hasGenerationType() != other.hasGenerationType()) return false;
+      if (hasGenerationType()) {
+        if (generationType_ != other.generationType_) return false;
+      }
+      if (hasNumAccept() != other.hasNumAccept()) return false;
+      if (hasNumAccept()) {
+        if (getNumAccept()
+            != other.getNumAccept()) return false;
+      }
+      if (hasNumDecline() != other.hasNumDecline()) return false;
+      if (hasNumDecline()) {
+        if (getNumDecline()
+            != other.getNumDecline()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasMisformattedResponseCount()) {
+        hash = (37 * hash) + MISFORMATTED_RESPONSE_COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getMisformattedResponseCount();
+      }
+      if (hasGenerationType()) {
+        hash = (37 * hash) + GENERATION_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + generationType_;
+      }
+      if (hasNumAccept()) {
+        hash = (37 * hash) + NUM_ACCEPT_FIELD_NUMBER;
+        hash = (53 * hash) + getNumAccept();
+      }
+      if (hasNumDecline()) {
+        hash = (37 * hash) + NUM_DECLINE_FIELD_NUMBER;
+        hash = (53 * hash) + getNumDecline();
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Logged for every test scenario geneartion result
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.TestScenarioEvent.TestScenarioResult}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.TestScenarioEvent.TestScenarioResult)
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.class, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        misformattedResponseCount_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        generationType_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        numAccept_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        numDecline_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult build() {
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult buildPartial() {
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult result = new com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.misformattedResponseCount_ = misformattedResponseCount_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.generationType_ = generationType_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.numAccept_ = numAccept_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.numDecline_ = numDecline_;
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult other) {
+        if (other == com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance()) return this;
+        if (other.hasMisformattedResponseCount()) {
+          setMisformattedResponseCount(other.getMisformattedResponseCount());
+        }
+        if (other.hasGenerationType()) {
+          setGenerationType(other.getGenerationType());
+        }
+        if (other.hasNumAccept()) {
+          setNumAccept(other.getNumAccept());
+        }
+        if (other.hasNumDecline()) {
+          setNumDecline(other.getNumDecline());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                misformattedResponseCount_ = input.readUInt32();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType tmpValue =
+                    com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  generationType_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              case 24: {
+                numAccept_ = input.readUInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                numDecline_ = input.readUInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int misformattedResponseCount_ ;
+      /**
+       * <pre>
+       * Number of misformatted model response
+       * </pre>
+       *
+       * <code>optional uint32 misformatted_response_count = 1;</code>
+       * @return Whether the misformattedResponseCount field is set.
+       */
+      @java.lang.Override
+      public boolean hasMisformattedResponseCount() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Number of misformatted model response
+       * </pre>
+       *
+       * <code>optional uint32 misformatted_response_count = 1;</code>
+       * @return The misformattedResponseCount.
+       */
+      @java.lang.Override
+      public int getMisformattedResponseCount() {
+        return misformattedResponseCount_;
+      }
+      /**
+       * <pre>
+       * Number of misformatted model response
+       * </pre>
+       *
+       * <code>optional uint32 misformatted_response_count = 1;</code>
+       * @param value The misformattedResponseCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMisformattedResponseCount(int value) {
+        bitField0_ |= 0x00000001;
+        misformattedResponseCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of misformatted model response
+       * </pre>
+       *
+       * <code>optional uint32 misformatted_response_count = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMisformattedResponseCount() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        misformattedResponseCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int generationType_ = 0;
+      /**
+       * <pre>
+       * Indicates whether user is creating new tests or enhancing existing
+       * tests.
+       * </pre>
+       *
+       * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+       * @return Whether the generationType field is set.
+       */
+      @java.lang.Override public boolean hasGenerationType() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Indicates whether user is creating new tests or enhancing existing
+       * tests.
+       * </pre>
+       *
+       * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+       * @return The generationType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType getGenerationType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.valueOf(generationType_);
+        return result == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.GENERATION_TYPE_UNDEFINED : result;
+      }
+      /**
+       * <pre>
+       * Indicates whether user is creating new tests or enhancing existing
+       * tests.
+       * </pre>
+       *
+       * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+       * @param value The generationType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setGenerationType(com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        generationType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Indicates whether user is creating new tests or enhancing existing
+       * tests.
+       * </pre>
+       *
+       * <code>optional .android_studio.TestScenarioEvent.GenerationType generation_type = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearGenerationType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        generationType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int numAccept_ ;
+      /**
+       * <pre>
+       * Number of accepted test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_accept = 3;</code>
+       * @return Whether the numAccept field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumAccept() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Number of accepted test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_accept = 3;</code>
+       * @return The numAccept.
+       */
+      @java.lang.Override
+      public int getNumAccept() {
+        return numAccept_;
+      }
+      /**
+       * <pre>
+       * Number of accepted test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_accept = 3;</code>
+       * @param value The numAccept to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumAccept(int value) {
+        bitField0_ |= 0x00000004;
+        numAccept_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of accepted test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_accept = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumAccept() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        numAccept_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int numDecline_ ;
+      /**
+       * <pre>
+       * Number of declined test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_decline = 4;</code>
+       * @return Whether the numDecline field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumDecline() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Number of declined test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_decline = 4;</code>
+       * @return The numDecline.
+       */
+      @java.lang.Override
+      public int getNumDecline() {
+        return numDecline_;
+      }
+      /**
+       * <pre>
+       * Number of declined test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_decline = 4;</code>
+       * @param value The numDecline to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumDecline(int value) {
+        bitField0_ |= 0x00000008;
+        numDecline_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of declined test scenarios
+       * </pre>
+       *
+       * <code>optional uint32 num_decline = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumDecline() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        numDecline_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.TestScenarioEvent.TestScenarioResult)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.TestScenarioEvent.TestScenarioResult)
+    private static final com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult();
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<TestScenarioResult>
+        PARSER = new com.google.protobuf.AbstractParser<TestScenarioResult>() {
+      @java.lang.Override
+      public TestScenarioResult parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<TestScenarioResult> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TestScenarioResult> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   private int transformCase_ = 0;
   private java.lang.Object transform_;
@@ -2062,7 +3176,8 @@ private static final long serialVersionUID = 0L;
       implements com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     REQUEST(1),
-    INCONSISTENT_COUNT(2),
+    @java.lang.Deprecated INCONSISTENT_COUNT(2),
+    TEST_SCENARIO_RESULT(3),
     TRANSFORM_NOT_SET(0);
     private final int value;
     private TransformCase(int value) {
@@ -2082,6 +3197,7 @@ private static final long serialVersionUID = 0L;
       switch (value) {
         case 1: return REQUEST;
         case 2: return INCONSISTENT_COUNT;
+        case 3: return TEST_SCENARIO_RESULT;
         case 0: return TRANSFORM_NOT_SET;
         default: return null;
       }
@@ -2130,33 +3246,78 @@ private static final long serialVersionUID = 0L;
 
   public static final int INCONSISTENT_COUNT_FIELD_NUMBER = 2;
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+   * @deprecated
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Override
-  public boolean hasInconsistentCount() {
+  @java.lang.Deprecated public boolean hasInconsistentCount() {
     return transformCase_ == 2;
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+   * @deprecated
    * @return The inconsistentCount.
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount() {
     if (transformCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) transform_;
     }
     return com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.getDefaultInstance();
   }
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    */
   @java.lang.Override
-  public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
+  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
     if (transformCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) transform_;
     }
     return com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.getDefaultInstance();
+  }
+
+  public static final int TEST_SCENARIO_RESULT_FIELD_NUMBER = 3;
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   * @return Whether the testScenarioResult field is set.
+   */
+  @java.lang.Override
+  public boolean hasTestScenarioResult() {
+    return transformCase_ == 3;
+  }
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   * @return The testScenarioResult.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getTestScenarioResult() {
+    if (transformCase_ == 3) {
+       return (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_;
+    }
+    return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+  }
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder getTestScenarioResultOrBuilder() {
+    if (transformCase_ == 3) {
+       return (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_;
+    }
+    return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -2179,6 +3340,9 @@ private static final long serialVersionUID = 0L;
     if (transformCase_ == 2) {
       output.writeMessage(2, (com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) transform_);
     }
+    if (transformCase_ == 3) {
+      output.writeMessage(3, (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -2195,6 +3359,10 @@ private static final long serialVersionUID = 0L;
     if (transformCase_ == 2) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(2, (com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) transform_);
+    }
+    if (transformCase_ == 3) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(3, (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2221,6 +3389,10 @@ private static final long serialVersionUID = 0L;
         if (!getInconsistentCount()
             .equals(other.getInconsistentCount())) return false;
         break;
+      case 3:
+        if (!getTestScenarioResult()
+            .equals(other.getTestScenarioResult())) return false;
+        break;
       case 0:
       default:
     }
@@ -2243,6 +3415,10 @@ private static final long serialVersionUID = 0L;
       case 2:
         hash = (37 * hash) + INCONSISTENT_COUNT_FIELD_NUMBER;
         hash = (53 * hash) + getInconsistentCount().hashCode();
+        break;
+      case 3:
+        hash = (37 * hash) + TEST_SCENARIO_RESULT_FIELD_NUMBER;
+        hash = (53 * hash) + getTestScenarioResult().hashCode();
         break;
       case 0:
       default:
@@ -2381,6 +3557,9 @@ private static final long serialVersionUID = 0L;
       if (inconsistentCountBuilder_ != null) {
         inconsistentCountBuilder_.clear();
       }
+      if (testScenarioResultBuilder_ != null) {
+        testScenarioResultBuilder_.clear();
+      }
       transformCase_ = 0;
       transform_ = null;
       return this;
@@ -2423,6 +3602,13 @@ private static final long serialVersionUID = 0L;
           result.transform_ = transform_;
         } else {
           result.transform_ = inconsistentCountBuilder_.build();
+        }
+      }
+      if (transformCase_ == 3) {
+        if (testScenarioResultBuilder_ == null) {
+          result.transform_ = transform_;
+        } else {
+          result.transform_ = testScenarioResultBuilder_.build();
         }
       }
       result.bitField0_ = to_bitField0_;
@@ -2484,6 +3670,10 @@ private static final long serialVersionUID = 0L;
           mergeInconsistentCount(other.getInconsistentCount());
           break;
         }
+        case TEST_SCENARIO_RESULT: {
+          mergeTestScenarioResult(other.getTestScenarioResult());
+          break;
+        }
         case TRANSFORM_NOT_SET: {
           break;
         }
@@ -2528,6 +3718,13 @@ private static final long serialVersionUID = 0L;
               transformCase_ = 2;
               break;
             } // case 18
+            case 26: {
+              input.readMessage(
+                  getTestScenarioResultFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              transformCase_ = 3;
+              break;
+            } // case 26
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -2704,19 +3901,29 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder> inconsistentCountBuilder_;
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+     * @deprecated
      * @return Whether the inconsistentCount field is set.
      */
     @java.lang.Override
-    public boolean hasInconsistentCount() {
+    @java.lang.Deprecated public boolean hasInconsistentCount() {
       return transformCase_ == 2;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+     * @deprecated
      * @return The inconsistentCount.
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount() {
       if (inconsistentCountBuilder_ == null) {
         if (transformCase_ == 2) {
           return (com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) transform_;
@@ -2730,9 +3937,13 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
-    public Builder setInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
+    @java.lang.Deprecated public Builder setInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
       if (inconsistentCountBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
@@ -2746,9 +3957,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
-    public Builder setInconsistentCount(
+    @java.lang.Deprecated public Builder setInconsistentCount(
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder builderForValue) {
       if (inconsistentCountBuilder_ == null) {
         transform_ = builderForValue.build();
@@ -2760,9 +3975,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
-    public Builder mergeInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
+    @java.lang.Deprecated public Builder mergeInconsistentCount(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount value) {
       if (inconsistentCountBuilder_ == null) {
         if (transformCase_ == 2 &&
             transform_ != com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.getDefaultInstance()) {
@@ -2782,9 +4001,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
-    public Builder clearInconsistentCount() {
+    @java.lang.Deprecated public Builder clearInconsistentCount() {
       if (inconsistentCountBuilder_ == null) {
         if (transformCase_ == 2) {
           transformCase_ = 0;
@@ -2801,16 +4024,24 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
-    public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder getInconsistentCountBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder getInconsistentCountBuilder() {
       return getInconsistentCountFieldBuilder().getBuilder();
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Override
-    public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder() {
       if ((transformCase_ == 2) && (inconsistentCountBuilder_ != null)) {
         return inconsistentCountBuilder_.getMessageOrBuilder();
       } else {
@@ -2821,7 +4052,11 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+     * <pre>
+     * Deprecated this field is no longer necessary
+     * </pre>
+     *
+     * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder> 
@@ -2840,6 +4075,147 @@ private static final long serialVersionUID = 0L;
       transformCase_ = 2;
       onChanged();;
       return inconsistentCountBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder> testScenarioResultBuilder_;
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     * @return Whether the testScenarioResult field is set.
+     */
+    @java.lang.Override
+    public boolean hasTestScenarioResult() {
+      return transformCase_ == 3;
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     * @return The testScenarioResult.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getTestScenarioResult() {
+      if (testScenarioResultBuilder_ == null) {
+        if (transformCase_ == 3) {
+          return (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_;
+        }
+        return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+      } else {
+        if (transformCase_ == 3) {
+          return testScenarioResultBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    public Builder setTestScenarioResult(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult value) {
+      if (testScenarioResultBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        transform_ = value;
+        onChanged();
+      } else {
+        testScenarioResultBuilder_.setMessage(value);
+      }
+      transformCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    public Builder setTestScenarioResult(
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder builderForValue) {
+      if (testScenarioResultBuilder_ == null) {
+        transform_ = builderForValue.build();
+        onChanged();
+      } else {
+        testScenarioResultBuilder_.setMessage(builderForValue.build());
+      }
+      transformCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    public Builder mergeTestScenarioResult(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult value) {
+      if (testScenarioResultBuilder_ == null) {
+        if (transformCase_ == 3 &&
+            transform_ != com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance()) {
+          transform_ = com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.newBuilder((com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          transform_ = value;
+        }
+        onChanged();
+      } else {
+        if (transformCase_ == 3) {
+          testScenarioResultBuilder_.mergeFrom(value);
+        }
+        testScenarioResultBuilder_.setMessage(value);
+      }
+      transformCase_ = 3;
+      return this;
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    public Builder clearTestScenarioResult() {
+      if (testScenarioResultBuilder_ == null) {
+        if (transformCase_ == 3) {
+          transformCase_ = 0;
+          transform_ = null;
+          onChanged();
+        }
+      } else {
+        if (transformCase_ == 3) {
+          transformCase_ = 0;
+          transform_ = null;
+        }
+        testScenarioResultBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder getTestScenarioResultBuilder() {
+      return getTestScenarioResultFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder getTestScenarioResultOrBuilder() {
+      if ((transformCase_ == 3) && (testScenarioResultBuilder_ != null)) {
+        return testScenarioResultBuilder_.getMessageOrBuilder();
+      } else {
+        if (transformCase_ == 3) {
+          return (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_;
+        }
+        return com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder> 
+        getTestScenarioResultFieldBuilder() {
+      if (testScenarioResultBuilder_ == null) {
+        if (!(transformCase_ == 3)) {
+          transform_ = com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.getDefaultInstance();
+        }
+        testScenarioResultBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult.Builder, com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder>(
+                (com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) transform_,
+                getParentForChildren(),
+                isClean());
+        transform_ = null;
+      }
+      transformCase_ = 3;
+      onChanged();;
+      return testScenarioResultBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

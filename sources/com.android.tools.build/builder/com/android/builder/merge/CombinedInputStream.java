@@ -18,14 +18,16 @@ package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import com.google.common.base.Preconditions;
 import com.google.common.io.Closer;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * An input stream that combines a list of input streams. The result when reading the entire
@@ -51,11 +53,15 @@ final class CombinedInputStream extends InputStream {
      * @param inputStreams the list of input streams to combine
      * @param newLinePadding whether '\n' characters should be inserted in-between input streams
      */
-    public CombinedInputStream(@NonNull List<InputStream> inputStreams, boolean newLinePadding) {
+    public CombinedInputStream(@NonNull List<MergeInput> inputStreams, boolean newLinePadding) {
         Preconditions.checkArgument(!inputStreams.isEmpty());
         inputStreams.forEach(Preconditions::checkNotNull);
 
-        this.modifiableStreamList = new ArrayList<>(inputStreams).listIterator();
+        this.modifiableStreamList =
+                inputStreams.stream()
+                        .map(MergeInput::getStream)
+                        .collect(Collectors.toList())
+                        .listIterator();
         this.currentStream = modifiableStreamList.next();
 
         this.newLinePadding = newLinePadding;

@@ -44,7 +44,8 @@ object DisabledCachingReason {
     /** Tasks that execute quickly usually do not benefit from caching. */
     const val FAST_TASK = "Fast task"
 
-    const val FAST_TRANSFORM = "This transform's work is likely faster to execute than retrieving from a remote cache"
+    /** Transforms that execute quickly usually do not benefit from caching. */
+    const val FAST_TRANSFORM = "Fast transform"
 
     /**
      * Base tasks have caching disabled by default. This is only to satisfy Gradle validation checks

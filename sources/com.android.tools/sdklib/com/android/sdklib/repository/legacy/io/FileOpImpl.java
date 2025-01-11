@@ -34,6 +34,7 @@ import java.nio.file.Path;
  * @deprecated Use {@link Path}s, {@link CancellableFileIo} and (for testing) {@code
  *     InMemoryFileSystems} directly.
  */
+@Deprecated
 public class FileOpImpl extends FileOp {
     private final FileSystem fileSystem;
 

@@ -24,15 +24,17 @@ import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.symbols.exportToCompiledJava
 import com.android.ide.common.symbols.SymbolIo
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.services.ServiceReference
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -45,7 +47,7 @@ import org.gradle.api.tasks.TaskProvider
 
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES)
-abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
+abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalGlobalTask() {
 
     @get:OutputFile
     abstract val rClassJar: RegularFileProperty
@@ -61,12 +63,12 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val runtimeSymbolList: RegularFileProperty
 
-    @get:Internal
+    @get:ServiceReference
     abstract val symbolTableBuildService: Property<SymbolTableBuildService>
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.applicationId.set(applicationId)
             it.rPackages.from(symbolListWithPackageNames)
             it.runtimeSymbolList.set(runtimeSymbolList)
@@ -108,7 +110,7 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
     }
 
     class CreationAction(private val creationConfig: PrivacySandboxSdkVariantScope) :
-        AndroidVariantTaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
+        GlobalTaskCreationAction<PrivacySandboxSdkGenerateRClassTask>() {
 
         override val name = "generateRClass"
         override val type = PrivacySandboxSdkGenerateRClassTask::class.java
@@ -131,8 +133,7 @@ abstract class PrivacySandboxSdkGenerateRClassTask : NonIncrementalTask() {
             )
             task.symbolListWithPackageNames.from(
                     creationConfig.dependencies.getArtifactFileCollection(
-                            Usage.JAVA_RUNTIME,
-                            creationConfig.mergeSpec,
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                             AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
             )
             task.symbolTableBuildService.set(getBuildService(creationConfig.services.buildServiceRegistry))

@@ -127,7 +127,7 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
 
         val aapt2ServiceKey = aapt2.registerAaptService()
         workerExecutor.noIsolation().submit(Aapt2LinkRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.aapt2ServiceKey.set(aapt2ServiceKey)
             it.request.set(config)
             it.errorFormatMode.set(aapt2.getErrorFormatMode())

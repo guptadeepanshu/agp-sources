@@ -16,9 +16,9 @@
 
 package com.android.build.gradle.internal.ide.kmp.resolvers
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.android.build.api.variant.impl.KmpVariantImpl
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.ide.kmp.KotlinModelBuildingConfigurator
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
@@ -36,8 +36,8 @@ import org.jetbrains.kotlin.gradle.plugin.ide.IdeAdditionalArtifactResolver
 internal class KotlinModelBuildingHook(
     private val project: Project,
     private val mainVariant: Lazy<KmpVariantImpl>,
-    private val androidTarget: Lazy<KotlinMultiplatformAndroidTarget>,
-    private val androidExtension: KotlinMultiplatformAndroidExtensionImpl
+    private val androidTarget: Lazy<KotlinMultiplatformAndroidLibraryTarget>,
+    private val androidExtension: KotlinMultiplatformAndroidLibraryExtensionImpl
 ): IdeAdditionalArtifactResolver {
     private var registered = false
 

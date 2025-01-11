@@ -100,7 +100,7 @@ abstract class AarMetadataTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(AarMetadataWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.output.set(output)
             it.aarFormatVersion.set(aarFormatVersion)
             it.aarMetadataVersion.set(aarMetadataVersion)

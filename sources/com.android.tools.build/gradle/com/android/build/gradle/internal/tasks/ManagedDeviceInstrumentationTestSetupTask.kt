@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.AvdComponentsBuildService
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.SdkComponentsBuildService.VersionedSdkLoader
 import com.android.build.gradle.internal.computeAbiFromArchitecture
@@ -42,13 +41,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.work.DisableCachingByDefault
-
-private const val SYSTEM_IMAGE_PREFIX = "system-images;"
-private const val HASH_DIVIDER = ";"
-private const val WAIT_AFTER_BOOT_MS = 5000L
-private const val DEVICE_BOOT_TIMEOUT_SEC = 80L
-
-private val loggerWrapper = LoggerWrapper.getLogger(ManagedDeviceInstrumentationTestSetupTask::class.java)
 
 /**
  * Task to create an AVD from a managed device definition in the DSL.
@@ -207,8 +199,8 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         private val hardwareProfile: String,
         private val managedDeviceName: String,
         private val require64Bit: Boolean,
-        creationConfig: GlobalTaskCreationConfig
-    ) : GlobalTaskCreationAction<ManagedDeviceInstrumentationTestSetupTask>(creationConfig) {
+        private val creationConfig: GlobalTaskCreationConfig
+    ) : GlobalTaskCreationAction<ManagedDeviceInstrumentationTestSetupTask>() {
 
         constructor(
             name: String,

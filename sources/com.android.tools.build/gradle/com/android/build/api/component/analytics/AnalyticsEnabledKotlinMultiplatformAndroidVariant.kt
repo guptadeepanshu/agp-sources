@@ -25,6 +25,7 @@ import com.android.build.api.variant.HostTestBuilder
 import com.android.build.api.variant.Instrumentation
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import com.android.build.api.variant.LifecycleTasks
+import com.android.build.api.variant.Sources
 import com.android.build.api.variant.TestedComponentPackaging
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -48,6 +49,17 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             return objectFactory.newInstance(
                 AnalyticsEnabledArtifacts::class.java,
                 delegate.artifacts,
+                stats,
+                objectFactory)
+        }
+
+    override val sources: Sources
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.COMPONENT_SOURCES_ACCESS_VALUE
+            return objectFactory.newInstance(
+                AnalyticsEnabledSources::class.java,
+                delegate.sources,
                 stats,
                 objectFactory)
         }

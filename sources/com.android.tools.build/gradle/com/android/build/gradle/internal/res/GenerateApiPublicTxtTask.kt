@@ -69,7 +69,7 @@ abstract class GenerateApiPublicTxtTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WorkAction::class.java) { parameters ->
-            parameters.initializeFromAndroidVariantTask(this)
+            parameters.initializeFromBaseTask(this)
             parameters.internalPublicTxt.set(internalPublicTxt)
             parameters.symbols.set(localOnlyResourceSymbols)
             parameters.externalPublicTxt.set(externalPublicTxt)

@@ -18,8 +18,10 @@ package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
 import com.android.ide.common.resources.FileStatus;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closer;
+
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;

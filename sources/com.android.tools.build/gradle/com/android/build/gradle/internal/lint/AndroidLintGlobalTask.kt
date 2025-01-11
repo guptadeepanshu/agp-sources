@@ -65,7 +65,7 @@ abstract class AndroidLintGlobalTask: AndroidGlobalTask() {
     }
 
     abstract class BaseGlobalCreationAction(creationConfig: GlobalTaskCreationConfig) :
-        GlobalTaskCreationAction<AndroidLintGlobalTask>(creationConfig) {
+        GlobalTaskCreationAction<AndroidLintGlobalTask>() {
 
         final override val type: Class<AndroidLintGlobalTask> get() = AndroidLintGlobalTask::class.java
         protected abstract val description: String

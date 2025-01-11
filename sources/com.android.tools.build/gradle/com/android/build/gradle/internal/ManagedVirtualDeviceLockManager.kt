@@ -53,7 +53,9 @@ private val DEFAULT_RETRY_WAIT_MS = 1000L
 class ManagedVirtualDeviceLockManager(
     androidLocationsProvider: AndroidLocationsProvider,
     private val maxGMDs: Int,
-    private val lockRetryWaitMs: Long = DEFAULT_RETRY_WAIT_MS
+    private val retryWaitAction: () -> Unit = {
+        Thread.sleep(DEFAULT_RETRY_WAIT_MS)
+    }
 ) {
     private val trackingFile: SynchronizedFile
 
@@ -106,10 +108,13 @@ class ManagedVirtualDeviceLockManager(
      */
     fun lock(lockCount: Int = 1): DeviceLock {
         var locksAcquired = 0
-        while (locksAcquired == 0) {
+        while (true) {
             locksAcquired = tryToAcquireLocks(lockCount)
+            if (locksAcquired != 0) {
+                break
+            }
             // Rest for a bit before trying again.
-            Thread.sleep(lockRetryWaitMs)
+            retryWaitAction()
         }
         return DeviceLock(locksAcquired)
     }

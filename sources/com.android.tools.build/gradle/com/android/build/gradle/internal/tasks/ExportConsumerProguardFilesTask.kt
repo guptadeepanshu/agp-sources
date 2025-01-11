@@ -120,7 +120,7 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
         }
 
         workerExecutor.noIsolation().submit(ExportConsumerProguardRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.input.from(filteredProguardFiles)
             it.outputDir.set(outputDir)
         }

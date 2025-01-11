@@ -49,7 +49,7 @@ abstract class FeatureDexMergeTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             FeatureDexMergeWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.dexDirs.from(dexDirs)
             it.outputDir.set(outputDir)
         }

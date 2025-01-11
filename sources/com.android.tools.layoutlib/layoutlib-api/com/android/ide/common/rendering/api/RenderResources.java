@@ -18,6 +18,7 @@ package com.android.ide.common.rendering.api;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.resources.ResourceType;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -198,7 +199,21 @@ public class RenderResources {
 
     /** Returns the style matching the given reference. */
     @Nullable
-    public StyleResourceValue getStyle(@NonNull ResourceReference reference) {
+    public StyleResourceValue getStyle(@NonNull ResourceReference styleReference) {
+        ResourceValue style;
+        if (styleReference.getResourceType() == ResourceType.ATTR) {
+            style = resolveResValue(findItemInTheme(styleReference));
+        } else {
+            style = getUnresolvedResource(styleReference);
+        }
+        if (style == null) {
+            return null;
+        }
+
+        if (style instanceof StyleResourceValue) {
+            return (StyleResourceValue) style;
+        }
+
         return null;
     }
 }

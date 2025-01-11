@@ -178,8 +178,8 @@ object TargetedShrinkRulesReadWriter {
                     r8Rules.add(
                         VersionedR8Rules(
                             fileName = matchResult.groups["fileName"]!!.value,
-                            minVersion = matchResult.groups["minVersion"]?.value?.let { ShrinkerVersion.parse(it) },
-                            maxVersionExclusive = matchResult.groups["maxVersionExclusive"]?.value?.let { ShrinkerVersion.parse(it) },
+                            minVersion = matchResult.groups["minVersion"]?.value?.let { ShrinkerVersion.tryParse(it) },
+                            maxVersionExclusive = matchResult.groups["maxVersionExclusive"]?.value?.let { ShrinkerVersion.tryParse(it) },
                             shrinkRules = zipInputStream.readBytes().decodeToString()
                         )
                     )
@@ -187,8 +187,8 @@ object TargetedShrinkRulesReadWriter {
                         proguardRules.add(
                             VersionedProguardRules(
                                 fileName = matchResult.groups["fileName"]!!.value,
-                                minVersion = matchResult.groups["minVersion"]?.value?.let { ShrinkerVersion.parse(it) },
-                                maxVersionExclusive = matchResult.groups["maxVersionExclusive"]?.value?.let { ShrinkerVersion.parse(it) },
+                                minVersion = matchResult.groups["minVersion"]?.value?.let { ShrinkerVersion.tryParse(it) },
+                                maxVersionExclusive = matchResult.groups["maxVersionExclusive"]?.value?.let { ShrinkerVersion.tryParse(it) },
                                 shrinkRules = zipInputStream.readBytes().decodeToString()
                             )
                         )

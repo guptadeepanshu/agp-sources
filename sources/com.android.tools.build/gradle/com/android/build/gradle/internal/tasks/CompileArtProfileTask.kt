@@ -132,11 +132,11 @@ abstract class CompileArtProfileTask: NonIncrementalTask() {
                 ObfuscationMap.Empty
             }
             val supplier = DexFileNameSupplier()
-            // need to rename dex files with sequential numbers the same way [DexIncrementalRenameManager] does
-            val dexFiles =
-                parameters.dexFolders.asFileTree.files.sortedWith(DexFileComparator()).map {
-                    DexFile(it.inputStream(), supplier.get())
-                }
+            // Sort and rename the dex files in the same way that they are packaged in the APK
+            // (DexIncrementalRenameManager) and the bundle (PerModuleBundleTask) (b/346268213)
+            val dexFiles = parameters.dexFolders.asFileTree.files.sortedWith(DexFileComparator).map {
+                DexFile(it.inputStream(), supplier.get())
+            }
 
             val artProfile = if (parameters.dexMetadataDirectory.isPresent) {
                 val artProfileWithDexMetadata = buildArtProfileWithDexMetadata(
@@ -180,7 +180,7 @@ abstract class CompileArtProfileTask: NonIncrementalTask() {
         if (!mergedArtProfile.isPresent || !mergedArtProfile.get().asFile.exists()) return
 
         workerExecutor.noIsolation().submit(CompileArtProfileWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.mergedArtProfile.set(mergedArtProfile)
             it.dexFolders.from(dexFolders)
             if (useMappingFile.get()) {

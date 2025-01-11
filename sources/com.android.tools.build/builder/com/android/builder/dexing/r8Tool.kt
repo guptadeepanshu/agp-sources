@@ -20,12 +20,17 @@ package com.android.builder.dexing
 
 import com.android.SdkConstants.DOT_CLASS
 import com.android.SdkConstants.DOT_JAR
+import com.android.SdkConstants.DOT_XML
 import com.android.SdkConstants.PROGUARD_RULES_FOLDER
 import com.android.SdkConstants.TOOLS_CONFIGURATION_FOLDER
 import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.builder.dexing.r8.R8DiagnosticsHandler
 import com.android.ide.common.blame.MessageReceiver
+import com.android.tools.r8.AndroidResourceInput
+import com.android.tools.r8.AndroidResourceProvider
 import com.android.tools.r8.ArchiveProgramResourceProvider
+import com.android.tools.r8.ArchiveProtoAndroidResourceConsumer
+import com.android.tools.r8.ArchiveProtoAndroidResourceProvider
 import com.android.tools.r8.AssertionsConfiguration
 import com.android.tools.r8.BaseCompilerCommand
 import com.android.tools.r8.ClassFileConsumer
@@ -40,6 +45,7 @@ import com.android.tools.r8.ProgramResource
 import com.android.tools.r8.ProgramResourceProvider
 import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
+import com.android.tools.r8.ResourcePath
 import com.android.tools.r8.StringConsumer
 import com.android.tools.r8.TextInputStream
 import com.android.tools.r8.TextOutputStream
@@ -53,6 +59,8 @@ import com.android.tools.r8.startup.StartupProfileProvider
 import com.android.tools.r8.utils.ArchiveResourceProvider
 import com.google.common.io.ByteStreams
 import java.io.BufferedOutputStream
+import java.io.ByteArrayInputStream
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -94,6 +102,7 @@ fun runR8(
     toolConfig: ToolConfig,
     proguardConfig: ProguardConfig,
     mainDexListConfig: MainDexListConfig,
+    resourceShrinkingConfig: ResourceShrinkingConfig?,
     messageReceiver: MessageReceiver,
     useFullR8: Boolean = false,
     featureClassJars: Collection<Path>,
@@ -109,9 +118,10 @@ fun runR8(
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
         logger.fine("*** Using R8 to process code ***")
-        logger.fine("Main dex list config: $mainDexListConfig")
-        logger.fine("Proguard config: $proguardConfig")
         logger.fine("Tool config: $toolConfig")
+        logger.fine("Proguard config: $proguardConfig")
+        logger.fine("Main dex list config: $mainDexListConfig")
+        logger.fine("Resource shrinking config: $resourceShrinkingConfig")
         logger.fine("Program classes: $inputClasses")
         logger.fine("Java resources: $inputJavaResJar")
         logger.fine("Library classes: $libraries")
@@ -330,6 +340,9 @@ fun runR8(
 
     // Enable workarounds for missing library APIs in R8 (see b/231547906).
     r8CommandBuilder.setEnableExperimentalMissingLibraryApiModeling(true);
+
+    resourceShrinkingConfig?.let { setupResourceShrinkingForApks(r8CommandBuilder, it) }
+
     ClassFileProviderFactory(libraries).use { libraryClasses ->
         ClassFileProviderFactory(classpath).use { classpathClasses ->
             r8CommandBuilder.addLibraryResourceProvider(libraryClasses.orderedProvider)
@@ -344,6 +357,81 @@ fun runR8(
             Files.createFile(it)
         }
     }
+}
+
+/**
+ * Sets up resource shrinking in R8 when building APK(s).
+ *
+ * (Resource shrinking in R8 when building bundles will be supported later.)
+ */
+private fun setupResourceShrinkingForApks(
+    r8CommandBuilder: R8Command.Builder,
+    config: ResourceShrinkingConfig
+) {
+    // Use R8's FeatureSplit API to handle both multi-APKs (with multiple input files) and a regular
+    // APK (with only 1 input file).
+    config.linkedResourcesInputFiles.forEachIndexed { index, linkedResourcesInputFile ->
+        r8CommandBuilder.addFeatureSplit {
+            it.setAndroidResourceProvider(
+                ArchiveProtoAndroidResourceProvider(linkedResourcesInputFile.toPath()))
+            it.setAndroidResourceConsumer(
+                ArchiveProtoAndroidResourceConsumer(config.shrunkResourcesOutputFiles[index].toPath()))
+
+            // R8 requires a program consumer to be set
+            it.setProgramConsumer(DexIndexedConsumer.emptyConsumer())
+
+            it.build()
+        }
+    }
+
+    r8CommandBuilder.setAndroidResourceProvider(
+        KeepRulesAndroidResourceProvider(config.mergedNotCompiledResourcesInputDir))
+    // R8 requires an Android resource consumer to be set
+    r8CommandBuilder.setAndroidResourceConsumer { _, _ ->  }
+
+    r8CommandBuilder.setResourceShrinkerConfiguration {
+        if (!config.usePreciseShrinking) {
+            it.disablePreciseShrinking()
+        }
+        config.logFile?.let { logFile ->
+            it.setDebugConsumer(StringConsumer.FileConsumer(logFile.toPath()))
+        }
+        it.build()
+    }
+}
+
+/** [AndroidResourceProvider] that provides [KeepRulesAndroidResourceInput]. */
+private class KeepRulesAndroidResourceProvider(
+    private val mergedNotCompiledResourcesInputDir: File
+) : AndroidResourceProvider {
+
+    override fun getAndroidResources(): List<KeepRulesAndroidResourceInput> {
+        return mergedNotCompiledResourcesInputDir.walk()
+                .filter { it.path.endsWith(DOT_XML) }
+                .map { KeepRulesAndroidResourceInput(it) }
+                .toList()
+    }
+}
+
+/**
+ * [AndroidResourceInput] where
+ * [AndroidResourceInput.Kind] == [AndroidResourceInput.Kind.KEEP_RULE_FILE].
+ */
+private class KeepRulesAndroidResourceInput(
+    /** XML file which contains keep rules for resources. */
+    private val resourceKeepRulesXmlFile: File
+) : AndroidResourceInput {
+
+    override fun getOrigin() = PathOrigin(resourceKeepRulesXmlFile.toPath())
+
+    override fun getPath() = ResourcePath {
+        // R8 expects this path to be in Unix style
+        resourceKeepRulesXmlFile.invariantSeparatorsPath
+    }
+
+    override fun getKind() = AndroidResourceInput.Kind.KEEP_RULE_FILE
+
+    override fun getByteStream() = ByteArrayInputStream(resourceKeepRulesXmlFile.readBytes())
 }
 
 fun wireArtProfileRewriting(
@@ -445,6 +533,21 @@ data class ToolConfig(
     val disableMinification: Boolean,
     val r8OutputType: R8OutputType,
 )
+
+/** Parameters required for running resource shrinking. */
+data class ResourceShrinkingConfig(
+    val linkedResourcesInputFiles: List<File>,
+    val mergedNotCompiledResourcesInputDir: File,
+    val usePreciseShrinking: Boolean,
+    val logFile: File?,
+    val shrunkResourcesOutputFiles: List<File>
+) : java.io.Serializable { // Serializable so it can be used in Gradle workers
+
+    companion object {
+        @Suppress("ConstPropertyName")
+        private const val serialVersionUID = 0L
+    }
+}
 
 private class ProGuardRulesFilteringVisitor(
     private val visitor: DataResourceProvider.Visitor?

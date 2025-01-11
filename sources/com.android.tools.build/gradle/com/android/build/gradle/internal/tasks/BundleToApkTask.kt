@@ -22,7 +22,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
-import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
@@ -30,7 +29,6 @@ import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.options.BooleanOption
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.bundle.RuntimeEnabledSdkConfigProto
-import com.android.bundle.SdkMetadataOuterClass
 import com.android.ide.common.signing.CertificateInfo
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildApksCommand
@@ -82,7 +80,7 @@ abstract class BundleToApkTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.bundleFile.set(bundle)
             it.aapt2File.set(aapt2.getAapt2Executable().toFile())
             it.androidPrivacySandboxSdkArchives.from(androidPrivacySandboxSdkArchives)

@@ -16,13 +16,17 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
+import com.android.build.api.annotations.ReplacedByIncubating
 
 /**
  * Interface that marks the potential existence of [AndroidTest] component on a [Variant].
  *
  * This is implemented by select subtypes of [VariantBuilder].
  */
+@ReplacedByIncubating(
+    message = "Replaced by the new interface HasDeviceTestsBuilder",
+    bugId = 357083708
+)
 interface HasAndroidTestBuilder {
 
     /**

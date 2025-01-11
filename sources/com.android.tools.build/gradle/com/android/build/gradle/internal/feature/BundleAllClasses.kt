@@ -75,7 +75,7 @@ abstract class BundleAllClasses : NonIncrementalTask() {
 
     public override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleAllClassesWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputDirs.from(inputDirs)
             it.inputJars.from(inputJars)
             it.outputJar.set(outputJar)

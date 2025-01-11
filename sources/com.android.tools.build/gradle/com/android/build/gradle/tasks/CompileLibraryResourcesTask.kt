@@ -86,7 +86,7 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
     override fun doTaskAction(inputChanges: InputChanges) {
         workerExecutor.noIsolation()
             .submit(CompileLibraryResourcesAction::class.java) { parameters ->
-                parameters.initializeFromAndroidVariantTask(this)
+                parameters.initializeFromBaseTask(this)
                 parameters.outputDirectory.set(outputDir)
                 parameters.aapt2.set(aapt2)
                 parameters.incremental.set(inputChanges.isIncremental)

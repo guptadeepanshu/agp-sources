@@ -86,6 +86,7 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
             globalVariantBuilderConfig,
             { targetSdkVersion },
             _enableMultiDex,
+            dslInfo.isDebuggable,
         )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {

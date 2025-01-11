@@ -162,6 +162,10 @@ internal class ApplicationVariantDslInfoImpl(
         extension.androidResources.generateLocaleConfig
     }
 
+    override val localeFilters: Set<String> by lazy {
+        extension.androidResources.localeFilters
+    }
+
     override val includeVcsInfo: Boolean?
         get() = applicationBuildType.vcsInfo.include
 

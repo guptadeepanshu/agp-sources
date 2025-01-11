@@ -21,16 +21,16 @@ import com.android.build.api.dsl.EmulatorSnapshots
 import com.android.build.api.dsl.ManagedDevices
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin
 import com.android.build.gradle.internal.utils.createTargetSdkVersion
 
 internal class KmpDeviceTestOptionsDslInfoImpl(
-    private val extension: KotlinMultiplatformAndroidExtensionImpl,
+    private val extension: KotlinMultiplatformAndroidLibraryExtensionImpl,
 ): DeviceTestOptionsDslInfo {
     private val testOnDeviceConfig
         get() = extension.androidTestOnDeviceOptions ?: throw RuntimeException(
-            "Android tests on device are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withAndroidTestOnDevice()` to enable)"
+            "Android tests on device are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withDeviceTest {}` to enable)"
         )
     override val animationsDisabled: Boolean
         get() = testOnDeviceConfig.animationsDisabled

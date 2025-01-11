@@ -17,7 +17,8 @@
 package com.android.build.api.component.impl.features
 
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.features.BuildConfigCreationConfig
 import com.android.build.gradle.internal.core.dsl.features.BuildConfigDslInfo
@@ -26,11 +27,13 @@ import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.compiling.BuildConfigType
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Provider
 import java.io.Serializable
 
 class BuildConfigCreationConfigImpl(
-    private val component: ConsumableCreationConfig,
+    private val component: ComponentCreationConfig,
     private val dslInfo: BuildConfigDslInfo,
     private val internalServices: VariantServices
 ): BuildConfigCreationConfig {
@@ -42,24 +45,25 @@ class BuildConfigCreationConfigImpl(
             dslInfo.getBuildConfigFields()
         )
     }
+
     override val dslBuildConfigFields: Map<String, BuildConfigField<out Serializable>>
         get() = dslInfo.getBuildConfigFields()
 
     override val compiledBuildConfig: FileCollection
-        get() {
-            val isBuildConfigJar = buildConfigType == BuildConfigType.JAR
-            // BuildConfig JAR is not required to be added as a classpath for ANDROID_TEST and UNIT_TEST
-            // variants as the tests will use JAR from GradleTestProject which doesn't use testedConfig.
-            return if (isBuildConfigJar && component !is TestComponentCreationConfig) {
-                internalServices.fileCollection(
-                    component.artifacts.get(
-                        InternalArtifactType.COMPILE_BUILD_CONFIG_JAR
-                    )
-                )
-            } else {
-                internalServices.fileCollection()
+        get() = if (buildConfigType == BuildConfigType.JAR) {
+            val files = mutableListOf<Provider<RegularFile>>()
+            if (component !is HostTestCreationConfig) {
+                files.add(component.artifacts.get(InternalArtifactType.COMPILE_BUILD_CONFIG_JAR))
             }
+            if (component is TestComponentCreationConfig) {
+                files.add(component.mainVariant.artifacts.get(
+                    InternalArtifactType.COMPILE_BUILD_CONFIG_JAR))
+            }
+            internalServices.fileCollection(files)
+        } else {
+            internalServices.fileCollection()
         }
+
     override val buildConfigType: BuildConfigType
         get() = if (internalServices.projectOptions[BooleanOption.ENABLE_BUILD_CONFIG_AS_BYTECODE]
             // TODO(b/224758957): This is wrong we need to check the final build config fields from

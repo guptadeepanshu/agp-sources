@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.AarMetadata
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.dsl.Packaging
 import com.android.build.api.dsl.TestFixtures
 import com.android.build.api.variant.ResValue
@@ -39,7 +39,7 @@ import com.android.build.gradle.internal.core.dsl.features.RenderscriptDslInfo
 import com.android.build.gradle.internal.core.dsl.features.ShadersDslInfo
 import com.android.build.gradle.internal.dsl.AaptOptions
 import com.android.build.gradle.internal.dsl.KmpOptimizationImpl
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.dsl.LibraryKeepRulesImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME
 import com.android.build.gradle.internal.services.DslServices
@@ -55,7 +55,7 @@ import org.gradle.api.provider.Provider
 import java.io.File
 
 class KmpVariantDslInfoImpl(
-    extension: KotlinMultiplatformAndroidExtension,
+    extension: KotlinMultiplatformAndroidLibraryExtension,
     services: VariantServices,
     buildDirectory: DirectoryProperty,
     withJava: Boolean,
@@ -100,14 +100,13 @@ class KmpVariantDslInfoImpl(
             )
     }
 
-    override val maxSdkVersion: Int?
-        get() = extension.maxSdk
+    override val maxSdkVersion: Int? = null
 
     override val packaging: Packaging
         get() = extension.packaging
 
     override val testInstrumentationRunnerArguments: Map<String, String>
-        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions
+        get() = (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnDeviceOptions
             ?.instrumentationRunnerArguments ?: emptyMap()
 
     override val experimentalProperties: Map<String, Any>
@@ -120,9 +119,9 @@ class KmpVariantDslInfoImpl(
     }
 
     override val enabledUnitTest: Boolean
-        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnJvmOptions != null
+        get() = (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnJvmOptions != null
     override val enableAndroidTest: Boolean
-        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions != null
+        get() = (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnDeviceOptions != null
 
     // not supported
     override val targetSdkVersion: MutableAndroidVersion? = null
@@ -138,7 +137,7 @@ class KmpVariantDslInfoImpl(
     override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> = listOf()
 
     class KmpOptimizationDslInfoImpl(
-        private val extension: KotlinMultiplatformAndroidExtension,
+        private val extension: KotlinMultiplatformAndroidLibraryExtension,
         private val services: VariantServices,
         private val buildDirectory: DirectoryProperty
     ): OptimizationDslInfo {

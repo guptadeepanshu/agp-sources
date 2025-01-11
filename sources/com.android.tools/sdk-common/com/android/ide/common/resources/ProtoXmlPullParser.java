@@ -23,14 +23,16 @@ import com.android.aapt.Resources;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.xml.AttrNameSplitter;
-import gnu.trove.TIntArrayList;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Implementation of {@link XmlPullParser} for XML in a proto format defined in
@@ -45,8 +47,9 @@ public class ProtoXmlPullParser implements XmlPullParser {
     private int myEventType;
     /** A stack of XML nodes reflecting a path from the root to the current node. */
     private final List<Resources.XmlNode> myNodeStack = new ArrayList<>();
+
     /** A stack of current child indices. Always the same size as {@link #myNodeStack}. */
-    private final TIntArrayList myCurrentChildIndices = new TIntArrayList();
+    private final IntStack myCurrentChildIndices = new IntStack();
 
     @Override
     public void setFeature(@NonNull String feature, boolean state) throws XmlPullParserException {
@@ -291,7 +294,7 @@ public class ProtoXmlPullParser implements XmlPullParser {
                 assert myCurrentChildIndices.isEmpty();
                 Resources.XmlNode rootNode = Resources.XmlNode.parseFrom(myStream);
                 myNodeStack.add(rootNode);
-                myCurrentChildIndices.add(0);
+                myCurrentChildIndices.push(0);
                 myEventType = XmlPullParser.START_TAG;
                 break;
 
@@ -302,7 +305,7 @@ public class ProtoXmlPullParser implements XmlPullParser {
             case XmlPullParser.TEXT:
             case XmlPullParser.END_TAG:
                 myNodeStack.remove(myNodeStack.size() - 1);
-                myCurrentChildIndices.remove(myCurrentChildIndices.size() - 1);
+                myCurrentChildIndices.pop();
                 if (myNodeStack.isEmpty()) {
                     myEventType = XmlPullParser.END_DOCUMENT;
                 } else {
@@ -317,12 +320,12 @@ public class ProtoXmlPullParser implements XmlPullParser {
     private void nextChild() {
         Resources.XmlElement element = getCurrentElement();
         assert element != null;
-        int childIndex = myCurrentChildIndices.get(myCurrentChildIndices.size() - 1);
+        int childIndex = myCurrentChildIndices.getLast();
         if (childIndex < element.getChildCount()) {
             Resources.XmlNode node = element.getChild(childIndex);
-            myCurrentChildIndices.set(myCurrentChildIndices.size() - 1, childIndex + 1);
+            myCurrentChildIndices.setLast(childIndex + 1);
             myNodeStack.add(node);
-            myCurrentChildIndices.add(0);
+            myCurrentChildIndices.push(0);
             if (node.hasElement()) {
                 myEventType = XmlPullParser.START_TAG;
             } else {
@@ -586,5 +589,40 @@ public class ProtoXmlPullParser implements XmlPullParser {
     private static String getPrefix(@NonNull String fullName) {
         int pos = fullName.indexOf(':');
         return pos >= 0 ? fullName.substring(0, pos) : null;
+    }
+
+    // A memory-efficient alternative to ArrayList<Integer>.
+    private static class IntStack {
+        private int[] data;
+        private int end;
+
+        public void push(int val) {
+            if (data == null) {
+                data = new int[4];
+            } else if (end >= data.length) {
+                data = Arrays.copyOf(data, 2 * data.length);
+            }
+            data[end++] = val;
+        }
+
+        public void pop() {
+            --end;
+        }
+
+        public int getLast() {
+            return data[end - 1];
+        }
+
+        public void setLast(int val) {
+            data[end - 1] = val;
+        }
+
+        public boolean isEmpty() {
+            return end == 0;
+        }
+
+        public void clear() {
+            end = 0;
+        }
     }
 }

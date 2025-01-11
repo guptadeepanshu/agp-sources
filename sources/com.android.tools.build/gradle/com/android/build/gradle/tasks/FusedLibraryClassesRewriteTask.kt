@@ -22,15 +22,14 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.NamespaceRewriter
 import com.android.build.gradle.internal.services.SymbolTableBuildService
-import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.ide.common.symbols.SymbolTable
 import com.android.utils.FileUtils
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -57,7 +56,7 @@ import java.io.File
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.SOURCE_PROCESSING])
-abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
+abstract class FusedLibraryClassesRewriteTask : NonIncrementalGlobalTask() {
 
     @get:OutputDirectory
     abstract val rewrittenClassesDirectory: DirectoryProperty
@@ -124,7 +123,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: FusedLibraryGlobalScope) :
-        AndroidVariantTaskCreationAction<FusedLibraryClassesRewriteTask>() {
+        GlobalTaskCreationAction<FusedLibraryClassesRewriteTask>() {
 
         override val name: String
             get() = "rewriteClasses"
@@ -152,8 +151,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
             )
             task.librariesSymbolLists.from(
                 creationConfig.dependencies.getArtifactFileCollection(
-                    Usage.JAVA_RUNTIME,
-                    creationConfig.mergeSpec,
+                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
                 )
             )

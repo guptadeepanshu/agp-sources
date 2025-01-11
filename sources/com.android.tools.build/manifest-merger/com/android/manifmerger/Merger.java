@@ -19,16 +19,19 @@ package com.android.manifmerger;
 import com.android.annotations.NonNull;
 import com.android.utils.ILogger;
 import com.android.utils.StdLogger;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -40,19 +43,36 @@ public class Merger {
     public static void main(String[] args) {
         try {
             System.exit(new Merger().process(args));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             System.exit(1);
         }
         System.exit(0);
     }
 
-    public int process(String[] args) throws FileNotFoundException {
+    public int process(String[] args) throws IOException {
 
-        Iterator<String> arguments = Arrays.asList(args).iterator();
-        // first pass to get all mandatory parameters.
-        String mainManifest = null;
         StdLogger.Level logLevel = StdLogger.Level.INFO;
         ILogger logger = new StdLogger(logLevel);
+        List<String> argumentsList = new ArrayList<>();
+        for (String arg : args) {
+            if (arg.startsWith("@")) {
+                File argumentFile = new File(arg.substring(1));
+                if (!argumentFile.exists()) {
+                    logger.error(
+                            null /* throwable */,
+                            "File " + argumentFile.getPath() + " does not exist.");
+                    return 1;
+                }
+                String argumentsString =
+                        java.nio.file.Files.readString(argumentFile.toPath(), Charsets.UTF_8);
+                argumentsList.addAll(List.of(argumentsString.split("\\s+")));
+            } else {
+                argumentsList.add(arg);
+            }
+        }
+        Iterator<String> arguments = argumentsList.iterator();
+        // first pass to get all mandatory parameters.
+        String mainManifest = null;
         while (arguments.hasNext()) {
             String selector = arguments.next();
             if (!selector.startsWith("--")) {
@@ -98,7 +118,7 @@ public class Merger {
                 mainManifestFile, logger);
 
         // second pass, get optional parameters and store them in the invoker.
-        arguments = Arrays.asList(args).iterator();
+        arguments = argumentsList.iterator();
         File outFile = null;
 
         while (arguments.hasNext()) {

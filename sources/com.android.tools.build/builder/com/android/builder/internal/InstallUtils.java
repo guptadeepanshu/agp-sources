@@ -17,12 +17,72 @@
 package com.android.builder.internal;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.SdkVersionInfo;
 import com.android.utils.ILogger;
 
 public class InstallUtils {
+
+    /**
+     * Checks whether a device is compatible with a given app minSdkVersion value.
+     *
+     * @param deviceName Name of the device
+     * @param deviceApiLevel API level of the device
+     * @param appMinSdkVersion the minSdkVersion of the app
+     * @param logger a logger object
+     * @param projectPath the project name for logging
+     * @param variantName the variant name for logging
+     * @return true if the device can run the app
+     */
+    public static boolean checkDeviceApiLevel(
+            @Nullable String deviceName,
+            int deviceApiLevel,
+            @Nullable String deviceCodeName,
+            @NonNull AndroidVersion appMinSdkVersion,
+            @NonNull ILogger logger,
+            @NonNull String projectPath,
+            @NonNull String variantName) {
+        if (deviceApiLevel == 0) {
+            logger.lifecycle(
+                    "Skipping device '%1$s' for '%2$s:%3$s': Unknown API Level",
+                    deviceName, projectPath, variantName);
+            return false;
+        }
+
+        int minSdkVersion = appMinSdkVersion.getApiLevel();
+
+        // Convert codename to API version.
+        if (appMinSdkVersion.getCodename() != null) {
+            if (deviceCodeName != null) {
+                if (!deviceCodeName.equals(appMinSdkVersion.getCodename())) {
+                    logger.lifecycle(
+                            "Skipping device '%1$s', due to different API preview '%2$s' and"
+                                    + " '%3$s'",
+                            deviceName, deviceCodeName, appMinSdkVersion.getCodename());
+                    return false;
+                }
+            } else {
+                minSdkVersion = SdkVersionInfo.getApiByBuildCode(
+                        appMinSdkVersion.getCodename(), true);
+            }
+        }
+
+        if (minSdkVersion > deviceApiLevel) {
+            logger.lifecycle(
+                    "Skipping device '%s' for '%s:%s': minSdkVersion [%s] > deviceApiLevel [%d]",
+                    deviceName,
+                    projectPath,
+                    variantName,
+                    appMinSdkVersion.getApiString(),
+                    deviceApiLevel);
+
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * Checks whether a device is compatible with a given app minSdkVersion value.
@@ -40,44 +100,13 @@ public class InstallUtils {
             @NonNull ILogger logger,
             @NonNull String projectPath,
             @NonNull String variantName) {
-        int deviceApiLevel = device.getApiLevel();
-        if (deviceApiLevel == 0) {
-            logger.lifecycle(
-                    "Skipping device '%1$s' for '%2$s:%3$s': Unknown API Level",
-                    device.getName(), projectPath, variantName);
-            return false;
-        }
-
-        int minSdkVersion = appMinSdkVersion.getApiLevel();
-
-        // Convert codename to API version.
-        if (appMinSdkVersion.getCodename() != null) {
-            String deviceCodeName = device.getApiCodeName();
-            if (deviceCodeName != null) {
-                if (!deviceCodeName.equals(appMinSdkVersion.getCodename())) {
-                    logger.lifecycle(
-                            "Skipping device '%1$s', due to different API preview '%2$s' and '%3$s'",
-                            device.getName(), deviceCodeName, appMinSdkVersion.getCodename());
-                    return false;
-                }
-            } else {
-                minSdkVersion = SdkVersionInfo.getApiByBuildCode(
-                        appMinSdkVersion.getCodename(), true);
-            }
-        }
-
-        if (minSdkVersion > deviceApiLevel) {
-            logger.lifecycle(
-                    "Skipping device '%s' for '%s:%s': minSdkVersion [%s] > deviceApiLevel [%d]",
-                    device.getName(),
-                    projectPath,
-                    variantName,
-                    appMinSdkVersion.getApiString(),
-                    deviceApiLevel);
-
-            return false;
-        } else {
-            return true;
-        }
+        return checkDeviceApiLevel(
+                device.getName(),
+                device.getApiLevel(),
+                device.getApiCodeName(),
+                appMinSdkVersion,
+                logger,
+                projectPath,
+                variantName);
     }
 }

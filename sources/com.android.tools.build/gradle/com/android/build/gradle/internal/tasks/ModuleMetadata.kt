@@ -30,8 +30,9 @@ class ModuleMetadata(
     val versionName: String,
     val debuggable: Boolean,
     val abiFilters: List<String>,
-    val ignoreFromInKeepRules: Set<String>,
-    val ignoreFromAllExternalDependenciesInKeepRules: Boolean
+    val ignoreFromInKeepRules: List<String>,
+    val ignoreFromAllExternalDependenciesInKeepRules: Boolean,
+    val localeFilters: List<String>
 ) {
 
     @Throws(IOException::class)

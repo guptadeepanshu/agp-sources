@@ -72,7 +72,7 @@ abstract class ExpandArtProfileWildcardsTask: NonIncrementalTask() {
         if (!mergedArtProfile.isPresent || !mergedArtProfile.get().asFile.exists()) return
 
         workerExecutor.noIsolation().submit(ExpandArtProfileWildcardsWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.mergedArtProfile.set(mergedArtProfile)
             it.projectClasses.from(projectClasses)
             it.expandedArtProfile.set(expandedArtProfile)

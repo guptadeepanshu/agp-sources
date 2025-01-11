@@ -40,7 +40,7 @@ fun computeRegistrationDirectoryContainer(): Path? {
     val os = System.getProperty("os.name").lowercase(Locale.ROOT)
     when {
         os.startsWith("mac") -> {
-            return Paths.get(System.getenv("HOME") ?: "/", "Library", "Caches", "TemporaryItems")
+            return Paths.get(System.getProperty("user.home") ?: "/", "Library", "Caches", "TemporaryItems")
         }
 
         os.startsWith("win") -> {
@@ -55,7 +55,7 @@ fun computeRegistrationDirectoryContainer(): Path? {
                 System.getenv("ANDROID_EMULATOR_HOME"),
                 System.getenv("ANDROID_PREFS_ROOT"),
                 System.getenv("ANDROID_SDK_HOME"),
-                (System.getenv("HOME") ?: "/") + ".android"
+                (System.getProperty("user.home") ?: "/") + ".android"
             )) {
                 if (dirstr == null) {
                     continue
@@ -66,13 +66,13 @@ fun computeRegistrationDirectoryContainer(): Path? {
                         return dir
                     }
                 } catch (exception: InvalidPathException) {
-                    LOG.finer("Failed to parse dir ${dirstr}, exception ${exception}")
+                    LOG.finer("Failed to parse dir $dirstr, exception $exception")
                 }
             }
 
             return Paths.get(
                 FileUtils.getTempDirectory().absolutePath,
-                "android-" + System.getProperty("USER")
+                "android-" + System.getProperty("user.name")
             )
         }
     }

@@ -133,8 +133,9 @@ public final class SdkConstants {
     /** An SDK Project's AndroidManifest.xml file */
     public static final String FN_ANDROID_MANIFEST_XML = "AndroidManifest.xml";
 
-    public static final String FN_SHARED_LIBRARY_ANDROID_MANIFEST_XML =
+    public static final String FN_NAMESPACED_SHARED_LIBRARY_ANDROID_MANIFEST_XML =
             "SharedLibraryAndroidManifest.xml";
+
     /** pre-dex jar filename. i.e. "classes.jar" */
     public static final String FN_CLASSES_JAR = "classes.jar";
     /** api.jar filename */
@@ -1131,6 +1132,7 @@ public final class SdkConstants {
     public static final String TAG_QUERIES = "queries";
     public static final String TAG_INTENT = "intent";
     public static final String TAG_SDK_LIBRARY = "sdk-library";
+    public static final String TAG_URI_RELATIVE_FILTER_GROUP = "uri-relative-filter-group";
 
     // Tags: Resources
     public static final String TAG_RESOURCES = "resources";
@@ -1269,6 +1271,7 @@ public final class SdkConstants {
 
     // Tags: Drawables
     public static final String TAG_ANIMATION_LIST = "animation-list";
+    public static final String TAG_ANIMATED_IMAGE = "animated-image";
     public static final String TAG_ANIMATED_SELECTOR = "animated-selector";
     public static final String TAG_ANIMATED_VECTOR = "animated-vector";
     public static final String TAG_BITMAP = "bitmap";
@@ -1313,6 +1316,15 @@ public final class SdkConstants {
     public static final String ATTR_PATH_PATTERN = "pathPattern";
     public static final String ATTR_PATH_SUFFIX = "pathSuffix";
     public static final String ATTR_PATH_ADVANCED_PATTERN = "pathAdvancedPattern";
+    public static final String ATTR_FRAGMENT_ADVANCED_PATTERN = "fragmentAdvancedPattern";
+    public static final String ATTR_FRAGMENT_PATTERN = "fragmentPattern";
+    public static final String ATTR_FRAGMENT_PREFIX = "fragmentPrefix";
+    public static final String ATTR_FRAGMENT_SUFFIX = "fragmentSuffix";
+    public static final String ATTR_QUERY = "query";
+    public static final String ATTR_QUERY_ADVANCED_PATTERN = "queryAdvancedPattern";
+    public static final String ATTR_QUERY_PATTERN = "queryPattern";
+    public static final String ATTR_QUERY_PREFIX = "queryPrefix";
+    public static final String ATTR_QUERY_SUFFIX = "querySuffix";
     public static final String ATTR_ALLOW_BACKUP = "allowBackup";
     public static final String ATTR_DEBUGGABLE = "debuggable";
     public static final String ATTR_READ_PERMISSION = "readPermission";
@@ -2881,7 +2893,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.9";
+    public static final String GRADLE_LATEST_VERSION = "8.10.2";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
@@ -2922,7 +2934,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "34.0.0";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "35.0.0";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";
@@ -3046,4 +3058,7 @@ public final class SdkConstants {
 
     /** Sdk downloadable fonts folder. */
     public static final String SDK_DL_FONTS_FOLDER = "fonts";
+
+    /** Current version for ASM dependencies. */
+    public static final String CURRENT_ASM_VERSION = "9.7";
 }

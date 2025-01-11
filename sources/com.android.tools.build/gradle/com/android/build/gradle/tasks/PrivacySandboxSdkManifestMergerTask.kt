@@ -31,14 +31,12 @@ import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.manifmerger.ManifestMerger2
-import org.gradle.api.attributes.Usage
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -107,7 +105,7 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(PrivacySandboxManifestMergerWorkAction::class.java) { params ->
-            params.initializeFromAndroidVariantTask(this)
+            params.initializeFromBaseTask(this)
             val identifierToManifestDependencyFile = libraryManifests.get().associate { result ->
                 ProcessApplicationManifest.getArtifactName(result) to result.file
             }
@@ -152,9 +150,8 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
             super.configure(task)
 
             val libraryManifests = creationConfig.dependencies.getArtifactCollection(
-                    Usage.JAVA_RUNTIME,
-                    creationConfig.mergeSpec,
-                    AndroidArtifacts.ArtifactType.MANIFEST
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                AndroidArtifacts.ArtifactType.MANIFEST
             )
             task.libraryManifests.set(libraryManifests)
             task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiString)

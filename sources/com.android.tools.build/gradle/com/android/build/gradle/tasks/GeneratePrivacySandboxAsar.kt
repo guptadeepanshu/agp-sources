@@ -25,8 +25,8 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
-import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.tools.build.bundletool.commands.BuildSdkAsarCommand
@@ -51,7 +51,7 @@ import org.gradle.work.DisableCachingByDefault
  * should just package already compiled and packaged stuff.
  */
 @DisableCachingByDefault
-abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
+abstract class GeneratePrivacySandboxAsar : NonIncrementalGlobalTask() {
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -68,7 +68,7 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.outputFile.set(outputFile)
             it.asb.set(asb)
             it.signingConfigDataProvider.set(signingConfigDataProvider.get().signingConfigData)
@@ -110,7 +110,7 @@ abstract class GeneratePrivacySandboxAsar : NonIncrementalTask() {
 
     class CreationAction(
             private val creationConfig: PrivacySandboxSdkVariantScope
-    ) : AndroidVariantTaskCreationAction<GeneratePrivacySandboxAsar>() {
+    ) : GlobalTaskCreationAction<GeneratePrivacySandboxAsar>() {
 
         override val name: String = "generatePrivacySandboxSdkArchive"
         override val type: Class<GeneratePrivacySandboxAsar> =

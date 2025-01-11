@@ -17,8 +17,7 @@
 package com.android.build.gradle.internal.core.dsl.impl
 
 import com.android.build.api.component.impl.ComponentIdentityImpl
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
-import com.android.build.api.variant.DeviceTest
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HostTestBuilder
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
@@ -28,7 +27,7 @@ import com.android.build.api.variant.ResValue
 import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.features.AndroidResourcesDslInfo
 import com.android.build.gradle.internal.dsl.AaptOptions
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.getNamePrefixedWithAndroidTarget
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -39,7 +38,7 @@ import com.google.common.collect.ImmutableSet
 import org.gradle.api.provider.Provider
 
 class KmpUnitTestDslInfoImpl(
-    extension: KotlinMultiplatformAndroidExtension,
+    extension: KotlinMultiplatformAndroidLibraryExtension,
     services: VariantServices,
     override val mainVariantDslInfo: KmpVariantDslInfo,
     withJava: Boolean,
@@ -48,11 +47,11 @@ class KmpUnitTestDslInfoImpl(
     extension, services, withJava
 ), HostTestComponentDslInfo, KmpComponentDslInfo {
 
-    private val testOnJvmConfig = (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnJvmOptions!!
+    private val testOnJvmConfig = (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnJvmOptions!!
 
     override val componentType = ComponentTypeImpl.UNIT_TEST
     override val componentIdentity = ComponentIdentityImpl(
-        (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnJvmBuilder!!.compilationName.getNamePrefixedWithAndroidTarget()
+        (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnJvmBuilder!!.compilationName.getNamePrefixedWithAndroidTarget()
     )
 
     override val namespace: Provider<String> by lazy {
@@ -94,7 +93,7 @@ class KmpUnitTestDslInfoImpl(
         )
 
     override val dslDefinedDeviceTests: List<ComponentDslInfo.DslDefinedDeviceTest> =
-        (extension as KotlinMultiplatformAndroidExtensionImpl).androidTestOnDeviceOptions?.let {
+        (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).androidTestOnDeviceOptions?.let {
             listOf(
                 ComponentDslInfo.DslDefinedDeviceTest(
                     DeviceTestBuilder.Companion.ANDROID_TEST_TYPE,

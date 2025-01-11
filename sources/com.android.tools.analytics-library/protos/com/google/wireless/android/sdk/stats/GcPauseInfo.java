@@ -89,6 +89,10 @@ private static final long serialVersionUID = 0L;
      * <code>G1_OLD = 8;</code>
      */
     G1_OLD(8),
+    /**
+     * <code>G1_CONCURRENT = 9;</code>
+     */
+    G1_CONCURRENT(9),
     ;
 
     /**
@@ -127,6 +131,10 @@ private static final long serialVersionUID = 0L;
      * <code>G1_OLD = 8;</code>
      */
     public static final int G1_OLD_VALUE = 8;
+    /**
+     * <code>G1_CONCURRENT = 9;</code>
+     */
+    public static final int G1_CONCURRENT_VALUE = 9;
 
 
     public final int getNumber() {
@@ -158,6 +166,7 @@ private static final long serialVersionUID = 0L;
         case 6: return CMS_OLD;
         case 7: return G1_YOUNG;
         case 8: return G1_OLD;
+        case 9: return G1_CONCURRENT;
         default: return null;
       }
     }

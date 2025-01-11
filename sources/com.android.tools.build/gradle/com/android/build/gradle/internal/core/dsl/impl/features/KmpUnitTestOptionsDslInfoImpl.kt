@@ -18,18 +18,18 @@ package com.android.build.gradle.internal.core.dsl.impl.features
 
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.gradle.internal.core.dsl.features.UnitTestOptionsDslInfo
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin
 import com.android.build.gradle.internal.utils.createTargetSdkVersion
 import org.gradle.api.tasks.testing.Test
 
 internal class KmpUnitTestOptionsDslInfoImpl(
-    private val extension: KotlinMultiplatformAndroidExtensionImpl,
+    private val extension: KotlinMultiplatformAndroidLibraryExtensionImpl,
 ): UnitTestOptionsDslInfo {
 
     private val testOnJvmConfig
         get() = extension.androidTestOnJvmOptions ?: throw RuntimeException(
-            "Android tests on jvm are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withAndroidTestOnJvm()` to enable)"
+            "Android tests on jvm are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withHostTest {}` to enable)"
         )
 
     override val isIncludeAndroidResources: Boolean

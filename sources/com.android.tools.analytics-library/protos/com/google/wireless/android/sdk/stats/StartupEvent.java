@@ -45,6 +45,10 @@ private static final long serialVersionUID = 0L;
   }
 
   /**
+   * <pre>
+   * Type of the startup phase
+   * </pre>
+   *
    * Protobuf enum {@code android_studio.StartupEvent.Type}
    */
   public enum Type
@@ -198,6 +202,10 @@ private static final long serialVersionUID = 0L;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
   private int durationMs_;
   /**
+   * <pre>
+   * Duration of the corresponding startup phase
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
@@ -206,6 +214,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
+   * <pre>
+   * Duration of the corresponding startup phase
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
@@ -217,6 +229,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 2;
   private int type_;
   /**
+   * <pre>
+   * Type of the startup phase
+   * </pre>
+   *
    * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
    * @return Whether the type field is set.
    */
@@ -224,6 +240,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
+   * <pre>
+   * Type of the startup phase
+   * </pre>
+   *
    * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
    * @return The type.
    */
@@ -598,6 +618,10 @@ private static final long serialVersionUID = 0L;
 
     private int durationMs_ ;
     /**
+     * <pre>
+     * Duration of the corresponding startup phase
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
@@ -606,6 +630,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * Duration of the corresponding startup phase
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return The durationMs.
      */
@@ -614,6 +642,10 @@ private static final long serialVersionUID = 0L;
       return durationMs_;
     }
     /**
+     * <pre>
+     * Duration of the corresponding startup phase
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @param value The durationMs to set.
      * @return This builder for chaining.
@@ -625,6 +657,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Duration of the corresponding startup phase
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return This builder for chaining.
      */
@@ -637,6 +673,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ = 0;
     /**
+     * <pre>
+     * Type of the startup phase
+     * </pre>
+     *
      * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
      * @return Whether the type field is set.
      */
@@ -644,6 +684,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
+     * <pre>
+     * Type of the startup phase
+     * </pre>
+     *
      * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
      * @return The type.
      */
@@ -654,6 +698,10 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.google.wireless.android.sdk.stats.StartupEvent.Type.UNKNOWN_STARTUP_EVENT_TYPE : result;
     }
     /**
+     * <pre>
+     * Type of the startup phase
+     * </pre>
+     *
      * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -668,6 +716,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Type of the startup phase
+     * </pre>
+     *
      * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
      * @return This builder for chaining.
      */

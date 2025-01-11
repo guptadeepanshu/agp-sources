@@ -8,11 +8,19 @@ public interface StartupPerformanceFrameBecameInteractiveEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * How long it takes for the main IDE frame to become interactive.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
   boolean hasDurationMs();
   /**
+   * <pre>
+   * How long it takes for the main IDE frame to become interactive.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */

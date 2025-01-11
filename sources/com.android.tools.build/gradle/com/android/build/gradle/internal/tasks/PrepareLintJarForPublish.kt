@@ -65,8 +65,8 @@ abstract class PrepareLintJarForPublish : NonIncrementalGlobalTask() {
         }
     }
 
-    class CreationAction(creationConfig: GlobalTaskCreationConfig) :
-        GlobalTaskCreationAction<PrepareLintJarForPublish>(creationConfig) {
+    class CreationAction(private val creationConfig: GlobalTaskCreationConfig) :
+        GlobalTaskCreationAction<PrepareLintJarForPublish>() {
 
         override val name = NAME
         override val type = PrepareLintJarForPublish::class.java

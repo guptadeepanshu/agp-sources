@@ -23,7 +23,6 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
 import com.android.build.gradle.internal.coverage.JacocoReportTask
-import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
 import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
 import com.android.build.gradle.internal.lint.LintModelWriterTask
@@ -64,7 +63,6 @@ import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
-import java.util.concurrent.Callable
 
 class AndroidTestTaskManager(
     project: Project,
@@ -474,16 +472,7 @@ class AndroidTestTaskManager(
     }
 
     private fun createMockableJarTask() {
-        project.dependencies
-            .add(
-                VariantDependencies.CONFIG_NAME_ANDROID_APIS,
-                project.files(
-                    Callable {
-                        globalConfig.versionedSdkLoader.flatMap {
-                            it.androidJarProvider
-                        }.orNull
-                    } as Callable<*>))
-
+        addAndroidJarDependency()
         // Adding this task to help the IDE find the mockable JAR.
         taskFactory.register(
             globalConfig.taskNames.createMockableJar

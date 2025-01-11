@@ -21,7 +21,9 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInter
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
@@ -31,7 +33,7 @@ import org.gradle.work.DisableCachingByDefault
 // Disable caching since we only create a small text file.
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST, secondaryTaskCategories = [TaskCategory.SOURCE_GENERATION])
-abstract class PrivacySandboxSdkManifestGeneratorTask: NonIncrementalTask() {
+abstract class PrivacySandboxSdkManifestGeneratorTask: NonIncrementalGlobalTask() {
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -49,7 +51,7 @@ abstract class PrivacySandboxSdkManifestGeneratorTask: NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-        AndroidVariantTaskCreationAction<PrivacySandboxSdkManifestGeneratorTask>() {
+        GlobalTaskCreationAction<PrivacySandboxSdkManifestGeneratorTask>() {
 
         override val name: String
             get() = "mainManifestGenerator"

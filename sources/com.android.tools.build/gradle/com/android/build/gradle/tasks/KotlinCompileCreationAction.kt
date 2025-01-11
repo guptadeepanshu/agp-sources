@@ -29,7 +29,7 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.KotlinServices
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class KotlinCompileCreationAction(
@@ -99,7 +99,11 @@ class KotlinCompileCreationAction(
             }
         }
 
-        creationConfig.global.kotlinOptions?.let { task.applyJvmOptions(it) }
+        // TODO(KT-69927) pass KotlinJvmCompilerOptions to registerKotlinJvmCompileTask()
+        creationConfig.global
+            .kotlinAndroidProjectExtension
+            ?.compilerOptions
+            ?.let { task.applyCompilerOptions(it) }
     }
 }
 
@@ -130,22 +134,22 @@ abstract class KotlinTaskCreationAction<TASK : Task>(
     }
 }
 
-internal fun KotlinJvmCompile.applyJvmOptions(options: KotlinJvmOptions) {
-    kotlinOptions {
-        // TODO(b/259523353): Initialize task options from the DSL object, add API in KGP for
-        //  automatic copying
-        jvmTarget = options.jvmTarget
-        javaParameters = options.javaParameters
-        moduleName = options.moduleName
-        noJdk = options.noJdk
+/**
+ * Add conventions for KotlinJvmCompile.compilerOptions properties based on [options]
+ */
+internal fun KotlinJvmCompile.applyCompilerOptions(options: KotlinJvmCompilerOptions) {
+    compilerOptions {
+        jvmTarget.convention(options.jvmTarget)
+        javaParameters.convention(options.javaParameters)
+        moduleName.convention(options.moduleName)
+        noJdk.convention(options.noJdk)
 
-        apiVersion = options.apiVersion
-        languageVersion = options.languageVersion
-        useK2 = options.useK2
+        apiVersion.convention(options.apiVersion)
+        languageVersion.convention(options.languageVersion)
 
-        freeCompilerArgs = options.freeCompilerArgs
-        allWarningsAsErrors = options.allWarningsAsErrors
-        suppressWarnings = options.suppressWarnings
-        verbose = options.verbose
+        freeCompilerArgs.convention(options.freeCompilerArgs)
+        allWarningsAsErrors.convention(options.allWarningsAsErrors)
+        suppressWarnings.convention(options.suppressWarnings)
+        verbose.convention(options.verbose)
     }
 }

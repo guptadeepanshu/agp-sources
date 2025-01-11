@@ -86,9 +86,9 @@ public final class Storage {
       return null;
     }
     // Get the numeric part
-    int numberPart;
+    long numberPart;
     try {
-      numberPart = Integer.parseInt(matcher.group(1));
+      numberPart = Long.parseLong(matcher.group(1));
     }
     catch (NumberFormatException unused) {
       return null;

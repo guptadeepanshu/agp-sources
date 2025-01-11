@@ -86,9 +86,9 @@ abstract class ManagedDeviceCleanTask: NonIncrementalGlobalTask() {
 
     class CreationAction @JvmOverloads constructor(
         override val name: String,
-        creationConfig: GlobalTaskCreationConfig,
+        private val creationConfig: GlobalTaskCreationConfig,
         private val definedDevices: List<ManagedVirtualDevice> = listOf()
-    ) : GlobalTaskCreationAction<ManagedDeviceCleanTask>(creationConfig) {
+    ) : GlobalTaskCreationAction<ManagedDeviceCleanTask>() {
 
         override val type: Class<ManagedDeviceCleanTask>
             get() = ManagedDeviceCleanTask::class.java

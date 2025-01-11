@@ -49,8 +49,8 @@ abstract class ExtractProguardFiles : NonIncrementalGlobalTask() {
     }
 
     class CreationAction(
-        creationConfig: GlobalTaskCreationConfig
-    ) : GlobalTaskCreationAction<ExtractProguardFiles>(creationConfig) {
+        private val creationConfig: GlobalTaskCreationConfig
+    ) : GlobalTaskCreationAction<ExtractProguardFiles>() {
 
         override val name = "extractProguardFiles"
         override val type = ExtractProguardFiles::class.java

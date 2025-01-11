@@ -117,7 +117,7 @@ abstract class GenerateAdditionalApkSplitForDeploymentViaApk : NonIncrementalTas
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(WorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.usesSdkLibrarySplitDir.set(usesSdkLibrarySplit)
             it.runtimeConfigFile.set(runtimeConfigFile)
             it.applicationId.set(applicationId)

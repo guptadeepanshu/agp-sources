@@ -112,4 +112,33 @@ public interface SdkIndexLibraryDetailsOrBuilder extends
    * @return The isBlocking.
    */
   boolean getIsBlocking();
+
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return Whether the updatedVersionString field is set.
+   */
+  boolean hasUpdatedVersionString();
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return The updatedVersionString.
+   */
+  java.lang.String getUpdatedVersionString();
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return The bytes for updatedVersionString.
+   */
+  com.google.protobuf.ByteString
+      getUpdatedVersionStringBytes();
 }

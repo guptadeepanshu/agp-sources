@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dependency
 
+import com.android.builder.dexing.R8Version
 import com.android.ide.common.gradle.Version
 import java.io.Serializable
 
@@ -27,14 +28,28 @@ data class ShrinkerVersion(private val version: Version) : Serializable, Compara
 
     companion object {
 
-        val R8 by lazy { parse(com.android.builder.dexing.R8Version.getVersionString())!! }
+        val R8 by lazy {
+            parse(R8Version.getVersionString())
+        }
+
+        // Special value representing R8 "main" version (b/374032642)
+        private const val R8_MAIN_VERSION = "9999.0.0-dev"
 
         private val versionPattern = """[^\s.]+(?:\.[^\s.]+)+""".toRegex()
 
-        fun parse(version: String): ShrinkerVersion? =
-            versionPattern.find(version)
-                ?.let { matchResult -> matchResult.groupValues[0] }
-                ?.let { Version.parse(it) }
-                ?.let { ShrinkerVersion(it) }
+        fun parse(version: String): ShrinkerVersion =
+            tryParse(version) ?: error("Unrecognized version: $version")
+
+        fun tryParse(version: String): ShrinkerVersion? {
+            // Check if this is R8 "main" version (version == "main (build 1234567)").
+            return if (version.startsWith("main")) {
+                ShrinkerVersion(Version.parse(R8_MAIN_VERSION))
+            } else {
+                versionPattern.find(version)
+                    ?.let { matchResult -> matchResult.groupValues[0] }
+                    ?.let { Version.parse(it) }
+                    ?.let { ShrinkerVersion(it) }
+            }
+        }
     }
 }

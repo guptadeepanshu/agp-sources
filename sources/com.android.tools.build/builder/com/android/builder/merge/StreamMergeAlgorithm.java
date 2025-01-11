@@ -17,7 +17,9 @@
 package com.android.builder.merge;
 
 import com.android.annotations.NonNull;
+
 import com.google.common.io.Closer;
+
 import java.io.InputStream;
 import java.util.List;
 
@@ -37,5 +39,5 @@ public interface StreamMergeAlgorithm {
      */
     @NonNull
     InputStream merge(
-            @NonNull String path, @NonNull List<InputStream> streams, @NonNull Closer closer);
+            @NonNull String path, @NonNull List<MergeInput> streams, @NonNull Closer closer);
 }

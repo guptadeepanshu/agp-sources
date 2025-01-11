@@ -115,7 +115,7 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
         val manifestFile = Iterables.getOnlyElement(manifestsOutputs.elements).outputFile
 
         workerExecutor.noIsolation().submit(Action::class.java) { params ->
-            params.initializeFromAndroidVariantTask(this)
+            params.initializeFromBaseTask(this)
             params.androidJar.set(androidJarInput.getAndroidJar().get())
             params.aapt2.set(aapt2)
             params.inputs.set(inputChanges.getChangesInSerializableForm(inputDirectory))

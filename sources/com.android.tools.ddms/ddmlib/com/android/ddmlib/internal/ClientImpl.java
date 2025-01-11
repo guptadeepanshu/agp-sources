@@ -251,7 +251,7 @@ public class ClientImpl extends JdwpPipe implements Client {
         } else {
             String file =
                     "/sdcard/"
-                            + mClientData.getClientDescription().replaceAll("\\:.*", "")
+                            + mClientData.getProcessName().replaceAll("\\:.*", "")
                             + DdmConstants.DOT_TRACE;
             HandleProfiling.sendMPRS(this, file, bufferSize, 0 /*flags*/);
         }

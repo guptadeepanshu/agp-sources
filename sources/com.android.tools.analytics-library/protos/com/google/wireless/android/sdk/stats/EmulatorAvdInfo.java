@@ -569,6 +569,38 @@ private static final long serialVersionUID = 0L;
      * <code>PIXEL_9_PRO_FOLD = 44;</code>
      */
     PIXEL_9_PRO_FOLD(44),
+    /**
+     * <code>AUTOMOTIVE_1080P_LANDSCAPE = 45;</code>
+     */
+    AUTOMOTIVE_1080P_LANDSCAPE(45),
+    /**
+     * <code>AUTOMOTIVE_1408P_LANDSCAPE_WITH_PLAY = 46;</code>
+     */
+    AUTOMOTIVE_1408P_LANDSCAPE_WITH_PLAY(46),
+    /**
+     * <code>AUTOMOTIVE_1408P_LANDSCAPE_WITH_GOOGLE_APIS = 47;</code>
+     */
+    AUTOMOTIVE_1408P_LANDSCAPE_WITH_GOOGLE_APIS(47),
+    /**
+     * <code>AUTOMOTIVE_PORTRAIT = 48;</code>
+     */
+    AUTOMOTIVE_PORTRAIT(48),
+    /**
+     * <code>AUTOMOTIVE_DISTANT_DISPLAY = 49;</code>
+     */
+    AUTOMOTIVE_DISTANT_DISPLAY(49),
+    /**
+     * <code>AUTOMOTIVE_DISTANT_DISPLAY_WITH_PLAY = 50;</code>
+     */
+    AUTOMOTIVE_DISTANT_DISPLAY_WITH_PLAY(50),
+    /**
+     * <code>AUTOMOTIVE_ULTRAWIDE_DISPLAY = 51;</code>
+     */
+    AUTOMOTIVE_ULTRAWIDE_DISPLAY(51),
+    /**
+     * <code>AUTOMOTIVE_LARGE_PORTRAIT = 52;</code>
+     */
+    AUTOMOTIVE_LARGE_PORTRAIT(52),
     ;
 
     /**
@@ -751,6 +783,38 @@ private static final long serialVersionUID = 0L;
      * <code>PIXEL_9_PRO_FOLD = 44;</code>
      */
     public static final int PIXEL_9_PRO_FOLD_VALUE = 44;
+    /**
+     * <code>AUTOMOTIVE_1080P_LANDSCAPE = 45;</code>
+     */
+    public static final int AUTOMOTIVE_1080P_LANDSCAPE_VALUE = 45;
+    /**
+     * <code>AUTOMOTIVE_1408P_LANDSCAPE_WITH_PLAY = 46;</code>
+     */
+    public static final int AUTOMOTIVE_1408P_LANDSCAPE_WITH_PLAY_VALUE = 46;
+    /**
+     * <code>AUTOMOTIVE_1408P_LANDSCAPE_WITH_GOOGLE_APIS = 47;</code>
+     */
+    public static final int AUTOMOTIVE_1408P_LANDSCAPE_WITH_GOOGLE_APIS_VALUE = 47;
+    /**
+     * <code>AUTOMOTIVE_PORTRAIT = 48;</code>
+     */
+    public static final int AUTOMOTIVE_PORTRAIT_VALUE = 48;
+    /**
+     * <code>AUTOMOTIVE_DISTANT_DISPLAY = 49;</code>
+     */
+    public static final int AUTOMOTIVE_DISTANT_DISPLAY_VALUE = 49;
+    /**
+     * <code>AUTOMOTIVE_DISTANT_DISPLAY_WITH_PLAY = 50;</code>
+     */
+    public static final int AUTOMOTIVE_DISTANT_DISPLAY_WITH_PLAY_VALUE = 50;
+    /**
+     * <code>AUTOMOTIVE_ULTRAWIDE_DISPLAY = 51;</code>
+     */
+    public static final int AUTOMOTIVE_ULTRAWIDE_DISPLAY_VALUE = 51;
+    /**
+     * <code>AUTOMOTIVE_LARGE_PORTRAIT = 52;</code>
+     */
+    public static final int AUTOMOTIVE_LARGE_PORTRAIT_VALUE = 52;
 
 
     public final int getNumber() {
@@ -818,6 +882,14 @@ private static final long serialVersionUID = 0L;
         case 42: return PIXEL_9_PRO;
         case 43: return PIXEL_9_PRO_XL;
         case 44: return PIXEL_9_PRO_FOLD;
+        case 45: return AUTOMOTIVE_1080P_LANDSCAPE;
+        case 46: return AUTOMOTIVE_1408P_LANDSCAPE_WITH_PLAY;
+        case 47: return AUTOMOTIVE_1408P_LANDSCAPE_WITH_GOOGLE_APIS;
+        case 48: return AUTOMOTIVE_PORTRAIT;
+        case 49: return AUTOMOTIVE_DISTANT_DISPLAY;
+        case 50: return AUTOMOTIVE_DISTANT_DISPLAY_WITH_PLAY;
+        case 51: return AUTOMOTIVE_ULTRAWIDE_DISPLAY;
+        case 52: return AUTOMOTIVE_LARGE_PORTRAIT;
         default: return null;
       }
     }

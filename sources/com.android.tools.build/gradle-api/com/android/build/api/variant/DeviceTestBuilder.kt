@@ -22,7 +22,7 @@ import org.gradle.api.Incubating
  * Interface to turn tests on devices, `AndroidTest` being an example of device tests.
  */
 @Incubating
-interface DeviceTestBuilder: GeneratesApkBuilder {
+interface DeviceTestBuilder: GeneratesTestApkBuilder {
     companion object {
 
         /**
@@ -39,8 +39,6 @@ interface DeviceTestBuilder: GeneratesApkBuilder {
     @get: Incubating
     @set: Incubating
     var enable: Boolean
-
-
 
     /**
      * Specifies host test code coverage data collection by configuring the JacocoPlugin.

@@ -57,7 +57,7 @@ abstract class ApkZipPackagingTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ApkZipPackagingRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.apkFolder.set(apkFolder)
             it.mappingFile.set(mappingFile)
             it.zipOutputFile.set(apkZipFile)

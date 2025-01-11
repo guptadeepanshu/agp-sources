@@ -68,4 +68,12 @@ open class AnalyticsEnabledAndroidTestBuilder(
                 VariantMethodType.TARGET_SDK_PREVIEW_VALUE
             delegate.targetSdkPreview = value
         }
+
+    override var debuggable: Boolean
+        get() = throw PropertyAccessNotAllowedException("debuggable", "AndroidTestBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.DEVICE_TEST_DEBUGGABLE_VALUE
+            delegate.debuggable = value
+        }
 }

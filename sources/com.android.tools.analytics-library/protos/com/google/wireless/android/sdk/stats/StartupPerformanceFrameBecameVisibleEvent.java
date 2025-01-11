@@ -4,6 +4,10 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Event describing how long it takes for the main IDE frame to become visible.
+ * </pre>
+ *
  * Protobuf type {@code android_studio.StartupPerformanceFrameBecameVisibleEvent}
  */
 public final class StartupPerformanceFrameBecameVisibleEvent extends
@@ -54,14 +58,26 @@ private static final long serialVersionUID = 0L;
      */
     UNKNOWN_PROJECT_TYPE(0),
     /**
+     * <pre>
+     * Project was reopened.
+     * </pre>
+     *
      * <code>REOPENED = 1;</code>
      */
     REOPENED(1),
     /**
+     * <pre>
+     * Files were specified to be loaded on IDE startup.
+     * </pre>
+     *
      * <code>FROM_FILES_TO_LOAD = 2;</code>
      */
     FROM_FILES_TO_LOAD(2),
     /**
+     * <pre>
+     * Project was specified in the arguments.
+     * </pre>
+     *
      * <code>FROM_ARGS = 3;</code>
      */
     FROM_ARGS(3),
@@ -72,14 +88,26 @@ private static final long serialVersionUID = 0L;
      */
     public static final int UNKNOWN_PROJECT_TYPE_VALUE = 0;
     /**
+     * <pre>
+     * Project was reopened.
+     * </pre>
+     *
      * <code>REOPENED = 1;</code>
      */
     public static final int REOPENED_VALUE = 1;
     /**
+     * <pre>
+     * Files were specified to be loaded on IDE startup.
+     * </pre>
+     *
      * <code>FROM_FILES_TO_LOAD = 2;</code>
      */
     public static final int FROM_FILES_TO_LOAD_VALUE = 2;
     /**
+     * <pre>
+     * Project was specified in the arguments.
+     * </pre>
+     *
      * <code>FROM_ARGS = 3;</code>
      */
     public static final int FROM_ARGS_VALUE = 3;
@@ -162,6 +190,10 @@ private static final long serialVersionUID = 0L;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
   private int durationMs_;
   /**
+   * <pre>
+   * How long did it take to show the main IDE frame since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
@@ -170,6 +202,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
+   * <pre>
+   * How long did it take to show the main IDE frame since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
@@ -181,6 +217,11 @@ private static final long serialVersionUID = 0L;
   public static final int HAS_SETTINGS_FIELD_NUMBER = 2;
   private boolean hasSettings_;
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 2;</code>
    * @return Whether the hasSettings field is set.
    */
@@ -189,6 +230,11 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 2;</code>
    * @return The hasSettings.
    */
@@ -200,6 +246,10 @@ private static final long serialVersionUID = 0L;
   public static final int PROJECT_TYPE_FIELD_NUMBER = 3;
   private int projectType_;
   /**
+   * <pre>
+   * Type of the project opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
    * @return Whether the projectType field is set.
    */
@@ -207,6 +257,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
+   * <pre>
+   * Type of the project opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
    * @return The projectType.
    */
@@ -409,6 +463,10 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Event describing how long it takes for the main IDE frame to become visible.
+   * </pre>
+   *
    * Protobuf type {@code android_studio.StartupPerformanceFrameBecameVisibleEvent}
    */
   public static final class Builder extends
@@ -612,6 +670,10 @@ private static final long serialVersionUID = 0L;
 
     private int durationMs_ ;
     /**
+     * <pre>
+     * How long did it take to show the main IDE frame since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
@@ -620,6 +682,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * How long did it take to show the main IDE frame since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return The durationMs.
      */
@@ -628,6 +694,10 @@ private static final long serialVersionUID = 0L;
       return durationMs_;
     }
     /**
+     * <pre>
+     * How long did it take to show the main IDE frame since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @param value The durationMs to set.
      * @return This builder for chaining.
@@ -639,6 +709,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * How long did it take to show the main IDE frame since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return This builder for chaining.
      */
@@ -651,6 +725,11 @@ private static final long serialVersionUID = 0L;
 
     private boolean hasSettings_ ;
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 2;</code>
      * @return Whether the hasSettings field is set.
      */
@@ -659,6 +738,11 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 2;</code>
      * @return The hasSettings.
      */
@@ -667,6 +751,11 @@ private static final long serialVersionUID = 0L;
       return hasSettings_;
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 2;</code>
      * @param value The hasSettings to set.
      * @return This builder for chaining.
@@ -678,6 +767,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 2;</code>
      * @return This builder for chaining.
      */
@@ -690,6 +784,10 @@ private static final long serialVersionUID = 0L;
 
     private int projectType_ = 0;
     /**
+     * <pre>
+     * Type of the project opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
      * @return Whether the projectType field is set.
      */
@@ -697,6 +795,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
+     * <pre>
+     * Type of the project opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
      * @return The projectType.
      */
@@ -707,6 +809,10 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceFrameBecameVisibleEvent.ProjectType.UNKNOWN_PROJECT_TYPE : result;
     }
     /**
+     * <pre>
+     * Type of the project opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
      * @param value The projectType to set.
      * @return This builder for chaining.
@@ -721,6 +827,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Type of the project opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFrameBecameVisibleEvent.ProjectType project_type = 3;</code>
      * @return This builder for chaining.
      */

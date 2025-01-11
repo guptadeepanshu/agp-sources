@@ -19,9 +19,8 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.impl.InternalScopedArtifacts
-import com.android.builder.files.KeyedFileCache
 import com.android.builder.files.IncrementalRelativeFileSets
+import com.android.builder.files.KeyedFileCache
 import com.android.builder.files.RelativeFile
 import com.android.builder.files.RelativeFiles
 import com.android.builder.files.SerializableInputChanges
@@ -34,20 +33,19 @@ import com.android.tools.build.apkzlib.utils.CachedSupplier
 import com.android.tools.build.apkzlib.utils.IOExceptionRunnable
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
-import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
 import java.util.Collections
-import java.util.HashSet
 
 /**
  * Creates an [IncrementalFileMergerInput] from a file (either a directory or jar file). All
  * children of the file will be reported in the incremental input.
  *
  * @param input the input file
+ * @param name the display name for the file in case of errors
  * @param changedInputs the map of changed files to the type of change
  * @param zipCache the zip cache; the cache will not be modified
  * @param cacheUpdates will receive actions to update the cache for the next iteration
@@ -55,6 +53,7 @@ import java.util.HashSet
  */
 fun toIncrementalInput(
     input: File,
+    name: String,
     changedInputs: Map<File, FileStatus>,
     zipCache: KeyedFileCache,
     cacheUpdates: MutableList<Runnable>
@@ -71,7 +70,7 @@ fun toIncrementalInput(
             })
         }
         return LazyIncrementalFileMergerInput(
-            input.absolutePath,
+            name,
             CachedSupplier { computeUpdatesFromJar(jarCDR, changedInputs, zipCache) },
             CachedSupplier { computeFilesFromJar(jarCDR) }
         )
@@ -79,7 +78,7 @@ fun toIncrementalInput(
 
     Preconditions.checkState(!input.isFile, "Non-directory inputs must have .jar extension: $input")
     return LazyIncrementalFileMergerInput(
-        input.absolutePath,
+        name,
         CachedSupplier { computeUpdatesFromDir(input, changedInputs) },
         CachedSupplier { computeFilesFromDir(input) }
     )
@@ -90,6 +89,7 @@ fun toIncrementalInput(
  * contain incremental information. All files will be reported as new.
  *
  * @param input the file input
+ * @param name the display name for the file in case of errors
  * @param zipCache the zip cache; the cache will not be modified
  * @param cacheUpdates will receive actions to update the cache for the next iteration, if
  *        file.isFile is true, in which case it's assumed to be a jar file.
@@ -97,6 +97,7 @@ fun toIncrementalInput(
  */
 fun toNonIncrementalInput(
     input: File,
+    name: String,
     zipCache: KeyedFileCache,
     cacheUpdates: MutableList<Runnable>
 ): IncrementalFileMergerInput? {
@@ -108,7 +109,7 @@ fun toNonIncrementalInput(
         cacheUpdates.add(IOExceptionRunnable.asRunnable {  zipCache.add(input) })
     }
 
-    return LazyIncrementalFileMergerInputs.fromNew(input.absolutePath, ImmutableSet.of(input))
+    return LazyIncrementalFileMergerInputs.fromNew(name, ImmutableSet.of(input))
 }
 
 /**
@@ -202,10 +203,16 @@ private fun computeFilesFromDir(dir: File): Set<RelativeFile> {
     return RelativeFiles.fromDirectory(dir)
 }
 
+internal data class InputData(
+    val file: File,
+    val priority: JavaResMergingPriority,
+    val source: String
+)
+
 /**
- * Creates a list of [IncrementalFileMergerInput] from a map of [File]s to [InternalScopedArtifacts.InternalScope]s.
+ * Creates a list of [IncrementalFileMergerInput] from a list of [InputData]
  *
- * @param inputMap map of files to their corresponding merging priority
+ * @param inputs list of file inputs with associated data
  * @param changes map of files to file status, passed from the incremental task, or null if
  * the task is not incremental
  * @param zipCache the zip cache; the cache will not be modified
@@ -213,37 +220,35 @@ private fun computeFilesFromDir(dir: File): Set<RelativeFile> {
  * @param full is this a full build? If not, then it is an incremental build; in full builds
  * the output is not cleaned, it is the responsibility of the caller to ensure the output
  * is properly set up; `full` cannot be `false` if changedInputs is null
- * @param priorityMap receives a mapping from all generated inputs to their merging priority
  */
 internal fun toInputs(
-    inputMap: MutableMap<File, JavaResMergingPriority>,
+    inputs: List<InputData>,
     changes: SerializableInputChanges?,
     zipCache: KeyedFileCache,
     cacheUpdates: MutableList<Runnable>,
     full: Boolean,
-    priorityMap: MutableMap<IncrementalFileMergerInput, JavaResMergingPriority>
-): ImmutableList<IncrementalFileMergerInput> {
+): ImmutableMap<IncrementalFileMergerInput, JavaResMergingPriority> {
     if (full) {
         cacheUpdates.add(IOExceptionRunnable.asRunnable { zipCache.clear() })
     }
     val changedInputs = changes?.let { collectChanges(it) }
 
-    val builder = ImmutableList.builder<IncrementalFileMergerInput>()
-    for ((input, priority) in inputMap.entries) {
+    val builder = ImmutableMap.builder<IncrementalFileMergerInput, JavaResMergingPriority>()
+    for (input in inputs) {
         val fileMergerInput: IncrementalFileMergerInput? = if (full) {
-            toNonIncrementalInput(input, zipCache, cacheUpdates)
+            toNonIncrementalInput(input.file, input.source, zipCache, cacheUpdates)
         } else {
             toIncrementalInput(
-                    input,
-                    changedInputs ?: throw IllegalArgumentException("changes must be specified for incremental merging."),
-                    zipCache,
-                    cacheUpdates)
+                input.file,
+                input.source,
+                changedInputs ?: throw IllegalArgumentException("changes must be specified for incremental merging."),
+                zipCache,
+                cacheUpdates
+            )
         }
 
         fileMergerInput?.let {
-            builder.add(it)
-            // Add mapping of fileMergerInput to its priority
-            priorityMap[it] = priority
+            builder.put(it, input.priority)
         }
     }
 

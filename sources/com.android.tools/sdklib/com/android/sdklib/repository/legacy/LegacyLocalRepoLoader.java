@@ -95,6 +95,7 @@ public class LegacyLocalRepoLoader implements FallbackLocalRepoLoader {
      * @deprecated Use {@link Path}s, {@link CancellableFileIo} and (for testing) {@code
      *     InMemoryFileSystems} directly.
      */
+    @Deprecated
     @NonNull
     private FileOp createFileOp(@Nullable Path path) {
         if (path != null) {

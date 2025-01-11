@@ -17,18 +17,18 @@
 package com.android.build.gradle.internal
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import org.gradle.api.JavaVersion
 
 /**
  * Implementation of [CompileOptions] that is based on kotlin multiplatform APIs for internal use.
  */
 internal class KotlinMultiplatformCompileOptionsImpl(
-    private val extension: KotlinMultiplatformAndroidExtension
+    private val extension: KotlinMultiplatformAndroidLibraryExtension
 ): CompileOptions() {
 
     override var isCoreLibraryDesugaringEnabled
-        get() = extension.isCoreLibraryDesugaringEnabled
+        get() = extension.enableCoreLibraryDesugaring
         set(_) {
             throw IllegalAccessException("Compile options for kmp variants are read only.")
         }

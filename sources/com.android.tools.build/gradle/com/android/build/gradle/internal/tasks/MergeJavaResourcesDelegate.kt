@@ -65,21 +65,15 @@ internal fun determinePriority(scope: ScopedArtifacts.Scope) =
  * [MergeJavaResourceTask]
  */
 internal class MergeJavaResourcesDelegate(
-    inputs: List<IncrementalFileMergerInput>,
+    private val inputs: Map<IncrementalFileMergerInput, JavaResMergingPriority>,
     private val outputFile: File,
-    private val priorityMap: MutableMap<IncrementalFileMergerInput, JavaResMergingPriority>,
     private val packagingOptions: ParsedPackagingOptions,
     private val incrementalStateFile: File,
     private val isIncremental: Boolean,
     private val noCompress: Collection<String>
 ) {
 
-    private var inputs: MutableList<IncrementalFileMergerInput>
     private val acceptedPathsPredicate: Predicate<String> = MergeJavaResourceTask.predicate
-
-    init {
-        this.inputs = inputs.toMutableList()
-    }
 
     /**
      * Returns the incremental state.
@@ -123,18 +117,33 @@ internal class MergeJavaResourcesDelegate(
          * by packagingOptions.
          */
 
-        // Sort inputs to move project scopes to the start.
-        inputs.sortBy { priorityMap[it]?.value ?: JavaResMergingPriority.LOW.value }
-
         // Filter inputs.
         val inputFilter =
             acceptedPathsPredicate.and { path -> packagingOptions.getAction(path) != PackagingFileAction.EXCLUDE }
-        inputs =
-                inputs.map {
+
+        /*
+         * We need a custom output to handle the case in which the same path appears in multiple
+         * inputs and the action is NONE, but only one input is actually PROJECT or FEATURES. In
+         * this specific case we will ignore all other inputs.
+         */
+        val highPriorityInputs = mutableListOf<FilterIncrementalFileMergerInput>()
+
+        // create final input list, sorted and filtered.
+        val finalInputList =
+            inputs.keys
+                .asSequence()
+                .sortedBy { inputs[it]?.value ?: JavaResMergingPriority.LOW.value }
+                .map {
                     val filteredInput = FilterIncrementalFileMergerInput(it, inputFilter)
-                    priorityMap[filteredInput] = priorityMap[it]!!
+
+                    val priority = inputs[it] ?: throw RuntimeException("unexpected missing priority for $it")
+                    if (priority != JavaResMergingPriority.LOW) {
+                        highPriorityInputs.add(filteredInput)
+                    }
+
                     filteredInput
-                }.toMutableList()
+                }
+                .toList()
 
         /*
          * Create the algorithm used by the merge transform. This algorithm decides on which
@@ -173,16 +182,6 @@ internal class MergeJavaResourcesDelegate(
                     ZFileOptions().also { it.noTimestamps = true }
                 )
             )
-
-        /*
-         * We need a custom output to handle the case in which the same path appears in multiple
-         * inputs and the action is NONE, but only one input is actually PROJECT or FEATURES. In
-         * this specific case we will ignore all other inputs.
-         */
-        val highPriorityInputs =
-            priorityMap.keys.filter {
-                priorityMap[it] != JavaResMergingPriority.LOW
-            }.toSet()
 
         val output = object : DelegateIncrementalFileMergerOutput(baseOutput) {
             override fun create(
@@ -237,7 +236,7 @@ internal class MergeJavaResourcesDelegate(
 
         saveMergeState(
             IncrementalFileMerger.merge(
-                inputs.toList(),
+                finalInputList,
                 output,
                 loadMergeState(),
                 PackagingUtils.getNoCompressPredicateForJavaRes(noCompress)

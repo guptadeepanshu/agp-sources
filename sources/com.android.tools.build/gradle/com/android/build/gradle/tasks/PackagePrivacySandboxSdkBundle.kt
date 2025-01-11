@@ -22,7 +22,9 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.internal.packaging.IncrementalPackager
@@ -64,7 +66,7 @@ import java.util.zip.ZipFile
  */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
-abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
+abstract class PackagePrivacySandboxSdkBundle: NonIncrementalGlobalTask() {
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -193,7 +195,7 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
 
     class CreationAction(
         private val creationConfig: PrivacySandboxSdkVariantScope
-    ): AndroidVariantTaskCreationAction<PackagePrivacySandboxSdkBundle>() {
+    ): GlobalTaskCreationAction<PackagePrivacySandboxSdkBundle>() {
 
         override val name: String = "packagePrivacySandboxSdkBundle"
         override val type: Class<PackagePrivacySandboxSdkBundle> = PackagePrivacySandboxSdkBundle::class.java
@@ -245,8 +247,7 @@ abstract class PackagePrivacySandboxSdkBundle: NonIncrementalTask() {
 
             task.sdkArchives.setFrom(
                     creationConfig.dependencies.getArtifactFileCollection(
-                            Usage.JAVA_RUNTIME,
-                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                             AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE))
 
             task.interfaceDescriptors.setDisallowChanges(

@@ -31,11 +31,13 @@ import com.android.ddmlib.TimeoutException;
 import com.android.ide.common.util.DeviceUtils;
 import com.android.sdklib.AndroidVersion;
 import com.android.utils.ILogger;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.ListenableFuture;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
@@ -386,6 +388,10 @@ public class ConnectedDevice extends DeviceConnector {
 
     @Override
     public boolean getSupportsPrivacySandbox() {
+        var currentServices = iDevice.services();
+        if (currentServices.isEmpty()) {
+            mLogger.lifecycle("Unexpected: No services running on device %1$s", iDevice.getName());
+        }
         return iDevice.getVersion().isGreaterOrEqualThan(34)
                 && iDevice.services().containsKey("sdk_sandbox");
     }

@@ -19,11 +19,13 @@ package com.android.build.api.variant.impl
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.gradle.internal.scope.BuildFeatureValues
+import org.gradle.api.provider.SetProperty
 
 class ApplicationAndroidResourcesImpl(
     genericAndroidResourcesImpl: AndroidResources,
     buildFeatures: BuildFeatureValues,
     override val generateLocaleConfig: Boolean,
+    override val localeFilters: SetProperty<String>
 ): ApplicationAndroidResources, AndroidResourcesImpl(
     genericAndroidResourcesImpl.ignoreAssetsPatterns,
     genericAndroidResourcesImpl.aaptAdditionalParameters,

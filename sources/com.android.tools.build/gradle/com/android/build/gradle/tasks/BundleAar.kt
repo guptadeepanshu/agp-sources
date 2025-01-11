@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.VariantTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.testFixtures.testFixturesClassifier
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.core.BuilderConstants
 import org.gradle.api.Action
@@ -39,6 +40,7 @@ import org.gradle.api.file.CopySpec
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCopyDetails
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -96,7 +98,7 @@ abstract class BundleAar : Zip(), VariantTask {
     val hasLocalAarDeps: Boolean
         get() {
             val hasLocalAarDependencies = localAarDeps.files.isNotEmpty()
-            if (hasLocalAarDependencies) {
+            if (hasLocalAarDependencies && !forLint.get()) {
                 throw RuntimeException(
                     "Direct local .aar file dependencies are not supported when building an AAR. " +
                             "The resulting AAR would be broken because the classes and Android " +
@@ -110,6 +112,13 @@ abstract class BundleAar : Zip(), VariantTask {
             }
             return hasLocalAarDependencies
         }
+
+    /**
+     * Whether this task generates an AAR specifically for lint, in which case local AAR
+     * dependencies are allowed.
+     */
+    @get:Input
+    abstract val forLint: Property<Boolean>
 
     abstract class BaseCreationAction<T: ComponentCreationConfig>(
         creationConfig: T
@@ -190,6 +199,7 @@ abstract class BundleAar : Zip(), VariantTask {
                     prependToCopyPath(SdkConstants.FD_ASSETS)
                 )
             }
+
             task.from(
                 artifacts.get(InternalArtifactType.AAR_METADATA)
             ) {
@@ -204,6 +214,7 @@ abstract class BundleAar : Zip(), VariantTask {
                 }
             )
             task.projectPath = task.project.path
+            task.forLint.convention(false)
         }
     }
 
@@ -279,6 +290,7 @@ abstract class BundleAar : Zip(), VariantTask {
                     prependToCopyPath(SdkConstants.LIBS_FOLDER)
                 )
             }
+            task.forLint.setDisallowChanges(true)
         }
     }
 
@@ -321,6 +333,7 @@ abstract class BundleAar : Zip(), VariantTask {
                     prependToCopyPath(SdkConstants.LIBS_FOLDER)
                 )
             }
+            task.forLint.setDisallowChanges(true)
         }
     }
 
@@ -426,6 +439,13 @@ abstract class BundleAar : Zip(), VariantTask {
             task.archiveExtension.set(BuilderConstants.EXT_LIB_ARCHIVE)
 
             task.from(creationConfig.artifacts.get(InternalArtifactType.LINT_PUBLISH_JAR))
+
+            if (creationConfig.buildFeatures.androidResources) {
+                task.from(
+                    creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ASSETS),
+                    prependToCopyPath(SdkConstants.FD_ASSETS)
+                )
+            }
         }
     }
 
@@ -456,6 +476,7 @@ abstract class BundleAar : Zip(), VariantTask {
 
             // No need to compress this archive because it's just an intermediate artifact.
             task.entryCompression = ZipEntryCompression.STORED
+            task.forLint.setDisallowChanges(true)
         }
     }
 

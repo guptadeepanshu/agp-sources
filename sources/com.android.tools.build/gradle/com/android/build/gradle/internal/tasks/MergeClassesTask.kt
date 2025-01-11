@@ -56,7 +56,7 @@ abstract class MergeClassesTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(MergeClassesWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputFiles.from(inputFiles)
             it.outputFile.set(outputFile)
         }

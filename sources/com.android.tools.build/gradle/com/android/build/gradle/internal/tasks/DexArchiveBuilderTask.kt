@@ -183,7 +183,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
         ) {
             // If non-incremental run (with files), or any of the dex files changed, copy them again.
             workerExecutor.noIsolation().submit(CopyDexOutput::class.java) {
-                it.initializeFromAndroidVariantTask(this)
+                it.initializeFromBaseTask(this)
                 it.inputDirs.from(externalLibDexFiles.files)
                 it.outputDexDir.set(externalLibsFromArtifactTransformsOutputs.dex)
                 it.outputGlobalSynthetics.set(externalLibsFromArtifactTransformsOutputs.globalSynthetics)

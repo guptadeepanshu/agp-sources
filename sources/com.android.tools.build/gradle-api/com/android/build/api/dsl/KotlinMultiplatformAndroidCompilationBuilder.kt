@@ -40,6 +40,10 @@ interface KotlinMultiplatformAndroidCompilationBuilder {
      */
     @get:Incubating
     @set:Incubating
+    @Deprecated(
+        "Changing the compilation name is discouraged." +
+                "This API will be removed in AGP 9.0"
+    ) // b/368600704
     var compilationName: String
 
     /**
@@ -59,6 +63,10 @@ interface KotlinMultiplatformAndroidCompilationBuilder {
      */
     @get:Incubating
     @set:Incubating
+    @Deprecated(
+        "Changing the name of the source set used as a default in a compilation is discouraged." +
+                "This API will be removed in AGP 9.0"
+    ) // b/368600704
     var defaultSourceSetName: String
 
     /**

@@ -166,7 +166,7 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
         }
 
         workerExecutor.noIsolation().submit(MergeNativeLibsTaskWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputFiles.set(inputFiles.toList())
             it.projectNativeLibs.set(projectNativeLibs.files)
             it.outputDirectory.set(outputDir)

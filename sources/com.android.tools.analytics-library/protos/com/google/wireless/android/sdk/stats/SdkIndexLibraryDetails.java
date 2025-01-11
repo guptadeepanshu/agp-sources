@@ -19,6 +19,7 @@ private static final long serialVersionUID = 0L;
     groupId_ = "";
     artifactId_ = "";
     versionString_ = "";
+    updatedVersionString_ = "";
   }
 
   @java.lang.Override
@@ -254,6 +255,66 @@ private static final long serialVersionUID = 0L;
     return isBlocking_;
   }
 
+  public static final int UPDATED_VERSION_STRING_FIELD_NUMBER = 5;
+  private volatile java.lang.Object updatedVersionString_;
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return Whether the updatedVersionString field is set.
+   */
+  @java.lang.Override
+  public boolean hasUpdatedVersionString() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return The updatedVersionString.
+   */
+  @java.lang.Override
+  public java.lang.String getUpdatedVersionString() {
+    java.lang.Object ref = updatedVersionString_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        updatedVersionString_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+   * </pre>
+   *
+   * <code>optional string updated_version_string = 5;</code>
+   * @return The bytes for updatedVersionString.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getUpdatedVersionStringBytes() {
+    java.lang.Object ref = updatedVersionString_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      updatedVersionString_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -280,6 +341,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeBool(4, isBlocking_);
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 5, updatedVersionString_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -301,6 +365,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(4, isBlocking_);
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, updatedVersionString_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -337,6 +404,11 @@ private static final long serialVersionUID = 0L;
       if (getIsBlocking()
           != other.getIsBlocking()) return false;
     }
+    if (hasUpdatedVersionString() != other.hasUpdatedVersionString()) return false;
+    if (hasUpdatedVersionString()) {
+      if (!getUpdatedVersionString()
+          .equals(other.getUpdatedVersionString())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -364,6 +436,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + IS_BLOCKING_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsBlocking());
+    }
+    if (hasUpdatedVersionString()) {
+      hash = (37 * hash) + UPDATED_VERSION_STRING_FIELD_NUMBER;
+      hash = (53 * hash) + getUpdatedVersionString().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -501,6 +577,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000004);
       isBlocking_ = false;
       bitField0_ = (bitField0_ & ~0x00000008);
+      updatedVersionString_ = "";
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -545,6 +623,10 @@ private static final long serialVersionUID = 0L;
         result.isBlocking_ = isBlocking_;
         to_bitField0_ |= 0x00000008;
       }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        to_bitField0_ |= 0x00000010;
+      }
+      result.updatedVersionString_ = updatedVersionString_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -612,6 +694,11 @@ private static final long serialVersionUID = 0L;
       if (other.hasIsBlocking()) {
         setIsBlocking(other.getIsBlocking());
       }
+      if (other.hasUpdatedVersionString()) {
+        bitField0_ |= 0x00000010;
+        updatedVersionString_ = other.updatedVersionString_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -658,6 +745,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000008;
               break;
             } // case 32
+            case 42: {
+              updatedVersionString_ = input.readBytes();
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1050,6 +1142,114 @@ private static final long serialVersionUID = 0L;
     public Builder clearIsBlocking() {
       bitField0_ = (bitField0_ & ~0x00000008);
       isBlocking_ = false;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object updatedVersionString_ = "";
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @return Whether the updatedVersionString field is set.
+     */
+    public boolean hasUpdatedVersionString() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @return The updatedVersionString.
+     */
+    public java.lang.String getUpdatedVersionString() {
+      java.lang.Object ref = updatedVersionString_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          updatedVersionString_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @return The bytes for updatedVersionString.
+     */
+    public com.google.protobuf.ByteString
+        getUpdatedVersionStringBytes() {
+      java.lang.Object ref = updatedVersionString_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        updatedVersionString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @param value The updatedVersionString to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUpdatedVersionString(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+      updatedVersionString_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUpdatedVersionString() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      updatedVersionString_ = getDefaultInstance().getUpdatedVersionString();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
+     * </pre>
+     *
+     * <code>optional string updated_version_string = 5;</code>
+     * @param value The bytes for updatedVersionString to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUpdatedVersionStringBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+      updatedVersionString_ = value;
       onChanged();
       return this;
     }

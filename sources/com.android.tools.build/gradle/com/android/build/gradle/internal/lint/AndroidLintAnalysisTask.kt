@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS
@@ -40,11 +41,13 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getLintParallelBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.ProjectOptions
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.lint.model.LintModelArtifactType
 import com.android.tools.lint.model.LintModelSerialization
@@ -237,6 +240,100 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 LINT_PARTIAL_RESULTS,
                 creationConfig.artifacts
             )
+        }
+    }
+
+    class PrivacySandboxCreationAction(
+        variantScope: PrivacySandboxSdkVariantScope,
+        val projectOptions: ProjectOptions)
+        : PrivacySandboxSdkAnalysisTaskCreationAction(variantScope, projectOptions) {
+        override val name = "lintAnalyze"
+        override val fatalOnly = false
+        override val description = "Run lint analysis on the Privacy Sandbox Sdk"
+        override val partialResultArtifactType: InternalArtifactType<Directory>
+            get() = LINT_PARTIAL_RESULTS
+    }
+
+    class PrivacySandboxLintVitalCreationAction(
+        variantScope: PrivacySandboxSdkVariantScope,
+        val projectOptions: ProjectOptions)
+        : PrivacySandboxSdkAnalysisTaskCreationAction(variantScope, projectOptions) {
+        override val name = "lintVitalAnalyze"
+        override val fatalOnly = true
+        override val description =
+            "Run lint analysis with only the fatal issues enabled on the Privacy Sandbox Sdk"
+        override val partialResultArtifactType: InternalArtifactType<Directory>
+            get() = LINT_VITAL_PARTIAL_RESULTS
+
+    }
+
+    abstract class PrivacySandboxSdkAnalysisTaskCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope,
+        private val projectOptions: ProjectOptions)
+        : PrivacySandboxSdkVariantTaskCreationAction<AndroidLintAnalysisTask>() {
+        final override val type: Class<AndroidLintAnalysisTask>
+            get() = AndroidLintAnalysisTask::class.java
+        abstract val fatalOnly: Boolean
+        abstract val description: String
+        abstract val partialResultArtifactType: InternalArtifactType<Directory>
+        override fun handleProvider(taskProvider: TaskProvider<AndroidLintAnalysisTask>) {
+            registerOutputArtifacts(
+                taskProvider,
+                partialResultArtifactType,
+                variantScope.artifacts
+            )
+        }
+
+        final override fun configure(task: AndroidLintAnalysisTask) {
+            super.configure(task)
+
+            task.description = description
+
+            task.initializeGlobalInputs(
+                services = variantScope.services,
+                isAndroid = true
+            )
+            task.lintModelDirectory.setDisallowChanges(
+                    task.project.layout.buildDirectory.dir("intermediates/${task.name}/android-lint-model"))
+
+            variantScope.customLintConfiguration?.let {
+                task.lintRuleJars.from(getLocalCustomLintChecks(it)) }
+
+            task.lintRuleJars.from(
+                variantScope
+                    .dependencies
+                    .getArtifactFileCollection(
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                        AndroidArtifacts.ArtifactType.LINT
+                    )
+            )
+            task.lintRuleJars.from(
+                variantScope
+                    .dependencies
+                    .getArtifactFileCollection(
+                        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                        AndroidArtifacts.ArtifactType.LINT
+                    )
+            )
+            task.lintRuleJars.disallowChanges()
+            task.fatalOnly.setDisallowChanges(fatalOnly)
+            task.checkOnly.set(
+                variantScope.services.provider {
+                    variantScope.lintOptions.checkOnly
+                }
+            )
+            task.projectInputs.initialize(variantScope, LintMode.ANALYSIS)
+            task.variantInputs.initialize(
+                task,
+                variantScope,
+                projectOptions,
+                false,
+                LintMode.ANALYSIS,
+                fatalOnly = fatalOnly
+            )
+            task.lintTool.initialize(variantScope.services, task)
+            task.desugaredMethodsFiles.disallowChanges()
+            task.uastInputs.initialize(variantScope)
         }
     }
 

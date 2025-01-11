@@ -17,30 +17,28 @@
 package com.android.build.gradle.internal.privaysandboxsdk
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import com.android.build.api.dsl.SigningConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.dependency.PluginConfigurations
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkBundleImpl
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkOptimizationImpl
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConfigurations
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryDependencies
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.sdklib.AndroidVersion
-import org.gradle.api.artifacts.component.ComponentIdentifier
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
-import org.gradle.api.specs.Spec
 
 interface PrivacySandboxSdkVariantScope {
     val layout: ProjectLayout
     val artifacts: ArtifactsImpl
-    val incomingConfigurations: FusedLibraryConfigurations
-    val outgoingConfigurations: FusedLibraryConfigurations
-    val dependencies: FusedLibraryDependencies
+    val incomingConfigurations: PluginConfigurations
+    val dependencies: PrivacySandboxSdkDependencies
     val extension: PrivacySandboxSdkExtension
-    val mergeSpec: Spec<ComponentIdentifier>
     val compileSdkVersion: String
     val minSdkVersion: AndroidVersion
     val targetSdkVersion: AndroidVersion
@@ -51,4 +49,11 @@ interface PrivacySandboxSdkVariantScope {
     val optimization: PrivacySandboxSdkOptimizationImpl
     val experimentalProperties: MapProperty<String, Any>
     val aarOrJarTypeToConsume: AarOrJarTypeToConsume
+    val lintOptions: Lint
+    val customLintConfiguration: Configuration?
+    val name: String
+
+    val lintUseK2UastManualSetting: Provider<Boolean> get() {
+        return VariantCreationConfig.getLintUseK2UastManualSetting(experimentalProperties, services)
+    }
 }

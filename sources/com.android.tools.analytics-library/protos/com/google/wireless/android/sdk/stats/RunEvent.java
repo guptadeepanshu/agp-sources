@@ -1087,6 +1087,33 @@ private static final long serialVersionUID = 0L;
     return runAlwaysInstallWithPm_;
   }
 
+  public static final int USE_ASSUME_VERIFIED_FIELD_NUMBER = 28;
+  private boolean useAssumeVerified_;
+  /**
+   * <pre>
+   * Whether the user configured Run to take advantage of assume-verified.
+   * </pre>
+   *
+   * <code>optional bool use_assume_verified = 28;</code>
+   * @return Whether the useAssumeVerified field is set.
+   */
+  @java.lang.Override
+  public boolean hasUseAssumeVerified() {
+    return ((bitField0_ & 0x00800000) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the user configured Run to take advantage of assume-verified.
+   * </pre>
+   *
+   * <code>optional bool use_assume_verified = 28;</code>
+   * @return The useAssumeVerified.
+   */
+  @java.lang.Override
+  public boolean getUseAssumeVerified() {
+    return useAssumeVerified_;
+  }
+
   public static final int APP_COMPONENT_TYPE_FIELD_NUMBER = 25;
   private int appComponentType_;
   /**
@@ -1098,7 +1125,7 @@ private static final long serialVersionUID = 0L;
    * @return Whether the appComponentType field is set.
    */
   @java.lang.Override public boolean hasAppComponentType() {
-    return ((bitField0_ & 0x00800000) != 0);
+    return ((bitField0_ & 0x01000000) != 0);
   }
   /**
    * <pre>
@@ -1126,7 +1153,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasIsComposeProject() {
-    return ((bitField0_ & 0x01000000) != 0);
+    return ((bitField0_ & 0x02000000) != 0);
   }
   /**
    * <pre>
@@ -1154,7 +1181,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasProjectId() {
-    return ((bitField0_ & 0x02000000) != 0);
+    return ((bitField0_ & 0x04000000) != 0);
   }
   /**
    * <pre>
@@ -1290,14 +1317,17 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00400000) != 0)) {
       output.writeBool(24, runAlwaysInstallWithPm_);
     }
-    if (((bitField0_ & 0x00800000) != 0)) {
+    if (((bitField0_ & 0x01000000) != 0)) {
       output.writeEnum(25, appComponentType_);
     }
-    if (((bitField0_ & 0x01000000) != 0)) {
+    if (((bitField0_ & 0x02000000) != 0)) {
       output.writeBool(26, isComposeProject_);
     }
-    if (((bitField0_ & 0x02000000) != 0)) {
+    if (((bitField0_ & 0x04000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 27, projectId_);
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      output.writeBool(28, useAssumeVerified_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -1402,16 +1432,20 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(24, runAlwaysInstallWithPm_);
     }
-    if (((bitField0_ & 0x00800000) != 0)) {
+    if (((bitField0_ & 0x01000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(25, appComponentType_);
     }
-    if (((bitField0_ & 0x01000000) != 0)) {
+    if (((bitField0_ & 0x02000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(26, isComposeProject_);
     }
-    if (((bitField0_ & 0x02000000) != 0)) {
+    if (((bitField0_ & 0x04000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(27, projectId_);
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(28, useAssumeVerified_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -1543,6 +1577,11 @@ private static final long serialVersionUID = 0L;
     if (hasRunAlwaysInstallWithPm()) {
       if (getRunAlwaysInstallWithPm()
           != other.getRunAlwaysInstallWithPm()) return false;
+    }
+    if (hasUseAssumeVerified() != other.hasUseAssumeVerified()) return false;
+    if (hasUseAssumeVerified()) {
+      if (getUseAssumeVerified()
+          != other.getUseAssumeVerified()) return false;
     }
     if (hasAppComponentType() != other.hasAppComponentType()) return false;
     if (hasAppComponentType()) {
@@ -1683,6 +1722,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + RUN_ALWAYS_INSTALL_WITH_PM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getRunAlwaysInstallWithPm());
+    }
+    if (hasUseAssumeVerified()) {
+      hash = (37 * hash) + USE_ASSUME_VERIFIED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getUseAssumeVerified());
     }
     if (hasAppComponentType()) {
       hash = (37 * hash) + APP_COMPONENT_TYPE_FIELD_NUMBER;
@@ -1878,12 +1922,14 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00400000);
       runAlwaysInstallWithPm_ = false;
       bitField0_ = (bitField0_ & ~0x00800000);
-      appComponentType_ = 0;
+      useAssumeVerified_ = false;
       bitField0_ = (bitField0_ & ~0x01000000);
-      isComposeProject_ = false;
+      appComponentType_ = 0;
       bitField0_ = (bitField0_ & ~0x02000000);
-      projectId_ = "";
+      isComposeProject_ = false;
       bitField0_ = (bitField0_ & ~0x04000000);
+      projectId_ = "";
+      bitField0_ = (bitField0_ & ~0x08000000);
       return this;
     }
 
@@ -2014,15 +2060,19 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00400000;
       }
       if (((from_bitField0_ & 0x01000000) != 0)) {
+        result.useAssumeVerified_ = useAssumeVerified_;
         to_bitField0_ |= 0x00800000;
       }
-      result.appComponentType_ = appComponentType_;
       if (((from_bitField0_ & 0x02000000) != 0)) {
-        result.isComposeProject_ = isComposeProject_;
         to_bitField0_ |= 0x01000000;
       }
+      result.appComponentType_ = appComponentType_;
       if (((from_bitField0_ & 0x04000000) != 0)) {
+        result.isComposeProject_ = isComposeProject_;
         to_bitField0_ |= 0x02000000;
+      }
+      if (((from_bitField0_ & 0x08000000) != 0)) {
+        to_bitField0_ |= 0x04000000;
       }
       result.projectId_ = projectId_;
       result.bitField0_ = to_bitField0_;
@@ -2173,6 +2223,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasRunAlwaysInstallWithPm()) {
         setRunAlwaysInstallWithPm(other.getRunAlwaysInstallWithPm());
       }
+      if (other.hasUseAssumeVerified()) {
+        setUseAssumeVerified(other.getUseAssumeVerified());
+      }
       if (other.hasAppComponentType()) {
         setAppComponentType(other.getAppComponentType());
       }
@@ -2180,7 +2233,7 @@ private static final long serialVersionUID = 0L;
         setIsComposeProject(other.getIsComposeProject());
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x04000000;
+        bitField0_ |= 0x08000000;
         projectId_ = other.projectId_;
         onChanged();
       }
@@ -2353,20 +2406,25 @@ private static final long serialVersionUID = 0L;
                 mergeUnknownVarintField(25, tmpRaw);
               } else {
                 appComponentType_ = tmpRaw;
-                bitField0_ |= 0x01000000;
+                bitField0_ |= 0x02000000;
               }
               break;
             } // case 200
             case 208: {
               isComposeProject_ = input.readBool();
-              bitField0_ |= 0x02000000;
+              bitField0_ |= 0x04000000;
               break;
             } // case 208
             case 218: {
               projectId_ = input.readBytes();
-              bitField0_ |= 0x04000000;
+              bitField0_ |= 0x08000000;
               break;
             } // case 218
+            case 224: {
+              useAssumeVerified_ = input.readBool();
+              bitField0_ |= 0x01000000;
+              break;
+            } // case 224
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -4059,6 +4117,61 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private boolean useAssumeVerified_ ;
+    /**
+     * <pre>
+     * Whether the user configured Run to take advantage of assume-verified.
+     * </pre>
+     *
+     * <code>optional bool use_assume_verified = 28;</code>
+     * @return Whether the useAssumeVerified field is set.
+     */
+    @java.lang.Override
+    public boolean hasUseAssumeVerified() {
+      return ((bitField0_ & 0x01000000) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to take advantage of assume-verified.
+     * </pre>
+     *
+     * <code>optional bool use_assume_verified = 28;</code>
+     * @return The useAssumeVerified.
+     */
+    @java.lang.Override
+    public boolean getUseAssumeVerified() {
+      return useAssumeVerified_;
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to take advantage of assume-verified.
+     * </pre>
+     *
+     * <code>optional bool use_assume_verified = 28;</code>
+     * @param value The useAssumeVerified to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUseAssumeVerified(boolean value) {
+      bitField0_ |= 0x01000000;
+      useAssumeVerified_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to take advantage of assume-verified.
+     * </pre>
+     *
+     * <code>optional bool use_assume_verified = 28;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUseAssumeVerified() {
+      bitField0_ = (bitField0_ & ~0x01000000);
+      useAssumeVerified_ = false;
+      onChanged();
+      return this;
+    }
+
     private int appComponentType_ = 0;
     /**
      * <pre>
@@ -4069,7 +4182,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the appComponentType field is set.
      */
     @java.lang.Override public boolean hasAppComponentType() {
-      return ((bitField0_ & 0x01000000) != 0);
+      return ((bitField0_ & 0x02000000) != 0);
     }
     /**
      * <pre>
@@ -4098,7 +4211,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      bitField0_ |= 0x01000000;
+      bitField0_ |= 0x02000000;
       appComponentType_ = value.getNumber();
       onChanged();
       return this;
@@ -4112,7 +4225,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAppComponentType() {
-      bitField0_ = (bitField0_ & ~0x01000000);
+      bitField0_ = (bitField0_ & ~0x02000000);
       appComponentType_ = 0;
       onChanged();
       return this;
@@ -4129,7 +4242,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public boolean hasIsComposeProject() {
-      return ((bitField0_ & 0x02000000) != 0);
+      return ((bitField0_ & 0x04000000) != 0);
     }
     /**
      * <pre>
@@ -4153,7 +4266,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsComposeProject(boolean value) {
-      bitField0_ |= 0x02000000;
+      bitField0_ |= 0x04000000;
       isComposeProject_ = value;
       onChanged();
       return this;
@@ -4167,7 +4280,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearIsComposeProject() {
-      bitField0_ = (bitField0_ & ~0x02000000);
+      bitField0_ = (bitField0_ & ~0x04000000);
       isComposeProject_ = false;
       onChanged();
       return this;
@@ -4184,7 +4297,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the projectId field is set.
      */
     public boolean hasProjectId() {
-      return ((bitField0_ & 0x04000000) != 0);
+      return ((bitField0_ & 0x08000000) != 0);
     }
     /**
      * <pre>
@@ -4246,7 +4359,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x08000000;
       projectId_ = value;
       onChanged();
       return this;
@@ -4261,7 +4374,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x04000000);
+      bitField0_ = (bitField0_ & ~0x08000000);
       projectId_ = getDefaultInstance().getProjectId();
       onChanged();
       return this;
@@ -4281,7 +4394,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x04000000;
+  bitField0_ |= 0x08000000;
       projectId_ = value;
       onChanged();
       return this;

@@ -130,6 +130,7 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
             globalVariantBuilderConfig,
             { targetSdkVersion },
             _enableMultiDex,
+            debuggable,
         )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {
@@ -158,6 +159,9 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
                     set(value) {}
                 override var targetSdkPreview: String?
                     get() = null
+                    set(value) {}
+                override var debuggable: Boolean
+                    get() = false
                     set(value) {}
             }
         }

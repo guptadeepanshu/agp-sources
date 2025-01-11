@@ -16,23 +16,23 @@
 
 package com.android.build.gradle.internal.core.dsl.impl
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.internal.core.dsl.KmpComponentDslInfo
 import com.android.build.gradle.internal.core.dsl.features.PrivacySandboxDslInfo
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.AbstractProductFlavor
 import org.gradle.api.provider.Property
 
 abstract class KmpComponentDslInfoImpl(
-    protected val extension: KotlinMultiplatformAndroidExtension,
+    protected val extension: KotlinMultiplatformAndroidLibraryExtension,
     protected val services: VariantServices,
     override val withJava: Boolean
 ): KmpComponentDslInfo {
 
     override val minSdkVersion: MutableAndroidVersion
-        get() = (extension as KotlinMultiplatformAndroidExtensionImpl).minSdkVersion
+        get() = (extension as KotlinMultiplatformAndroidLibraryExtensionImpl).minSdkVersion
 
     override val applicationId: Property<String> by lazy {
         services.newPropertyBackingDeprecatedApi(

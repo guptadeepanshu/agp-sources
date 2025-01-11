@@ -8,22 +8,38 @@ public interface StartupEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * Duration of the corresponding startup phase
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
   boolean hasDurationMs();
   /**
+   * <pre>
+   * Duration of the corresponding startup phase
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
   int getDurationMs();
 
   /**
+   * <pre>
+   * Type of the startup phase
+   * </pre>
+   *
    * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
    * @return Whether the type field is set.
    */
   boolean hasType();
   /**
+   * <pre>
+   * Type of the startup phase
+   * </pre>
+   *
    * <code>optional .android_studio.StartupEvent.Type type = 2;</code>
    * @return The type.
    */

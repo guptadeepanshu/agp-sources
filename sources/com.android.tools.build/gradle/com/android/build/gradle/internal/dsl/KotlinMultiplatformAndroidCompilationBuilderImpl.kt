@@ -34,11 +34,11 @@ internal class KotlinMultiplatformAndroidCompilationBuilderImpl(
         return when (compilationType) {
             KmpAndroidCompilationType.MAIN -> KotlinSourceSetTreeClassifier.Default
 
-            KmpAndroidCompilationType.TEST_ON_JVM -> sourceSetTreeName?.let {
+            KmpAndroidCompilationType.HOST_TEST -> sourceSetTreeName?.let {
                 KotlinSourceSetTreeClassifier.Name(it)
             } ?: KotlinSourceSetTreeClassifier.Value(KotlinSourceSetTree.test)
 
-            KmpAndroidCompilationType.TEST_ON_DEVICE -> sourceSetTreeName?.let {
+            KmpAndroidCompilationType.DEVICE_TEST -> sourceSetTreeName?.let {
                 KotlinSourceSetTreeClassifier.Name(it)
             } ?: KotlinSourceSetTreeClassifier.None
         }

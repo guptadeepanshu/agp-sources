@@ -21,7 +21,9 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.errors.IssueReporter
@@ -44,7 +46,7 @@ import org.gradle.work.DisableCachingByDefault
 /* Task to verify the state of the Privacy Sandbox specific configurations are correct. */
 @DisableCachingByDefault
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.VERIFICATION)
-abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalTask() {
+abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalGlobalTask() {
 
     @get:Input
     abstract val includeConfiguration: Property<ResolvedComponentResult>
@@ -101,7 +103,7 @@ abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope)
-        : AndroidVariantTaskCreationAction<PrivacySandboxValidateConfigurationTask>() {
+        : GlobalTaskCreationAction<PrivacySandboxValidateConfigurationTask>() {
 
         override val name: String
             get() = "validatePrivacySandboxSdkConfiguration"
@@ -151,9 +153,8 @@ abstract class PrivacySandboxValidateConfigurationTask : NonIncrementalTask() {
             )
 
             task.sdkArchives = creationConfig.dependencies.getArtifactCollection(
-                    Usage.JAVA_RUNTIME,
-                    creationConfig.mergeSpec,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE
             )
         }
     }

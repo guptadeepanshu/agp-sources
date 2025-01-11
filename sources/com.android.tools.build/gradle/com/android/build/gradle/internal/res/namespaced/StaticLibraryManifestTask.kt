@@ -52,7 +52,7 @@ abstract class StaticLibraryManifestTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(StaticLibraryManifestWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.manifestFile.set(manifestFile)
             it.packageName.set(packageName)
         }

@@ -87,6 +87,28 @@ interface SettingsExtension {
 
     var minSdkPreview: String?
 
+    /**
+     * The target SDK version.
+     * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
+     * Only one of [targetSdk] and [targetSdkPreview] should be set.
+     *
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
+     */
+    @get:Incubating
+    @set:Incubating
+    var targetSdk: Int?
+
+    /**
+     * The target SDK version.
+     * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
+     * Only one of [targetSdk] and [targetSdkPreview] should be set.
+     *
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
+     */
+    @get:Incubating
+    @set:Incubating
+    var targetSdkPreview: String?
+
 
     /** Set execution profiles and options for tools. */
     val execution: Execution

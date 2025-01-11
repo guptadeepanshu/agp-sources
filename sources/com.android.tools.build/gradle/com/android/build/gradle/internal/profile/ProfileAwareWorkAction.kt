@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.profile
 
-import com.android.build.gradle.internal.tasks.AndroidVariantTask
+import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import org.gradle.api.provider.Property
@@ -32,7 +32,7 @@ abstract class ProfileAwareWorkAction<T : ProfileAwareWorkAction.Parameters> : W
         abstract val taskOwner: Property<String>
         abstract val workerKey: Property<String>
         abstract val analyticsService: Property<AnalyticsService>
-        fun initializeFromAndroidVariantTask(task: AndroidVariantTask) {
+        fun initializeFromBaseTask(task: BaseTask) {
             initializeWith(task.projectPath, task.path, task.analyticsService)
         }
         fun initializeWith(

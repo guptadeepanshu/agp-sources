@@ -23,19 +23,48 @@ public interface TestScenarioEventOrBuilder extends
   com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequestOrBuilder getRequestOrBuilder();
 
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+   * @deprecated
    * @return Whether the inconsistentCount field is set.
    */
-  boolean hasInconsistentCount();
+  @java.lang.Deprecated boolean hasInconsistentCount();
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
+   * @deprecated
    * @return The inconsistentCount.
    */
-  com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount();
   /**
-   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [lazy = true];</code>
+   * <pre>
+   * Deprecated this field is no longer necessary
+   * </pre>
+   *
+   * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    */
-  com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder();
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCountOrBuilder getInconsistentCountOrBuilder();
+
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   * @return Whether the testScenarioResult field is set.
+   */
+  boolean hasTestScenarioResult();
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   * @return The testScenarioResult.
+   */
+  com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult getTestScenarioResult();
+  /**
+   * <code>.android_studio.TestScenarioEvent.TestScenarioResult test_scenario_result = 3 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder getTestScenarioResultOrBuilder();
 
   public com.google.wireless.android.sdk.stats.TestScenarioEvent.TransformCase getTransformCase();
 }

@@ -24,11 +24,13 @@ import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.ER
 import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.maybeThrowException
 import com.android.build.gradle.internal.lint.LintTaskManager.Companion.isLintStderr
 import com.android.build.gradle.internal.lint.LintTaskManager.Companion.isLintStdout
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -148,6 +150,24 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         override val fatalOnly = false
     }
 
+    class PrivacySandboxSdkLintTextOutputTaskCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope) :
+        PrivacySandboxSdkVariantTaskCreationAction<AndroidLintTextOutputTask>() {
+        override val name: String = "lint"
+        override val type: Class<AndroidLintTextOutputTask>
+            get() = AndroidLintTextOutputTask::class.java
+
+        override fun configure(task: AndroidLintTextOutputTask) {
+            super.configure(task)
+            task.group = JavaBasePlugin.VERIFICATION_GROUP
+            task.description = "Print text output from the corresponding lint report task"
+            task.android.setDisallowChanges(true)
+            task.initializeCommonInputs(
+                variantScope.artifacts, variantScope.lintOptions, false
+            )
+        }
+    }
+
     class LintVitalCreationAction(variant: ComponentCreationConfig) :
         VariantCreationAction(variant) {
         override val name: String = computeTaskName("lintVital")
@@ -155,6 +175,24 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<AndroidLintTextOutputTask>) {
             creationConfig.taskContainer.assembleTask.dependsOn(taskProvider)
+        }
+    }
+
+    class PrivacySandboxSdkLintVitalCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope) :
+        PrivacySandboxSdkVariantTaskCreationAction<AndroidLintTextOutputTask>() {
+        override val name: String = "lintVital"
+        override val type: Class<AndroidLintTextOutputTask>
+            get() = AndroidLintTextOutputTask::class.java
+
+        override fun configure(task: AndroidLintTextOutputTask) {
+            super.configure(task)
+            task.group = JavaBasePlugin.VERIFICATION_GROUP
+            task.description = "Print text output from the corresponding lint report task"
+            task.android.setDisallowChanges(true)
+            task.initializeCommonInputs(
+                variantScope.artifacts, variantScope.lintOptions, true
+            )
         }
     }
 

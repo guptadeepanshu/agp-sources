@@ -59,7 +59,7 @@ abstract class ExtractProfilerNativeDependenciesTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ExtractProfilerNativeDepsWorkerAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.inputJars.from(inputJars)
             it.outputDir.set(outputDir)
         }

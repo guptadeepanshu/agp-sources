@@ -26,6 +26,7 @@ import com.android.build.gradle.internal.component.NestedComponentCreationConfig
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_MODEL
 import com.android.build.gradle.internal.scope.InternalArtifactType.ANDROID_TEST_LINT_PARTIAL_RESULTS
@@ -44,8 +45,10 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.ProjectOptions
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.lint.model.LintModelArtifactType
 import com.android.tools.lint.model.LintModelModule
@@ -102,7 +105,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
         val variant =
             variantInputs.toLintModel(
                 module,
-                partialResultsDir.get().asFile,
+                partialResultsDir.orNull?.asFile,
                 desugaredMethodsFiles = listOf()
             )
         LintModelSerialization.writeModule(
@@ -215,6 +218,48 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
                 LINT_PARTIAL_RESULTS
             }
             val partialResultsDir = creationConfig.artifacts.get(type)
+            task.partialResultsDir.set(partialResultsDir)
+            task.partialResultsDir.disallowChanges()
+        }
+    }
+
+    class PrivacySandboxCreationAction(
+        private val variantScope: PrivacySandboxSdkVariantScope,
+        private val fatalOnly: Boolean,
+        private val projectOptions: ProjectOptions,
+    ) : PrivacySandboxSdkVariantTaskCreationAction<LintModelWriterTask>() {
+        private val vitalOrBlank = if (fatalOnly) "Vital" else ""
+        override val name: String
+            get() = "generateLint${vitalOrBlank}ReportModel"
+
+        override val type: Class<LintModelWriterTask>
+            get() = LintModelWriterTask::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<LintModelWriterTask>) {
+            super.handleProvider(taskProvider)
+            registerOutputArtifacts(
+                taskProvider,
+                if (fatalOnly) LINT_VITAL_REPORT_LINT_MODEL else LINT_REPORT_LINT_MODEL,
+                variantScope.artifacts
+            )
+        }
+
+        override fun configure(task: LintModelWriterTask) {
+            super.configure(task)
+            task.projectInputs.initialize(variantScope, LintMode.MODEL_WRITING)
+            task.variantInputs.initialize(
+                task,
+                variantScope,
+                projectOptions,
+                true,
+                LintMode.MODEL_WRITING,
+                fatalOnly)
+            val type = if (fatalOnly) {
+                LINT_VITAL_PARTIAL_RESULTS
+            } else {
+                LINT_PARTIAL_RESULTS
+            }
+            val partialResultsDir = variantScope.artifacts.get(type)
             task.partialResultsDir.set(partialResultsDir)
             task.partialResultsDir.disallowChanges()
         }

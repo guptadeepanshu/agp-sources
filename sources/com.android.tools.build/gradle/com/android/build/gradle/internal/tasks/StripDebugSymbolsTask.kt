@@ -21,7 +21,6 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.NdkHandlerInput
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.stripping.SymbolStripExecutableFinder
 import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.process.GradleProcessExecutor
@@ -102,7 +101,7 @@ abstract class StripDebugSymbolsTask : NewIncrementalTask() {
         val changes = inputChanges.getChangesInSerializableForm(inputDir)
 
         workerExecutor.noIsolation().submit(StripDebugSymbolsDelegate::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.keepDebugSymbols.set(keepDebugSymbols.get())
             it.sdkBuildService.set(sdkBuildService)
             it.ndkHandlerInput.set(ndkHandlerInput)

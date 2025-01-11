@@ -185,6 +185,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT = 33;</code>
      */
     EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT(33),
+    /**
+     * <code>RES_VALUES_DEFAULT = 34;</code>
+     */
+    RES_VALUES_DEFAULT(34),
     ;
 
     /**
@@ -323,6 +327,10 @@ private static final long serialVersionUID = 0L;
      * <code>EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT = 33;</code>
      */
     public static final int EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT_VALUE = 33;
+    /**
+     * <code>RES_VALUES_DEFAULT = 34;</code>
+     */
+    public static final int RES_VALUES_DEFAULT_VALUE = 34;
 
 
     public final int getNumber() {
@@ -379,6 +387,7 @@ private static final long serialVersionUID = 0L;
         case 31: return MIGRATE_TEST_COVERAGE_ENABLED;
         case 32: return USE_ANDROIDX_DEFAULT;
         case 33: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS_DEFAULT;
+        case 34: return RES_VALUES_DEFAULT;
         default: return null;
       }
     }

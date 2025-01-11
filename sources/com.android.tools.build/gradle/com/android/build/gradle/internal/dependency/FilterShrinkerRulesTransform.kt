@@ -117,10 +117,10 @@ internal fun configDirMatchesVersion(
     if (minVersionString.isEmpty() && maxVersionString.isEmpty()) {
         return true
     }
-    val minVersion = ShrinkerVersion.parse(minVersionString)
+    val minVersion = ShrinkerVersion.tryParse(minVersionString)
     if (minVersion != null && version < minVersion) {
         return false
     }
-    val maxVersion = ShrinkerVersion.parse(maxVersionString)
+    val maxVersion = ShrinkerVersion.tryParse(maxVersionString)
     return maxVersion == null || maxVersion > version
 }

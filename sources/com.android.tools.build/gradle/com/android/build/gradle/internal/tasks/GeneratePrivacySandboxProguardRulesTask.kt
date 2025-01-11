@@ -19,7 +19,8 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
-import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
@@ -38,7 +39,7 @@ import java.util.SortedSet
  */
 @CacheableTask
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION)
-abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalTask() {
+abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalGlobalTask() {
 
     @get:Input
     @get:Optional
@@ -58,7 +59,7 @@ abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             GenerateProguardRulesWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.compatSdkProviderClassName.set(compatSdkProviderClassName)
             it.sdkProviderClassName.set(sdkProviderClassName)
             it.applicationId.set(applicationId)
@@ -81,7 +82,7 @@ abstract class GeneratePrivacySandboxProguardRulesTask : NonIncrementalTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-        AndroidVariantTaskCreationAction<GeneratePrivacySandboxProguardRulesTask>() {
+        GlobalTaskCreationAction<GeneratePrivacySandboxProguardRulesTask>() {
 
         override val name: String
             get() = "generatePrivacySandboxProguardRules"

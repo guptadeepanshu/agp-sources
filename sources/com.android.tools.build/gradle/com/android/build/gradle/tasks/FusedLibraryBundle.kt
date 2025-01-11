@@ -19,12 +19,14 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants
 import com.android.SdkConstants.EXT_JAR
 import com.android.SdkConstants.FD_AAR_LIBS
-import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.AarMetadataTask
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
+import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
@@ -146,7 +148,8 @@ abstract class FusedLibraryBundleClasses: NonIncrementalGlobalTask() {
 
     class CreationAction(
         val creationConfig: FusedLibraryGlobalScope,
-    ): TaskCreationAction<FusedLibraryBundleClasses>() {
+    ): GlobalTaskCreationAction<FusedLibraryBundleClasses>() {
+
         override val name: String
             get() = "packageJar"
         override val type: Class<FusedLibraryBundleClasses>
@@ -163,9 +166,6 @@ abstract class FusedLibraryBundleClasses: NonIncrementalGlobalTask() {
 
         override fun configure(task: FusedLibraryBundleClasses) {
             super.configure(task)
-            task.analyticsService.setDisallowChanges(
-                getBuildService(task.project.gradle.sharedServices)
-            )
             task.include.from(
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.CLASSES_WITH_REWRITTEN_R_CLASS_REFS),
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)

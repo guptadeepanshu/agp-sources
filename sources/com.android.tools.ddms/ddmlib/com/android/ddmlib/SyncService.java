@@ -22,6 +22,7 @@ import com.android.ddmlib.FileListingService.FileEntry;
 import com.android.ddmlib.SyncException.SyncError;
 import com.android.ddmlib.utils.ArrayHelper;
 import com.android.ddmlib.utils.FilePermissionUtil;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -480,7 +481,12 @@ public class SyncService implements AutoCloseable {
         for (File f : files) {
             if (f.exists()) {
                 if (f.isDirectory()) {
-                    return getTotalLocalFileSize(f.listFiles()) + 1;
+                    File[] children = f.listFiles();
+                    if (children == null) {
+                        count++;
+                    } else {
+                        count += getTotalLocalFileSize(children) + 1;
+                    }
                 } else if (f.isFile()) {
                     count += f.length();
                 }

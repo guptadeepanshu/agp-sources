@@ -34,7 +34,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ClassesDirF
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable
@@ -162,7 +161,7 @@ abstract class BundleLibraryClassesDir: NewIncrementalTask(), BundleLibraryClass
         workerExecutor.noIsolation().submit(
             BundleLibraryClassesWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             configureWorkerActionParams(it, inputChanges, output.asFile)
         }
     }
@@ -235,7 +234,7 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
         workerExecutor.noIsolation().submit(
             BundleLibraryClassesWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             configureWorkerActionParams(it, null, output.asFile)
         }
     }

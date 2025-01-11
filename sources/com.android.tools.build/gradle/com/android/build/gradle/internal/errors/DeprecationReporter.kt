@@ -93,14 +93,14 @@ interface DeprecationReporter {
         ),
 
         DENSITY_SPLIT_API(
-            Version.VERSION_9_0,
-            "Density-based apk split feature is deprecated and will be removed in AGP 9.0. " +
+            Version.VERSION_10_0,
+            "Density-based apk split feature is deprecated and will be removed in AGP 10.0. " +
                     "Use Android App Bundle (https://developer.android.com/guide/app-bundle) " +
                     "to generate optimized APKs."
         ),
 
         BUILD_CONFIG_GLOBAL_PROPERTY(
-            Version.VERSION_9_0,
+            Version.VERSION_10_0,
             "To keep using this feature, add the following to your module-level build.gradle files:\n"+
                     "    android.buildFeatures.buildConfig = true\n" +
                     "or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`."

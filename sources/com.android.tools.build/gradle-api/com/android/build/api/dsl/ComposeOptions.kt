@@ -36,6 +36,6 @@ interface ComposeOptions {
     /**
      * Enables live literals in Compose
      */
-    @Deprecated("ComposeOptions.useLiveLiterals is deprecated and will be removed in AGP 9.0.")
+    @Deprecated("ComposeOptions.useLiveLiterals is deprecated and will be removed in AGP 9.0.") // b/346774554
     var useLiveLiterals: Boolean
 }

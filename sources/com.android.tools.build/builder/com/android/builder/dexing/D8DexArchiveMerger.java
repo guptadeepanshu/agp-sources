@@ -39,6 +39,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -90,7 +91,8 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
             @Nullable Path userMultidexKeepFile,
             @Nullable Collection<Path> libraryFiles,
             @Nullable Path inputProfileForDexStartupOptimization,
-            @Nullable Path mainDexListOutput)
+            @Nullable Path mainDexListOutput,
+            @Nullable Path d8Metadata)
             throws DexArchiveMergerException {
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.log(
@@ -120,6 +122,16 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
         D8Command.Builder builder = D8Command.builder(d8DiagnosticsHandler);
         builder.setDisableDesugaring(true);
         builder.setIncludeClassesChecksum(compilationMode == CompilationMode.DEBUG);
+        if (d8Metadata != null) {
+            builder.setBuildMetadataConsumer(
+                    d8BuildMetadata -> {
+                        try {
+                            Files.writeString(d8Metadata, d8BuildMetadata.toJson());
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    });
+        }
 
         for (DexArchiveEntry dexArchiveEntry : dexArchiveEntries) {
             builder.addDexProgramData(

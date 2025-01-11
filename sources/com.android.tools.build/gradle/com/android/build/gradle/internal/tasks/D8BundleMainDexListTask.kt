@@ -94,7 +94,7 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(
             MainDexListWorkerAction::class.java
         ) { params ->
-            params.initializeFromAndroidVariantTask(this)
+            params.initializeFromBaseTask(this)
             params.proguardRules.from(aaptGeneratedRules)
             params.proguardRules.from(userMultidexProguardRules.get())
             params.programDexFiles.from(baseDexDirs, featureDexDirs)

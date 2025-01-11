@@ -47,10 +47,17 @@ interface GeneratesApk {
     val renderscript: Renderscript?
 
     /**
+     * Min SDK version for this variant
+     */
+    @get:Incubating
+    val minSdk: AndroidVersion
+
+    /**
      * Target SDK version for this variant.
      */
     val targetSdk: AndroidVersion
 
+    // b/368604254
     @Deprecated(message = "Replaced with targetSdk, will be removed in 9.0", replaceWith = ReplaceWith("targetSdk"))
     val targetSdkVersion: AndroidVersion
 

@@ -101,7 +101,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.apkSetArchive.set(apkSetArchive)
             it.deviceConfig.set(
                 deviceConfig

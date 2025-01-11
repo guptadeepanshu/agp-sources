@@ -65,7 +65,7 @@ abstract class FeatureSetMetadataWriterTask : NonIncrementalTask() {
 
     public override fun doTaskAction() {
         workerExecutor.noIsolation().submit(FeatureSetRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.featureFiles.from(inputFiles)
             it.minSdkVersion.set(minSdkVersion)
             it.maxNumberOfFeaturesBeforeOreo.set(maxNumberOfFeaturesBeforeOreo)

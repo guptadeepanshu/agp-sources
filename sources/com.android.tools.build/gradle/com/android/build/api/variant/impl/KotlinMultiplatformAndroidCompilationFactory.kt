@@ -19,7 +19,7 @@ package com.android.build.api.variant.impl
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
 import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidCompilationBuilderImpl
-import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidExtensionImpl
+import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME
 import com.android.utils.appendCapitalized
 import org.gradle.api.NamedDomainObjectFactory
@@ -34,23 +34,23 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.external.createCompilation
 @OptIn(ExternalKotlinTargetApi::class)
 internal class KotlinMultiplatformAndroidCompilationFactory(
     private val project: Project,
-    private val target: KotlinMultiplatformAndroidTargetImpl,
+    private val target: KotlinMultiplatformAndroidLibraryTargetImpl,
     private val kotlinExtension: KotlinMultiplatformExtension,
-    private val androidExtension: KotlinMultiplatformAndroidExtensionImpl
+    private val androidExtension: KotlinMultiplatformAndroidLibraryExtensionImpl
 ): NamedDomainObjectFactory<KotlinMultiplatformAndroidCompilation> {
 
     @Suppress("INVISIBLE_MEMBER")
     override fun create(name: String): KotlinMultiplatformAndroidCompilationImpl {
         val compilationType = when (name) {
             KmpAndroidCompilationType.MAIN.defaultCompilationName -> KmpAndroidCompilationType.MAIN
-            androidExtension.androidTestOnJvmBuilder?.compilationName -> KmpAndroidCompilationType.TEST_ON_JVM
-            androidExtension.androidTestOnDeviceBuilder?.compilationName -> KmpAndroidCompilationType.TEST_ON_DEVICE
+            androidExtension.androidTestOnJvmBuilder?.compilationName -> KmpAndroidCompilationType.HOST_TEST
+            androidExtension.androidTestOnDeviceBuilder?.compilationName -> KmpAndroidCompilationType.DEVICE_TEST
             else -> throw IllegalStateException(
                 "Kotlin multiplatform android plugin doesn't support creating arbitrary " +
                         "compilations. Only three types of compilations are supported:\n" +
                         "  * main compilation (named \"${KmpAndroidCompilationType.MAIN.defaultCompilationName}\"),\n" +
-                        "  * test on jvm compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withAndroidTestOnJvm()` to enable),\n" +
-                        "  * test on device compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withAndroidTestOnDevice()` to enable)."
+                        "  * test on jvm compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withHostTest {}` to enable),\n" +
+                        "  * test on device compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withDeviceTest {}` to enable)."
             )
         }
 
@@ -58,8 +58,8 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
             KmpAndroidCompilationType.MAIN -> KotlinMultiplatformAndroidCompilationBuilderImpl(
                 compilationType
             )
-            KmpAndroidCompilationType.TEST_ON_JVM -> androidExtension.androidTestOnJvmBuilder!!
-            KmpAndroidCompilationType.TEST_ON_DEVICE -> androidExtension.androidTestOnDeviceBuilder!!
+            KmpAndroidCompilationType.HOST_TEST -> androidExtension.androidTestOnJvmBuilder!!
+            KmpAndroidCompilationType.DEVICE_TEST -> androidExtension.androidTestOnDeviceBuilder!!
         }
 
         val isTestComponent = compilationType != KmpAndroidCompilationType.MAIN
@@ -74,13 +74,13 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
                     KmpAndroidCompilationType.MAIN ->
                         KotlinMultiplatformAndroidCompilationImpl(delegate)
 
-                    KmpAndroidCompilationType.TEST_ON_JVM ->
-                        KotlinMultiplatformAndroidTestOnJvmCompilationImpl(
+                    KmpAndroidCompilationType.HOST_TEST ->
+                        KotlinMultiplatformAndroidHostTestCompilationImpl(
                             androidExtension.androidTestOnJvmOptions!!, delegate
                         )
 
-                    KmpAndroidCompilationType.TEST_ON_DEVICE ->
-                        KotlinMultiplatformAndroidTestOnDeviceCompilationImpl(
+                    KmpAndroidCompilationType.DEVICE_TEST ->
+                        KotlinMultiplatformAndroidDeviceTestCompilationImpl(
                             androidExtension.androidTestOnDeviceOptions!!, delegate
                         )
                 }

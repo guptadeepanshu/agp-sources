@@ -137,7 +137,7 @@ open class HostTestTaskManager(
     protected fun setupAndroidRequiredTasks(
         testedVariant: VariantCreationConfig,
         hostTestCreationConfig: HostTestCreationConfig
-        ) {
+    ) {
         if (testedVariant.componentType.isAar) {
             // Add a task to process the manifest
             createProcessTestManifestTask(hostTestCreationConfig)
@@ -226,26 +226,11 @@ open class HostTestTaskManager(
         }
     }
 
-    protected fun setupAssembleAndJavaCompilationTasks(
+    protected fun setupJavaCompilationTasks(
         hostTestCreationConfig: HostTestCreationConfig,
         taskContainer: MutableTaskContainer,
         testedVariant: VariantCreationConfig,
-        assembleTasK: String) {
-        // Whether we have android resources or not, we must always depend on the
-        // CLASSES so we run compilation, etc...
-        taskContainer.assembleTask.configure { task: Task ->
-            task.dependsOn(
-                hostTestCreationConfig
-                    .artifacts
-                    .forScope(ScopedArtifacts.Scope.PROJECT)
-                    .getFinalArtifacts(ScopedArtifact.CLASSES),
-            )
-        }
-
-        taskFactory.configure(assembleTasK) { assembleTest: Task ->
-            assembleTest.dependsOn(hostTestCreationConfig.taskContainer.assembleTask.name)
-        }
-
+    ) {
         // TODO(b/276758294): Remove such checks
         if (hostTestCreationConfig !is KmpComponentCreationConfig) {
             // compileDebugSources should be enough for running tests from AS, so add
@@ -258,8 +243,30 @@ open class HostTestTaskManager(
             setJavaCompilerTask(javacTask, hostTestCreationConfig)
             initializeAllScope(hostTestCreationConfig.artifacts)
         }
-        maybeCreateTransformClassesWithAsmTask(hostTestCreationConfig)
+    }
 
+    protected fun setupAssembleTasks(
+        hostTestCreationConfig: HostTestCreationConfig,
+        taskContainer: MutableTaskContainer,
+        assembleTask: String
+    ) {
+        // Whether we have android resources or not, we must always depend on the
+        // CLASSES so we run compilation, etc...
+        taskContainer.assembleTask.configure { task: Task ->
+            task.dependsOn(
+                hostTestCreationConfig
+                    .artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES),
+            )
+        }
+
+        taskFactory.configure(assembleTask) { assembleTest: Task ->
+            assembleTest.dependsOn(hostTestCreationConfig.taskContainer.assembleTask.name)
+        }
+    }
+
+    protected fun setupLintTasks(hostTestCreationConfig: HostTestCreationConfig) {
         if (globalConfig.avoidTaskRegistration.not()
             && hostTestCreationConfig.services.projectOptions.get(BooleanOption.LINT_ANALYSIS_PER_COMPONENT)
             && globalConfig.lintOptions.ignoreTestSources.not()

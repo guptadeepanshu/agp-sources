@@ -759,7 +759,9 @@ public class VariantDependenciesBuilder {
         }
 
         // make compileClasspath match runtimeClasspath
-        compileClasspath.shouldResolveConsistentlyWith(runtimeClasspath);
+        if (projectOptions.get(BooleanOption.ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT)) {
+            compileClasspath.shouldResolveConsistentlyWith(runtimeClasspath);
+        }
 
         // No dependency alignment for runtimeClasspath and androidTest runtimeClasspath in library
         if (isAarTest) {

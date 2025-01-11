@@ -58,7 +58,7 @@ abstract class ParseIntegrityConfigTask : NonIncrementalTask() {
 
     public override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ParseIntegrityConfigRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.integrityConfigDir.set(integrityConfigDir)
             it.appIntegrityConfigProto.set(appIntegrityConfigProto)
         }

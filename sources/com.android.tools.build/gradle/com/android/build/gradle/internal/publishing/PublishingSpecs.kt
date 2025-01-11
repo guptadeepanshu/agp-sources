@@ -21,7 +21,6 @@ import com.android.build.api.artifact.SingleArtifact.APK
 import com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST
 import com.android.build.api.artifact.SingleArtifact.METADATA_LIBRARY_DEPENDENCIES_REPORT
 import com.android.build.api.artifact.SingleArtifact.OBFUSCATION_MAPPING_FILE
-import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS
@@ -45,8 +44,8 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_SYMB
 import com.android.build.gradle.internal.scope.InternalArtifactType.CONSUMER_PROGUARD_DIR
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT
-import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_PUBLISHED_DEX
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_NAME
+import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_PUBLISHED_DEX
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_RESOURCE_PKG
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_SET_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.FULL_JAR
@@ -349,6 +348,7 @@ class PublishingSpecs {
                 // match the behavior of the Java library plugin. The LibraryElements attribute will
                 // be used for incremental dexing of test fixtures.
                 runtime(RUNTIME_LIBRARY_CLASSES_DIR, ArtifactType.CLASSES_DIR, LibraryElements.CLASSES)
+                runtime(LIBRARY_ASSETS, ArtifactType.ASSETS)
                 runtime(PACKAGED_RES, ArtifactType.ANDROID_RES)
                 runtime(PUBLIC_RES, ArtifactType.PUBLIC_RES)
                 runtime(COMPILE_SYMBOL_LIST, ArtifactType.COMPILE_SYMBOL_LIST)
@@ -378,7 +378,7 @@ class PublishingSpecs {
             variantSpec(ComponentTypeImpl.TEST_APK)
             variantSpec(ComponentTypeImpl.ANDROID_TEST)
             variantSpec(ComponentTypeImpl.UNIT_TEST)
-
+            variantSpec(ComponentTypeImpl.PRIVACY_SANDBOX_SDK)
             lock()
         }
 

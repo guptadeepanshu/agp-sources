@@ -85,7 +85,7 @@ abstract class GenerateLibraryProguardRulesTask : NewIncrementalTask() {
         workerExecutor.noIsolation().submit(
             GenerateProguardRulesWorkAction::class.java
         ) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.manifestFile.set(manifest)
             it.proguardOutputFile.set(proguardOutputFile)
             it.inputResourcesDir.set(inputResourcesDir)

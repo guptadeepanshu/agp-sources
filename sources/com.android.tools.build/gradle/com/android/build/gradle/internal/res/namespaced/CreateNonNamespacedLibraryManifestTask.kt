@@ -51,7 +51,7 @@ abstract class CreateNonNamespacedLibraryManifestTask : NonIncrementalTask() {
     override fun doTaskAction() {
         workerExecutor.noIsolation()
             .submit(CreateNonNamespacedLibraryManifestRunnable::class.java) {
-                it.initializeFromAndroidVariantTask(this)
+                it.initializeFromBaseTask(this)
                 it.originalManifestFile.set(libraryManifest)
                 it.strippedManifestFile.set(outputStrippedManifestFile)
             }

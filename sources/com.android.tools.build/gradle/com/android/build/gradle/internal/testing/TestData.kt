@@ -110,17 +110,7 @@ interface TestData {
      */
     @Internal("Already captured by testApkDir property.")
     fun getTestApk(): Provider<File> = testApkDir.map {
-        val testApkOutputs = BuiltArtifactsLoaderImpl().load(it)
-            ?: throw RuntimeException("No test APK in provided directory, file a bug")
-        if (testApkOutputs.elements.size != 1) {
-            throw RuntimeException(
-                "Unexpected number of main APKs, expected 1, got  "
-                        + testApkOutputs.elements.size
-                        + ":"
-                        + Joiner.on(",").join(testApkOutputs.elements)
-            )
-        }
-        File(testApkOutputs.elements.iterator().next().outputFile)
+        Companion.getTestingApk(it)
     }
 
     /**
@@ -168,4 +158,21 @@ interface TestData {
      * @suppress Do not use from production code. This API is exposed for prototype.
      */
     fun privacySandboxInstallBundlesFinder(deviceConfigProvider: DeviceConfigProvider): List<List<Path>>
+
+    companion object {
+        fun getTestingApk(directory: Directory): File {
+            val testApkOutputs = BuiltArtifactsLoaderImpl().load(directory)
+                ?: throw RuntimeException("No test APK in provided directory, file a bug")
+            if (testApkOutputs.elements.size != 1) {
+                throw RuntimeException(
+                    "Unexpected number of main APKs, expected 1, got  "
+                            + testApkOutputs.elements.size
+                            + ":"
+                            + Joiner.on(",").join(testApkOutputs.elements)
+                )
+            }
+            return File(testApkOutputs.elements.iterator().next().outputFile)
+
+        }
+    }
 }

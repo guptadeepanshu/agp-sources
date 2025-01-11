@@ -4,6 +4,13 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Event describing the duration from the user starting IDE till having single
+ * project opened without Welcome Screen involved, and the editors in project
+ * are reopened, or it's found that there are no editors to open. Does not wait
+ * for highlighting/indexing/other initialization activities to finish.
+ * </pre>
+ *
  * Protobuf type {@code android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor}
  */
 public final class StartupPerformanceCodeLoadedAndVisibleInEditor extends
@@ -55,10 +62,18 @@ private static final long serialVersionUID = 0L;
      */
     UNKNOWN_SOURCE_OF_SELECTED_EDITOR(0),
     /**
+     * <pre>
+     * A regular text editor was opened.
+     * </pre>
+     *
      * <code>TEXT_EDITOR = 1;</code>
      */
     TEXT_EDITOR(1),
     /**
+     * <pre>
+     * README.md file was found in the project and opened as a default.
+     * </pre>
+     *
      * <code>FOUND_README_FILE = 2;</code>
      */
     FOUND_README_FILE(2),
@@ -69,10 +84,18 @@ private static final long serialVersionUID = 0L;
      */
     public static final int UNKNOWN_SOURCE_OF_SELECTED_EDITOR_VALUE = 0;
     /**
+     * <pre>
+     * A regular text editor was opened.
+     * </pre>
+     *
      * <code>TEXT_EDITOR = 1;</code>
      */
     public static final int TEXT_EDITOR_VALUE = 1;
     /**
+     * <pre>
+     * README.md file was found in the project and opened as a default.
+     * </pre>
+     *
      * <code>FOUND_README_FILE = 2;</code>
      */
     public static final int FOUND_README_FILE_VALUE = 2;
@@ -154,6 +177,10 @@ private static final long serialVersionUID = 0L;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
   private int durationMs_;
   /**
+   * <pre>
+   * How long did it take to load the code and show it in the editor.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
@@ -162,6 +189,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
+   * <pre>
+   * How long did it take to load the code and show it in the editor.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
@@ -173,6 +204,10 @@ private static final long serialVersionUID = 0L;
   public static final int FILE_TYPE_FIELD_NUMBER = 2;
   private volatile java.lang.Object fileType_;
   /**
+   * <pre>
+   * Type of the file opened.
+   * </pre>
+   *
    * <code>optional string file_type = 2;</code>
    * @return Whether the fileType field is set.
    */
@@ -181,6 +216,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
+   * <pre>
+   * Type of the file opened.
+   * </pre>
+   *
    * <code>optional string file_type = 2;</code>
    * @return The fileType.
    */
@@ -200,6 +239,10 @@ private static final long serialVersionUID = 0L;
     }
   }
   /**
+   * <pre>
+   * Type of the file opened.
+   * </pre>
+   *
    * <code>optional string file_type = 2;</code>
    * @return The bytes for fileType.
    */
@@ -221,6 +264,11 @@ private static final long serialVersionUID = 0L;
   public static final int HAS_SETTINGS_FIELD_NUMBER = 3;
   private boolean hasSettings_;
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 3;</code>
    * @return Whether the hasSettings field is set.
    */
@@ -229,6 +277,11 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
+   * <pre>
+   * Shows if the opened project has settings to filter cases of importing which
+   * may need more resources.
+   * </pre>
+   *
    * <code>optional bool has_settings = 3;</code>
    * @return The hasSettings.
    */
@@ -240,6 +293,10 @@ private static final long serialVersionUID = 0L;
   public static final int LOADED_CACHED_MARKUP_FIELD_NUMBER = 4;
   private boolean loadedCachedMarkup_;
   /**
+   * <pre>
+   * While opening the file, the markup was loaded from the cache.
+   * </pre>
+   *
    * <code>optional bool loaded_cached_markup = 4;</code>
    * @return Whether the loadedCachedMarkup field is set.
    */
@@ -248,6 +305,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
+   * <pre>
+   * While opening the file, the markup was loaded from the cache.
+   * </pre>
+   *
    * <code>optional bool loaded_cached_markup = 4;</code>
    * @return The loadedCachedMarkup.
    */
@@ -259,6 +320,10 @@ private static final long serialVersionUID = 0L;
   public static final int NO_EDITORS_TO_OPEN_FIELD_NUMBER = 5;
   private boolean noEditorsToOpen_;
   /**
+   * <pre>
+   * No editors were opened on the IDE startup.
+   * </pre>
+   *
    * <code>optional bool no_editors_to_open = 5;</code>
    * @return Whether the noEditorsToOpen field is set.
    */
@@ -267,6 +332,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
+   * <pre>
+   * No editors were opened on the IDE startup.
+   * </pre>
+   *
    * <code>optional bool no_editors_to_open = 5;</code>
    * @return The noEditorsToOpen.
    */
@@ -278,6 +347,10 @@ private static final long serialVersionUID = 0L;
   public static final int SOURCE_OF_SELECTED_EDITOR_FIELD_NUMBER = 6;
   private int sourceOfSelectedEditor_;
   /**
+   * <pre>
+   * The reason why the selected editor was opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
    * @return Whether the sourceOfSelectedEditor field is set.
    */
@@ -285,6 +358,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
+   * <pre>
+   * The reason why the selected editor was opened.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
    * @return The sourceOfSelectedEditor.
    */
@@ -536,6 +613,13 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Event describing the duration from the user starting IDE till having single
+   * project opened without Welcome Screen involved, and the editors in project
+   * are reopened, or it's found that there are no editors to open. Does not wait
+   * for highlighting/indexing/other initialization activities to finish.
+   * </pre>
+   *
    * Protobuf type {@code android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor}
    */
   public static final class Builder extends
@@ -783,6 +867,10 @@ private static final long serialVersionUID = 0L;
 
     private int durationMs_ ;
     /**
+     * <pre>
+     * How long did it take to load the code and show it in the editor.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
@@ -791,6 +879,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * How long did it take to load the code and show it in the editor.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return The durationMs.
      */
@@ -799,6 +891,10 @@ private static final long serialVersionUID = 0L;
       return durationMs_;
     }
     /**
+     * <pre>
+     * How long did it take to load the code and show it in the editor.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @param value The durationMs to set.
      * @return This builder for chaining.
@@ -810,6 +906,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * How long did it take to load the code and show it in the editor.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return This builder for chaining.
      */
@@ -822,6 +922,10 @@ private static final long serialVersionUID = 0L;
 
     private java.lang.Object fileType_ = "";
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @return Whether the fileType field is set.
      */
@@ -829,6 +933,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @return The fileType.
      */
@@ -847,6 +955,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @return The bytes for fileType.
      */
@@ -864,6 +976,10 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @param value The fileType to set.
      * @return This builder for chaining.
@@ -879,6 +995,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @return This builder for chaining.
      */
@@ -889,6 +1009,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Type of the file opened.
+     * </pre>
+     *
      * <code>optional string file_type = 2;</code>
      * @param value The bytes for fileType to set.
      * @return This builder for chaining.
@@ -906,6 +1030,11 @@ private static final long serialVersionUID = 0L;
 
     private boolean hasSettings_ ;
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 3;</code>
      * @return Whether the hasSettings field is set.
      */
@@ -914,6 +1043,11 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 3;</code>
      * @return The hasSettings.
      */
@@ -922,6 +1056,11 @@ private static final long serialVersionUID = 0L;
       return hasSettings_;
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 3;</code>
      * @param value The hasSettings to set.
      * @return This builder for chaining.
@@ -933,6 +1072,11 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Shows if the opened project has settings to filter cases of importing which
+     * may need more resources.
+     * </pre>
+     *
      * <code>optional bool has_settings = 3;</code>
      * @return This builder for chaining.
      */
@@ -945,6 +1089,10 @@ private static final long serialVersionUID = 0L;
 
     private boolean loadedCachedMarkup_ ;
     /**
+     * <pre>
+     * While opening the file, the markup was loaded from the cache.
+     * </pre>
+     *
      * <code>optional bool loaded_cached_markup = 4;</code>
      * @return Whether the loadedCachedMarkup field is set.
      */
@@ -953,6 +1101,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
+     * <pre>
+     * While opening the file, the markup was loaded from the cache.
+     * </pre>
+     *
      * <code>optional bool loaded_cached_markup = 4;</code>
      * @return The loadedCachedMarkup.
      */
@@ -961,6 +1113,10 @@ private static final long serialVersionUID = 0L;
       return loadedCachedMarkup_;
     }
     /**
+     * <pre>
+     * While opening the file, the markup was loaded from the cache.
+     * </pre>
+     *
      * <code>optional bool loaded_cached_markup = 4;</code>
      * @param value The loadedCachedMarkup to set.
      * @return This builder for chaining.
@@ -972,6 +1128,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * While opening the file, the markup was loaded from the cache.
+     * </pre>
+     *
      * <code>optional bool loaded_cached_markup = 4;</code>
      * @return This builder for chaining.
      */
@@ -984,6 +1144,10 @@ private static final long serialVersionUID = 0L;
 
     private boolean noEditorsToOpen_ ;
     /**
+     * <pre>
+     * No editors were opened on the IDE startup.
+     * </pre>
+     *
      * <code>optional bool no_editors_to_open = 5;</code>
      * @return Whether the noEditorsToOpen field is set.
      */
@@ -992,6 +1156,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
+     * <pre>
+     * No editors were opened on the IDE startup.
+     * </pre>
+     *
      * <code>optional bool no_editors_to_open = 5;</code>
      * @return The noEditorsToOpen.
      */
@@ -1000,6 +1168,10 @@ private static final long serialVersionUID = 0L;
       return noEditorsToOpen_;
     }
     /**
+     * <pre>
+     * No editors were opened on the IDE startup.
+     * </pre>
+     *
      * <code>optional bool no_editors_to_open = 5;</code>
      * @param value The noEditorsToOpen to set.
      * @return This builder for chaining.
@@ -1011,6 +1183,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * No editors were opened on the IDE startup.
+     * </pre>
+     *
      * <code>optional bool no_editors_to_open = 5;</code>
      * @return This builder for chaining.
      */
@@ -1023,6 +1199,10 @@ private static final long serialVersionUID = 0L;
 
     private int sourceOfSelectedEditor_ = 0;
     /**
+     * <pre>
+     * The reason why the selected editor was opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
      * @return Whether the sourceOfSelectedEditor field is set.
      */
@@ -1030,6 +1210,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
+     * <pre>
+     * The reason why the selected editor was opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
      * @return The sourceOfSelectedEditor.
      */
@@ -1040,6 +1224,10 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.UNKNOWN_SOURCE_OF_SELECTED_EDITOR : result;
     }
     /**
+     * <pre>
+     * The reason why the selected editor was opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
      * @param value The sourceOfSelectedEditor to set.
      * @return This builder for chaining.
@@ -1054,6 +1242,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * The reason why the selected editor was opened.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor source_of_selected_editor = 6;</code>
      * @return This builder for chaining.
      */

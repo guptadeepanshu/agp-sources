@@ -39,8 +39,10 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.tasks.ClasspathNormalizer
 import org.gradle.api.tasks.SourceSet
+import org.jetbrains.kotlin.gradle.plugin.CompilerPluginConfig
 import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
+import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
@@ -111,7 +113,16 @@ fun parseKotlinVersion(currVersion: String): KotlinVersion? {
  * "unknown" if plugin is applied but version can't be determined.
  */
 fun getKotlinAndroidPluginVersion(project: Project): String? {
-    val plugin = project.plugins.findPlugin("kotlin-android") ?: return null
+    val kotlinBaseApiPlugin =
+        try {
+            project.plugins.findPlugin(KotlinBaseApiPlugin::class.java)
+        } catch (e: Throwable) {
+            if (e is ClassNotFoundException || e is NoClassDefFoundError) null else throw e
+        }
+    val plugin =
+        project.plugins.findPlugin("kotlin-android")
+            ?: kotlinBaseApiPlugin
+            ?: return null
     return getKotlinPluginVersionFromPlugin(plugin)
 }
 
@@ -197,6 +208,7 @@ fun recordKotlinCompilePropertiesForAnalytics(
  */
 private fun getLanguageVersionUnsafe(kotlinCompile: KotlinCompile): String? {
     return runCatching { kotlinCompile.kotlinOptions.languageVersion }.getOrNull()
+        ?: runCatching { kotlinCompile.compilerOptions.languageVersion.orNull?.version }.getOrNull()
         ?: runCatching { org.jetbrains.kotlin.gradle.dsl.KotlinVersion.DEFAULT.version }.getOrNull()
 }
 
@@ -218,20 +230,33 @@ fun addComposeArgsToKotlinCompile(
     task.addPluginClasspath(kotlinVersion, compilerExtension)
 
     if (debuggable) {
-        task.addPluginOption("androidx.compose.compiler.plugins.kotlin", "sourceInformation", "true")
+        task.addPluginOption(
+            kotlinVersion,
+            "androidx.compose.compiler.plugins.kotlin",
+            "sourceInformation",
+            "true"
+        )
         if (useLiveLiterals) {
-            task.addPluginOption("androidx.compose.compiler.plugins.kotlin", "liveLiterals", "true")
+            task.addPluginOption(
+                kotlinVersion,
+                "androidx.compose.compiler.plugins.kotlin",
+                "liveLiterals",
+                "true"
+            )
         }
     }
 
-    task.kotlinOptions.freeCompilerArgs += "-Xallow-unstable-dependencies"
+    if (kotlinVersion.isVersionAtLeast(1, 8)) {
+        task.compilerOptions.freeCompilerArgs.add("-Xallow-unstable-dependencies")
+    } else {
+        task.kotlinOptions.freeCompilerArgs += "-Xallow-unstable-dependencies"
+    }
 }
 
 private fun KotlinCompile.addPluginClasspath(
     kotlinVersion: KotlinVersion?, compilerExtension: FileCollection
 ) {
-    // If kotlinVersion == null, it's likely a newer Kotlin version
-    if (kotlinVersion == null || kotlinVersion.isAtLeast(1, 7)) {
+    if (kotlinVersion.isVersionAtLeast(1, 7)) {
         pluginClasspath.from(compilerExtension)
     } else {
         inputs.files(compilerExtension)
@@ -244,23 +269,41 @@ private fun KotlinCompile.addPluginClasspath(
     }
 }
 
-private fun KotlinCompile.addPluginOption(pluginId: String, key: String, value: String) {
-    // Once https://youtrack.jetbrains.com/issue/KT-54160 is fixed, we will be able to use the new
-    // API to add plugin options as follows:
-    //     // If kotlinVersion == null, it's likely a newer Kotlin version
-    //     if (kotlinVersion == null || kotlinVersion.isAtLeast(X, Y)) {
-    //         pluginOptions.add(CompilerPluginConfig().apply {
-    //             addPluginArgument(pluginId, SubpluginOption(key, value))
-    //         })
-    //     } else { ... }
-    // For now, continue to use the old way to add plugin options.
+private fun KotlinCompile.addPluginOption(
+    kotlinVersion: KotlinVersion?,
+    pluginId: String,
+    key: String,
+    value: String
+) {
+    val freeCompilerArgs =
+        if (kotlinVersion.isVersionAtLeast(1, 8)) {
+            compilerOptions.freeCompilerArgs.getOrElse(emptyList())
+        } else {
+            kotlinOptions.freeCompilerArgs
+        }
     val pluginOption = "plugin:$pluginId:$key"
-
     // Only add the plugin option if it was not previously added by the user (see b/318384658)
-    if (kotlinOptions.freeCompilerArgs.none { it.startsWith("$pluginOption=") }) {
+    if (freeCompilerArgs.any { it.startsWith("$pluginOption=") }) {
+        return
+    }
+    if (kotlinVersion.isVersionAtLeast(1, 9, 20)) {
+         pluginOptions.add(
+             CompilerPluginConfig().apply {
+                 addPluginArgument(pluginId, SubpluginOption(key, value))
+             }
+         )
+    } else {
         kotlinOptions.freeCompilerArgs += listOf("-P", "$pluginOption=$value")
     }
 }
+
+private fun KotlinVersion?.isVersionAtLeast(major: Int, minor: Int, patch: Int? = null): Boolean =
+    when {
+        // If this == null, it's likely a newer Kotlin version
+        this == null -> true
+        patch == null -> this.isAtLeast(major, minor)
+        else -> this.isAtLeast(major, minor, patch)
+    }
 
 /**
  * Get information about Kotlin sources from KGP, until there is a KGP version that can work

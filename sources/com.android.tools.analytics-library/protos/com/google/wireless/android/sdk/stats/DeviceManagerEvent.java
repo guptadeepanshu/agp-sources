@@ -194,6 +194,22 @@ private static final long serialVersionUID = 0L;
      * <code>PHYSICAL_UNPAIR_DEVICE_ACTION = 16;</code>
      */
     PHYSICAL_UNPAIR_DEVICE_ACTION(16),
+    /**
+     * <pre>
+     * An AVD was created
+     * </pre>
+     *
+     * <code>VIRTUAL_CREATE_ACTION = 17;</code>
+     */
+    VIRTUAL_CREATE_ACTION(17),
+    /**
+     * <pre>
+     * A direct access device was selected
+     * </pre>
+     *
+     * <code>DIRECT_ACCESS_ADD_DEVICE_ACTION = 18;</code>
+     */
+    DIRECT_ACCESS_ADD_DEVICE_ACTION(18),
     ;
 
     /**
@@ -332,6 +348,22 @@ private static final long serialVersionUID = 0L;
      * <code>PHYSICAL_UNPAIR_DEVICE_ACTION = 16;</code>
      */
     public static final int PHYSICAL_UNPAIR_DEVICE_ACTION_VALUE = 16;
+    /**
+     * <pre>
+     * An AVD was created
+     * </pre>
+     *
+     * <code>VIRTUAL_CREATE_ACTION = 17;</code>
+     */
+    public static final int VIRTUAL_CREATE_ACTION_VALUE = 17;
+    /**
+     * <pre>
+     * A direct access device was selected
+     * </pre>
+     *
+     * <code>DIRECT_ACCESS_ADD_DEVICE_ACTION = 18;</code>
+     */
+    public static final int DIRECT_ACCESS_ADD_DEVICE_ACTION_VALUE = 18;
 
 
     public final int getNumber() {
@@ -371,6 +403,8 @@ private static final long serialVersionUID = 0L;
         case 14: return PHYSICAL_DELETE_ACTION;
         case 15: return VIRTUAL_UNPAIR_DEVICE_ACTION;
         case 16: return PHYSICAL_UNPAIR_DEVICE_ACTION;
+        case 17: return VIRTUAL_CREATE_ACTION;
+        case 18: return DIRECT_ACCESS_ADD_DEVICE_ACTION;
         default: return null;
       }
     }

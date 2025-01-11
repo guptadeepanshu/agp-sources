@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinCommonOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.plugin.HasCompilerOptions
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.DecoratedExternalKotlinCompilation
 
 @OptIn(ExternalKotlinTargetApi::class)
@@ -56,6 +56,9 @@ open class KotlinMultiplatformAndroidCompilationImpl(
     override fun kotlinOptions(configure: Action<KotlinCommonOptions>) {
         super.kotlinOptions(configure)
     }
+
+    override val componentName: String
+        get() = this.compilationName.getNamePrefixedWithAndroidTarget()
 }
 
 internal enum class KmpAndroidCompilationType(
@@ -65,12 +68,14 @@ internal enum class KmpAndroidCompilationType(
 ) {
     MAIN(
         defaultCompilationName = "main",
-        defaultSourceSetTreeName = KotlinTargetHierarchy.SourceSetTree.main.name
-    ), TEST_ON_JVM(
-        defaultCompilationName = "testOnJvm",
-        defaultSourceSetTreeName = KotlinTargetHierarchy.SourceSetTree.test.name
-    ), TEST_ON_DEVICE(
-        defaultCompilationName = "testOnDevice",
+        defaultSourceSetTreeName = KotlinSourceSetTree.main.name
+    ),
+    HOST_TEST(
+        defaultCompilationName = "hostTest",
+        defaultSourceSetTreeName = KotlinSourceSetTree.test.name
+    ),
+    DEVICE_TEST(
+        defaultCompilationName = "deviceTest",
         defaultSourceSetTreeName = null
     )
 }

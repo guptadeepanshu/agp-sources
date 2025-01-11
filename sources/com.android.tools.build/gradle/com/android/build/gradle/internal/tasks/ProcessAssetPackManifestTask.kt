@@ -67,7 +67,7 @@ abstract class ProcessAssetPackManifestTask : NonIncrementalTask() {
                     ProjectComponentIdentifier ?: throw RuntimeException("unexpected identifier type for $assetPackManifestArtifact")
 
             workerExecutor.noIsolation().submit(ProcessAssetPackManifestWorkAction::class.java) {
-                it.initializeFromAndroidVariantTask(this)
+                it.initializeFromBaseTask(this)
                 it.assetPackManifest.set(assetPackManifestArtifact.file)
                 it.assetPackName.set(projectId.projectPath.replace(":", File.separator))
                 it.applicationId.set(applicationId)

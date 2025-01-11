@@ -77,4 +77,10 @@ interface ApplicationVariant : GeneratesApk,
      * Variant's packagingOptions, initialized by the corresponding global DSL element.
      */
     override val packaging: TestedApkPackaging
+
+    /**
+     * Provides access to built artifacts output(e.g. APK) produced by this Variant.
+     */
+    @get:Incubating
+    val outputProviders: ApkOutputProviders
 }

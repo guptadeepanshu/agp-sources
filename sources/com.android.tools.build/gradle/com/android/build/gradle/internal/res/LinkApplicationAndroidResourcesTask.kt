@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.res
 import com.android.SdkConstants
 import com.android.SdkConstants.FN_R_CLASS_JAR
 import com.android.SdkConstants.RES_QUALIFIER_SEP
+import com.android.aaptcompiler.LocaleValue
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.MultiOutputHandler
@@ -254,6 +255,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     var useStableIds: Boolean = false
         internal set
 
+    @get:Input
+    abstract val dynamicFeature: Property<Boolean>
+
     @get:Nested
     abstract val outputsHandler: Property<MultiOutputHandler>
 
@@ -278,6 +282,12 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
     @get:Internal
     abstract val incrementalDirectory: DirectoryProperty
+
+    @get:Input
+    abstract val localeFilters: SetProperty<String>
+
+    @get:Input
+    abstract val pseudoLocalesEnabled: Property<Boolean>
 
     @Internal
     override fun getManifestFile(): File? {
@@ -319,7 +329,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
     private fun doFullTaskAction(inputStableIdsFile: File?) {
         workerExecutor.noIsolation().submit(TaskAction::class.java) { parameters ->
-            parameters.initializeFromAndroidVariantTask(this)
+            parameters.initializeFromBaseTask(this)
 
             parameters.mainDexListProguardOutputFile.set(mainDexListProguardOutputFile)
             parameters.outputStableIdsFile.set(stableIdsOutputFileProperty)
@@ -343,6 +353,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.incrementalDirectory.set(incrementalDirectory)
             parameters.inputResourcesDirectory.set(inputResourcesDir)
             parameters.inputStableIdsFile.set(inputStableIdsFile)
+            parameters.dynamicFeature.set(dynamicFeature)
             parameters.library.set(isLibrary)
             parameters.localResourcesFile.set(localResourcesFile)
             parameters.manifestFiles.set(if (aaptFriendlyManifestFiles.isPresent) aaptFriendlyManifestFiles else manifestFiles)
@@ -361,6 +372,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.variantName.set(variantName)
             parameters.outputsHandler.set(outputsHandler.get().toSerializable())
             parameters.componentType.set(type)
+            parameters.localeFilters.set(localeFilters)
+            parameters.pseudoLocalesEnabled.set(pseudoLocalesEnabled)
         }
     }
 
@@ -388,6 +401,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         abstract val incrementalDirectory: DirectoryProperty
         abstract val inputResourcesDirectory: DirectoryProperty
         abstract val inputStableIdsFile: RegularFileProperty
+        abstract val dynamicFeature: Property<Boolean>
         abstract val library: Property<Boolean>
         abstract val localResourcesFile: RegularFileProperty
         abstract val manifestFiles: DirectoryProperty
@@ -405,6 +419,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         abstract val useStableIds: Property<Boolean>
         abstract val variantName: Property<String>
         abstract val componentType: Property<ComponentType>
+        abstract val localeFilters: SetProperty<String>
+        abstract val pseudoLocalesEnabled: Property<Boolean>
     }
 
     abstract class TaskAction : ProfileAwareWorkAction<TaskWorkActionParameters>() {
@@ -413,6 +429,16 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         abstract val workerExecutor: WorkerExecutor
 
         override fun run() {
+            if (!parameters.dynamicFeature.get() && !parameters.featureResourcePackages.isEmpty) {
+            throw IllegalStateException(
+                    """
+                    This application (${parameters.applicationId.get()}) is not configured to use dynamic features.
+                    Please ensure dynamic features are configured in the build file.
+                    Refer to https://developer.android.com/guide/playcore/feature-delivery#base_feature_relationship
+                    """.trimIndent()
+                )
+        }
+
             val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(parameters.manifestFiles)
                 ?: throw RuntimeException("Cannot load processed manifest files, please file a bug.")
             // 'Incremental' runs should only preserve the stable IDs file.
@@ -461,7 +487,6 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         }
 
     }
-
 
     abstract class InvokeAaptForSplitAction : ProfileAwareWorkAction<InvokeAaptForSplitAction.Parameters>() {
         abstract class Parameters: ProfileAwareWorkAction.Parameters() {
@@ -623,6 +648,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 task.resOffset.disallowChanges()
             }
 
+            task.dynamicFeature.setDisallowChanges(componentType.isDynamicFeature)
             task.projectBaseName.setDisallowChanges(baseName)
             task.isLibrary = isLibrary
 
@@ -645,6 +671,22 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             )
 
             task.outputsHandler.setDisallowChanges(MultiOutputHandler.create(creationConfig))
+
+            when (creationConfig) {
+                is ApplicationCreationConfig -> {
+                    task.localeFilters.setDisallowChanges(creationConfig.androidResources.localeFilters)
+                }
+                is DynamicFeatureCreationConfig -> {
+                    task.localeFilters.setDisallowChanges(creationConfig.baseModuleLocaleFilters)
+                }
+                else -> {
+                    task.localeFilters.setDisallowChanges(ImmutableSet.of())
+                }
+            }
+
+            task.pseudoLocalesEnabled.setDisallowChanges(
+                androidResourcesCreationConfig.pseudoLocalesEnabled
+            )
         }
     }
 
@@ -723,6 +765,14 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 sourceArtifactType.outputType,
                 task.inputResourcesDir
             )
+
+            if (creationConfig.services.projectOptions[BooleanOption.SUPPORT_OEM_TOKEN_LIBRARIES]) {
+                task.sharedLibraryDependencies.fromDisallowChanges(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
+                        RUNTIME_CLASSPATH, ALL, AndroidArtifacts.ArtifactType.RES_SHARED_OEM_TOKEN_LIBRARY
+                    )
+                )
+            }
 
             if (androidResourcesCreationConfig.isPrecompileDependenciesResourcesEnabled) {
                 task.compiledDependenciesResources.fromDisallowChanges(
@@ -878,6 +928,23 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
             val preferredDensity = densityFilterData?.identifier
 
+            parameters.localeFilters.get().forEach {
+                if (!validLocale(it)) {
+                    throw RuntimeException("The locale in localeFilters \"$it\" is invalid.")
+                }
+            }
+            if (parameters.localeFilters.get().isNotEmpty()) {
+                parameters.resourceConfigs.get().forEach {
+                    if (validLocale(it)) {
+                        throw RuntimeException(
+                            "When localeFilters are specified, resourceConfigurations cannot " +
+                            "include locale qualifiers. Please move all locale qualifiers to " +
+                            "localeFilters."
+                        )
+                    }
+                }
+            }
+
             try {
 
                 // If the new resources flag is enabled and if we are dealing with a library process
@@ -914,6 +981,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                         .setLocalSymbolTableFile(parameters.localResourcesFile.orNull?.asFile)
                         .setMergeBlameDirectory(parameters.mergeBlameDirectory.get().asFile)
                         .setManifestMergeBlameFile(parameters.manifestMergeBlameFile.orNull?.asFile)
+                        .setLocaleFilters(parameters.localeFilters.get())
+                        .setPseudoLocalesEnabled(parameters.pseudoLocalesEnabled.get())
                         .apply {
                             val compiledDependencyResourceFiles =
                                 parameters.compiledDependenciesResources.files
@@ -977,6 +1046,11 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                     "Failed to process resources, see aapt output above for details.", e
                 )
             }
+        }
+
+        fun validLocale(locale: String): Boolean {
+            val parts = locale.split('-').map { it.lowercase() }
+            return LocaleValue().initFromParts(parts, 0) != 0
         }
     }
 

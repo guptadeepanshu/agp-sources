@@ -21,7 +21,7 @@ import com.android.builder.utils.agpReferenceDocsUrl
  * Exception by [StreamMergeAlgorithms.acceptOnlyOne] if more than one file needs to be
  * merged.
  */
-class DuplicateRelativeFileException constructor(
+class DuplicateRelativeFileException(
     private val path: String,
     private val size: Int,
     private val inputs: List<String>,
@@ -55,11 +55,5 @@ class DuplicateRelativeFileException constructor(
             }.toString()
         }
 
-    constructor(path: String, size: Int) : this(path, size, listOf(), null)
-
-    constructor(
-        inputs: List<IncrementalFileMergerInput>,
-        cause: DuplicateRelativeFileException
-    ) : this(cause.path, cause.size, inputs.map { it.name }, cause)
-
+    constructor(path: String, inputs: List<String>) : this(path, inputs.size, inputs, null)
 }

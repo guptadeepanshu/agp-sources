@@ -241,7 +241,6 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             artifact.elements.map { ModuleMetadata.load(it.single().asFile) })
     }
 
-
     private fun instantiateFeatureSetMetadata(
         variantDependencies: VariantDependencies
     ): Provider<FeatureSetMetadata> {
@@ -289,6 +288,9 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             it.disallowChanges()
             it.finalizeValueOnRead()
         }
+
+    override val baseModuleLocaleFilters: Provider<List<String>> =
+        baseModuleMetadata.map { it.localeFilters }
 
     override fun <T : Component> createUserVisibleVariantObject(
             stats: GradleBuildVariant.Builder?

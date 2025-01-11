@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.PrivacySandboxSdkBundle
 import com.android.build.api.dsl.PrivacySandboxSdkExtension
 import com.android.build.api.dsl.PrivacySandboxSdkOptimization
@@ -26,4 +27,5 @@ interface InternalPrivacySandboxSdkExtension: PrivacySandboxSdkExtension {
     fun signingConfig(action: Action<SigningConfig>)
     fun bundle(action: Action<PrivacySandboxSdkBundle>)
     fun optimization(action: Action<PrivacySandboxSdkOptimization>)
+    fun lint(action: Action<Lint>)
 }

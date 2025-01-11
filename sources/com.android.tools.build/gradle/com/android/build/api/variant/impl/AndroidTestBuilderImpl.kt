@@ -52,4 +52,9 @@ class AndroidTestBuilderImpl(
         set(value) {
             deviceTestBuilder.targetSdkPreview = value
         }
+    override var debuggable: Boolean
+        get() = deviceTestBuilder.debuggable
+        set(value) {
+            deviceTestBuilder.debuggable = value
+        }
 }

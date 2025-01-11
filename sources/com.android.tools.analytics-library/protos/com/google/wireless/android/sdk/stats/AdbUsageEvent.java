@@ -43,6 +43,1009 @@ private static final long serialVersionUID = 0L;
             com.google.wireless.android.sdk.stats.AdbUsageEvent.class, com.google.wireless.android.sdk.stats.AdbUsageEvent.Builder.class);
   }
 
+  public interface AdbDeviceStateChangeEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Current device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+     * @return Whether the deviceState field is set.
+     */
+    boolean hasDeviceState();
+    /**
+     * <pre>
+     * Current device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+     * @return The deviceState.
+     */
+    com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getDeviceState();
+
+    /**
+     * <pre>
+     * Previously recorded device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+     * @return Whether the previousDeviceState field is set.
+     */
+    boolean hasPreviousDeviceState();
+    /**
+     * <pre>
+     * Previously recorded device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+     * @return The previousDeviceState.
+     */
+    com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getPreviousDeviceState();
+
+    /**
+     * <pre>
+     * Time since last online in milliseconds.
+     * Note that since we use a serial number to identify the device we may get
+     * a misleading value for anything other than a local physical devices (e.g.
+     * emulator serial number like `emulator-5554` can be reused).
+     * </pre>
+     *
+     * <code>optional int64 last_online_ms = 3;</code>
+     * @return Whether the lastOnlineMs field is set.
+     */
+    boolean hasLastOnlineMs();
+    /**
+     * <pre>
+     * Time since last online in milliseconds.
+     * Note that since we use a serial number to identify the device we may get
+     * a misleading value for anything other than a local physical devices (e.g.
+     * emulator serial number like `emulator-5554` can be reused).
+     * </pre>
+     *
+     * <code>optional int64 last_online_ms = 3;</code>
+     * @return The lastOnlineMs.
+     */
+    long getLastOnlineMs();
+  }
+  /**
+   * Protobuf type {@code android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent}
+   */
+  public static final class AdbDeviceStateChangeEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent)
+      AdbDeviceStateChangeEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AdbDeviceStateChangeEvent.newBuilder() to construct.
+    private AdbDeviceStateChangeEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AdbDeviceStateChangeEvent() {
+      deviceState_ = 0;
+      previousDeviceState_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new AdbDeviceStateChangeEvent();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.class, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState}
+     */
+    public enum DeviceState
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>DEVICE_STATE_UNSPECIFIED = 0;</code>
+       */
+      DEVICE_STATE_UNSPECIFIED(0),
+      /**
+       * <pre>
+       * Other than the state type listed below
+       * </pre>
+       *
+       * <code>OTHER = 1;</code>
+       */
+      OTHER(1),
+      /**
+       * <code>BOOTLOADER = 2;</code>
+       */
+      BOOTLOADER(2),
+      /**
+       * <code>AUTHORIZING = 3;</code>
+       */
+      AUTHORIZING(3),
+      /**
+       * <code>CONNECTING = 4;</code>
+       */
+      CONNECTING(4),
+      /**
+       * <code>OFFLINE = 5;</code>
+       */
+      OFFLINE(5),
+      /**
+       * <code>ONLINE = 6;</code>
+       */
+      ONLINE(6),
+      /**
+       * <code>DISCONNECTED = 7;</code>
+       */
+      DISCONNECTED(7),
+      ;
+
+      /**
+       * <code>DEVICE_STATE_UNSPECIFIED = 0;</code>
+       */
+      public static final int DEVICE_STATE_UNSPECIFIED_VALUE = 0;
+      /**
+       * <pre>
+       * Other than the state type listed below
+       * </pre>
+       *
+       * <code>OTHER = 1;</code>
+       */
+      public static final int OTHER_VALUE = 1;
+      /**
+       * <code>BOOTLOADER = 2;</code>
+       */
+      public static final int BOOTLOADER_VALUE = 2;
+      /**
+       * <code>AUTHORIZING = 3;</code>
+       */
+      public static final int AUTHORIZING_VALUE = 3;
+      /**
+       * <code>CONNECTING = 4;</code>
+       */
+      public static final int CONNECTING_VALUE = 4;
+      /**
+       * <code>OFFLINE = 5;</code>
+       */
+      public static final int OFFLINE_VALUE = 5;
+      /**
+       * <code>ONLINE = 6;</code>
+       */
+      public static final int ONLINE_VALUE = 6;
+      /**
+       * <code>DISCONNECTED = 7;</code>
+       */
+      public static final int DISCONNECTED_VALUE = 7;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static DeviceState valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static DeviceState forNumber(int value) {
+        switch (value) {
+          case 0: return DEVICE_STATE_UNSPECIFIED;
+          case 1: return OTHER;
+          case 2: return BOOTLOADER;
+          case 3: return AUTHORIZING;
+          case 4: return CONNECTING;
+          case 5: return OFFLINE;
+          case 6: return ONLINE;
+          case 7: return DISCONNECTED;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<DeviceState>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          DeviceState> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<DeviceState>() {
+              public DeviceState findValueByNumber(int number) {
+                return DeviceState.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final DeviceState[] VALUES = values();
+
+      public static DeviceState valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private DeviceState(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState)
+    }
+
+    private int bitField0_;
+    public static final int DEVICE_STATE_FIELD_NUMBER = 1;
+    private int deviceState_;
+    /**
+     * <pre>
+     * Current device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+     * @return Whether the deviceState field is set.
+     */
+    @java.lang.Override public boolean hasDeviceState() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Current device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+     * @return The deviceState.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getDeviceState() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(deviceState_);
+      return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
+    }
+
+    public static final int PREVIOUS_DEVICE_STATE_FIELD_NUMBER = 2;
+    private int previousDeviceState_;
+    /**
+     * <pre>
+     * Previously recorded device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+     * @return Whether the previousDeviceState field is set.
+     */
+    @java.lang.Override public boolean hasPreviousDeviceState() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Previously recorded device state
+     * </pre>
+     *
+     * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+     * @return The previousDeviceState.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getPreviousDeviceState() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(previousDeviceState_);
+      return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
+    }
+
+    public static final int LAST_ONLINE_MS_FIELD_NUMBER = 3;
+    private long lastOnlineMs_;
+    /**
+     * <pre>
+     * Time since last online in milliseconds.
+     * Note that since we use a serial number to identify the device we may get
+     * a misleading value for anything other than a local physical devices (e.g.
+     * emulator serial number like `emulator-5554` can be reused).
+     * </pre>
+     *
+     * <code>optional int64 last_online_ms = 3;</code>
+     * @return Whether the lastOnlineMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasLastOnlineMs() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Time since last online in milliseconds.
+     * Note that since we use a serial number to identify the device we may get
+     * a misleading value for anything other than a local physical devices (e.g.
+     * emulator serial number like `emulator-5554` can be reused).
+     * </pre>
+     *
+     * <code>optional int64 last_online_ms = 3;</code>
+     * @return The lastOnlineMs.
+     */
+    @java.lang.Override
+    public long getLastOnlineMs() {
+      return lastOnlineMs_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, deviceState_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, previousDeviceState_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt64(3, lastOnlineMs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, deviceState_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, previousDeviceState_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, lastOnlineMs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent other = (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) obj;
+
+      if (hasDeviceState() != other.hasDeviceState()) return false;
+      if (hasDeviceState()) {
+        if (deviceState_ != other.deviceState_) return false;
+      }
+      if (hasPreviousDeviceState() != other.hasPreviousDeviceState()) return false;
+      if (hasPreviousDeviceState()) {
+        if (previousDeviceState_ != other.previousDeviceState_) return false;
+      }
+      if (hasLastOnlineMs() != other.hasLastOnlineMs()) return false;
+      if (hasLastOnlineMs()) {
+        if (getLastOnlineMs()
+            != other.getLastOnlineMs()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasDeviceState()) {
+        hash = (37 * hash) + DEVICE_STATE_FIELD_NUMBER;
+        hash = (53 * hash) + deviceState_;
+      }
+      if (hasPreviousDeviceState()) {
+        hash = (37 * hash) + PREVIOUS_DEVICE_STATE_FIELD_NUMBER;
+        hash = (53 * hash) + previousDeviceState_;
+      }
+      if (hasLastOnlineMs()) {
+        hash = (37 * hash) + LAST_ONLINE_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getLastOnlineMs());
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent)
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.class, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        deviceState_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        previousDeviceState_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        lastOnlineMs_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent build() {
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent result = new com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.deviceState_ = deviceState_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.previousDeviceState_ = previousDeviceState_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.lastOnlineMs_ = lastOnlineMs_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance()) return this;
+        if (other.hasDeviceState()) {
+          setDeviceState(other.getDeviceState());
+        }
+        if (other.hasPreviousDeviceState()) {
+          setPreviousDeviceState(other.getPreviousDeviceState());
+        }
+        if (other.hasLastOnlineMs()) {
+          setLastOnlineMs(other.getLastOnlineMs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState tmpValue =
+                    com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  deviceState_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState tmpValue =
+                    com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  previousDeviceState_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              case 24: {
+                lastOnlineMs_ = input.readInt64();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int deviceState_ = 0;
+      /**
+       * <pre>
+       * Current device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+       * @return Whether the deviceState field is set.
+       */
+      @java.lang.Override public boolean hasDeviceState() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Current device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+       * @return The deviceState.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getDeviceState() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(deviceState_);
+        return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
+      }
+      /**
+       * <pre>
+       * Current device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+       * @param value The deviceState to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDeviceState(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        deviceState_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Current device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState device_state = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDeviceState() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        deviceState_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int previousDeviceState_ = 0;
+      /**
+       * <pre>
+       * Previously recorded device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+       * @return Whether the previousDeviceState field is set.
+       */
+      @java.lang.Override public boolean hasPreviousDeviceState() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Previously recorded device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+       * @return The previousDeviceState.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getPreviousDeviceState() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(previousDeviceState_);
+        return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
+      }
+      /**
+       * <pre>
+       * Previously recorded device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+       * @param value The previousDeviceState to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPreviousDeviceState(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        previousDeviceState_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Previously recorded device state
+       * </pre>
+       *
+       * <code>optional .android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState previous_device_state = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPreviousDeviceState() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        previousDeviceState_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long lastOnlineMs_ ;
+      /**
+       * <pre>
+       * Time since last online in milliseconds.
+       * Note that since we use a serial number to identify the device we may get
+       * a misleading value for anything other than a local physical devices (e.g.
+       * emulator serial number like `emulator-5554` can be reused).
+       * </pre>
+       *
+       * <code>optional int64 last_online_ms = 3;</code>
+       * @return Whether the lastOnlineMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasLastOnlineMs() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Time since last online in milliseconds.
+       * Note that since we use a serial number to identify the device we may get
+       * a misleading value for anything other than a local physical devices (e.g.
+       * emulator serial number like `emulator-5554` can be reused).
+       * </pre>
+       *
+       * <code>optional int64 last_online_ms = 3;</code>
+       * @return The lastOnlineMs.
+       */
+      @java.lang.Override
+      public long getLastOnlineMs() {
+        return lastOnlineMs_;
+      }
+      /**
+       * <pre>
+       * Time since last online in milliseconds.
+       * Note that since we use a serial number to identify the device we may get
+       * a misleading value for anything other than a local physical devices (e.g.
+       * emulator serial number like `emulator-5554` can be reused).
+       * </pre>
+       *
+       * <code>optional int64 last_online_ms = 3;</code>
+       * @param value The lastOnlineMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLastOnlineMs(long value) {
+        bitField0_ |= 0x00000004;
+        lastOnlineMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Time since last online in milliseconds.
+       * Note that since we use a serial number to identify the device we may get
+       * a misleading value for anything other than a local physical devices (e.g.
+       * emulator serial number like `emulator-5554` can be reused).
+       * </pre>
+       *
+       * <code>optional int64 last_online_ms = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLastOnlineMs() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        lastOnlineMs_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent)
+    private static final com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<AdbDeviceStateChangeEvent>
+        PARSER = new com.google.protobuf.AbstractParser<AdbDeviceStateChangeEvent>() {
+      @java.lang.Override
+      public AdbDeviceStateChangeEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<AdbDeviceStateChangeEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AdbDeviceStateChangeEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface JdwpProcessPropertiesCollectorEventOrBuilder extends
       // @@protoc_insertion_point(interface_extends:android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent)
       com.google.protobuf.MessageOrBuilder {
@@ -1172,6 +2175,7 @@ private static final long serialVersionUID = 0L;
       implements com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     PROCESS_PROPERTIES_EVENT(1),
+    DEVICE_STATE_CHANGE_EVENT(2),
     EVENT_NOT_SET(0);
     private final int value;
     private EventCase(int value) {
@@ -1190,6 +2194,7 @@ private static final long serialVersionUID = 0L;
     public static EventCase forNumber(int value) {
       switch (value) {
         case 1: return PROCESS_PROPERTIES_EVENT;
+        case 2: return DEVICE_STATE_CHANGE_EVENT;
         case 0: return EVENT_NOT_SET;
         default: return null;
       }
@@ -1207,10 +2212,6 @@ private static final long serialVersionUID = 0L;
 
   public static final int PROCESS_PROPERTIES_EVENT_FIELD_NUMBER = 1;
   /**
-   * <pre>
-   * Add other types of events, e.g. attaching debugger, etc
-   * </pre>
-   *
    * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return Whether the processPropertiesEvent field is set.
    */
@@ -1219,10 +2220,6 @@ private static final long serialVersionUID = 0L;
     return eventCase_ == 1;
   }
   /**
-   * <pre>
-   * Add other types of events, e.g. attaching debugger, etc
-   * </pre>
-   *
    * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    * @return The processPropertiesEvent.
    */
@@ -1234,10 +2231,6 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.getDefaultInstance();
   }
   /**
-   * <pre>
-   * Add other types of events, e.g. attaching debugger, etc
-   * </pre>
-   *
    * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
    */
   @java.lang.Override
@@ -1246,6 +2239,49 @@ private static final long serialVersionUID = 0L;
        return (com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent) event_;
     }
     return com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.getDefaultInstance();
+  }
+
+  public static final int DEVICE_STATE_CHANGE_EVENT_FIELD_NUMBER = 2;
+  /**
+   * <pre>
+   * Add other types of events, e.g. attaching debugger, etc
+   * </pre>
+   *
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   * @return Whether the deviceStateChangeEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceStateChangeEvent() {
+    return eventCase_ == 2;
+  }
+  /**
+   * <pre>
+   * Add other types of events, e.g. attaching debugger, etc
+   * </pre>
+   *
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   * @return The deviceStateChangeEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDeviceStateChangeEvent() {
+    if (eventCase_ == 2) {
+       return (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_;
+    }
+    return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+  }
+  /**
+   * <pre>
+   * Add other types of events, e.g. attaching debugger, etc
+   * </pre>
+   *
+   * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder getDeviceStateChangeEventOrBuilder() {
+    if (eventCase_ == 2) {
+       return (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_;
+    }
+    return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
   }
 
   private byte memoizedIsInitialized = -1;
@@ -1265,6 +2301,9 @@ private static final long serialVersionUID = 0L;
     if (eventCase_ == 1) {
       output.writeMessage(1, (com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent) event_);
     }
+    if (eventCase_ == 2) {
+      output.writeMessage(2, (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -1277,6 +2316,10 @@ private static final long serialVersionUID = 0L;
     if (eventCase_ == 1) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, (com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent) event_);
+    }
+    if (eventCase_ == 2) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -1299,6 +2342,10 @@ private static final long serialVersionUID = 0L;
         if (!getProcessPropertiesEvent()
             .equals(other.getProcessPropertiesEvent())) return false;
         break;
+      case 2:
+        if (!getDeviceStateChangeEvent()
+            .equals(other.getDeviceStateChangeEvent())) return false;
+        break;
       case 0:
       default:
     }
@@ -1317,6 +2364,10 @@ private static final long serialVersionUID = 0L;
       case 1:
         hash = (37 * hash) + PROCESS_PROPERTIES_EVENT_FIELD_NUMBER;
         hash = (53 * hash) + getProcessPropertiesEvent().hashCode();
+        break;
+      case 2:
+        hash = (37 * hash) + DEVICE_STATE_CHANGE_EVENT_FIELD_NUMBER;
+        hash = (53 * hash) + getDeviceStateChangeEvent().hashCode();
         break;
       case 0:
       default:
@@ -1452,6 +2503,9 @@ private static final long serialVersionUID = 0L;
       if (processPropertiesEventBuilder_ != null) {
         processPropertiesEventBuilder_.clear();
       }
+      if (deviceStateChangeEventBuilder_ != null) {
+        deviceStateChangeEventBuilder_.clear();
+      }
       eventCase_ = 0;
       event_ = null;
       return this;
@@ -1487,6 +2541,13 @@ private static final long serialVersionUID = 0L;
           result.event_ = event_;
         } else {
           result.event_ = processPropertiesEventBuilder_.build();
+        }
+      }
+      if (eventCase_ == 2) {
+        if (deviceStateChangeEventBuilder_ == null) {
+          result.event_ = event_;
+        } else {
+          result.event_ = deviceStateChangeEventBuilder_.build();
         }
       }
       result.bitField0_ = to_bitField0_;
@@ -1544,6 +2605,10 @@ private static final long serialVersionUID = 0L;
           mergeProcessPropertiesEvent(other.getProcessPropertiesEvent());
           break;
         }
+        case DEVICE_STATE_CHANGE_EVENT: {
+          mergeDeviceStateChangeEvent(other.getDeviceStateChangeEvent());
+          break;
+        }
         case EVENT_NOT_SET: {
           break;
         }
@@ -1581,6 +2646,13 @@ private static final long serialVersionUID = 0L;
               eventCase_ = 1;
               break;
             } // case 10
+            case 18: {
+              input.readMessage(
+                  getDeviceStateChangeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              eventCase_ = 2;
+              break;
+            } // case 18
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1616,10 +2688,6 @@ private static final long serialVersionUID = 0L;
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent, com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.Builder, com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEventOrBuilder> processPropertiesEventBuilder_;
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      * @return Whether the processPropertiesEvent field is set.
      */
@@ -1628,10 +2696,6 @@ private static final long serialVersionUID = 0L;
       return eventCase_ == 1;
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      * @return The processPropertiesEvent.
      */
@@ -1650,10 +2714,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder setProcessPropertiesEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent value) {
@@ -1670,10 +2730,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder setProcessPropertiesEvent(
@@ -1688,10 +2744,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder mergeProcessPropertiesEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent value) {
@@ -1714,10 +2766,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public Builder clearProcessPropertiesEvent() {
@@ -1737,20 +2785,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.Builder getProcessPropertiesEventBuilder() {
       return getProcessPropertiesEventFieldBuilder().getBuilder();
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     @java.lang.Override
@@ -1765,10 +2805,6 @@ private static final long serialVersionUID = 0L;
       }
     }
     /**
-     * <pre>
-     * Add other types of events, e.g. attaching debugger, etc
-     * </pre>
-     *
      * <code>.android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent process_properties_event = 1 [lazy = true];</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -1788,6 +2824,183 @@ private static final long serialVersionUID = 0L;
       eventCase_ = 1;
       onChanged();;
       return processPropertiesEventBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder> deviceStateChangeEventBuilder_;
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     * @return Whether the deviceStateChangeEvent field is set.
+     */
+    @java.lang.Override
+    public boolean hasDeviceStateChangeEvent() {
+      return eventCase_ == 2;
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     * @return The deviceStateChangeEvent.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent getDeviceStateChangeEvent() {
+      if (deviceStateChangeEventBuilder_ == null) {
+        if (eventCase_ == 2) {
+          return (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_;
+        }
+        return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+      } else {
+        if (eventCase_ == 2) {
+          return deviceStateChangeEventBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    public Builder setDeviceStateChangeEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent value) {
+      if (deviceStateChangeEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        event_ = value;
+        onChanged();
+      } else {
+        deviceStateChangeEventBuilder_.setMessage(value);
+      }
+      eventCase_ = 2;
+      return this;
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    public Builder setDeviceStateChangeEvent(
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder builderForValue) {
+      if (deviceStateChangeEventBuilder_ == null) {
+        event_ = builderForValue.build();
+        onChanged();
+      } else {
+        deviceStateChangeEventBuilder_.setMessage(builderForValue.build());
+      }
+      eventCase_ = 2;
+      return this;
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    public Builder mergeDeviceStateChangeEvent(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent value) {
+      if (deviceStateChangeEventBuilder_ == null) {
+        if (eventCase_ == 2 &&
+            event_ != com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance()) {
+          event_ = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.newBuilder((com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          event_ = value;
+        }
+        onChanged();
+      } else {
+        if (eventCase_ == 2) {
+          deviceStateChangeEventBuilder_.mergeFrom(value);
+        }
+        deviceStateChangeEventBuilder_.setMessage(value);
+      }
+      eventCase_ = 2;
+      return this;
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    public Builder clearDeviceStateChangeEvent() {
+      if (deviceStateChangeEventBuilder_ == null) {
+        if (eventCase_ == 2) {
+          eventCase_ = 0;
+          event_ = null;
+          onChanged();
+        }
+      } else {
+        if (eventCase_ == 2) {
+          eventCase_ = 0;
+          event_ = null;
+        }
+        deviceStateChangeEventBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder getDeviceStateChangeEventBuilder() {
+      return getDeviceStateChangeEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder getDeviceStateChangeEventOrBuilder() {
+      if ((eventCase_ == 2) && (deviceStateChangeEventBuilder_ != null)) {
+        return deviceStateChangeEventBuilder_.getMessageOrBuilder();
+      } else {
+        if (eventCase_ == 2) {
+          return (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_;
+        }
+        return com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Add other types of events, e.g. attaching debugger, etc
+     * </pre>
+     *
+     * <code>.android_studio.AdbUsageEvent.AdbDeviceStateChangeEvent device_state_change_event = 2 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder> 
+        getDeviceStateChangeEventFieldBuilder() {
+      if (deviceStateChangeEventBuilder_ == null) {
+        if (!(eventCase_ == 2)) {
+          event_ = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.getDefaultInstance();
+        }
+        deviceStateChangeEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.Builder, com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder>(
+                (com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) event_,
+                getParentForChildren(),
+                isClean());
+        event_ = null;
+      }
+      eventCase_ = 2;
+      onChanged();;
+      return deviceStateChangeEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

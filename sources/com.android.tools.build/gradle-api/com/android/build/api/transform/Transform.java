@@ -21,18 +21,21 @@ import com.android.annotations.Nullable;
 import com.android.build.api.transform.QualifiedContent.ContentType;
 import com.android.build.api.transform.QualifiedContent.Scope;
 import com.android.build.api.variant.VariantInfo;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+
+import org.gradle.api.Incubating;
+import org.gradle.api.file.Directory;
+import org.gradle.api.file.RegularFile;
+import org.gradle.api.provider.Property;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import org.gradle.api.Incubating;
-import org.gradle.api.file.Directory;
-import org.gradle.api.file.RegularFile;
-import org.gradle.api.provider.Property;
 
 /**
  * A Transform that processes intermediary build artifacts.
@@ -85,7 +88,7 @@ import org.gradle.api.provider.Property;
  * @deprecated This API is planned to be removed in Android Gradle Plugin 9.0.
  */
 @SuppressWarnings("MethodMayBeStatic")
-@Deprecated
+@Deprecated // b/368426481
 public abstract class Transform {
 
     /**

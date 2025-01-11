@@ -776,6 +776,26 @@ public enum BooleanOption
    * <code>USE_DECLARATIVE_INTERFACES = 188;</code>
    */
   USE_DECLARATIVE_INTERFACES(188),
+  /**
+   * <code>ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT = 189;</code>
+   */
+  ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT(189),
+  /**
+   * <code>R8_INTEGRATED_RESOURCE_SHRINKING = 190;</code>
+   */
+  R8_INTEGRATED_RESOURCE_SHRINKING(190),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_ENABLE_LINT = 191;</code>
+   */
+  PRIVACY_SANDBOX_SDK_ENABLE_LINT(191),
+  /**
+   * <code>SUPPORT_OEM_TOKEN_LIBRARIES = 192;</code>
+   */
+  SUPPORT_OEM_TOKEN_LIBRARIES(192),
+  /**
+   * <code>SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE = 193;</code>
+   */
+  SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE(193),
   UNRECOGNIZED(-1),
   ;
 
@@ -1535,6 +1555,26 @@ public enum BooleanOption
    * <code>USE_DECLARATIVE_INTERFACES = 188;</code>
    */
   public static final int USE_DECLARATIVE_INTERFACES_VALUE = 188;
+  /**
+   * <code>ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT = 189;</code>
+   */
+  public static final int ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT_VALUE = 189;
+  /**
+   * <code>R8_INTEGRATED_RESOURCE_SHRINKING = 190;</code>
+   */
+  public static final int R8_INTEGRATED_RESOURCE_SHRINKING_VALUE = 190;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_ENABLE_LINT = 191;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_ENABLE_LINT_VALUE = 191;
+  /**
+   * <code>SUPPORT_OEM_TOKEN_LIBRARIES = 192;</code>
+   */
+  public static final int SUPPORT_OEM_TOKEN_LIBRARIES_VALUE = 192;
+  /**
+   * <code>SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE = 193;</code>
+   */
+  public static final int SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE_VALUE = 193;
 
 
   public final int getNumber() {
@@ -1750,6 +1790,11 @@ public enum BooleanOption
       case 186: return ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT;
       case 187: return SUPPRESS_MANIFEST_PACKAGE_WARNING;
       case 188: return USE_DECLARATIVE_INTERFACES;
+      case 189: return ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT;
+      case 190: return R8_INTEGRATED_RESOURCE_SHRINKING;
+      case 191: return PRIVACY_SANDBOX_SDK_ENABLE_LINT;
+      case 192: return SUPPORT_OEM_TOKEN_LIBRARIES;
+      case 193: return SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE;
       default: return null;
     }
   }

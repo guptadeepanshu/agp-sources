@@ -80,7 +80,7 @@ abstract class VerifyLibraryClassesTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(TraceReferencesWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.aarMainJar.set(aarMainJar)
             it.aarLibsDirectory.set(aarLibsDirectory)
             it.runtime.from(runtime)

@@ -23,7 +23,6 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.plugin.HasCompilerOptions
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 
-@Incubating
 interface KotlinMultiplatformAndroidCompilation: KotlinCompilation<KotlinCommonOptions> {
     override val compilerOptions: HasCompilerOptions<KotlinJvmCompilerOptions>
 
@@ -41,4 +40,15 @@ interface KotlinMultiplatformAndroidCompilation: KotlinCompilation<KotlinCommonO
         ReplaceWith("compilerOptions.configure { }")
     )
     override fun kotlinOptions(configure: Action<KotlinCommonOptions>)
+
+    /**
+     * The name of the component corresponding to this Android compilation.
+     * Consists of the compilation name prefixed by the android target name (e.g "android")
+     * The default component names for the default compilations would be:
+     *   - androidMain
+     *   - androidHostTest
+     *   - androidDeviceTest
+     */
+    @get:Incubating
+    val componentName: String
 }

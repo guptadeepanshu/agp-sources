@@ -35,7 +35,7 @@ import org.jetbrains.kotlin.tooling.core.Extras
 class AndroidExtrasSerializationExtension : IdeaKotlinExtrasSerializationExtension {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> serializer(key: Extras.Key<T>): IdeaKotlinExtrasSerializer<T>? {
+    override fun <T> serializer(key: Extras.Key<T>): IdeaKotlinExtrasSerializer<T>? {
         return when(key) {
             androidTargetKey -> AndroidTargetModelSerializer as IdeaKotlinExtrasSerializer<T>
             androidCompilationKey -> AndroidCompilationModelSerializer as IdeaKotlinExtrasSerializer<T>

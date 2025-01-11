@@ -36,7 +36,6 @@ import org.objectweb.asm.ClassWriter
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.lang.RuntimeException
 import java.nio.file.InvalidPathException
 import java.nio.file.attribute.FileTime
 import java.util.zip.CRC32
@@ -141,7 +140,7 @@ class FixStackFramesDelegate(
 
             if (changeType == ChangeType.ADDED || changeType == ChangeType.MODIFIED) {
                 workers.noIsolation().submit(FixJarStackFramesRunnable::class.java) { params ->
-                    params.initializeFromAndroidVariantTask(task)
+                    params.initializeFromBaseTask(task)
                     params.inputJar.set(inputJar)
                     params.outputJar.set(outputJar)
                     params.classesHierarchyBuildService.set(
@@ -176,7 +175,7 @@ class FixStackFramesDelegate(
         if (filesToProcess.isNotEmpty()) {
             workers.noIsolation()
                 .submit(FixClassesStackFramesRunnable::class.java) { params ->
-                    params.initializeFromAndroidVariantTask(task)
+                    params.initializeFromBaseTask(task)
                     params.inputDir.set(classesDir)
                     params.inputFiles.set(filesToProcess)
                     params.outputDir.set(classesOutDir)

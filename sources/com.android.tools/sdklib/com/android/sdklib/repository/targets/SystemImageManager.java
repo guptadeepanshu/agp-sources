@@ -10,10 +10,12 @@ import com.android.repository.impl.meta.TypeDetails;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.SystemImageTags;
+import com.android.sdklib.devices.Abi;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.PackageParserUtils;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.android.sdklib.repository.meta.SysImgFactory;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
@@ -21,11 +23,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
+
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -206,8 +210,13 @@ public class SystemImageManager {
             version = ((DetailsTypes.ApiDetailsType) details).getAndroidVersion();
         }
         if (details instanceof DetailsTypes.SysImgDetailsType) {
-            abis = ((DetailsTypes.SysImgDetailsType) details).getAbis();
-            translatedAbis = ((DetailsTypes.SysImgDetailsType) details).getTranslatedAbis();
+            abis = new ArrayList<>();
+            translatedAbis = new ArrayList<>();
+            readSysImgAbis(
+                    p.getLocation(),
+                    (DetailsTypes.SysImgDetailsType) details,
+                    abis,
+                    translatedAbis);
         } else if (mValidator.isValidAbi(containingDir)) {
             abis = Collections.singletonList(containingDir);
             translatedAbis = Collections.emptyList();
@@ -235,6 +244,46 @@ public class SystemImageManager {
         }
         return new SystemImage(
                 dir, SystemImageTags.getTags(p), vendor, abis, translatedAbis, skins, p);
+    }
+
+    private static @Nullable String getCpuFamily(String abiString) {
+        Abi abi = Abi.getEnum(abiString);
+        return abi == null ? null : abi.getDisplayName();
+    }
+
+    private static void readSysImgAbis(
+            Path location,
+            DetailsTypes.SysImgDetailsType details,
+            List<String> abis,
+            List<String> translatedAbis) {
+        if (details instanceof com.android.sdklib.repository.generated.sysimg.v1.SysImgDetailsType
+                || details
+                        instanceof
+                        com.android.sdklib.repository.generated.sysimg.v2.SysImgDetailsType
+                || details
+                        instanceof
+                        com.android.sdklib.repository.generated.sysimg.v3.SysImgDetailsType) {
+            // We have an old image, so we won't get more than one ABI from the XML. Read from disk.
+            // We also know that there shouldn't be any unknown ABIs (they would use new XML).
+            List<String> allAbis = SystemImage.readAbisFromBuildProps(location);
+            if (allAbis != null && !allAbis.isEmpty()) {
+                // Look at the architecture of the primary ABI to determine whether others are
+                // translated or not.
+                String primaryCpuFamily = getCpuFamily(allAbis.get(0));
+                if (primaryCpuFamily != null) {
+                    for (String abi : allAbis) {
+                        if (getCpuFamily(abi).equals(primaryCpuFamily)) {
+                            abis.add(abi);
+                        } else {
+                            translatedAbis.add(abi);
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        abis.addAll(details.getAbis());
+        translatedAbis.addAll(details.getTranslatedAbis());
     }
 
     @Nullable

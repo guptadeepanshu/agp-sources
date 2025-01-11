@@ -22,6 +22,8 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifa
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -51,7 +53,7 @@ import java.util.zip.ZipFile
  */
 @BuildAnalyzer(primaryTaskCategory = TaskCategory.METADATA)
 @DisableCachingByDefault
-abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
+abstract class PrivacySandboxSdkGenerateJarStubsTask : NonIncrementalGlobalTask() {
 
     @get:Classpath
     abstract val mergedClasses: ConfigurableFileCollection
@@ -71,8 +73,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
     @get:OutputFile
     abstract val outputJar: RegularFileProperty
 
-    @TaskAction
-    fun doTaskAction() {
+    override fun doTaskAction() {
         val sourcesDir = sourceDirectory.get().asFile
         FileUtils.cleanOutputDir(sourcesDir)
 
@@ -101,7 +102,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
     }
 
     class CreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
-            TaskCreationAction<PrivacySandboxSdkGenerateJarStubsTask>() {
+            GlobalTaskCreationAction<PrivacySandboxSdkGenerateJarStubsTask>() {
 
         override val name: String
             get() = "privacySandboxClassesJarStubs"
@@ -125,6 +126,7 @@ abstract class PrivacySandboxSdkGenerateJarStubsTask : DefaultTask() {
         }
 
         override fun configure(task: PrivacySandboxSdkGenerateJarStubsTask) {
+            super.configure(task)
             val experimentalProperties = creationConfig.experimentalProperties
             experimentalProperties.finalizeValue()
             val apiPackagerDependencies =

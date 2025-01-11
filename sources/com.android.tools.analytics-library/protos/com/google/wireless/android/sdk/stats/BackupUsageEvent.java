@@ -160,6 +160,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Where the action was invoked from
+   * Deprecated
    * </pre>
    *
    * Protobuf enum {@code android_studio.BackupUsageEvent.Source}
@@ -278,6 +279,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Where the action was invoked from
+   * Deprecated
    * </pre>
    *
    * Protobuf enum {@code android_studio.BackupUsageEvent.Result}
@@ -470,37 +472,217 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+     * <pre>
+     * Deprecated: use type_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the type field is set.
      */
-    boolean hasType();
+    @java.lang.Deprecated boolean hasType();
     /**
-     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+     * <pre>
+     * Deprecated: use type_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The type.
      */
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType();
 
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the source field is set.
      */
-    boolean hasSource();
+    @java.lang.Deprecated boolean hasSource();
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The source.
      */
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
 
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
-    boolean hasResult();
+    @java.lang.Deprecated boolean hasResult();
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
+
+    /**
+     * <pre>
+     * Deprecated: use type_string
+     * </pre>
+     *
+     * <code>optional int32 type_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the typeValue field is set.
+     */
+    @java.lang.Deprecated boolean hasTypeValue();
+    /**
+     * <pre>
+     * Deprecated: use type_string
+     * </pre>
+     *
+     * <code>optional int32 type_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return The typeValue.
+     */
+    @java.lang.Deprecated int getTypeValue();
+
+    /**
+     * <pre>
+     * Deprecated: use source_string
+     * </pre>
+     *
+     * <code>optional int32 source_value = 5 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the sourceValue field is set.
+     */
+    @java.lang.Deprecated boolean hasSourceValue();
+    /**
+     * <pre>
+     * Deprecated: use source_string
+     * </pre>
+     *
+     * <code>optional int32 source_value = 5 [deprecated = true];</code>
+     * @deprecated
+     * @return The sourceValue.
+     */
+    @java.lang.Deprecated int getSourceValue();
+
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 6 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the resultValue field is set.
+     */
+    @java.lang.Deprecated boolean hasResultValue();
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 6 [deprecated = true];</code>
+     * @deprecated
+     * @return The resultValue.
+     */
+    @java.lang.Deprecated int getResultValue();
+
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return Whether the typeString field is set.
+     */
+    boolean hasTypeString();
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return The typeString.
+     */
+    java.lang.String getTypeString();
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return The bytes for typeString.
+     */
+    com.google.protobuf.ByteString
+        getTypeStringBytes();
+
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return Whether the sourceString field is set.
+     */
+    boolean hasSourceString();
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return The sourceString.
+     */
+    java.lang.String getSourceString();
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return The bytes for sourceString.
+     */
+    com.google.protobuf.ByteString
+        getSourceStringBytes();
+
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return Whether the resultString field is set.
+     */
+    boolean hasResultString();
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return The resultString.
+     */
+    java.lang.String getResultString();
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return The bytes for resultString.
+     */
+    com.google.protobuf.ByteString
+        getResultStringBytes();
   }
   /**
    * <pre>
@@ -522,6 +704,9 @@ private static final long serialVersionUID = 0L;
       type_ = 0;
       source_ = 0;
       result_ = 0;
+      typeString_ = "";
+      sourceString_ = "";
+      resultString_ = "";
     }
 
     @java.lang.Override
@@ -550,6 +735,10 @@ private static final long serialVersionUID = 0L;
     }
 
     /**
+     * <pre>
+     * Deprecated
+     * </pre>
+     *
      * Protobuf enum {@code android_studio.BackupUsageEvent.BackupEvent.Type}
      */
     public enum Type
@@ -658,17 +847,27 @@ private static final long serialVersionUID = 0L;
     public static final int TYPE_FIELD_NUMBER = 1;
     private int type_;
     /**
-     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+     * <pre>
+     * Deprecated: use type_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the type field is set.
      */
-    @java.lang.Override public boolean hasType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+     * <pre>
+     * Deprecated: use type_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The type.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.UNKNOWN_BACKUP_TYPE : result;
@@ -677,17 +876,27 @@ private static final long serialVersionUID = 0L;
     public static final int SOURCE_FIELD_NUMBER = 2;
     private int source_;
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the source field is set.
      */
-    @java.lang.Override public boolean hasSource() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The source.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
@@ -696,20 +905,297 @@ private static final long serialVersionUID = 0L;
     public static final int RESULT_FIELD_NUMBER = 3;
     private int result_;
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
-    @java.lang.Override public boolean hasResult() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
+    }
+
+    public static final int TYPE_VALUE_FIELD_NUMBER = 4;
+    private int typeValue_;
+    /**
+     * <pre>
+     * Deprecated: use type_string
+     * </pre>
+     *
+     * <code>optional int32 type_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the typeValue field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasTypeValue() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated: use type_string
+     * </pre>
+     *
+     * <code>optional int32 type_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return The typeValue.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public int getTypeValue() {
+      return typeValue_;
+    }
+
+    public static final int SOURCE_VALUE_FIELD_NUMBER = 5;
+    private int sourceValue_;
+    /**
+     * <pre>
+     * Deprecated: use source_string
+     * </pre>
+     *
+     * <code>optional int32 source_value = 5 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the sourceValue field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasSourceValue() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated: use source_string
+     * </pre>
+     *
+     * <code>optional int32 source_value = 5 [deprecated = true];</code>
+     * @deprecated
+     * @return The sourceValue.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public int getSourceValue() {
+      return sourceValue_;
+    }
+
+    public static final int RESULT_VALUE_FIELD_NUMBER = 6;
+    private int resultValue_;
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 6 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the resultValue field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasResultValue() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 6 [deprecated = true];</code>
+     * @deprecated
+     * @return The resultValue.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public int getResultValue() {
+      return resultValue_;
+    }
+
+    public static final int TYPE_STRING_FIELD_NUMBER = 7;
+    private volatile java.lang.Object typeString_;
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return Whether the typeString field is set.
+     */
+    @java.lang.Override
+    public boolean hasTypeString() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return The typeString.
+     */
+    @java.lang.Override
+    public java.lang.String getTypeString() {
+      java.lang.Object ref = typeString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          typeString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * e.g. CLOUD
+     * </pre>
+     *
+     * <code>optional string type_string = 7;</code>
+     * @return The bytes for typeString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTypeStringBytes() {
+      java.lang.Object ref = typeString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        typeString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SOURCE_STRING_FIELD_NUMBER = 8;
+    private volatile java.lang.Object sourceString_;
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return Whether the sourceString field is set.
+     */
+    @java.lang.Override
+    public boolean hasSourceString() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return The sourceString.
+     */
+    @java.lang.Override
+    public java.lang.String getSourceString() {
+      java.lang.Object ref = sourceString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sourceString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 8;</code>
+     * @return The bytes for sourceString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getSourceStringBytes() {
+      java.lang.Object ref = sourceString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sourceString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RESULT_STRING_FIELD_NUMBER = 9;
+    private volatile java.lang.Object resultString_;
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return Whether the resultString field is set.
+     */
+    @java.lang.Override
+    public boolean hasResultString() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return The resultString.
+     */
+    @java.lang.Override
+    public java.lang.String getResultString() {
+      java.lang.Object ref = resultString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          resultString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 9;</code>
+     * @return The bytes for resultString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getResultStringBytes() {
+      java.lang.Object ref = resultString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        resultString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -735,6 +1221,24 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeEnum(3, result_);
       }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt32(4, typeValue_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeInt32(5, sourceValue_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeInt32(6, resultValue_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, typeString_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, sourceString_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, resultString_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -755,6 +1259,27 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, result_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, typeValue_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, sourceValue_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(6, resultValue_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, typeString_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, sourceString_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, resultString_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -783,6 +1308,36 @@ private static final long serialVersionUID = 0L;
       if (hasResult()) {
         if (result_ != other.result_) return false;
       }
+      if (hasTypeValue() != other.hasTypeValue()) return false;
+      if (hasTypeValue()) {
+        if (getTypeValue()
+            != other.getTypeValue()) return false;
+      }
+      if (hasSourceValue() != other.hasSourceValue()) return false;
+      if (hasSourceValue()) {
+        if (getSourceValue()
+            != other.getSourceValue()) return false;
+      }
+      if (hasResultValue() != other.hasResultValue()) return false;
+      if (hasResultValue()) {
+        if (getResultValue()
+            != other.getResultValue()) return false;
+      }
+      if (hasTypeString() != other.hasTypeString()) return false;
+      if (hasTypeString()) {
+        if (!getTypeString()
+            .equals(other.getTypeString())) return false;
+      }
+      if (hasSourceString() != other.hasSourceString()) return false;
+      if (hasSourceString()) {
+        if (!getSourceString()
+            .equals(other.getSourceString())) return false;
+      }
+      if (hasResultString() != other.hasResultString()) return false;
+      if (hasResultString()) {
+        if (!getResultString()
+            .equals(other.getResultString())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -805,6 +1360,30 @@ private static final long serialVersionUID = 0L;
       if (hasResult()) {
         hash = (37 * hash) + RESULT_FIELD_NUMBER;
         hash = (53 * hash) + result_;
+      }
+      if (hasTypeValue()) {
+        hash = (37 * hash) + TYPE_VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getTypeValue();
+      }
+      if (hasSourceValue()) {
+        hash = (37 * hash) + SOURCE_VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceValue();
+      }
+      if (hasResultValue()) {
+        hash = (37 * hash) + RESULT_VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getResultValue();
+      }
+      if (hasTypeString()) {
+        hash = (37 * hash) + TYPE_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getTypeString().hashCode();
+      }
+      if (hasSourceString()) {
+        hash = (37 * hash) + SOURCE_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceString().hashCode();
+      }
+      if (hasResultString()) {
+        hash = (37 * hash) + RESULT_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getResultString().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -944,6 +1523,18 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000002);
         result_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        typeValue_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        sourceValue_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        resultValue_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        typeString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000040);
+        sourceString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
+        resultString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -984,6 +1575,30 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000004;
         }
         result.result_ = result_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.typeValue_ = typeValue_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.sourceValue_ = sourceValue_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.resultValue_ = resultValue_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.typeString_ = typeString_;
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.sourceString_ = sourceString_;
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.resultString_ = resultString_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1041,6 +1656,30 @@ private static final long serialVersionUID = 0L;
         }
         if (other.hasResult()) {
           setResult(other.getResult());
+        }
+        if (other.hasTypeValue()) {
+          setTypeValue(other.getTypeValue());
+        }
+        if (other.hasSourceValue()) {
+          setSourceValue(other.getSourceValue());
+        }
+        if (other.hasResultValue()) {
+          setResultValue(other.getResultValue());
+        }
+        if (other.hasTypeString()) {
+          bitField0_ |= 0x00000040;
+          typeString_ = other.typeString_;
+          onChanged();
+        }
+        if (other.hasSourceString()) {
+          bitField0_ |= 0x00000080;
+          sourceString_ = other.sourceString_;
+          onChanged();
+        }
+        if (other.hasResultString()) {
+          bitField0_ |= 0x00000100;
+          resultString_ = other.resultString_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -1104,6 +1743,36 @@ private static final long serialVersionUID = 0L;
                 }
                 break;
               } // case 24
+              case 32: {
+                typeValue_ = input.readInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 40: {
+                sourceValue_ = input.readInt32();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              case 48: {
+                resultValue_ = input.readInt32();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 58: {
+                typeString_ = input.readBytes();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 58
+              case 66: {
+                sourceString_ = input.readBytes();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 66
+              case 74: {
+                resultString_ = input.readBytes();
+                bitField0_ |= 0x00000100;
+                break;
+              } // case 74
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1123,28 +1792,43 @@ private static final long serialVersionUID = 0L;
 
       private int type_ = 0;
       /**
-       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+       * <pre>
+       * Deprecated: use type_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the type field is set.
        */
-      @java.lang.Override public boolean hasType() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+       * <pre>
+       * Deprecated: use type_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The type.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.valueOf(type_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.UNKNOWN_BACKUP_TYPE : result;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+       * <pre>
+       * Deprecated: use type_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The type to set.
        * @return This builder for chaining.
        */
-      public Builder setType(com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type value) {
+      @java.lang.Deprecated public Builder setType(com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1154,10 +1838,15 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1;</code>
+       * <pre>
+       * Deprecated: use type_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearType() {
+      @java.lang.Deprecated public Builder clearType() {
         bitField0_ = (bitField0_ & ~0x00000001);
         type_ = 0;
         onChanged();
@@ -1166,28 +1855,43 @@ private static final long serialVersionUID = 0L;
 
       private int source_ = 0;
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the source field is set.
        */
-      @java.lang.Override public boolean hasSource() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The source.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The source to set.
        * @return This builder for chaining.
        */
-      public Builder setSource(com.google.wireless.android.sdk.stats.BackupUsageEvent.Source value) {
+      @java.lang.Deprecated public Builder setSource(com.google.wireless.android.sdk.stats.BackupUsageEvent.Source value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1197,10 +1901,15 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 2;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearSource() {
+      @java.lang.Deprecated public Builder clearSource() {
         bitField0_ = (bitField0_ & ~0x00000002);
         source_ = 0;
         onChanged();
@@ -1209,28 +1918,43 @@ private static final long serialVersionUID = 0L;
 
       private int result_ = 0;
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the result field is set.
        */
-      @java.lang.Override public boolean hasResult() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+       * @deprecated
        * @return The result.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+       * @deprecated
        * @param value The result to set.
        * @return This builder for chaining.
        */
-      public Builder setResult(com.google.wireless.android.sdk.stats.BackupUsageEvent.Result value) {
+      @java.lang.Deprecated public Builder setResult(com.google.wireless.android.sdk.stats.BackupUsageEvent.Result value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1240,12 +1964,518 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 3;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearResult() {
+      @java.lang.Deprecated public Builder clearResult() {
         bitField0_ = (bitField0_ & ~0x00000004);
         result_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int typeValue_ ;
+      /**
+       * <pre>
+       * Deprecated: use type_string
+       * </pre>
+       *
+       * <code>optional int32 type_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return Whether the typeValue field is set.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public boolean hasTypeValue() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Deprecated: use type_string
+       * </pre>
+       *
+       * <code>optional int32 type_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return The typeValue.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public int getTypeValue() {
+        return typeValue_;
+      }
+      /**
+       * <pre>
+       * Deprecated: use type_string
+       * </pre>
+       *
+       * <code>optional int32 type_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @param value The typeValue to set.
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder setTypeValue(int value) {
+        bitField0_ |= 0x00000008;
+        typeValue_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Deprecated: use type_string
+       * </pre>
+       *
+       * <code>optional int32 type_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder clearTypeValue() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        typeValue_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int sourceValue_ ;
+      /**
+       * <pre>
+       * Deprecated: use source_string
+       * </pre>
+       *
+       * <code>optional int32 source_value = 5 [deprecated = true];</code>
+       * @deprecated
+       * @return Whether the sourceValue field is set.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public boolean hasSourceValue() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_string
+       * </pre>
+       *
+       * <code>optional int32 source_value = 5 [deprecated = true];</code>
+       * @deprecated
+       * @return The sourceValue.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public int getSourceValue() {
+        return sourceValue_;
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_string
+       * </pre>
+       *
+       * <code>optional int32 source_value = 5 [deprecated = true];</code>
+       * @deprecated
+       * @param value The sourceValue to set.
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder setSourceValue(int value) {
+        bitField0_ |= 0x00000010;
+        sourceValue_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_string
+       * </pre>
+       *
+       * <code>optional int32 source_value = 5 [deprecated = true];</code>
+       * @deprecated
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder clearSourceValue() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        sourceValue_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int resultValue_ ;
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 6 [deprecated = true];</code>
+       * @deprecated
+       * @return Whether the resultValue field is set.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public boolean hasResultValue() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 6 [deprecated = true];</code>
+       * @deprecated
+       * @return The resultValue.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public int getResultValue() {
+        return resultValue_;
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 6 [deprecated = true];</code>
+       * @deprecated
+       * @param value The resultValue to set.
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder setResultValue(int value) {
+        bitField0_ |= 0x00000020;
+        resultValue_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 6 [deprecated = true];</code>
+       * @deprecated
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder clearResultValue() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        resultValue_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object typeString_ = "";
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @return Whether the typeString field is set.
+       */
+      public boolean hasTypeString() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @return The typeString.
+       */
+      public java.lang.String getTypeString() {
+        java.lang.Object ref = typeString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            typeString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @return The bytes for typeString.
+       */
+      public com.google.protobuf.ByteString
+          getTypeStringBytes() {
+        java.lang.Object ref = typeString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          typeString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @param value The typeString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        typeString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTypeString() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        typeString_ = getDefaultInstance().getTypeString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. CLOUD
+       * </pre>
+       *
+       * <code>optional string type_string = 7;</code>
+       * @param value The bytes for typeString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000040;
+        typeString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sourceString_ = "";
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @return Whether the sourceString field is set.
+       */
+      public boolean hasSourceString() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @return The sourceString.
+       */
+      public java.lang.String getSourceString() {
+        java.lang.Object ref = sourceString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sourceString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @return The bytes for sourceString.
+       */
+      public com.google.protobuf.ByteString
+          getSourceStringBytes() {
+        java.lang.Object ref = sourceString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sourceString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @param value The sourceString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSourceString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        sourceString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSourceString() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        sourceString_ = getDefaultInstance().getSourceString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 8;</code>
+       * @param value The bytes for sourceString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSourceStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        sourceString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object resultString_ = "";
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @return Whether the resultString field is set.
+       */
+      public boolean hasResultString() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @return The resultString.
+       */
+      public java.lang.String getResultString() {
+        java.lang.Object ref = resultString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            resultString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @return The bytes for resultString.
+       */
+      public com.google.protobuf.ByteString
+          getResultStringBytes() {
+        java.lang.Object ref = resultString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          resultString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @param value The resultString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResultString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        resultString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearResultString() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        resultString_ = getDefaultInstance().getResultString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 9;</code>
+       * @param value The bytes for resultString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResultStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        resultString_ = value;
         onChanged();
         return this;
       }
@@ -1318,26 +2548,146 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the source field is set.
      */
-    boolean hasSource();
+    @java.lang.Deprecated boolean hasSource();
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The source.
      */
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
 
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
-    boolean hasResult();
+    @java.lang.Deprecated boolean hasResult();
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
+    @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
+
+    /**
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional int32 source_value = 3 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the sourceValue field is set.
+     */
+    @java.lang.Deprecated boolean hasSourceValue();
+    /**
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional int32 source_value = 3 [deprecated = true];</code>
+     * @deprecated
+     * @return The sourceValue.
+     */
+    @java.lang.Deprecated int getSourceValue();
+
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the resultValue field is set.
+     */
+    @java.lang.Deprecated boolean hasResultValue();
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return The resultValue.
+     */
+    @java.lang.Deprecated int getResultValue();
+
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return Whether the sourceString field is set.
+     */
+    boolean hasSourceString();
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return The sourceString.
+     */
+    java.lang.String getSourceString();
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return The bytes for sourceString.
+     */
+    com.google.protobuf.ByteString
+        getSourceStringBytes();
+
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return Whether the resultString field is set.
+     */
+    boolean hasResultString();
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return The resultString.
+     */
+    java.lang.String getResultString();
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return The bytes for resultString.
+     */
+    com.google.protobuf.ByteString
+        getResultStringBytes();
   }
   /**
    * <pre>
@@ -1358,6 +2708,8 @@ private static final long serialVersionUID = 0L;
     private RestoreEvent() {
       source_ = 0;
       result_ = 0;
+      sourceString_ = "";
+      resultString_ = "";
     }
 
     @java.lang.Override
@@ -1389,17 +2741,27 @@ private static final long serialVersionUID = 0L;
     public static final int SOURCE_FIELD_NUMBER = 1;
     private int source_;
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the source field is set.
      */
-    @java.lang.Override public boolean hasSource() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+     * @deprecated
      * @return The source.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
@@ -1408,20 +2770,208 @@ private static final long serialVersionUID = 0L;
     public static final int RESULT_FIELD_NUMBER = 2;
     private int result_;
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+     * @deprecated
      * @return Whether the result field is set.
      */
-    @java.lang.Override public boolean hasResult() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
-     * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+     * <pre>
+     * Deprecated: use result_value
+     * </pre>
+     *
+     * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+     * @deprecated
      * @return The result.
      */
-    @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
+    @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
+    }
+
+    public static final int SOURCE_VALUE_FIELD_NUMBER = 3;
+    private int sourceValue_;
+    /**
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional int32 source_value = 3 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the sourceValue field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasSourceValue() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated: use source_value
+     * </pre>
+     *
+     * <code>optional int32 source_value = 3 [deprecated = true];</code>
+     * @deprecated
+     * @return The sourceValue.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public int getSourceValue() {
+      return sourceValue_;
+    }
+
+    public static final int RESULT_VALUE_FIELD_NUMBER = 4;
+    private int resultValue_;
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return Whether the resultValue field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasResultValue() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated: use result_string
+     * </pre>
+     *
+     * <code>optional int32 result_value = 4 [deprecated = true];</code>
+     * @deprecated
+     * @return The resultValue.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public int getResultValue() {
+      return resultValue_;
+    }
+
+    public static final int SOURCE_STRING_FIELD_NUMBER = 5;
+    private volatile java.lang.Object sourceString_;
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return Whether the sourceString field is set.
+     */
+    @java.lang.Override
+    public boolean hasSourceString() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return The sourceString.
+     */
+    @java.lang.Override
+    public java.lang.String getSourceString() {
+      java.lang.Object ref = sourceString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sourceString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * e.g. DEVICE_EXPLORER
+     * </pre>
+     *
+     * <code>optional string source_string = 5;</code>
+     * @return The bytes for sourceString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getSourceStringBytes() {
+      java.lang.Object ref = sourceString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sourceString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int RESULT_STRING_FIELD_NUMBER = 6;
+    private volatile java.lang.Object resultString_;
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return Whether the resultString field is set.
+     */
+    @java.lang.Override
+    public boolean hasResultString() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return The resultString.
+     */
+    @java.lang.Override
+    public java.lang.String getResultString() {
+      java.lang.Object ref = resultString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          resultString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * e.g. SUCCESS
+     * </pre>
+     *
+     * <code>optional string result_string = 6;</code>
+     * @return The bytes for resultString.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getResultStringBytes() {
+      java.lang.Object ref = resultString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        resultString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1444,6 +2994,18 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000002) != 0)) {
         output.writeEnum(2, result_);
       }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeInt32(3, sourceValue_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeInt32(4, resultValue_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, sourceString_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, resultString_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1460,6 +3022,20 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, result_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, sourceValue_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, resultValue_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, sourceString_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, resultString_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1484,6 +3060,26 @@ private static final long serialVersionUID = 0L;
       if (hasResult()) {
         if (result_ != other.result_) return false;
       }
+      if (hasSourceValue() != other.hasSourceValue()) return false;
+      if (hasSourceValue()) {
+        if (getSourceValue()
+            != other.getSourceValue()) return false;
+      }
+      if (hasResultValue() != other.hasResultValue()) return false;
+      if (hasResultValue()) {
+        if (getResultValue()
+            != other.getResultValue()) return false;
+      }
+      if (hasSourceString() != other.hasSourceString()) return false;
+      if (hasSourceString()) {
+        if (!getSourceString()
+            .equals(other.getSourceString())) return false;
+      }
+      if (hasResultString() != other.hasResultString()) return false;
+      if (hasResultString()) {
+        if (!getResultString()
+            .equals(other.getResultString())) return false;
+      }
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1502,6 +3098,22 @@ private static final long serialVersionUID = 0L;
       if (hasResult()) {
         hash = (37 * hash) + RESULT_FIELD_NUMBER;
         hash = (53 * hash) + result_;
+      }
+      if (hasSourceValue()) {
+        hash = (37 * hash) + SOURCE_VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceValue();
+      }
+      if (hasResultValue()) {
+        hash = (37 * hash) + RESULT_VALUE_FIELD_NUMBER;
+        hash = (53 * hash) + getResultValue();
+      }
+      if (hasSourceString()) {
+        hash = (37 * hash) + SOURCE_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getSourceString().hashCode();
+      }
+      if (hasResultString()) {
+        hash = (37 * hash) + RESULT_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getResultString().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -1639,6 +3251,14 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000001);
         result_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
+        sourceValue_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        resultValue_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        sourceString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        resultString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -1675,6 +3295,22 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000002;
         }
         result.result_ = result_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.sourceValue_ = sourceValue_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.resultValue_ = resultValue_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.sourceString_ = sourceString_;
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.resultString_ = resultString_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1730,6 +3366,22 @@ private static final long serialVersionUID = 0L;
         if (other.hasResult()) {
           setResult(other.getResult());
         }
+        if (other.hasSourceValue()) {
+          setSourceValue(other.getSourceValue());
+        }
+        if (other.hasResultValue()) {
+          setResultValue(other.getResultValue());
+        }
+        if (other.hasSourceString()) {
+          bitField0_ |= 0x00000010;
+          sourceString_ = other.sourceString_;
+          onChanged();
+        }
+        if (other.hasResultString()) {
+          bitField0_ |= 0x00000020;
+          resultString_ = other.resultString_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -1780,6 +3432,26 @@ private static final long serialVersionUID = 0L;
                 }
                 break;
               } // case 16
+              case 24: {
+                sourceValue_ = input.readInt32();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                resultValue_ = input.readInt32();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 42: {
+                sourceString_ = input.readBytes();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 42
+              case 50: {
+                resultString_ = input.readBytes();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 50
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1799,28 +3471,43 @@ private static final long serialVersionUID = 0L;
 
       private int source_ = 0;
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the source field is set.
        */
-      @java.lang.Override public boolean hasSource() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+       * @deprecated
        * @return The source.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+       * @deprecated
        * @param value The source to set.
        * @return This builder for chaining.
        */
-      public Builder setSource(com.google.wireless.android.sdk.stats.BackupUsageEvent.Source value) {
+      @java.lang.Deprecated public Builder setSource(com.google.wireless.android.sdk.stats.BackupUsageEvent.Source value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1830,10 +3517,15 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Source source = 1;</code>
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearSource() {
+      @java.lang.Deprecated public Builder clearSource() {
         bitField0_ = (bitField0_ & ~0x00000001);
         source_ = 0;
         onChanged();
@@ -1842,28 +3534,43 @@ private static final long serialVersionUID = 0L;
 
       private int result_ = 0;
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+       * @deprecated
        * @return Whether the result field is set.
        */
-      @java.lang.Override public boolean hasResult() {
+      @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+       * @deprecated
        * @return The result.
        */
       @java.lang.Override
-      public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
+      @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+       * @deprecated
        * @param value The result to set.
        * @return This builder for chaining.
        */
-      public Builder setResult(com.google.wireless.android.sdk.stats.BackupUsageEvent.Result value) {
+      @java.lang.Deprecated public Builder setResult(com.google.wireless.android.sdk.stats.BackupUsageEvent.Result value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1873,12 +3580,351 @@ private static final long serialVersionUID = 0L;
         return this;
       }
       /**
-       * <code>optional .android_studio.BackupUsageEvent.Result result = 2;</code>
+       * <pre>
+       * Deprecated: use result_value
+       * </pre>
+       *
+       * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
+       * @deprecated
        * @return This builder for chaining.
        */
-      public Builder clearResult() {
+      @java.lang.Deprecated public Builder clearResult() {
         bitField0_ = (bitField0_ & ~0x00000002);
         result_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int sourceValue_ ;
+      /**
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional int32 source_value = 3 [deprecated = true];</code>
+       * @deprecated
+       * @return Whether the sourceValue field is set.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public boolean hasSourceValue() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional int32 source_value = 3 [deprecated = true];</code>
+       * @deprecated
+       * @return The sourceValue.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public int getSourceValue() {
+        return sourceValue_;
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional int32 source_value = 3 [deprecated = true];</code>
+       * @deprecated
+       * @param value The sourceValue to set.
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder setSourceValue(int value) {
+        bitField0_ |= 0x00000004;
+        sourceValue_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Deprecated: use source_value
+       * </pre>
+       *
+       * <code>optional int32 source_value = 3 [deprecated = true];</code>
+       * @deprecated
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder clearSourceValue() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        sourceValue_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int resultValue_ ;
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return Whether the resultValue field is set.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public boolean hasResultValue() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return The resultValue.
+       */
+      @java.lang.Override
+      @java.lang.Deprecated public int getResultValue() {
+        return resultValue_;
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @param value The resultValue to set.
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder setResultValue(int value) {
+        bitField0_ |= 0x00000008;
+        resultValue_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Deprecated: use result_string
+       * </pre>
+       *
+       * <code>optional int32 result_value = 4 [deprecated = true];</code>
+       * @deprecated
+       * @return This builder for chaining.
+       */
+      @java.lang.Deprecated public Builder clearResultValue() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        resultValue_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sourceString_ = "";
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @return Whether the sourceString field is set.
+       */
+      public boolean hasSourceString() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @return The sourceString.
+       */
+      public java.lang.String getSourceString() {
+        java.lang.Object ref = sourceString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sourceString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @return The bytes for sourceString.
+       */
+      public com.google.protobuf.ByteString
+          getSourceStringBytes() {
+        java.lang.Object ref = sourceString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sourceString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @param value The sourceString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSourceString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        sourceString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSourceString() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        sourceString_ = getDefaultInstance().getSourceString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. DEVICE_EXPLORER
+       * </pre>
+       *
+       * <code>optional string source_string = 5;</code>
+       * @param value The bytes for sourceString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSourceStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        sourceString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object resultString_ = "";
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @return Whether the resultString field is set.
+       */
+      public boolean hasResultString() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @return The resultString.
+       */
+      public java.lang.String getResultString() {
+        java.lang.Object ref = resultString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            resultString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @return The bytes for resultString.
+       */
+      public com.google.protobuf.ByteString
+          getResultStringBytes() {
+        java.lang.Object ref = resultString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          resultString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @param value The resultString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResultString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        resultString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearResultString() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        resultString_ = getDefaultInstance().getResultString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * e.g. SUCCESS
+       * </pre>
+       *
+       * <code>optional string result_string = 6;</code>
+       * @param value The bytes for resultString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResultStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        resultString_ = value;
         onChanged();
         return this;
       }

@@ -696,37 +696,6 @@ public class ResourceResolver extends RenderResources {
         return false;
     }
 
-    @Override
-    @Nullable
-    public StyleResourceValue getStyle(@NonNull ResourceReference styleReference) {
-        ResourceValue style;
-        if (styleReference.getResourceType() == ResourceType.ATTR) {
-            style = resolveResValue(findItemInTheme(styleReference));
-        } else {
-            style = getUnresolvedResource(styleReference);
-        }
-        if (style == null) {
-            return null;
-        }
-
-        if (style instanceof StyleResourceValue) {
-            return (StyleResourceValue) style;
-        }
-
-        if (mLogger != null) {
-            mLogger.error(
-                    null,
-                    String.format(
-                            "Style %1$s is not of type STYLE (instead %2$s)",
-                            styleReference, style.getResourceType().toString()),
-                    null,
-                    null,
-                    styleReference);
-        }
-
-        return null;
-    }
-
     /** Checks if the given {@link ResourceValue} represents a theme. */
     public boolean isTheme(
             @NonNull ResourceValue value, @Nullable Map<ResourceValue, Boolean> cache) {

@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -517,25 +518,17 @@ public final class Device {
             return false;
         }
         Device d = (Device) o;
-        boolean ok = mName.equals(d.getDisplayName())
+        return mName.equals(d.getDisplayName())
+                && mId.equals(d.getId())
                 && mManufacturer.equals(d.getManufacturer())
                 && mSoftware.equals(d.getAllSoftware())
                 && mState.equals(d.getAllStates())
                 && mMeta.equals(d.getMeta())
-                && mDefaultState.equals(d.getDefaultState());
-        if (!ok) {
-            return false;
-        }
-
-        ok = (mTagId == null && d.mTagId == null) ||
-             (mTagId != null && mTagId.equals(d.mTagId));
-        if (!ok) {
-            return false;
-        }
-
-        ok = (mBootProps == null && d.mBootProps == null) ||
-             (mBootProps != null && mBootProps.equals(d.mBootProps));
-        return ok;
+                && mDefaultState.equals(d.getDefaultState())
+                && mIsDeprecated == d.mIsDeprecated
+                && mHasPlayStore == d.mHasPlayStore
+                && Objects.equals(mTagId, d.mTagId)
+                && mBootProps.equals(d.mBootProps);
     }
 
     /**
@@ -545,18 +538,21 @@ public final class Device {
     public int hashCode() {
         int hash = 17;
         hash = 31 * hash + mName.hashCode();
+        hash = 31 * hash + mId.hashCode();
         hash = 31 * hash + mManufacturer.hashCode();
         hash = 31 * hash + mSoftware.hashCode();
         hash = 31 * hash + mState.hashCode();
         hash = 31 * hash + mMeta.hashCode();
         hash = 31 * hash + mDefaultState.hashCode();
+        hash = 31 * hash + Boolean.hashCode(mIsDeprecated);
+        hash = 31 * hash + Boolean.hashCode(mHasPlayStore);
 
         // tag-id and boot-props are optional and should not change a device's hashcode
         // which did not have them before.
         if (mTagId != null) {
             hash = 31 * hash + mTagId.hashCode();
         }
-        if (mBootProps != null && !mBootProps.isEmpty()) {
+        if (!mBootProps.isEmpty()) {
             hash = 31 * hash + mBootProps.hashCode();
         }
         return hash;

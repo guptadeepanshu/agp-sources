@@ -94,7 +94,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.intermediaryBundleFile.set(intermediaryBundleFile)
             it.finalBundleFile.set(finalBundleFile)
             signingConfigData?.convertToParams()?.let { signing ->

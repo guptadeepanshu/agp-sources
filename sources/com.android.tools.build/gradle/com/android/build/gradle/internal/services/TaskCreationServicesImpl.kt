@@ -26,6 +26,7 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
@@ -47,6 +48,9 @@ class TaskCreationServicesImpl(projectServices: ProjectServices) : BaseServicesI
     }
     override fun directoryProperty(): DirectoryProperty =
         projectServices.objectFactory.directoryProperty()
+
+    override fun regularFileProperty(): RegularFileProperty =
+        projectServices.objectFactory.fileProperty()
 
     override fun <T> listProperty(type: Class<T>): ListProperty<T> =
         projectServices.objectFactory.listProperty(type)

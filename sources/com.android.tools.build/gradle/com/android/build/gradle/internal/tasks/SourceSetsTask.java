@@ -19,20 +19,23 @@ package com.android.build.gradle.internal.tasks;
 import com.android.annotations.NonNull;
 import com.android.build.gradle.api.AndroidSourceDirectorySet;
 import com.android.build.gradle.api.AndroidSourceSet;
+import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet;
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet;
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction;
 import com.android.buildanalyzer.common.TaskCategory;
 import com.android.builder.core.ComponentType;
-import java.io.IOException;
-import java.util.stream.Collectors;
+
 import org.gradle.api.Project;
 import org.gradle.api.tasks.diagnostics.ProjectBasedReportTask;
 import org.gradle.api.tasks.diagnostics.internal.ReportRenderer;
 import org.gradle.api.tasks.diagnostics.internal.TextReportRenderer;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.work.DisableCachingByDefault;
+
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 /** Prints out the DSL names and directory names of available source sets. */
 @DisableCachingByDefault
@@ -50,6 +53,9 @@ public class SourceSetsTask extends ProjectBasedReportTask {
 
     @Override
     protected void generate(Project project) throws IOException {
+        LoggerWrapper.getLogger(this.getClass())
+                .warning("SourceSetsTask has been deprecated and will be removed in AGP 9.0");
+
         for (AndroidSourceSet sourceSet : sourceSetContainer) {
             mRenderer.getBuilder().subheading(sourceSet.getName());
 

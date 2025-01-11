@@ -21,8 +21,8 @@ import com.android.build.api.variant.CanMinifyCodeBuilder
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.ProguardFileType
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
 import com.android.build.gradle.internal.component.features.OptimizationCreationConfig
@@ -91,9 +91,9 @@ class OptimizationCreationConfigImpl(
         }
     }
 
-    override val ignoreFromInKeepRules: Provider<Set<String>> =
+    override val ignoreFromInKeepRules: Provider<List<String>> =
         baseModuleMetadata?.map { it.ignoreFromInKeepRules }
-            ?: internalServices.setPropertyOf(
+            ?: internalServices.listPropertyOf(
                 String::class.java,
                 dslInfo.ignoreFromInKeepRules
             )

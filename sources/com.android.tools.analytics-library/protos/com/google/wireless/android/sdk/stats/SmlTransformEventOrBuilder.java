@@ -68,6 +68,21 @@ public interface SmlTransformEventOrBuilder extends
   com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformAcceptedOrBuilder getAcceptedOrBuilder();
 
   /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   * @return Whether the rejected field is set.
+   */
+  boolean hasRejected();
+  /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   * @return The rejected.
+   */
+  com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejected getRejected();
+  /**
+   * <code>.android_studio.SmlTransformEvent.TransformRejected rejected = 6 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformRejectedOrBuilder getRejectedOrBuilder();
+
+  /**
    * <pre>
    * The kind of transform, which will be used to differentiate
    * metrics for Document action, Custom transforms etc.

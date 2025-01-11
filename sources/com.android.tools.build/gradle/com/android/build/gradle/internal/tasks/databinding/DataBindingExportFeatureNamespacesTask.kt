@@ -64,7 +64,7 @@ abstract class DataBindingExportFeatureNamespacesTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ExportNamespacesRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.featureDeclarations.set(featureDeclarations.asFileTree.files)
             it.packageListOutFolder.set(packageListOutFolder.get().asFile)
         }

@@ -34,6 +34,7 @@ import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.PackageParserUtils;
 import com.android.sdklib.repository.meta.DetailsTypes;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,6 +42,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -60,15 +62,11 @@ public class PlatformTarget implements IAndroidTarget {
      */
     public static final String PLATFORM_VENDOR = "Android Open Source Project";
 
-    /**
-     * "Android NN" is the default name for platform targets.
-     */
-    private static final String PLATFORM_NAME = "Android %s";
+    /** "Android NN" is the default name for platform targets. */
+    public static final String PLATFORM_NAME = "Android %s";
 
-    /**
-     * "Android NN (Preview)" is the default name for preview platform targets.
-     */
-    private static final String PLATFORM_NAME_PREVIEW = "Android %s (Preview)";
+    /** "Android NN (Preview)" is the default name for preview platform targets. */
+    public static final String PLATFORM_NAME_PREVIEW = "Android %s (Preview)";
 
     /** The {@link LocalPackage} from which this target was created. */
     private final LocalPackage mPackage;

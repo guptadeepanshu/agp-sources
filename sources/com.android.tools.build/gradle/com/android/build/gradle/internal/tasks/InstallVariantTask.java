@@ -16,14 +16,11 @@
 package com.android.build.gradle.internal.tasks;
 
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS;
-import static com.android.build.gradle.internal.tasks.BundleInstallUtils.extractApkFilesBypassingBundleTool;
+import static com.android.build.gradle.internal.utils.InstallApkUtilsKt.getDeviceSpec;
 
-import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.SingleArtifact;
 import com.android.build.api.dsl.Installation;
-import com.android.build.api.variant.impl.BuiltArtifactsImpl;
-import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
 import com.android.build.api.variant.impl.VariantApiExtensionsKt;
 import com.android.build.gradle.internal.BuildToolsExecutableInput;
 import com.android.build.gradle.internal.LoggerWrapper;
@@ -33,30 +30,27 @@ import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
-import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher;
 import com.android.build.gradle.internal.testing.ConnectedDeviceProvider;
+import com.android.build.gradle.internal.utils.ApkSources;
+import com.android.build.gradle.internal.utils.DefaultDeviceApkOutput;
+import com.android.build.gradle.internal.utils.DeviceApkOutput;
+import com.android.build.gradle.internal.utils.SdkApkInstallGroup;
 import com.android.buildanalyzer.common.TaskCategory;
-import com.android.builder.internal.InstallUtils;
-import com.android.builder.testing.api.DeviceConfigProviderImpl;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
 import com.android.sdklib.AndroidVersion;
-import com.android.tools.profgen.ArtProfileKt;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
 
 import org.gradle.api.GradleException;
 import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
-import org.gradle.api.logging.LogLevel;
+import org.gradle.api.file.RegularFile;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
@@ -69,14 +63,9 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.work.DisableCachingByDefault;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -109,7 +98,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
 
     @Override
     protected void doTaskAction() throws DeviceException, ExecutionException {
-        final ILogger iLogger = new LoggerWrapper(getLogger());
+        final LoggerWrapper iLogger = new LoggerWrapper(getLogger());
         DeviceProvider deviceProvider =
                 new ConnectedDeviceProvider(
                         getBuildTools().adbExecutable(),
@@ -119,134 +108,85 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
 
         deviceProvider.use(
                 () -> {
+                    var deviceApkOutput =
+                            new DefaultDeviceApkOutput(
+                                    new ApkSources(
+                                            getApkDirectory(),
+                                            getPrivacySandboxSdksApksFiles(),
+                                            getPrivacySandboxSupportedSdkAdditionalSplitApks(),
+                                            getPrivacySandboxCompatApks(),
+                                            getDexMetadataDirectory()),
+                                    supportedAbis,
+                                    minSdkVersion,
+                                    variantName,
+                                    getProjectPath().get(),
+                                    iLogger);
                     install(
+                            deviceApkOutput,
                             getProjectPath().get(),
                             variantName,
                             deviceProvider,
-                            minSdkVersion,
-                            getApkDirectory().get(),
-                            getPrivacySandboxSdksApksFiles().getFiles(),
-                            getPrivacySandboxSupportedSdkAdditionalSplitApks(),
-                            getPrivacySandboxCompatApks(),
-                            supportedAbis,
                             getInstallOptions(),
                             getTimeOutInMs(),
-                            getLogger(),
-                            getDexMetadataDirectory());
+                            getLogger());
                     return null;
                 });
     }
 
     static void install(
+            @NonNull DeviceApkOutput deviceApkOutput,
             @NonNull String projectPath,
             @NonNull String variantName,
             @NonNull DeviceProvider deviceProvider,
-            @NonNull AndroidVersion minSdkVersion,
-            @NonNull Directory apkDirectory,
-            @NonNull Set<File> privacySandboxSdksApksFiles,
-            @NonNull DirectoryProperty additionalSupportedSdkApkSplits,
-            @NonNull DirectoryProperty privacySandboxSdkSplitApksForLegacy,
-            @NonNull Set<String> supportedAbis,
             @NonNull Collection<String> installOptions,
             int timeOutInMs,
-            @NonNull Logger logger,
-            @NonNull DirectoryProperty dexMetadataDirectory)
-            throws DeviceException, IOException {
+            @NonNull Logger logger)
+            throws DeviceException {
         ILogger iLogger = new LoggerWrapper(logger);
         int successfulInstallCount = 0;
         List<? extends DeviceConnector> devices = deviceProvider.getDevices();
 
-        BuiltArtifactsImpl builtArtifacts = new BuiltArtifactsLoaderImpl().load(apkDirectory);
-        List<File> apkFiles;
-
         for (final DeviceConnector device : devices) {
-            // When InstallUtils.checkDeviceApiLevel returns false, it logs the reason.
-            if (InstallUtils.checkDeviceApiLevel(
-                    device, minSdkVersion, iLogger, projectPath, variantName)) {
-                final Collection<String> extraArgs =
-                        MoreObjects.firstNonNull(installOptions, ImmutableList.of());
-                DeviceConfigProviderImpl deviceConfigProvider =
-                        new DeviceConfigProviderImpl(device);
-                apkFiles = Lists.newLinkedList();
-                if (builtArtifacts != null) {
-                    apkFiles.addAll(
-                            BuiltArtifactsSplitOutputMatcher.INSTANCE.computeBestOutput(
-                                    deviceConfigProvider, builtArtifacts, supportedAbis));
-                }
-                boolean privacySandboxSdksPresent =
-                        !privacySandboxSdksApksFiles.isEmpty()
-                                || additionalSupportedSdkApkSplits.isPresent();
-                if (privacySandboxSdksPresent && device.getSupportsPrivacySandbox()) {
-                    privacySandboxSdksApksFiles.forEach(
-                            file -> {
-                                List<File> sdkApkFiles =
-                                        extractApkFilesBypassingBundleTool(file.toPath()).stream()
-                                                .map(Path::toFile)
-                                                .collect(Collectors.toUnmodifiableList());
-                                try {
-                                    logger.lifecycle(
-                                            "Installing Privacy Sandbox APK '{}' on '{}' for {}:{}",
-                                            FileUtils.getNamesAsCommaSeparatedList(sdkApkFiles),
-                                            device.getName(),
-                                            projectPath,
-                                            variantName);
-                                    device.installPackages(
-                                            sdkApkFiles, extraArgs, timeOutInMs, iLogger);
-                                } catch (DeviceException e) {
-                                    logger.error(
-                                            String.format(
-                                                    "Failed to install privacy sandbox SDK APKs"
-                                                        + " from %s",
-                                                    file.toPath()),
-                                            e);
-                                }
-                            });
-                    if (additionalSupportedSdkApkSplits.isPresent()) {
-                        List<File> splitApks = additionalSupportedSdkApkSplits.get()
-                                .getAsFileTree()
-                                .getFiles()
-                                .stream()
-                                .filter(file -> file.getName().endsWith(SdkConstants.DOT_ANDROID_PACKAGE))
+            var installGroups = deviceApkOutput.getApks(getDeviceSpec(device));
+            final Collection<String> extraArgs =
+                    MoreObjects.firstNonNull(installOptions, ImmutableList.of());
+            for (var apkInstallGroup : installGroups) {
+                var apkFiles =
+                        apkInstallGroup.getApks().stream()
+                                .map(RegularFile::getAsFile)
                                 .collect(Collectors.toList());
-                        apkFiles.addAll(splitApks);
-                    }
-                } else {
-                    if (privacySandboxSdkSplitApksForLegacy.isPresent()) {
-                        List<File> splitApks = privacySandboxSdkSplitApksForLegacy.get()
-                                .getAsFileTree()
-                                .getFiles()
-                                .stream()
-                                .filter(file -> file.getName().endsWith(SdkConstants.DOT_ANDROID_PACKAGE))
-                                .collect(Collectors.toList());
-                        apkFiles.addAll(splitApks);
-                    }
-                }
-
-                addDexMetadataFiles(dexMetadataDirectory, apkDirectory, device, apkFiles, logger);
-
-                if (apkFiles.isEmpty()) {
-                    logger.lifecycle(
-                            "Skipping device '{}' for '{}:{}': Could not find build of variant "
-                                    + "which supports density {} and an ABI in {}",
-                            device.getName(),
+                if (apkInstallGroup instanceof SdkApkInstallGroup) {
+                    SdkApkInstallGroup sdkApkInstallGroup = (SdkApkInstallGroup) apkInstallGroup;
+                    installPrivacySandboxSdkApks(
+                            logger,
+                            device,
                             projectPath,
+                            sdkApkInstallGroup.getSdkFile().getAsFile(),
+                            apkFiles,
+                            extraArgs,
+                            iLogger,
                             variantName,
-                            device.getDensity(),
-                            Joiner.on(", ").join(device.getAbis()));
+                            timeOutInMs);
                 } else {
-                    logger.lifecycle(
-                            "Installing APK '{}' on '{}' for {}:{}",
-                            FileUtils.getNamesAsCommaSeparatedList(apkFiles),
-                            device.getName(),
-                            projectPath,
-                            variantName);
-
-                    if (apkFiles.size() > 1) {
-                        device.installPackages(apkFiles, extraArgs, timeOutInMs, iLogger);
+                    if (apkFiles.isEmpty()) {
+                        logger.lifecycle(
+                                "Skipping device '{}' for '{}:{}': Could not find build of variant "
+                                        + "which supports density {} and an ABI in {}",
+                                device.getName(),
+                                projectPath,
+                                variantName,
+                                device.getDensity(),
+                                Joiner.on(", ").join(device.getAbis()));
                     } else {
-                        device.installPackage(apkFiles.get(0), extraArgs, timeOutInMs, iLogger);
+                        logger.lifecycle(
+                                "Installing APK '{}' on '{}' for {}:{}",
+                                FileUtils.getNamesAsCommaSeparatedList(apkFiles),
+                                device.getName(),
+                                projectPath,
+                                variantName);
+                        installPackages(device, apkFiles, extraArgs, timeOutInMs, iLogger);
+                        successfulInstallCount++;
                     }
-                    successfulInstallCount++;
                 }
             }
         }
@@ -261,64 +201,44 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         }
     }
 
-    /**
-     * This method takes the dexMetadataDirectory which is an output of the CompileArtProfileTask
-     * and uses its contents to add one or more .dm files to [apkFiles] to be installed on the
-     * device. This will only execute if the dexMetadataDirectory exists.
-     */
-    private static void addDexMetadataFiles(
-            DirectoryProperty dexMetadataDirectory,
-            Directory apkDirectory,
-            DeviceConnector device,
-            List<File> apkFiles,
-            Logger logger)
-            throws IOException {
-        Directory dmDir = dexMetadataDirectory.getOrNull();
-        if (dmDir == null || !dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile().exists()) {
-            return;
-        }
-        File dexMetadataProperties = dmDir.file(SdkConstants.FN_DEX_METADATA_PROP).getAsFile();
-        InputStream inputStream = new FileInputStream(dexMetadataProperties);
-        Properties properties = new Properties();
-        properties.load(inputStream);
-        String dmPath;
-        if (device.getApiLevel() > ArtProfileKt.SDK_LEVEL_FOR_V0_1_5_S) {
-            dmPath = properties.getProperty(String.valueOf(Integer.MAX_VALUE));
+    private static void installPackages(
+            @NonNull DeviceConnector device,
+            @NonNull List<File> apkFiles,
+            @NonNull Collection<String> extraArgs,
+            @NonNull int timeOutInMs,
+            @NonNull ILogger iLogger)
+            throws DeviceException {
+        if (apkFiles.size() > 1) {
+            device.installPackages(apkFiles, extraArgs, timeOutInMs, iLogger);
         } else {
-            dmPath = properties.getProperty(String.valueOf(device.getApiLevel()));
+            device.installPackage(apkFiles.get(0), extraArgs, timeOutInMs, iLogger);
         }
-        if (dmPath == null) {
-            logger.log(
-                    LogLevel.INFO,
-                    "Baseline Profile not found for API level " + device.getApiLevel());
-            return;
-        }
+    }
 
-        if (!apkFiles.isEmpty()) {
-            String fileIndex = new File(dmPath).getParentFile().getName();
-            int numApks = apkFiles.size();
-            for (int i = 0; i < numApks; i++) {
-                String apkFileName = apkFiles.get(i).getName();
-                if (apkFileName.endsWith(".apk")) {
-                    String apkName = Files.getNameWithoutExtension(apkFileName);
-                    File renamedBaselineProfile =
-                            FileUtils.join(
-                                    apkDirectory.getAsFile(),
-                                    SdkConstants.FN_OUTPUT_BASELINE_PROFILES,
-                                    fileIndex,
-                                    apkName + ".dm");
-                    if (!renamedBaselineProfile.exists()) {
-                        logger.log(
-                                LogLevel.INFO,
-                                "Baseline Profile at "
-                                        + renamedBaselineProfile.getAbsolutePath()
-                                        + " was not found.");
-                        return;
-                    }
-                    apkFiles.add(renamedBaselineProfile);
-                }
+    private static void installPrivacySandboxSdkApks(
+            @NonNull Logger logger,
+            @NonNull DeviceConnector device,
+            @NonNull String projectPath,
+            @NonNull File file,
+            @NonNull List<File> sdkApkFiles,
+            @NonNull Collection<String> extraArgs,
+            @NonNull ILogger iLogger,
+            @NonNull String variantName,
+            @NonNull int timeOutInMs) {
+        try {
+            logger.lifecycle(
+                    "Installing Privacy Sandbox APK '{}' on '{}' for {}:{}",
+                    FileUtils.getNamesAsCommaSeparatedList(sdkApkFiles),
+                    device.getName(),
+                    projectPath,
+                    variantName);
+            installPackages(device, sdkApkFiles, extraArgs, timeOutInMs, iLogger);
+        } catch (DeviceException e) {
+            logger.error(
+                    String.format(
+                            "Failed to install privacy sandbox SDK APKs from %s", file.toPath()),
+                    e);
             }
-        }
     }
 
     @Input

@@ -701,6 +701,14 @@ public enum VariantPropertiesMethodType
    * <code>DEVICE_TEST_CODE_COVERAGE_ENABLED = 160;</code>
    */
   DEVICE_TEST_CODE_COVERAGE_ENABLED(160),
+  /**
+   * <code>PROVIDE_APK_OUTPUT_TO_TASK = 161;</code>
+   */
+  PROVIDE_APK_OUTPUT_TO_TASK(161),
+  /**
+   * <code>MIN_SDK = 162;</code>
+   */
+  MIN_SDK(162),
   UNRECOGNIZED(-1),
   ;
 
@@ -1396,6 +1404,14 @@ public enum VariantPropertiesMethodType
    * <code>DEVICE_TEST_CODE_COVERAGE_ENABLED = 160;</code>
    */
   public static final int DEVICE_TEST_CODE_COVERAGE_ENABLED_VALUE = 160;
+  /**
+   * <code>PROVIDE_APK_OUTPUT_TO_TASK = 161;</code>
+   */
+  public static final int PROVIDE_APK_OUTPUT_TO_TASK_VALUE = 161;
+  /**
+   * <code>MIN_SDK = 162;</code>
+   */
+  public static final int MIN_SDK_VALUE = 162;
 
 
   public final int getNumber() {
@@ -1583,6 +1599,8 @@ public enum VariantPropertiesMethodType
       case 158: return HOST_TESTS;
       case 159: return HOST_TEST_CODE_COVERAGE_ENABLED;
       case 160: return DEVICE_TEST_CODE_COVERAGE_ENABLED;
+      case 161: return PROVIDE_APK_OUTPUT_TO_TASK;
+      case 162: return MIN_SDK;
       default: return null;
     }
   }

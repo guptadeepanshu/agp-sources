@@ -83,7 +83,7 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.bundleFile.set(bundle)
             it.aapt2File.set(aapt2.getAapt2Executable().toFile())
             it.outputFile.set(outputFile)

@@ -80,14 +80,14 @@ interface AndroidSourceSet : Named {
      * The Android JNI source directory for this source set.
      * @deprecated This is unused and will be removed in AGP 9.0
      */
-    @Deprecated("Unused")
+    @Deprecated("Unused") // b/368426598
     @get:Incubating
     val jni: AndroidSourceDirectorySet
     /**
      * The Android JNI source directory for this source set.
      * @deprecated This is unused and will be removed in AGP 9.0
      */
-    @Deprecated("Unused")
+    @Deprecated("Unused") // b/368426598
     @Incubating
     fun jni(action: AndroidSourceDirectorySet.() -> Unit)
 

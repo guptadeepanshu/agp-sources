@@ -190,7 +190,17 @@ abstract class JacocoTask : NewIncrementalTask() {
     /** The possible actions which can happen to an input file  */
     enum class Action(vararg patterns: Pattern) {
         /** The file is just copied to the transform output.  */
-        COPY(KOTLIN_MODULE_PATTERN),
+        COPY(
+            KOTLIN_MODULE_PATTERN,
+            R_CLASS_PATTERN,
+            MANIFEST_CLASS_PATTERN,
+            BUILD_CONFIG_CLASS_PATTERN,
+
+            // Avoid instrumenting files from these directories as they can cause issues such as
+            // recursive instrumentation.
+            ORG_JACOCO_PATTERN,
+            JUNIT_RUNLISTENER_PATTERN
+        ),
 
         /** The file is ignored.  */
         IGNORE,
@@ -351,28 +361,24 @@ abstract class JacocoTask : NewIncrementalTask() {
         }
 
         private val CLASS_PATTERN = Pattern.compile(".*\\.class$")
+        private val ORG_JACOCO_PATTERN = Pattern.compile("^org/jacoco.*")
+        private val JUNIT_RUNLISTENER_PATTERN =
+            Pattern.compile("^org/junit/runner/notification/RunListener.*")
+        private val R_CLASS_PATTERN = Pattern.compile(".+?R\\\$?.*?\\.class\$")
+        private val MANIFEST_CLASS_PATTERN = Pattern.compile(".+?Manifest\\\$?.*?\\.class$")
+        private val BUILD_CONFIG_CLASS_PATTERN = Pattern.compile(".+?BuildConfig.class$")
 
         // META-INF/*.kotlin_module files need to be copied to output so they show up
         // in the intermediate classes jar.
         private val KOTLIN_MODULE_PATTERN = Pattern.compile("^META-INF/.*\\.kotlin_module$")
         fun calculateAction(inputRelativePath: String): Action {
-            // Avoid instrumenting files from these directories as they can cause issues such as
-            // recursive instrumentation.
-            if (inputRelativePath.startsWith("org/jacoco") ||
-                    inputRelativePath.startsWith("org/junit/runner/notification/RunListener")) {
-                return Action.COPY
+            return when {
+                Action.COPY.patterns.any { it.matcher(inputRelativePath).matches() } -> Action.COPY
+                Action.INSTRUMENT.patterns.any {
+                    it.matcher(inputRelativePath).matches()
+                } -> Action.INSTRUMENT
+                else -> Action.IGNORE
             }
-            for (pattern in Action.COPY.patterns) {
-                if (pattern.matcher(inputRelativePath).matches()) {
-                    return Action.COPY
-                }
-            }
-            for (pattern in Action.INSTRUMENT.patterns) {
-                if (pattern.matcher(inputRelativePath).matches()) {
-                    return Action.INSTRUMENT
-                }
-            }
-            return Action.IGNORE
         }
 
         private fun getCorrespondingInstrumentedJar(

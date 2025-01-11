@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.plugins
 import com.android.SdkConstants
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.SettingsExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidComponentsExtension
@@ -87,7 +88,6 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfigI
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.TaskManagerConfigImpl
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
-import com.android.build.gradle.internal.utils.enforceMinimumVersionsOfPlugins
 import com.android.build.gradle.internal.utils.getKotlinAndroidPluginVersion
 import com.android.build.gradle.internal.utils.syncAgpAndKgpSources
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -96,6 +96,7 @@ import com.android.build.gradle.internal.variant.VariantFactory
 import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.internal.variant.VariantModelImpl
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.errors.IssueReporter.Type
 import com.android.builder.model.v2.ide.ProjectType
@@ -415,12 +416,6 @@ abstract class BasePlugin<
             .allOptions
             .forEach(projectServices.deprecationReporter::reportOptionIssuesIfAny)
         IncompatibleProjectOptionsReporter.check(projectOptions, issueReporter)
-
-        // TODO(b/189990965) Re-enable checking minimum versions of certain plugins once
-        // https://github.com/gradle/gradle/issues/23838 is fixed
-        if (!gradleBuildFeatures.projectIsolationActive()) {
-            enforceMinimumVersionsOfPlugins(project, issueReporter)
-        }
 
         // Apply the Java plugin
         project.plugins.apply(JavaBasePlugin::class.java)
@@ -901,6 +896,28 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
 
         settings.minSdkPreview?.let { minSdkPreview ->
             this.defaultConfig.minSdkPreview = minSdkPreview
+        }
+
+        // For libraries, set testOptions.targetSdk and lint.targetSdk instead of the deprecated
+        // LibraryBaseFlavor.targetSdk
+        settings.targetSdk?.let {targetSdk ->
+            if (this is LibraryExtension) {
+                this.testOptions.targetSdk = targetSdk
+                this.lint.targetSdk = targetSdk
+            } else {
+                (this.defaultConfig as DefaultConfig).targetSdk = targetSdk
+            }
+        }
+
+        // For libraries, set testOptions.targetSdkPreview and lint.targetSdkPreview instead of the
+        // deprecated LibraryBaseFlavor.targetSdkPreview
+        settings.targetSdkPreview?.let { targetSdkPreview ->
+            if (this is LibraryExtension) {
+                this.testOptions.targetSdkPreview = targetSdkPreview
+                this.lint.targetSdkPreview = targetSdkPreview
+            } else {
+                (this.defaultConfig as DefaultConfig).targetSdkPreview = targetSdkPreview
+            }
         }
 
         settings.ndkVersion.let { ndkVersion ->

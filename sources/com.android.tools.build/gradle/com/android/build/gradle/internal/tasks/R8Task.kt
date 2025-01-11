@@ -49,6 +49,7 @@ import com.android.builder.dexing.MainDexListConfig
 import com.android.builder.dexing.ProguardConfig
 import com.android.builder.dexing.ProguardOutputFiles
 import com.android.builder.dexing.R8OutputType
+import com.android.builder.dexing.ResourceShrinkingConfig
 import com.android.builder.dexing.ToolConfig
 import com.android.builder.dexing.runR8
 import com.android.utils.FileUtils
@@ -69,6 +70,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -243,6 +245,9 @@ abstract class R8Task @Inject constructor(
     @get:OutputFile
     abstract val r8Metadata: RegularFileProperty
 
+    @get:Nested
+    abstract val resourceShrinkingParams: R8ResourceShrinkingParameters
+
     class PrivacySandboxSdkCreationAction(
         val creationConfig: PrivacySandboxSdkVariantScope,
         addCompileRClass: Boolean,
@@ -313,6 +318,9 @@ abstract class R8Task @Inject constructor(
             task.baseJar.disallowChanges()
             task.featureClassJars.disallowChanges()
             task.featureJavaResourceJars.disallowChanges()
+
+            // TODO(b/326190433): Support resource shrinking for privacy sandbox SDKs
+            task.resourceShrinkingParams.enabled.setDisallowChanges(false)
         }
 
         override fun keep(keep: String) {
@@ -366,7 +374,7 @@ abstract class R8Task @Inject constructor(
                     .withName("shrunkClasses.jar")
                     .on(InternalArtifactType.SHRUNK_CLASSES)
 
-                (creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true -> {
+                (creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true -> {
                     creationConfig.artifacts.setInitialProvider(
                         taskProvider,
                         R8Task::baseDexDir
@@ -424,6 +432,12 @@ abstract class R8Task @Inject constructor(
                 taskProvider,
                 R8Task::r8Metadata
             ).on(InternalArtifactType.R8_METADATA)
+
+            if (creationConfig.runResourceShrinkingWithR8()) {
+                creationConfig.artifacts.setInitialProvider(taskProvider) {
+                    it.resourceShrinkingParams.shrunkResourcesOutputDir
+                }.on(InternalArtifactType.SHRUNK_RESOURCES_PROTO_FORMAT)
+            }
         }
 
         override fun configure(
@@ -503,7 +517,7 @@ abstract class R8Task @Inject constructor(
                     creationConfig.dexing.multiDexKeepFile
                 )
 
-                if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
+                if ((creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true) {
                     creationConfig.artifacts.setTaskInputToFinalProduct(
                         InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
                         task.baseJar
@@ -531,6 +545,12 @@ abstract class R8Task @Inject constructor(
             task.baseJar.disallowChanges()
             task.featureClassJars.disallowChanges()
             task.featureJavaResourceJars.disallowChanges()
+
+            if (creationConfig.runResourceShrinkingWithR8()) {
+                task.resourceShrinkingParams.initialize(creationConfig, task.mappingFile)
+            } else {
+                task.resourceShrinkingParams.enabled.setDisallowChanges(false)
+            }
         }
 
         override fun keep(keep: String) {
@@ -621,6 +641,10 @@ abstract class R8Task @Inject constructor(
             outputArtProfile.orNull?.asFile?.let { FileUtils.copyFile(inputArtProfileFile, it) }
         }
 
+        if (resourceShrinkingParams.enabled.get()) {
+            resourceShrinkingParams.saveOutputBuiltArtifactsMetadata()
+        }
+
         val workerAction = { it: R8Runnable.Params ->
             it.bootClasspath.from(bootClasspath.toList())
             it.minSdkVersion.set(minSdkVersion.get())
@@ -689,6 +713,7 @@ abstract class R8Task @Inject constructor(
             }
             it.inputProfileForDexStartupOptimization.set(inputProfileForDexStartupOptimization)
             it.r8Metadata.set(r8Metadata)
+            it.resourceShrinkingConfig.set(resourceShrinkingParams.toConfig())
         }
         if (executionOptions.get().runInSeparateProcess) {
             workerExecutor.processIsolation { spec ->
@@ -737,7 +762,8 @@ abstract class R8Task @Inject constructor(
             inputArtProfile: File?,
             outputArtProfile: File?,
             inputProfileForDexStartupOptimization: File?,
-            r8Metadata: File?
+            r8Metadata: File?,
+            resourceShrinkingConfig: ResourceShrinkingConfig?,
         ) {
             val logger = LoggerWrapper.getLogger(R8Task::class.java)
 
@@ -803,6 +829,7 @@ abstract class R8Task @Inject constructor(
                 toolConfig,
                 proguardConfig,
                 mainDexListConfig,
+                resourceShrinkingConfig,
                 MessageReceiverImpl(errorFormatMode, Logging.getLogger(R8Runnable::class.java)),
                 useFullR8,
                 featureClassJars.map { it.toPath() },
@@ -866,6 +893,7 @@ abstract class R8Task @Inject constructor(
             abstract val outputArtProfile: RegularFileProperty
             abstract val inputProfileForDexStartupOptimization: RegularFileProperty
             abstract val r8Metadata: RegularFileProperty
+            abstract val resourceShrinkingConfig: Property<ResourceShrinkingConfig>
         }
 
         override fun execute() {
@@ -905,6 +933,7 @@ abstract class R8Task @Inject constructor(
                 parameters.outputArtProfile.orNull?.asFile,
                 parameters.inputProfileForDexStartupOptimization.orNull?.asFile,
                 parameters.r8Metadata.orNull?.asFile,
+                parameters.resourceShrinkingConfig.orNull,
             )
         }
     }

@@ -70,6 +70,7 @@ public interface DexArchiveMerger {
             @Nullable Path userMultidexKeepFile,
             @Nullable Collection<Path> libraryFiles,
             @Nullable Path inputProfileForDexStartupOptimization,
-            @Nullable Path mainDexListOutput)
+            @Nullable Path mainDexListOutput,
+            @Nullable Path d8Metadata)
             throws DexArchiveMergerException, IOException;
 }

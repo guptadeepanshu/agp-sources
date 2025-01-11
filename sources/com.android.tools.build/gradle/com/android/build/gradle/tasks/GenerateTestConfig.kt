@@ -85,7 +85,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
 
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(GenerateTestConfigRunnable::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.testConfigProperties.set(testConfigInputs.computeProperties(projectDir.get().asFile))
             it.outputDirectory.set(outputDirectory)
         }

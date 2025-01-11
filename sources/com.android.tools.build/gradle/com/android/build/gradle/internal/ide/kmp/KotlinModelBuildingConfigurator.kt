@@ -20,7 +20,7 @@ import com.android.SdkConstants
 import com.android.Version
 import com.android.build.api.component.impl.KmpAndroidTestImpl
 import com.android.build.api.component.impl.KmpHostTestImpl
-import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
@@ -113,7 +113,7 @@ object KotlinModelBuildingConfigurator {
                 AndroidSourceSet.newBuilder()
                     .setSourceProvider(
                         SourceProvider.newBuilder()
-                            .setManifestFile(component.sources.manifestFile.get().convert())
+                            .setManifestFile(component.sources.manifestFile.convert())
                     )
                     .build()
         }
@@ -127,7 +127,7 @@ object KotlinModelBuildingConfigurator {
     fun setupAndroidTargetModels(
         project: Project,
         mainVariant: KmpCreationConfig,
-        androidTarget: KotlinMultiplatformAndroidTarget,
+        androidTarget: KotlinMultiplatformAndroidLibraryTarget,
         projectOptions: ProjectOptions,
         issueReporter: IssueReporter
     ) {

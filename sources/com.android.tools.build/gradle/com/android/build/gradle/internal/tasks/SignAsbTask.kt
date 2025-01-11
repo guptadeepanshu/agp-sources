@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVaria
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
@@ -81,7 +82,7 @@ abstract class SignAsbTask : NonIncrementalGlobalTask() {
     }
 
     class CreationActionPrivacySandboxSdk(val creationConfig: PrivacySandboxSdkVariantScope)
-        : TaskCreationAction<SignAsbTask>() {
+        : GlobalTaskCreationAction<SignAsbTask>() {
 
         override val name: String
             get() = "bundle"

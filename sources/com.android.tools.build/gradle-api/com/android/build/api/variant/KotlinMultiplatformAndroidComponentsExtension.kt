@@ -16,7 +16,7 @@
 
 package com.android.build.api.variant
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import org.gradle.api.Action
 import org.gradle.api.Incubating
 
@@ -25,10 +25,10 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface KotlinMultiplatformAndroidComponentsExtension:
-    DslLifecycle<KotlinMultiplatformAndroidExtension>, AndroidComponents {
+    DslLifecycle<KotlinMultiplatformAndroidLibraryExtension>, AndroidComponents {
 
     /**
-     * Allow for registration of a [callback] to be called with variant instances of type [KotlinMultiplatformAndroidExtension]
+     * Allow for registration of a [callback] to be called with variant instances of type [KotlinMultiplatformAndroidLibraryExtension]
      * once the list of [com.android.build.api.artifact.Artifact] has been determined.
      *
      * At this stage, access to the DSL objects is disallowed
@@ -38,7 +38,7 @@ interface KotlinMultiplatformAndroidComponentsExtension:
      * users can modify such artifacts by replacing or transforming them, see [com.android.build.api.artifact.Artifacts]
      * for details.
      *
-     * Code executing in the [callback] also has access to the [KotlinMultiplatformAndroidExtension] information which is used
+     * Code executing in the [callback] also has access to the [KotlinMultiplatformAndroidLibraryExtension] information which is used
      * to configure [org.gradle.api.Task] inputs (for example, the buildConfigFields). Such
      * information represented as [org.gradle.api.provider.Property] can still be modified ensuring
      * that all [org.gradle.api.Task]s created by the Android Gradle Plugin use the updated value.

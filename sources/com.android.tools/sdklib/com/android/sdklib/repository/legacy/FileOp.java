@@ -39,6 +39,7 @@ import java.util.stream.Stream;
  * @deprecated Use {@link Path}s, {@link CancellableFileIo} and (for testing) {@code
  *     InMemoryFileSystems} directly.
  */
+@Deprecated
 public abstract class FileOp {
     /** Returns the {@link FileSystem} this is based on. */
     public abstract FileSystem getFileSystem();

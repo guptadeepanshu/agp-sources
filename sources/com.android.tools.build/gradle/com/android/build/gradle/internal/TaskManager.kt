@@ -29,11 +29,11 @@ import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl
 import com.android.build.gradle.api.AndroidSourceSet
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
@@ -65,9 +65,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_AND_
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DEX
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_RESOURCE_PKG
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_RES
-import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_CLASSES
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
@@ -131,6 +131,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.getFeatureName
 import com.android.build.gradle.internal.tasks.mlkit.GenerateMlModelClass
+import com.android.build.gradle.internal.tasks.runResourceShrinkingWithR8
 import com.android.build.gradle.internal.test.AbstractTestDataImpl
 import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
@@ -199,6 +200,7 @@ import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import java.io.File
 import java.util.Locale
+import java.util.concurrent.Callable
 
 /**
  * Abstract class containing tasks creation logic that is shared between variants and components.
@@ -365,7 +367,7 @@ abstract class TaskManager(
         // dynamic-features.
         // The main dex list calculation for the bundle also needs the feature classes for reference
         // only
-        if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true ||
+        if ((creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true ||
             (creationConfig as? ApkCreationConfig)?.dexing?.needsMainDexListForBundle == true) {
             creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.FEATURES)
                 .setInitialContent(
@@ -594,7 +596,7 @@ abstract class TaskManager(
         val packageOutputType: InternalArtifactType<Directory>? =
                 if (componentType.isApk && !componentType.isForTesting) FEATURE_RESOURCE_PKG else null
         createApkProcessResTask(creationConfig, packageOutputType)
-        if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
+        if ((creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true) {
             taskFactory.register(MergeAaptProguardFilesCreationAction(creationConfig))
         }
     }
@@ -717,7 +719,7 @@ abstract class TaskManager(
                 // dependencies.
 
                 // First collect symbols from this module.
-                taskFactory.register(ParseLibraryResourcesTask.CreateAction(creationConfig))
+                registerParseLibraryResourcesTask(creationConfig)
 
                 // Only generate the keep rules when we need them. We don't need to generate them here
                 // for non-library modules since AAPT2 will generate them from MergeType.MERGE.
@@ -1232,7 +1234,7 @@ abstract class TaskManager(
         // or a base module consuming feature jars. Merged runtime classes are needed if code
         // minification is enabled in a project with features or dynamic-features.
         if (creationConfig.componentType.isDynamicFeature
-                || (creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
+                || (creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true) {
             taskFactory.register(MergeClassesTask.CreationAction(creationConfig))
         }
 
@@ -1787,6 +1789,24 @@ abstract class TaskManager(
                 R8Task.CreationAction(creationConfig, isTestApplication, addCompileRClass))
     }
 
+    protected fun registerParseLibraryResourcesTask(creationConfig: ComponentCreationConfig) {
+        addAndroidJarDependency()
+        taskFactory.register(ParseLibraryResourcesTask.CreateAction(creationConfig))
+    }
+
+    protected fun addAndroidJarDependency() {
+        project.dependencies
+            .add(
+                VariantDependencies.CONFIG_NAME_ANDROID_APIS,
+                project.files(
+                    Callable {
+                        globalConfig.versionedSdkLoader.flatMap {
+                            it.androidJarProvider
+                        }.orNull
+                    } as Callable<*>))
+    }
+
+
     /**
      * We have a separate method for publishing artifacts back to the features (instead of using the
      * typical PublishingSpecs pipeline) because multiple artifacts are published with different
@@ -1847,11 +1867,15 @@ abstract class TaskManager(
             // for base module only.
             return
         }
+
         // Shrink resources in APK with a new resource shrinker and produce stripped res
         // package.
         taskFactory.register(ConvertLinkedResourcesToProtoTask.CreationAction(creationConfig))
-        taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
+        if (!creationConfig.runResourceShrinkingWithR8()) {
+            taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
+        }
         taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(creationConfig))
+
         // Shrink resources in bundles with new resource shrinker.
         taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
     }

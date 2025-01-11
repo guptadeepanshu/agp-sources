@@ -556,6 +556,9 @@ public class DeviceParser {
             }
             devices.mark(MAX_FILE_LENGTH);
             int version = DeviceSchema.getXmlSchemaVersion(devices);
+            if (version == 0) {
+                throw new SAXException("Failed to parse schema version");
+            }
             SAXParser parser = getParser(version);
             DeviceHandler dHandler = new DeviceHandler(parentDir);
             devices.reset();

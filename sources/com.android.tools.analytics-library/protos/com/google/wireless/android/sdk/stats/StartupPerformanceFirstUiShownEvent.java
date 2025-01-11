@@ -4,6 +4,11 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Event describing how long it takes to show the first UI element in the
+ * startup flow. UI elements are either the splash screen or the main IDE frame.
+ * </pre>
+ *
  * Protobuf type {@code android_studio.StartupPerformanceFirstUiShownEvent}
  */
 public final class StartupPerformanceFirstUiShownEvent extends
@@ -54,10 +59,18 @@ private static final long serialVersionUID = 0L;
      */
     UNKNOWN_UI_RESPONSE_TYPE(0),
     /**
+     * <pre>
+     * The splash screen was shown.
+     * </pre>
+     *
      * <code>SPLASH = 1;</code>
      */
     SPLASH(1),
     /**
+     * <pre>
+     * The main IDE frame was shown.
+     * </pre>
+     *
      * <code>FRAME = 2;</code>
      */
     FRAME(2),
@@ -68,10 +81,18 @@ private static final long serialVersionUID = 0L;
      */
     public static final int UNKNOWN_UI_RESPONSE_TYPE_VALUE = 0;
     /**
+     * <pre>
+     * The splash screen was shown.
+     * </pre>
+     *
      * <code>SPLASH = 1;</code>
      */
     public static final int SPLASH_VALUE = 1;
     /**
+     * <pre>
+     * The main IDE frame was shown.
+     * </pre>
+     *
      * <code>FRAME = 2;</code>
      */
     public static final int FRAME_VALUE = 2;
@@ -153,6 +174,10 @@ private static final long serialVersionUID = 0L;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
   private int durationMs_;
   /**
+   * <pre>
+   * How long did it take to show the first UI element since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
@@ -161,6 +186,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
+   * <pre>
+   * How long did it take to show the first UI element since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
@@ -172,6 +201,10 @@ private static final long serialVersionUID = 0L;
   public static final int TYPE_FIELD_NUMBER = 2;
   private int type_;
   /**
+   * <pre>
+   * Type of the first UI element shown.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
    * @return Whether the type field is set.
    */
@@ -179,6 +212,10 @@ private static final long serialVersionUID = 0L;
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
+   * <pre>
+   * Type of the first UI element shown.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
    * @return The type.
    */
@@ -364,6 +401,11 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Event describing how long it takes to show the first UI element in the
+   * startup flow. UI elements are either the splash screen or the main IDE frame.
+   * </pre>
+   *
    * Protobuf type {@code android_studio.StartupPerformanceFirstUiShownEvent}
    */
   public static final class Builder extends
@@ -553,6 +595,10 @@ private static final long serialVersionUID = 0L;
 
     private int durationMs_ ;
     /**
+     * <pre>
+     * How long did it take to show the first UI element since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
@@ -561,6 +607,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
+     * <pre>
+     * How long did it take to show the first UI element since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return The durationMs.
      */
@@ -569,6 +619,10 @@ private static final long serialVersionUID = 0L;
       return durationMs_;
     }
     /**
+     * <pre>
+     * How long did it take to show the first UI element since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @param value The durationMs to set.
      * @return This builder for chaining.
@@ -580,6 +634,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * How long did it take to show the first UI element since the IDE startup.
+     * </pre>
+     *
      * <code>optional uint32 duration_ms = 1;</code>
      * @return This builder for chaining.
      */
@@ -592,6 +650,10 @@ private static final long serialVersionUID = 0L;
 
     private int type_ = 0;
     /**
+     * <pre>
+     * Type of the first UI element shown.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
      * @return Whether the type field is set.
      */
@@ -599,6 +661,10 @@ private static final long serialVersionUID = 0L;
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
+     * <pre>
+     * Type of the first UI element shown.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
      * @return The type.
      */
@@ -609,6 +675,10 @@ private static final long serialVersionUID = 0L;
       return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.UNKNOWN_UI_RESPONSE_TYPE : result;
     }
     /**
+     * <pre>
+     * Type of the first UI element shown.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
      * @param value The type to set.
      * @return This builder for chaining.
@@ -623,6 +693,10 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
+     * <pre>
+     * Type of the first UI element shown.
+     * </pre>
+     *
      * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
      * @return This builder for chaining.
      */

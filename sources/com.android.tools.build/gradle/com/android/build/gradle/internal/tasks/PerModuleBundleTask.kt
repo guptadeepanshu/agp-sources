@@ -40,10 +40,12 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
 import com.android.builder.files.NativeLibraryAbiPredicate
+import com.android.builder.packaging.DexFileComparator
 import com.android.builder.packaging.JarFlinger
 import com.android.bundle.RuntimeEnabledSdkConfigProto
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -85,11 +87,11 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val dexFiles: ConfigurableFileCollection
+    abstract val dexDirectories: ConfigurableFileCollection
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val featureDexFiles: ConfigurableFileCollection
+    abstract val featureDexDirectories: ConfigurableFileCollection
 
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
@@ -168,21 +170,21 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
 
             jarCreator.addJar(resFiles.get().asFile.toPath(), excludeJarManifest, ResRelocator())
 
-            // dex files
-            val dexFilesSet = if (hasFeatureDexFiles()) featureDexFiles.files else dexFiles.files
-            if (dexFilesSet.size == 1) {
-                // Don't rename if there is only one input folder
-                // as this might be the legacy multidex case.
-                addHybridFolder(jarCreator, dexFilesSet, Relocator(FD_DEX), excludeJarManifest)
-            } else {
-                addHybridFolder(jarCreator, dexFilesSet, DexRelocator(FD_DEX), excludeJarManifest)
-            }
+            // Sort and rename the dex files similarly to how they are packaged in the APK
+            // (see DexIncrementalRenameManager)
+            val sortedDexFiles = dexDirectoriesToPackage().asFileTree.files.sortedWith(DexFileComparator)
+            addHybridFolder(
+                jarCreator,
+                sortedDexFiles,
+                DexRelocator(FD_DEX),
+                excludeJarManifest
+            )
 
-            // we check hasFeatureDexFiles() instead of checking if
+            // we check baseConsumesDynamicFeatures() instead of checking if
             // featureJavaResFiles.files.isNotEmpty() because we want to use featureJavaResFiles
             // even if it's empty (which will be the case when using proguard)
             val javaResFilesSet =
-                if (hasFeatureDexFiles()) featureJavaResFiles.files else setOf(javaResJar.asFile.get())
+                if (baseConsumesDynamicFeatures()) featureJavaResFiles.files else setOf(javaResJar.asFile.get())
             addHybridFolder(
                 jarCreator, javaResFilesSet, Relocator("root"),
                 JarFlinger.EXCLUDE_CLASSES
@@ -249,7 +251,33 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
         }
     }
 
-    private fun hasFeatureDexFiles() = featureDexFiles.files.isNotEmpty()
+    /**
+     * Selects the dex directories to package.
+     *
+     * Note: This decision depends on whether the base module consumes dynamic feature modules
+     * (i.e., whether shrinking is enabled in base), but from a dynamic feature module we don't have
+     * this info at task configuration time, so we have to do it at task execution time.
+     */
+    private fun dexDirectoriesToPackage(): FileCollection {
+        return if (baseConsumesDynamicFeatures()) {
+            featureDexDirectories
+        } else {
+            dexDirectories
+        }
+    }
+
+    /**
+     * Whether this is a dynamic feature module, and the base module consumes dynamic feature
+     * modules (i.e., shrinking is enabled) -- see [ApplicationCreationConfig.consumesDynamicFeatures].
+     *
+     * Note: From a dynamic feature module, we don't have this info at task configuration time,
+     * that's why we need to check it at task execution time, and check it indirectly through the
+     * presence of [featureDexDirectories] (it is present only under the above condition).
+     */
+    private fun baseConsumesDynamicFeatures(): Boolean {
+        // This returns true when the directories are present, even if they may be empty directories
+        return featureDexDirectories.files.isNotEmpty()
+    }
 
     class PrivacySandboxSdkCreationAction(
         private val creationConfig: PrivacySandboxSdkVariantScope
@@ -269,7 +297,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
         override fun configure(task: PerModuleBundleTask) {
             super.configure(task)
 
-            task.dexFiles.fromDisallowChanges(
+            task.dexDirectories.fromDisallowChanges(
                 creationConfig.artifacts.get(
                     PrivacySandboxSdkInternalArtifactType.DEX
                 )
@@ -287,7 +315,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             )
 
             // Not applicable
-            task.featureDexFiles.fromDisallowChanges()
+            task.featureDexDirectories.fromDisallowChanges()
             task.featureJavaResFiles.fromDisallowChanges()
             task.nativeLibsFiles.fromDisallowChanges()
             task.abiFilters.setDisallowChanges(emptySet())
@@ -319,7 +347,13 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             task: PerModuleBundleTask
         ) {
             super.configure(task)
+
+            val componentType = creationConfig.componentType
             val artifacts = creationConfig.artifacts
+
+            check(componentType.isBaseModule || componentType.isDynamicFeature) {
+                "Unexpected component type: $componentType"
+            }
 
             if (creationConfig is DynamicFeatureCreationConfig) {
                 task.fileName.set(creationConfig.featureName.map { "$it.zip" })
@@ -328,6 +362,39 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             }
             task.fileName.disallowChanges()
 
+            if (componentType.isBaseModule) {
+                if ((creationConfig as ApplicationCreationConfig).consumesDynamicFeatures) {
+                    task.dexDirectories.from(artifacts.get(InternalArtifactType.BASE_DEX))
+                } else {
+                    task.dexDirectories.from(artifacts.getAll(InternalMultipleArtifactType.DEX))
+                }
+                // DESUGAR_LIB_DEX and GLOBAL_SYNTHETICS_DEX are separate from DEX/BASE_DEX and are
+                // only packaged in base module, not in dynamic feature modules
+                if (creationConfig.dexing.shouldPackageDesugarLibDex) {
+                    task.dexDirectories.from(artifacts.get(InternalArtifactType.DESUGAR_LIB_DEX))
+                }
+                if (creationConfig.enableGlobalSynthetics
+                    && creationConfig.dexing.dexingType == DexingType.NATIVE_MULTIDEX
+                    && !creationConfig.optimizationCreationConfig.minifiedEnabled
+                ) {
+                    task.dexDirectories.from(artifacts.get(InternalArtifactType.GLOBAL_SYNTHETICS_DEX))
+                }
+                task.dexDirectories.disallowChanges()
+            } else {
+                // We set both properties below even though at execution time we'll use only one of
+                // them. This adds more build time, but we currently have no choice
+                // (see `dexDirectoriesToPackage()`).
+                task.featureDexDirectories.fromDisallowChanges(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
+                        AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                        AndroidArtifacts.ArtifactScope.PROJECT,
+                        AndroidArtifacts.ArtifactType.FEATURE_DEX,
+                        AndroidAttributes(MODULE_PATH to task.project.path)
+                    )
+                )
+                task.dexDirectories.fromDisallowChanges(artifacts.getAll(InternalMultipleArtifactType.DEX))
+            }
+
             task.assetsFilesDirectory.setDisallowChanges(
                 creationConfig.artifacts.get(SingleArtifact.ASSETS)
             )
@@ -335,34 +402,6 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             task.resFiles.set(artifacts.get(InternalArtifactType.LINKED_RESOURCES_FOR_BUNDLE_PROTO_FORMAT))
             task.resFiles.disallowChanges()
 
-            task.dexFiles.from(
-                if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
-                    artifacts.get(InternalArtifactType.BASE_DEX)
-                } else {
-                    artifacts.getAll(InternalMultipleArtifactType.DEX)
-                }
-            )
-            if (creationConfig.dexing.shouldPackageDesugarLibDex) {
-                task.dexFiles.from(
-                    artifacts.get(InternalArtifactType.DESUGAR_LIB_DEX)
-                )
-            }
-            if (creationConfig.enableGlobalSynthetics
-                && creationConfig.dexing.dexingType == DexingType.NATIVE_MULTIDEX
-                && !creationConfig.optimizationCreationConfig.minifiedEnabled) {
-                task.dexFiles.from(
-                    artifacts.get(InternalArtifactType.GLOBAL_SYNTHETICS_DEX)
-                )
-            }
-
-            task.featureDexFiles.from(
-                creationConfig.variantDependencies.getArtifactFileCollection(
-                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-                    AndroidArtifacts.ArtifactScope.PROJECT,
-                    AndroidArtifacts.ArtifactType.FEATURE_DEX,
-                    AndroidAttributes(MODULE_PATH to task.project.path)
-                )
-            )
             task.javaResJar.setDisallowChanges(
                 artifacts.get(InternalArtifactType.MERGED_JAVA_RES)
             )

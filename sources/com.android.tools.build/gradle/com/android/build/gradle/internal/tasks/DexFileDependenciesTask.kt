@@ -91,7 +91,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
         inputs.forEachIndexed { index, input ->
             // Desugar each jar with reference to all the others
             workerExecutor.noIsolation().submit(DexFileDependenciesWorkerAction::class.java) {
-                it.initializeFromAndroidVariantTask(this)
+                it.initializeFromBaseTask(this)
                 it.minSdkVersion.set(minSdkVersion)
                 it.debuggable.set(debuggable)
                 it.bootClasspath.from(bootClasspath)

@@ -102,6 +102,7 @@ open class LibraryVariantBuilderImpl @Inject constructor(
             globalVariantBuilderConfig,
             { targetSdkVersion },
             dslInfo.isAndroidTestMultiDexEnabled,
+            dslInfo.isDebuggable
         )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {

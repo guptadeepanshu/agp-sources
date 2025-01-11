@@ -1092,7 +1092,7 @@ public final class DeviceImpl implements IDevice {
         if (mDeviceClientManagerProvider != null) {
             Client[] clients = getClients();
             for (Client c : clients) {
-                if (processName.equals(c.getClientData().getClientDescription())) {
+                if (processName.equals(c.getClientData().getProcessName())) {
                     return c;
                 }
             }
@@ -1100,7 +1100,7 @@ public final class DeviceImpl implements IDevice {
         }
         synchronized (mClients) {
             for (Client c : mClients) {
-                if (processName.equals(c.getClientData().getClientDescription())) {
+                if (processName.equals(c.getClientData().getProcessName())) {
                     return c;
                 }
             }

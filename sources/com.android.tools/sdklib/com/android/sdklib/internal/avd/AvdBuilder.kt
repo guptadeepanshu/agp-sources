@@ -49,11 +49,18 @@ import kotlin.io.path.name
  * User settings and boot props are simpler than the config.ini case: boot.props are determined
  * entirely by the Device, and user settings are independent of other fields.
  */
-class AvdBuilder(var metadataIniPath: Path, var avdFolder: Path, var device: Device) {
+class AvdBuilder(var metadataIniPath: Path, avdFolder: Path, var device: Device) {
   var avdName: String
     get() = metadataIniPath.name.removeSuffix(".ini")
     set(name) {
       metadataIniPath = metadataIniPath.resolveSibling(name + ".ini")
+    }
+
+  var avdFolder: Path = avdFolder
+    set(newFolder) {
+      val oldFolder = field
+      updateInternalPaths(oldFolder, newFolder)
+      field = newFolder
     }
 
   var displayName: String = ""
@@ -116,6 +123,25 @@ class AvdBuilder(var metadataIniPath: Path, var avdFolder: Path, var device: Dev
     return properties
   }
 
+  /**
+   * When the AVD folder changes, updates absolute paths that point to a location within the old AVD
+   * folder to a corresponding location within the new AVD folder.
+   */
+  private fun updateInternalPaths(oldFolder: Path, newFolder: Path) {
+    when (val sdCard = sdCard) {
+      is ExternalSdCard -> {
+        if (sdCard.path.startsWith(oldFolder.toString())) {
+          // TODO(b/370815882): Consider whether ExternalSdCard.path should be a Path
+          this.sdCard =
+            ExternalSdCard(
+              newFolder.resolve(sdCard.path.substring(oldFolder.toString().length + 1)).toString()
+            )
+        }
+      }
+      else -> {}
+    }
+  }
+
   companion object {
     /**
      * Values that we unconditionally set before setting other properties. They may be overridden by
@@ -130,8 +156,10 @@ class AvdBuilder(var metadataIniPath: Path, var avdFolder: Path, var device: Dev
         AvdBuilder::screenOrientation bindToKey HardwareProperties.HW_INITIAL_ORIENTATION,
         AvdBuilder::showDeviceFrame bindToKey ConfigKey.SHOW_DEVICE_FRAME,
         AvdBuilder::cpuCoreCount bindToKey ConfigKey.CPU_CORES,
-        AvdBuilder::ram bindVia StorageConverter() toKey ConfigKey.RAM_SIZE,
-        AvdBuilder::vmHeap bindVia StorageConverter() toKey ConfigKey.VM_HEAP_SIZE,
+        AvdBuilder::ram bindVia StorageConverter(allowUnitSuffix = false) toKey ConfigKey.RAM_SIZE,
+        AvdBuilder::vmHeap bindVia
+          StorageConverter(allowUnitSuffix = false) toKey
+          ConfigKey.VM_HEAP_SIZE,
         AvdBuilder::internalStorage bindVia
           StorageConverter(defaultUnit = Storage.Unit.B) toKey
           ConfigKey.DATA_PARTITION_SIZE,
@@ -144,6 +172,7 @@ class AvdBuilder(var metadataIniPath: Path, var avdFolder: Path, var device: Dev
       )
 
     /** Creates an AvdBuilder for editing an existing AVD. */
+    @JvmStatic
     fun createForExistingDevice(device: Device, avdInfo: AvdInfo): AvdBuilder {
       return AvdBuilder(avdInfo.iniFile, avdInfo.dataFolderPath, device).apply {
         systemImage = avdInfo.systemImage

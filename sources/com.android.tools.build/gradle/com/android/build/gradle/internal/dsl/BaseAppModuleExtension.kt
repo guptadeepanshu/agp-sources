@@ -23,7 +23,6 @@ import com.android.build.api.dsl.ComposeOptions
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
-import com.android.build.gradle.internal.ApplicationBuildTypeContainer
 import com.android.build.gradle.internal.CompileOptionsInternal
 import com.android.build.gradle.internal.DependenciesExtension
 import com.android.build.gradle.internal.ExtraModelInfo
@@ -56,14 +55,6 @@ open class BaseAppModuleExtensionInternal(
     @Configuring
     fun compileOptionsDcl(action: CompileOptionsInternal.() -> Unit) {
         super.compileOptions(action)
-    }
-
-    private val appBuildTypes: ApplicationBuildTypeContainer
-        get() = ApplicationBuildTypeContainer(publicExtensionImpl.buildTypes)
-
-    @Configuring
-    fun appBuildTypes(action: ApplicationBuildTypeContainer.() -> Unit) {
-        action.invoke(appBuildTypes)
     }
 
     val dependenciesDcl: DependenciesExtension by lazy {

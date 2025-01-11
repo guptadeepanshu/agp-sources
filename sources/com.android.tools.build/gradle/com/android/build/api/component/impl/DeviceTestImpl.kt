@@ -35,8 +35,8 @@ import com.android.build.api.variant.impl.ApkPackagingImpl
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.component.features.AndroidResourcesCreationConfig
@@ -103,7 +103,7 @@ open class DeviceTestImpl @Inject constructor(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
-    override val debuggable: Boolean = dslInfo.isDebuggable
+    override val debuggable: Boolean = deviceTestBuilder.debuggable
 
     override val minSdk: AndroidVersion
         get() = mainVariant.minSdk
@@ -242,11 +242,9 @@ open class DeviceTestImpl @Inject constructor(
 
     override val buildConfigCreationConfig: BuildConfigCreationConfig? by lazy(LazyThreadSafetyMode.NONE) {
         if (buildFeatures.buildConfig) {
-            BuildConfigCreationConfigImpl(
-                this,
-                dslInfo.buildConfigDslInfo!!,
-                internalServices
-            )
+            dslInfo.buildConfigDslInfo?.let {
+                BuildConfigCreationConfigImpl(this, it, internalServices)
+            }
         } else {
             null
         }

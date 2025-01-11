@@ -205,6 +205,14 @@ private static final long serialVersionUID = 0L;
        * <code>APP_INSPECTION_SHOW = 2;</code>
        */
       APP_INSPECTION_SHOW(2),
+      /**
+       * <pre>
+       * Get started with Gemini action button
+       * </pre>
+       *
+       * <code>GET_STARTED_WITH_GEMINI = 3;</code>
+       */
+      GET_STARTED_WITH_GEMINI(3),
       ;
 
       /**
@@ -227,6 +235,14 @@ private static final long serialVersionUID = 0L;
        * <code>APP_INSPECTION_SHOW = 2;</code>
        */
       public static final int APP_INSPECTION_SHOW_VALUE = 2;
+      /**
+       * <pre>
+       * Get started with Gemini action button
+       * </pre>
+       *
+       * <code>GET_STARTED_WITH_GEMINI = 3;</code>
+       */
+      public static final int GET_STARTED_WITH_GEMINI_VALUE = 3;
 
 
       public final int getNumber() {
@@ -252,6 +268,7 @@ private static final long serialVersionUID = 0L;
           case 0: return UNKNOWN_BUTTON;
           case 1: return BUILD_ANALYZER_SHOW;
           case 2: return APP_INSPECTION_SHOW;
+          case 3: return GET_STARTED_WITH_GEMINI;
           default: return null;
         }
       }

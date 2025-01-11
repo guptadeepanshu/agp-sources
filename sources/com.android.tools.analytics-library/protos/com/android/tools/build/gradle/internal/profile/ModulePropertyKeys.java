@@ -96,6 +96,18 @@ public enum ModulePropertyKeys
    * <code>MODULE_KMP_ANDROID_RESOURCES_ENABLED = 21;</code>
    */
   MODULE_KMP_ANDROID_RESOURCES_ENABLED(21),
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_DEFAULT_GROUP = 22;</code>
+   */
+  MODULE_DTTV2_DEVICE_GROUP_DEFAULT_GROUP(22),
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_ENABLE_SPLIT = 23;</code>
+   */
+  MODULE_DTTV2_DEVICE_GROUP_ENABLE_SPLIT(23),
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_CONFIG = 24;</code>
+   */
+  MODULE_DTTV2_DEVICE_GROUP_CONFIG(24),
   UNRECOGNIZED(-1),
   ;
 
@@ -187,6 +199,18 @@ public enum ModulePropertyKeys
    * <code>MODULE_KMP_ANDROID_RESOURCES_ENABLED = 21;</code>
    */
   public static final int MODULE_KMP_ANDROID_RESOURCES_ENABLED_VALUE = 21;
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_DEFAULT_GROUP = 22;</code>
+   */
+  public static final int MODULE_DTTV2_DEVICE_GROUP_DEFAULT_GROUP_VALUE = 22;
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_ENABLE_SPLIT = 23;</code>
+   */
+  public static final int MODULE_DTTV2_DEVICE_GROUP_ENABLE_SPLIT_VALUE = 23;
+  /**
+   * <code>MODULE_DTTV2_DEVICE_GROUP_CONFIG = 24;</code>
+   */
+  public static final int MODULE_DTTV2_DEVICE_GROUP_CONFIG_VALUE = 24;
 
 
   public final int getNumber() {
@@ -235,6 +259,9 @@ public enum ModulePropertyKeys
       case 19: return MODULE_ANDROID_PRIVACY_SANDBOX_R8_OPTIMIZATION;
       case 20: return MODULE_ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE;
       case 21: return MODULE_KMP_ANDROID_RESOURCES_ENABLED;
+      case 22: return MODULE_DTTV2_DEVICE_GROUP_DEFAULT_GROUP;
+      case 23: return MODULE_DTTV2_DEVICE_GROUP_ENABLE_SPLIT;
+      case 24: return MODULE_DTTV2_DEVICE_GROUP_CONFIG;
       default: return null;
     }
   }

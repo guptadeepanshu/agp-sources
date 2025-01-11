@@ -43,8 +43,8 @@ enum class BooleanOption(
     val stage: Stage
 ) : Option<Boolean> {
 
-    /* ----------
-     * STABLE API
+    /* -----------
+     * STABLE APIs
      */
 
     // IDE properties
@@ -71,6 +71,7 @@ enum class BooleanOption(
 
     // Features' default values
     BUILD_FEATURE_DATABINDING("android.defaults.buildfeatures.databinding", false, ApiStage.Stable),
+    // TODO(b/366029616) deprecate and then remove BUILD_FEATURE_RESVALUES
     BUILD_FEATURE_RESVALUES("android.defaults.buildfeatures.resvalues", true, ApiStage.Stable),
     BUILD_FEATURE_SHADERS("android.defaults.buildfeatures.shaders", true, ApiStage.Stable),
     BUILD_FEATURE_VIEWBINDING("android.defaults.buildfeatures.viewbinding", false, ApiStage.Stable),
@@ -155,18 +156,37 @@ enum class BooleanOption(
     ENABLE_LEGACY_API("android.compatibility.enableLegacyApi", true, FeatureStage.Supported),
     FULL_R8("android.enableR8.fullMode", true, FeatureStage.Supported),
 
-    /* ---------------------
-     * EXPERIMENTAL FEATURES
+    /* -----------------
+     * EXPERIMENTAL APIs
      */
 
     BUILD_FEATURE_MLMODELBINDING("android.defaults.buildfeatures.mlmodelbinding", false, ApiStage.Experimental),
     ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG("android.experimental.useDefaultDebugSigningConfigForProfileableBuildtypes", false, ApiStage.Experimental),
+
+    /**
+     * Enables compile classpath and runtime classpath alignment (i.e., if the version of a
+     * dependency on compile classpath is lower than its version on runtime classpath, the version
+     * on compile classpath will be promoted to match the version on runtime classpath; if the
+     * version on compile classpath is higher than the version on runtime classpath, the build will
+     * fail).
+     *
+     * This option is enabled by default. The users can disable it if it causes issues (e.g., when
+     * the dependencies involve `com.google.guava:guava` and `com.google.guava:listenablefuture` --
+     * see bug 300760566 for details).
+     */
+    ENABLE_COMPILE_RUNTIME_CLASSPATH_ALIGNMENT("android.enableCompileRuntimeClasspathAlignment", true, ApiStage.Experimental),
+
+    /* ---------------------
+     * EXPERIMENTAL FEATURES
+     */
+
     ENABLE_PROFILE_JSON("android.enableProfileJson", false, FeatureStage.Experimental),
     DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION("android.dependencyResolutionAtConfigurationTime.disallow", false, FeatureStage.Experimental),
     VERSION_CHECK_OVERRIDE_PROPERTY("android.overrideVersionCheck", false, FeatureStage.Experimental),
     OVERRIDE_PATH_CHECK_PROPERTY("android.overridePathCheck", false, FeatureStage.Experimental),
     DISABLE_RESOURCE_VALIDATION("android.disableResourceValidation", false, FeatureStage.Experimental),
     CONSUME_DEPENDENCIES_AS_SHARED_LIBRARIES("android.consumeDependenciesAsSharedLibraries", false, FeatureStage.Experimental),
+    SUPPORT_OEM_TOKEN_LIBRARIES("android.enableOemTokenLibraries", false, FeatureStage.Experimental),
     DISABLE_EARLY_MANIFEST_PARSING("android.disableEarlyManifestParsing", false, FeatureStage.Experimental),
     ENABLE_RESOURCE_NAMESPACING_DEFAULT("android.enableResourceNamespacingDefault", false, FeatureStage.Experimental),
     CONDITIONAL_KEEP_RULES("android.useConditionalKeepRules", false, FeatureStage.Experimental),
@@ -241,6 +261,9 @@ enum class BooleanOption(
     /** Whether to force the APK to be deterministic. */
     FORCE_DETERMINISTIC_APK("android.experimental.forceDeterministicApk", false, FeatureStage.Experimental),
 
+    /** Whether to skip apk generation via bundle if possible. */
+    SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE("android.experimental.skipApksViaBundleIfPossible", false, FeatureStage.Experimental),
+
     MISSING_LINT_BASELINE_IS_EMPTY_BASELINE(
         "android.experimental.lint.missingBaselineIsEmptyBaseline",
         false,
@@ -263,6 +286,9 @@ enum class BooleanOption(
 
     PRIVACY_SANDBOX_SDK_REQUIRE_SERVICES(
             "android.experimental.privacysandboxsdk.requireServices", true, FeatureStage.Experimental),
+
+    PRIVACY_SANDBOX_SDK_ENABLE_LINT(
+        "android.experimental.privacysandboxsdk.enableLint", false, FeatureStage.Experimental),
 
     VERIFY_AAR_CLASSES("android.experimental.verifyLibraryClasses", false, FeatureStage.Experimental),
     DISABLE_COMPILE_SDK_CHECKS("android.experimental.disableCompileSdkChecks", false, FeatureStage.Experimental),
@@ -318,6 +344,19 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
+    /**
+     * When enabled, the R8 task will perform resource shrinking in addition to code shrinking.
+     * When disabled, resource shrinking will be performed in a separate task after the R8 task has
+     * run.
+     *
+     * Note: If resource shrinking is not enabled, this flag has no effect.
+     */
+    R8_INTEGRATED_RESOURCE_SHRINKING(
+        "android.r8.integratedResourceShrinking",
+        false,
+        FeatureStage.Experimental
+    ),
+
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
@@ -326,7 +365,6 @@ enum class BooleanOption(
         true,
         FeatureStage.SoftlyEnforced(VERSION_9_0)
     ),
-
 
     ENABLE_EMULATOR_CONTROL(
         "android.experimental.androidTest.enableEmulatorControl",
@@ -371,18 +409,21 @@ enum class BooleanOption(
      * DEPRECATED FEATURES
      */
 
+    // TODO(b/254305041) move to ApiStage.Removed
     BUILD_FEATURE_AIDL(
         "android.defaults.buildfeatures.aidl",
         false,
         ApiStage.Deprecated(VERSION_9_0)
     ),
 
+    // TODO(b/254305041) move to ApiStage.Removed
     BUILD_FEATURE_RENDERSCRIPT(
         "android.defaults.buildfeatures.renderscript",
         false,
         ApiStage.Deprecated(VERSION_9_0)
     ),
 
+    // TODO(b/254305041) move to ApiStage.Removed
     BUILD_FEATURE_BUILDCONFIG(
         "android.defaults.buildfeatures.buildconfig",
         false,

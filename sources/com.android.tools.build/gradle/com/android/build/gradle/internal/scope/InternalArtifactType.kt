@@ -593,6 +593,9 @@ InternalArtifactType<T : FileSystemLocation>(
     // File containing app metadata to be included in the APK and .aab files for analytics.
     object APP_METADATA: InternalArtifactType<RegularFile>(FILE), Replaceable
 
+    /** Metadata file included in the app bundle as output from D8 */
+    object D8_METADATA: InternalArtifactType<RegularFile>(FILE)
+
     /** Metadata file included in the app bundle as output from R8 */
     object R8_METADATA: InternalArtifactType<RegularFile>(FILE)
 

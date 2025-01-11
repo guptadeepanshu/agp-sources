@@ -128,6 +128,10 @@ class KaptStubGenerationCreationAction(
             }
         }
 
-        creationConfig.global.kotlinOptions?.let { task.applyJvmOptions(it) }
+        // TODO(KT-70383) pass KotlinJvmCompilerOptions from corresponding Kotlin compile task
+        creationConfig.global
+            .kotlinAndroidProjectExtension
+            ?.compilerOptions
+            ?.let { task.applyCompilerOptions(it) }
     }
 }

@@ -17,7 +17,7 @@
 package com.android.build.api.extension.impl
 
 import com.android.build.api.AndroidPluginVersion
-import com.android.build.api.dsl.KotlinMultiplatformAndroidExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.instrumentation.manageddevice.ManagedDeviceRegistry
 import com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension
@@ -32,13 +32,13 @@ open class KotlinMultiplatformAndroidComponentsExtensionImpl(
     override val pluginVersion: AndroidPluginVersion
         get() = CurrentAndroidGradlePluginVersion.CURRENT_AGP_VERSION
 
-    override fun finalizeDsl(callback: (KotlinMultiplatformAndroidExtension) -> Unit) {
+    override fun finalizeDsl(callback: (KotlinMultiplatformAndroidLibraryExtension) -> Unit) {
         variantApiOperations.add {
             callback.invoke(it)
         }
     }
 
-    override fun finalizeDsl(callback: Action<KotlinMultiplatformAndroidExtension>) {
+    override fun finalizeDsl(callback: Action<KotlinMultiplatformAndroidLibraryExtension>) {
         variantApiOperations.add(callback)
     }
 
@@ -52,4 +52,3 @@ open class KotlinMultiplatformAndroidComponentsExtensionImpl(
         variantApiOperations.variantOperations.addOperation(callback)
     }
 }
-

@@ -137,7 +137,7 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
     }
 
     private fun configureParams(params: BaseWorkerParams, inputChanges: InputChanges) {
-        params.initializeFromAndroidVariantTask(this)
+        params.initializeFromBaseTask(this)
 
         params.visitorsList.set(visitorsList)
         params.asmApiVersion.set(asmApiVersion)

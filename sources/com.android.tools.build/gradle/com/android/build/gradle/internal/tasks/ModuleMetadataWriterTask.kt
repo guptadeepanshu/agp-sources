@@ -70,6 +70,9 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
     @get:Input
     abstract val ignoreFromAllExternalDependenciesInKeepRules: Property<Boolean>
 
+    @get:Input
+    abstract val localeFilters: SetProperty<String>
+
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
@@ -81,9 +84,10 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
                 versionName = versionName.orNull ?: "",
                 debuggable = debuggable.get(),
                 abiFilters = abiFilters.get(),
-                ignoreFromInKeepRules = ignoreFromInKeepRules.get(),
+                ignoreFromInKeepRules = ignoreFromInKeepRules.get().sorted(),
                 ignoreFromAllExternalDependenciesInKeepRules =
-                    ignoreFromAllExternalDependenciesInKeepRules.get()
+                    ignoreFromAllExternalDependenciesInKeepRules.get(),
+                localeFilters = localeFilters.get().sorted()
             )
 
         declaration.save(outputFile.get().asFile)
@@ -128,6 +132,7 @@ abstract class ModuleMetadataWriterTask : NonIncrementalTask() {
             task.ignoreFromAllExternalDependenciesInKeepRules.setDisallowChanges(
                 creationConfig.optimizationCreationConfig.ignoreFromAllExternalDependenciesInKeepRules
             )
+            task.localeFilters.setDisallowChanges(creationConfig.androidResources.localeFilters)
         }
     }
 }

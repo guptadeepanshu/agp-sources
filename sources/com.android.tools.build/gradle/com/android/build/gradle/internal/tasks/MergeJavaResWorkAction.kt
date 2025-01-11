@@ -24,6 +24,7 @@ import com.android.builder.files.KeyedFileCache
 import com.android.builder.files.SerializableInputChanges
 import com.android.builder.merge.IncrementalFileMergerInput
 import com.android.utils.FileUtils
+import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -32,6 +33,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import java.io.File
+import java.io.Serializable
 
 /**
  * [ProfileAwareWorkAction] to merge java resources
@@ -51,31 +53,45 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
 
         val zipCache = KeyedFileCache(cacheDir, KeyedFileCache::fileNameKey)
         val cacheUpdates = mutableListOf<Runnable>()
-        val priorityMap =
-            mutableMapOf<IncrementalFileMergerInput, JavaResMergingPriority>()
-        val inputMap =
-            mutableMapOf<File, JavaResMergingPriority>()
-        inputMap.putAll(parameters.projectJavaRes.associateWith {
-            determinePriority(ScopedArtifacts.Scope.PROJECT)
+        val inputDataList = mutableListOf<InputData>()
+
+        inputDataList.addAll(parameters.projectJavaRes.map {
+            InputData(
+                it,
+                determinePriority(ScopedArtifacts.Scope.PROJECT),
+                "project(\"${parameters.projectPath.get()}\") - This project"
+            )
         })
-        inputMap.putAll(parameters.subProjectJavaRes.associateWith {
-            determinePriority(InternalScopedArtifacts.InternalScope.SUB_PROJECTS)
+
+        inputDataList.addAll(parameters.subProjectJavaRes.get().map {
+            InputData(
+                it.input,
+                determinePriority(InternalScopedArtifacts.InternalScope.SUB_PROJECTS),
+                it.source
+            )
         })
-        inputMap.putAll(parameters.externalLibJavaRes.associateWith {
-            determinePriority(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS)
+        inputDataList.addAll(parameters.externalLibJavaRes.get().map {
+            InputData(
+                it.input,
+                determinePriority(InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS),
+                it.source
+            )
         })
-        inputMap.putAll(parameters.featureJavaRes.associateWith {
-            determinePriority(InternalScopedArtifacts.InternalScope.FEATURES)
+        inputDataList.addAll(parameters.featureJavaRes.get().map {
+            InputData(
+                it.input,
+                determinePriority(InternalScopedArtifacts.InternalScope.FEATURES),
+                it.source
+            )
         })
 
         val inputs = try {
             toInputs(
-                inputMap,
+                inputDataList,
                 changedInputs,
                 zipCache,
                 cacheUpdates,
-                !isIncremental,
-                priorityMap
+                !isIncremental
             )
         } catch (e: IllegalStateException) {
             if (isIncremental) {
@@ -90,7 +106,6 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
             MergeJavaResourcesDelegate(
                 inputs,
                 outputFile,
-                priorityMap,
                 ParsedPackagingOptions(
                     parameters.excludes.get(),
                     parameters.pickFirsts.get(),
@@ -104,11 +119,19 @@ abstract class MergeJavaResWorkAction : ProfileAwareWorkAction<MergeJavaResWorkA
         cacheUpdates.forEach(Runnable::run)
     }
 
+    /**
+     * Data Structure to associate a file and it's provenance to the worker.
+     */
+    data class SourcedInput(
+        val input: File,
+        val source: String,
+    ): Serializable
+
     abstract class Params : Parameters() {
         abstract val projectJavaRes: ConfigurableFileCollection
-        abstract val subProjectJavaRes: ConfigurableFileCollection
-        abstract val externalLibJavaRes: ConfigurableFileCollection
-        abstract val featureJavaRes: ConfigurableFileCollection
+        abstract val subProjectJavaRes: ListProperty<SourcedInput>
+        abstract val externalLibJavaRes: ListProperty<SourcedInput>
+        abstract val featureJavaRes: ListProperty<SourcedInput>
         abstract val outputFile: RegularFileProperty
         abstract val incrementalStateFile: RegularFileProperty
         abstract val incremental: Property<Boolean>

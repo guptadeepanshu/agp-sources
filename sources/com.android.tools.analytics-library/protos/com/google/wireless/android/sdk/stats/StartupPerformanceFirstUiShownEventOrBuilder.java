@@ -8,22 +8,38 @@ public interface StartupPerformanceFirstUiShownEventOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <pre>
+   * How long did it take to show the first UI element since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
   boolean hasDurationMs();
   /**
+   * <pre>
+   * How long did it take to show the first UI element since the IDE startup.
+   * </pre>
+   *
    * <code>optional uint32 duration_ms = 1;</code>
    * @return The durationMs.
    */
   int getDurationMs();
 
   /**
+   * <pre>
+   * Type of the first UI element shown.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
    * @return Whether the type field is set.
    */
   boolean hasType();
   /**
+   * <pre>
+   * Type of the first UI element shown.
+   * </pre>
+   *
    * <code>optional .android_studio.StartupPerformanceFirstUiShownEvent.UiResponseType type = 2;</code>
    * @return The type.
    */

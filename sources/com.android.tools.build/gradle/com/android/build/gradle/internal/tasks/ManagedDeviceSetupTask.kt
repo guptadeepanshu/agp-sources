@@ -88,7 +88,7 @@ abstract class ManagedDeviceSetupTask : UnsafeOutputsGlobalTask(
         private val setupTaskAction: Class<out DeviceSetupTaskAction<*>>,
         private val dslDevice: DeviceT,
         creationConfig: GlobalTaskCreationConfig
-    ): GlobalTaskCreationAction<ManagedDeviceSetupTask>(creationConfig) {
+    ): GlobalTaskCreationAction<ManagedDeviceSetupTask>() {
 
         override val name: String
             get() = setupTaskName(dslDevice)

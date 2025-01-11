@@ -238,4 +238,25 @@ open class LayeredSourceDirectoriesImpl(
             }.flatten()
         }
     }
+
+    /**
+     * Note: This doesn't preserve task dependencies of internal `directoryEntry` objects as the
+     * provider watched is the one from the outer scope only. Do not use unless necessary.
+     *
+     * https://youtrack.jetbrains.com/issue/KT-59503
+     */
+    @Deprecated("This is only to support kotlin multiplatform")
+    internal fun addStaticSources(sources: Provider<DirectoryEntries>) {
+        variantSources.add(sources)
+
+        variantServices.newListPropertyForInternalUse(Directory::class.java).also {
+            sources.map { directoryEntries ->
+                directoryEntries.directoryEntries.forEach { entry ->
+                    it.addAll(entry)
+                }
+            }
+            directories.add(it)
+            staticDirectories.add(it)
+        }
+    }
 }

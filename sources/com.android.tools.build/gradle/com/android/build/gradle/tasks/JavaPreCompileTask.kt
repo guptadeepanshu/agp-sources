@@ -76,7 +76,7 @@ abstract class JavaPreCompileTask : NonIncrementalTask() {
             kspProcessorArtifacts?.artifacts?.map { SerializableArtifact(it) } ?: emptyList()
 
         workerExecutor.noIsolation().submit(JavaPreCompileWorkAction::class.java) {
-            it.initializeFromAndroidVariantTask(this)
+            it.initializeFromBaseTask(this)
             it.annotationProcessorArtifacts.setDisallowChanges(annotationProcessorArtifacts)
             it.kspProcessorArtifacts.setDisallowChanges(kspProcessorArtifacts)
             it.annotationProcessorClassNames.setDisallowChanges(annotationProcessorClassNames)

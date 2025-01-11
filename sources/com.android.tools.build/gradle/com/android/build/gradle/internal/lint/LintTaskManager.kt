@@ -54,9 +54,6 @@ class LintTaskManager constructor(
         testComponentPropertiesList: Collection<TestComponentCreationConfig>,
         isPerComponent: Boolean
     ) {
-        if (globalTaskCreationConfig.avoidTaskRegistration) {
-            return
-        }
         return createLintTasks(
             componentType,
             defaultVariant = variantModel.defaultVariant,
@@ -99,6 +96,23 @@ class LintTaskManager constructor(
 
         for (variantWithTests in variantsWithTests.values) {
             val mainVariant = variantWithTests.main
+
+            // Don't register AndroidLintTextOutputTask for dynamic features because lint issues
+            // from dynamic features are reported via the base app.
+            val variantLintTextOutputTask = if (componentType.isDynamicFeature) {
+                null
+            } else {
+                taskFactory.register(
+                    AndroidLintTextOutputTask.SingleVariantCreationAction(mainVariant)
+                )
+            }
+
+            // Avoid registering most lint tasks, but register the AndroidLintTextOutputTask above
+            // in case users reference it in their build scripts (b/332755363)
+            if (globalTaskCreationConfig.avoidTaskRegistration) {
+                continue
+            }
+
             if (componentType.isAar || componentType.isDynamicFeature) {
                 if (isPerComponent) {
                     taskFactory.register(
@@ -191,15 +205,11 @@ class LintTaskManager constructor(
             val variantLintTask =
                 taskFactory.register(AndroidLintTask.SingleVariantCreationAction(variantWithTests))
                     .also { it.configure { task -> task.mustRunAfter(updateLintBaselineTask) } }
-            val variantLintTextOutputTask =
-                taskFactory.register(
-                    AndroidLintTextOutputTask.SingleVariantCreationAction(mainVariant)
-                )
 
             if (needsCopyReportTask) {
                 val copyLintReportTask =
                     taskFactory.register(AndroidLintCopyReportTask.CreationAction(mainVariant))
-                variantLintTextOutputTask.configure {
+                variantLintTextOutputTask?.configure {
                     it.finalizedBy(copyLintReportTask)
                 }
             }
@@ -247,8 +257,9 @@ class LintTaskManager constructor(
 
                 // If lint is being run, we do not need to run lint vital.
                 variantLintTaskToLintVitalTask[getTaskPath(variantLintTask)] = lintVitalTask
-                variantLintTaskToLintVitalTask[getTaskPath(variantLintTextOutputTask)] =
-                    lintVitalTextOutputTask
+                variantLintTextOutputTask?.let {
+                    variantLintTaskToLintVitalTask[getTaskPath(it)] = lintVitalTextOutputTask
+                }
             }
             taskFactory.register(AndroidLintTask.FixSingleVariantCreationAction(variantWithTests))
                 .also { it.configure { task -> task.mustRunAfter(updateLintBaselineTask) } }
@@ -257,6 +268,11 @@ class LintTaskManager constructor(
         // Nothing left to do for dynamic features because they don't have global lint or lintFix
         // tasks, and they don't have any lint reporting tasks.
         if (componentType.isDynamicFeature) {
+            return
+        }
+
+        // Avoid registering most lint tasks.
+        if (globalTaskCreationConfig.avoidTaskRegistration) {
             return
         }
 
@@ -395,7 +411,7 @@ class LintTaskManager constructor(
         internal fun File.isLintStdout() = this.path == File("stdout").path
         internal fun File.isLintStderr() = this.path == File("stderr").path
 
-        internal fun needsCopyReportTask(lintOptions: Lint) : Boolean {
+        fun needsCopyReportTask(lintOptions: Lint) : Boolean {
             val textOutput = lintOptions.textOutput
             return (lintOptions.textReport && textOutput != null && !textOutput.isLintStdout() && !textOutput.isLintStderr()) ||
                     (lintOptions.htmlReport && lintOptions.htmlOutput != null) ||
