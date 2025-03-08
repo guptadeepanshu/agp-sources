@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new KotlinGradlePerformance();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_KotlinGradlePerformance_descriptor;
@@ -165,7 +160,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int USE_FIR_FIELD_NUMBER = 1;
-  private int useFir_;
+  private int useFir_ = 0;
   /**
    * <pre>
    * Indicates whether FIR usage is total, partial, or none
@@ -186,13 +181,13 @@ private static final long serialVersionUID = 0L;
    * @return The useFir.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage getUseFir() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage result = com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.valueOf(useFir_);
+    com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage result = com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.forNumber(useFir_);
     return result == null ? com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.UNSPECIFIED : result;
   }
 
   public static final int KOTLIN_API_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object kotlinApiVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinApiVersion_ = "";
   /**
    * <pre>
    * e.g. 1.5.0
@@ -252,7 +247,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_COMPILER_VERSION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object kotlinCompilerVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinCompilerVersion_ = "";
   /**
    * <pre>
    * e.g. 1.8.0
@@ -312,7 +308,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_LANGUAGE_VERSION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object kotlinLanguageVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinLanguageVersion_ = "";
   /**
    * <pre>
    * e.g. 1.5.0
@@ -372,7 +369,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_STDLIB_VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object kotlinStdlibVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinStdlibVersion_ = "";
   /**
    * <pre>
    * e.g.1.8.0
@@ -432,7 +430,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_VERSION_FIELD_NUMBER = 6;
-  private volatile java.lang.Object pluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pluginVersion_ = "";
   /**
    * <pre>
    * e.g.223-18.0-release
@@ -492,7 +491,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_ALL_OPEN_FIELD_NUMBER = 7;
-  private boolean enabledCompilerPluginAllOpen_;
+  private boolean enabledCompilerPluginAllOpen_ = false;
   /**
    * <pre>
    * Flags to indicate the presence of common compiler plugins
@@ -519,7 +518,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_ATOMICFU_FIELD_NUMBER = 8;
-  private boolean enabledCompilerPluginAtomicfu_;
+  private boolean enabledCompilerPluginAtomicfu_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_atomicfu = 8;</code>
    * @return Whether the enabledCompilerPluginAtomicfu field is set.
@@ -538,7 +537,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_JPA_SUPPORT_FIELD_NUMBER = 9;
-  private boolean enabledCompilerPluginJpaSupport_;
+  private boolean enabledCompilerPluginJpaSupport_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_jpa_support = 9;</code>
    * @return Whether the enabledCompilerPluginJpaSupport field is set.
@@ -557,7 +556,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_LOMBOK_FIELD_NUMBER = 10;
-  private boolean enabledCompilerPluginLombok_;
+  private boolean enabledCompilerPluginLombok_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_lombok = 10;</code>
    * @return Whether the enabledCompilerPluginLombok field is set.
@@ -576,7 +575,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_NO_ARG_FIELD_NUMBER = 11;
-  private boolean enabledCompilerPluginNoArg_;
+  private boolean enabledCompilerPluginNoArg_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_no_arg = 11;</code>
    * @return Whether the enabledCompilerPluginNoArg field is set.
@@ -595,7 +594,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_PARCELIZE_FIELD_NUMBER = 12;
-  private boolean enabledCompilerPluginParcelize_;
+  private boolean enabledCompilerPluginParcelize_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_parcelize = 12;</code>
    * @return Whether the enabledCompilerPluginParcelize field is set.
@@ -614,7 +613,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ENABLED_COMPILER_PLUGIN_SAM_WITH_RECEIVER_FIELD_NUMBER = 13;
-  private boolean enabledCompilerPluginSamWithReceiver_;
+  private boolean enabledCompilerPluginSamWithReceiver_ = false;
   /**
    * <code>optional bool enabled_compiler_plugin_sam_with_receiver = 13;</code>
    * @return Whether the enabledCompilerPluginSamWithReceiver field is set.
@@ -633,7 +632,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KTS_USED_FIELD_NUMBER = 14;
-  private boolean ktsUsed_;
+  private boolean ktsUsed_ = false;
   /**
    * <pre>
    * Indicates usage of Kotlin script
@@ -1062,34 +1061,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       useFir_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       kotlinApiVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       kotlinCompilerVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       kotlinLanguageVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       kotlinStdlibVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       pluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       enabledCompilerPluginAllOpen_ = false;
-      bitField0_ = (bitField0_ & ~0x00000040);
       enabledCompilerPluginAtomicfu_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       enabledCompilerPluginJpaSupport_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       enabledCompilerPluginLombok_ = false;
-      bitField0_ = (bitField0_ & ~0x00000200);
       enabledCompilerPluginNoArg_ = false;
-      bitField0_ = (bitField0_ & ~0x00000400);
       enabledCompilerPluginParcelize_ = false;
-      bitField0_ = (bitField0_ & ~0x00000800);
       enabledCompilerPluginSamWithReceiver_ = false;
-      bitField0_ = (bitField0_ & ~0x00001000);
       ktsUsed_ = false;
-      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -1116,32 +1102,38 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinGradlePerformance buildPartial() {
       com.google.wireless.android.sdk.stats.KotlinGradlePerformance result = new com.google.wireless.android.sdk.stats.KotlinGradlePerformance(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.KotlinGradlePerformance result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.useFir_ = useFir_;
         to_bitField0_ |= 0x00000001;
       }
-      result.useFir_ = useFir_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.kotlinApiVersion_ = kotlinApiVersion_;
         to_bitField0_ |= 0x00000002;
       }
-      result.kotlinApiVersion_ = kotlinApiVersion_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.kotlinCompilerVersion_ = kotlinCompilerVersion_;
         to_bitField0_ |= 0x00000004;
       }
-      result.kotlinCompilerVersion_ = kotlinCompilerVersion_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.kotlinLanguageVersion_ = kotlinLanguageVersion_;
         to_bitField0_ |= 0x00000008;
       }
-      result.kotlinLanguageVersion_ = kotlinLanguageVersion_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.kotlinStdlibVersion_ = kotlinStdlibVersion_;
         to_bitField0_ |= 0x00000010;
       }
-      result.kotlinStdlibVersion_ = kotlinStdlibVersion_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.pluginVersion_ = pluginVersion_;
         to_bitField0_ |= 0x00000020;
       }
-      result.pluginVersion_ = pluginVersion_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.enabledCompilerPluginAllOpen_ = enabledCompilerPluginAllOpen_;
         to_bitField0_ |= 0x00000040;
@@ -1174,43 +1166,9 @@ private static final long serialVersionUID = 0L;
         result.ktsUsed_ = ktsUsed_;
         to_bitField0_ |= 0x00002000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.KotlinGradlePerformance) {
@@ -1227,28 +1185,28 @@ private static final long serialVersionUID = 0L;
         setUseFir(other.getUseFir());
       }
       if (other.hasKotlinApiVersion()) {
-        bitField0_ |= 0x00000002;
         kotlinApiVersion_ = other.kotlinApiVersion_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasKotlinCompilerVersion()) {
-        bitField0_ |= 0x00000004;
         kotlinCompilerVersion_ = other.kotlinCompilerVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasKotlinLanguageVersion()) {
-        bitField0_ |= 0x00000008;
         kotlinLanguageVersion_ = other.kotlinLanguageVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasKotlinStdlibVersion()) {
-        bitField0_ |= 0x00000010;
         kotlinStdlibVersion_ = other.kotlinStdlibVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasPluginVersion()) {
-        bitField0_ |= 0x00000020;
         pluginVersion_ = other.pluginVersion_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (other.hasEnabledCompilerPluginAllOpen()) {
@@ -1417,8 +1375,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage getUseFir() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage result = com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.valueOf(useFir_);
+      com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage result = com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.forNumber(useFir_);
       return result == null ? com.google.wireless.android.sdk.stats.KotlinGradlePerformance.FirUsage.UNSPECIFIED : result;
     }
     /**
@@ -1520,11 +1477,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinApiVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       kotlinApiVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1537,8 +1492,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinApiVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       kotlinApiVersion_ = getDefaultInstance().getKotlinApiVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1553,11 +1508,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinApiVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       kotlinApiVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1628,11 +1581,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinCompilerVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       kotlinCompilerVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1645,8 +1596,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinCompilerVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       kotlinCompilerVersion_ = getDefaultInstance().getKotlinCompilerVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1661,11 +1612,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinCompilerVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       kotlinCompilerVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1736,11 +1685,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinLanguageVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       kotlinLanguageVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1753,8 +1700,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinLanguageVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       kotlinLanguageVersion_ = getDefaultInstance().getKotlinLanguageVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1769,11 +1716,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinLanguageVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       kotlinLanguageVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1844,11 +1789,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinStdlibVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       kotlinStdlibVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1861,8 +1804,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinStdlibVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       kotlinStdlibVersion_ = getDefaultInstance().getKotlinStdlibVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1877,11 +1820,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinStdlibVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       kotlinStdlibVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1952,11 +1893,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1969,8 +1908,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       pluginVersion_ = getDefaultInstance().getPluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1985,11 +1924,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2029,8 +1966,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginAllOpen(boolean value) {
-      bitField0_ |= 0x00000040;
+
       enabledCompilerPluginAllOpen_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2072,8 +2010,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginAtomicfu(boolean value) {
-      bitField0_ |= 0x00000080;
+
       enabledCompilerPluginAtomicfu_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2111,8 +2050,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginJpaSupport(boolean value) {
-      bitField0_ |= 0x00000100;
+
       enabledCompilerPluginJpaSupport_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2150,8 +2090,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginLombok(boolean value) {
-      bitField0_ |= 0x00000200;
+
       enabledCompilerPluginLombok_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -2189,8 +2130,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginNoArg(boolean value) {
-      bitField0_ |= 0x00000400;
+
       enabledCompilerPluginNoArg_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -2228,8 +2170,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginParcelize(boolean value) {
-      bitField0_ |= 0x00000800;
+
       enabledCompilerPluginParcelize_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -2267,8 +2210,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnabledCompilerPluginSamWithReceiver(boolean value) {
-      bitField0_ |= 0x00001000;
+
       enabledCompilerPluginSamWithReceiver_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -2318,8 +2262,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setKtsUsed(boolean value) {
-      bitField0_ |= 0x00002000;
+
       ktsUsed_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }

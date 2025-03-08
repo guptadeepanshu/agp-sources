@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new GradleAndroidModule();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleAndroidModule_descriptor;
@@ -52,7 +47,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int APP_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object appId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object appId_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the application id
@@ -121,7 +117,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_NAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object moduleName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object moduleName_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the module name.
@@ -181,7 +178,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_LIBRARY_FIELD_NUMBER = 3;
-  private boolean isLibrary_;
+  private boolean isLibrary_ = false;
   /**
    * <pre>
    * True if this module is a library.
@@ -208,7 +205,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_TYPE_COUNT_FIELD_NUMBER = 4;
-  private long buildTypeCount_;
+  private long buildTypeCount_ = 0L;
   /**
    * <pre>
    * Number of different build types for this module.
@@ -235,7 +232,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FLAVOR_COUNT_FIELD_NUMBER = 5;
-  private long flavorCount_;
+  private long flavorCount_ = 0L;
   /**
    * <pre>
    * Number of different flavor types for this module.
@@ -262,7 +259,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FLAVOR_DIMENSION_FIELD_NUMBER = 6;
-  private long flavorDimension_;
+  private long flavorDimension_ = 0L;
   /**
    * <pre>
    * Number of different flavor dimensions for this module.
@@ -289,7 +286,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SIGNING_CONFIG_COUNT_FIELD_NUMBER = 7;
-  private long signingConfigCount_;
+  private long signingConfigCount_ = 0L;
   /**
    * <pre>
    * Number of signing configurations for this module.
@@ -316,7 +313,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUIRED_HARDWARE_FIELD_NUMBER = 8;
-  private volatile java.lang.Object requiredHardware_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object requiredHardware_ = "";
   /**
    * <pre>
    * Hardware specified as required in the manifest. Only logging the types
@@ -689,22 +687,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       appId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       moduleName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       isLibrary_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       buildTypeCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       flavorCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       flavorDimension_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       signingConfigCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       requiredHardware_ = "";
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -731,16 +722,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleAndroidModule buildPartial() {
       com.google.wireless.android.sdk.stats.GradleAndroidModule result = new com.google.wireless.android.sdk.stats.GradleAndroidModule(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleAndroidModule result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.appId_ = appId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.appId_ = appId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.moduleName_ = moduleName_;
         to_bitField0_ |= 0x00000002;
       }
-      result.moduleName_ = moduleName_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.isLibrary_ = isLibrary_;
         to_bitField0_ |= 0x00000004;
@@ -762,46 +759,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000040;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.requiredHardware_ = requiredHardware_;
         to_bitField0_ |= 0x00000080;
       }
-      result.requiredHardware_ = requiredHardware_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleAndroidModule) {
@@ -815,13 +778,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleAndroidModule other) {
       if (other == com.google.wireless.android.sdk.stats.GradleAndroidModule.getDefaultInstance()) return this;
       if (other.hasAppId()) {
-        bitField0_ |= 0x00000001;
         appId_ = other.appId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasModuleName()) {
-        bitField0_ |= 0x00000002;
         moduleName_ = other.moduleName_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasIsLibrary()) {
@@ -840,8 +803,8 @@ private static final long serialVersionUID = 0L;
         setSigningConfigCount(other.getSigningConfigCount());
       }
       if (other.hasRequiredHardware()) {
-        bitField0_ |= 0x00000080;
         requiredHardware_ = other.requiredHardware_;
+        bitField0_ |= 0x00000080;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -1005,11 +968,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAppId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       appId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1025,8 +986,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAppId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       appId_ = getDefaultInstance().getAppId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1044,11 +1005,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAppIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       appId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1119,11 +1078,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModuleName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       moduleName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1136,8 +1093,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModuleName() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       moduleName_ = getDefaultInstance().getModuleName();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1152,11 +1109,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModuleNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       moduleName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1196,8 +1151,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsLibrary(boolean value) {
-      bitField0_ |= 0x00000004;
+
       isLibrary_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1251,8 +1207,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBuildTypeCount(long value) {
-      bitField0_ |= 0x00000008;
+
       buildTypeCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1306,8 +1263,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFlavorCount(long value) {
-      bitField0_ |= 0x00000010;
+
       flavorCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1361,8 +1319,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFlavorDimension(long value) {
-      bitField0_ |= 0x00000020;
+
       flavorDimension_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1416,8 +1375,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSigningConfigCount(long value) {
-      bitField0_ |= 0x00000040;
+
       signingConfigCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1506,11 +1466,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRequiredHardware(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       requiredHardware_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1524,8 +1482,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRequiredHardware() {
-      bitField0_ = (bitField0_ & ~0x00000080);
       requiredHardware_ = getDefaultInstance().getRequiredHardware();
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -1541,11 +1499,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRequiredHardwareBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       requiredHardware_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }

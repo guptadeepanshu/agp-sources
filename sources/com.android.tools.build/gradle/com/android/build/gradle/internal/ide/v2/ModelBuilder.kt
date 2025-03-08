@@ -227,6 +227,7 @@ class ModelBuilder<
                 // dependencies with a self dependency. This makes sure Gradle skips any resolution
                 // for external libraries.
                 it.copyRecursive().apply {
+                    isCanBeConsumed = false
                     resolutionStrategy.dependencySubstitution.all {
                         if (it.requested !is ProjectComponentSelector) {
                             it.useTarget(project)
@@ -1414,6 +1415,10 @@ class ModelBuilder<
             flags.put(
                 BooleanFlag.DATA_BINDING_ENABLED,
                 variants.any { it.buildFeatures.dataBinding }
+            )
+            flags.put(
+                BooleanFlag.GENERATE_MANIFEST_CLASS,
+                projectOptions[BooleanOption.GENERATE_MANIFEST_CLASS]
             )
 
             return AndroidGradlePluginProjectFlagsImpl(flags.build())

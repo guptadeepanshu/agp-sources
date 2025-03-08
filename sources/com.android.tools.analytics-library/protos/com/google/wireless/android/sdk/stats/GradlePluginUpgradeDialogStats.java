@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new GradlePluginUpgradeDialogStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradlePluginUpgradeDialogStats_descriptor;
@@ -217,7 +212,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CURRENT_GRADLE_VERSION_FIELD_NUMBER = 1;
-  private volatile java.lang.Object currentGradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object currentGradleVersion_ = "";
   /**
    * <pre>
    * The current Gradle Version used by the project e.g "4.10.3"
@@ -277,7 +273,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CURRENT_ANDROID_GRADLE_PLUGIN_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object currentAndroidGradlePluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object currentAndroidGradlePluginVersion_ = "";
   /**
    * <pre>
    * The current Android Gradle Plugin version used by the project e.g
@@ -340,7 +337,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RECOMMENDED_GRADLE_VERSION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object recommendedGradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object recommendedGradleVersion_ = "";
   /**
    * <pre>
    * The Gradle version that the update prompt recommended e.g "5.1"
@@ -400,7 +398,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RECOMMENDED_ANDROID_GRADLE_PLUGIN_VERSION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object recommendedAndroidGradlePluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object recommendedAndroidGradlePluginVersion_ = "";
   /**
    * <pre>
    * The Android Gradle Plugin version that the upgrade prompt recommended e.g
@@ -463,7 +462,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USER_ACTION_FIELD_NUMBER = 5;
-  private int userAction_;
+  private int userAction_ = 0;
   /**
    * <pre>
    * The action the user took
@@ -484,8 +483,7 @@ private static final long serialVersionUID = 0L;
    * @return The userAction.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction getUserAction() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction result = com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.valueOf(userAction_);
+    com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction result = com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.forNumber(userAction_);
     return result == null ? com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.UNKNOWN_USER_ACTION : result;
   }
 
@@ -745,16 +743,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       currentGradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       currentAndroidGradlePluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       recommendedGradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       recommendedAndroidGradlePluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       userAction_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -781,65 +775,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats buildPartial() {
       com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats result = new com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.currentGradleVersion_ = currentGradleVersion_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.currentAndroidGradlePluginVersion_ = currentAndroidGradlePluginVersion_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.recommendedGradleVersion_ = recommendedGradleVersion_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.recommendedAndroidGradlePluginVersion_ = recommendedAndroidGradlePluginVersion_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.userAction_ = userAction_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.currentGradleVersion_ = currentGradleVersion_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.currentAndroidGradlePluginVersion_ = currentAndroidGradlePluginVersion_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.recommendedGradleVersion_ = recommendedGradleVersion_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.recommendedAndroidGradlePluginVersion_ = recommendedAndroidGradlePluginVersion_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.userAction_ = userAction_;
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats) {
@@ -853,23 +819,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats other) {
       if (other == com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.getDefaultInstance()) return this;
       if (other.hasCurrentGradleVersion()) {
-        bitField0_ |= 0x00000001;
         currentGradleVersion_ = other.currentGradleVersion_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasCurrentAndroidGradlePluginVersion()) {
-        bitField0_ |= 0x00000002;
         currentAndroidGradlePluginVersion_ = other.currentAndroidGradlePluginVersion_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasRecommendedGradleVersion()) {
-        bitField0_ |= 0x00000004;
         recommendedGradleVersion_ = other.recommendedGradleVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasRecommendedAndroidGradlePluginVersion()) {
-        bitField0_ |= 0x00000008;
         recommendedAndroidGradlePluginVersion_ = other.recommendedAndroidGradlePluginVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasUserAction()) {
@@ -1016,11 +982,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       currentGradleVersion_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1033,8 +997,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCurrentGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       currentGradleVersion_ = getDefaultInstance().getCurrentGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1049,11 +1013,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       currentGradleVersion_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1128,11 +1090,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentAndroidGradlePluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       currentAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1146,8 +1106,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCurrentAndroidGradlePluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       currentAndroidGradlePluginVersion_ = getDefaultInstance().getCurrentAndroidGradlePluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1163,11 +1123,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentAndroidGradlePluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       currentAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1238,11 +1196,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRecommendedGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       recommendedGradleVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1255,8 +1211,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRecommendedGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       recommendedGradleVersion_ = getDefaultInstance().getRecommendedGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1271,11 +1227,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRecommendedGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       recommendedGradleVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1350,11 +1304,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRecommendedAndroidGradlePluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       recommendedAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1368,8 +1320,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRecommendedAndroidGradlePluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       recommendedAndroidGradlePluginVersion_ = getDefaultInstance().getRecommendedAndroidGradlePluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1385,11 +1337,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRecommendedAndroidGradlePluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       recommendedAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1416,8 +1366,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction getUserAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction result = com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.valueOf(userAction_);
+      com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction result = com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.forNumber(userAction_);
       return result == null ? com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.UserAction.UNKNOWN_USER_ACTION : result;
     }
     /**

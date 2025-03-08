@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new DaggerEditorEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DaggerEditorEvent_descriptor;
@@ -448,11 +443,6 @@ private static final long serialVersionUID = 0L;
       return new NavigationMetadata();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DaggerEditorEvent_NavigationMetadata_descriptor;
@@ -573,7 +563,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int CONTEXT_FIELD_NUMBER = 1;
-    private int context_;
+    private int context_ = 0;
     /**
      * <pre>
      * Context from which a navigation was called
@@ -594,13 +584,12 @@ private static final long serialVersionUID = 0L;
      * @return The context.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext getContext() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.valueOf(context_);
+      com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.forNumber(context_);
       return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.UNKNOWN_CONTEXT : result;
     }
 
     public static final int FROM_ELEMENT_FIELD_NUMBER = 2;
-    private int fromElement_;
+    private int fromElement_ = 0;
     /**
      * <pre>
      * ElementType that is source of navigation
@@ -621,13 +610,12 @@ private static final long serialVersionUID = 0L;
      * @return The fromElement.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getFromElement() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(fromElement_);
+      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(fromElement_);
       return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
     }
 
     public static final int TO_ELEMENT_FIELD_NUMBER = 3;
-    private int toElement_;
+    private int toElement_ = 0;
     /**
      * <pre>
      * ElementType that is target of navigation
@@ -648,8 +636,7 @@ private static final long serialVersionUID = 0L;
      * @return The toElement.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getToElement() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(toElement_);
+      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(toElement_);
       return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
     }
 
@@ -879,12 +866,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         context_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         fromElement_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         toElement_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -911,57 +896,29 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata buildPartial() {
         com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata result = new com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.context_ = context_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.fromElement_ = fromElement_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.toElement_ = toElement_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.context_ = context_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.fromElement_ = fromElement_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.toElement_ = toElement_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata) {
@@ -1084,8 +1041,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext getContext() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.valueOf(context_);
+        com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.forNumber(context_);
         return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.NavigationContext.UNKNOWN_CONTEXT : result;
       }
       /**
@@ -1143,8 +1099,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getFromElement() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(fromElement_);
+        com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(fromElement_);
         return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
       }
       /**
@@ -1202,8 +1157,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getToElement() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(toElement_);
+        com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(toElement_);
         return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
       }
       /**
@@ -1304,7 +1258,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The detailed type of this event
@@ -1325,8 +1279,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.valueOf(type_);
+    com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.UNKNOWN_EVENT_TYPE : result;
   }
 
@@ -1369,7 +1322,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OWNER_ELEMENT_TYPE_FIELD_NUMBER = 3;
-  private int ownerElementType_;
+  private int ownerElementType_ = 0;
   /**
    * <pre>
    * Set if |type| is |FIND_USAGES_NODE_WAS_DISPLAYED|, |CLICKED_ON_GUTTER|,
@@ -1392,13 +1345,12 @@ private static final long serialVersionUID = 0L;
    * @return The ownerElementType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getOwnerElementType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(ownerElementType_);
+    com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(ownerElementType_);
     return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
   }
 
   public static final int CALCULATION_TIME_MS_FIELD_NUMBER = 4;
-  private long calculationTimeMs_;
+  private long calculationTimeMs_ = 0L;
   /**
    * <pre>
    * Set if |type| is |FIND_USAGES_NODE_WAS_DISPLAYED|, |GUTTER_WAS_DISPLAYED|
@@ -1425,7 +1377,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USING_BUILT_IN_ANNOTATION_SEARCH_FIELD_NUMBER = 5;
-  private boolean usingBuiltInAnnotationSearch_;
+  private boolean usingBuiltInAnnotationSearch_ = false;
   /**
    * <pre>
    * Indicates whether built-in (true) or custom Dagger (false) annotation
@@ -1720,20 +1672,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (navigationMetadataBuilder_ == null) {
-        navigationMetadata_ = null;
-      } else {
-        navigationMetadataBuilder_.clear();
+      navigationMetadata_ = null;
+      if (navigationMetadataBuilder_ != null) {
+        navigationMetadataBuilder_.dispose();
+        navigationMetadataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       ownerElementType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       calculationTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       usingBuiltInAnnotationSearch_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -1760,24 +1708,28 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DaggerEditorEvent result = new com.google.wireless.android.sdk.stats.DaggerEditorEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DaggerEditorEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (navigationMetadataBuilder_ == null) {
-          result.navigationMetadata_ = navigationMetadata_;
-        } else {
-          result.navigationMetadata_ = navigationMetadataBuilder_.build();
-        }
+        result.navigationMetadata_ = navigationMetadataBuilder_ == null
+            ? navigationMetadata_
+            : navigationMetadataBuilder_.build();
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.ownerElementType_ = ownerElementType_;
         to_bitField0_ |= 0x00000004;
       }
-      result.ownerElementType_ = ownerElementType_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.calculationTimeMs_ = calculationTimeMs_;
         to_bitField0_ |= 0x00000008;
@@ -1786,43 +1738,9 @@ private static final long serialVersionUID = 0L;
         result.usingBuiltInAnnotationSearch_ = usingBuiltInAnnotationSearch_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DaggerEditorEvent) {
@@ -1956,8 +1874,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.Type.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -2035,11 +1952,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         navigationMetadata_ = value;
-        onChanged();
       } else {
         navigationMetadataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -2053,11 +1970,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.Builder builderForValue) {
       if (navigationMetadataBuilder_ == null) {
         navigationMetadata_ = builderForValue.build();
-        onChanged();
       } else {
         navigationMetadataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -2070,18 +1987,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeNavigationMetadata(com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata value) {
       if (navigationMetadataBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            navigationMetadata_ != null &&
-            navigationMetadata_ != com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.getDefaultInstance()) {
-          navigationMetadata_ =
-            com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.newBuilder(navigationMetadata_).mergeFrom(value).buildPartial();
+          navigationMetadata_ != null &&
+          navigationMetadata_ != com.google.wireless.android.sdk.stats.DaggerEditorEvent.NavigationMetadata.getDefaultInstance()) {
+          getNavigationMetadataBuilder().mergeFrom(value);
         } else {
           navigationMetadata_ = value;
         }
-        onChanged();
       } else {
         navigationMetadataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -2092,13 +2008,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DaggerEditorEvent.NavigationMetadata navigation_metadata = 2 [lazy = true];</code>
      */
     public Builder clearNavigationMetadata() {
-      if (navigationMetadataBuilder_ == null) {
-        navigationMetadata_ = null;
-        onChanged();
-      } else {
-        navigationMetadataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      navigationMetadata_ = null;
+      if (navigationMetadataBuilder_ != null) {
+        navigationMetadataBuilder_.dispose();
+        navigationMetadataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2173,8 +2089,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType getOwnerElementType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.valueOf(ownerElementType_);
+      com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType result = com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.forNumber(ownerElementType_);
       return result == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.ElementType.UNKNOWN_ELEMENT_TYPE : result;
     }
     /**
@@ -2247,8 +2162,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCalculationTimeMs(long value) {
-      bitField0_ |= 0x00000008;
+
       calculationTimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2305,8 +2221,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUsingBuiltInAnnotationSearch(boolean value) {
-      bitField0_ |= 0x00000010;
+
       usingBuiltInAnnotationSearch_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

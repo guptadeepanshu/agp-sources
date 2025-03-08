@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new JetifierUsageData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_JetifierUsageData_descriptor;
@@ -183,7 +178,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int JETIFIER_USAGE_STATE_FIELD_NUMBER = 1;
-  private int jetifierUsageState_;
+  private int jetifierUsageState_ = 0;
   /**
    * <code>optional .android_studio.JetifierUsageData.JetifierUsageState jetifier_usage_state = 1;</code>
    * @return Whether the jetifierUsageState field is set.
@@ -196,13 +191,12 @@ private static final long serialVersionUID = 0L;
    * @return The jetifierUsageState.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState getJetifierUsageState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.valueOf(jetifierUsageState_);
+    com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.forNumber(jetifierUsageState_);
     return result == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.UNKNOWN_STATE : result;
   }
 
   public static final int NUMBER_OF_LIBRARIES_REQUIRE_JETIFIER_FIELD_NUMBER = 2;
-  private int numberOfLibrariesRequireJetifier_;
+  private int numberOfLibrariesRequireJetifier_ = 0;
   /**
    * <pre>
    * Size of the libraries list found by checkJetifier task
@@ -229,7 +223,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHECK_JETIFIER_TASK_BUILD_FIELD_NUMBER = 3;
-  private boolean checkJetifierTaskBuild_;
+  private boolean checkJetifierTaskBuild_ = false;
   /**
    * <pre>
    * True if this build had ran checkJetifier task
@@ -484,12 +478,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       jetifierUsageState_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       numberOfLibrariesRequireJetifier_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       checkJetifierTaskBuild_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -516,12 +508,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.JetifierUsageData buildPartial() {
       com.google.wireless.android.sdk.stats.JetifierUsageData result = new com.google.wireless.android.sdk.stats.JetifierUsageData(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.JetifierUsageData result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.jetifierUsageState_ = jetifierUsageState_;
         to_bitField0_ |= 0x00000001;
       }
-      result.jetifierUsageState_ = jetifierUsageState_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.numberOfLibrariesRequireJetifier_ = numberOfLibrariesRequireJetifier_;
         to_bitField0_ |= 0x00000002;
@@ -530,43 +528,9 @@ private static final long serialVersionUID = 0L;
         result.checkJetifierTaskBuild_ = checkJetifierTaskBuild_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.JetifierUsageData) {
@@ -667,8 +631,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState getJetifierUsageState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.valueOf(jetifierUsageState_);
+      com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.forNumber(jetifierUsageState_);
       return result == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.UNKNOWN_STATE : result;
     }
     /**
@@ -731,8 +694,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumberOfLibrariesRequireJetifier(int value) {
-      bitField0_ |= 0x00000002;
+
       numberOfLibrariesRequireJetifier_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -786,8 +750,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCheckJetifierTaskBuild(boolean value) {
-      bitField0_ |= 0x00000004;
+
       checkJetifierTaskBuild_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

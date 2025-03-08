@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new BuildAttributionPerformanceStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BuildAttributionPerformanceStats_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int POST_BUILD_ANALYSIS_DURATION_MS_FIELD_NUMBER = 1;
-  private long postBuildAnalysisDurationMs_;
+  private long postBuildAnalysisDurationMs_ = 0L;
   /**
    * <pre>
    * The duration it takes from when the build is finished, until all build
@@ -78,7 +73,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UI_CREATION_DURATION_MS_FIELD_NUMBER = 2;
-  private long uiCreationDurationMs_;
+  private long uiCreationDurationMs_ = 0L;
   /**
    * <pre>
    * The duration it takes to build the UI
@@ -105,7 +100,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOOLING_API_BUILD_FINISHED_EVENT_LATENCY_MS_FIELD_NUMBER = 3;
-  private long toolingApiBuildFinishedEventLatencyMs_;
+  private long toolingApiBuildFinishedEventLatencyMs_ = 0L;
   /**
    * <pre>
    * The latency introduced by the tooling API events (the duration from
@@ -134,7 +129,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUMBER_OF_GENERATED_PARTIAL_RESULTS_FIELD_NUMBER = 4;
-  private int numberOfGeneratedPartialResults_;
+  private int numberOfGeneratedPartialResults_ = 0;
   /**
    * <pre>
    * The number of partial result files generated in AGP which corresponds to
@@ -412,14 +407,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       postBuildAnalysisDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       uiCreationDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       toolingApiBuildFinishedEventLatencyMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       numberOfGeneratedPartialResults_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -446,6 +438,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats buildPartial() {
       com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats result = new com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -464,43 +462,9 @@ private static final long serialVersionUID = 0L;
         result.numberOfGeneratedPartialResults_ = numberOfGeneratedPartialResults_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.BuildAttributionPerformanceStats) {
@@ -626,8 +590,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPostBuildAnalysisDurationMs(long value) {
-      bitField0_ |= 0x00000001;
+
       postBuildAnalysisDurationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -682,8 +647,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUiCreationDurationMs(long value) {
-      bitField0_ |= 0x00000002;
+
       uiCreationDurationMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -740,8 +706,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setToolingApiBuildFinishedEventLatencyMs(long value) {
-      bitField0_ |= 0x00000004;
+
       toolingApiBuildFinishedEventLatencyMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -802,8 +769,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumberOfGeneratedPartialResults(int value) {
-      bitField0_ |= 0x00000008;
+
       numberOfGeneratedPartialResults_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

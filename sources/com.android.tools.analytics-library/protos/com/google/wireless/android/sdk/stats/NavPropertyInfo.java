@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new NavPropertyInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NavPropertyInfo_descriptor;
@@ -536,7 +531,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int PROPERTY_FIELD_NUMBER = 1;
-  private int property_;
+  private int property_ = 0;
   /**
    * <pre>
    * The property affected.
@@ -557,13 +552,12 @@ private static final long serialVersionUID = 0L;
    * @return The property.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavPropertyInfo.Property getProperty() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavPropertyInfo.Property result = com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.valueOf(property_);
+    com.google.wireless.android.sdk.stats.NavPropertyInfo.Property result = com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.forNumber(property_);
     return result == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.UNKNOWN : result;
   }
 
   public static final int CONTAINING_TAG_FIELD_NUMBER = 2;
-  private int containingTag_;
+  private int containingTag_ = 0;
   /**
    * <pre>
    * Type of the containing tag.
@@ -584,13 +578,12 @@ private static final long serialVersionUID = 0L;
    * @return The containingTag.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType getContainingTag() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType result = com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.valueOf(containingTag_);
+    com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType result = com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.forNumber(containingTag_);
     return result == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.UNKNOWN_TAG : result;
   }
 
   public static final int WAS_EMPTY_FIELD_NUMBER = 3;
-  private boolean wasEmpty_;
+  private boolean wasEmpty_ = false;
   /**
    * <pre>
    * Whether the property was empty prior to being set just now.
@@ -840,12 +833,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       property_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       containingTag_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       wasEmpty_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -872,57 +863,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavPropertyInfo buildPartial() {
       com.google.wireless.android.sdk.stats.NavPropertyInfo result = new com.google.wireless.android.sdk.stats.NavPropertyInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.property_ = property_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.containingTag_ = containingTag_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.wasEmpty_ = wasEmpty_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NavPropertyInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.property_ = property_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.containingTag_ = containingTag_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.wasEmpty_ = wasEmpty_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NavPropertyInfo) {
@@ -1038,8 +1001,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavPropertyInfo.Property getProperty() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavPropertyInfo.Property result = com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.valueOf(property_);
+      com.google.wireless.android.sdk.stats.NavPropertyInfo.Property result = com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.forNumber(property_);
       return result == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.Property.UNKNOWN : result;
     }
     /**
@@ -1097,8 +1059,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType getContainingTag() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType result = com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.valueOf(containingTag_);
+      com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType result = com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.forNumber(containingTag_);
       return result == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.TagType.UNKNOWN_TAG : result;
     }
     /**
@@ -1169,8 +1130,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWasEmpty(boolean value) {
-      bitField0_ |= 0x00000004;
+
       wasEmpty_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

@@ -139,7 +139,7 @@ public final class AndroidTestCoverageConfigProto {
      */
     boolean getUseTestStorageService();
 
-    public com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig.TestCoveragePathOnDeviceCase getTestCoveragePathOnDeviceCase();
+    com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig.TestCoveragePathOnDeviceCase getTestCoveragePathOnDeviceCase();
   }
   /**
    * <pre>
@@ -169,11 +169,6 @@ public final class AndroidTestCoverageConfigProto {
       return new AndroidTestCoverageConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.internal_static_com_android_tools_utp_plugins_host_coverage_proto_AndroidTestCoverageConfig_descriptor;
@@ -188,6 +183,7 @@ public final class AndroidTestCoverageConfigProto {
     }
 
     private int testCoveragePathOnDeviceCase_ = 0;
+    @SuppressWarnings("serial")
     private java.lang.Object testCoveragePathOnDevice_;
     public enum TestCoveragePathOnDeviceCase
         implements com.google.protobuf.Internal.EnumLite,
@@ -363,7 +359,8 @@ public final class AndroidTestCoverageConfigProto {
     }
 
     public static final int RUN_AS_PACKAGE_NAME_FIELD_NUMBER = 3;
-    private volatile java.lang.Object runAsPackageName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object runAsPackageName_ = "";
     /**
      * <pre>
      * A package name to be used to copy test coverage files from a device
@@ -415,7 +412,8 @@ public final class AndroidTestCoverageConfigProto {
     }
 
     public static final int OUTPUT_DIRECTORY_ON_HOST_FIELD_NUMBER = 4;
-    private volatile java.lang.Object outputDirectoryOnHost_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object outputDirectoryOnHost_ = "";
     /**
      * <pre>
      * A path to the output directory on a host machine.
@@ -461,7 +459,7 @@ public final class AndroidTestCoverageConfigProto {
     }
 
     public static final int USE_TEST_STORAGE_SERVICE_FIELD_NUMBER = 5;
-    private boolean useTestStorageService_;
+    private boolean useTestStorageService_ = false;
     /**
      * <pre>
      * Use the test storage service provided by the 'androidx.test.services'
@@ -643,11 +641,13 @@ public final class AndroidTestCoverageConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -726,12 +726,10 @@ public final class AndroidTestCoverageConfigProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         runAsPackageName_ = "";
-
         outputDirectoryOnHost_ = "";
-
         useTestStorageService_ = false;
-
         testCoveragePathOnDeviceCase_ = 0;
         testCoveragePathOnDevice_ = null;
         return this;
@@ -760,18 +758,28 @@ public final class AndroidTestCoverageConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig buildPartial() {
         com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig result = new com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig(this);
-        if (testCoveragePathOnDeviceCase_ == 1) {
-          result.testCoveragePathOnDevice_ = testCoveragePathOnDevice_;
-        }
-        if (testCoveragePathOnDeviceCase_ == 2) {
-          result.testCoveragePathOnDevice_ = testCoveragePathOnDevice_;
-        }
-        result.runAsPackageName_ = runAsPackageName_;
-        result.outputDirectoryOnHost_ = outputDirectoryOnHost_;
-        result.useTestStorageService_ = useTestStorageService_;
-        result.testCoveragePathOnDeviceCase_ = testCoveragePathOnDeviceCase_;
+        if (bitField0_ != 0) { buildPartial0(result); }
+        buildPartialOneofs(result);
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.runAsPackageName_ = runAsPackageName_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.outputDirectoryOnHost_ = outputDirectoryOnHost_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.useTestStorageService_ = useTestStorageService_;
+        }
+      }
+
+      private void buildPartialOneofs(com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig result) {
+        result.testCoveragePathOnDeviceCase_ = testCoveragePathOnDeviceCase_;
+        result.testCoveragePathOnDevice_ = this.testCoveragePathOnDevice_;
       }
 
       @java.lang.Override
@@ -820,10 +828,12 @@ public final class AndroidTestCoverageConfigProto {
         if (other == com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig.getDefaultInstance()) return this;
         if (!other.getRunAsPackageName().isEmpty()) {
           runAsPackageName_ = other.runAsPackageName_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (!other.getOutputDirectoryOnHost().isEmpty()) {
           outputDirectoryOnHost_ = other.outputDirectoryOnHost_;
+          bitField0_ |= 0x00000008;
           onChanged();
         }
         if (other.getUseTestStorageService() != false) {
@@ -886,17 +896,17 @@ public final class AndroidTestCoverageConfigProto {
               } // case 18
               case 26: {
                 runAsPackageName_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 outputDirectoryOnHost_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 40: {
                 useTestStorageService_ = input.readBool();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 40
               default: {
@@ -929,6 +939,7 @@ public final class AndroidTestCoverageConfigProto {
         return this;
       }
 
+      private int bitField0_;
 
       /**
        * <pre>
@@ -1010,10 +1021,8 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setSingleCoverageFile(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  testCoveragePathOnDeviceCase_ = 1;
+        if (value == null) { throw new NullPointerException(); }
+        testCoveragePathOnDeviceCase_ = 1;
         testCoveragePathOnDevice_ = value;
         onChanged();
         return this;
@@ -1047,10 +1056,8 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setSingleCoverageFileBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         testCoveragePathOnDeviceCase_ = 1;
         testCoveragePathOnDevice_ = value;
         onChanged();
@@ -1137,10 +1144,8 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setMultipleCoverageFilesInDirectory(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  testCoveragePathOnDeviceCase_ = 2;
+        if (value == null) { throw new NullPointerException(); }
+        testCoveragePathOnDeviceCase_ = 2;
         testCoveragePathOnDevice_ = value;
         onChanged();
         return this;
@@ -1174,10 +1179,8 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setMultipleCoverageFilesInDirectoryBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         testCoveragePathOnDeviceCase_ = 2;
         testCoveragePathOnDevice_ = value;
         onChanged();
@@ -1246,11 +1249,9 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setRunAsPackageName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         runAsPackageName_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1266,8 +1267,8 @@ public final class AndroidTestCoverageConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearRunAsPackageName() {
-        
         runAsPackageName_ = getDefaultInstance().getRunAsPackageName();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -1285,12 +1286,10 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setRunAsPackageNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         runAsPackageName_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1348,11 +1347,9 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setOutputDirectoryOnHost(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         outputDirectoryOnHost_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1365,8 +1362,8 @@ public final class AndroidTestCoverageConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearOutputDirectoryOnHost() {
-        
         outputDirectoryOnHost_ = getDefaultInstance().getOutputDirectoryOnHost();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -1381,12 +1378,10 @@ public final class AndroidTestCoverageConfigProto {
        */
       public Builder setOutputDirectoryOnHostBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         outputDirectoryOnHost_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1416,8 +1411,9 @@ public final class AndroidTestCoverageConfigProto {
        * @return This builder for chaining.
        */
       public Builder setUseTestStorageService(boolean value) {
-        
+
         useTestStorageService_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1431,7 +1427,7 @@ public final class AndroidTestCoverageConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearUseTestStorageService() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         useTestStorageService_ = false;
         onChanged();
         return this;

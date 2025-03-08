@@ -27,15 +27,17 @@ import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.AndroidTestTaskManager
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.UnitTestTaskManager
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpComponentCreationConfig
 import com.android.build.gradle.internal.component.KmpCreationConfig
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.plugins.LINT_PLUGIN_ID
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.res.ConvertShrunkResourcesToBinaryTask
+import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
-import com.android.build.gradle.internal.res.ParseLibraryResourcesTask
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -128,12 +130,17 @@ class KmpTaskManager(
             registerParseLibraryResourcesTask(variant)
             taskFactory.register(GenerateLibraryRFileTask.CreationAction(variant))
 
+            // Task to generate the public.txt for the API that always exists
+            // Unlike the internal one which is packaged in the AAR which only exists if the
+            // developer has explicitly marked resources as public.
+            taskFactory.register(GenerateApiPublicTxtTask.CreationAction(variant))
+
             // tasks to package assets in the library aar
             variant
                 .taskContainer
                 .assetGenTask =
                 taskFactory.register(variant.computeTaskNameInternal("generate", "Assets"))
-            taskFactory.register(MergeSourceSetFolders.LibraryAssetCreationAction(variant))
+            taskFactory.register(MergeSourceSetFolders.MergeAssetCreationAction(variant, false))
         }
 
         project.tasks.registerTask(
@@ -189,6 +196,11 @@ class KmpTaskManager(
                     addCompileRClass = false
                 )
             )
+            if ((variant as? ApplicationCreationConfig)?.runResourceShrinkingWithR8() == true) {
+                // Also convert shrunk resources from proto format to binary format so it can be
+                // included in an APK
+                taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(variant))
+            }
         }
 
         // Publishing consumer proguard rules is an opt-in feature for KMP

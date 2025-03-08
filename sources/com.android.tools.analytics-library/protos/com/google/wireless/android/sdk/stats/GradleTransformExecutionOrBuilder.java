@@ -17,7 +17,8 @@ public interface GradleTransformExecutionOrBuilder extends
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+   *     See studio_stats.proto;l=5393
    * @return Whether the type field is set.
    */
   @java.lang.Deprecated boolean hasType();
@@ -31,7 +32,8 @@ public interface GradleTransformExecutionOrBuilder extends
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+   *     See studio_stats.proto;l=5393
    * @return The type.
    */
   @java.lang.Deprecated int getType();

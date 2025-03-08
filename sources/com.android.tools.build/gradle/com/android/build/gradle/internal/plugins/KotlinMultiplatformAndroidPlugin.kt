@@ -49,6 +49,7 @@ import com.android.build.gradle.internal.core.dsl.impl.KmpUnitTestDslInfoImpl
 import com.android.build.gradle.internal.core.dsl.impl.KmpVariantDslInfoImpl
 import com.android.build.gradle.internal.core.dsl.impl.features.KmpDeviceTestOptionsDslInfoImpl
 import com.android.build.gradle.internal.dependency.AgpVersionCompatibilityRule
+import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
 import com.android.build.gradle.internal.dependency.JacocoInstrumentationService
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule.Companion.setUp
 import com.android.build.gradle.internal.dependency.SingleVariantBuildTypeRule
@@ -103,8 +104,10 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.configuration.BuildFeatures
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Provider
 import org.gradle.build.event.BuildEventsListenerRegistry
+import org.gradle.jvm.toolchain.JavaToolchainService
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import javax.inject.Inject
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.publishSources
@@ -114,7 +117,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 class KotlinMultiplatformAndroidPlugin @Inject constructor(
     listenerRegistry: BuildEventsListenerRegistry,
     private val buildFeatures: BuildFeatures,
-): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
+): AndroidPluginBaseServices(listenerRegistry, buildFeatures), Plugin<Project> {
 
     private lateinit var global: GlobalTaskCreationConfig
     private lateinit var androidExtension: KotlinMultiplatformAndroidLibraryExtensionImpl
@@ -135,6 +138,17 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
                 projectServices,
                 sdkComponentsBuildService,
                 ProjectType.LIBRARY
+            )
+        }
+    }
+
+    private val versionedSdkLoaderService: VersionedSdkLoaderService by lazy {
+        withProject("versionedSdkLoaderService") { project ->
+            VersionedSdkLoaderService(
+                dslServices,
+                project,
+                ::getCompileSdkVersion,
+                ::getBuildToolsVersion
             )
         }
     }
@@ -186,6 +200,8 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         project.extensions.extraProperties.set(
             "kotlin.publishJvmEnvironmentAttribute", "true"
         )
+
+        createAndroidJdkImageConfiguration(project)
     }
 
     override fun configureExtension(project: Project) {
@@ -258,7 +274,24 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         }
     }
 
-    protected open fun KotlinMultiplatformAndroidLibraryExtension.initExtensionFromSettings(
+    private fun createAndroidJdkImageConfiguration(project: Project) {
+        val config = project.configurations.create(CONFIG_NAME_ANDROID_JDK_IMAGE)
+        config.isVisible = false
+        config.isCanBeConsumed = false
+        config.description = "Configuration providing JDK image for compiling Java 9+ sources"
+
+        project.dependencies
+            .add(
+                CONFIG_NAME_ANDROID_JDK_IMAGE,
+                project.files(
+                    versionedSdkLoaderService
+                        .versionedSdkLoader
+                        .flatMap { it.coreForSystemModulesProvider }
+                )
+            )
+    }
+
+    private fun KotlinMultiplatformAndroidLibraryExtension.initExtensionFromSettings(
         settings: SettingsExtension
     ) {
         settings.compileSdk?.let { compileSdk ->
@@ -399,8 +432,26 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         )
 
         updateTestComponentFriendPaths(listOfNotNull(unitTest, androidTest))
+        wireJvmToolchain(listOfNotNull(mainVariant, unitTest, androidTest), project)
         finalizeAllComponents(listOfNotNull(mainVariant, unitTest, androidTest))
         kotlinMultiplatformHandler.finalize(mainVariant)
+    }
+
+    private fun wireJvmToolchain(components: List<KmpComponentImpl<out KmpComponentDslInfo>>, project: Project) {
+        // Configure kotlin compiler with the jvm toolchain, similar to the JavaBasePlugin
+        // (https://github.com/gradle/gradle/blob/66010b2/subprojects/plugins/src/main/java/org/gradle/api/plugins/JavaBasePlugin.java#L204)
+        val toolchain = project.extensions.getByType(JavaPluginExtension::class.java).toolchain
+        val service = project.extensions.getByType(JavaToolchainService::class.java)
+        val javaLauncher = service.launcherFor(toolchain)
+        if (toolchain.languageVersion.isPresent) {
+            components.forEach {
+                it.androidKotlinCompilation.compileTaskProvider.configure { task ->
+                    (task as KotlinJvmCompile).kotlinJavaToolchain.toolchain.use(
+                        javaLauncher
+                    )
+                }
+            }
+        }
     }
 
     private fun updateTestComponentFriendPaths(components: List<KmpComponentImpl<out KmpComponentDslInfo>>) {

@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorUiEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorUiEvent_descriptor;
@@ -428,7 +423,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ELEMENT_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object elementId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object elementId_ = "";
   /**
    * <pre>
    * Id of the UI element, baked in the emulator binary.
@@ -488,7 +484,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 2;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The type of UI event
@@ -509,13 +505,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.UNKONWN_EMULATOR_UI_EVENT_TYPE : result;
   }
 
   public static final int CONTEXT_FIELD_NUMBER = 3;
-  private int context_;
+  private int context_ = 0;
   /**
    * <pre>
    * The current context of the event.
@@ -536,13 +531,12 @@ private static final long serialVersionUID = 0L;
    * @return The context.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext getContext() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.valueOf(context_);
+    com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.forNumber(context_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.UNKNOWN_EMULATOR_UI_EVENT_CONTEXT : result;
   }
 
   public static final int VALUE_FIELD_NUMBER = 4;
-  private long value_;
+  private long value_ = 0L;
   /**
    * <pre>
    * This value is an opaque numeric type. The exact schema of the UI metrics
@@ -815,14 +809,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       elementId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       context_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       value_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -849,61 +840,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorUiEvent buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorUiEvent result = new com.google.wireless.android.sdk.stats.EmulatorUiEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.elementId_ = elementId_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.context_ = context_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.value_ = value_;
-        to_bitField0_ |= 0x00000008;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorUiEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.elementId_ = elementId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.context_ = context_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.value_ = value_;
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorUiEvent) {
@@ -917,8 +880,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.EmulatorUiEvent other) {
       if (other == com.google.wireless.android.sdk.stats.EmulatorUiEvent.getDefaultInstance()) return this;
       if (other.hasElementId()) {
-        bitField0_ |= 0x00000001;
         elementId_ = other.elementId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasType()) {
@@ -1073,11 +1036,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setElementId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       elementId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1090,8 +1051,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearElementId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       elementId_ = getDefaultInstance().getElementId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1106,11 +1067,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setElementIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       elementId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1137,8 +1096,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.UNKONWN_EMULATOR_UI_EVENT_TYPE : result;
     }
     /**
@@ -1196,8 +1154,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext getContext() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.valueOf(context_);
+      com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.forNumber(context_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.UNKNOWN_EMULATOR_UI_EVENT_CONTEXT : result;
     }
     /**
@@ -1274,8 +1231,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setValue(long value) {
-      bitField0_ |= 0x00000008;
+
       value_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

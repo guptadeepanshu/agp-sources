@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AsmClassesTransformRegistration();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AsmClassesTransformRegistration_descriptor;
@@ -160,7 +155,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CLASS_VISITOR_FACTORY_CLASS_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object classVisitorFactoryClassName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object classVisitorFactoryClassName_ = "";
   /**
    * <pre>
    * Name of the factory class supplied in registration.
@@ -223,7 +219,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SCOPE_FIELD_NUMBER = 2;
-  private int scope_;
+  private int scope_ = 0;
   /**
    * <pre>
    * Scope of the classes to be transformed
@@ -244,8 +240,7 @@ private static final long serialVersionUID = 0L;
    * @return The scope.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope getScope() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.valueOf(scope_);
+    com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.forNumber(scope_);
     return result == null ? com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.UNKNOWN_SCOPE : result;
   }
 
@@ -460,10 +455,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       classVisitorFactoryClassName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       scope_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -490,53 +484,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration buildPartial() {
       com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration result = new com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.classVisitorFactoryClassName_ = classVisitorFactoryClassName_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.scope_ = scope_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.classVisitorFactoryClassName_ = classVisitorFactoryClassName_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.scope_ = scope_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration) {
@@ -550,8 +516,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration other) {
       if (other == com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.getDefaultInstance()) return this;
       if (other.hasClassVisitorFactoryClassName()) {
-        bitField0_ |= 0x00000001;
         classVisitorFactoryClassName_ = other.classVisitorFactoryClassName_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasScope()) {
@@ -687,11 +653,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassVisitorFactoryClassName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       classVisitorFactoryClassName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -705,8 +669,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearClassVisitorFactoryClassName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       classVisitorFactoryClassName_ = getDefaultInstance().getClassVisitorFactoryClassName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -722,11 +686,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassVisitorFactoryClassNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       classVisitorFactoryClassName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -753,8 +715,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope getScope() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.valueOf(scope_);
+      com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.forNumber(scope_);
       return result == null ? com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.UNKNOWN_SCOPE : result;
     }
     /**

@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new GradleFailureDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleFailureDetails_descriptor;
@@ -140,11 +135,6 @@ private static final long serialVersionUID = 0L;
       return new GradleExceptionInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleFailureDetails_GradleExceptionInfo_descriptor;
@@ -160,7 +150,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int EXCEPTION_CLASS_NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object exceptionClassName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object exceptionClassName_ = "";
     /**
      * <pre>
      * Full class name of the exception.
@@ -478,14 +469,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         exceptionClassName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (topFrameInfoBuilder_ == null) {
-          topFrameInfo_ = null;
-        } else {
-          topFrameInfoBuilder_.clear();
+        topFrameInfo_ = null;
+        if (topFrameInfoBuilder_ != null) {
+          topFrameInfoBuilder_.dispose();
+          topFrameInfoBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -512,57 +502,27 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo buildPartial() {
         com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo result = new com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.exceptionClassName_ = exceptionClassName_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (topFrameInfoBuilder_ == null) {
-            result.topFrameInfo_ = topFrameInfo_;
-          } else {
-            result.topFrameInfo_ = topFrameInfoBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.exceptionClassName_ = exceptionClassName_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.topFrameInfo_ = topFrameInfoBuilder_ == null
+              ? topFrameInfo_
+              : topFrameInfoBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo) {
@@ -576,8 +536,8 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo other) {
         if (other == com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo.getDefaultInstance()) return this;
         if (other.hasExceptionClassName()) {
-          bitField0_ |= 0x00000001;
           exceptionClassName_ = other.exceptionClassName_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasTopFrameInfo()) {
@@ -708,11 +668,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setExceptionClassName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         exceptionClassName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -726,8 +684,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearExceptionClassName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         exceptionClassName_ = getDefaultInstance().getExceptionClassName();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -743,11 +701,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setExceptionClassNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         exceptionClassName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -794,11 +750,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           topFrameInfo_ = value;
-          onChanged();
         } else {
           topFrameInfoBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -812,11 +768,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo.Builder builderForValue) {
         if (topFrameInfoBuilder_ == null) {
           topFrameInfo_ = builderForValue.build();
-          onChanged();
         } else {
           topFrameInfoBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -829,18 +785,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeTopFrameInfo(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo value) {
         if (topFrameInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              topFrameInfo_ != null &&
-              topFrameInfo_ != com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo.getDefaultInstance()) {
-            topFrameInfo_ =
-              com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo.newBuilder(topFrameInfo_).mergeFrom(value).buildPartial();
+            topFrameInfo_ != null &&
+            topFrameInfo_ != com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo.getDefaultInstance()) {
+            getTopFrameInfoBuilder().mergeFrom(value);
           } else {
             topFrameInfo_ = value;
           }
-          onChanged();
         } else {
           topFrameInfoBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -851,13 +806,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.GradleFailureDetails.GradleExceptionStackFrameInfo top_frame_info = 2;</code>
        */
       public Builder clearTopFrameInfo() {
-        if (topFrameInfoBuilder_ == null) {
-          topFrameInfo_ = null;
-          onChanged();
-        } else {
-          topFrameInfoBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        topFrameInfo_ = null;
+        if (topFrameInfoBuilder_ != null) {
+          topFrameInfoBuilder_.dispose();
+          topFrameInfoBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1086,11 +1041,6 @@ private static final long serialVersionUID = 0L;
       return new GradleExceptionStackFrameInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleFailureDetails_GradleExceptionStackFrameInfo_descriptor;
@@ -1106,7 +1056,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int CLASS_NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object className_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object className_ = "";
     /**
      * <code>optional string class_name = 1;</code>
      * @return Whether the className field is set.
@@ -1154,7 +1105,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int METHOD_NAME_FIELD_NUMBER = 2;
-    private volatile java.lang.Object methodName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object methodName_ = "";
     /**
      * <code>optional string method_name = 2;</code>
      * @return Whether the methodName field is set.
@@ -1202,7 +1154,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FILE_NAME_FIELD_NUMBER = 3;
-    private volatile java.lang.Object fileName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object fileName_ = "";
     /**
      * <code>optional string file_name = 3;</code>
      * @return Whether the fileName field is set.
@@ -1250,7 +1203,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LINE_NUMBER_FIELD_NUMBER = 4;
-    private int lineNumber_;
+    private int lineNumber_ = 0;
     /**
      * <code>optional int32 line_number = 4;</code>
      * @return Whether the lineNumber field is set.
@@ -1269,7 +1222,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FRAME_INDEX_FIELD_NUMBER = 5;
-    private int frameIndex_;
+    private int frameIndex_ = 0;
     /**
      * <pre>
      * The index of the frame in the stack trace array.
@@ -1554,16 +1507,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         className_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         methodName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         fileName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
         lineNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         frameIndex_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1590,20 +1539,26 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo buildPartial() {
         com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo result = new com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.className_ = className_;
           to_bitField0_ |= 0x00000001;
         }
-        result.className_ = className_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.methodName_ = methodName_;
           to_bitField0_ |= 0x00000002;
         }
-        result.methodName_ = methodName_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.fileName_ = fileName_;
           to_bitField0_ |= 0x00000004;
         }
-        result.fileName_ = fileName_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.lineNumber_ = lineNumber_;
           to_bitField0_ |= 0x00000008;
@@ -1612,43 +1567,9 @@ private static final long serialVersionUID = 0L;
           result.frameIndex_ = frameIndex_;
           to_bitField0_ |= 0x00000010;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo) {
@@ -1662,18 +1583,18 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo other) {
         if (other == com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionStackFrameInfo.getDefaultInstance()) return this;
         if (other.hasClassName()) {
-          bitField0_ |= 0x00000001;
           className_ = other.className_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasMethodName()) {
-          bitField0_ |= 0x00000002;
           methodName_ = other.methodName_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasFileName()) {
-          bitField0_ |= 0x00000004;
           fileName_ = other.fileName_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (other.hasLineNumber()) {
@@ -1800,11 +1721,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setClassName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         className_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1813,8 +1732,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearClassName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         className_ = getDefaultInstance().getClassName();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1825,11 +1744,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setClassNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         className_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1884,11 +1801,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setMethodName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         methodName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1897,8 +1812,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearMethodName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         methodName_ = getDefaultInstance().getMethodName();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1909,11 +1824,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setMethodNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         methodName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1968,11 +1881,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setFileName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         fileName_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1981,8 +1892,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearFileName() {
-        bitField0_ = (bitField0_ & ~0x00000004);
         fileName_ = getDefaultInstance().getFileName();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -1993,11 +1904,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setFileNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         fileName_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2025,8 +1934,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLineNumber(int value) {
-        bitField0_ |= 0x00000008;
+
         lineNumber_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -2076,8 +1986,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFrameIndex(int value) {
-        bitField0_ |= 0x00000010;
+
         frameIndex_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -2216,11 +2127,6 @@ private static final long serialVersionUID = 0L;
       return new GradleErrorInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleFailureDetails_GradleErrorInfo_descriptor;
@@ -2235,6 +2141,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int EXCEPTIONS_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleExceptionInfo> exceptions_;
     /**
      * <code>repeated .android_studio.GradleFailureDetails.GradleExceptionInfo exceptions = 1;</code>
@@ -2470,6 +2377,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (exceptionsBuilder_ == null) {
           exceptions_ = java.util.Collections.emptyList();
         } else {
@@ -2503,7 +2411,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo buildPartial() {
         com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo result = new com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo result) {
         if (exceptionsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             exceptions_ = java.util.Collections.unmodifiableList(exceptions_);
@@ -2513,42 +2427,12 @@ private static final long serialVersionUID = 0L;
         } else {
           result.exceptions_ = exceptionsBuilder_.build();
         }
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo) {
@@ -2947,6 +2831,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERRORS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleFailureDetails.GradleErrorInfo> errors_;
   /**
    * <code>repeated .android_studio.GradleFailureDetails.GradleErrorInfo errors = 1;</code>
@@ -3182,6 +3067,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (errorsBuilder_ == null) {
         errors_ = java.util.Collections.emptyList();
       } else {
@@ -3215,7 +3101,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleFailureDetails buildPartial() {
       com.google.wireless.android.sdk.stats.GradleFailureDetails result = new com.google.wireless.android.sdk.stats.GradleFailureDetails(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleFailureDetails result) {
       if (errorsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           errors_ = java.util.Collections.unmodifiableList(errors_);
@@ -3225,42 +3117,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.errors_ = errorsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleFailureDetails result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleFailureDetails) {

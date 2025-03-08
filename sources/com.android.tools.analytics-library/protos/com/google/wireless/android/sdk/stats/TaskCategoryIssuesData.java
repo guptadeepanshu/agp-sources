@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new TaskCategoryIssuesData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskCategoryIssuesData_descriptor;
@@ -168,14 +163,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPORTED_ISSUES_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> reportedIssues_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue> reportedIssues_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue>() {
             public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue result = com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue.valueOf(from);
+              com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue result = com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.TaskCategoryIssuesData.TaskCategoryIssue.UNKNOWN_ISSUE : result;
             }
           };
@@ -409,6 +404,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       reportedIssues_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000001);
       return this;
@@ -437,48 +433,24 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskCategoryIssuesData buildPartial() {
       com.google.wireless.android.sdk.stats.TaskCategoryIssuesData result = new com.google.wireless.android.sdk.stats.TaskCategoryIssuesData(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         reportedIssues_ = java.util.Collections.unmodifiableList(reportedIssues_);
         bitField0_ = (bitField0_ & ~0x00000001);
       }
       result.reportedIssues_ = reportedIssues_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.TaskCategoryIssuesData result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.TaskCategoryIssuesData) {

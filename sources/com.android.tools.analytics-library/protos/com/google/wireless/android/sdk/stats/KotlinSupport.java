@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new KotlinSupport();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_KotlinSupport_descriptor;
@@ -51,7 +46,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int INCLUDE_KOTLIN_SUPPORT_FIELD_NUMBER = 1;
-  private boolean includeKotlinSupport_;
+  private boolean includeKotlinSupport_ = false;
   /**
    * <pre>
    * True if "Include Kotlin Support" option checked
@@ -82,7 +77,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_SUPPORT_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object kotlinSupportVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinSupportVersion_ = "";
   /**
    * <pre>
    * Kotlin version used, e.g. "1.1.3-2".
@@ -142,7 +138,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ANDROID_KTX_VERSION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object androidKtxVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object androidKtxVersion_ = "";
   /**
    * <pre>
    * Android Ktx version used, e.g. "1.0.0".
@@ -429,12 +426,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       includeKotlinSupport_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       kotlinSupportVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       androidKtxVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -461,6 +456,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinSupport buildPartial() {
       com.google.wireless.android.sdk.stats.KotlinSupport result = new com.google.wireless.android.sdk.stats.KotlinSupport(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.KotlinSupport result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -468,50 +469,16 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.kotlinSupportVersion_ = kotlinSupportVersion_;
         to_bitField0_ |= 0x00000002;
       }
-      result.kotlinSupportVersion_ = kotlinSupportVersion_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.androidKtxVersion_ = androidKtxVersion_;
         to_bitField0_ |= 0x00000004;
       }
-      result.androidKtxVersion_ = androidKtxVersion_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.KotlinSupport) {
@@ -528,13 +495,13 @@ private static final long serialVersionUID = 0L;
         setIncludeKotlinSupport(other.getIncludeKotlinSupport());
       }
       if (other.hasKotlinSupportVersion()) {
-        bitField0_ |= 0x00000002;
         kotlinSupportVersion_ = other.kotlinSupportVersion_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasAndroidKtxVersion()) {
-        bitField0_ |= 0x00000004;
         androidKtxVersion_ = other.androidKtxVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -636,8 +603,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncludeKotlinSupport(boolean value) {
-      bitField0_ |= 0x00000001;
+
       includeKotlinSupport_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -724,11 +692,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinSupportVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       kotlinSupportVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -741,8 +707,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinSupportVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       kotlinSupportVersion_ = getDefaultInstance().getKotlinSupportVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -757,11 +723,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinSupportVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       kotlinSupportVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -832,11 +796,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAndroidKtxVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       androidKtxVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -849,8 +811,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAndroidKtxVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       androidKtxVersion_ = getDefaultInstance().getAndroidKtxVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -865,11 +827,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAndroidKtxVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       androidKtxVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

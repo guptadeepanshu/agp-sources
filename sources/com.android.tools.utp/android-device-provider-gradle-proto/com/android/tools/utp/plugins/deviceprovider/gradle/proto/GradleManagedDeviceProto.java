@@ -217,11 +217,6 @@ public final class GradleManagedDeviceProto {
       return new GradleManagedDeviceConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.internal_static_com_android_tools_utp_plugins_deviceprovider_gradle_proto_GradleManagedDeviceConfig_descriptor;
@@ -235,6 +230,7 @@ public final class GradleManagedDeviceProto {
               com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.class, com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.Builder.class);
     }
 
+    private int bitField0_;
     public static final int AVD_FOLDER_FIELD_NUMBER = 1;
     private com.google.protobuf.Any avdFolder_;
     /**
@@ -249,7 +245,7 @@ public final class GradleManagedDeviceProto {
      */
     @java.lang.Override
     public boolean hasAvdFolder() {
-      return avdFolder_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -276,11 +272,12 @@ public final class GradleManagedDeviceProto {
      */
     @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getAvdFolderOrBuilder() {
-      return getAvdFolder();
+      return avdFolder_ == null ? com.google.protobuf.Any.getDefaultInstance() : avdFolder_;
     }
 
     public static final int AVD_NAME_FIELD_NUMBER = 2;
-    private volatile java.lang.Object avdName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object avdName_ = "";
     /**
      * <pre>
      * Name of the android virtual device to be run from the given avd_folder.
@@ -326,7 +323,8 @@ public final class GradleManagedDeviceProto {
     }
 
     public static final int AVD_ID_FIELD_NUMBER = 3;
-    private volatile java.lang.Object avdId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object avdId_ = "";
     /**
      * <pre>
      * A unique identifier supplied by the Gradle Plugin for android to
@@ -376,7 +374,7 @@ public final class GradleManagedDeviceProto {
     }
 
     public static final int ENABLE_DISPLAY_FIELD_NUMBER = 4;
-    private boolean enableDisplay_;
+    private boolean enableDisplay_ = false;
     /**
      * <pre>
      * Enables the device to be displayed to the user.
@@ -403,7 +401,7 @@ public final class GradleManagedDeviceProto {
      */
     @java.lang.Override
     public boolean hasEmulatorPath() {
-      return emulatorPath_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -428,11 +426,12 @@ public final class GradleManagedDeviceProto {
      */
     @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getEmulatorPathOrBuilder() {
-      return getEmulatorPath();
+      return emulatorPath_ == null ? com.google.protobuf.Any.getDefaultInstance() : emulatorPath_;
     }
 
     public static final int GRADLE_DSL_DEVICE_NAME_FIELD_NUMBER = 6;
-    private volatile java.lang.Object gradleDslDeviceName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object gradleDslDeviceName_ = "";
     /**
      * <pre>
      * The name of the Managed Device as provided from the dsl.
@@ -478,7 +477,8 @@ public final class GradleManagedDeviceProto {
     }
 
     public static final int EMULATOR_GPU_FIELD_NUMBER = 7;
-    private volatile java.lang.Object emulatorGpu_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object emulatorGpu_ = "";
     /**
      * <pre>
      * The gpu value passed to the emulator executable to create the managed
@@ -526,7 +526,7 @@ public final class GradleManagedDeviceProto {
     }
 
     public static final int SHOW_EMULATOR_KERNEL_LOGGING_FIELD_NUMBER = 8;
-    private boolean showEmulatorKernelLogging_;
+    private boolean showEmulatorKernelLogging_ = false;
     /**
      * <pre>
      * When enabled, "-verbose" and "-show-kernel" emulator options are added.
@@ -554,7 +554,7 @@ public final class GradleManagedDeviceProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (avdFolder_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(1, getAvdFolder());
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(avdName_)) {
@@ -566,7 +566,7 @@ public final class GradleManagedDeviceProto {
       if (enableDisplay_ != false) {
         output.writeBool(4, enableDisplay_);
       }
-      if (emulatorPath_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(5, getEmulatorPath());
       }
       if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(gradleDslDeviceName_)) {
@@ -587,7 +587,7 @@ public final class GradleManagedDeviceProto {
       if (size != -1) return size;
 
       size = 0;
-      if (avdFolder_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getAvdFolder());
       }
@@ -601,7 +601,7 @@ public final class GradleManagedDeviceProto {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, enableDisplay_);
       }
-      if (emulatorPath_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getEmulatorPath());
       }
@@ -734,11 +734,13 @@ public final class GradleManagedDeviceProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -806,41 +808,41 @@ public final class GradleManagedDeviceProto {
 
       // Construct using com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getAvdFolderFieldBuilder();
+          getEmulatorPathFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (avdFolderBuilder_ == null) {
-          avdFolder_ = null;
-        } else {
-          avdFolder_ = null;
+        bitField0_ = 0;
+        avdFolder_ = null;
+        if (avdFolderBuilder_ != null) {
+          avdFolderBuilder_.dispose();
           avdFolderBuilder_ = null;
         }
         avdName_ = "";
-
         avdId_ = "";
-
         enableDisplay_ = false;
-
-        if (emulatorPathBuilder_ == null) {
-          emulatorPath_ = null;
-        } else {
-          emulatorPath_ = null;
+        emulatorPath_ = null;
+        if (emulatorPathBuilder_ != null) {
+          emulatorPathBuilder_.dispose();
           emulatorPathBuilder_ = null;
         }
         gradleDslDeviceName_ = "";
-
         emulatorGpu_ = "";
-
         showEmulatorKernelLogging_ = false;
-
         return this;
       }
 
@@ -867,24 +869,45 @@ public final class GradleManagedDeviceProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig buildPartial() {
         com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig result = new com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig(this);
-        if (avdFolderBuilder_ == null) {
-          result.avdFolder_ = avdFolder_;
-        } else {
-          result.avdFolder_ = avdFolderBuilder_.build();
-        }
-        result.avdName_ = avdName_;
-        result.avdId_ = avdId_;
-        result.enableDisplay_ = enableDisplay_;
-        if (emulatorPathBuilder_ == null) {
-          result.emulatorPath_ = emulatorPath_;
-        } else {
-          result.emulatorPath_ = emulatorPathBuilder_.build();
-        }
-        result.gradleDslDeviceName_ = gradleDslDeviceName_;
-        result.emulatorGpu_ = emulatorGpu_;
-        result.showEmulatorKernelLogging_ = showEmulatorKernelLogging_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.avdFolder_ = avdFolderBuilder_ == null
+              ? avdFolder_
+              : avdFolderBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.avdName_ = avdName_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.avdId_ = avdId_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.enableDisplay_ = enableDisplay_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.emulatorPath_ = emulatorPathBuilder_ == null
+              ? emulatorPath_
+              : emulatorPathBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.gradleDslDeviceName_ = gradleDslDeviceName_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.emulatorGpu_ = emulatorGpu_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.showEmulatorKernelLogging_ = showEmulatorKernelLogging_;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -936,10 +959,12 @@ public final class GradleManagedDeviceProto {
         }
         if (!other.getAvdName().isEmpty()) {
           avdName_ = other.avdName_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (!other.getAvdId().isEmpty()) {
           avdId_ = other.avdId_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (other.getEnableDisplay() != false) {
@@ -950,10 +975,12 @@ public final class GradleManagedDeviceProto {
         }
         if (!other.getGradleDslDeviceName().isEmpty()) {
           gradleDslDeviceName_ = other.gradleDslDeviceName_;
+          bitField0_ |= 0x00000020;
           onChanged();
         }
         if (!other.getEmulatorGpu().isEmpty()) {
           emulatorGpu_ = other.emulatorGpu_;
+          bitField0_ |= 0x00000040;
           onChanged();
         }
         if (other.getShowEmulatorKernelLogging() != false) {
@@ -989,44 +1016,44 @@ public final class GradleManagedDeviceProto {
                 input.readMessage(
                     getAvdFolderFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 avdName_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 avdId_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 32: {
                 enableDisplay_ = input.readBool();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 32
               case 42: {
                 input.readMessage(
                     getEmulatorPathFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               case 50: {
                 gradleDslDeviceName_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 58: {
                 emulatorGpu_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 58
               case 64: {
                 showEmulatorKernelLogging_ = input.readBool();
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 64
               default: {
@@ -1044,6 +1071,7 @@ public final class GradleManagedDeviceProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.google.protobuf.Any avdFolder_;
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1059,7 +1087,7 @@ public final class GradleManagedDeviceProto {
        * @return Whether the avdFolder field is set.
        */
       public boolean hasAvdFolder() {
-        return avdFolderBuilder_ != null || avdFolder_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -1093,11 +1121,11 @@ public final class GradleManagedDeviceProto {
             throw new NullPointerException();
           }
           avdFolder_ = value;
-          onChanged();
         } else {
           avdFolderBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1113,11 +1141,11 @@ public final class GradleManagedDeviceProto {
           com.google.protobuf.Any.Builder builderForValue) {
         if (avdFolderBuilder_ == null) {
           avdFolder_ = builderForValue.build();
-          onChanged();
         } else {
           avdFolderBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1131,17 +1159,20 @@ public final class GradleManagedDeviceProto {
        */
       public Builder mergeAvdFolder(com.google.protobuf.Any value) {
         if (avdFolderBuilder_ == null) {
-          if (avdFolder_ != null) {
-            avdFolder_ =
-              com.google.protobuf.Any.newBuilder(avdFolder_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000001) != 0) &&
+            avdFolder_ != null &&
+            avdFolder_ != com.google.protobuf.Any.getDefaultInstance()) {
+            getAvdFolderBuilder().mergeFrom(value);
           } else {
             avdFolder_ = value;
           }
-          onChanged();
         } else {
           avdFolderBuilder_.mergeFrom(value);
         }
-
+        if (avdFolder_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -1154,14 +1185,13 @@ public final class GradleManagedDeviceProto {
        * <code>.google.protobuf.Any avd_folder = 1;</code>
        */
       public Builder clearAvdFolder() {
-        if (avdFolderBuilder_ == null) {
-          avdFolder_ = null;
-          onChanged();
-        } else {
-          avdFolder_ = null;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        avdFolder_ = null;
+        if (avdFolderBuilder_ != null) {
+          avdFolderBuilder_.dispose();
           avdFolderBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -1174,7 +1204,7 @@ public final class GradleManagedDeviceProto {
        * <code>.google.protobuf.Any avd_folder = 1;</code>
        */
       public com.google.protobuf.Any.Builder getAvdFolderBuilder() {
-        
+        bitField0_ |= 0x00000001;
         onChanged();
         return getAvdFolderFieldBuilder().getBuilder();
       }
@@ -1271,11 +1301,9 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setAvdName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         avdName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1288,8 +1316,8 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearAvdName() {
-        
         avdName_ = getDefaultInstance().getAvdName();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1304,12 +1332,10 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setAvdNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         avdName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1373,11 +1399,9 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setAvdId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         avdId_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1392,8 +1416,8 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearAvdId() {
-        
         avdId_ = getDefaultInstance().getAvdId();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -1410,12 +1434,10 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setAvdIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         avdId_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1443,8 +1465,9 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder setEnableDisplay(boolean value) {
-        
+
         enableDisplay_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1457,7 +1480,7 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearEnableDisplay() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         enableDisplay_ = false;
         onChanged();
         return this;
@@ -1476,7 +1499,7 @@ public final class GradleManagedDeviceProto {
        * @return Whether the emulatorPath field is set.
        */
       public boolean hasEmulatorPath() {
-        return emulatorPathBuilder_ != null || emulatorPath_ != null;
+        return ((bitField0_ & 0x00000010) != 0);
       }
       /**
        * <pre>
@@ -1508,11 +1531,11 @@ public final class GradleManagedDeviceProto {
             throw new NullPointerException();
           }
           emulatorPath_ = value;
-          onChanged();
         } else {
           emulatorPathBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -1527,11 +1550,11 @@ public final class GradleManagedDeviceProto {
           com.google.protobuf.Any.Builder builderForValue) {
         if (emulatorPathBuilder_ == null) {
           emulatorPath_ = builderForValue.build();
-          onChanged();
         } else {
           emulatorPathBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -1544,17 +1567,20 @@ public final class GradleManagedDeviceProto {
        */
       public Builder mergeEmulatorPath(com.google.protobuf.Any value) {
         if (emulatorPathBuilder_ == null) {
-          if (emulatorPath_ != null) {
-            emulatorPath_ =
-              com.google.protobuf.Any.newBuilder(emulatorPath_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000010) != 0) &&
+            emulatorPath_ != null &&
+            emulatorPath_ != com.google.protobuf.Any.getDefaultInstance()) {
+            getEmulatorPathBuilder().mergeFrom(value);
           } else {
             emulatorPath_ = value;
           }
-          onChanged();
         } else {
           emulatorPathBuilder_.mergeFrom(value);
         }
-
+        if (emulatorPath_ != null) {
+          bitField0_ |= 0x00000010;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -1566,14 +1592,13 @@ public final class GradleManagedDeviceProto {
        * <code>.google.protobuf.Any emulator_path = 5;</code>
        */
       public Builder clearEmulatorPath() {
-        if (emulatorPathBuilder_ == null) {
-          emulatorPath_ = null;
-          onChanged();
-        } else {
-          emulatorPath_ = null;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        emulatorPath_ = null;
+        if (emulatorPathBuilder_ != null) {
+          emulatorPathBuilder_.dispose();
           emulatorPathBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -1585,7 +1610,7 @@ public final class GradleManagedDeviceProto {
        * <code>.google.protobuf.Any emulator_path = 5;</code>
        */
       public com.google.protobuf.Any.Builder getEmulatorPathBuilder() {
-        
+        bitField0_ |= 0x00000010;
         onChanged();
         return getEmulatorPathFieldBuilder().getBuilder();
       }
@@ -1680,11 +1705,9 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setGradleDslDeviceName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         gradleDslDeviceName_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1697,8 +1720,8 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearGradleDslDeviceName() {
-        
         gradleDslDeviceName_ = getDefaultInstance().getGradleDslDeviceName();
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
@@ -1713,12 +1736,10 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setGradleDslDeviceNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         gradleDslDeviceName_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1779,11 +1800,9 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setEmulatorGpu(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         emulatorGpu_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1797,8 +1816,8 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorGpu() {
-        
         emulatorGpu_ = getDefaultInstance().getEmulatorGpu();
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
@@ -1814,12 +1833,10 @@ public final class GradleManagedDeviceProto {
        */
       public Builder setEmulatorGpuBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         emulatorGpu_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1847,8 +1864,9 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder setShowEmulatorKernelLogging(boolean value) {
-        
+
         showEmulatorKernelLogging_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1861,7 +1879,7 @@ public final class GradleManagedDeviceProto {
        * @return This builder for chaining.
        */
       public Builder clearShowEmulatorKernelLogging() {
-        
+        bitField0_ = (bitField0_ & ~0x00000080);
         showEmulatorKernelLogging_ = false;
         onChanged();
         return this;

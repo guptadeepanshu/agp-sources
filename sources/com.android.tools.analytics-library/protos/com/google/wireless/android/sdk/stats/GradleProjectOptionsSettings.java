@@ -6,8 +6,10 @@ package com.google.wireless.android.sdk.stats;
 /**
  * <pre>
  * Configuration flags for the gradle plugin.
+ *
  * These are set by studio when invoking the gradle plugin, or manually by the
  * end user.
+ *
  * The Android Gradle Plugin will only report options that are explicitly set.
  * See tools/analytics-library/protos/src/main/proto/analytics_enums.proto for
  * the enums for these option classes.
@@ -42,11 +44,6 @@ private static final long serialVersionUID = 0L;
     return new GradleProjectOptionsSettings();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleProjectOptionsSettings_descriptor;
@@ -61,6 +58,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRUE_BOOLEAN_OPTIONS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList trueBooleanOptions_;
   /**
    * <pre>
@@ -115,6 +113,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FALSE_BOOLEAN_OPTIONS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList falseBooleanOptions_;
   /**
    * <pre>
@@ -157,6 +156,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRUE_OPTIONAL_BOOLEAN_OPTIONS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList trueOptionalBooleanOptions_;
   /**
    * <pre>
@@ -205,6 +205,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FALSE_OPTIONAL_BOOLEAN_OPTIONS_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList falseOptionalBooleanOptions_;
   /**
    * <pre>
@@ -247,6 +248,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INTEGER_OPTION_VALUES_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry> integerOptionValues_;
   /**
    * <pre>
@@ -317,6 +319,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LONG_OPTIONS_FIELD_NUMBER = 6;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList longOptions_;
   /**
    * <pre>
@@ -362,6 +365,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int STRING_OPTIONS_FIELD_NUMBER = 7;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList stringOptions_;
   /**
    * <pre>
@@ -410,6 +414,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_PROPERTY_KEYS_FIELD_NUMBER = 8;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList modulePropertyKeys_;
   /**
    * <pre>
@@ -740,8 +745,10 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * Configuration flags for the gradle plugin.
+   *
    * These are set by studio when invoking the gradle plugin, or manually by the
    * end user.
+   *
    * The Android Gradle Plugin will only report options that are explicitly set.
    * See tools/analytics-library/protos/src/main/proto/analytics_enums.proto for
    * the enums for these option classes.
@@ -779,14 +786,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       trueBooleanOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000001);
       falseBooleanOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000002);
       trueOptionalBooleanOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000004);
       falseOptionalBooleanOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000008);
       if (integerOptionValuesBuilder_ == null) {
         integerOptionValues_ = java.util.Collections.emptyList();
       } else {
@@ -795,11 +799,8 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000010);
       longOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000020);
       stringOptions_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000040);
       modulePropertyKeys_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -826,7 +827,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings buildPartial() {
       com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings result = new com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         trueBooleanOptions_.makeImmutable();
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -871,42 +878,12 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
       }
       result.modulePropertyKeys_ = modulePropertyKeys_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings) {
@@ -1188,7 +1165,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000001) != 0)) {
         trueBooleanOptions_ = mutableCopy(trueBooleanOptions_);
         bitField0_ |= 0x00000001;
-       }
+      }
     }
     /**
      * <pre>
@@ -1258,6 +1235,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTrueBooleanOptions(
         int index, int value) {
+
       ensureTrueBooleanOptionsIsMutable();
       trueBooleanOptions_.setInt(index, value);
       onChanged();
@@ -1278,6 +1256,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addTrueBooleanOptions(int value) {
+
       ensureTrueBooleanOptionsIsMutable();
       trueBooleanOptions_.addInt(value);
       onChanged();
@@ -1330,7 +1309,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000002) != 0)) {
         falseBooleanOptions_ = mutableCopy(falseBooleanOptions_);
         bitField0_ |= 0x00000002;
-       }
+      }
     }
     /**
      * <pre>
@@ -1384,6 +1363,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFalseBooleanOptions(
         int index, int value) {
+
       ensureFalseBooleanOptionsIsMutable();
       falseBooleanOptions_.setInt(index, value);
       onChanged();
@@ -1400,6 +1380,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addFalseBooleanOptions(int value) {
+
       ensureFalseBooleanOptionsIsMutable();
       falseBooleanOptions_.addInt(value);
       onChanged();
@@ -1444,7 +1425,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000004) != 0)) {
         trueOptionalBooleanOptions_ = mutableCopy(trueOptionalBooleanOptions_);
         bitField0_ |= 0x00000004;
-       }
+      }
     }
     /**
      * <pre>
@@ -1506,6 +1487,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTrueOptionalBooleanOptions(
         int index, int value) {
+
       ensureTrueOptionalBooleanOptionsIsMutable();
       trueOptionalBooleanOptions_.setInt(index, value);
       onChanged();
@@ -1524,6 +1506,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addTrueOptionalBooleanOptions(int value) {
+
       ensureTrueOptionalBooleanOptionsIsMutable();
       trueOptionalBooleanOptions_.addInt(value);
       onChanged();
@@ -1572,7 +1555,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000008) != 0)) {
         falseOptionalBooleanOptions_ = mutableCopy(falseOptionalBooleanOptions_);
         bitField0_ |= 0x00000008;
-       }
+      }
     }
     /**
      * <pre>
@@ -1626,6 +1609,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFalseOptionalBooleanOptions(
         int index, int value) {
+
       ensureFalseOptionalBooleanOptionsIsMutable();
       falseOptionalBooleanOptions_.setInt(index, value);
       onChanged();
@@ -1642,6 +1626,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addFalseOptionalBooleanOptions(int value) {
+
       ensureFalseOptionalBooleanOptionsIsMutable();
       falseOptionalBooleanOptions_.addInt(value);
       onChanged();
@@ -2034,7 +2019,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000020) != 0)) {
         longOptions_ = mutableCopy(longOptions_);
         bitField0_ |= 0x00000020;
-       }
+      }
     }
     /**
      * <pre>
@@ -2092,6 +2077,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLongOptions(
         int index, int value) {
+
       ensureLongOptionsIsMutable();
       longOptions_.setInt(index, value);
       onChanged();
@@ -2109,6 +2095,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addLongOptions(int value) {
+
       ensureLongOptionsIsMutable();
       longOptions_.addInt(value);
       onChanged();
@@ -2155,7 +2142,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000040) != 0)) {
         stringOptions_ = mutableCopy(stringOptions_);
         bitField0_ |= 0x00000040;
-       }
+      }
     }
     /**
      * <pre>
@@ -2217,6 +2204,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setStringOptions(
         int index, int value) {
+
       ensureStringOptionsIsMutable();
       stringOptions_.setInt(index, value);
       onChanged();
@@ -2235,6 +2223,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addStringOptions(int value) {
+
       ensureStringOptionsIsMutable();
       stringOptions_.addInt(value);
       onChanged();
@@ -2283,7 +2272,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000080) != 0)) {
         modulePropertyKeys_ = mutableCopy(modulePropertyKeys_);
         bitField0_ |= 0x00000080;
-       }
+      }
     }
     /**
      * <pre>
@@ -2341,6 +2330,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModulePropertyKeys(
         int index, int value) {
+
       ensureModulePropertyKeysIsMutable();
       modulePropertyKeys_.setInt(index, value);
       onChanged();
@@ -2358,6 +2348,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addModulePropertyKeys(int value) {
+
       ensureModulePropertyKeysIsMutable();
       modulePropertyKeys_.addInt(value);
       onChanged();

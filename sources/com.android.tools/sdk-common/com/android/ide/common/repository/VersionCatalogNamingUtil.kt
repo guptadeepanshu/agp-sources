@@ -22,6 +22,9 @@ import java.util.TreeSet
 
 private fun Dependency.isAndroidX(): Boolean = group?.startsWith("androidx.") ?: false
 
+private infix fun ((String) -> String).compose(second: (String) -> String) = { arg: String ->
+    second(this(arg)) }
+
 /**
  * Pick name with next steps. Each step generates name and check whether it
  * exists in reserved set where comparison is done in case-insensitive way.
@@ -47,7 +50,7 @@ fun pickLibraryVariableName(
     val reserved = TreeSet(String.CASE_INSENSITIVE_ORDER)
     reserved.addAll(caseSensitiveReserved)
 
-    val transform = getMaybeTransformToCamelCase(reserved)
+    val transform = getMaybeTransformToCamelCase(reserved) compose obfuscateReservedWords
 
     val versionIdentifier = dependency.version?.toIdentifier()
     val versionSuffix = when {
@@ -105,6 +108,20 @@ fun pickLibraryVariableName(
     }
 }
 
+private val obfuscateReservedWords: (String) -> String =
+    setOf(
+        "as", "as?", "break", "class", "continue", "do", "else", "false",
+        "for", "fun", "if", "in", "!in", "interface", "is", "!is",
+        "null", "object", "package", "return", "super", "this", "throw",
+        "true", "try", "typealias", "typeof", "val", "var", "when", "while"
+    ).let { set ->
+        { alias: String ->
+            if (!alias.contains("-")) alias
+            else alias.split("-")
+                .joinToString("-") { if (set.contains(it)) "${it}1" else it }
+        }
+    }
+
 private fun getMaybeTransformToCamelCase(reserved: Set<String>): (String) -> String {
     val (haveCamelCase, haveHyphen) = getAliasStyle(reserved)
     val camelCaseOutput = haveCamelCase && !haveHyphen
@@ -112,7 +129,7 @@ private fun getMaybeTransformToCamelCase(reserved: Set<String>): (String) -> Str
     return { alias ->
         val safeAlias = alias.toSafeHyphenKey()
         if (camelCaseOutput && safeAlias.contains("-")) {
-            CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, alias.toSafeHyphenKey())
+            CaseFormat.LOWER_HYPHEN.to(CaseFormat.LOWER_CAMEL, safeAlias)
         } else alias
     }
 }
@@ -147,7 +164,7 @@ fun pickPluginVariableName(
     val reserved = TreeSet(String.CASE_INSENSITIVE_ORDER)
     reserved.addAll(caseSensitiveReserved)
 
-    val transform = getMaybeTransformToCamelCase(reserved)
+    val transform = getMaybeTransformToCamelCase(reserved) compose obfuscateReservedWords
 
     val plugin = cutDomainPrefix(pluginId)
 
@@ -244,7 +261,7 @@ private fun cutDomainPrefix(group: String): String {
     val reserved = TreeSet(String.CASE_INSENSITIVE_ORDER)
     reserved.addAll(caseSensitiveReserved)
 
-    val transform = getMaybeTransformVersionToCamelCase(reserved)
+    val transform = getMaybeTransformVersionToCamelCase(reserved) compose obfuscateReservedWords
 
     if (reserved.isEmpty()) {
         return transform(artifact)
@@ -353,7 +370,7 @@ fun pickPluginVersionVariableName(
         return safeKey
     }
 
-    val transform = getMaybeTransformVersionToCamelCase(reserved)
+    val transform = getMaybeTransformVersionToCamelCase(reserved) compose obfuscateReservedWords
 
     if (reserved.isNotEmpty() && reserved.first().lowercase().endsWith("version")) {
         val withVersion = transform("${plugin}-version")

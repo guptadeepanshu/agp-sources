@@ -52,7 +52,8 @@ public interface AndroidProfilerEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.AndroidProfilerEvent.cpu_config is deprecated.
+   *     See studio_stats.proto;l=8089
    * @return Whether the cpuConfig field is set.
    */
   @java.lang.Deprecated boolean hasCpuConfig();
@@ -63,7 +64,8 @@ public interface AndroidProfilerEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.AndroidProfilerEvent.cpu_config is deprecated.
+   *     See studio_stats.proto;l=8089
    * @return The cpuConfig.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.CpuProfilingConfig getCpuConfig();

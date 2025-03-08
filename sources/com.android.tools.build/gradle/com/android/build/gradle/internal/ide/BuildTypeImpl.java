@@ -21,6 +21,7 @@ import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Immutable;
 import com.android.builder.model.BuildType;
 import com.android.builder.model.SigningConfig;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -53,7 +54,7 @@ final class BuildTypeImpl extends BaseConfigImpl implements BuildType, Serializa
         this.testCoverageEnabled = buildType.isTestCoverageEnabled();
         this.jniDebuggable = buildType.isJniDebuggable();
         this.pseudoLocalesEnabled = buildType.isPseudoLocalesEnabled();
-        this.renderscriptDebuggable = buildType.isRenderscriptDebuggable();
+        this.renderscriptDebuggable = false;
         this.renderscriptOptimLevel = buildType.getRenderscriptOptimLevel();
         this.versionNameSuffix = buildType.getVersionNameSuffix();
         this.minifyEnabled = buildType.isMinifyEnabled();

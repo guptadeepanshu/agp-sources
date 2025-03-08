@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new GradleCppSyncStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleCppSyncStats_descriptor;
@@ -151,11 +146,6 @@ private static final long serialVersionUID = 0L;
       return new NativeModuleStats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleCppSyncStats_NativeModuleStats_descriptor;
@@ -171,7 +161,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int C_SOURCE_FILE_COUNT_FIELD_NUMBER = 1;
-    private int cSourceFileCount_;
+    private int cSourceFileCount_ = 0;
     /**
      * <pre>
      * The total number of C files in this native module
@@ -198,7 +188,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CPP_SOURCE_FILE_COUNT_FIELD_NUMBER = 2;
-    private int cppSourceFileCount_;
+    private int cppSourceFileCount_ = 0;
     /**
      * <pre>
      * The total number of C++ files in this native module
@@ -225,7 +215,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DISTINCT_COMPILER_FLAG_LISTS_COUNT_FIELD_NUMBER = 3;
-    private int distinctCompilerFlagListsCount_;
+    private int distinctCompilerFlagListsCount_ = 0;
     /**
      * <pre>
      * The number of distinct compiler flags.
@@ -252,7 +242,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CIDR_CONFIGURATION_COUNT_FIELD_NUMBER = 4;
-    private int cidrConfigurationCount_;
+    private int cidrConfigurationCount_ = 0;
     /**
      * <pre>
      * The number of CIDR configurations created for this module.
@@ -519,14 +509,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         cSourceFileCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         cppSourceFileCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         distinctCompilerFlagListsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         cidrConfigurationCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -553,6 +540,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats buildPartial() {
         com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats result = new com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -571,43 +564,9 @@ private static final long serialVersionUID = 0L;
           result.cidrConfigurationCount_ = cidrConfigurationCount_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats) {
@@ -730,8 +689,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCSourceFileCount(int value) {
-        bitField0_ |= 0x00000001;
+
         cSourceFileCount_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -785,8 +745,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCppSourceFileCount(int value) {
-        bitField0_ |= 0x00000002;
+
         cppSourceFileCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -840,8 +801,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDistinctCompilerFlagListsCount(int value) {
-        bitField0_ |= 0x00000004;
+
         distinctCompilerFlagListsCount_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -895,8 +857,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCidrConfigurationCount(int value) {
-        bitField0_ |= 0x00000008;
+
         cidrConfigurationCount_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -980,7 +943,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int NATIVE_WORKSPACE_SYNC_TIME_MS_FIELD_NUMBER = 1;
-  private long nativeWorkspaceSyncTimeMs_;
+  private long nativeWorkspaceSyncTimeMs_ = 0L;
   /**
    * <pre>
    * The time it takes to sync native workspace after Gradle sync is completed.
@@ -1007,6 +970,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SYNCED_NATIVE_MODULE_STATS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats> syncedNativeModuleStats_;
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
@@ -1047,7 +1011,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CIDR_WORKSPACE_SIZE_FIELD_NUMBER = 3;
-  private int cidrWorkspaceSize_;
+  private int cidrWorkspaceSize_ = 0;
   /**
    * <pre>
    * The estimated memory footprint of the CIDR workspace. This value is
@@ -1303,8 +1267,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       nativeWorkspaceSyncTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (syncedNativeModuleStatsBuilder_ == null) {
         syncedNativeModuleStats_ = java.util.Collections.emptyList();
       } else {
@@ -1313,7 +1277,6 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000002);
       cidrWorkspaceSize_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1340,12 +1303,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleCppSyncStats buildPartial() {
       com.google.wireless.android.sdk.stats.GradleCppSyncStats result = new com.google.wireless.android.sdk.stats.GradleCppSyncStats(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.nativeWorkspaceSyncTimeMs_ = nativeWorkspaceSyncTimeMs_;
-        to_bitField0_ |= 0x00000001;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleCppSyncStats result) {
       if (syncedNativeModuleStatsBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0)) {
           syncedNativeModuleStats_ = java.util.Collections.unmodifiableList(syncedNativeModuleStats_);
@@ -1355,47 +1319,22 @@ private static final long serialVersionUID = 0L;
       } else {
         result.syncedNativeModuleStats_ = syncedNativeModuleStatsBuilder_.build();
       }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleCppSyncStats result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.nativeWorkspaceSyncTimeMs_ = nativeWorkspaceSyncTimeMs_;
+        to_bitField0_ |= 0x00000001;
+      }
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.cidrWorkspaceSize_ = cidrWorkspaceSize_;
         to_bitField0_ |= 0x00000002;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleCppSyncStats) {
@@ -1541,8 +1480,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNativeWorkspaceSyncTimeMs(long value) {
-      bitField0_ |= 0x00000001;
+
       nativeWorkspaceSyncTimeMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1839,8 +1779,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCidrWorkspaceSize(int value) {
-      bitField0_ |= 0x00000004;
+
       cidrWorkspaceSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

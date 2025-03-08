@@ -165,17 +165,18 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                     }
 
                 parameters.signingConfig.orNull?.resolve()?.let {
+                    val keyAlias = it.keyAlias!!
                     val certificateInfo =
                         KeystoreHelper.getCertificateInfo(
                             it.storeType,
                             it.storeFile!!,
                             it.storePassword!!,
                             it.keyPassword!!,
-                            it.keyAlias!!
+                            keyAlias
                         )
                     AabFlinger(
                         outputFile = parameters.finalBundleFile.asFile.get(),
-                        signerName = it.keyAlias.uppercase(Locale.US),
+                        signerName = keyAlias.uppercase(Locale.US),
                         privateKey = certificateInfo.key,
                         certificates = listOf(certificateInfo.certificate),
                         minSdkVersion = 18 // So that RSA + SHA256 are used
@@ -213,7 +214,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
 
             val bundleNameProvider =
-                projectServices.projectInfo.getProjectBaseName().map { "$it.aab" }
+                projectServices.projectInfo.getProjectBaseName().map { "$it${if (!isSigningReady) "-unsigned" else ""}.aab" }
             val location = SingleArtifact.BUNDLE.getOutputPath(artifacts.buildDirectory, "")
             artifacts.setInitialProvider(taskProvider, FinalizeBundleTask::finalBundleFile)
                 .atLocation(location.absolutePath)

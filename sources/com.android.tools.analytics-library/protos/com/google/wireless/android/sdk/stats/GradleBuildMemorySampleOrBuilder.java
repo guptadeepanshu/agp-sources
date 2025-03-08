@@ -15,7 +15,8 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildMemorySample.gc_time_ms is deprecated.
+   *     See studio_stats.proto;l=5089
    * @return Whether the gcTimeMs field is set.
    */
   @java.lang.Deprecated boolean hasGcTimeMs();
@@ -27,7 +28,8 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildMemorySample.gc_time_ms is deprecated.
+   *     See studio_stats.proto;l=5089
    * @return The gcTimeMs.
    */
   @java.lang.Deprecated long getGcTimeMs();
@@ -40,7 +42,8 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildMemorySample.gc_count is deprecated.
+   *     See studio_stats.proto;l=5094
    * @return Whether the gcCount field is set.
    */
   @java.lang.Deprecated boolean hasGcCount();
@@ -52,7 +55,8 @@ public interface GradleBuildMemorySampleOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildMemorySample.gc_count is deprecated.
+   *     See studio_stats.proto;l=5094
    * @return The gcCount.
    */
   @java.lang.Deprecated long getGcCount();

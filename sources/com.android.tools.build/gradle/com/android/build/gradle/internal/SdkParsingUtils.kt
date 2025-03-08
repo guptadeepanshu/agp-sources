@@ -17,15 +17,15 @@
 package com.android.build.gradle.internal
 
 import com.android.Version
+import com.android.build.gradle.internal.utils.ConsoleProgressIndicatorFactory
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.builder.errors.IssueReporter
+import com.android.ide.common.repository.AgpVersion
 import com.android.io.CancellableFileIo
 import com.android.repository.Revision
-import com.android.repository.api.ConsoleProgressIndicator
 import com.android.repository.api.LocalPackage
 import com.android.repository.api.Repository
 import com.android.repository.impl.meta.SchemaModuleUtil
-import com.android.sdklib.AndroidTargetHash.getPlatformHashString
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.BuildToolInfo
 import com.android.sdklib.OptionalLibrary
@@ -54,25 +54,12 @@ fun buildBuildTools(sdkDirectory: File, revision: Revision): BuildToolInfo? {
 /**
  * Load and parse a {@link LocalPackage} ('package.xml') file from the disk.
  */
-fun parsePackage(packageXml: File): LocalPackage? {
+fun parsePackage(packageXml: File, consoleProgressIndicatorFactory: ConsoleProgressIndicatorFactory): LocalPackage? {
     if (!packageXml.exists()) {
         return null
     }
 
-    val progress = object : ConsoleProgressIndicator() {
-        val prefix = "SDK processing. "
-        override fun logWarning(s: String, e: Throwable?) {
-            super.logWarning(prefix + s, e)
-        }
-
-        override fun logError(s: String, e: Throwable?) {
-            super.logError(prefix + s, e)
-        }
-
-        override fun logInfo(s: String) {
-            super.logInfo(prefix + s)
-        }
-    }
+    val progress = consoleProgressIndicatorFactory.create(prefix = "SDK processing. ")
 
     lateinit var repo: Repository
     try {
@@ -138,7 +125,7 @@ fun warnIfCompileSdkTooNew(version: AndroidVersion, issueReporter: IssueReporter
         version = version,
         issueReporter = issueReporter,
         maxVersion = ToolsRevisionUtils.MAX_RECOMMENDED_COMPILE_SDK_VERSION,
-        androidGradlePluginVersion = Version.ANDROID_GRADLE_PLUGIN_VERSION,
+        androidGradlePluginVersion = AgpVersion.parse(Version.ANDROID_GRADLE_PLUGIN_VERSION),
         suppressWarningIfTooNewForVersions = suppressWarningIfTooNewForVersions,
     )
 }
@@ -148,10 +135,13 @@ internal fun warnIfCompileSdkTooNew(
     version: AndroidVersion,
     issueReporter: IssueReporter,
     maxVersion: AndroidVersion,
-    androidGradlePluginVersion: String,
+    androidGradlePluginVersion: AgpVersion,
     suppressWarningIfTooNewForVersions: String? = null,
     ) {
     if (version.compareTo(maxVersion.apiLevel, maxVersion.codename) <= 0) return
+    // Don't warn about the next preview version when AGP is in dev/alpha
+    if (version.isPreview && version.apiLevel == maxVersion.apiLevel && !maxVersion.isPreview &&
+        (androidGradlePluginVersion.previewKind == AgpVersion.PreviewKind.ALPHA || androidGradlePluginVersion.previewKind == AgpVersion.PreviewKind.DEV)) return
     val suppressName = version.apiStringWithoutExtension
     val suppressSet = suppressWarningIfTooNewForVersions
         ?.splitToSequence(",")
@@ -161,7 +151,7 @@ internal fun warnIfCompileSdkTooNew(
     if (suppressSet.contains(suppressName)) return
 
     val currentCompileSdk = version.asDsl()
-    val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).asDsl() + (if (maxVersion.isPreview) " (and ${maxVersion.asDsl()})" else "")
+    val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).asDsl() + (if (maxVersion.isPreview && version.isPreview) " (and ${maxVersion.asDsl()})" else "")
     val preview = (if (version.isPreview) "preview " else "")
     val headline = if (version.isPreview) {
         "$currentCompileSdk has not been tested with this version of the Android Gradle plugin."

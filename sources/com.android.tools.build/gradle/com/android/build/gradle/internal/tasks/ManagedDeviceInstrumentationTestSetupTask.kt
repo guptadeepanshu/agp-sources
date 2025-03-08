@@ -39,6 +39,7 @@ import com.android.utils.osArchitecture
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.Internal
 import org.gradle.work.DisableCachingByDefault
 
@@ -72,10 +73,17 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
     abstract val abi: Property<String>
 
     @get: Input
-    abstract val apiLevel: Property<Int>
+    abstract val sdkVersion: Property<Int>
 
     @get: Input
     abstract val systemImageVendor: Property<String>
+
+    @get: Input
+    @get: Optional
+    abstract val sdkExtensionVersion: Property<Int>
+
+    @get: Input
+    abstract val pageAlignmentSuffix: Property<String>
 
     @get: Input
     abstract val hardwareProfile: Property<String>
@@ -95,19 +103,26 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         assertNoTvOrAuto()
 
         workerExecutor.noIsolation().submit(ManagedDeviceSetupRunnable::class.java) {
-            it.initializeWith(projectPath,  path, analyticsService)
+            it.initializeWith(projectPath, path, analyticsService)
             it.sdkService.set(sdkService)
             it.compileSdkVersion.set(compileSdkVersion)
             it.buildToolsRevision.set(buildToolsRevision)
             it.avdService.set(avdService)
             it.deviceName.set(
                 computeAvdName(
-                    apiLevel.get(), systemImageVendor.get(), abi.get(), hardwareProfile.get()))
+                    sdkVersion.get(),
+                    sdkExtensionVersion.orNull,
+                    systemImageVendor.get(),
+                    pageAlignmentSuffix.get(),
+                    abi.get(),
+                    hardwareProfile.get()))
             it.hardwareProfile.set(hardwareProfile)
             it.emulatorGpuFlag.set(emulatorGpuFlag)
             it.managedDeviceName.set(managedDeviceName)
             it.systemImageVendor.set(systemImageVendor)
-            it.apiLevel.set(apiLevel)
+            it.pageAlignmentSuffix.set(pageAlignmentSuffix)
+            it.sdkVersion.set(sdkVersion)
+            it.sdkExtensionVersion.set(sdkExtensionVersion)
             it.require64Bit.set(require64Bit)
             it.abi.set(abi)
         }
@@ -148,8 +163,10 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             if (!sdkImageProvider.isPresent) {
                 error(generateSystemImageErrorMessage(
                     parameters.managedDeviceName.get(),
-                    parameters.apiLevel.get(),
+                    parameters.sdkVersion.get(),
+                    parameters.sdkExtensionVersion.orNull,
                     parameters.systemImageVendor.get(),
+                    parameters.pageAlignmentSuffix.get(),
                     parameters.require64Bit.get(),
                     versionedSdkLoader))
             }
@@ -171,8 +188,10 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
 
         private fun computeImageHash(): String =
             computeSystemImageHashFromDsl(
-                parameters.apiLevel.get(),
+                parameters.sdkVersion.get(),
+                parameters.sdkExtensionVersion.orNull,
                 parameters.systemImageVendor.get(),
+                parameters.pageAlignmentSuffix.get(),
                 parameters.abi.get())
     }
 
@@ -186,7 +205,9 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         abstract val emulatorGpuFlag: Property<String>
         abstract val managedDeviceName: Property<String>
         abstract val systemImageVendor: Property<String>
-        abstract val apiLevel: Property<Int>
+        abstract val pageAlignmentSuffix: Property<String>
+        abstract val sdkVersion: Property<Int>
+        abstract val sdkExtensionVersion: Property<Int>
         abstract val require64Bit: Property<Boolean>
         abstract val abi: Property<String>
     }
@@ -194,7 +215,9 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
     class CreationAction(
         override val name: String,
         private val systemImageSource: String,
-        private val apiLevel: Int,
+        private val pageAlignmentSuffix: String,
+        private val sdkVersion: Int,
+        private val sdkExtensionVersion: Int?,
         private val abi: String,
         private val hardwareProfile: String,
         private val managedDeviceName: String,
@@ -209,7 +232,9 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         ): this(
             name,
             managedDevice.systemImageSource,
-            managedDevice.apiLevel,
+            managedDevice.pageAlignmentSuffix,
+            managedDevice.sdkVersion,
+            managedDevice.sdkExtensionVersion,
             computeAbiFromArchitecture(managedDevice),
             managedDevice.device,
             managedDevice.name,
@@ -231,7 +256,9 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             )
 
             task.systemImageVendor.setDisallowChanges(systemImageSource)
-            task.apiLevel.setDisallowChanges(apiLevel)
+            task.pageAlignmentSuffix.setDisallowChanges(pageAlignmentSuffix)
+            task.sdkVersion.setDisallowChanges(sdkVersion)
+            task.sdkExtensionVersion.setDisallowChanges(sdkExtensionVersion)
             task.abi.setDisallowChanges(abi)
             task.hardwareProfile.setDisallowChanges(hardwareProfile)
 
@@ -248,8 +275,10 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         @VisibleForTesting
         fun generateSystemImageErrorMessage(
             deviceName: String,
-            apiLevel: Int,
+            sdkVersion: Int,
+            extensionVersion: Int?,
             systemImageSource: String,
+            pageAlignmentSuffix: String,
             require64Bit: Boolean,
             versionedSdkLoader: VersionedSdkLoader
         ) : String {
@@ -266,8 +295,10 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             return ManagedDeviceImageSuggestionGenerator(
                 osArchitecture,
                 deviceName,
-                apiLevel,
+                sdkVersion,
+                extensionVersion,
                 systemImageSource,
+                pageAlignmentSuffix,
                 require64Bit,
                 allImages
             ).message

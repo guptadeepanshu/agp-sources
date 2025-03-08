@@ -28,11 +28,6 @@ private static final long serialVersionUID = 0L;
     return new SoongRunEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SoongRunEvent_descriptor;
@@ -162,7 +157,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int COMMAND_FIELD_NUMBER = 1;
-  private int command_;
+  private int command_ = 0;
   /**
    * <pre>
    * Run command
@@ -183,13 +178,13 @@ private static final long serialVersionUID = 0L;
    * @return The command.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SoongRunEvent.Command getCommand() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SoongRunEvent.Command result = com.google.wireless.android.sdk.stats.SoongRunEvent.Command.valueOf(command_);
+    com.google.wireless.android.sdk.stats.SoongRunEvent.Command result = com.google.wireless.android.sdk.stats.SoongRunEvent.Command.forNumber(command_);
     return result == null ? com.google.wireless.android.sdk.stats.SoongRunEvent.Command.UNKNOWN : result;
   }
 
   public static final int RUN_TARGET_FIELD_NUMBER = 2;
-  private volatile java.lang.Object runTarget_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object runTarget_ = "";
   /**
    * <pre>
    * Run target (if any)
@@ -249,7 +244,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LUNCH_TARGET_FIELD_NUMBER = 3;
-  private volatile java.lang.Object lunchTarget_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object lunchTarget_ = "";
   /**
    * <pre>
    * Lunch target
@@ -309,7 +305,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ON_DEVICE_FIELD_NUMBER = 4;
-  private boolean onDevice_;
+  private boolean onDevice_ = false;
   /**
    * <pre>
    * Whether or not command was run on a device (vs host)
@@ -574,14 +570,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       command_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       runTarget_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       lunchTarget_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       onDevice_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -608,61 +601,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SoongRunEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SoongRunEvent result = new com.google.wireless.android.sdk.stats.SoongRunEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.command_ = command_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.runTarget_ = runTarget_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.lunchTarget_ = lunchTarget_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.onDevice_ = onDevice_;
-        to_bitField0_ |= 0x00000008;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SoongRunEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.command_ = command_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.runTarget_ = runTarget_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.lunchTarget_ = lunchTarget_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.onDevice_ = onDevice_;
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SoongRunEvent) {
@@ -679,13 +644,13 @@ private static final long serialVersionUID = 0L;
         setCommand(other.getCommand());
       }
       if (other.hasRunTarget()) {
-        bitField0_ |= 0x00000002;
         runTarget_ = other.runTarget_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasLunchTarget()) {
-        bitField0_ |= 0x00000004;
         lunchTarget_ = other.lunchTarget_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasOnDevice()) {
@@ -783,8 +748,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SoongRunEvent.Command getCommand() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SoongRunEvent.Command result = com.google.wireless.android.sdk.stats.SoongRunEvent.Command.valueOf(command_);
+      com.google.wireless.android.sdk.stats.SoongRunEvent.Command result = com.google.wireless.android.sdk.stats.SoongRunEvent.Command.forNumber(command_);
       return result == null ? com.google.wireless.android.sdk.stats.SoongRunEvent.Command.UNKNOWN : result;
     }
     /**
@@ -886,11 +850,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRunTarget(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       runTarget_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -903,8 +865,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRunTarget() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       runTarget_ = getDefaultInstance().getRunTarget();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -919,11 +881,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRunTargetBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       runTarget_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -994,11 +954,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLunchTarget(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       lunchTarget_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1011,8 +969,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLunchTarget() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       lunchTarget_ = getDefaultInstance().getLunchTarget();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1027,11 +985,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLunchTargetBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       lunchTarget_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1071,8 +1027,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOnDevice(boolean value) {
-      bitField0_ |= 0x00000008;
+
       onDevice_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

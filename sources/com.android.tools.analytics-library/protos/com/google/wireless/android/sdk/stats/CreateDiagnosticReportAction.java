@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new CreateDiagnosticReportAction();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_CreateDiagnosticReportAction_descriptor;
@@ -151,7 +146,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTION_TYPE_FIELD_NUMBER = 1;
-  private int actionType_;
+  private int actionType_ = 0;
   /**
    * <pre>
    * Indicates which action the user took
@@ -172,8 +167,7 @@ private static final long serialVersionUID = 0L;
    * @return The actionType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType getActionType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType result = com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.valueOf(actionType_);
+    com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType result = com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.forNumber(actionType_);
     return result == null ? com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.UNKNOWN_ACTION_TYPE : result;
   }
 
@@ -369,8 +363,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       actionType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -397,49 +391,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction buildPartial() {
       com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction result = new com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.actionType_ = actionType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.actionType_ = actionType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction) {
@@ -532,8 +498,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType getActionType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType result = com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.valueOf(actionType_);
+      com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType result = com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.forNumber(actionType_);
       return result == null ? com.google.wireless.android.sdk.stats.CreateDiagnosticReportAction.ActionType.UNKNOWN_ACTION_TYPE : result;
     }
     /**

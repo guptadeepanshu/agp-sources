@@ -48,7 +48,9 @@ import org.gradle.api.provider.Provider
 const val NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED = false
 
 object FusedLibraryConstants {
+    const val EXTENSION_NAME = "androidFusedLibrary"
     const val INCLUDE_CONFIGURATION_NAME = "include"
+    const val VALIDATE_DEPENDENCIES_TASK_NAME = "validateDependencies"
 }
 
 internal fun createTasks(
@@ -180,36 +182,22 @@ internal fun Provider<Set<ModuleVersionIdentifier>>.toDependenciesProvider(
  */
 internal fun getFusedLibraryDependencyModuleVersionIdentifiers(
     sourceConfiguration: Configuration,
-    issueReporter: IssueReporter
 ) : Provider<Set<ModuleVersionIdentifier>> {
     return sourceConfiguration.incoming.resolutionResult.rootComponent.map { sourceRootComponent ->
         val dependenciesIncludedInFusedAar: Set<ModuleVersionIdentifier> =
             sourceRootComponent.dependencies
-                .map { (it as ResolvedDependencyResult).selected }
-                .mapNotNull(ResolvedComponentResult::getModuleVersion)
+                .map { (it as ResolvedDependencyResult).selected.moduleVersion
+                    ?: error("${it.selected} cannot have a null moduleVersion") }
                 .toSet()
 
-        val moduleVersionVersionIds = sourceConfiguration.incoming.resolutionResult.allComponents
+        sourceConfiguration.incoming.resolutionResult.allComponents
             // ResolvedComponentResult's subclasses don't define `equals()` methods so we need to
             // compare `ResolvedComponentResult`s through `ComponentIdentifier`s (which has `equals()`
             // defined in their subclasses).
             .asSequence()
-            .mapNotNull(ResolvedComponentResult::getModuleVersion)
+            .map(ResolvedComponentResult::getModuleVersion)
             .minus(dependenciesIncludedInFusedAar)
             .minus(sourceRootComponent.moduleVersion)
             .toSet() as Set<ModuleVersionIdentifier>
-
-        moduleVersionVersionIds.also {
-            it.forEach { it.validate(issueReporter) }
-        }
-    }
-}
-
-private fun ModuleVersionIdentifier.validate(issueReporter: IssueReporter) {
-    if (group in setOf("androidx.databinding", "com.android.databinding")) {
-        issueReporter.reportError(
-            IssueReporter.Type.GENERIC,
-                "Fused Library plugin does not allow dependencies with databinding."
-        )
     }
 }

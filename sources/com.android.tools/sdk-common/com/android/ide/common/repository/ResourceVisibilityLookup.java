@@ -19,14 +19,16 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.resources.ResourceType;
 import com.android.resources.ResourceUrl;
+
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Files;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -327,7 +329,7 @@ public abstract class ResourceVisibilityLookup {
             }
 
             try {
-                List<String> lines = Files.readLines(publicResources, Charsets.UTF_8);
+                List<String> lines = Files.readLines(publicResources, StandardCharsets.UTF_8);
                 Multimap<String, ResourceType> result = ArrayListMultimap.create(lines.size(), 2);
                 for (String line : lines) {
                     // These files are written by code in MergedResourceWriter#postWriteAction
@@ -444,7 +446,7 @@ public abstract class ResourceVisibilityLookup {
     private static Multimap<String, ResourceType> readSymbolFile(File symbolFile)
             throws IOException {
         List<String> lines =
-                Files.readLines(symbolFile, Charsets.UTF_8); // TODO: Switch to iterator
+                Files.readLines(symbolFile, StandardCharsets.UTF_8); // TODO: Switch to iterator
         Multimap<String, ResourceType> result = ArrayListMultimap.create(lines.size(), 2);
 
         ResourceType previousType = null;

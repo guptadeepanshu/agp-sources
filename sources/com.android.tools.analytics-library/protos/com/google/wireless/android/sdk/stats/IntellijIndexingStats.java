@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new IntellijIndexingStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IntellijIndexingStats_descriptor;
@@ -447,11 +442,6 @@ private static final long serialVersionUID = 0L;
       return new OperationStats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IntellijIndexingStats_OperationStats_descriptor;
@@ -467,7 +457,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int OPERATION_FIELD_NUMBER = 1;
-    private int operation_;
+    private int operation_ = 0;
     /**
      * <pre>
      * Operation described by this message.
@@ -488,13 +478,12 @@ private static final long serialVersionUID = 0L;
      * @return The operation.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation getOperation() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.valueOf(operation_);
+      com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.forNumber(operation_);
       return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.UNKNOWN_OPERATION : result;
     }
 
     public static final int TOTAL_CPU_NANOS_FIELD_NUMBER = 2;
-    private long totalCpuNanos_;
+    private long totalCpuNanos_ = 0L;
     /**
      * <pre>
      * Total CPU time.
@@ -521,7 +510,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_WALL_NANOS_FIELD_NUMBER = 3;
-    private long totalWallNanos_;
+    private long totalWallNanos_ = 0L;
     /**
      * <pre>
      * Total wall time.
@@ -548,7 +537,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MAX_CPU_NANOS_FIELD_NUMBER = 4;
-    private int maxCpuNanos_;
+    private int maxCpuNanos_ = 0;
     /**
      * <pre>
      * Maximum observed CPU time.
@@ -575,7 +564,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MAX_WALL_NANOS_FIELD_NUMBER = 5;
-    private int maxWallNanos_;
+    private int maxWallNanos_ = 0;
     /**
      * <pre>
      * Maximum observed wall time.
@@ -602,7 +591,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_COUNT_FIELD_NUMBER = 6;
-    private int totalCount_;
+    private int totalCount_ = 0;
     /**
      * <pre>
      * Total number of operations aggregated in this record.
@@ -906,18 +895,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         operation_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         totalCpuNanos_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         totalWallNanos_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         maxCpuNanos_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         maxWallNanos_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         totalCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -944,12 +928,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats buildPartial() {
         com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats result = new com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.operation_ = operation_;
           to_bitField0_ |= 0x00000001;
         }
-        result.operation_ = operation_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.totalCpuNanos_ = totalCpuNanos_;
           to_bitField0_ |= 0x00000002;
@@ -970,43 +960,9 @@ private static final long serialVersionUID = 0L;
           result.totalCount_ = totalCount_;
           to_bitField0_ |= 0x00000020;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats) {
@@ -1139,8 +1095,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation getOperation() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.valueOf(operation_);
+        com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.forNumber(operation_);
         return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.UNKNOWN_OPERATION : result;
       }
       /**
@@ -1211,8 +1166,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalCpuNanos(long value) {
-        bitField0_ |= 0x00000002;
+
         totalCpuNanos_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1266,8 +1222,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalWallNanos(long value) {
-        bitField0_ |= 0x00000004;
+
         totalWallNanos_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1321,8 +1278,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMaxCpuNanos(int value) {
-        bitField0_ |= 0x00000008;
+
         maxCpuNanos_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1376,8 +1334,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMaxWallNanos(int value) {
-        bitField0_ |= 0x00000010;
+
         maxWallNanos_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1431,8 +1390,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalCount(int value) {
-        bitField0_ |= 0x00000020;
+
         totalCount_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1609,11 +1569,6 @@ private static final long serialVersionUID = 0L;
       return new IndexStats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IntellijIndexingStats_IndexStats_descriptor;
@@ -1629,7 +1584,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int INDEX_FIELD_NUMBER = 1;
-    private int index_;
+    private int index_ = 0;
     /**
      * <pre>
      * Index described by this message.
@@ -1650,12 +1605,12 @@ private static final long serialVersionUID = 0L;
      * @return The index.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index getIndex() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.valueOf(index_);
+      com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.forNumber(index_);
       return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.UNKNOWN_INDEX : result;
     }
 
     public static final int OPERATION_STATS_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats> operationStats_;
     /**
      * <pre>
@@ -1924,8 +1879,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         index_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         if (operationStatsBuilder_ == null) {
           operationStats_ = java.util.Collections.emptyList();
         } else {
@@ -1959,12 +1914,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats buildPartial() {
         com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats result = new com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.index_ = index_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats result) {
         if (operationStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0)) {
             operationStats_ = java.util.Collections.unmodifiableList(operationStats_);
@@ -1974,43 +1930,18 @@ private static final long serialVersionUID = 0L;
         } else {
           result.operationStats_ = operationStatsBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.index_ = index_;
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats) {
@@ -2142,8 +2073,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index getIndex() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.valueOf(index_);
+        com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.forNumber(index_);
         return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.UNKNOWN_INDEX : result;
       }
       /**
@@ -2556,7 +2486,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
-  private int durationMs_;
+  private int durationMs_ = 0;
   /**
    * <pre>
    * How long the indexing operation took in milliseconds.
@@ -2583,7 +2513,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_COUNT_FIELD_NUMBER = 2;
-  private int fileCount_;
+  private int fileCount_ = 0;
   /**
    * <pre>
    * Number of files indexed during this indexing operation.
@@ -2610,7 +2540,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INDEXER_THREADS_FIELD_NUMBER = 3;
-  private int indexerThreads_;
+  private int indexerThreads_ = 0;
   /**
    * <pre>
    * Number of threads configured to run indexing tasks.
@@ -2637,6 +2567,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INDEX_STATS_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats> indexStats_;
   /**
    * <pre>
@@ -2938,12 +2869,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       durationMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       fileCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       indexerThreads_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       if (indexStatsBuilder_ == null) {
         indexStats_ = java.util.Collections.emptyList();
       } else {
@@ -2977,6 +2906,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IntellijIndexingStats buildPartial() {
       com.google.wireless.android.sdk.stats.IntellijIndexingStats result = new com.google.wireless.android.sdk.stats.IntellijIndexingStats(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.IntellijIndexingStats result) {
+      if (indexStatsBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0)) {
+          indexStats_ = java.util.Collections.unmodifiableList(indexStats_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.indexStats_ = indexStats_;
+      } else {
+        result.indexStats_ = indexStatsBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.IntellijIndexingStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2991,52 +2939,9 @@ private static final long serialVersionUID = 0L;
         result.indexerThreads_ = indexerThreads_;
         to_bitField0_ |= 0x00000004;
       }
-      if (indexStatsBuilder_ == null) {
-        if (((bitField0_ & 0x00000008) != 0)) {
-          indexStats_ = java.util.Collections.unmodifiableList(indexStats_);
-          bitField0_ = (bitField0_ & ~0x00000008);
-        }
-        result.indexStats_ = indexStats_;
-      } else {
-        result.indexStats_ = indexStatsBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.IntellijIndexingStats) {
@@ -3190,8 +3095,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(int value) {
-      bitField0_ |= 0x00000001;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -3245,8 +3151,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFileCount(int value) {
-      bitField0_ |= 0x00000002;
+
       fileCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -3300,8 +3207,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIndexerThreads(int value) {
-      bitField0_ |= 0x00000004;
+
       indexerThreads_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

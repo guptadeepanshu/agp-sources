@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new UpgradeAssistantComponentEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentEvent_descriptor;
@@ -50,7 +45,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int UPGRADE_UUID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object upgradeUuid_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object upgradeUuid_ = "";
   /**
    * <pre>
    * The uuid for a session of the upgrade assistant.
@@ -110,7 +106,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CURRENT_AGP_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object currentAgpVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object currentAgpVersion_ = "";
   /**
    * <pre>
    * The software version of AGP used by the project.
@@ -170,7 +167,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NEW_AGP_VERSION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object newAgpVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object newAgpVersion_ = "";
   /**
    * <pre>
    * The software version of AGP after upgrade.
@@ -230,7 +228,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CURRENT_GRADLE_VERSION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object currentGradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object currentGradleVersion_ = "";
   /**
    * <pre>
    * The software version of Gradle used by the project.
@@ -290,7 +289,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NEW_GRADLE_VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object newGradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object newGradleVersion_ = "";
   /**
    * <pre>
    * The software version of Gradle after upgrade.
@@ -716,28 +716,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       upgradeUuid_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       currentAgpVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       newAgpVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       currentGradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       newGradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (componentInfoBuilder_ == null) {
-        componentInfo_ = null;
-      } else {
-        componentInfoBuilder_.clear();
+      componentInfo_ = null;
+      if (componentInfoBuilder_ != null) {
+        componentInfoBuilder_.dispose();
+        componentInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (eventInfoBuilder_ == null) {
-        eventInfo_ = null;
-      } else {
-        eventInfoBuilder_.clear();
+      eventInfo_ = null;
+      if (eventInfoBuilder_ != null) {
+        eventInfoBuilder_.dispose();
+        eventInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -764,81 +758,49 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent buildPartial() {
       com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent result = new com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.upgradeUuid_ = upgradeUuid_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.currentAgpVersion_ = currentAgpVersion_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.newAgpVersion_ = newAgpVersion_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.currentGradleVersion_ = currentGradleVersion_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.newGradleVersion_ = newGradleVersion_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (componentInfoBuilder_ == null) {
-          result.componentInfo_ = componentInfo_;
-        } else {
-          result.componentInfo_ = componentInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (eventInfoBuilder_ == null) {
-          result.eventInfo_ = eventInfo_;
-        } else {
-          result.eventInfo_ = eventInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.upgradeUuid_ = upgradeUuid_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.currentAgpVersion_ = currentAgpVersion_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.newAgpVersion_ = newAgpVersion_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.currentGradleVersion_ = currentGradleVersion_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.newGradleVersion_ = newGradleVersion_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.componentInfo_ = componentInfoBuilder_ == null
+            ? componentInfo_
+            : componentInfoBuilder_.build();
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.eventInfo_ = eventInfoBuilder_ == null
+            ? eventInfo_
+            : eventInfoBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent) {
@@ -852,28 +814,28 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent other) {
       if (other == com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent.getDefaultInstance()) return this;
       if (other.hasUpgradeUuid()) {
-        bitField0_ |= 0x00000001;
         upgradeUuid_ = other.upgradeUuid_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasCurrentAgpVersion()) {
-        bitField0_ |= 0x00000002;
         currentAgpVersion_ = other.currentAgpVersion_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasNewAgpVersion()) {
-        bitField0_ |= 0x00000004;
         newAgpVersion_ = other.newAgpVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasCurrentGradleVersion()) {
-        bitField0_ |= 0x00000008;
         currentGradleVersion_ = other.currentGradleVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasNewGradleVersion()) {
-        bitField0_ |= 0x00000010;
         newGradleVersion_ = other.newGradleVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasComponentInfo()) {
@@ -1030,11 +992,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUpgradeUuid(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       upgradeUuid_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1047,8 +1007,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUpgradeUuid() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       upgradeUuid_ = getDefaultInstance().getUpgradeUuid();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1063,11 +1023,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUpgradeUuidBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       upgradeUuid_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1138,11 +1096,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentAgpVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       currentAgpVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1155,8 +1111,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCurrentAgpVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       currentAgpVersion_ = getDefaultInstance().getCurrentAgpVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1171,11 +1127,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentAgpVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       currentAgpVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1246,11 +1200,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNewAgpVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       newAgpVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1263,8 +1215,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearNewAgpVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       newAgpVersion_ = getDefaultInstance().getNewAgpVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1279,11 +1231,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNewAgpVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       newAgpVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1354,11 +1304,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       currentGradleVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1371,8 +1319,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCurrentGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       currentGradleVersion_ = getDefaultInstance().getCurrentGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1387,11 +1335,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCurrentGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       currentGradleVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1462,11 +1408,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNewGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       newGradleVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1479,8 +1423,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearNewGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       newGradleVersion_ = getDefaultInstance().getNewGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1495,11 +1439,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNewGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       newGradleVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1546,11 +1488,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         componentInfo_ = value;
-        onChanged();
       } else {
         componentInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1564,11 +1506,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Builder builderForValue) {
       if (componentInfoBuilder_ == null) {
         componentInfo_ = builderForValue.build();
-        onChanged();
       } else {
         componentInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1581,18 +1523,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeComponentInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo value) {
       if (componentInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            componentInfo_ != null &&
-            componentInfo_ != com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.getDefaultInstance()) {
-          componentInfo_ =
-            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.newBuilder(componentInfo_).mergeFrom(value).buildPartial();
+          componentInfo_ != null &&
+          componentInfo_ != com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.getDefaultInstance()) {
+          getComponentInfoBuilder().mergeFrom(value);
         } else {
           componentInfo_ = value;
         }
-        onChanged();
       } else {
         componentInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1603,13 +1544,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6 [lazy = true];</code>
      */
     public Builder clearComponentInfo() {
-      if (componentInfoBuilder_ == null) {
-        componentInfo_ = null;
-        onChanged();
-      } else {
-        componentInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      componentInfo_ = null;
+      if (componentInfoBuilder_ != null) {
+        componentInfoBuilder_.dispose();
+        componentInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1702,11 +1643,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         eventInfo_ = value;
-        onChanged();
       } else {
         eventInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1720,11 +1661,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.Builder builderForValue) {
       if (eventInfoBuilder_ == null) {
         eventInfo_ = builderForValue.build();
-        onChanged();
       } else {
         eventInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1737,18 +1678,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeEventInfo(com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo value) {
       if (eventInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            eventInfo_ != null &&
-            eventInfo_ != com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.getDefaultInstance()) {
-          eventInfo_ =
-            com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.newBuilder(eventInfo_).mergeFrom(value).buildPartial();
+          eventInfo_ != null &&
+          eventInfo_ != com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.getDefaultInstance()) {
+          getEventInfoBuilder().mergeFrom(value);
         } else {
           eventInfo_ = value;
         }
-        onChanged();
       } else {
         eventInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1759,13 +1699,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7 [lazy = true];</code>
      */
     public Builder clearEventInfo() {
-      if (eventInfoBuilder_ == null) {
-        eventInfo_ = null;
-        onChanged();
-      } else {
-        eventInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      eventInfo_ = null;
+      if (eventInfoBuilder_ != null) {
+        eventInfoBuilder_.dispose();
+        eventInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

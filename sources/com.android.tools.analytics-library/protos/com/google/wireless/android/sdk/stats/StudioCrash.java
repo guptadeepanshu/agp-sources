@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new StudioCrash();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioCrash_descriptor;
@@ -50,7 +45,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTIONS_FIELD_NUMBER = 1;
-  private long actions_;
+  private long actions_ = 0L;
   /**
    * <pre>
    * number of actions since last crash report.
@@ -77,7 +72,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXCEPTIONS_FIELD_NUMBER = 2;
-  private long exceptions_;
+  private long exceptions_ = 0L;
   /**
    * <pre>
    * number of exceptions since last crash report.
@@ -104,7 +99,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CRASHES_FIELD_NUMBER = 3;
-  private long crashes_;
+  private long crashes_ = 0L;
   /**
    * <pre>
    * number of crashes since last crash report.
@@ -131,7 +126,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUNDLED_PLUGIN_EXCEPTIONS_FIELD_NUMBER = 4;
-  private long bundledPluginExceptions_;
+  private long bundledPluginExceptions_ = 0L;
   /**
    * <pre>
    * number of exceptions from plugins bundled with Android Studio.
@@ -158,7 +153,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NON_BUNDLED_PLUGIN_EXCEPTIONS_FIELD_NUMBER = 5;
-  private long nonBundledPluginExceptions_;
+  private long nonBundledPluginExceptions_ = 0L;
   /**
    * <pre>
    * number of exceptions from plugins not bundled with Android Studio.
@@ -185,6 +180,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DETAILS_FIELD_NUMBER = 6;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.StudioExceptionDetails> details_;
   /**
    * <pre>
@@ -523,16 +519,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       actions_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       exceptions_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       crashes_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       bundledPluginExceptions_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       nonBundledPluginExceptions_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       if (detailsBuilder_ == null) {
         details_ = java.util.Collections.emptyList();
       } else {
@@ -566,6 +558,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioCrash buildPartial() {
       com.google.wireless.android.sdk.stats.StudioCrash result = new com.google.wireless.android.sdk.stats.StudioCrash(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.StudioCrash result) {
+      if (detailsBuilder_ == null) {
+        if (((bitField0_ & 0x00000020) != 0)) {
+          details_ = java.util.Collections.unmodifiableList(details_);
+          bitField0_ = (bitField0_ & ~0x00000020);
+        }
+        result.details_ = details_;
+      } else {
+        result.details_ = detailsBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioCrash result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -588,52 +599,9 @@ private static final long serialVersionUID = 0L;
         result.nonBundledPluginExceptions_ = nonBundledPluginExceptions_;
         to_bitField0_ |= 0x00000010;
       }
-      if (detailsBuilder_ == null) {
-        if (((bitField0_ & 0x00000020) != 0)) {
-          details_ = java.util.Collections.unmodifiableList(details_);
-          bitField0_ = (bitField0_ & ~0x00000020);
-        }
-        result.details_ = details_;
-      } else {
-        result.details_ = detailsBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioCrash) {
@@ -803,8 +771,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setActions(long value) {
-      bitField0_ |= 0x00000001;
+
       actions_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -858,8 +827,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExceptions(long value) {
-      bitField0_ |= 0x00000002;
+
       exceptions_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -913,8 +883,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCrashes(long value) {
-      bitField0_ |= 0x00000004;
+
       crashes_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -968,8 +939,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBundledPluginExceptions(long value) {
-      bitField0_ |= 0x00000008;
+
       bundledPluginExceptions_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1023,8 +995,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNonBundledPluginExceptions(long value) {
-      bitField0_ |= 0x00000010;
+
       nonBundledPluginExceptions_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

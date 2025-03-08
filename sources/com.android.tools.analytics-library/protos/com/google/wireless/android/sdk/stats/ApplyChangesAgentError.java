@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new ApplyChangesAgentError();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ApplyChangesAgentError_descriptor;
@@ -297,7 +292,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int AGENT_ATTACH_TIME_MS_FIELD_NUMBER = 1;
-  private long agentAttachTimeMs_;
+  private long agentAttachTimeMs_ = 0L;
   /**
    * <pre>
    * When the last agent was attached, measured on the device's steady clock.
@@ -324,7 +319,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AGENT_ATTACH_COUNT_FIELD_NUMBER = 2;
-  private int agentAttachCount_;
+  private int agentAttachCount_ = 0;
   /**
    * <pre>
    * How many times the AC agent has attached to this VM.
@@ -351,7 +346,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EVENT_TIME_MS_FIELD_NUMBER = 3;
-  private long eventTimeMs_;
+  private long eventTimeMs_ = 0L;
   /**
    * <pre>
    * When this crash occurred, measured on the device's steady clock.
@@ -378,7 +373,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AGENT_PURPOSE_FIELD_NUMBER = 4;
-  private int agentPurpose_;
+  private int agentPurpose_ = 0;
   /**
    * <pre>
    * The operation that caused the most recent agent to attach.
@@ -399,20 +394,19 @@ private static final long serialVersionUID = 0L;
    * @return The agentPurpose.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose getAgentPurpose() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.valueOf(agentPurpose_);
+    com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.forNumber(agentPurpose_);
     return result == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.UNKNOWN_PURPOSE : result;
   }
 
   public static final int TARGET_CLASSES_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> targetClasses_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass> targetClasses_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass>() {
             public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass.valueOf(from);
+              com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass.UNKNOWN_TARGET_CLASS : result;
             }
           };
@@ -717,14 +711,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       agentAttachTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       agentAttachCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       eventTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       agentPurpose_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       targetClasses_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000010);
       return this;
@@ -753,6 +744,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ApplyChangesAgentError buildPartial() {
       com.google.wireless.android.sdk.stats.ApplyChangesAgentError result = new com.google.wireless.android.sdk.stats.ApplyChangesAgentError(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.ApplyChangesAgentError result) {
+      if (((bitField0_ & 0x00000010) != 0)) {
+        targetClasses_ = java.util.Collections.unmodifiableList(targetClasses_);
+        bitField0_ = (bitField0_ & ~0x00000010);
+      }
+      result.targetClasses_ = targetClasses_;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ApplyChangesAgentError result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -768,51 +774,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.agentPurpose_ = agentPurpose_;
         to_bitField0_ |= 0x00000008;
       }
-      result.agentPurpose_ = agentPurpose_;
-      if (((bitField0_ & 0x00000010) != 0)) {
-        targetClasses_ = java.util.Collections.unmodifiableList(targetClasses_);
-        bitField0_ = (bitField0_ & ~0x00000010);
-      }
-      result.targetClasses_ = targetClasses_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ApplyChangesAgentError) {
@@ -981,8 +948,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAgentAttachTimeMs(long value) {
-      bitField0_ |= 0x00000001;
+
       agentAttachTimeMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1036,8 +1004,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAgentAttachCount(int value) {
-      bitField0_ |= 0x00000002;
+
       agentAttachCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1091,8 +1060,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEventTimeMs(long value) {
-      bitField0_ |= 0x00000004;
+
       eventTimeMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1133,8 +1103,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose getAgentPurpose() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.valueOf(agentPurpose_);
+      com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.forNumber(agentPurpose_);
       return result == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.UNKNOWN_PURPOSE : result;
     }
     /**

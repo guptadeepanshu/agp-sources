@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new LintTooltipLinkEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LintTooltipLinkEvent_descriptor;
@@ -53,7 +48,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ISSUE_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object issueId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object issueId_ = "";
   /**
    * <pre>
    * The issue id is a unique identifier for each type of coding issue found by
@@ -119,7 +115,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int URL_FIELD_NUMBER = 2;
-  private volatile java.lang.Object url_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object url_ = "";
   /**
    * <pre>
    * The URL of the link that was clicked, which will usually be to some
@@ -409,10 +406,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       issueId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       url_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -439,53 +435,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintTooltipLinkEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LintTooltipLinkEvent result = new com.google.wireless.android.sdk.stats.LintTooltipLinkEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.issueId_ = issueId_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.url_ = url_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.issueId_ = issueId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.url_ = url_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LintTooltipLinkEvent) {
@@ -499,13 +467,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.LintTooltipLinkEvent other) {
       if (other == com.google.wireless.android.sdk.stats.LintTooltipLinkEvent.getDefaultInstance()) return this;
       if (other.hasIssueId()) {
-        bitField0_ |= 0x00000001;
         issueId_ = other.issueId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasUrl()) {
-        bitField0_ |= 0x00000002;
         url_ = other.url_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -635,11 +603,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setIssueId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       issueId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -654,8 +620,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearIssueId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       issueId_ = getDefaultInstance().getIssueId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -672,11 +638,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setIssueIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       issueId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -771,11 +735,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUrl(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       url_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -794,8 +756,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUrl() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       url_ = getDefaultInstance().getUrl();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -816,11 +778,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUrlBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       url_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }

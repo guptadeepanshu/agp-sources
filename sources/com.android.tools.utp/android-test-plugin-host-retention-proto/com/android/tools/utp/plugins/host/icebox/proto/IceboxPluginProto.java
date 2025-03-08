@@ -424,11 +424,6 @@ public final class IceboxPluginProto {
       return new IceboxPlugin();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.internal_static_com_android_tools_utp_plugins_host_icebox_proto_IceboxPlugin_descriptor;
@@ -443,7 +438,8 @@ public final class IceboxPluginProto {
     }
 
     public static final int APP_PACKAGE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object appPackage_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object appPackage_ = "";
     /**
      * <pre>
      * Test APP package name
@@ -489,7 +485,8 @@ public final class IceboxPluginProto {
     }
 
     public static final int EMULATOR_GRPC_ADDRESS_FIELD_NUMBER = 2;
-    private volatile java.lang.Object emulatorGrpcAddress_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object emulatorGrpcAddress_ = "";
     /**
      * <pre>
      * The emulator gRPC address
@@ -535,7 +532,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int EMULATOR_GRPC_PORT_FIELD_NUMBER = 3;
-    private int emulatorGrpcPort_;
+    private int emulatorGrpcPort_ = 0;
     /**
      * <pre>
      * The emulator gRPC port
@@ -550,7 +547,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int SKIP_SNAPSHOT_FIELD_NUMBER = 4;
-    private boolean skipSnapshot_;
+    private boolean skipSnapshot_ = false;
     /**
      * <pre>
      * Set to true to skip taking snapshots.
@@ -565,7 +562,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int MAX_SNAPSHOT_NUMBER_FIELD_NUMBER = 5;
-    private int maxSnapshotNumber_;
+    private int maxSnapshotNumber_ = 0;
     /**
      * <pre>
      * Maximum number of snapshots Icebox can take. Set skip_snapshot=false and
@@ -582,7 +579,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int ANDROID_STUDIO_DDMLIB_PORT_FIELD_NUMBER = 6;
-    private int androidStudioDdmlibPort_;
+    private int androidStudioDdmlibPort_ = 0;
     /**
      * <pre>
      * The Android Studio ddmlib port to send the disconnect process message.
@@ -597,7 +594,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int SNAPSHOT_COMPRESSION_FIELD_NUMBER = 7;
-    private int snapshotCompression_;
+    private int snapshotCompression_ = 0;
     /**
      * <pre>
      * Compress the icebox snapshot or not. The compression is slow.
@@ -618,13 +615,13 @@ public final class IceboxPluginProto {
      * @return The snapshotCompression.
      */
     @java.lang.Override public com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression getSnapshotCompression() {
-      @SuppressWarnings("deprecation")
-      com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.valueOf(snapshotCompression_);
+      com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.forNumber(snapshotCompression_);
       return result == null ? com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.UNRECOGNIZED : result;
     }
 
     public static final int EMULATOR_GRPC_TOKEN_FIELD_NUMBER = 8;
-    private volatile java.lang.Object emulatorGrpcToken_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object emulatorGrpcToken_ = "";
     /**
      * <pre>
      * The emulator gRPC token
@@ -670,7 +667,7 @@ public final class IceboxPluginProto {
     }
 
     public static final int SETUP_STRATEGY_FIELD_NUMBER = 9;
-    private int setupStrategy_;
+    private int setupStrategy_ = 0;
     /**
      * <pre>
      * The behavior of the test driver.
@@ -691,8 +688,7 @@ public final class IceboxPluginProto {
      * @return The setupStrategy.
      */
     @java.lang.Override public com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy getSetupStrategy() {
-      @SuppressWarnings("deprecation")
-      com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.valueOf(setupStrategy_);
+      com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.forNumber(setupStrategy_);
       return result == null ? com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.UNRECOGNIZED : result;
     }
 
@@ -889,11 +885,13 @@ public final class IceboxPluginProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -974,24 +972,16 @@ public final class IceboxPluginProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         appPackage_ = "";
-
         emulatorGrpcAddress_ = "";
-
         emulatorGrpcPort_ = 0;
-
         skipSnapshot_ = false;
-
         maxSnapshotNumber_ = 0;
-
         androidStudioDdmlibPort_ = 0;
-
         snapshotCompression_ = 0;
-
         emulatorGrpcToken_ = "";
-
         setupStrategy_ = 0;
-
         return this;
       }
 
@@ -1018,17 +1008,40 @@ public final class IceboxPluginProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin buildPartial() {
         com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin result = new com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin(this);
-        result.appPackage_ = appPackage_;
-        result.emulatorGrpcAddress_ = emulatorGrpcAddress_;
-        result.emulatorGrpcPort_ = emulatorGrpcPort_;
-        result.skipSnapshot_ = skipSnapshot_;
-        result.maxSnapshotNumber_ = maxSnapshotNumber_;
-        result.androidStudioDdmlibPort_ = androidStudioDdmlibPort_;
-        result.snapshotCompression_ = snapshotCompression_;
-        result.emulatorGrpcToken_ = emulatorGrpcToken_;
-        result.setupStrategy_ = setupStrategy_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.appPackage_ = appPackage_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.emulatorGrpcAddress_ = emulatorGrpcAddress_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.emulatorGrpcPort_ = emulatorGrpcPort_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.skipSnapshot_ = skipSnapshot_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.maxSnapshotNumber_ = maxSnapshotNumber_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.androidStudioDdmlibPort_ = androidStudioDdmlibPort_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.snapshotCompression_ = snapshotCompression_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.emulatorGrpcToken_ = emulatorGrpcToken_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.setupStrategy_ = setupStrategy_;
+        }
       }
 
       @java.lang.Override
@@ -1077,10 +1090,12 @@ public final class IceboxPluginProto {
         if (other == com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin.getDefaultInstance()) return this;
         if (!other.getAppPackage().isEmpty()) {
           appPackage_ = other.appPackage_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (!other.getEmulatorGrpcAddress().isEmpty()) {
           emulatorGrpcAddress_ = other.emulatorGrpcAddress_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.getEmulatorGrpcPort() != 0) {
@@ -1100,6 +1115,7 @@ public final class IceboxPluginProto {
         }
         if (!other.getEmulatorGrpcToken().isEmpty()) {
           emulatorGrpcToken_ = other.emulatorGrpcToken_;
+          bitField0_ |= 0x00000080;
           onChanged();
         }
         if (other.setupStrategy_ != 0) {
@@ -1133,47 +1149,47 @@ public final class IceboxPluginProto {
                 break;
               case 10: {
                 appPackage_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 emulatorGrpcAddress_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 24: {
                 emulatorGrpcPort_ = input.readInt32();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 24
               case 32: {
                 skipSnapshot_ = input.readBool();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 32
               case 40: {
                 maxSnapshotNumber_ = input.readInt32();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 40
               case 48: {
                 androidStudioDdmlibPort_ = input.readInt32();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 48
               case 56: {
                 snapshotCompression_ = input.readEnum();
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 56
               case 66: {
                 emulatorGrpcToken_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 66
               case 72: {
                 setupStrategy_ = input.readEnum();
-
+                bitField0_ |= 0x00000100;
                 break;
               } // case 72
               default: {
@@ -1191,6 +1207,7 @@ public final class IceboxPluginProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object appPackage_ = "";
       /**
@@ -1245,11 +1262,9 @@ public final class IceboxPluginProto {
        */
       public Builder setAppPackage(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         appPackage_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1262,8 +1277,8 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearAppPackage() {
-        
         appPackage_ = getDefaultInstance().getAppPackage();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1278,12 +1293,10 @@ public final class IceboxPluginProto {
        */
       public Builder setAppPackageBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         appPackage_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1341,11 +1354,9 @@ public final class IceboxPluginProto {
        */
       public Builder setEmulatorGrpcAddress(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         emulatorGrpcAddress_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1358,8 +1369,8 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorGrpcAddress() {
-        
         emulatorGrpcAddress_ = getDefaultInstance().getEmulatorGrpcAddress();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1374,12 +1385,10 @@ public final class IceboxPluginProto {
        */
       public Builder setEmulatorGrpcAddressBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         emulatorGrpcAddress_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1407,8 +1416,9 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setEmulatorGrpcPort(int value) {
-        
+
         emulatorGrpcPort_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1421,7 +1431,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorGrpcPort() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         emulatorGrpcPort_ = 0;
         onChanged();
         return this;
@@ -1450,8 +1460,9 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setSkipSnapshot(boolean value) {
-        
+
         skipSnapshot_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1464,7 +1475,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearSkipSnapshot() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         skipSnapshot_ = false;
         onChanged();
         return this;
@@ -1497,8 +1508,9 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setMaxSnapshotNumber(int value) {
-        
+
         maxSnapshotNumber_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1513,7 +1525,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearMaxSnapshotNumber() {
-        
+        bitField0_ = (bitField0_ & ~0x00000010);
         maxSnapshotNumber_ = 0;
         onChanged();
         return this;
@@ -1542,8 +1554,9 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setAndroidStudioDdmlibPort(int value) {
-        
+
         androidStudioDdmlibPort_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1556,7 +1569,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearAndroidStudioDdmlibPort() {
-        
+        bitField0_ = (bitField0_ & ~0x00000020);
         androidStudioDdmlibPort_ = 0;
         onChanged();
         return this;
@@ -1584,8 +1597,8 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setSnapshotCompressionValue(int value) {
-        
         snapshotCompression_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1599,8 +1612,7 @@ public final class IceboxPluginProto {
        */
       @java.lang.Override
       public com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression getSnapshotCompression() {
-        @SuppressWarnings("deprecation")
-        com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.valueOf(snapshotCompression_);
+        com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.forNumber(snapshotCompression_);
         return result == null ? com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.Compression.UNRECOGNIZED : result;
       }
       /**
@@ -1616,7 +1628,7 @@ public final class IceboxPluginProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+        bitField0_ |= 0x00000040;
         snapshotCompression_ = value.getNumber();
         onChanged();
         return this;
@@ -1630,7 +1642,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearSnapshotCompression() {
-        
+        bitField0_ = (bitField0_ & ~0x00000040);
         snapshotCompression_ = 0;
         onChanged();
         return this;
@@ -1689,11 +1701,9 @@ public final class IceboxPluginProto {
        */
       public Builder setEmulatorGrpcToken(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         emulatorGrpcToken_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1706,8 +1716,8 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorGrpcToken() {
-        
         emulatorGrpcToken_ = getDefaultInstance().getEmulatorGrpcToken();
+        bitField0_ = (bitField0_ & ~0x00000080);
         onChanged();
         return this;
       }
@@ -1722,12 +1732,10 @@ public final class IceboxPluginProto {
        */
       public Builder setEmulatorGrpcTokenBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         emulatorGrpcToken_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1754,8 +1762,8 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder setSetupStrategyValue(int value) {
-        
         setupStrategy_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1769,8 +1777,7 @@ public final class IceboxPluginProto {
        */
       @java.lang.Override
       public com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy getSetupStrategy() {
-        @SuppressWarnings("deprecation")
-        com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.valueOf(setupStrategy_);
+        com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy result = com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.forNumber(setupStrategy_);
         return result == null ? com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxSetupStrategy.UNRECOGNIZED : result;
       }
       /**
@@ -1786,7 +1793,7 @@ public final class IceboxPluginProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        
+        bitField0_ |= 0x00000100;
         setupStrategy_ = value.getNumber();
         onChanged();
         return this;
@@ -1800,7 +1807,7 @@ public final class IceboxPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearSetupStrategy() {
-        
+        bitField0_ = (bitField0_ & ~0x00000100);
         setupStrategy_ = 0;
         onChanged();
         return this;

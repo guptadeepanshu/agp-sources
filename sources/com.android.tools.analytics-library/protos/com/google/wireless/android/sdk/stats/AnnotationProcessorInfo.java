@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new AnnotationProcessorInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AnnotationProcessorInfo_descriptor;
@@ -193,7 +188,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SPEC_FIELD_NUMBER = 1;
-  private volatile java.lang.Object spec_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object spec_ = "";
   /**
    * <pre>
    * The user's original spec, e.g. 'org.immutables:value:2.4.4'
@@ -256,7 +252,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUSION_TYPE_FIELD_NUMBER = 2;
-  private int inclusionType_;
+  private int inclusionType_ = 0;
   /**
    * <pre>
    * How the processor was included in the build file.
@@ -277,13 +273,12 @@ private static final long serialVersionUID = 0L;
    * @return The inclusionType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType getInclusionType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.valueOf(inclusionType_);
+    com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.forNumber(inclusionType_);
     return result == null ? com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.APT : result;
   }
 
   public static final int IS_INCREMENTAL_FIELD_NUMBER = 3;
-  private boolean isIncremental_;
+  private boolean isIncremental_ = false;
   /**
    * <pre>
    * Whether the annotation processor is
@@ -535,12 +530,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       spec_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       inclusionType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       isIncremental_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -567,57 +560,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo buildPartial() {
       com.google.wireless.android.sdk.stats.AnnotationProcessorInfo result = new com.google.wireless.android.sdk.stats.AnnotationProcessorInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.spec_ = spec_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.inclusionType_ = inclusionType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.isIncremental_ = isIncremental_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AnnotationProcessorInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.spec_ = spec_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.inclusionType_ = inclusionType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.isIncremental_ = isIncremental_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AnnotationProcessorInfo) {
@@ -631,8 +596,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.AnnotationProcessorInfo other) {
       if (other == com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.getDefaultInstance()) return this;
       if (other.hasSpec()) {
-        bitField0_ |= 0x00000001;
         spec_ = other.spec_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasInclusionType()) {
@@ -776,11 +741,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSpec(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       spec_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -794,8 +757,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSpec() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       spec_ = getDefaultInstance().getSpec();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -811,11 +774,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSpecBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       spec_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -842,8 +803,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType getInclusionType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.valueOf(inclusionType_);
+      com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.forNumber(inclusionType_);
       return result == null ? com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.APT : result;
     }
     /**
@@ -917,8 +877,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsIncremental(boolean value) {
-      bitField0_ |= 0x00000004;
+
       isIncremental_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

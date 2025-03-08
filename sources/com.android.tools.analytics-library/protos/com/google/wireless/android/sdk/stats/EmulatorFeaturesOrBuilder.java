@@ -46,7 +46,8 @@ public interface EmulatorFeaturesOrBuilder extends
    * </pre>
    *
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.EmulatorFeatures.container_launch is deprecated.
+   *     See studio_stats.proto;l=2683
    * @return Whether the containerLaunch field is set.
    */
   @java.lang.Deprecated boolean hasContainerLaunch();
@@ -56,7 +57,8 @@ public interface EmulatorFeaturesOrBuilder extends
    * </pre>
    *
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.EmulatorFeatures.container_launch is deprecated.
+   *     See studio_stats.proto;l=2683
    * @return The containerLaunch.
    */
   @java.lang.Deprecated boolean getContainerLaunch();

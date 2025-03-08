@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.testing.AdbHelper
+import com.android.build.gradle.internal.utils.ConsoleProgressIndicatorFactory
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
@@ -62,7 +63,6 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import java.io.File
-import java.lang.RuntimeException
 import java.lang.ref.SoftReference
 import javax.inject.Inject
 
@@ -112,6 +112,7 @@ abstract class SdkComponentsBuildService @Inject constructor(
             sdkSourceSet,
             parameters.issueReporter.get(),
             parameters.suppressWarningUnsupportedCompileSdk.orNull,
+            ConsoleProgressIndicatorFactory(providerFactory)
         ).also {
             it.setSdkLibData(
                 SdkLibDataFactory(

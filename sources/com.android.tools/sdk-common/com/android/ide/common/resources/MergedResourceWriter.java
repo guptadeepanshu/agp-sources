@@ -20,6 +20,7 @@ import static com.android.SdkConstants.ATTR_TYPE;
 import static com.android.SdkConstants.DOT_XML;
 import static com.android.SdkConstants.RES_QUALIFIER_SEP;
 import static com.android.SdkConstants.TAG_RESOURCES;
+
 import static com.google.common.base.Preconditions.checkState;
 
 import com.android.SdkConstants;
@@ -35,7 +36,7 @@ import com.android.resources.ResourceFolderType;
 import com.android.resources.ResourceType;
 import com.android.utils.FileUtils;
 import com.android.utils.XmlUtils;
-import com.google.common.base.Charsets;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
@@ -44,11 +45,18 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.util.concurrent.MoreExecutors;
+
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,13 +65,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
+
 import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * A {@link MergeWriter} for assets, using {@link ResourceMergerItem}. Also takes care of compiling
@@ -574,7 +579,7 @@ public class MergedResourceWriter
                         content = XmlUtils.toXml(document);
                     }
 
-                    Files.asCharSink(outFile, Charsets.UTF_8).write(content);
+                    Files.asCharSink(outFile, StandardCharsets.UTF_8).write(content);
 
                     CompileResourceRequest request =
                             new CompileResourceRequest(
@@ -638,7 +643,7 @@ public class MergedResourceWriter
                             }
                         }
                         String text = sb.toString();
-                        Files.asCharSink(mergeWriterRequest.getPublicFile(), Charsets.UTF_8)
+                        Files.asCharSink(mergeWriterRequest.getPublicFile(), StandardCharsets.UTF_8)
                                 .write(text);
                     }
                 } catch (Exception e) {

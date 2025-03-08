@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new RunEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_RunEvent_descriptor;
@@ -347,7 +342,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int STATUS_FIELD_NUMBER = 1;
-  private int status_;
+  private int status_ = 0;
   /**
    * <code>optional .android_studio.RunEvent.Status status = 1;</code>
    * @return Whether the status field is set.
@@ -360,13 +355,13 @@ private static final long serialVersionUID = 0L;
    * @return The status.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.RunEvent.Status getStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.valueOf(status_);
+    com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.forNumber(status_);
     return result == null ? com.google.wireless.android.sdk.stats.RunEvent.Status.UNKNOWN_STATUS : result;
   }
 
   public static final int EXECUTOR_FIELD_NUMBER = 2;
-  private volatile java.lang.Object executor_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object executor_ = "";
   /**
    * <pre>
    * The executor used, from Executor::getId()
@@ -426,7 +421,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEBUGGABLE_FIELD_NUMBER = 3;
-  private boolean debuggable_;
+  private boolean debuggable_ = false;
   /**
    * <pre>
    * Whether the app is debuggable
@@ -453,7 +448,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INSTANT_RUN_ENABLED_FIELD_NUMBER = 4;
-  private boolean instantRunEnabled_;
+  private boolean instantRunEnabled_ = false;
   /**
    * <pre>
    * Whether instant run is enabled
@@ -480,7 +475,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APPLY_CHANGES_FIELD_NUMBER = 5;
-  private boolean applyChanges_;
+  private boolean applyChanges_ = false;
   /**
    * <pre>
    * Whether the apply changes button was used
@@ -507,7 +502,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USER_SELECTED_TARGET_FIELD_NUMBER = 6;
-  private boolean userSelectedTarget_;
+  private boolean userSelectedTarget_ = false;
   /**
    * <pre>
    * Whether the device dialog was open
@@ -534,7 +529,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LAUNCHED_DEVICES_FIELD_NUMBER = 7;
-  private boolean launchedDevices_;
+  private boolean launchedDevices_ = false;
   /**
    * <pre>
    * Weather a device, like the emulator, was launched
@@ -561,7 +556,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_COUNT_FIELD_NUMBER = 8;
-  private int deviceCount_;
+  private int deviceCount_ = 0;
   /**
    * <pre>
    * How many devices were targeted
@@ -588,7 +583,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PARTIAL_FIELD_NUMBER = 9;
-  private boolean partial_;
+  private boolean partial_ = false;
   /**
    * <pre>
    * True if this run event started mid-way
@@ -615,6 +610,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LAUNCH_TASK_DETAIL_FIELD_NUMBER = 10;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.LaunchTaskDetail> launchTaskDetail_;
   /**
    * <pre>
@@ -675,7 +671,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BEGIN_TIMESTAMP_MS_FIELD_NUMBER = 11;
-  private long beginTimestampMs_;
+  private long beginTimestampMs_ = 0L;
   /**
    * <pre>
    * Timestamps in expected order
@@ -704,7 +700,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BEGIN_BEFORE_RUN_TASKS_TIMESTAMP_MS_FIELD_NUMBER = 12;
-  private long beginBeforeRunTasksTimestampMs_;
+  private long beginBeforeRunTasksTimestampMs_ = 0L;
   /**
    * <pre>
    * The before-run tasks start (i.e. running gradle)
@@ -731,7 +727,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_BEFORE_RUN_TASKS_TIMESTAMP_MS_FIELD_NUMBER = 13;
-  private long endBeforeRunTasksTimestampMs_;
+  private long endBeforeRunTasksTimestampMs_ = 0L;
   /**
    * <pre>
    * End of the before-run tasks
@@ -758,7 +754,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BEGIN_WAIT_FOR_DEVICE_TIMESTAMP_MS_FIELD_NUMBER = 14;
-  private long beginWaitForDeviceTimestampMs_;
+  private long beginWaitForDeviceTimestampMs_ = 0L;
   /**
    * <pre>
    * Before launching, we must wait for devices
@@ -785,7 +781,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_WAIT_FOR_DEVICE_TIMESTAMP_MS_FIELD_NUMBER = 15;
-  private long endWaitForDeviceTimestampMs_;
+  private long endWaitForDeviceTimestampMs_ = 0L;
   /**
    * <pre>
    * All devices are now ready
@@ -812,7 +808,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BEGIN_LAUNCH_TASKS_TIMESTAMP_MS_FIELD_NUMBER = 16;
-  private long beginLaunchTasksTimestampMs_;
+  private long beginLaunchTasksTimestampMs_ = 0L;
   /**
    * <pre>
    * Launch tasks start being executed
@@ -839,7 +835,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_LAUNCH_TASKS_TIMESTAMP_MS_FIELD_NUMBER = 17;
-  private long endLaunchTasksTimestampMs_;
+  private long endLaunchTasksTimestampMs_ = 0L;
   /**
    * <pre>
    * All launch tasks completed
@@ -866,7 +862,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_TIMESTAMP_MS_FIELD_NUMBER = 18;
-  private long endTimestampMs_;
+  private long endTimestampMs_ = 0L;
   /**
    * <pre>
    * The run cycle finished
@@ -893,7 +889,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEPLOYED_AS_INSTANT_FIELD_NUMBER = 19;
-  private boolean deployedAsInstant_;
+  private boolean deployedAsInstant_ = false;
   /**
    * <pre>
    * Whether the run configuration was set to deploy as instant
@@ -920,7 +916,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEPLOYED_FROM_BUNDLE_FIELD_NUMBER = 20;
-  private boolean deployedFromBundle_;
+  private boolean deployedFromBundle_ = false;
   /**
    * <pre>
    * Whether the run configuration was set to deploy from app bundle
@@ -947,7 +943,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEPLOY_FAILURE_ID_FIELD_NUMBER = 21;
-  private volatile java.lang.Object deployFailureId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object deployFailureId_ = "";
   /**
    * <pre>
    * Enum name representing deploy failure reason
@@ -1007,7 +1004,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APPLY_CHANGES_FALLBACK_TO_RUN_FIELD_NUMBER = 22;
-  private boolean applyChangesFallbackToRun_;
+  private boolean applyChangesFallbackToRun_ = false;
   /**
    * <pre>
    * Whether the user configured AC to fall back to Run
@@ -1034,7 +1031,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APPLY_CODE_CHANGES_FALLBACK_TO_RUN_FIELD_NUMBER = 23;
-  private boolean applyCodeChangesFallbackToRun_;
+  private boolean applyCodeChangesFallbackToRun_ = false;
   /**
    * <pre>
    * Whether the user configured ACC to fall back to Run
@@ -1061,7 +1058,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RUN_ALWAYS_INSTALL_WITH_PM_FIELD_NUMBER = 24;
-  private boolean runAlwaysInstallWithPm_;
+  private boolean runAlwaysInstallWithPm_ = false;
   /**
    * <pre>
    * Whether the user configured Run to disable overlay installs.
@@ -1088,7 +1085,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USE_ASSUME_VERIFIED_FIELD_NUMBER = 28;
-  private boolean useAssumeVerified_;
+  private boolean useAssumeVerified_ = false;
   /**
    * <pre>
    * Whether the user configured Run to take advantage of assume-verified.
@@ -1115,7 +1112,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APP_COMPONENT_TYPE_FIELD_NUMBER = 25;
-  private int appComponentType_;
+  private int appComponentType_ = 0;
   /**
    * <pre>
    * Type of AppComponent user wants to run
@@ -1136,13 +1133,12 @@ private static final long serialVersionUID = 0L;
    * @return The appComponentType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);
+    com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.forNumber(appComponentType_);
     return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
   }
 
   public static final int IS_COMPOSE_PROJECT_FIELD_NUMBER = 26;
-  private boolean isComposeProject_;
+  private boolean isComposeProject_ = false;
   /**
    * <pre>
    * Whether or not the deployed project is a Compose project.
@@ -1169,7 +1165,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_ID_FIELD_NUMBER = 27;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Client-side salted (rotating every 28 days), sha256 of the project base
@@ -1869,24 +1866,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       status_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       executor_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       debuggable_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       instantRunEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       applyChanges_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       userSelectedTarget_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       launchedDevices_ = false;
-      bitField0_ = (bitField0_ & ~0x00000040);
       deviceCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       partial_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       if (launchTaskDetailBuilder_ == null) {
         launchTaskDetail_ = java.util.Collections.emptyList();
       } else {
@@ -1895,41 +1884,23 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000200);
       beginTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000400);
       beginBeforeRunTasksTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000800);
       endBeforeRunTasksTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00001000);
       beginWaitForDeviceTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00002000);
       endWaitForDeviceTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00004000);
       beginLaunchTasksTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00008000);
       endLaunchTasksTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00010000);
       endTimestampMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00020000);
       deployedAsInstant_ = false;
-      bitField0_ = (bitField0_ & ~0x00040000);
       deployedFromBundle_ = false;
-      bitField0_ = (bitField0_ & ~0x00080000);
       deployFailureId_ = "";
-      bitField0_ = (bitField0_ & ~0x00100000);
       applyChangesFallbackToRun_ = false;
-      bitField0_ = (bitField0_ & ~0x00200000);
       applyCodeChangesFallbackToRun_ = false;
-      bitField0_ = (bitField0_ & ~0x00400000);
       runAlwaysInstallWithPm_ = false;
-      bitField0_ = (bitField0_ & ~0x00800000);
       useAssumeVerified_ = false;
-      bitField0_ = (bitField0_ & ~0x01000000);
       appComponentType_ = 0;
-      bitField0_ = (bitField0_ & ~0x02000000);
       isComposeProject_ = false;
-      bitField0_ = (bitField0_ & ~0x04000000);
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x08000000);
       return this;
     }
 
@@ -1956,16 +1927,35 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunEvent buildPartial() {
       com.google.wireless.android.sdk.stats.RunEvent result = new com.google.wireless.android.sdk.stats.RunEvent(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.RunEvent result) {
+      if (launchTaskDetailBuilder_ == null) {
+        if (((bitField0_ & 0x00000200) != 0)) {
+          launchTaskDetail_ = java.util.Collections.unmodifiableList(launchTaskDetail_);
+          bitField0_ = (bitField0_ & ~0x00000200);
+        }
+        result.launchTaskDetail_ = launchTaskDetail_;
+      } else {
+        result.launchTaskDetail_ = launchTaskDetailBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.RunEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.status_ = status_;
         to_bitField0_ |= 0x00000001;
       }
-      result.status_ = status_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.executor_ = executor_;
         to_bitField0_ |= 0x00000002;
       }
-      result.executor_ = executor_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.debuggable_ = debuggable_;
         to_bitField0_ |= 0x00000004;
@@ -1993,15 +1983,6 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000100) != 0)) {
         result.partial_ = partial_;
         to_bitField0_ |= 0x00000100;
-      }
-      if (launchTaskDetailBuilder_ == null) {
-        if (((bitField0_ & 0x00000200) != 0)) {
-          launchTaskDetail_ = java.util.Collections.unmodifiableList(launchTaskDetail_);
-          bitField0_ = (bitField0_ & ~0x00000200);
-        }
-        result.launchTaskDetail_ = launchTaskDetail_;
-      } else {
-        result.launchTaskDetail_ = launchTaskDetailBuilder_.build();
       }
       if (((from_bitField0_ & 0x00000400) != 0)) {
         result.beginTimestampMs_ = beginTimestampMs_;
@@ -2044,9 +2025,9 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00040000;
       }
       if (((from_bitField0_ & 0x00100000) != 0)) {
+        result.deployFailureId_ = deployFailureId_;
         to_bitField0_ |= 0x00080000;
       }
-      result.deployFailureId_ = deployFailureId_;
       if (((from_bitField0_ & 0x00200000) != 0)) {
         result.applyChangesFallbackToRun_ = applyChangesFallbackToRun_;
         to_bitField0_ |= 0x00100000;
@@ -2064,54 +2045,20 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00800000;
       }
       if (((from_bitField0_ & 0x02000000) != 0)) {
+        result.appComponentType_ = appComponentType_;
         to_bitField0_ |= 0x01000000;
       }
-      result.appComponentType_ = appComponentType_;
       if (((from_bitField0_ & 0x04000000) != 0)) {
         result.isComposeProject_ = isComposeProject_;
         to_bitField0_ |= 0x02000000;
       }
       if (((from_bitField0_ & 0x08000000) != 0)) {
+        result.projectId_ = projectId_;
         to_bitField0_ |= 0x04000000;
       }
-      result.projectId_ = projectId_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.RunEvent) {
@@ -2128,8 +2075,8 @@ private static final long serialVersionUID = 0L;
         setStatus(other.getStatus());
       }
       if (other.hasExecutor()) {
-        bitField0_ |= 0x00000002;
         executor_ = other.executor_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasDebuggable()) {
@@ -2210,8 +2157,8 @@ private static final long serialVersionUID = 0L;
         setDeployedFromBundle(other.getDeployedFromBundle());
       }
       if (other.hasDeployFailureId()) {
-        bitField0_ |= 0x00100000;
         deployFailureId_ = other.deployFailureId_;
+        bitField0_ |= 0x00100000;
         onChanged();
       }
       if (other.hasApplyChangesFallbackToRun()) {
@@ -2233,8 +2180,8 @@ private static final long serialVersionUID = 0L;
         setIsComposeProject(other.getIsComposeProject());
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x08000000;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x08000000;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -2456,8 +2403,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunEvent.Status getStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.valueOf(status_);
+      com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.forNumber(status_);
       return result == null ? com.google.wireless.android.sdk.stats.RunEvent.Status.UNKNOWN_STATUS : result;
     }
     /**
@@ -2551,11 +2497,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutor(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       executor_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2568,8 +2512,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExecutor() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       executor_ = getDefaultInstance().getExecutor();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -2584,11 +2528,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutorBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       executor_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2628,8 +2570,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDebuggable(boolean value) {
-      bitField0_ |= 0x00000004;
+
       debuggable_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2683,8 +2626,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInstantRunEnabled(boolean value) {
-      bitField0_ |= 0x00000008;
+
       instantRunEnabled_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2738,8 +2682,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApplyChanges(boolean value) {
-      bitField0_ |= 0x00000010;
+
       applyChanges_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2793,8 +2738,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUserSelectedTarget(boolean value) {
-      bitField0_ |= 0x00000020;
+
       userSelectedTarget_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2848,8 +2794,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLaunchedDevices(boolean value) {
-      bitField0_ |= 0x00000040;
+
       launchedDevices_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2903,8 +2850,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeviceCount(int value) {
-      bitField0_ |= 0x00000080;
+
       deviceCount_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2958,8 +2906,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPartial(boolean value) {
-      bitField0_ |= 0x00000100;
+
       partial_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -3328,8 +3277,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBeginTimestampMs(long value) {
-      bitField0_ |= 0x00000400;
+
       beginTimestampMs_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -3384,8 +3334,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBeginBeforeRunTasksTimestampMs(long value) {
-      bitField0_ |= 0x00000800;
+
       beginBeforeRunTasksTimestampMs_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -3439,8 +3390,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEndBeforeRunTasksTimestampMs(long value) {
-      bitField0_ |= 0x00001000;
+
       endBeforeRunTasksTimestampMs_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -3494,8 +3446,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBeginWaitForDeviceTimestampMs(long value) {
-      bitField0_ |= 0x00002000;
+
       beginWaitForDeviceTimestampMs_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -3549,8 +3502,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEndWaitForDeviceTimestampMs(long value) {
-      bitField0_ |= 0x00004000;
+
       endWaitForDeviceTimestampMs_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -3604,8 +3558,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBeginLaunchTasksTimestampMs(long value) {
-      bitField0_ |= 0x00008000;
+
       beginLaunchTasksTimestampMs_ = value;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -3659,8 +3614,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEndLaunchTasksTimestampMs(long value) {
-      bitField0_ |= 0x00010000;
+
       endLaunchTasksTimestampMs_ = value;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -3714,8 +3670,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEndTimestampMs(long value) {
-      bitField0_ |= 0x00020000;
+
       endTimestampMs_ = value;
+      bitField0_ |= 0x00020000;
       onChanged();
       return this;
     }
@@ -3769,8 +3726,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeployedAsInstant(boolean value) {
-      bitField0_ |= 0x00040000;
+
       deployedAsInstant_ = value;
+      bitField0_ |= 0x00040000;
       onChanged();
       return this;
     }
@@ -3824,8 +3782,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeployedFromBundle(boolean value) {
-      bitField0_ |= 0x00080000;
+
       deployedFromBundle_ = value;
+      bitField0_ |= 0x00080000;
       onChanged();
       return this;
     }
@@ -3910,11 +3869,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeployFailureId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00100000;
+      if (value == null) { throw new NullPointerException(); }
       deployFailureId_ = value;
+      bitField0_ |= 0x00100000;
       onChanged();
       return this;
     }
@@ -3927,8 +3884,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDeployFailureId() {
-      bitField0_ = (bitField0_ & ~0x00100000);
       deployFailureId_ = getDefaultInstance().getDeployFailureId();
+      bitField0_ = (bitField0_ & ~0x00100000);
       onChanged();
       return this;
     }
@@ -3943,11 +3900,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeployFailureIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00100000;
+      if (value == null) { throw new NullPointerException(); }
       deployFailureId_ = value;
+      bitField0_ |= 0x00100000;
       onChanged();
       return this;
     }
@@ -3987,8 +3942,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApplyChangesFallbackToRun(boolean value) {
-      bitField0_ |= 0x00200000;
+
       applyChangesFallbackToRun_ = value;
+      bitField0_ |= 0x00200000;
       onChanged();
       return this;
     }
@@ -4042,8 +3998,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApplyCodeChangesFallbackToRun(boolean value) {
-      bitField0_ |= 0x00400000;
+
       applyCodeChangesFallbackToRun_ = value;
+      bitField0_ |= 0x00400000;
       onChanged();
       return this;
     }
@@ -4097,8 +4054,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRunAlwaysInstallWithPm(boolean value) {
-      bitField0_ |= 0x00800000;
+
       runAlwaysInstallWithPm_ = value;
+      bitField0_ |= 0x00800000;
       onChanged();
       return this;
     }
@@ -4152,8 +4110,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUseAssumeVerified(boolean value) {
-      bitField0_ |= 0x01000000;
+
       useAssumeVerified_ = value;
+      bitField0_ |= 0x01000000;
       onChanged();
       return this;
     }
@@ -4194,8 +4153,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);
+      com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.forNumber(appComponentType_);
       return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
     }
     /**
@@ -4266,8 +4224,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsComposeProject(boolean value) {
-      bitField0_ |= 0x04000000;
+
       isComposeProject_ = value;
+      bitField0_ |= 0x04000000;
       onChanged();
       return this;
     }
@@ -4356,11 +4315,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x08000000;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x08000000;
       onChanged();
       return this;
     }
@@ -4374,8 +4331,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x08000000);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x08000000);
       onChanged();
       return this;
     }
@@ -4391,11 +4348,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x08000000;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x08000000;
       onChanged();
       return this;
     }

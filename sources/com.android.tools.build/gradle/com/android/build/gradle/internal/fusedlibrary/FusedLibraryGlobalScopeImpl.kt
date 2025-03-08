@@ -25,9 +25,11 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
+import com.android.build.gradle.internal.services.VariantServicesImpl
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
+import org.gradle.api.provider.MapProperty
 
 class FusedLibraryGlobalScopeImpl(
     project: Project,
@@ -35,15 +37,59 @@ class FusedLibraryGlobalScopeImpl(
     extensionProvider: () -> FusedLibraryExtension
 ) : FusedLibraryGlobalScope {
 
+    private val internalServices = VariantServicesImpl(projectServices)
+
     override val aarMetadata: AarMetadataImpl
         get() = extension.aarMetadata as AarMetadataImpl
     override val artifacts= ArtifactsImpl(project, "single")
     override val dependencies = FusedLibraryDependencies()
     override val incomingConfigurations = dependencies.configurations
-
     override val extension: FusedLibraryExtension by lazy {
         extensionProvider.invoke()
     }
+
+    override val experimentalProperties: MapProperty<String, Any>
+        get() = internalServices.mapPropertyOf(
+            String::class.java,
+            Any::class.java,
+            extension.experimentalProperties,
+            false
+        )
+
+    override val namespace: String
+        get() = extension.namespace ?: error(
+            """
+                Namespace is not defined.
+
+                Please add the `namespace` field to the :${projectServices.projectInfo.name} build file.
+
+                For example:
+                ```
+                ${FusedLibraryConstants.EXTENSION_NAME} {
+                    namespace = "com.example.mylibrary"
+                }
+                ```
+            """.trimIndent()
+        )
+
+    override val manifestPlaceholders: MutableMap<String, String>
+        get() = extension.manifestPlaceholders
+
+    override val minSdk: Int
+        get() = extension.minSdk ?: error(
+            """
+                Minimum Sdk is not defined.
+
+                Please add the `minSdk` field to the :${projectServices.projectInfo.name} build file.
+
+                For example:
+                ```
+                ${FusedLibraryConstants.EXTENSION_NAME} {
+                    minSdk = 34
+                }
+                ```
+            """.trimIndent()
+        )
 
     override val projectLayout: ProjectLayout = project.layout
     override val services: TaskCreationServices

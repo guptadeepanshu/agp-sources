@@ -180,5 +180,5 @@ public interface AppInspectionEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadataOrBuilder getEnvironmentMetadataOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.AppInspectionEvent.InspectorEventCase getInspectorEventCase();
+  com.google.wireless.android.sdk.stats.AppInspectionEvent.InspectorEventCase getInspectorEventCase();
 }

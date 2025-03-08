@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new ImportSampleEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ImportSampleEvent_descriptor;
@@ -50,7 +45,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IMPORT_SAMPLE_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object importSampleId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object importSampleId_ = "";
   /**
    * <pre>
    * The ID of the sample imported. This is not user content, it will always be
@@ -311,8 +307,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       importSampleId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -339,49 +335,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ImportSampleEvent buildPartial() {
       com.google.wireless.android.sdk.stats.ImportSampleEvent result = new com.google.wireless.android.sdk.stats.ImportSampleEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.importSampleId_ = importSampleId_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ImportSampleEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.importSampleId_ = importSampleId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ImportSampleEvent) {
@@ -395,8 +363,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.ImportSampleEvent other) {
       if (other == com.google.wireless.android.sdk.stats.ImportSampleEvent.getDefaultInstance()) return this;
       if (other.hasImportSampleId()) {
-        bitField0_ |= 0x00000001;
         importSampleId_ = other.importSampleId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -521,11 +489,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setImportSampleId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       importSampleId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -540,8 +506,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearImportSampleId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       importSampleId_ = getDefaultInstance().getImportSampleId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -558,11 +524,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setImportSampleIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       importSampleId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }

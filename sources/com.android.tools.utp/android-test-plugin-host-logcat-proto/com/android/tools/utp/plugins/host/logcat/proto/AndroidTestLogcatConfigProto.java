@@ -71,11 +71,6 @@ public final class AndroidTestLogcatConfigProto {
       return new AndroidTestLogcatConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.internal_static_com_android_tools_utp_plugins_host_logcat_AndroidTestLogcatConfig_descriptor;
@@ -90,7 +85,8 @@ public final class AndroidTestLogcatConfigProto {
     }
 
     public static final int TARGET_TEST_PROCESS_NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object targetTestProcessName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object targetTestProcessName_ = "";
     /**
      * <pre>
      **
@@ -249,11 +245,13 @@ public final class AndroidTestLogcatConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -332,8 +330,8 @@ public final class AndroidTestLogcatConfigProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         targetTestProcessName_ = "";
-
         return this;
       }
 
@@ -360,9 +358,16 @@ public final class AndroidTestLogcatConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig buildPartial() {
         com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig result = new com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig(this);
-        result.targetTestProcessName_ = targetTestProcessName_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.targetTestProcessName_ = targetTestProcessName_;
+        }
       }
 
       @java.lang.Override
@@ -411,6 +416,7 @@ public final class AndroidTestLogcatConfigProto {
         if (other == com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig.getDefaultInstance()) return this;
         if (!other.getTargetTestProcessName().isEmpty()) {
           targetTestProcessName_ = other.targetTestProcessName_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -441,7 +447,7 @@ public final class AndroidTestLogcatConfigProto {
                 break;
               case 10: {
                 targetTestProcessName_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               default: {
@@ -459,6 +465,7 @@ public final class AndroidTestLogcatConfigProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object targetTestProcessName_ = "";
       /**
@@ -522,11 +529,9 @@ public final class AndroidTestLogcatConfigProto {
        */
       public Builder setTargetTestProcessName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         targetTestProcessName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -542,8 +547,8 @@ public final class AndroidTestLogcatConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearTargetTestProcessName() {
-        
         targetTestProcessName_ = getDefaultInstance().getTargetTestProcessName();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -561,12 +566,10 @@ public final class AndroidTestLogcatConfigProto {
        */
       public Builder setTargetTestProcessNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         targetTestProcessName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }

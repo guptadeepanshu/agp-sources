@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new CpuApiTracingMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_CpuApiTracingMetadata_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int USE_SAMPLING_FIELD_NUMBER = 1;
-  private boolean useSampling_;
+  private boolean useSampling_ = false;
   /**
    * <pre>
    * True if using sampling; false if using instrumentation.
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARG_TRACE_PATH_FIELD_NUMBER = 2;
-  private boolean argTracePath_;
+  private boolean argTracePath_ = false;
   /**
    * <pre>
    * A trace path is given and not null (we don't log the path as it might
@@ -105,7 +100,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARG_BUFFER_SIZE_FIELD_NUMBER = 3;
-  private int argBufferSize_;
+  private int argBufferSize_ = 0;
   /**
    * <pre>
    * Buffer size as a given API argument (-1 if unavailable).
@@ -132,7 +127,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARG_FLAGS_FIELD_NUMBER = 4;
-  private int argFlags_;
+  private int argFlags_ = 0;
   /**
    * <pre>
    * Flags as a given API argument (-1 if unavailable).
@@ -159,7 +154,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARG_INTERVAL_US_FIELD_NUMBER = 5;
-  private int argIntervalUs_;
+  private int argIntervalUs_ = 0;
   /**
    * <pre>
    * Sampling interval as a given API argument (-1 if unavailable).
@@ -448,16 +443,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       useSampling_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       argTracePath_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       argBufferSize_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       argFlags_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       argIntervalUs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -484,6 +475,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuApiTracingMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.CpuApiTracingMetadata result = new com.google.wireless.android.sdk.stats.CpuApiTracingMetadata(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.CpuApiTracingMetadata result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -506,43 +503,9 @@ private static final long serialVersionUID = 0L;
         result.argIntervalUs_ = argIntervalUs_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.CpuApiTracingMetadata) {
@@ -673,8 +636,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUseSampling(boolean value) {
-      bitField0_ |= 0x00000001;
+
       useSampling_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -731,8 +695,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setArgTracePath(boolean value) {
-      bitField0_ |= 0x00000002;
+
       argTracePath_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -787,8 +752,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setArgBufferSize(int value) {
-      bitField0_ |= 0x00000004;
+
       argBufferSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -842,8 +808,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setArgFlags(int value) {
-      bitField0_ |= 0x00000008;
+
       argFlags_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -897,8 +864,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setArgIntervalUs(int value) {
-      bitField0_ |= 0x00000010;
+
       argIntervalUs_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

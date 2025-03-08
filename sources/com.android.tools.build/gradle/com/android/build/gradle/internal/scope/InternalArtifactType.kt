@@ -245,6 +245,12 @@ InternalArtifactType<T : FileSystemLocation>(
     /** Shrunk resources in binary format. */
     object SHRUNK_RESOURCES_BINARY_FORMAT: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
 
+    /**
+     * Shrunk resources in proto format (produced by the base module, to be consumed by dynamic
+     * feature modules).
+     */
+    object FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT: InternalArtifactType<Directory>(DIRECTORY)
+
     object COMPILED_LOCAL_RESOURCES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     object STABLE_RESOURCE_IDS_FILE: InternalArtifactType<RegularFile>(FILE)
 
@@ -308,7 +314,6 @@ InternalArtifactType<T : FileSystemLocation>(
     // Assets created by compiling shader
     object SHADER_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
-    object LIBRARY_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // compressed assets, ready to be packaged in the APK.
     object COMPRESSED_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
@@ -410,6 +415,8 @@ InternalArtifactType<T : FileSystemLocation>(
     // Files holding the corresponding lint invocation's return value
     object LINT_RETURN_VALUE: InternalArtifactType<RegularFile>(FILE)
     object LINT_VITAL_RETURN_VALUE: InternalArtifactType<RegularFile>(FILE)
+    // This only exists so that the Lint vital task runs when the assemble or bundle task is run
+    object LINT_VITAL_OUTPUT: InternalArtifactType<RegularFile>(FILE)
     // Partial lint results, which are the module-specific lint results generated when running lint
     // with the --analyze-only flag. These partial results are merged into a final report
     // downstream.
@@ -500,8 +507,6 @@ InternalArtifactType<T : FileSystemLocation>(
     // processor (for feature compilation). Created by DataBindingExportFeatureInfoTask and passed
     // into the annotation processor via processor args.
     object FEATURE_DATA_BINDING_FEATURE_INFO: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    // The base dex files output by the DexSplitter.
-    object BASE_DEX: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // The feature dex files output by the DexSplitter from the base. The base produces and
     // publishes these files when there's multi-apk code shrinking.
     object FEATURE_DEX: InternalArtifactType<Directory>(DIRECTORY), Replaceable

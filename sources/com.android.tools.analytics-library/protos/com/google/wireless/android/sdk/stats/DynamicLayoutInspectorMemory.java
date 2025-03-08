@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorMemory();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorMemory_descriptor;
@@ -130,11 +125,6 @@ private static final long serialVersionUID = 0L;
       return new Snapshot();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorMemory_Snapshot_descriptor;
@@ -150,7 +140,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SKIA_IMAGE_FIELD_NUMBER = 1;
-    private boolean skiaImage_;
+    private boolean skiaImage_ = false;
     /**
      * <pre>
      * True if the image was based on a skia snapshot, false it was a bitmap
@@ -177,7 +167,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CAPTURE_SIZE_MB_FIELD_NUMBER = 2;
-    private long captureSizeMb_;
+    private long captureSizeMb_ = 0L;
     /**
      * <pre>
      * The size used in the capture in mega bytes
@@ -204,7 +194,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MEASUREMENT_DURATION_MS_FIELD_NUMBER = 3;
-    private long measurementDurationMs_;
+    private long measurementDurationMs_ = 0L;
     /**
      * <pre>
      * The time it took to measure the memory used
@@ -458,12 +448,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         skiaImage_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         captureSizeMb_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         measurementDurationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -490,6 +478,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot buildPartial() {
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -504,43 +498,9 @@ private static final long serialVersionUID = 0L;
           result.measurementDurationMs_ = measurementDurationMs_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot) {
@@ -655,8 +615,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSkiaImage(boolean value) {
-        bitField0_ |= 0x00000001;
+
         skiaImage_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -710,8 +671,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCaptureSizeMb(long value) {
-        bitField0_ |= 0x00000002;
+
         captureSizeMb_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -765,8 +727,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMeasurementDurationMs(long value) {
-        bitField0_ |= 0x00000004;
+
         measurementDurationMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1145,18 +1108,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (initialSnapshotBuilder_ == null) {
-        initialSnapshot_ = null;
-      } else {
-        initialSnapshotBuilder_.clear();
+      bitField0_ = 0;
+      initialSnapshot_ = null;
+      if (initialSnapshotBuilder_ != null) {
+        initialSnapshotBuilder_.dispose();
+        initialSnapshotBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (largestSnapshotBuilder_ == null) {
-        largestSnapshot_ = null;
-      } else {
-        largestSnapshotBuilder_.clear();
+      largestSnapshot_ = null;
+      if (largestSnapshotBuilder_ != null) {
+        largestSnapshotBuilder_.dispose();
+        largestSnapshotBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -1183,61 +1145,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (initialSnapshotBuilder_ == null) {
-          result.initialSnapshot_ = initialSnapshot_;
-        } else {
-          result.initialSnapshot_ = initialSnapshotBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (largestSnapshotBuilder_ == null) {
-          result.largestSnapshot_ = largestSnapshot_;
-        } else {
-          result.largestSnapshot_ = largestSnapshotBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.initialSnapshot_ = initialSnapshotBuilder_ == null
+            ? initialSnapshot_
+            : initialSnapshotBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.largestSnapshot_ = largestSnapshotBuilder_ == null
+            ? largestSnapshot_
+            : largestSnapshotBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory) {
@@ -1355,11 +1285,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         initialSnapshot_ = value;
-        onChanged();
       } else {
         initialSnapshotBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1373,11 +1303,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder builderForValue) {
       if (initialSnapshotBuilder_ == null) {
         initialSnapshot_ = builderForValue.build();
-        onChanged();
       } else {
         initialSnapshotBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1390,18 +1320,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeInitialSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (initialSnapshotBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            initialSnapshot_ != null &&
-            initialSnapshot_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance()) {
-          initialSnapshot_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.newBuilder(initialSnapshot_).mergeFrom(value).buildPartial();
+          initialSnapshot_ != null &&
+          initialSnapshot_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance()) {
+          getInitialSnapshotBuilder().mergeFrom(value);
         } else {
           initialSnapshot_ = value;
         }
-        onChanged();
       } else {
         initialSnapshotBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1412,13 +1341,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1 [lazy = true];</code>
      */
     public Builder clearInitialSnapshot() {
-      if (initialSnapshotBuilder_ == null) {
-        initialSnapshot_ = null;
-        onChanged();
-      } else {
-        initialSnapshotBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      initialSnapshot_ = null;
+      if (initialSnapshotBuilder_ != null) {
+        initialSnapshotBuilder_.dispose();
+        initialSnapshotBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1511,11 +1440,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         largestSnapshot_ = value;
-        onChanged();
       } else {
         largestSnapshotBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1529,11 +1458,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.Builder builderForValue) {
       if (largestSnapshotBuilder_ == null) {
         largestSnapshot_ = builderForValue.build();
-        onChanged();
       } else {
         largestSnapshotBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1546,18 +1475,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLargestSnapshot(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot value) {
       if (largestSnapshotBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            largestSnapshot_ != null &&
-            largestSnapshot_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance()) {
-          largestSnapshot_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.newBuilder(largestSnapshot_).mergeFrom(value).buildPartial();
+          largestSnapshot_ != null &&
+          largestSnapshot_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance()) {
+          getLargestSnapshotBuilder().mergeFrom(value);
         } else {
           largestSnapshot_ = value;
         }
-        onChanged();
       } else {
         largestSnapshotBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1568,13 +1496,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2 [lazy = true];</code>
      */
     public Builder clearLargestSnapshot() {
-      if (largestSnapshotBuilder_ == null) {
-        largestSnapshot_ = null;
-        onChanged();
-      } else {
-        largestSnapshotBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      largestSnapshot_ = null;
+      if (largestSnapshotBuilder_ != null) {
+        largestSnapshotBuilder_.dispose();
+        largestSnapshotBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

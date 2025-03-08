@@ -21,7 +21,9 @@ import com.android.annotations.Nullable;
 import com.android.repository.api.ProgressIndicator;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.targets.AndroidTargetManager;
+
 import com.google.common.base.Splitter;
+
 import java.util.List;
 
 /**
@@ -59,6 +61,21 @@ public abstract class AndroidTargetHash {
                    + "-ext"
                    + version.getExtensionLevel();
         }
+    }
+
+    /**
+     * Returns the hash string for a given platform version from api string.
+     *
+     * @param apiString An api string representing a platform version.
+     * @return A hash string uniquely representing this platform target.
+     */
+    @Nullable
+    public static String getPlatformHashString(@NonNull String apiString) {
+        AndroidVersion sdkVersion = SdkVersionInfo.getVersion(apiString, null);
+        if (sdkVersion != null) {
+            return getPlatformHashString(sdkVersion);
+        }
+        return null;
     }
 
     /**

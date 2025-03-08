@@ -135,7 +135,8 @@ public interface DeviceInfoOrBuilder extends
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.DeviceInfo.build_api_level is deprecated.
+   *     See studio_stats.proto;l=2440
    * @return Whether the buildApiLevel field is set.
    */
   @java.lang.Deprecated boolean hasBuildApiLevel();
@@ -145,7 +146,8 @@ public interface DeviceInfoOrBuilder extends
    * </pre>
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.DeviceInfo.build_api_level is deprecated.
+   *     See studio_stats.proto;l=2440
    * @return The buildApiLevel.
    */
   @java.lang.Deprecated int getBuildApiLevel();
@@ -398,4 +400,36 @@ public interface DeviceInfoOrBuilder extends
    */
   com.google.protobuf.ByteString
       getConnectionIdBytes();
+
+  /**
+   * <pre>
+   * If this is a remote physical device from a non-google lab, this is the
+   * name of the lab as reported in the device catalog.
+   * </pre>
+   *
+   * <code>optional string oem_lab_name = 15;</code>
+   * @return Whether the oemLabName field is set.
+   */
+  boolean hasOemLabName();
+  /**
+   * <pre>
+   * If this is a remote physical device from a non-google lab, this is the
+   * name of the lab as reported in the device catalog.
+   * </pre>
+   *
+   * <code>optional string oem_lab_name = 15;</code>
+   * @return The oemLabName.
+   */
+  java.lang.String getOemLabName();
+  /**
+   * <pre>
+   * If this is a remote physical device from a non-google lab, this is the
+   * name of the lab as reported in the device catalog.
+   * </pre>
+   *
+   * <code>optional string oem_lab_name = 15;</code>
+   * @return The bytes for oemLabName.
+   */
+  com.google.protobuf.ByteString
+      getOemLabNameBytes();
 }

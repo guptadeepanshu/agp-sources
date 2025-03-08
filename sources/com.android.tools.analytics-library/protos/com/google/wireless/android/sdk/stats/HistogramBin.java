@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new HistogramBin();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_HistogramBin_descriptor;
@@ -53,7 +48,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int START_FIELD_NUMBER = 1;
-  private long start_;
+  private long start_ = 0L;
   /**
    * <pre>
    * Start value for this bin, inclusive. All the samples in this bin are equal
@@ -82,7 +77,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int END_FIELD_NUMBER = 2;
-  private long end_;
+  private long end_ = 0L;
   /**
    * <pre>
    * End value for this bin, exclusive. All the samples in this bin are strictly
@@ -111,7 +106,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SAMPLES_FIELD_NUMBER = 3;
-  private long samples_;
+  private long samples_ = 0L;
   /**
    * <pre>
    * Number of samples that fell within this bin (between the start and end
@@ -140,7 +135,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_SAMPLES_FIELD_NUMBER = 4;
-  private long totalSamples_;
+  private long totalSamples_ = 0L;
   /**
    * <pre>
    * Total number of samples that are greater than or equal to the bin's start.
@@ -423,14 +418,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       start_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       end_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       samples_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       totalSamples_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -457,6 +449,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramBin buildPartial() {
       com.google.wireless.android.sdk.stats.HistogramBin result = new com.google.wireless.android.sdk.stats.HistogramBin(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.HistogramBin result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -475,43 +473,9 @@ private static final long serialVersionUID = 0L;
         result.totalSamples_ = totalSamples_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.HistogramBin) {
@@ -637,8 +601,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStart(long value) {
-      bitField0_ |= 0x00000001;
+
       start_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -696,8 +661,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEnd(long value) {
-      bitField0_ |= 0x00000002;
+
       end_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -755,8 +721,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSamples(long value) {
-      bitField0_ |= 0x00000004;
+
       samples_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -817,8 +784,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalSamples(long value) {
-      bitField0_ |= 0x00000008;
+
       totalSamples_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

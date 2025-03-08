@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new SdkIndexLibraryDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SdkIndexLibraryDetails_descriptor;
@@ -49,7 +44,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int GROUP_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object groupId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object groupId_ = "";
   /**
    * <pre>
    * Group Id of library
@@ -109,7 +105,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARTIFACT_ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object artifactId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object artifactId_ = "";
   /**
    * <pre>
    * Artifact Id of library
@@ -169,10 +166,11 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_STRING_FIELD_NUMBER = 3;
-  private volatile java.lang.Object versionString_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object versionString_ = "";
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>
@@ -184,7 +182,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>
@@ -207,7 +205,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>
@@ -229,7 +227,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_BLOCKING_FIELD_NUMBER = 4;
-  private boolean isBlocking_;
+  private boolean isBlocking_ = false;
   /**
    * <pre>
    * Is this library reported as blocking publishing on Google Play?
@@ -256,7 +254,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UPDATED_VERSION_STRING_FIELD_NUMBER = 5;
-  private volatile java.lang.Object updatedVersionString_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object updatedVersionString_ = "";
   /**
    * <pre>
    * Version this library was upgraded to (SDK_INDEX_LIBRARY_UPDATED)
@@ -569,16 +568,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       groupId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       artifactId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       versionString_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       isBlocking_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       updatedVersionString_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -605,65 +600,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails buildPartial() {
       com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails result = new com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.groupId_ = groupId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.groupId_ = groupId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.artifactId_ = artifactId_;
         to_bitField0_ |= 0x00000002;
       }
-      result.artifactId_ = artifactId_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.versionString_ = versionString_;
         to_bitField0_ |= 0x00000004;
       }
-      result.versionString_ = versionString_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.isBlocking_ = isBlocking_;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.updatedVersionString_ = updatedVersionString_;
         to_bitField0_ |= 0x00000010;
       }
-      result.updatedVersionString_ = updatedVersionString_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails) {
@@ -677,26 +644,26 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails other) {
       if (other == com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance()) return this;
       if (other.hasGroupId()) {
-        bitField0_ |= 0x00000001;
         groupId_ = other.groupId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasArtifactId()) {
-        bitField0_ |= 0x00000002;
         artifactId_ = other.artifactId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasVersionString()) {
-        bitField0_ |= 0x00000004;
         versionString_ = other.versionString_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasIsBlocking()) {
         setIsBlocking(other.getIsBlocking());
       }
       if (other.hasUpdatedVersionString()) {
-        bitField0_ |= 0x00000010;
         updatedVersionString_ = other.updatedVersionString_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -833,11 +800,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGroupId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       groupId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -850,8 +815,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGroupId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       groupId_ = getDefaultInstance().getGroupId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -866,11 +831,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGroupIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       groupId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -941,11 +904,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setArtifactId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       artifactId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -958,8 +919,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearArtifactId() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       artifactId_ = getDefaultInstance().getArtifactId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -974,11 +935,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setArtifactIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       artifactId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -986,7 +945,7 @@ private static final long serialVersionUID = 0L;
     private java.lang.Object versionString_ = "";
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
@@ -997,7 +956,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
@@ -1019,7 +978,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
@@ -1040,7 +999,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
@@ -1049,31 +1008,29 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionString(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       versionString_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
      * @return This builder for chaining.
      */
     public Builder clearVersionString() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       versionString_ = getDefaultInstance().getVersionString();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
     /**
      * <pre>
-     * Version of library
+     * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
      * </pre>
      *
      * <code>optional string version_string = 3;</code>
@@ -1082,11 +1039,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionStringBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       versionString_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1126,8 +1081,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsBlocking(boolean value) {
-      bitField0_ |= 0x00000008;
+
       isBlocking_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1212,11 +1168,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUpdatedVersionString(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       updatedVersionString_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1229,8 +1183,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUpdatedVersionString() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       updatedVersionString_ = getDefaultInstance().getUpdatedVersionString();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1245,11 +1199,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUpdatedVersionStringBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       updatedVersionString_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

@@ -16,13 +16,11 @@
 package com.android.build.gradle
 
 import com.android.build.api.dsl.LibraryBuildFeatures
-import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.LibraryVariant
-import com.android.build.gradle.internal.CompileOptionsInternal
 import com.android.build.gradle.internal.DependenciesExtension
 import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
@@ -60,11 +58,6 @@ open class LibraryExtensionInternal(
     publicExtensionImpl,
     stats,
 ) {
-    @Configuring
-    fun compileOptionsDcl(action: CompileOptionsInternal.() -> Unit) {
-        super.compileOptions(action)
-    }
-
     val dependenciesDcl: DependenciesExtension by lazy {
         dslServices.newInstance(DependenciesExtension::class.java)
     }

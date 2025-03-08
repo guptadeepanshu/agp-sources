@@ -91,8 +91,15 @@ public class LibraryPlugin
             name = "androidLibrary",
             modelPublicType = com.android.build.gradle.LibraryExtensionInternal.class)
     public com.android.build.gradle.LibraryExtensionInternal getAndroidLibrary() {
-        return ((com.android.build.gradle.LibraryExtensionInternal)
-                Objects.requireNonNull(project).getExtensions().getByName("android"));
+        try {
+            return ((com.android.build.gradle.LibraryExtensionInternal)
+                    Objects.requireNonNull(project).getExtensions().getByName("android"));
+        } catch (ClassCastException ex) {
+            throw new RuntimeException(
+                    "To use declarative gradle, you need to set"
+                            + " android.experimental.declarative=true in properties.gradle file",
+                    ex);
+        }
     }
 
     @Inject

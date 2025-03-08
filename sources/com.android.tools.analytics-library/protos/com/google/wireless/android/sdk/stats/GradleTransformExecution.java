@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new GradleTransformExecution();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleTransformExecution_descriptor;
@@ -46,7 +41,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The transform implementing class.
@@ -57,7 +52,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+   *     See studio_stats.proto;l=5393
    * @return Whether the type field is set.
    */
   @java.lang.Override
@@ -74,7 +70,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+   *     See studio_stats.proto;l=5393
    * @return The type.
    */
   @java.lang.Override
@@ -83,7 +80,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_INCREMENTAL_FIELD_NUMBER = 2;
-  private boolean isIncremental_;
+  private boolean isIncremental_ = false;
   /**
    * <pre>
    * Whether the transform could be (in the case of TASK_TRANSFORM_PREPARATION)
@@ -112,7 +109,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRANSFORM_CLASS_NAME_FIELD_NUMBER = 3;
-  private volatile java.lang.Object transformClassName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object transformClassName_ = "";
   /**
    * <pre>
    * Name of the class executing the transform.
@@ -399,12 +397,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       isIncremental_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       transformClassName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -431,6 +427,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleTransformExecution buildPartial() {
       com.google.wireless.android.sdk.stats.GradleTransformExecution result = new com.google.wireless.android.sdk.stats.GradleTransformExecution(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleTransformExecution result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -442,46 +444,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.transformClassName_ = transformClassName_;
         to_bitField0_ |= 0x00000004;
       }
-      result.transformClassName_ = transformClassName_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleTransformExecution) {
@@ -501,8 +469,8 @@ private static final long serialVersionUID = 0L;
         setIsIncremental(other.getIsIncremental());
       }
       if (other.hasTransformClassName()) {
-        bitField0_ |= 0x00000004;
         transformClassName_ = other.transformClassName_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -574,7 +542,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+     *     See studio_stats.proto;l=5393
      * @return Whether the type field is set.
      */
     @java.lang.Override
@@ -591,7 +560,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+     *     See studio_stats.proto;l=5393
      * @return The type.
      */
     @java.lang.Override
@@ -608,13 +578,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+     *     See studio_stats.proto;l=5393
      * @param value The type to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setType(int value) {
-      bitField0_ |= 0x00000001;
+
       type_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -628,7 +600,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTransformExecution.type is deprecated.
+     *     See studio_stats.proto;l=5393
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearType() {
@@ -676,8 +649,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsIncremental(boolean value) {
-      bitField0_ |= 0x00000002;
+
       isIncremental_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -767,11 +741,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTransformClassName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       transformClassName_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -785,8 +757,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTransformClassName() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       transformClassName_ = getDefaultInstance().getTransformClassName();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -802,11 +774,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTransformClassNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       transformClassName_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new NavEditorEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NavEditorEvent_descriptor;
@@ -800,7 +795,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of event
@@ -821,13 +816,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int SOURCE_FIELD_NUMBER = 2;
-  private int source_;
+  private int source_ = 0;
   /**
    * <pre>
    * Where the event was triggered
@@ -848,8 +842,7 @@ private static final long serialVersionUID = 0L;
    * @return The source.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.Source getSource() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.valueOf(source_);
+    com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.forNumber(source_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.Source.UNKNOWN : result;
   }
 
@@ -1047,7 +1040,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODE_FIELD_NUMBER = 8;
-  private int mode_;
+  private int mode_ = 0;
   /**
    * <pre>
    * Mode of navigation editor: design-only, text-only, or split view
@@ -1068,8 +1061,7 @@ private static final long serialVersionUID = 0L;
    * @return The mode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode getMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.valueOf(mode_);
+    com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.forNumber(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.UNKNOWN_MODE : result;
   }
 
@@ -1389,42 +1381,35 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       source_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (propertyInfoBuilder_ == null) {
-        propertyInfo_ = null;
-      } else {
-        propertyInfoBuilder_.clear();
+      propertyInfo_ = null;
+      if (propertyInfoBuilder_ != null) {
+        propertyInfoBuilder_.dispose();
+        propertyInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (actionInfoBuilder_ == null) {
-        actionInfo_ = null;
-      } else {
-        actionInfoBuilder_.clear();
+      actionInfo_ = null;
+      if (actionInfoBuilder_ != null) {
+        actionInfoBuilder_.dispose();
+        actionInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (destinationInfoBuilder_ == null) {
-        destinationInfo_ = null;
-      } else {
-        destinationInfoBuilder_.clear();
+      destinationInfo_ = null;
+      if (destinationInfoBuilder_ != null) {
+        destinationInfoBuilder_.dispose();
+        destinationInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (schemaInfoBuilder_ == null) {
-        schemaInfo_ = null;
-      } else {
-        schemaInfoBuilder_.clear();
+      schemaInfo_ = null;
+      if (schemaInfoBuilder_ != null) {
+        schemaInfoBuilder_.dispose();
+        schemaInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (contentsBuilder_ == null) {
-        contents_ = null;
-      } else {
-        contentsBuilder_.clear();
+      contents_ = null;
+      if (contentsBuilder_ != null) {
+        contentsBuilder_.dispose();
+        contentsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       mode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -1451,97 +1436,59 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent buildPartial() {
       com.google.wireless.android.sdk.stats.NavEditorEvent result = new com.google.wireless.android.sdk.stats.NavEditorEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.source_ = source_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (propertyInfoBuilder_ == null) {
-          result.propertyInfo_ = propertyInfo_;
-        } else {
-          result.propertyInfo_ = propertyInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (actionInfoBuilder_ == null) {
-          result.actionInfo_ = actionInfo_;
-        } else {
-          result.actionInfo_ = actionInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (destinationInfoBuilder_ == null) {
-          result.destinationInfo_ = destinationInfo_;
-        } else {
-          result.destinationInfo_ = destinationInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000010;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (schemaInfoBuilder_ == null) {
-          result.schemaInfo_ = schemaInfo_;
-        } else {
-          result.schemaInfo_ = schemaInfoBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (contentsBuilder_ == null) {
-          result.contents_ = contents_;
-        } else {
-          result.contents_ = contentsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        to_bitField0_ |= 0x00000080;
-      }
-      result.mode_ = mode_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NavEditorEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.source_ = source_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.propertyInfo_ = propertyInfoBuilder_ == null
+            ? propertyInfo_
+            : propertyInfoBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.actionInfo_ = actionInfoBuilder_ == null
+            ? actionInfo_
+            : actionInfoBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.destinationInfo_ = destinationInfoBuilder_ == null
+            ? destinationInfo_
+            : destinationInfoBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.schemaInfo_ = schemaInfoBuilder_ == null
+            ? schemaInfo_
+            : schemaInfoBuilder_.build();
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.contents_ = contentsBuilder_ == null
+            ? contents_
+            : contentsBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.mode_ = mode_;
+        to_bitField0_ |= 0x00000080;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NavEditorEvent) {
@@ -1714,8 +1661,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -1773,8 +1719,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.Source getSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.valueOf(source_);
+      com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.forNumber(source_);
       return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.Source.UNKNOWN : result;
     }
     /**
@@ -1852,11 +1797,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         propertyInfo_ = value;
-        onChanged();
       } else {
         propertyInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1870,11 +1815,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.NavPropertyInfo.Builder builderForValue) {
       if (propertyInfoBuilder_ == null) {
         propertyInfo_ = builderForValue.build();
-        onChanged();
       } else {
         propertyInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1887,18 +1832,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePropertyInfo(com.google.wireless.android.sdk.stats.NavPropertyInfo value) {
       if (propertyInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            propertyInfo_ != null &&
-            propertyInfo_ != com.google.wireless.android.sdk.stats.NavPropertyInfo.getDefaultInstance()) {
-          propertyInfo_ =
-            com.google.wireless.android.sdk.stats.NavPropertyInfo.newBuilder(propertyInfo_).mergeFrom(value).buildPartial();
+          propertyInfo_ != null &&
+          propertyInfo_ != com.google.wireless.android.sdk.stats.NavPropertyInfo.getDefaultInstance()) {
+          getPropertyInfoBuilder().mergeFrom(value);
         } else {
           propertyInfo_ = value;
         }
-        onChanged();
       } else {
         propertyInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1909,13 +1853,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavPropertyInfo property_info = 3 [lazy = true];</code>
      */
     public Builder clearPropertyInfo() {
-      if (propertyInfoBuilder_ == null) {
-        propertyInfo_ = null;
-        onChanged();
-      } else {
-        propertyInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      propertyInfo_ = null;
+      if (propertyInfoBuilder_ != null) {
+        propertyInfoBuilder_.dispose();
+        propertyInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2008,11 +1952,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         actionInfo_ = value;
-        onChanged();
       } else {
         actionInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2026,11 +1970,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.NavActionInfo.Builder builderForValue) {
       if (actionInfoBuilder_ == null) {
         actionInfo_ = builderForValue.build();
-        onChanged();
       } else {
         actionInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2043,18 +1987,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeActionInfo(com.google.wireless.android.sdk.stats.NavActionInfo value) {
       if (actionInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            actionInfo_ != null &&
-            actionInfo_ != com.google.wireless.android.sdk.stats.NavActionInfo.getDefaultInstance()) {
-          actionInfo_ =
-            com.google.wireless.android.sdk.stats.NavActionInfo.newBuilder(actionInfo_).mergeFrom(value).buildPartial();
+          actionInfo_ != null &&
+          actionInfo_ != com.google.wireless.android.sdk.stats.NavActionInfo.getDefaultInstance()) {
+          getActionInfoBuilder().mergeFrom(value);
         } else {
           actionInfo_ = value;
         }
-        onChanged();
       } else {
         actionInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -2065,13 +2008,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavActionInfo action_info = 4 [lazy = true];</code>
      */
     public Builder clearActionInfo() {
-      if (actionInfoBuilder_ == null) {
-        actionInfo_ = null;
-        onChanged();
-      } else {
-        actionInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      actionInfo_ = null;
+      if (actionInfoBuilder_ != null) {
+        actionInfoBuilder_.dispose();
+        actionInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2167,11 +2110,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         destinationInfo_ = value;
-        onChanged();
       } else {
         destinationInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2186,11 +2129,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.NavDestinationInfo.Builder builderForValue) {
       if (destinationInfoBuilder_ == null) {
         destinationInfo_ = builderForValue.build();
-        onChanged();
       } else {
         destinationInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2204,18 +2147,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDestinationInfo(com.google.wireless.android.sdk.stats.NavDestinationInfo value) {
       if (destinationInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            destinationInfo_ != null &&
-            destinationInfo_ != com.google.wireless.android.sdk.stats.NavDestinationInfo.getDefaultInstance()) {
-          destinationInfo_ =
-            com.google.wireless.android.sdk.stats.NavDestinationInfo.newBuilder(destinationInfo_).mergeFrom(value).buildPartial();
+          destinationInfo_ != null &&
+          destinationInfo_ != com.google.wireless.android.sdk.stats.NavDestinationInfo.getDefaultInstance()) {
+          getDestinationInfoBuilder().mergeFrom(value);
         } else {
           destinationInfo_ = value;
         }
-        onChanged();
       } else {
         destinationInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -2227,13 +2169,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavDestinationInfo destination_info = 5 [lazy = true];</code>
      */
     public Builder clearDestinationInfo() {
-      if (destinationInfoBuilder_ == null) {
-        destinationInfo_ = null;
-        onChanged();
-      } else {
-        destinationInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      destinationInfo_ = null;
+      if (destinationInfoBuilder_ != null) {
+        destinationInfoBuilder_.dispose();
+        destinationInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2329,11 +2271,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         schemaInfo_ = value;
-        onChanged();
       } else {
         schemaInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2347,11 +2289,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.NavSchemaInfo.Builder builderForValue) {
       if (schemaInfoBuilder_ == null) {
         schemaInfo_ = builderForValue.build();
-        onChanged();
       } else {
         schemaInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2364,18 +2306,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSchemaInfo(com.google.wireless.android.sdk.stats.NavSchemaInfo value) {
       if (schemaInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            schemaInfo_ != null &&
-            schemaInfo_ != com.google.wireless.android.sdk.stats.NavSchemaInfo.getDefaultInstance()) {
-          schemaInfo_ =
-            com.google.wireless.android.sdk.stats.NavSchemaInfo.newBuilder(schemaInfo_).mergeFrom(value).buildPartial();
+          schemaInfo_ != null &&
+          schemaInfo_ != com.google.wireless.android.sdk.stats.NavSchemaInfo.getDefaultInstance()) {
+          getSchemaInfoBuilder().mergeFrom(value);
         } else {
           schemaInfo_ = value;
         }
-        onChanged();
       } else {
         schemaInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2386,13 +2327,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavSchemaInfo schema_info = 6 [lazy = true];</code>
      */
     public Builder clearSchemaInfo() {
-      if (schemaInfoBuilder_ == null) {
-        schemaInfo_ = null;
-        onChanged();
-      } else {
-        schemaInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      schemaInfo_ = null;
+      if (schemaInfoBuilder_ != null) {
+        schemaInfoBuilder_.dispose();
+        schemaInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2485,11 +2426,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         contents_ = value;
-        onChanged();
       } else {
         contentsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -2503,11 +2444,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.NavigationContents.Builder builderForValue) {
       if (contentsBuilder_ == null) {
         contents_ = builderForValue.build();
-        onChanged();
       } else {
         contentsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -2520,18 +2461,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeContents(com.google.wireless.android.sdk.stats.NavigationContents value) {
       if (contentsBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            contents_ != null &&
-            contents_ != com.google.wireless.android.sdk.stats.NavigationContents.getDefaultInstance()) {
-          contents_ =
-            com.google.wireless.android.sdk.stats.NavigationContents.newBuilder(contents_).mergeFrom(value).buildPartial();
+          contents_ != null &&
+          contents_ != com.google.wireless.android.sdk.stats.NavigationContents.getDefaultInstance()) {
+          getContentsBuilder().mergeFrom(value);
         } else {
           contents_ = value;
         }
-        onChanged();
       } else {
         contentsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -2542,13 +2482,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavigationContents contents = 7 [lazy = true];</code>
      */
     public Builder clearContents() {
-      if (contentsBuilder_ == null) {
-        contents_ = null;
-        onChanged();
-      } else {
-        contentsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      contents_ = null;
+      if (contentsBuilder_ != null) {
+        contentsBuilder_.dispose();
+        contentsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2621,8 +2561,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode getMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.valueOf(mode_);
+      com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.forNumber(mode_);
       return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.UNKNOWN_MODE : result;
     }
     /**

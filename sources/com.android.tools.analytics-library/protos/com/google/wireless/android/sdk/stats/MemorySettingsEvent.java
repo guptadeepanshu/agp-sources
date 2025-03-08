@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new MemorySettingsEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemorySettingsEvent_descriptor;
@@ -307,7 +302,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int KIND_FIELD_NUMBER = 1;
-  private int kind_;
+  private int kind_ = 0;
   /**
    * <pre>
    * Kind of the event.
@@ -328,8 +323,7 @@ private static final long serialVersionUID = 0L;
    * @return The kind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind getKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.valueOf(kind_);
+    com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.forNumber(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.UNKNOWN : result;
   }
 
@@ -699,26 +693,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       kind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (currentBuilder_ == null) {
-        current_ = null;
-      } else {
-        currentBuilder_.clear();
+      current_ = null;
+      if (currentBuilder_ != null) {
+        currentBuilder_.dispose();
+        currentBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (recommendedBuilder_ == null) {
-        recommended_ = null;
-      } else {
-        recommendedBuilder_.clear();
+      recommended_ = null;
+      if (recommendedBuilder_ != null) {
+        recommendedBuilder_.dispose();
+        recommendedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (changedBuilder_ == null) {
-        changed_ = null;
-      } else {
-        changedBuilder_.clear();
+      changed_ = null;
+      if (changedBuilder_ != null) {
+        changedBuilder_.dispose();
+        changedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -745,73 +736,39 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemorySettingsEvent buildPartial() {
       com.google.wireless.android.sdk.stats.MemorySettingsEvent result = new com.google.wireless.android.sdk.stats.MemorySettingsEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.kind_ = kind_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (currentBuilder_ == null) {
-          result.current_ = current_;
-        } else {
-          result.current_ = currentBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (recommendedBuilder_ == null) {
-          result.recommended_ = recommended_;
-        } else {
-          result.recommended_ = recommendedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (changedBuilder_ == null) {
-          result.changed_ = changed_;
-        } else {
-          result.changed_ = changedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.MemorySettingsEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.kind_ = kind_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.current_ = currentBuilder_ == null
+            ? current_
+            : currentBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.recommended_ = recommendedBuilder_ == null
+            ? recommended_
+            : recommendedBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.changed_ = changedBuilder_ == null
+            ? changed_
+            : changedBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.MemorySettingsEvent) {
@@ -934,8 +891,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind getKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.valueOf(kind_);
+      com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.forNumber(kind_);
       return result == null ? com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.UNKNOWN : result;
     }
     /**
@@ -1013,11 +969,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         current_ = value;
-        onChanged();
       } else {
         currentBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1031,11 +987,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
       if (currentBuilder_ == null) {
         current_ = builderForValue.build();
-        onChanged();
       } else {
         currentBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1048,18 +1004,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeCurrent(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (currentBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            current_ != null &&
-            current_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
-          current_ =
-            com.google.wireless.android.sdk.stats.MemorySettings.newBuilder(current_).mergeFrom(value).buildPartial();
+          current_ != null &&
+          current_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
+          getCurrentBuilder().mergeFrom(value);
         } else {
           current_ = value;
         }
-        onChanged();
       } else {
         currentBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1070,13 +1025,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemorySettings current = 2 [lazy = true];</code>
      */
     public Builder clearCurrent() {
-      if (currentBuilder_ == null) {
-        current_ = null;
-        onChanged();
-      } else {
-        currentBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      current_ = null;
+      if (currentBuilder_ != null) {
+        currentBuilder_.dispose();
+        currentBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1169,11 +1124,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         recommended_ = value;
-        onChanged();
       } else {
         recommendedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1187,11 +1142,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
       if (recommendedBuilder_ == null) {
         recommended_ = builderForValue.build();
-        onChanged();
       } else {
         recommendedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1204,18 +1159,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRecommended(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (recommendedBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            recommended_ != null &&
-            recommended_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
-          recommended_ =
-            com.google.wireless.android.sdk.stats.MemorySettings.newBuilder(recommended_).mergeFrom(value).buildPartial();
+          recommended_ != null &&
+          recommended_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
+          getRecommendedBuilder().mergeFrom(value);
         } else {
           recommended_ = value;
         }
-        onChanged();
       } else {
         recommendedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1226,13 +1180,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemorySettings recommended = 3 [lazy = true];</code>
      */
     public Builder clearRecommended() {
-      if (recommendedBuilder_ == null) {
-        recommended_ = null;
-        onChanged();
-      } else {
-        recommendedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      recommended_ = null;
+      if (recommendedBuilder_ != null) {
+        recommendedBuilder_.dispose();
+        recommendedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1325,11 +1279,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         changed_ = value;
-        onChanged();
       } else {
         changedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1343,11 +1297,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.MemorySettings.Builder builderForValue) {
       if (changedBuilder_ == null) {
         changed_ = builderForValue.build();
-        onChanged();
       } else {
         changedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1360,18 +1314,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeChanged(com.google.wireless.android.sdk.stats.MemorySettings value) {
       if (changedBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            changed_ != null &&
-            changed_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
-          changed_ =
-            com.google.wireless.android.sdk.stats.MemorySettings.newBuilder(changed_).mergeFrom(value).buildPartial();
+          changed_ != null &&
+          changed_ != com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance()) {
+          getChangedBuilder().mergeFrom(value);
         } else {
           changed_ = value;
         }
-        onChanged();
       } else {
         changedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1382,13 +1335,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemorySettings changed = 4 [lazy = true];</code>
      */
     public Builder clearChanged() {
-      if (changedBuilder_ == null) {
-        changed_ = null;
-        onChanged();
-      } else {
-        changedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      changed_ = null;
+      if (changedBuilder_ != null) {
+        changedBuilder_.dispose();
+        changedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

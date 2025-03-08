@@ -146,7 +146,8 @@ open class HostTestTaskManager(
             createGenerateResValuesTask(hostTestCreationConfig)
 
             // Add a task to merge the assets folders
-            createMergeAssetsTask(hostTestCreationConfig)
+            createMergeAssetsTask(hostTestCreationConfig, includeDependencies = true)
+
             createMergeResourcesTask(hostTestCreationConfig, true, ImmutableSet.of())
             // Add a task to process the Android Resources and generate source files
             createApkProcessResTask(hostTestCreationConfig,

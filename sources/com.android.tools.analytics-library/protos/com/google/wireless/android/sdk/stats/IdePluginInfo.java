@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new IdePluginInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IdePluginInfo_descriptor;
@@ -45,6 +40,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGINS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.IdePlugin> plugins_;
   /**
    * <pre>
@@ -294,6 +290,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (pluginsBuilder_ == null) {
         plugins_ = java.util.Collections.emptyList();
       } else {
@@ -327,7 +324,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IdePluginInfo buildPartial() {
       com.google.wireless.android.sdk.stats.IdePluginInfo result = new com.google.wireless.android.sdk.stats.IdePluginInfo(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.IdePluginInfo result) {
       if (pluginsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           plugins_ = java.util.Collections.unmodifiableList(plugins_);
@@ -337,42 +340,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.plugins_ = pluginsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.IdePluginInfo result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.IdePluginInfo) {

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new StudioPerformanceStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPerformanceStats_descriptor;
@@ -50,7 +45,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int UI_FREEZE_TIME_MS_FIELD_NUMBER = 1;
-  private int uiFreezeTimeMs_;
+  private int uiFreezeTimeMs_ = 0;
   /**
    * <pre>
    * Time for which the UI was blocked in milliseconds
@@ -127,7 +122,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EVENT_SERVICE_TIME_SAMPLE_PERIOD_FIELD_NUMBER = 3;
-  private int eventServiceTimeSamplePeriod_;
+  private int eventServiceTimeSamplePeriod_ = 0;
   /**
    * <pre>
    * Sample period used to compute the event_service_time_ms histogram. For
@@ -200,6 +195,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GC_PAUSE_INFO_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GcPauseInfo> gcPauseInfo_;
   /**
    * <pre>
@@ -530,22 +526,19 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       uiFreezeTimeMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (eventServiceTimeMsBuilder_ == null) {
-        eventServiceTimeMs_ = null;
-      } else {
-        eventServiceTimeMsBuilder_.clear();
+      eventServiceTimeMs_ = null;
+      if (eventServiceTimeMsBuilder_ != null) {
+        eventServiceTimeMsBuilder_.dispose();
+        eventServiceTimeMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       eventServiceTimeSamplePeriod_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (writeLockWaitTimeMsBuilder_ == null) {
-        writeLockWaitTimeMs_ = null;
-      } else {
-        writeLockWaitTimeMsBuilder_.clear();
+      writeLockWaitTimeMs_ = null;
+      if (writeLockWaitTimeMsBuilder_ != null) {
+        writeLockWaitTimeMsBuilder_.dispose();
+        writeLockWaitTimeMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
       if (gcPauseInfoBuilder_ == null) {
         gcPauseInfo_ = java.util.Collections.emptyList();
       } else {
@@ -579,32 +572,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPerformanceStats buildPartial() {
       com.google.wireless.android.sdk.stats.StudioPerformanceStats result = new com.google.wireless.android.sdk.stats.StudioPerformanceStats(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.uiFreezeTimeMs_ = uiFreezeTimeMs_;
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (eventServiceTimeMsBuilder_ == null) {
-          result.eventServiceTimeMs_ = eventServiceTimeMs_;
-        } else {
-          result.eventServiceTimeMs_ = eventServiceTimeMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.eventServiceTimeSamplePeriod_ = eventServiceTimeSamplePeriod_;
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (writeLockWaitTimeMsBuilder_ == null) {
-          result.writeLockWaitTimeMs_ = writeLockWaitTimeMs_;
-        } else {
-          result.writeLockWaitTimeMs_ = writeLockWaitTimeMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.StudioPerformanceStats result) {
       if (gcPauseInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0)) {
           gcPauseInfo_ = java.util.Collections.unmodifiableList(gcPauseInfo_);
@@ -614,43 +588,34 @@ private static final long serialVersionUID = 0L;
       } else {
         result.gcPauseInfo_ = gcPauseInfoBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPerformanceStats result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.uiFreezeTimeMs_ = uiFreezeTimeMs_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.eventServiceTimeMs_ = eventServiceTimeMsBuilder_ == null
+            ? eventServiceTimeMs_
+            : eventServiceTimeMsBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.eventServiceTimeSamplePeriod_ = eventServiceTimeSamplePeriod_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.writeLockWaitTimeMs_ = writeLockWaitTimeMsBuilder_ == null
+            ? writeLockWaitTimeMs_
+            : writeLockWaitTimeMsBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioPerformanceStats) {
@@ -816,8 +781,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUiFreezeTimeMs(int value) {
-      bitField0_ |= 0x00000001;
+
       uiFreezeTimeMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -890,11 +856,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         eventServiceTimeMs_ = value;
-        onChanged();
       } else {
         eventServiceTimeMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -912,11 +878,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (eventServiceTimeMsBuilder_ == null) {
         eventServiceTimeMs_ = builderForValue.build();
-        onChanged();
       } else {
         eventServiceTimeMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -933,18 +899,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeEventServiceTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (eventServiceTimeMsBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            eventServiceTimeMs_ != null &&
-            eventServiceTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          eventServiceTimeMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(eventServiceTimeMs_).mergeFrom(value).buildPartial();
+          eventServiceTimeMs_ != null &&
+          eventServiceTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getEventServiceTimeMsBuilder().mergeFrom(value);
         } else {
           eventServiceTimeMs_ = value;
         }
-        onChanged();
       } else {
         eventServiceTimeMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -959,13 +924,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram event_service_time_ms = 2 [lazy = true];</code>
      */
     public Builder clearEventServiceTimeMs() {
-      if (eventServiceTimeMsBuilder_ == null) {
-        eventServiceTimeMs_ = null;
-        onChanged();
-      } else {
-        eventServiceTimeMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      eventServiceTimeMs_ = null;
+      if (eventServiceTimeMsBuilder_ != null) {
+        eventServiceTimeMsBuilder_.dispose();
+        eventServiceTimeMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1075,8 +1040,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEventServiceTimeSamplePeriod(int value) {
-      bitField0_ |= 0x00000004;
+
       eventServiceTimeSamplePeriod_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1141,11 +1107,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         writeLockWaitTimeMs_ = value;
-        onChanged();
       } else {
         writeLockWaitTimeMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1159,11 +1125,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (writeLockWaitTimeMsBuilder_ == null) {
         writeLockWaitTimeMs_ = builderForValue.build();
-        onChanged();
       } else {
         writeLockWaitTimeMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1176,18 +1142,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeWriteLockWaitTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (writeLockWaitTimeMsBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            writeLockWaitTimeMs_ != null &&
-            writeLockWaitTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          writeLockWaitTimeMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(writeLockWaitTimeMs_).mergeFrom(value).buildPartial();
+          writeLockWaitTimeMs_ != null &&
+          writeLockWaitTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getWriteLockWaitTimeMsBuilder().mergeFrom(value);
         } else {
           writeLockWaitTimeMs_ = value;
         }
-        onChanged();
       } else {
         writeLockWaitTimeMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1198,13 +1163,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4 [lazy = true];</code>
      */
     public Builder clearWriteLockWaitTimeMs() {
-      if (writeLockWaitTimeMsBuilder_ == null) {
-        writeLockWaitTimeMs_ = null;
-        onChanged();
-      } else {
-        writeLockWaitTimeMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      writeLockWaitTimeMs_ = null;
+      if (writeLockWaitTimeMsBuilder_ != null) {
+        writeLockWaitTimeMsBuilder_.dispose();
+        writeLockWaitTimeMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -19,7 +19,8 @@ private static final long serialVersionUID = 0L;
     trigger_ = 0;
     status_ = 0;
     lunchTarget_ = "";
-    modulePaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    modulePaths_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -29,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new SoongSyncStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SoongSyncStats_descriptor;
@@ -268,7 +264,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TRIGGER_FIELD_NUMBER = 1;
-  private int trigger_;
+  private int trigger_ = 0;
   /**
    * <pre>
    * Cause of sync
@@ -289,13 +285,12 @@ private static final long serialVersionUID = 0L;
    * @return The trigger.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger getTrigger() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger result = com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.valueOf(trigger_);
+    com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger result = com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.forNumber(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.TRIGGER_UNKNOWN : result;
   }
 
   public static final int STATUS_FIELD_NUMBER = 2;
-  private int status_;
+  private int status_ = 0;
   /**
    * <pre>
    * Status of sync
@@ -316,13 +311,12 @@ private static final long serialVersionUID = 0L;
    * @return The status.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SoongSyncStats.Status getStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SoongSyncStats.Status result = com.google.wireless.android.sdk.stats.SoongSyncStats.Status.valueOf(status_);
+    com.google.wireless.android.sdk.stats.SoongSyncStats.Status result = com.google.wireless.android.sdk.stats.SoongSyncStats.Status.forNumber(status_);
     return result == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.Status.STATUS_UNKNOWN : result;
   }
 
   public static final int TOTAL_TIME_MS_FIELD_NUMBER = 3;
-  private long totalTimeMs_;
+  private long totalTimeMs_ = 0L;
   /**
    * <pre>
    * Total time of the entire sync process
@@ -349,7 +343,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LUNCH_TARGET_FIELD_NUMBER = 4;
-  private volatile java.lang.Object lunchTarget_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object lunchTarget_ = "";
   /**
    * <pre>
    * Lunch target used for sync
@@ -409,7 +404,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_PATHS_FIELD_NUMBER = 5;
-  private com.google.protobuf.LazyStringList modulePaths_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList modulePaths_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Module paths that were synced. These are paths relative
@@ -719,16 +716,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       trigger_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       status_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       totalTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       lunchTarget_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
-      modulePaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      modulePaths_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       return this;
     }
 
@@ -755,66 +749,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SoongSyncStats buildPartial() {
       com.google.wireless.android.sdk.stats.SoongSyncStats result = new com.google.wireless.android.sdk.stats.SoongSyncStats(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SoongSyncStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.trigger_ = trigger_;
         to_bitField0_ |= 0x00000001;
       }
-      result.trigger_ = trigger_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.status_ = status_;
         to_bitField0_ |= 0x00000002;
       }
-      result.status_ = status_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.totalTimeMs_ = totalTimeMs_;
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.lunchTarget_ = lunchTarget_;
         to_bitField0_ |= 0x00000008;
       }
-      result.lunchTarget_ = lunchTarget_;
-      if (((bitField0_ & 0x00000010) != 0)) {
-        modulePaths_ = modulePaths_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000010);
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        modulePaths_.makeImmutable();
+        result.modulePaths_ = modulePaths_;
       }
-      result.modulePaths_ = modulePaths_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SoongSyncStats) {
@@ -837,14 +802,14 @@ private static final long serialVersionUID = 0L;
         setTotalTimeMs(other.getTotalTimeMs());
       }
       if (other.hasLunchTarget()) {
-        bitField0_ |= 0x00000008;
         lunchTarget_ = other.lunchTarget_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (!other.modulePaths_.isEmpty()) {
         if (modulePaths_.isEmpty()) {
           modulePaths_ = other.modulePaths_;
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ |= 0x00000010;
         } else {
           ensureModulePathsIsMutable();
           modulePaths_.addAll(other.modulePaths_);
@@ -956,8 +921,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger getTrigger() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger result = com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.valueOf(trigger_);
+      com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger result = com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.forNumber(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.Trigger.TRIGGER_UNKNOWN : result;
     }
     /**
@@ -1015,8 +979,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SoongSyncStats.Status getStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SoongSyncStats.Status result = com.google.wireless.android.sdk.stats.SoongSyncStats.Status.valueOf(status_);
+      com.google.wireless.android.sdk.stats.SoongSyncStats.Status result = com.google.wireless.android.sdk.stats.SoongSyncStats.Status.forNumber(status_);
       return result == null ? com.google.wireless.android.sdk.stats.SoongSyncStats.Status.STATUS_UNKNOWN : result;
     }
     /**
@@ -1087,8 +1050,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalTimeMs(long value) {
-      bitField0_ |= 0x00000004;
+
       totalTimeMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1173,11 +1137,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLunchTarget(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       lunchTarget_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1190,8 +1152,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLunchTarget() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       lunchTarget_ = getDefaultInstance().getLunchTarget();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1206,21 +1168,20 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLunchTargetBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       lunchTarget_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList modulePaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList modulePaths_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureModulePathsIsMutable() {
-      if (!((bitField0_ & 0x00000010) != 0)) {
+      if (!modulePaths_.isModifiable()) {
         modulePaths_ = new com.google.protobuf.LazyStringArrayList(modulePaths_);
-        bitField0_ |= 0x00000010;
-       }
+      }
+      bitField0_ |= 0x00000010;
     }
     /**
      * <pre>
@@ -1233,7 +1194,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getModulePathsList() {
-      return modulePaths_.getUnmodifiableView();
+      modulePaths_.makeImmutable();
+      return modulePaths_;
     }
     /**
      * <pre>
@@ -1287,11 +1249,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModulePaths(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureModulePathsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureModulePathsIsMutable();
       modulePaths_.set(index, value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1307,11 +1268,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addModulePaths(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureModulePathsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureModulePathsIsMutable();
       modulePaths_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1330,6 +1290,7 @@ private static final long serialVersionUID = 0L;
       ensureModulePathsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, modulePaths_);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1343,8 +1304,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModulePaths() {
-      modulePaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000010);
+      modulePaths_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000010);;
       onChanged();
       return this;
     }
@@ -1360,11 +1322,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addModulePathsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureModulePathsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureModulePathsIsMutable();
       modulePaths_.add(value);
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new AlwaysRunTasksAnalyzerData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AlwaysRunTasksAnalyzerData_descriptor;
@@ -78,7 +73,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+     *     See studio_stats.proto;l=11398
      * @return Whether the pluginIdentifier field is set.
      */
     @java.lang.Deprecated boolean hasPluginIdentifier();
@@ -89,7 +85,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+     *     See studio_stats.proto;l=11398
      * @return The pluginIdentifier.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier();
@@ -153,11 +150,6 @@ private static final long serialVersionUID = 0L;
       return new AlwaysRunTask();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AlwaysRunTasksAnalyzerData_AlwaysRunTask_descriptor;
@@ -287,7 +279,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int REASON_FIELD_NUMBER = 1;
-    private int reason_;
+    private int reason_ = 0;
     /**
      * <pre>
      * Reason the task is always running
@@ -308,8 +300,7 @@ private static final long serialVersionUID = 0L;
      * @return The reason.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason getReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.valueOf(reason_);
+      com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.forNumber(reason_);
       return result == null ? com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.UNKNOWN_REASON : result;
     }
 
@@ -322,7 +313,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+     *     See studio_stats.proto;l=11398
      * @return Whether the pluginIdentifier field is set.
      */
     @java.lang.Override
@@ -336,7 +328,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+     *     See studio_stats.proto;l=11398
      * @return The pluginIdentifier.
      */
     @java.lang.Override
@@ -625,20 +618,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         reason_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (pluginIdentifierBuilder_ == null) {
-          pluginIdentifier_ = null;
-        } else {
-          pluginIdentifierBuilder_.clear();
+        pluginIdentifier_ = null;
+        if (pluginIdentifierBuilder_ != null) {
+          pluginIdentifierBuilder_.dispose();
+          pluginIdentifierBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (taskIdentifierBuilder_ == null) {
-          taskIdentifier_ = null;
-        } else {
-          taskIdentifierBuilder_.clear();
+        taskIdentifier_ = null;
+        if (taskIdentifierBuilder_ != null) {
+          taskIdentifierBuilder_.dispose();
+          taskIdentifierBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -665,65 +656,33 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask buildPartial() {
         com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask result = new com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.reason_ = reason_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (pluginIdentifierBuilder_ == null) {
-            result.pluginIdentifier_ = pluginIdentifier_;
-          } else {
-            result.pluginIdentifier_ = pluginIdentifierBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          if (taskIdentifierBuilder_ == null) {
-            result.taskIdentifier_ = taskIdentifier_;
-          } else {
-            result.taskIdentifier_ = taskIdentifierBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000004;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.reason_ = reason_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.pluginIdentifier_ = pluginIdentifierBuilder_ == null
+              ? pluginIdentifier_
+              : pluginIdentifierBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.taskIdentifier_ = taskIdentifierBuilder_ == null
+              ? taskIdentifier_
+              : taskIdentifierBuilder_.build();
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask) {
@@ -836,8 +795,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason getReason() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.valueOf(reason_);
+        com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.forNumber(reason_);
         return result == null ? com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.UNKNOWN_REASON : result;
       }
       /**
@@ -883,7 +841,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+       *     See studio_stats.proto;l=11398
        * @return Whether the pluginIdentifier field is set.
        */
       @java.lang.Deprecated public boolean hasPluginIdentifier() {
@@ -896,7 +855,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
+       *     See studio_stats.proto;l=11398
        * @return The pluginIdentifier.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {
@@ -920,11 +880,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           pluginIdentifier_ = value;
-          onChanged();
         } else {
           pluginIdentifierBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -939,11 +899,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.Builder builderForValue) {
         if (pluginIdentifierBuilder_ == null) {
           pluginIdentifier_ = builderForValue.build();
-          onChanged();
         } else {
           pluginIdentifierBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -957,18 +917,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Deprecated public Builder mergePluginIdentifier(com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier value) {
         if (pluginIdentifierBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              pluginIdentifier_ != null &&
-              pluginIdentifier_ != com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance()) {
-            pluginIdentifier_ =
-              com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.newBuilder(pluginIdentifier_).mergeFrom(value).buildPartial();
+            pluginIdentifier_ != null &&
+            pluginIdentifier_ != com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance()) {
+            getPluginIdentifierBuilder().mergeFrom(value);
           } else {
             pluginIdentifier_ = value;
           }
-          onChanged();
         } else {
           pluginIdentifierBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -980,13 +939,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearPluginIdentifier() {
-        if (pluginIdentifierBuilder_ == null) {
-          pluginIdentifier_ = null;
-          onChanged();
-        } else {
-          pluginIdentifierBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        pluginIdentifier_ = null;
+        if (pluginIdentifierBuilder_ != null) {
+          pluginIdentifierBuilder_.dispose();
+          pluginIdentifierBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1082,11 +1041,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           taskIdentifier_ = value;
-          onChanged();
         } else {
           taskIdentifierBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1100,11 +1059,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.Builder builderForValue) {
         if (taskIdentifierBuilder_ == null) {
           taskIdentifier_ = builderForValue.build();
-          onChanged();
         } else {
           taskIdentifierBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1117,18 +1076,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeTaskIdentifier(com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier value) {
         if (taskIdentifierBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
-              taskIdentifier_ != null &&
-              taskIdentifier_ != com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.getDefaultInstance()) {
-            taskIdentifier_ =
-              com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.newBuilder(taskIdentifier_).mergeFrom(value).buildPartial();
+            taskIdentifier_ != null &&
+            taskIdentifier_ != com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.getDefaultInstance()) {
+            getTaskIdentifierBuilder().mergeFrom(value);
           } else {
             taskIdentifier_ = value;
           }
-          onChanged();
         } else {
           taskIdentifierBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1139,13 +1097,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3 [lazy = true];</code>
        */
       public Builder clearTaskIdentifier() {
-        if (taskIdentifierBuilder_ == null) {
-          taskIdentifier_ = null;
-          onChanged();
-        } else {
-          taskIdentifierBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        taskIdentifier_ = null;
+        if (taskIdentifierBuilder_ != null) {
+          taskIdentifierBuilder_.dispose();
+          taskIdentifierBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1260,6 +1218,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ALWAYS_RUN_TASKS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask> alwaysRunTasks_;
   /**
    * <pre>
@@ -1513,6 +1472,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (alwaysRunTasksBuilder_ == null) {
         alwaysRunTasks_ = java.util.Collections.emptyList();
       } else {
@@ -1546,7 +1506,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData buildPartial() {
       com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData result = new com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData result) {
       if (alwaysRunTasksBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           alwaysRunTasks_ = java.util.Collections.unmodifiableList(alwaysRunTasks_);
@@ -1556,42 +1522,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.alwaysRunTasks_ = alwaysRunTasksBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData) {

@@ -111,6 +111,7 @@ abstract class MergeConsumerProguardFilesTask : MergeFileTask() {
             task.consumerProguardFiles.from(
                 optimizationCreationConfig.consumerProguardFiles
             )
+            task.consumerProguardFiles.disallowChanges()
             val inputFiles = creationConfig
                     .services
                     .fileCollection(

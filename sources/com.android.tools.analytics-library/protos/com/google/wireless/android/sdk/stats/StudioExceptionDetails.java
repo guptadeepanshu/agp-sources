@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new StudioExceptionDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioExceptionDetails_descriptor;
@@ -47,7 +42,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int HASH_FIELD_NUMBER = 1;
-  private volatile java.lang.Object hash_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object hash_ = "";
   /**
    * <pre>
    * hash of the exception stack trace
@@ -107,7 +103,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SUMMARY_FIELD_NUMBER = 2;
-  private volatile java.lang.Object summary_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object summary_ = "";
   /**
    * <pre>
    * summary of the exception stack trace
@@ -167,7 +164,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNT_FIELD_NUMBER = 3;
-  private int count_;
+  private int count_ = 0;
   /**
    * <pre>
    * number of crashes seen with this stack trace
@@ -416,12 +413,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       hash_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       summary_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       count_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -448,57 +443,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioExceptionDetails buildPartial() {
       com.google.wireless.android.sdk.stats.StudioExceptionDetails result = new com.google.wireless.android.sdk.stats.StudioExceptionDetails(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.hash_ = hash_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.summary_ = summary_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.count_ = count_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioExceptionDetails result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.hash_ = hash_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.summary_ = summary_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.count_ = count_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioExceptionDetails) {
@@ -512,13 +479,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.StudioExceptionDetails other) {
       if (other == com.google.wireless.android.sdk.stats.StudioExceptionDetails.getDefaultInstance()) return this;
       if (other.hasHash()) {
-        bitField0_ |= 0x00000001;
         hash_ = other.hash_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasSummary()) {
-        bitField0_ |= 0x00000002;
         summary_ = other.summary_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasCount()) {
@@ -648,11 +615,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setHash(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       hash_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -665,8 +630,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearHash() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       hash_ = getDefaultInstance().getHash();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -681,11 +646,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setHashBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       hash_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -756,11 +719,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSummary(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       summary_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -773,8 +734,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSummary() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       summary_ = getDefaultInstance().getSummary();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -789,11 +750,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSummaryBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       summary_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -833,8 +792,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCount(int value) {
-      bitField0_ |= 0x00000004;
+
       count_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

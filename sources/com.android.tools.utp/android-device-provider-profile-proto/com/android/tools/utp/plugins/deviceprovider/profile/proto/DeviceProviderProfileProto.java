@@ -60,11 +60,6 @@ public final class DeviceProviderProfileProto {
       return new TimeSpan();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.internal_static_com_android_tools_utp_plugins_deviceprovider_profile_proto_TimeSpan_descriptor;
@@ -79,7 +74,7 @@ public final class DeviceProviderProfileProto {
     }
 
     public static final int SPAN_BEGIN_MS_FIELD_NUMBER = 1;
-    private long spanBeginMs_;
+    private long spanBeginMs_ = 0L;
     /**
      * <pre>
      * Start of the time span
@@ -94,7 +89,7 @@ public final class DeviceProviderProfileProto {
     }
 
     public static final int SPAN_END_MS_FIELD_NUMBER = 2;
-    private long spanEndMs_;
+    private long spanEndMs_ = 0L;
     /**
      * <pre>
      * End of the time span
@@ -230,11 +225,13 @@ public final class DeviceProviderProfileProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -309,10 +306,9 @@ public final class DeviceProviderProfileProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         spanBeginMs_ = 0L;
-
         spanEndMs_ = 0L;
-
         return this;
       }
 
@@ -339,10 +335,19 @@ public final class DeviceProviderProfileProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan buildPartial() {
         com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan result = new com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan(this);
-        result.spanBeginMs_ = spanBeginMs_;
-        result.spanEndMs_ = spanEndMs_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.spanBeginMs_ = spanBeginMs_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.spanEndMs_ = spanEndMs_;
+        }
       }
 
       @java.lang.Override
@@ -423,12 +428,12 @@ public final class DeviceProviderProfileProto {
                 break;
               case 8: {
                 spanBeginMs_ = input.readInt64();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 16: {
                 spanEndMs_ = input.readInt64();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               default: {
@@ -446,6 +451,7 @@ public final class DeviceProviderProfileProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private long spanBeginMs_ ;
       /**
@@ -470,8 +476,9 @@ public final class DeviceProviderProfileProto {
        * @return This builder for chaining.
        */
       public Builder setSpanBeginMs(long value) {
-        
+
         spanBeginMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -484,7 +491,7 @@ public final class DeviceProviderProfileProto {
        * @return This builder for chaining.
        */
       public Builder clearSpanBeginMs() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         spanBeginMs_ = 0L;
         onChanged();
         return this;
@@ -513,8 +520,9 @@ public final class DeviceProviderProfileProto {
        * @return This builder for chaining.
        */
       public Builder setSpanEndMs(long value) {
-        
+
         spanEndMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -527,7 +535,7 @@ public final class DeviceProviderProfileProto {
        * @return This builder for chaining.
        */
       public Builder clearSpanEndMs() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         spanEndMs_ = 0L;
         onChanged();
         return this;
@@ -680,11 +688,6 @@ public final class DeviceProviderProfileProto {
       return new DeviceProviderProfile();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.internal_static_com_android_tools_utp_plugins_deviceprovider_profile_proto_DeviceProviderProfile_descriptor;
@@ -698,6 +701,7 @@ public final class DeviceProviderProfileProto {
               com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile.class, com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile.Builder.class);
     }
 
+    private int bitField0_;
     public static final int DEVICE_PROVISION_FIELD_NUMBER = 1;
     private com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan deviceProvision_;
     /**
@@ -710,7 +714,7 @@ public final class DeviceProviderProfileProto {
      */
     @java.lang.Override
     public boolean hasDeviceProvision() {
-      return deviceProvision_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -733,7 +737,7 @@ public final class DeviceProviderProfileProto {
      */
     @java.lang.Override
     public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpanOrBuilder getDeviceProvisionOrBuilder() {
-      return getDeviceProvision();
+      return deviceProvision_ == null ? com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.getDefaultInstance() : deviceProvision_;
     }
 
     public static final int DEVICE_RELEASE_FIELD_NUMBER = 2;
@@ -748,7 +752,7 @@ public final class DeviceProviderProfileProto {
      */
     @java.lang.Override
     public boolean hasDeviceRelease() {
-      return deviceRelease_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -771,7 +775,7 @@ public final class DeviceProviderProfileProto {
      */
     @java.lang.Override
     public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpanOrBuilder getDeviceReleaseOrBuilder() {
-      return getDeviceRelease();
+      return deviceRelease_ == null ? com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.getDefaultInstance() : deviceRelease_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -788,10 +792,10 @@ public final class DeviceProviderProfileProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (deviceProvision_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(1, getDeviceProvision());
       }
-      if (deviceRelease_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(2, getDeviceRelease());
       }
       getUnknownFields().writeTo(output);
@@ -803,11 +807,11 @@ public final class DeviceProviderProfileProto {
       if (size != -1) return size;
 
       size = 0;
-      if (deviceProvision_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getDeviceProvision());
       }
-      if (deviceRelease_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getDeviceRelease());
       }
@@ -904,11 +908,13 @@ public final class DeviceProviderProfileProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -976,27 +982,33 @@ public final class DeviceProviderProfileProto {
 
       // Construct using com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getDeviceProvisionFieldBuilder();
+          getDeviceReleaseFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (deviceProvisionBuilder_ == null) {
-          deviceProvision_ = null;
-        } else {
-          deviceProvision_ = null;
+        bitField0_ = 0;
+        deviceProvision_ = null;
+        if (deviceProvisionBuilder_ != null) {
+          deviceProvisionBuilder_.dispose();
           deviceProvisionBuilder_ = null;
         }
-        if (deviceReleaseBuilder_ == null) {
-          deviceRelease_ = null;
-        } else {
-          deviceRelease_ = null;
+        deviceRelease_ = null;
+        if (deviceReleaseBuilder_ != null) {
+          deviceReleaseBuilder_.dispose();
           deviceReleaseBuilder_ = null;
         }
         return this;
@@ -1025,18 +1037,27 @@ public final class DeviceProviderProfileProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile buildPartial() {
         com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile result = new com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile(this);
-        if (deviceProvisionBuilder_ == null) {
-          result.deviceProvision_ = deviceProvision_;
-        } else {
-          result.deviceProvision_ = deviceProvisionBuilder_.build();
-        }
-        if (deviceReleaseBuilder_ == null) {
-          result.deviceRelease_ = deviceRelease_;
-        } else {
-          result.deviceRelease_ = deviceReleaseBuilder_.build();
-        }
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.DeviceProviderProfile result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.deviceProvision_ = deviceProvisionBuilder_ == null
+              ? deviceProvision_
+              : deviceProvisionBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.deviceRelease_ = deviceReleaseBuilder_ == null
+              ? deviceRelease_
+              : deviceReleaseBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -1119,14 +1140,14 @@ public final class DeviceProviderProfileProto {
                 input.readMessage(
                     getDeviceProvisionFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 input.readMessage(
                     getDeviceReleaseFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               default: {
@@ -1144,6 +1165,7 @@ public final class DeviceProviderProfileProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan deviceProvision_;
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1157,7 +1179,7 @@ public final class DeviceProviderProfileProto {
        * @return Whether the deviceProvision field is set.
        */
       public boolean hasDeviceProvision() {
-        return deviceProvisionBuilder_ != null || deviceProvision_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -1187,11 +1209,11 @@ public final class DeviceProviderProfileProto {
             throw new NullPointerException();
           }
           deviceProvision_ = value;
-          onChanged();
         } else {
           deviceProvisionBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1205,11 +1227,11 @@ public final class DeviceProviderProfileProto {
           com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.Builder builderForValue) {
         if (deviceProvisionBuilder_ == null) {
           deviceProvision_ = builderForValue.build();
-          onChanged();
         } else {
           deviceProvisionBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1221,17 +1243,20 @@ public final class DeviceProviderProfileProto {
        */
       public Builder mergeDeviceProvision(com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan value) {
         if (deviceProvisionBuilder_ == null) {
-          if (deviceProvision_ != null) {
-            deviceProvision_ =
-              com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.newBuilder(deviceProvision_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000001) != 0) &&
+            deviceProvision_ != null &&
+            deviceProvision_ != com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.getDefaultInstance()) {
+            getDeviceProvisionBuilder().mergeFrom(value);
           } else {
             deviceProvision_ = value;
           }
-          onChanged();
         } else {
           deviceProvisionBuilder_.mergeFrom(value);
         }
-
+        if (deviceProvision_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -1242,14 +1267,13 @@ public final class DeviceProviderProfileProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.profile.proto.TimeSpan device_provision = 1;</code>
        */
       public Builder clearDeviceProvision() {
-        if (deviceProvisionBuilder_ == null) {
-          deviceProvision_ = null;
-          onChanged();
-        } else {
-          deviceProvision_ = null;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        deviceProvision_ = null;
+        if (deviceProvisionBuilder_ != null) {
+          deviceProvisionBuilder_.dispose();
           deviceProvisionBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -1260,7 +1284,7 @@ public final class DeviceProviderProfileProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.profile.proto.TimeSpan device_provision = 1;</code>
        */
       public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.Builder getDeviceProvisionBuilder() {
-        
+        bitField0_ |= 0x00000001;
         onChanged();
         return getDeviceProvisionFieldBuilder().getBuilder();
       }
@@ -1312,7 +1336,7 @@ public final class DeviceProviderProfileProto {
        * @return Whether the deviceRelease field is set.
        */
       public boolean hasDeviceRelease() {
-        return deviceReleaseBuilder_ != null || deviceRelease_ != null;
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
        * <pre>
@@ -1342,11 +1366,11 @@ public final class DeviceProviderProfileProto {
             throw new NullPointerException();
           }
           deviceRelease_ = value;
-          onChanged();
         } else {
           deviceReleaseBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1360,11 +1384,11 @@ public final class DeviceProviderProfileProto {
           com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.Builder builderForValue) {
         if (deviceReleaseBuilder_ == null) {
           deviceRelease_ = builderForValue.build();
-          onChanged();
         } else {
           deviceReleaseBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1376,17 +1400,20 @@ public final class DeviceProviderProfileProto {
        */
       public Builder mergeDeviceRelease(com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan value) {
         if (deviceReleaseBuilder_ == null) {
-          if (deviceRelease_ != null) {
-            deviceRelease_ =
-              com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.newBuilder(deviceRelease_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000002) != 0) &&
+            deviceRelease_ != null &&
+            deviceRelease_ != com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.getDefaultInstance()) {
+            getDeviceReleaseBuilder().mergeFrom(value);
           } else {
             deviceRelease_ = value;
           }
-          onChanged();
         } else {
           deviceReleaseBuilder_.mergeFrom(value);
         }
-
+        if (deviceRelease_ != null) {
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -1397,14 +1424,13 @@ public final class DeviceProviderProfileProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.profile.proto.TimeSpan device_release = 2;</code>
        */
       public Builder clearDeviceRelease() {
-        if (deviceReleaseBuilder_ == null) {
-          deviceRelease_ = null;
-          onChanged();
-        } else {
-          deviceRelease_ = null;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        deviceRelease_ = null;
+        if (deviceReleaseBuilder_ != null) {
+          deviceReleaseBuilder_.dispose();
           deviceReleaseBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -1415,7 +1441,7 @@ public final class DeviceProviderProfileProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.profile.proto.TimeSpan device_release = 2;</code>
        */
       public com.android.tools.utp.plugins.deviceprovider.profile.proto.DeviceProviderProfileProto.TimeSpan.Builder getDeviceReleaseBuilder() {
-        
+        bitField0_ |= 0x00000002;
         onChanged();
         return getDeviceReleaseFieldBuilder().getBuilder();
       }

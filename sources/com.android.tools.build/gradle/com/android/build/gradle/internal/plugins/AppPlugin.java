@@ -107,8 +107,15 @@ public class AppPlugin
 
     @SoftwareType(name = "androidApp", modelPublicType = BaseAppModuleExtensionInternal.class)
     public BaseAppModuleExtensionInternal getAndroidApp() {
-        return (BaseAppModuleExtensionInternal)
-                Objects.requireNonNull(project).getExtensions().getByName("android");
+        try {
+            return (BaseAppModuleExtensionInternal)
+                    Objects.requireNonNull(project).getExtensions().getByName("android");
+        } catch (ClassCastException ex) {
+            throw new RuntimeException(
+                    "To use declarative gradle, you need to set"
+                            + " android.experimental.declarative=true in properties.gradle file",
+                    ex);
+        }
     }
 
     @NonNull

@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new GradleNativeAndroidModule();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleNativeAndroidModule_descriptor;
@@ -229,7 +224,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int APP_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object appId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object appId_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the application id
@@ -298,7 +294,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_NAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object moduleName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object moduleName_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the module name.
@@ -358,7 +355,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_SYSTEM_TYPE_FIELD_NUMBER = 3;
-  private int buildSystemType_;
+  private int buildSystemType_ = 0;
   /**
    * <pre>
    * True if this module is a library.
@@ -379,13 +376,13 @@ private static final long serialVersionUID = 0L;
    * @return The buildSystemType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.valueOf(buildSystemType_);
+    com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.forNumber(buildSystemType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.UNKNOWN_NATIVE_BUILD_SYSTEM_TYPE : result;
   }
 
   public static final int NDK_VERSION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object ndkVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object ndkVersion_ = "";
   /**
    * <pre>
    * the ndk version being used by this module
@@ -685,14 +682,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       appId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       moduleName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       buildSystemType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       ndkVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -719,61 +713,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule buildPartial() {
       com.google.wireless.android.sdk.stats.GradleNativeAndroidModule result = new com.google.wireless.android.sdk.stats.GradleNativeAndroidModule(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.appId_ = appId_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.moduleName_ = moduleName_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.buildSystemType_ = buildSystemType_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.ndkVersion_ = ndkVersion_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleNativeAndroidModule result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.appId_ = appId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.moduleName_ = moduleName_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.buildSystemType_ = buildSystemType_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.ndkVersion_ = ndkVersion_;
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleNativeAndroidModule) {
@@ -787,21 +753,21 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleNativeAndroidModule other) {
       if (other == com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.getDefaultInstance()) return this;
       if (other.hasAppId()) {
-        bitField0_ |= 0x00000001;
         appId_ = other.appId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasModuleName()) {
-        bitField0_ |= 0x00000002;
         moduleName_ = other.moduleName_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasBuildSystemType()) {
         setBuildSystemType(other.getBuildSystemType());
       }
       if (other.hasNdkVersion()) {
-        bitField0_ |= 0x00000008;
         ndkVersion_ = other.ndkVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -952,11 +918,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAppId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       appId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -972,8 +936,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAppId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       appId_ = getDefaultInstance().getAppId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -991,11 +955,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAppIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       appId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1066,11 +1028,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModuleName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       moduleName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1083,8 +1043,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModuleName() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       moduleName_ = getDefaultInstance().getModuleName();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1099,11 +1059,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModuleNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       moduleName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1130,8 +1088,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.valueOf(buildSystemType_);
+      com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.forNumber(buildSystemType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.UNKNOWN_NATIVE_BUILD_SYSTEM_TYPE : result;
     }
     /**
@@ -1233,11 +1190,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNdkVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       ndkVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1250,8 +1205,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearNdkVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       ndkVersion_ = getDefaultInstance().getNdkVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1266,11 +1221,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNdkVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       ndkVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

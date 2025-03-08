@@ -40,6 +40,7 @@ import com.android.sdklib.devices.Storage;
 import com.android.sdklib.internal.avd.AvdCamera;
 import com.android.sdklib.internal.avd.AvdInfo;
 import com.android.sdklib.internal.avd.AvdManager;
+import com.android.sdklib.internal.avd.AvdManagerException;
 import com.android.sdklib.internal.avd.AvdNetworkLatency;
 import com.android.sdklib.internal.avd.AvdNetworkSpeed;
 import com.android.sdklib.internal.avd.ConfigKey;
@@ -891,25 +892,22 @@ class AvdManagerCli extends CommandLineParser {
             String sdCardParam = getParamSdCard();
             SdCard sdCard = sdCardParam == null ? null : SdCards.parseSdCard(sdCardParam);
 
-            @SuppressWarnings("unused") // newAvdInfo is never read, yet useful for debugging
-            AvdInfo newAvdInfo =
-                    avdManager.createAvd(
-                            avdFolder,
-                            avdName,
-                            img,
-                            skin,
-                            sdCard,
-                            hardwareConfig,
-                            null,
-                            device == null ? null : device.getBootProps(),
-                            true,
-                            removePrevious,
-                            false);
-
-            if (newAvdInfo == null) {
-                errorAndExit("AVD not created.");
+            try {
+                avdManager.createAvd(
+                        avdFolder,
+                        avdName,
+                        img,
+                        skin,
+                        sdCard,
+                        hardwareConfig,
+                        null,
+                        device == null ? null : device.getBootProps(),
+                        true,
+                        removePrevious,
+                        false);
+            } catch (AvdManagerException e) {
+                errorAndExit(e.getMessage());
             }
-
         } catch (AndroidLocationsException e) {
             errorAndExit(e.getMessage());
         }
@@ -1061,7 +1059,7 @@ class AvdManagerCli extends CommandLineParser {
                 avdManager.updateAvd(info, properties);
             }
             avdManager.moveAvd(info, newName, paramFolderPath);
-        } catch (AndroidLocationsException | IOException e) {
+        } catch (AndroidLocationsException | IOException | AvdManagerException e) {
             errorAndExit(e.getMessage());
         }
     }

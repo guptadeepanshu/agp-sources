@@ -140,11 +140,6 @@ public final class GradleAndroidTestResultListenerConfigProto {
       return new GradleAndroidTestResultListenerConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_GradleAndroidTestResultListenerConfig_descriptor;
@@ -159,7 +154,7 @@ public final class GradleAndroidTestResultListenerConfigProto {
     }
 
     public static final int RESULTLISTENERSERVERPORT_FIELD_NUMBER = 1;
-    private int resultListenerServerPort_;
+    private int resultListenerServerPort_ = 0;
     /**
      * <pre>
      * Test Result Listener gRPC server port number.
@@ -174,7 +169,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
     }
 
     public static final int RESULTLISTENERCLIENTCERTFILEPATH_FIELD_NUMBER = 2;
-    private volatile java.lang.Object resultListenerClientCertFilePath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object resultListenerClientCertFilePath_ = "";
     /**
      * <pre>
      * A file path to the cert of the gRPC client.
@@ -220,7 +216,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
     }
 
     public static final int RESULTLISTENERCLIENTPRIVATEKEYFILEPATH_FIELD_NUMBER = 3;
-    private volatile java.lang.Object resultListenerClientPrivateKeyFilePath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object resultListenerClientPrivateKeyFilePath_ = "";
     /**
      * <pre>
      * A file path to the private key of the gRPC client.
@@ -268,7 +265,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
     }
 
     public static final int TRUSTCERTCOLLECTIONFILEPATH_FIELD_NUMBER = 4;
-    private volatile java.lang.Object trustCertCollectionFilePath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object trustCertCollectionFilePath_ = "";
     /**
      * <pre>
      * A file path to the trusted cert chain.
@@ -314,7 +312,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
     }
 
     public static final int DEVICEID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object deviceId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object deviceId_ = "";
     /**
      * <pre>
      * A device ID to listen to for test results.
@@ -508,11 +507,13 @@ public final class GradleAndroidTestResultListenerConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -591,16 +592,12 @@ public final class GradleAndroidTestResultListenerConfigProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         resultListenerServerPort_ = 0;
-
         resultListenerClientCertFilePath_ = "";
-
         resultListenerClientPrivateKeyFilePath_ = "";
-
         trustCertCollectionFilePath_ = "";
-
         deviceId_ = "";
-
         return this;
       }
 
@@ -627,13 +624,28 @@ public final class GradleAndroidTestResultListenerConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig buildPartial() {
         com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig(this);
-        result.resultListenerServerPort_ = resultListenerServerPort_;
-        result.resultListenerClientCertFilePath_ = resultListenerClientCertFilePath_;
-        result.resultListenerClientPrivateKeyFilePath_ = resultListenerClientPrivateKeyFilePath_;
-        result.trustCertCollectionFilePath_ = trustCertCollectionFilePath_;
-        result.deviceId_ = deviceId_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.resultListenerServerPort_ = resultListenerServerPort_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.resultListenerClientCertFilePath_ = resultListenerClientCertFilePath_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.resultListenerClientPrivateKeyFilePath_ = resultListenerClientPrivateKeyFilePath_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.trustCertCollectionFilePath_ = trustCertCollectionFilePath_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.deviceId_ = deviceId_;
+        }
       }
 
       @java.lang.Override
@@ -685,18 +697,22 @@ public final class GradleAndroidTestResultListenerConfigProto {
         }
         if (!other.getResultListenerClientCertFilePath().isEmpty()) {
           resultListenerClientCertFilePath_ = other.resultListenerClientCertFilePath_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (!other.getResultListenerClientPrivateKeyFilePath().isEmpty()) {
           resultListenerClientPrivateKeyFilePath_ = other.resultListenerClientPrivateKeyFilePath_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (!other.getTrustCertCollectionFilePath().isEmpty()) {
           trustCertCollectionFilePath_ = other.trustCertCollectionFilePath_;
+          bitField0_ |= 0x00000008;
           onChanged();
         }
         if (!other.getDeviceId().isEmpty()) {
           deviceId_ = other.deviceId_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -727,27 +743,27 @@ public final class GradleAndroidTestResultListenerConfigProto {
                 break;
               case 8: {
                 resultListenerServerPort_ = input.readInt32();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 18: {
                 resultListenerClientCertFilePath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 resultListenerClientPrivateKeyFilePath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 trustCertCollectionFilePath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 42: {
                 deviceId_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               default: {
@@ -765,6 +781,7 @@ public final class GradleAndroidTestResultListenerConfigProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private int resultListenerServerPort_ ;
       /**
@@ -789,8 +806,9 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder setResultListenerServerPort(int value) {
-        
+
         resultListenerServerPort_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -803,7 +821,7 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearResultListenerServerPort() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         resultListenerServerPort_ = 0;
         onChanged();
         return this;
@@ -862,11 +880,9 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setResultListenerClientCertFilePath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         resultListenerClientCertFilePath_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -879,8 +895,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearResultListenerClientCertFilePath() {
-        
         resultListenerClientCertFilePath_ = getDefaultInstance().getResultListenerClientCertFilePath();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -895,12 +911,10 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setResultListenerClientCertFilePathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         resultListenerClientCertFilePath_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -961,11 +975,9 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setResultListenerClientPrivateKeyFilePath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         resultListenerClientPrivateKeyFilePath_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -979,8 +991,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearResultListenerClientPrivateKeyFilePath() {
-        
         resultListenerClientPrivateKeyFilePath_ = getDefaultInstance().getResultListenerClientPrivateKeyFilePath();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -996,12 +1008,10 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setResultListenerClientPrivateKeyFilePathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         resultListenerClientPrivateKeyFilePath_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1059,11 +1069,9 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setTrustCertCollectionFilePath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         trustCertCollectionFilePath_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1076,8 +1084,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearTrustCertCollectionFilePath() {
-        
         trustCertCollectionFilePath_ = getDefaultInstance().getTrustCertCollectionFilePath();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -1092,12 +1100,10 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setTrustCertCollectionFilePathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         trustCertCollectionFilePath_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1155,11 +1161,9 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setDeviceId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         deviceId_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1172,8 +1176,8 @@ public final class GradleAndroidTestResultListenerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearDeviceId() {
-        
         deviceId_ = getDefaultInstance().getDeviceId();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -1188,12 +1192,10 @@ public final class GradleAndroidTestResultListenerConfigProto {
        */
       public Builder setDeviceIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         deviceId_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }

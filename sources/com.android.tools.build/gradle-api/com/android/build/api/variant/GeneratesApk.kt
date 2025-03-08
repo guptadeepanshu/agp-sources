@@ -67,4 +67,9 @@ interface GeneratesApk {
     @get:Incubating
     val dexing: Dexing
 
+    /**
+     * Provides access to built artifacts output(e.g. APK) produced by this Variant.
+     */
+    @get:Incubating
+    val outputProviders: ApkOutputProviders
 }

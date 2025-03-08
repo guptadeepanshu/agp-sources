@@ -630,8 +630,7 @@ public class ManifestMerger2 {
         }
 
         // perform tools: annotations removal if requested.
-        if (mMergeType != MergeType.FUSED_LIBRARY
-                && mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
+        if (mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
             ToolsInstructionsCleaner.cleanToolsReferences(mMergeType, xmlDocument, mLogger);
         }
 
@@ -1415,14 +1414,6 @@ public class ManifestMerger2 {
          * merged android manifest into an application.
          */
         LIBRARY(false, false),
-
-        /**
-         * Fused library merging type is similar to application manifest merging as library
-         * manifests are merged, however tools annotations are kept for application merging,
-         * placeholder replacements are non-exhaustive and final validation is not performed.
-         * merging.
-         */
-        FUSED_LIBRARY(false, false),
 
         /**
          * Privacy sandbox library merging similar to fused library merging except that resulting

@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorSnapshot();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorSnapshot_descriptor;
@@ -54,7 +49,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object name_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object name_ = "";
   /**
    * <pre>
    * Anonymized snapshot name (SHA256 + salted).
@@ -114,7 +110,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FLAGS_FIELD_NUMBER = 2;
-  private int flags_;
+  private int flags_ = 0;
   /**
    * <pre>
    * A combination of EmulatorSnapshotFlags describing the snapshot.
@@ -141,7 +137,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SIZE_BYTES_FIELD_NUMBER = 3;
-  private long sizeBytes_;
+  private long sizeBytes_ = 0L;
   /**
    * <pre>
    * Total size on disk, in bytes.
@@ -168,7 +164,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SAVE_STATE_FIELD_NUMBER = 4;
-  private int saveState_;
+  private int saveState_ = 0;
   /**
    * <pre>
    * Snapshot save/load states.
@@ -189,13 +185,12 @@ private static final long serialVersionUID = 0L;
    * @return The saveState.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState getSaveState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.valueOf(saveState_);
+    com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.forNumber(saveState_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.EMULATOR_SNAPSHOT_SAVE_SUCCEEDED_NORMAL : result;
   }
 
   public static final int LOAD_STATE_FIELD_NUMBER = 5;
-  private int loadState_;
+  private int loadState_ = 0;
   /**
    * <code>optional .android_studio.EmulatorSnapshotLoadState load_state = 5;</code>
    * @return Whether the loadState field is set.
@@ -208,13 +203,12 @@ private static final long serialVersionUID = 0L;
    * @return The loadState.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState getLoadState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.valueOf(loadState_);
+    com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.forNumber(loadState_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.EMULATOR_SNAPSHOT_LOAD_SUCCEEDED_NORMAL : result;
   }
 
   public static final int LOAD_FAILURE_REASON_FIELD_NUMBER = 6;
-  private int loadFailureReason_;
+  private int loadFailureReason_ = 0;
   /**
    * <pre>
    * Detailed reason for non-success of snapshot load.
@@ -235,13 +229,12 @@ private static final long serialVersionUID = 0L;
    * @return The loadFailureReason.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getLoadFailureReason() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(loadFailureReason_);
+    com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(loadFailureReason_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
   }
 
   public static final int SAVE_FAILURE_REASON_FIELD_NUMBER = 7;
-  private int saveFailureReason_;
+  private int saveFailureReason_ = 0;
   /**
    * <pre>
    * Detailed reason for non-success of snapshot save.
@@ -262,13 +255,12 @@ private static final long serialVersionUID = 0L;
    * @return The saveFailureReason.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getSaveFailureReason() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(saveFailureReason_);
+    com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(saveFailureReason_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
   }
 
   public static final int LAZY_LOADED_FIELD_NUMBER = 8;
-  private boolean lazyLoaded_;
+  private boolean lazyLoaded_ = false;
   /**
    * <pre>
    * Whether or not it was lazy loaded.
@@ -295,7 +287,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCREMENTALLY_SAVED_FIELD_NUMBER = 9;
-  private boolean incrementallySaved_;
+  private boolean incrementallySaved_ = false;
   /**
    * <pre>
    * Whether or not it was incrementally saved.
@@ -322,7 +314,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RAM_SIZE_BYTES_FIELD_NUMBER = 10;
-  private long ramSizeBytes_;
+  private long ramSizeBytes_ = 0L;
   /**
    * <pre>
    * Size of RAM (possibly incl. incremental / compression)
@@ -349,7 +341,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEXTURES_SIZE_BYTES_FIELD_NUMBER = 11;
-  private long texturesSizeBytes_;
+  private long texturesSizeBytes_ = 0L;
   /**
    * <pre>
    * Size of textures (possibly incl. incremental / compression)
@@ -376,7 +368,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOAD_DURATION_MS_FIELD_NUMBER = 12;
-  private long loadDurationMs_;
+  private long loadDurationMs_ = 0L;
   /**
    * <pre>
    * Duration of load / save (total).
@@ -403,7 +395,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SAVE_DURATION_MS_FIELD_NUMBER = 13;
-  private long saveDurationMs_;
+  private long saveDurationMs_ = 0L;
   /**
    * <code>optional uint64 save_duration_ms = 13;</code>
    * @return Whether the saveDurationMs field is set.
@@ -422,7 +414,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RAM_LOAD_DURATION_MS_FIELD_NUMBER = 14;
-  private long ramLoadDurationMs_;
+  private long ramLoadDurationMs_ = 0L;
   /**
    * <pre>
    * Duration of load / save (ram).
@@ -449,7 +441,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RAM_SAVE_DURATION_MS_FIELD_NUMBER = 15;
-  private long ramSaveDurationMs_;
+  private long ramSaveDurationMs_ = 0L;
   /**
    * <code>optional uint64 ram_save_duration_ms = 15;</code>
    * @return Whether the ramSaveDurationMs field is set.
@@ -468,7 +460,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEXTURES_LOAD_DURATION_MS_FIELD_NUMBER = 16;
-  private long texturesLoadDurationMs_;
+  private long texturesLoadDurationMs_ = 0L;
   /**
    * <pre>
    * Duration of load / save (textures).
@@ -495,7 +487,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEXTURES_SAVE_DURATION_MS_FIELD_NUMBER = 17;
-  private long texturesSaveDurationMs_;
+  private long texturesSaveDurationMs_ = 0L;
   /**
    * <pre>
    * Next tag: 18
@@ -980,40 +972,24 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       name_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       flags_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       sizeBytes_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       saveState_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       loadState_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       loadFailureReason_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       saveFailureReason_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       lazyLoaded_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       incrementallySaved_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       ramSizeBytes_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
       texturesSizeBytes_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000400);
       loadDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000800);
       saveDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00001000);
       ramLoadDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00002000);
       ramSaveDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00004000);
       texturesLoadDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00008000);
       texturesSaveDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00010000);
       return this;
     }
 
@@ -1040,12 +1016,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshot buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorSnapshot result = new com.google.wireless.android.sdk.stats.EmulatorSnapshot(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorSnapshot result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.name_ = name_;
         to_bitField0_ |= 0x00000001;
       }
-      result.name_ = name_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.flags_ = flags_;
         to_bitField0_ |= 0x00000002;
@@ -1055,21 +1037,21 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.saveState_ = saveState_;
         to_bitField0_ |= 0x00000008;
       }
-      result.saveState_ = saveState_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.loadState_ = loadState_;
         to_bitField0_ |= 0x00000010;
       }
-      result.loadState_ = loadState_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.loadFailureReason_ = loadFailureReason_;
         to_bitField0_ |= 0x00000020;
       }
-      result.loadFailureReason_ = loadFailureReason_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.saveFailureReason_ = saveFailureReason_;
         to_bitField0_ |= 0x00000040;
       }
-      result.saveFailureReason_ = saveFailureReason_;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.lazyLoaded_ = lazyLoaded_;
         to_bitField0_ |= 0x00000080;
@@ -1110,43 +1092,9 @@ private static final long serialVersionUID = 0L;
         result.texturesSaveDurationMs_ = texturesSaveDurationMs_;
         to_bitField0_ |= 0x00010000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorSnapshot) {
@@ -1160,8 +1108,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.EmulatorSnapshot other) {
       if (other == com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance()) return this;
       if (other.hasName()) {
-        bitField0_ |= 0x00000001;
         name_ = other.name_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasFlags()) {
@@ -1434,11 +1382,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1451,8 +1397,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       name_ = getDefaultInstance().getName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1467,11 +1413,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1511,8 +1455,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFlags(int value) {
-      bitField0_ |= 0x00000002;
+
       flags_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1566,8 +1511,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSizeBytes(long value) {
-      bitField0_ |= 0x00000004;
+
       sizeBytes_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1608,8 +1554,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState getSaveState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.valueOf(saveState_);
+      com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.forNumber(saveState_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.EMULATOR_SNAPSHOT_SAVE_SUCCEEDED_NORMAL : result;
     }
     /**
@@ -1659,8 +1604,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState getLoadState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.valueOf(loadState_);
+      com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.forNumber(loadState_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.EMULATOR_SNAPSHOT_LOAD_SUCCEEDED_NORMAL : result;
     }
     /**
@@ -1710,8 +1654,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getLoadFailureReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(loadFailureReason_);
+      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(loadFailureReason_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
     }
     /**
@@ -1769,8 +1712,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getSaveFailureReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(saveFailureReason_);
+      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(saveFailureReason_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
     }
     /**
@@ -1841,8 +1783,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLazyLoaded(boolean value) {
-      bitField0_ |= 0x00000080;
+
       lazyLoaded_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1896,8 +1839,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncrementallySaved(boolean value) {
-      bitField0_ |= 0x00000100;
+
       incrementallySaved_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1951,8 +1895,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRamSizeBytes(long value) {
-      bitField0_ |= 0x00000200;
+
       ramSizeBytes_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -2006,8 +1951,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTexturesSizeBytes(long value) {
-      bitField0_ |= 0x00000400;
+
       texturesSizeBytes_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -2061,8 +2007,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoadDurationMs(long value) {
-      bitField0_ |= 0x00000800;
+
       loadDurationMs_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -2104,8 +2051,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSaveDurationMs(long value) {
-      bitField0_ |= 0x00001000;
+
       saveDurationMs_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -2155,8 +2103,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRamLoadDurationMs(long value) {
-      bitField0_ |= 0x00002000;
+
       ramLoadDurationMs_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2198,8 +2147,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRamSaveDurationMs(long value) {
-      bitField0_ |= 0x00004000;
+
       ramSaveDurationMs_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -2249,8 +2199,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTexturesLoadDurationMs(long value) {
-      bitField0_ |= 0x00008000;
+
       texturesLoadDurationMs_ = value;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -2304,8 +2255,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTexturesSaveDurationMs(long value) {
-      bitField0_ |= 0x00010000;
+
       texturesSaveDurationMs_ = value;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }

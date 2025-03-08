@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new DaemonCodeAnalyzerFinishedEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DaemonCodeAnalyzerFinishedEvent_descriptor;
@@ -52,7 +47,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SEGMENT_DURATION_MS_FIELD_NUMBER = 1;
-  private long segmentDurationMs_;
+  private long segmentDurationMs_ = 0L;
   /**
    * <pre>
    * Daemon highlighting segment duration until it was finished or restarted for
@@ -81,7 +76,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FULL_DURATION_SINCE_STARTED_MS_FIELD_NUMBER = 2;
-  private long fullDurationSinceStartedMs_;
+  private long fullDurationSinceStartedMs_ = 0L;
   /**
    * <pre>
    * Full highlighting duration since the file was modified and/or dumb mode
@@ -110,7 +105,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERRORS_FIELD_NUMBER = 3;
-  private int errors_;
+  private int errors_ = 0;
   /**
    * <pre>
    * Number of errors found by the DaemonCodeAnalyzer.
@@ -137,7 +132,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int WARNINGS_FIELD_NUMBER = 4;
-  private int warnings_;
+  private int warnings_ = 0;
   /**
    * <pre>
    * Number of warnings found by the DaemonCodeAnalyzer.
@@ -164,7 +159,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LINES_FIELD_NUMBER = 5;
-  private int lines_;
+  private int lines_ = 0;
   /**
    * <pre>
    * Total number of lines analyzed by the DaemonCodeAnalyzer.
@@ -191,7 +186,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_TYPE_FIELD_NUMBER = 6;
-  private volatile java.lang.Object fileType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object fileType_ = "";
   /**
    * <pre>
    * Type of the file that was analyzed.
@@ -251,7 +247,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HIGHLIGHTING_COMPLETED_FIELD_NUMBER = 7;
-  private boolean highlightingCompleted_;
+  private boolean highlightingCompleted_ = false;
   /**
    * <pre>
    * Was the highlighting completed.
@@ -278,7 +274,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DUMB_MODE_FIELD_NUMBER = 8;
-  private boolean dumbMode_;
+  private boolean dumbMode_ = false;
   /**
    * <pre>
    * Did the iteration happened while the IDE was in the dumb mode.
@@ -618,22 +614,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       segmentDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       fullDurationSinceStartedMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       errors_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       warnings_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       lines_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       fileType_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       highlightingCompleted_ = false;
-      bitField0_ = (bitField0_ & ~0x00000040);
       dumbMode_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -660,6 +649,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent result = new com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -683,9 +678,9 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.fileType_ = fileType_;
         to_bitField0_ |= 0x00000020;
       }
-      result.fileType_ = fileType_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.highlightingCompleted_ = highlightingCompleted_;
         to_bitField0_ |= 0x00000040;
@@ -694,43 +689,9 @@ private static final long serialVersionUID = 0L;
         result.dumbMode_ = dumbMode_;
         to_bitField0_ |= 0x00000080;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DaemonCodeAnalyzerFinishedEvent) {
@@ -759,8 +720,8 @@ private static final long serialVersionUID = 0L;
         setLines(other.getLines());
       }
       if (other.hasFileType()) {
-        bitField0_ |= 0x00000020;
         fileType_ = other.fileType_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (other.hasHighlightingCompleted()) {
@@ -890,8 +851,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSegmentDurationMs(long value) {
-      bitField0_ |= 0x00000001;
+
       segmentDurationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -949,8 +911,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFullDurationSinceStartedMs(long value) {
-      bitField0_ |= 0x00000002;
+
       fullDurationSinceStartedMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1005,8 +968,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setErrors(int value) {
-      bitField0_ |= 0x00000004;
+
       errors_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1060,8 +1024,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWarnings(int value) {
-      bitField0_ |= 0x00000008;
+
       warnings_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1115,8 +1080,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLines(int value) {
-      bitField0_ |= 0x00000010;
+
       lines_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1201,11 +1167,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1218,8 +1182,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFileType() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       fileType_ = getDefaultInstance().getFileType();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1234,11 +1198,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1278,8 +1240,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHighlightingCompleted(boolean value) {
-      bitField0_ |= 0x00000040;
+
       highlightingCompleted_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1333,8 +1296,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDumbMode(boolean value) {
-      bitField0_ |= 0x00000080;
+
       dumbMode_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }

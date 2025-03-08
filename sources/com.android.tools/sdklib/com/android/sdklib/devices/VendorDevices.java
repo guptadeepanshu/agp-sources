@@ -19,9 +19,11 @@ package com.android.sdklib.devices;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.utils.ILogger;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.io.Closeables;
+
 import java.io.InputStream;
 
 /** Class providing access to a embedded java resource list of vendor devices. */

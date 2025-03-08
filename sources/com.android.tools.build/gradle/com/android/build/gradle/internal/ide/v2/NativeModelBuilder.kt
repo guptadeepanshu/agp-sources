@@ -47,27 +47,22 @@ import com.android.builder.model.v2.models.ndk.NativeBuildSystem.NINJA
 import com.android.builder.model.v2.models.ndk.NativeModelBuilderParameter
 import com.android.builder.model.v2.models.ndk.NativeModule
 import com.android.builder.model.v2.models.ndk.NativeVariant
-import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.process.ExecOperations
-import org.gradle.process.ExecSpec
-import org.gradle.process.JavaExecSpec
 import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder
 import java.lang.RuntimeException
+import javax.inject.Inject
 
-class NativeModelBuilder(
+abstract class NativeModelBuilder @Inject constructor(
     private val project: Project,
     private val issueReporter: SyncIssueReporter,
     private val projectOptions: ProjectOptions,
     private val variantModel: VariantModel,
 ) : ParameterizedToolingModelBuilder<NativeModelBuilderParameter> {
-    private val ops = object : ExecOperations {
-        override fun exec(action: Action<in ExecSpec>) =
-            project.exec(action)
 
-        override fun javaexec(action: Action<in JavaExecSpec>) =
-                project.javaexec(action)
-    }
+    @get:Inject
+    protected abstract val ops: ExecOperations
+
     private val ideRefreshExternalNativeModel
         get() =
             projectOptions.get(BooleanOption.IDE_REFRESH_EXTERNAL_NATIVE_MODEL)

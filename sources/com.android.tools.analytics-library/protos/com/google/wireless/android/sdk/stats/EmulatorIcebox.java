@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorIcebox();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorIcebox_descriptor;
@@ -96,11 +91,6 @@ private static final long serialVersionUID = 0L;
       return new StartIcebox();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorIcebox_StartIcebox_descriptor;
@@ -116,7 +106,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int MAX_SNAPSHOT_NUMBER_FIELD_NUMBER = 1;
-    private int maxSnapshotNumber_;
+    private int maxSnapshotNumber_ = 0;
     /**
      * <pre>
      * Maximum number of snapshots set by users. -1 for infinite snapshots;
@@ -339,8 +329,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         maxSnapshotNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -367,49 +357,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox buildPartial() {
         com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox result = new com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.maxSnapshotNumber_ = maxSnapshotNumber_;
           to_bitField0_ |= 0x00000001;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EmulatorIcebox.StartIcebox) {
@@ -508,8 +470,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMaxSnapshotNumber(int value) {
-        bitField0_ |= 0x00000001;
+
         maxSnapshotNumber_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -648,11 +611,6 @@ private static final long serialVersionUID = 0L;
       return new TakeSnapshot();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorIcebox_TakeSnapshot_descriptor;
@@ -908,12 +866,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (snapshotBuilder_ == null) {
-          snapshot_ = null;
-        } else {
-          snapshotBuilder_.clear();
+        bitField0_ = 0;
+        snapshot_ = null;
+        if (snapshotBuilder_ != null) {
+          snapshotBuilder_.dispose();
+          snapshotBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -940,53 +898,23 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot buildPartial() {
         com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot result = new com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (snapshotBuilder_ == null) {
-            result.snapshot_ = snapshot_;
-          } else {
-            result.snapshot_ = snapshotBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.snapshot_ = snapshotBuilder_ == null
+              ? snapshot_
+              : snapshotBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EmulatorIcebox.TakeSnapshot) {
@@ -1094,11 +1022,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           snapshot_ = value;
-          onChanged();
         } else {
           snapshotBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1112,11 +1040,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder builderForValue) {
         if (snapshotBuilder_ == null) {
           snapshot_ = builderForValue.build();
-          onChanged();
         } else {
           snapshotBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1129,18 +1057,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
         if (snapshotBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              snapshot_ != null &&
-              snapshot_ != com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance()) {
-            snapshot_ =
-              com.google.wireless.android.sdk.stats.EmulatorSnapshot.newBuilder(snapshot_).mergeFrom(value).buildPartial();
+            snapshot_ != null &&
+            snapshot_ != com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance()) {
+            getSnapshotBuilder().mergeFrom(value);
           } else {
             snapshot_ = value;
           }
-          onChanged();
         } else {
           snapshotBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1151,13 +1078,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EmulatorSnapshot snapshot = 1 [lazy = true];</code>
        */
       public Builder clearSnapshot() {
-        if (snapshotBuilder_ == null) {
-          snapshot_ = null;
-          onChanged();
-        } else {
-          snapshotBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        snapshot_ = null;
+        if (snapshotBuilder_ != null) {
+          snapshotBuilder_.dispose();
+          snapshotBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1339,11 +1266,6 @@ private static final long serialVersionUID = 0L;
       return new FinishIcebox();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorIcebox_FinishIcebox_descriptor;
@@ -1359,7 +1281,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int MAX_SNAPSHOT_NUMBER_FIELD_NUMBER = 1;
-    private int maxSnapshotNumber_;
+    private int maxSnapshotNumber_ = 0;
     /**
      * <pre>
      * Maximum number of snapshots set by users. -1 for infinite snapshots;
@@ -1386,7 +1308,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ACTUAL_SNAPSHOT_NUMBER_FIELD_NUMBER = 2;
-    private int actualSnapshotNumber_;
+    private int actualSnapshotNumber_ = 0;
     /**
      * <pre>
      * Actual number of snapshots taken.
@@ -1625,10 +1547,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         maxSnapshotNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         actualSnapshotNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1655,6 +1576,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox buildPartial() {
         com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox result = new com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1665,43 +1592,9 @@ private static final long serialVersionUID = 0L;
           result.actualSnapshotNumber_ = actualSnapshotNumber_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIcebox) {
@@ -1808,8 +1701,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMaxSnapshotNumber(int value) {
-        bitField0_ |= 0x00000001;
+
         maxSnapshotNumber_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1863,8 +1757,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setActualSnapshotNumber(int value) {
-        bitField0_ |= 0x00000002;
+
         actualSnapshotNumber_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1948,6 +1843,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   private int kindCase_ = 0;
+  @SuppressWarnings("serial")
   private java.lang.Object kind_;
   public enum KindCase
       implements com.google.protobuf.Internal.EnumLite,
@@ -2318,6 +2214,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (startIceboxBuilder_ != null) {
         startIceboxBuilder_.clear();
       }
@@ -2355,67 +2252,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorIcebox buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorIcebox result = new com.google.wireless.android.sdk.stats.EmulatorIcebox(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (kindCase_ == 1) {
-        if (startIceboxBuilder_ == null) {
-          result.kind_ = kind_;
-        } else {
-          result.kind_ = startIceboxBuilder_.build();
-        }
-      }
-      if (kindCase_ == 2) {
-        if (takeSnapshotBuilder_ == null) {
-          result.kind_ = kind_;
-        } else {
-          result.kind_ = takeSnapshotBuilder_.build();
-        }
-      }
-      if (kindCase_ == 3) {
-        if (finishIceboxBuilder_ == null) {
-          result.kind_ = kind_;
-        } else {
-          result.kind_ = finishIceboxBuilder_.build();
-        }
-      }
-      result.bitField0_ = to_bitField0_;
-      result.kindCase_ = kindCase_;
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorIcebox result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(com.google.wireless.android.sdk.stats.EmulatorIcebox result) {
+      result.kindCase_ = kindCase_;
+      result.kind_ = this.kind_;
+      if (kindCase_ == 1 &&
+          startIceboxBuilder_ != null) {
+        result.kind_ = startIceboxBuilder_.build();
+      }
+      if (kindCase_ == 2 &&
+          takeSnapshotBuilder_ != null) {
+        result.kind_ = takeSnapshotBuilder_.build();
+      }
+      if (kindCase_ == 3 &&
+          finishIceboxBuilder_ != null) {
+        result.kind_ = finishIceboxBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorIcebox) {
@@ -2598,8 +2461,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (kindCase_ == 1) {
           startIceboxBuilder_.mergeFrom(value);
+        } else {
+          startIceboxBuilder_.setMessage(value);
         }
-        startIceboxBuilder_.setMessage(value);
       }
       kindCase_ = 1;
       return this;
@@ -2661,7 +2525,7 @@ private static final long serialVersionUID = 0L;
         kind_ = null;
       }
       kindCase_ = 1;
-      onChanged();;
+      onChanged();
       return startIceboxBuilder_;
     }
 
@@ -2739,8 +2603,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (kindCase_ == 2) {
           takeSnapshotBuilder_.mergeFrom(value);
+        } else {
+          takeSnapshotBuilder_.setMessage(value);
         }
-        takeSnapshotBuilder_.setMessage(value);
       }
       kindCase_ = 2;
       return this;
@@ -2802,7 +2667,7 @@ private static final long serialVersionUID = 0L;
         kind_ = null;
       }
       kindCase_ = 2;
-      onChanged();;
+      onChanged();
       return takeSnapshotBuilder_;
     }
 
@@ -2880,8 +2745,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (kindCase_ == 3) {
           finishIceboxBuilder_.mergeFrom(value);
+        } else {
+          finishIceboxBuilder_.setMessage(value);
         }
-        finishIceboxBuilder_.setMessage(value);
       }
       kindCase_ = 3;
       return this;
@@ -2943,7 +2809,7 @@ private static final long serialVersionUID = 0L;
         kind_ = null;
       }
       kindCase_ = 3;
-      onChanged();;
+      onChanged();
       return finishIceboxBuilder_;
     }
     @java.lang.Override

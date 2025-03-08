@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new GfxTracingDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GfxTracingDetails_descriptor;
@@ -53,7 +48,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOTAL_TIME_FIELD_NUMBER = 1;
-  private long totalTime_;
+  private long totalTime_ = 0L;
   /**
    * <pre>
    * total time the trace took
@@ -80,7 +75,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMMAND_FIELD_NUMBER = 2;
-  private volatile java.lang.Object command_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object command_ = "";
   /**
    * <pre>
    * class name of the UI command selected to affect the tracing.
@@ -140,7 +136,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERROR_MESSAGE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object errorMessage_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object errorMessage_ = "";
   /**
    * <pre>
    * Error message when tracing fails.
@@ -200,7 +197,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRACE_PATH_FIELD_NUMBER = 4;
-  private volatile java.lang.Object tracePath_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object tracePath_ = "";
   /**
    * <pre>
    * A path describing the kind of details from the trace. This is a mix
@@ -272,7 +270,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMAGE_FORMAT_FIELD_NUMBER = 5;
-  private volatile java.lang.Object imageFormat_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object imageFormat_ = "";
   /**
    * <pre>
    * the image format of the gpu image being traced. e.g. 'image/png'
@@ -332,7 +331,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMAGE_WIDTH_FIELD_NUMBER = 6;
-  private long imageWidth_;
+  private long imageWidth_ = 0L;
   /**
    * <pre>
    * the width of the image being traced.
@@ -359,7 +358,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMAGE_HEIGHT_FIELD_NUMBER = 7;
-  private long imageHeight_;
+  private long imageHeight_ = 0L;
   /**
    * <pre>
    * the height of the image being traced.
@@ -677,20 +676,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       totalTime_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       command_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       errorMessage_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       tracePath_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       imageFormat_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       imageWidth_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       imageHeight_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -717,6 +710,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GfxTracingDetails buildPartial() {
       com.google.wireless.android.sdk.stats.GfxTracingDetails result = new com.google.wireless.android.sdk.stats.GfxTracingDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GfxTracingDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -724,21 +723,21 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.command_ = command_;
         to_bitField0_ |= 0x00000002;
       }
-      result.command_ = command_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.errorMessage_ = errorMessage_;
         to_bitField0_ |= 0x00000004;
       }
-      result.errorMessage_ = errorMessage_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.tracePath_ = tracePath_;
         to_bitField0_ |= 0x00000008;
       }
-      result.tracePath_ = tracePath_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.imageFormat_ = imageFormat_;
         to_bitField0_ |= 0x00000010;
       }
-      result.imageFormat_ = imageFormat_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
         result.imageWidth_ = imageWidth_;
         to_bitField0_ |= 0x00000020;
@@ -747,43 +746,9 @@ private static final long serialVersionUID = 0L;
         result.imageHeight_ = imageHeight_;
         to_bitField0_ |= 0x00000040;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GfxTracingDetails) {
@@ -800,23 +765,23 @@ private static final long serialVersionUID = 0L;
         setTotalTime(other.getTotalTime());
       }
       if (other.hasCommand()) {
-        bitField0_ |= 0x00000002;
         command_ = other.command_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasErrorMessage()) {
-        bitField0_ |= 0x00000004;
         errorMessage_ = other.errorMessage_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasTracePath()) {
-        bitField0_ |= 0x00000008;
         tracePath_ = other.tracePath_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasImageFormat()) {
-        bitField0_ |= 0x00000010;
         imageFormat_ = other.imageFormat_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasImageWidth()) {
@@ -938,8 +903,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalTime(long value) {
-      bitField0_ |= 0x00000001;
+
       totalTime_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1024,11 +990,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCommand(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       command_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1041,8 +1005,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCommand() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       command_ = getDefaultInstance().getCommand();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1057,11 +1021,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCommandBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       command_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1132,11 +1094,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setErrorMessage(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       errorMessage_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1149,8 +1109,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearErrorMessage() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       errorMessage_ = getDefaultInstance().getErrorMessage();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1165,11 +1125,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setErrorMessageBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       errorMessage_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1256,11 +1214,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTracePath(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       tracePath_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1277,8 +1233,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTracePath() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       tracePath_ = getDefaultInstance().getTracePath();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1297,11 +1253,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTracePathBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       tracePath_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1372,11 +1326,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setImageFormat(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       imageFormat_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1389,8 +1341,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearImageFormat() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       imageFormat_ = getDefaultInstance().getImageFormat();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1405,11 +1357,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setImageFormatBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       imageFormat_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1449,8 +1399,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setImageWidth(long value) {
-      bitField0_ |= 0x00000020;
+
       imageWidth_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1504,8 +1455,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setImageHeight(long value) {
-      bitField0_ |= 0x00000040;
+
       imageHeight_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }

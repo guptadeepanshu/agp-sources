@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new TestRun();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_descriptor;
@@ -472,11 +467,6 @@ private static final long serialVersionUID = 0L;
       return new AutomaticSnapshotOnFailure();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_descriptor;
@@ -634,7 +624,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int ENABLED_FIELD_NUMBER = 1;
-    private int enabled_;
+    private int enabled_ = 0;
     /**
      * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
      * @return Whether the enabled field is set.
@@ -647,8 +637,7 @@ private static final long serialVersionUID = 0L;
      * @return The enabled.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
+      com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.forNumber(enabled_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.UNSPECIFIED : result;
     }
 
@@ -848,8 +837,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         enabled_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -876,49 +865,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure buildPartial() {
         com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure result = new com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.enabled_ = enabled_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.enabled_ = enabled_;
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure) {
@@ -1003,8 +964,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.forNumber(enabled_);
         return result == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.UNSPECIFIED : result;
       }
       /**
@@ -1105,7 +1065,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+     *     See studio_stats.proto;l=4146
      * @return Whether the screenshotCount field is set.
      */
     @java.lang.Deprecated boolean hasScreenshotCount();
@@ -1115,7 +1076,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+     *     See studio_stats.proto;l=4146
      * @return The screenshotCount.
      */
     @java.lang.Deprecated int getScreenshotCount();
@@ -1126,7 +1088,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4149
      * @return Whether the totalRunTimeMs field is set.
      */
     @java.lang.Deprecated boolean hasTotalRunTimeMs();
@@ -1136,7 +1099,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4149
      * @return The totalRunTimeMs.
      */
     @java.lang.Deprecated long getTotalRunTimeMs();
@@ -1147,7 +1111,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4152
      * @return Whether the discoveryRunTimeMs field is set.
      */
     @java.lang.Deprecated boolean hasDiscoveryRunTimeMs();
@@ -1157,7 +1122,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4152
      * @return The discoveryRunTimeMs.
      */
     @java.lang.Deprecated long getDiscoveryRunTimeMs();
@@ -1168,7 +1134,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4155
      * @return Whether the renderingRunTimeMs field is set.
      */
     @java.lang.Deprecated boolean hasRenderingRunTimeMs();
@@ -1178,7 +1145,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4155
      * @return The renderingRunTimeMs.
      */
     @java.lang.Deprecated long getRenderingRunTimeMs();
@@ -1205,11 +1173,6 @@ private static final long serialVersionUID = 0L;
       return new PreviewScreenshotRun();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_PreviewScreenshotRun_descriptor;
@@ -1225,14 +1188,15 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SCREENSHOT_COUNT_FIELD_NUMBER = 1;
-    private int screenshotCount_;
+    private int screenshotCount_ = 0;
     /**
      * <pre>
      * Deprecated: use TestRun.number_of_tests_executed.
      * </pre>
      *
      * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+     *     See studio_stats.proto;l=4146
      * @return Whether the screenshotCount field is set.
      */
     @java.lang.Override
@@ -1245,7 +1209,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+     *     See studio_stats.proto;l=4146
      * @return The screenshotCount.
      */
     @java.lang.Override
@@ -1254,14 +1219,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_RUN_TIME_MS_FIELD_NUMBER = 2;
-    private long totalRunTimeMs_;
+    private long totalRunTimeMs_ = 0L;
     /**
      * <pre>
      * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
      * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4149
      * @return Whether the totalRunTimeMs field is set.
      */
     @java.lang.Override
@@ -1274,7 +1240,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4149
      * @return The totalRunTimeMs.
      */
     @java.lang.Override
@@ -1283,14 +1250,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DISCOVERY_RUN_TIME_MS_FIELD_NUMBER = 3;
-    private long discoveryRunTimeMs_;
+    private long discoveryRunTimeMs_ = 0L;
     /**
      * <pre>
      * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
      * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4152
      * @return Whether the discoveryRunTimeMs field is set.
      */
     @java.lang.Override
@@ -1303,7 +1271,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4152
      * @return The discoveryRunTimeMs.
      */
     @java.lang.Override
@@ -1312,14 +1281,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RENDERING_RUN_TIME_MS_FIELD_NUMBER = 4;
-    private long renderingRunTimeMs_;
+    private long renderingRunTimeMs_ = 0L;
     /**
      * <pre>
      * Deprecated: use GradleBuildProfileSpan.
      * </pre>
      *
      * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4155
      * @return Whether the renderingRunTimeMs field is set.
      */
     @java.lang.Override
@@ -1332,7 +1302,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+     *     See studio_stats.proto;l=4155
      * @return The renderingRunTimeMs.
      */
     @java.lang.Override
@@ -1584,14 +1555,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         screenshotCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         totalRunTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         discoveryRunTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         renderingRunTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1618,6 +1586,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun buildPartial() {
         com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun result = new com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1636,43 +1610,9 @@ private static final long serialVersionUID = 0L;
           result.renderingRunTimeMs_ = renderingRunTimeMs_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun) {
@@ -1767,7 +1707,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+       *     See studio_stats.proto;l=4146
        * @return Whether the screenshotCount field is set.
        */
       @java.lang.Override
@@ -1780,7 +1721,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+       *     See studio_stats.proto;l=4146
        * @return The screenshotCount.
        */
       @java.lang.Override
@@ -1793,13 +1735,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+       *     See studio_stats.proto;l=4146
        * @param value The screenshotCount to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setScreenshotCount(int value) {
-        bitField0_ |= 0x00000001;
+
         screenshotCount_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1809,7 +1753,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 screenshot_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.screenshot_count is deprecated.
+       *     See studio_stats.proto;l=4146
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearScreenshotCount() {
@@ -1826,7 +1771,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4149
        * @return Whether the totalRunTimeMs field is set.
        */
       @java.lang.Override
@@ -1839,7 +1785,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4149
        * @return The totalRunTimeMs.
        */
       @java.lang.Override
@@ -1852,13 +1799,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4149
        * @param value The totalRunTimeMs to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setTotalRunTimeMs(long value) {
-        bitField0_ |= 0x00000002;
+
         totalRunTimeMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1868,7 +1817,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 total_run_time_ms = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.total_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4149
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTotalRunTimeMs() {
@@ -1885,7 +1835,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4152
        * @return Whether the discoveryRunTimeMs field is set.
        */
       @java.lang.Override
@@ -1898,7 +1849,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4152
        * @return The discoveryRunTimeMs.
        */
       @java.lang.Override
@@ -1911,13 +1863,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4152
        * @param value The discoveryRunTimeMs to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setDiscoveryRunTimeMs(long value) {
-        bitField0_ |= 0x00000004;
+
         discoveryRunTimeMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1927,7 +1881,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 discovery_run_time_ms = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.discovery_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4152
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearDiscoveryRunTimeMs() {
@@ -1944,7 +1899,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4155
        * @return Whether the renderingRunTimeMs field is set.
        */
       @java.lang.Override
@@ -1957,7 +1913,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4155
        * @return The renderingRunTimeMs.
        */
       @java.lang.Override
@@ -1970,13 +1927,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4155
        * @param value The renderingRunTimeMs to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setRenderingRunTimeMs(long value) {
-        bitField0_ |= 0x00000008;
+
         renderingRunTimeMs_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1986,7 +1945,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int64 rendering_run_time_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestRun.PreviewScreenshotRun.rendering_run_time_ms is deprecated.
+       *     See studio_stats.proto;l=4155
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearRenderingRunTimeMs() {
@@ -2061,7 +2021,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TEST_INVOCATION_TYPE_FIELD_NUMBER = 1;
-  private int testInvocationType_;
+  private int testInvocationType_ = 0;
   /**
    * <pre>
    * Describes how tests where invoked.
@@ -2082,13 +2042,12 @@ private static final long serialVersionUID = 0L;
    * @return The testInvocationType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestInvocationType getTestInvocationType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.valueOf(testInvocationType_);
+    com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.forNumber(testInvocationType_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.UNKNOWN_TEST_INVOCATION_TYPE : result;
   }
 
   public static final int NUMBER_OF_TESTS_EXECUTED_FIELD_NUMBER = 2;
-  private int numberOfTestsExecuted_;
+  private int numberOfTestsExecuted_ = 0;
   /**
    * <pre>
    * Total number of tests that ran.
@@ -2115,7 +2074,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_KIND_FIELD_NUMBER = 3;
-  private int testKind_;
+  private int testKind_ = 0;
   /**
    * <pre>
    * What kind of test is run.
@@ -2136,13 +2095,12 @@ private static final long serialVersionUID = 0L;
    * @return The testKind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
+    com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.forNumber(testKind_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestKind.UNKNOWN_TEST_KIND : result;
   }
 
   public static final int CRASHED_FIELD_NUMBER = 4;
-  private boolean crashed_;
+  private boolean crashed_ = false;
   /**
    * <pre>
    * Whether the test run finished successfully (regardless of results) or
@@ -2171,7 +2129,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GRADLE_VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object gradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gradleVersion_ = "";
   /**
    * <pre>
    * Set when test_invocation_type = GRADLE or ANDROID_STUDIO_THROUGH_GRADLE
@@ -2231,7 +2190,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CODE_COVERAGE_ENABLED_FIELD_NUMBER = 6;
-  private boolean codeCoverageEnabled_;
+  private boolean codeCoverageEnabled_ = false;
   /**
    * <pre>
    * Did the user/project enable code coverage on this test run?
@@ -2296,7 +2255,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_EXECUTION_FIELD_NUMBER = 8;
-  private int testExecution_;
+  private int testExecution_ = 0;
   /**
    * <pre>
    * Only set when test_kind=INSTRUMENTATION_TEST
@@ -2317,8 +2276,7 @@ private static final long serialVersionUID = 0L;
    * @return The testExecution.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.valueOf(testExecution_);
+    com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.forNumber(testExecution_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestExecution.UNKNOWN_TEST_EXECUTION : result;
   }
 
@@ -2405,6 +2363,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_TEST_SPAN_PROFILES_FIELD_NUMBER = 11;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.DeviceTestSpanProfile> deviceTestSpanProfiles_;
   /**
    * <pre>
@@ -2825,38 +2784,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       testInvocationType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       numberOfTestsExecuted_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       testKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       crashed_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       gradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       codeCoverageEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (testLibrariesBuilder_ == null) {
-        testLibraries_ = null;
-      } else {
-        testLibrariesBuilder_.clear();
+      testLibraries_ = null;
+      if (testLibrariesBuilder_ != null) {
+        testLibrariesBuilder_.dispose();
+        testLibrariesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       testExecution_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
-      if (automaticSnapshotOnFailureBuilder_ == null) {
-        automaticSnapshotOnFailure_ = null;
-      } else {
-        automaticSnapshotOnFailureBuilder_.clear();
+      automaticSnapshotOnFailure_ = null;
+      if (automaticSnapshotOnFailureBuilder_ != null) {
+        automaticSnapshotOnFailureBuilder_.dispose();
+        automaticSnapshotOnFailureBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000100);
-      if (previewScreenshotRunBuilder_ == null) {
-        previewScreenshotRun_ = null;
-      } else {
-        previewScreenshotRunBuilder_.clear();
+      previewScreenshotRun_ = null;
+      if (previewScreenshotRunBuilder_ != null) {
+        previewScreenshotRunBuilder_.dispose();
+        previewScreenshotRunBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000200);
       if (deviceTestSpanProfilesBuilder_ == null) {
         deviceTestSpanProfiles_ = java.util.Collections.emptyList();
       } else {
@@ -2890,60 +2840,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun buildPartial() {
       com.google.wireless.android.sdk.stats.TestRun result = new com.google.wireless.android.sdk.stats.TestRun(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.testInvocationType_ = testInvocationType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.numberOfTestsExecuted_ = numberOfTestsExecuted_;
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.testKind_ = testKind_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.crashed_ = crashed_;
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.gradleVersion_ = gradleVersion_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.codeCoverageEnabled_ = codeCoverageEnabled_;
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (testLibrariesBuilder_ == null) {
-          result.testLibraries_ = testLibraries_;
-        } else {
-          result.testLibraries_ = testLibrariesBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        to_bitField0_ |= 0x00000080;
-      }
-      result.testExecution_ = testExecution_;
-      if (((from_bitField0_ & 0x00000100) != 0)) {
-        if (automaticSnapshotOnFailureBuilder_ == null) {
-          result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailure_;
-        } else {
-          result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailureBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000100;
-      }
-      if (((from_bitField0_ & 0x00000200) != 0)) {
-        if (previewScreenshotRunBuilder_ == null) {
-          result.previewScreenshotRun_ = previewScreenshotRun_;
-        } else {
-          result.previewScreenshotRun_ = previewScreenshotRunBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000200;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.TestRun result) {
       if (deviceTestSpanProfilesBuilder_ == null) {
         if (((bitField0_ & 0x00000400) != 0)) {
           deviceTestSpanProfiles_ = java.util.Collections.unmodifiableList(deviceTestSpanProfiles_);
@@ -2953,43 +2856,60 @@ private static final long serialVersionUID = 0L;
       } else {
         result.deviceTestSpanProfiles_ = deviceTestSpanProfilesBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.TestRun result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.testInvocationType_ = testInvocationType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.numberOfTestsExecuted_ = numberOfTestsExecuted_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.testKind_ = testKind_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.crashed_ = crashed_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.gradleVersion_ = gradleVersion_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.codeCoverageEnabled_ = codeCoverageEnabled_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.testLibraries_ = testLibrariesBuilder_ == null
+            ? testLibraries_
+            : testLibrariesBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.testExecution_ = testExecution_;
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailureBuilder_ == null
+            ? automaticSnapshotOnFailure_
+            : automaticSnapshotOnFailureBuilder_.build();
+        to_bitField0_ |= 0x00000100;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.previewScreenshotRun_ = previewScreenshotRunBuilder_ == null
+            ? previewScreenshotRun_
+            : previewScreenshotRunBuilder_.build();
+        to_bitField0_ |= 0x00000200;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.TestRun) {
@@ -3015,8 +2935,8 @@ private static final long serialVersionUID = 0L;
         setCrashed(other.getCrashed());
       }
       if (other.hasGradleVersion()) {
-        bitField0_ |= 0x00000010;
         gradleVersion_ = other.gradleVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasCodeCoverageEnabled()) {
@@ -3215,8 +3135,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestInvocationType getTestInvocationType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.valueOf(testInvocationType_);
+      com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.forNumber(testInvocationType_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.UNKNOWN_TEST_INVOCATION_TYPE : result;
     }
     /**
@@ -3287,8 +3206,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumberOfTestsExecuted(int value) {
-      bitField0_ |= 0x00000002;
+
       numberOfTestsExecuted_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -3329,8 +3249,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
+      com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.forNumber(testKind_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestKind.UNKNOWN_TEST_KIND : result;
     }
     /**
@@ -3404,8 +3323,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCrashed(boolean value) {
-      bitField0_ |= 0x00000008;
+
       crashed_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -3491,11 +3411,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       gradleVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -3508,8 +3426,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       gradleVersion_ = getDefaultInstance().getGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -3524,11 +3442,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       gradleVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -3568,8 +3484,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCodeCoverageEnabled(boolean value) {
-      bitField0_ |= 0x00000020;
+
       codeCoverageEnabled_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -3630,11 +3547,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         testLibraries_ = value;
-        onChanged();
       } else {
         testLibrariesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3648,11 +3565,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.TestLibraries.Builder builderForValue) {
       if (testLibrariesBuilder_ == null) {
         testLibraries_ = builderForValue.build();
-        onChanged();
       } else {
         testLibrariesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3665,18 +3582,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeTestLibraries(com.google.wireless.android.sdk.stats.TestLibraries value) {
       if (testLibrariesBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            testLibraries_ != null &&
-            testLibraries_ != com.google.wireless.android.sdk.stats.TestLibraries.getDefaultInstance()) {
-          testLibraries_ =
-            com.google.wireless.android.sdk.stats.TestLibraries.newBuilder(testLibraries_).mergeFrom(value).buildPartial();
+          testLibraries_ != null &&
+          testLibraries_ != com.google.wireless.android.sdk.stats.TestLibraries.getDefaultInstance()) {
+          getTestLibrariesBuilder().mergeFrom(value);
         } else {
           testLibraries_ = value;
         }
-        onChanged();
       } else {
         testLibrariesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3687,13 +3603,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestLibraries test_libraries = 7 [lazy = true];</code>
      */
     public Builder clearTestLibraries() {
-      if (testLibrariesBuilder_ == null) {
-        testLibraries_ = null;
-        onChanged();
-      } else {
-        testLibrariesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      testLibraries_ = null;
+      if (testLibrariesBuilder_ != null) {
+        testLibrariesBuilder_.dispose();
+        testLibrariesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -3766,8 +3682,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.valueOf(testExecution_);
+      com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.forNumber(testExecution_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestExecution.UNKNOWN_TEST_EXECUTION : result;
     }
     /**
@@ -3851,11 +3766,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         automaticSnapshotOnFailure_ = value;
-        onChanged();
       } else {
         automaticSnapshotOnFailureBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -3871,11 +3786,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder builderForValue) {
       if (automaticSnapshotOnFailureBuilder_ == null) {
         automaticSnapshotOnFailure_ = builderForValue.build();
-        onChanged();
       } else {
         automaticSnapshotOnFailureBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -3890,18 +3805,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAutomaticSnapshotOnFailure(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure value) {
       if (automaticSnapshotOnFailureBuilder_ == null) {
         if (((bitField0_ & 0x00000100) != 0) &&
-            automaticSnapshotOnFailure_ != null &&
-            automaticSnapshotOnFailure_ != com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance()) {
-          automaticSnapshotOnFailure_ =
-            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.newBuilder(automaticSnapshotOnFailure_).mergeFrom(value).buildPartial();
+          automaticSnapshotOnFailure_ != null &&
+          automaticSnapshotOnFailure_ != com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance()) {
+          getAutomaticSnapshotOnFailureBuilder().mergeFrom(value);
         } else {
           automaticSnapshotOnFailure_ = value;
         }
-        onChanged();
       } else {
         automaticSnapshotOnFailureBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -3914,13 +3828,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9 [lazy = true];</code>
      */
     public Builder clearAutomaticSnapshotOnFailure() {
-      if (automaticSnapshotOnFailureBuilder_ == null) {
-        automaticSnapshotOnFailure_ = null;
-        onChanged();
-      } else {
-        automaticSnapshotOnFailureBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000100);
+      automaticSnapshotOnFailure_ = null;
+      if (automaticSnapshotOnFailureBuilder_ != null) {
+        automaticSnapshotOnFailureBuilder_.dispose();
+        automaticSnapshotOnFailureBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -4019,11 +3933,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         previewScreenshotRun_ = value;
-        onChanged();
       } else {
         previewScreenshotRunBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -4037,11 +3951,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.Builder builderForValue) {
       if (previewScreenshotRunBuilder_ == null) {
         previewScreenshotRun_ = builderForValue.build();
-        onChanged();
       } else {
         previewScreenshotRunBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -4054,18 +3968,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePreviewScreenshotRun(com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun value) {
       if (previewScreenshotRunBuilder_ == null) {
         if (((bitField0_ & 0x00000200) != 0) &&
-            previewScreenshotRun_ != null &&
-            previewScreenshotRun_ != com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance()) {
-          previewScreenshotRun_ =
-            com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.newBuilder(previewScreenshotRun_).mergeFrom(value).buildPartial();
+          previewScreenshotRun_ != null &&
+          previewScreenshotRun_ != com.google.wireless.android.sdk.stats.TestRun.PreviewScreenshotRun.getDefaultInstance()) {
+          getPreviewScreenshotRunBuilder().mergeFrom(value);
         } else {
           previewScreenshotRun_ = value;
         }
-        onChanged();
       } else {
         previewScreenshotRunBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000200;
+      onChanged();
       return this;
     }
     /**
@@ -4076,13 +3989,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.PreviewScreenshotRun preview_screenshot_run = 10 [lazy = true];</code>
      */
     public Builder clearPreviewScreenshotRun() {
-      if (previewScreenshotRunBuilder_ == null) {
-        previewScreenshotRun_ = null;
-        onChanged();
-      } else {
-        previewScreenshotRunBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000200);
+      previewScreenshotRun_ = null;
+      if (previewScreenshotRunBuilder_ != null) {
+        previewScreenshotRunBuilder_.dispose();
+        previewScreenshotRunBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

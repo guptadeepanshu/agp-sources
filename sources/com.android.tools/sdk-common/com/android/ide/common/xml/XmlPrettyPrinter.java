@@ -35,22 +35,25 @@ import com.android.annotations.Nullable;
 import com.android.resources.ResourceFolderType;
 import com.android.utils.SdkUtils;
 import com.android.utils.XmlUtils;
+
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Visitor which walks over the subtree of the DOM to be formatted and pretty prints
@@ -1247,7 +1250,7 @@ public class XmlPrettyPrinter {
             }
 
             try {
-                String xml = Files.toString(file, Charsets.UTF_8);
+                String xml = Files.toString(file, StandardCharsets.UTF_8);
                 Document document = XmlUtils.parseDocumentSilently(xml, true);
                 if (document == null) {
                     System.err.println("Could not parse " + file);
@@ -1266,7 +1269,7 @@ public class XmlPrettyPrinter {
                 if (stdout) {
                     System.out.println(formatted);
                 } else {
-                    Files.asCharSink(file, Charsets.UTF_8).write(formatted);
+                    Files.asCharSink(file, StandardCharsets.UTF_8).write(formatted);
                 }
             } catch (IOException e) {
                 System.err.println("Could not read " + file);

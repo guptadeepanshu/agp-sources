@@ -90,7 +90,20 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
 
     abstract override var isJniDebuggable: Boolean
 
-    abstract override var isRenderscriptDebuggable: Boolean
+    override var isRenderscriptDebuggable: Boolean
+        get() {
+            dslServices.deprecationReporter.reportObsoleteUsage(
+                "isRenderscriptDebuggable",
+                DeprecationReporter.DeprecationTarget.VERSION_9_0
+            )
+            return false
+        }
+        set(_) {
+            dslServices.deprecationReporter.reportObsoleteUsage(
+                "isRenderscriptDebuggable",
+                DeprecationReporter.DeprecationTarget.VERSION_9_0
+            )
+        }
 
     abstract override var renderscriptOptimLevel: Int
 
@@ -244,9 +257,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         enableAndroidTestCoverage = thatBuildType.enableAndroidTestCoverage
         externalNativeBuildOptions._initWith(thatBuildType.externalNativeBuildOptions)
         postProcessingBlockUsed = thatBuildType.postProcessingBlockUsed
-        if (postProcessingBlockUsed) {
-            _postProcessing.initWith(that._postProcessing)
-        }
+        _postProcessing.initWith(that._postProcessing)
         isCrunchPngs = thatBuildType.isCrunchPngs
         isCrunchPngsDefault = thatBuildType.isCrunchPngsDefault
         setMatchingFallbacks(thatBuildType.matchingFallbacks)

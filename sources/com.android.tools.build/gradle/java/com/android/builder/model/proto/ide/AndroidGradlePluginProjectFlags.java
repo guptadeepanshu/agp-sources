@@ -156,6 +156,14 @@ private static final long serialVersionUID = 0L;
      * <code>DATA_BINDING_ENABLED = 10;</code>
      */
     DATA_BINDING_ENABLED(10),
+    /**
+     * <pre>
+     * Whether to generate manifest classes
+     * </pre>
+     *
+     * <code>GENERATE_MANIFEST_CLASS = 11;</code>
+     */
+    GENERATE_MANIFEST_CLASS(11),
     UNRECOGNIZED(-1),
     ;
 
@@ -254,6 +262,14 @@ private static final long serialVersionUID = 0L;
      * <code>DATA_BINDING_ENABLED = 10;</code>
      */
     public static final int DATA_BINDING_ENABLED_VALUE = 10;
+    /**
+     * <pre>
+     * Whether to generate manifest classes
+     * </pre>
+     *
+     * <code>GENERATE_MANIFEST_CLASS = 11;</code>
+     */
+    public static final int GENERATE_MANIFEST_CLASS_VALUE = 11;
 
 
     public final int getNumber() {
@@ -291,6 +307,7 @@ private static final long serialVersionUID = 0L;
         case 8: return BUILD_FEATURE_ANDROID_RESOURCES;
         case 9: return EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS;
         case 10: return DATA_BINDING_ENABLED;
+        case 11: return GENERATE_MANIFEST_CLASS;
         default: return null;
       }
     }

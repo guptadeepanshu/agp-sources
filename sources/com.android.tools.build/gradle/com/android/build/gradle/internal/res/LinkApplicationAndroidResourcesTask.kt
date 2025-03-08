@@ -56,6 +56,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
+import com.android.build.gradle.internal.tasks.runResourceShrinking
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
@@ -222,6 +223,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     abstract val linkedResourcesOutputDir: DirectoryProperty
 
     @get:Input
+    abstract val linkedResourcesArtifactType: Property<InternalArtifactType<Directory>>
+
+    @get:Input
     abstract val projectBaseName: Property<String>
 
     @get:Input
@@ -336,6 +340,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.proguardOutputFile.set(proguardOutputFile)
             parameters.rClassOutputJar.set(rClassOutputJar)
             parameters.linkedResourcesOutputDir.set(linkedResourcesOutputDir)
+            parameters.linkedResourcesArtifactType.set(linkedResourcesArtifactType)
             parameters.sourceOutputDirectory.set(sourceOutputDirProperty)
             parameters.symbolsWithPackageNameOutputFile.set(symbolsWithPackageNameOutputFile)
             parameters.textSymbolOutputFile.set(textSymbolOutputFileProperty)
@@ -384,6 +389,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         abstract val proguardOutputFile: RegularFileProperty
         abstract val rClassOutputJar: RegularFileProperty
         abstract val linkedResourcesOutputDir: DirectoryProperty
+        abstract val linkedResourcesArtifactType: Property<InternalArtifactType<Directory>>
         abstract val sourceOutputDirectory: DirectoryProperty
         abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
         abstract val textSymbolOutputFile: RegularFileProperty
@@ -536,6 +542,15 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                     || creationConfig.componentType.isDynamicFeature)
         }
 
+        private val linkedResourcesArtifactType: InternalArtifactType<Directory>
+            // Resource shrinker only works with proto format, so we produce the proto format
+            // directly in that case.
+            get() = if ((creationConfig as? ApplicationCreationConfig)?.runResourceShrinking() == true) {
+                InternalArtifactType.LINKED_RESOURCES_PROTO_FORMAT
+            } else {
+                InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT
+            }
+
         override fun handleProvider(
             taskProvider: TaskProvider<LinkApplicationAndroidResourcesTask>
         ) {
@@ -544,7 +559,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 LinkApplicationAndroidResourcesTask::linkedResourcesOutputDir
-            ).on(InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT)
+            ).on(linkedResourcesArtifactType)
 
             if (generatesProguardOutputFile(creationConfig)) {
                 creationConfig.artifacts.setInitialProvider(
@@ -575,6 +590,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
             preconditionsCheck(creationConfig)
 
+            task.linkedResourcesArtifactType.setDisallowChanges(linkedResourcesArtifactType)
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
 
             task.incrementalDirectory.set(creationConfig.paths.getIncrementalDir(name))
@@ -852,6 +868,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         @Synchronized
         @Throws(IOException::class)
         fun appendOutput(
+            artifactType: InternalArtifactType<Directory>,
             applicationId: String,
             variantName: String,
             output: BuiltArtifactImpl,
@@ -859,7 +876,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
         ) {
             (BuiltArtifactsLoaderImpl.loadFromDirectory(resPackageOutputFolder)?.addElement(output)
                     ?: BuiltArtifactsImpl(
-                        artifactType = InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT,
+                        artifactType = artifactType,
                         applicationId = applicationId,
                         variantName = variantName,
                         elements = listOf(output)
@@ -899,8 +916,13 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
             val linkedResourcesOutputFile = File(
                 parameters.linkedResourcesOutputDir.get().asFile,
-                "linked-resources-binary-format" + variantName + SdkConstants.DOT_RES
+                parameters.linkedResourcesArtifactType.get().name().lowercase().replace("_", "-") + variantName + SdkConstants.DOT_RES
             )
+            val generateProtos = when (parameters.linkedResourcesArtifactType.get()) {
+                is InternalArtifactType.LINKED_RESOURCES_PROTO_FORMAT -> true
+                is InternalArtifactType.LINKED_RESOURCES_BINARY_FORMAT -> false
+                else -> error("Unexpected artifact type: ${parameters.linkedResourcesArtifactType.get()}")
+            }
 
             val manifestFile = manifestOutput.outputFile
 
@@ -957,7 +979,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                         .setSymbolOutputDir(symbolOutputDir)
                         .setSourceOutputDir(srcOut)
                         .setResourceOutputApk(linkedResourcesOutputFile)
-                        .setGenerateProtos(false)
+                        .setGenerateProtos(generateProtos)
                         .setProguardOutputFile(proguardOutputFile)
                         .setMainDexListProguardOutputFile(mainDexListProguardOutputFile)
                         .setComponentType(parameters.componentType.get())
@@ -1036,6 +1058,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                     )
                 }
                 appendOutput(
+                    parameters.linkedResourcesArtifactType.get(),
                     parameters.applicationId.get().orEmpty(),
                     parameters.variantName.get(),
                     manifestOutput.newOutput(linkedResourcesOutputFile.toPath()),

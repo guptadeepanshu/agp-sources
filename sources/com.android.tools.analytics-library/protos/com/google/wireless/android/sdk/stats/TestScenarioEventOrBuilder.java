@@ -28,7 +28,8 @@ public interface TestScenarioEventOrBuilder extends
    * </pre>
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+   *     See studio_stats.proto;l=15530
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Deprecated boolean hasInconsistentCount();
@@ -38,7 +39,8 @@ public interface TestScenarioEventOrBuilder extends
    * </pre>
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+   *     See studio_stats.proto;l=15530
    * @return The inconsistentCount.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount();
@@ -66,5 +68,5 @@ public interface TestScenarioEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResultOrBuilder getTestScenarioResultOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.TestScenarioEvent.TransformCase getTransformCase();
+  com.google.wireless.android.sdk.stats.TestScenarioEvent.TransformCase getTransformCase();
 }

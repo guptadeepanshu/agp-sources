@@ -35,11 +35,6 @@ private static final long serialVersionUID = 0L;
     return new KotlinProjectConfiguration();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_KotlinProjectConfiguration_descriptor;
@@ -151,7 +146,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SYSTEM_FIELD_NUMBER = 1;
-  private volatile java.lang.Object system_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object system_ = "";
   /**
    * <pre>
    * Build system, i.e. Gradle
@@ -211,7 +207,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object pluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pluginVersion_ = "";
   /**
    * <pre>
    * plugin version
@@ -271,7 +268,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_FIELD_NUMBER = 3;
-  private volatile java.lang.Object plugin_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object plugin_ = "";
   /**
    * <pre>
    * plugin name, i.e. org.jetbrains.kotlin
@@ -331,7 +329,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_TYPE_FIELD_NUMBER = 4;
-  private volatile java.lang.Object pluginType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pluginType_ = "";
   /**
    * <pre>
    * plugin type, i.e. JB_BUNDLED
@@ -391,7 +390,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLATFORM_FIELD_NUMBER = 5;
-  private volatile java.lang.Object platform_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object platform_ = "";
   /**
    * <pre>
    * platform, i.e. jvm
@@ -451,7 +451,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_MULTIPLATFORM_FIELD_NUMBER = 6;
-  private boolean isMultiplatform_;
+  private boolean isMultiplatform_ = false;
   /**
    * <pre>
    * indicates whether this a kotlin multiplatform programming project
@@ -478,7 +478,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EVENT_TYPE_FIELD_NUMBER = 7;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <pre>
    * indicates the type of the configuration event (i.e. build)
@@ -499,13 +499,12 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.TYPE_UNKNOWN : result;
   }
 
   public static final int EVENT_FLAGS_FIELD_NUMBER = 8;
-  private long eventFlags_;
+  private long eventFlags_ = 0L;
   /**
    * <pre>
    * bitfield for future flags added by kotlin plugin
@@ -836,22 +835,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       system_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       pluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       plugin_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       pluginType_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       platform_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       isMultiplatform_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       eventFlags_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -878,77 +870,49 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration buildPartial() {
       com.google.wireless.android.sdk.stats.KotlinProjectConfiguration result = new com.google.wireless.android.sdk.stats.KotlinProjectConfiguration(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.KotlinProjectConfiguration result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.system_ = system_;
         to_bitField0_ |= 0x00000001;
       }
-      result.system_ = system_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.pluginVersion_ = pluginVersion_;
         to_bitField0_ |= 0x00000002;
       }
-      result.pluginVersion_ = pluginVersion_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.plugin_ = plugin_;
         to_bitField0_ |= 0x00000004;
       }
-      result.plugin_ = plugin_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.pluginType_ = pluginType_;
         to_bitField0_ |= 0x00000008;
       }
-      result.pluginType_ = pluginType_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.platform_ = platform_;
         to_bitField0_ |= 0x00000010;
       }
-      result.platform_ = platform_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
         result.isMultiplatform_ = isMultiplatform_;
         to_bitField0_ |= 0x00000020;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.eventType_ = eventType_;
         to_bitField0_ |= 0x00000040;
       }
-      result.eventType_ = eventType_;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.eventFlags_ = eventFlags_;
         to_bitField0_ |= 0x00000080;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.KotlinProjectConfiguration) {
@@ -962,28 +926,28 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.KotlinProjectConfiguration other) {
       if (other == com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.getDefaultInstance()) return this;
       if (other.hasSystem()) {
-        bitField0_ |= 0x00000001;
         system_ = other.system_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasPluginVersion()) {
-        bitField0_ |= 0x00000002;
         pluginVersion_ = other.pluginVersion_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasPlugin()) {
-        bitField0_ |= 0x00000004;
         plugin_ = other.plugin_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasPluginType()) {
-        bitField0_ |= 0x00000008;
         pluginType_ = other.pluginType_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasPlatform()) {
-        bitField0_ |= 0x00000010;
         platform_ = other.platform_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasIsMultiplatform()) {
@@ -1151,11 +1115,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSystem(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       system_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1168,8 +1130,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSystem() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       system_ = getDefaultInstance().getSystem();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1184,11 +1146,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSystemBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       system_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1259,11 +1219,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1276,8 +1234,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       pluginVersion_ = getDefaultInstance().getPluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1292,11 +1250,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1367,11 +1323,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPlugin(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       plugin_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1384,8 +1338,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPlugin() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       plugin_ = getDefaultInstance().getPlugin();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1400,11 +1354,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       plugin_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1475,11 +1427,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       pluginType_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1492,8 +1442,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPluginType() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       pluginType_ = getDefaultInstance().getPluginType();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1508,11 +1458,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       pluginType_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1583,11 +1531,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPlatform(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       platform_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1600,8 +1546,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPlatform() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       platform_ = getDefaultInstance().getPlatform();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1616,11 +1562,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPlatformBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       platform_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1660,8 +1604,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsMultiplatform(boolean value) {
-      bitField0_ |= 0x00000020;
+
       isMultiplatform_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1702,8 +1647,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.TYPE_UNKNOWN : result;
     }
     /**
@@ -1774,8 +1718,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEventFlags(long value) {
-      bitField0_ |= 0x00000080;
+
       eventFlags_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }

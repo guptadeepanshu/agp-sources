@@ -52,5 +52,5 @@ public interface TSdkUAEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.TSdkUAEvent.UserMotionOrBuilder getUserMotionOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.TSdkUAEvent.ContentCase getContentCase();
+  com.google.wireless.android.sdk.stats.TSdkUAEvent.ContentCase getContentCase();
 }

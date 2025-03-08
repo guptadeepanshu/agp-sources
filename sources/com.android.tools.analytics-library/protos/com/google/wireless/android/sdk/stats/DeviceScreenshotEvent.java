@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new DeviceScreenshotEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceScreenshotEvent_descriptor;
@@ -284,7 +279,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DEVICE_TYPE_FIELD_NUMBER = 1;
-  private int deviceType_;
+  private int deviceType_ = 0;
   /**
    * <pre>
    * The type of the device the screenshot is taken on
@@ -305,13 +300,12 @@ private static final long serialVersionUID = 0L;
    * @return The deviceType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType getDeviceType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.valueOf(deviceType_);
+    com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.forNumber(deviceType_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.UNKNOWN_DEVICE_TYPE : result;
   }
 
   public static final int DECORATION_OPTION_FIELD_NUMBER = 2;
-  private int decorationOption_;
+  private int decorationOption_ = 0;
   /**
    * <pre>
    * The type of decoration used for the screenshot
@@ -332,8 +326,7 @@ private static final long serialVersionUID = 0L;
    * @return The decorationOption.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption getDecorationOption() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.valueOf(decorationOption_);
+    com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.forNumber(decorationOption_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.UNKNOWN_DECORATION_OPTION : result;
   }
 
@@ -544,10 +537,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       deviceType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       decorationOption_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -574,53 +566,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DeviceScreenshotEvent result = new com.google.wireless.android.sdk.stats.DeviceScreenshotEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.deviceType_ = deviceType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.decorationOption_ = decorationOption_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DeviceScreenshotEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.deviceType_ = deviceType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.decorationOption_ = decorationOption_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DeviceScreenshotEvent) {
@@ -728,8 +692,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType getDeviceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.valueOf(deviceType_);
+      com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.forNumber(deviceType_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DeviceType.UNKNOWN_DEVICE_TYPE : result;
     }
     /**
@@ -787,8 +750,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption getDecorationOption() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.valueOf(decorationOption_);
+      com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption result = com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.forNumber(decorationOption_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceScreenshotEvent.DecorationOption.UNKNOWN_DECORATION_OPTION : result;
     }
     /**

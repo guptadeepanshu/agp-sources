@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new GradleTaskExecution();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleTaskExecution_descriptor;
@@ -192,7 +187,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The task implementing class.
@@ -225,7 +220,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DID_WORK_FIELD_NUMBER = 2;
-  private boolean didWork_;
+  private boolean didWork_ = false;
   /**
    * <pre>
    * Whether the task did work (TaskState#getDidWork())
@@ -235,7 +230,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool did_work = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+   *     See studio_stats.proto;l=5357
    * @return Whether the didWork field is set.
    */
   @java.lang.Override
@@ -251,7 +247,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool did_work = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+   *     See studio_stats.proto;l=5357
    * @return The didWork.
    */
   @java.lang.Override
@@ -260,7 +257,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SKIPPED_FIELD_NUMBER = 3;
-  private boolean skipped_;
+  private boolean skipped_ = false;
   /**
    * <pre>
    * Whether the task was skipped (TaskState#getSkipped())
@@ -268,7 +265,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool skipped = 3 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+   *     See studio_stats.proto;l=5361
    * @return Whether the skipped field is set.
    */
   @java.lang.Override
@@ -282,7 +280,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool skipped = 3 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+   *     See studio_stats.proto;l=5361
    * @return The skipped.
    */
   @java.lang.Override
@@ -291,7 +290,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UP_TO_DATE_FIELD_NUMBER = 4;
-  private boolean upToDate_;
+  private boolean upToDate_ = false;
   /**
    * <pre>
    * Whether the task was up to date (TaskState#getUpToDate())
@@ -299,7 +298,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+   *     See studio_stats.proto;l=5365
    * @return Whether the upToDate field is set.
    */
   @java.lang.Override
@@ -313,7 +313,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+   *     See studio_stats.proto;l=5365
    * @return The upToDate.
    */
   @java.lang.Override
@@ -322,7 +323,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILED_FIELD_NUMBER = 5;
-  private boolean failed_;
+  private boolean failed_ = false;
   /**
    * <pre>
    * Whether the task failed
@@ -330,7 +331,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool failed = 5 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+   *     See studio_stats.proto;l=5369
    * @return Whether the failed field is set.
    */
   @java.lang.Override
@@ -344,7 +346,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool failed = 5 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+   *     See studio_stats.proto;l=5369
    * @return The failed.
    */
   @java.lang.Override
@@ -353,7 +356,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TASK_STATE_FIELD_NUMBER = 6;
-  private int taskState_;
+  private int taskState_ = 0;
   /**
    * <pre>
    * State of the task during the build
@@ -374,8 +377,7 @@ private static final long serialVersionUID = 0L;
    * @return The taskState.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState getTaskState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.valueOf(taskState_);
+    com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.forNumber(taskState_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UNKNOWN : result;
   }
 
@@ -655,18 +657,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       didWork_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       skipped_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       upToDate_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       failed_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       taskState_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -693,6 +690,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleTaskExecution buildPartial() {
       com.google.wireless.android.sdk.stats.GradleTaskExecution result = new com.google.wireless.android.sdk.stats.GradleTaskExecution(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleTaskExecution result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -716,46 +719,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.taskState_ = taskState_;
         to_bitField0_ |= 0x00000020;
       }
-      result.taskState_ = taskState_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleTaskExecution) {
@@ -910,8 +879,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setType(int value) {
-      bitField0_ |= 0x00000001;
+
       type_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -943,7 +913,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool did_work = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+     *     See studio_stats.proto;l=5357
      * @return Whether the didWork field is set.
      */
     @java.lang.Override
@@ -959,7 +930,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool did_work = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+     *     See studio_stats.proto;l=5357
      * @return The didWork.
      */
     @java.lang.Override
@@ -975,13 +947,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool did_work = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+     *     See studio_stats.proto;l=5357
      * @param value The didWork to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setDidWork(boolean value) {
-      bitField0_ |= 0x00000002;
+
       didWork_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -994,7 +968,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool did_work = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
+     *     See studio_stats.proto;l=5357
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearDidWork() {
@@ -1012,7 +987,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool skipped = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+     *     See studio_stats.proto;l=5361
      * @return Whether the skipped field is set.
      */
     @java.lang.Override
@@ -1026,7 +1002,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool skipped = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+     *     See studio_stats.proto;l=5361
      * @return The skipped.
      */
     @java.lang.Override
@@ -1040,13 +1017,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool skipped = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+     *     See studio_stats.proto;l=5361
      * @param value The skipped to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setSkipped(boolean value) {
-      bitField0_ |= 0x00000004;
+
       skipped_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1057,7 +1036,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool skipped = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
+     *     See studio_stats.proto;l=5361
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearSkipped() {
@@ -1075,7 +1055,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+     *     See studio_stats.proto;l=5365
      * @return Whether the upToDate field is set.
      */
     @java.lang.Override
@@ -1089,7 +1070,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+     *     See studio_stats.proto;l=5365
      * @return The upToDate.
      */
     @java.lang.Override
@@ -1103,13 +1085,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+     *     See studio_stats.proto;l=5365
      * @param value The upToDate to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setUpToDate(boolean value) {
-      bitField0_ |= 0x00000008;
+
       upToDate_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1120,7 +1104,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool up_to_date = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
+     *     See studio_stats.proto;l=5365
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearUpToDate() {
@@ -1138,7 +1123,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool failed = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+     *     See studio_stats.proto;l=5369
      * @return Whether the failed field is set.
      */
     @java.lang.Override
@@ -1152,7 +1138,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool failed = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+     *     See studio_stats.proto;l=5369
      * @return The failed.
      */
     @java.lang.Override
@@ -1166,13 +1153,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool failed = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+     *     See studio_stats.proto;l=5369
      * @param value The failed to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setFailed(boolean value) {
-      bitField0_ |= 0x00000010;
+
       failed_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1183,7 +1172,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool failed = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
+     *     See studio_stats.proto;l=5369
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearFailed() {
@@ -1215,8 +1205,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState getTaskState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.valueOf(taskState_);
+      com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState result = com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.forNumber(taskState_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.TaskState.UNKNOWN : result;
     }
     /**

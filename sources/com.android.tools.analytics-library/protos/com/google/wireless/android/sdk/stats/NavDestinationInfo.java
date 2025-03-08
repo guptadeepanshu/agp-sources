@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new NavDestinationInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NavDestinationInfo_descriptor;
@@ -160,7 +155,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The type of the destination
@@ -181,13 +176,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.UNKNOWN : result;
   }
 
   public static final int HAS_CLASS_FIELD_NUMBER = 2;
-  private boolean hasClass_;
+  private boolean hasClass_ = false;
   /**
    * <pre>
    * Whether the destination has a class (android:name) specified
@@ -214,7 +208,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HAS_LAYOUT_FIELD_NUMBER = 3;
-  private boolean hasLayout_;
+  private boolean hasLayout_ = false;
   /**
    * <pre>
    * Whether the destination has a layout (tools:layout) specified
@@ -466,12 +460,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       hasClass_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       hasLayout_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -498,12 +490,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavDestinationInfo buildPartial() {
       com.google.wireless.android.sdk.stats.NavDestinationInfo result = new com.google.wireless.android.sdk.stats.NavDestinationInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NavDestinationInfo result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.hasClass_ = hasClass_;
         to_bitField0_ |= 0x00000002;
@@ -512,43 +510,9 @@ private static final long serialVersionUID = 0L;
         result.hasLayout_ = hasLayout_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NavDestinationInfo) {
@@ -657,8 +621,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.UNKNOWN : result;
     }
     /**
@@ -729,8 +692,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasClass(boolean value) {
-      bitField0_ |= 0x00000002;
+
       hasClass_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -784,8 +748,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasLayout(boolean value) {
-      bitField0_ |= 0x00000004;
+
       hasLayout_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

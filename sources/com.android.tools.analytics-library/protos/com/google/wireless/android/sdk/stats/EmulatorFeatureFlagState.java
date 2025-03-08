@@ -35,11 +35,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorFeatureFlagState();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorFeatureFlagState_descriptor;
@@ -1168,14 +1163,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ATTEMPTED_ENABLED_FEATURE_FLAGS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> attemptedEnabledFeatureFlags_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> attemptedEnabledFeatureFlags_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>() {
             public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.EMULATOR_FEATURE_FLAG_UNSPECIFIED : result;
             }
           };
@@ -1219,14 +1214,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USER_OVERRIDDEN_ENABLED_FEATURES_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> userOverriddenEnabledFeatures_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> userOverriddenEnabledFeatures_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>() {
             public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.EMULATOR_FEATURE_FLAG_UNSPECIFIED : result;
             }
           };
@@ -1270,14 +1265,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USER_OVERRIDDEN_DISABLED_FEATURES_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> userOverriddenDisabledFeatures_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> userOverriddenDisabledFeatures_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>() {
             public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.EMULATOR_FEATURE_FLAG_UNSPECIFIED : result;
             }
           };
@@ -1321,14 +1316,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESULTING_ENABLED_FEATURES_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> resultingEnabledFeatures_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> resultingEnabledFeatures_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>() {
             public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag result = com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag.EMULATOR_FEATURE_FLAG_UNSPECIFIED : result;
             }
           };
@@ -1622,6 +1617,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       attemptedEnabledFeatureFlags_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000001);
       userOverriddenEnabledFeatures_ = java.util.Collections.emptyList();
@@ -1656,7 +1652,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState result = new com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         attemptedEnabledFeatureFlags_ = java.util.Collections.unmodifiableList(attemptedEnabledFeatureFlags_);
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1677,42 +1679,12 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
       }
       result.resultingEnabledFeatures_ = resultingEnabledFeatures_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState) {

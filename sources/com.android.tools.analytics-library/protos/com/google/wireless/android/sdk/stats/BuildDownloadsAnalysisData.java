@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new BuildDownloadsAnalysisData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BuildDownloadsAnalysisData_descriptor;
@@ -188,11 +183,6 @@ private static final long serialVersionUID = 0L;
       return new RepositoryStats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BuildDownloadsAnalysisData_RepositoryStats_descriptor;
@@ -331,7 +321,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int REPOSITORY_TYPE_FIELD_NUMBER = 1;
-    private int repositoryType_;
+    private int repositoryType_ = 0;
     /**
      * <pre>
      * Type of the repository, if it is one of the known ones.
@@ -352,13 +342,12 @@ private static final long serialVersionUID = 0L;
      * @return The repositoryType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType getRepositoryType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType result = com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.valueOf(repositoryType_);
+      com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType result = com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.forNumber(repositoryType_);
       return result == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.UNKNOWN_REPOSITORY : result;
     }
 
     public static final int SUCCESS_REQUESTS_COUNT_FIELD_NUMBER = 2;
-    private int successRequestsCount_;
+    private int successRequestsCount_ = 0;
     /**
      * <code>optional int32 success_requests_count = 2;</code>
      * @return Whether the successRequestsCount field is set.
@@ -377,7 +366,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUCCESS_REQUESTS_TOTAL_TIME_MS_FIELD_NUMBER = 3;
-    private long successRequestsTotalTimeMs_;
+    private long successRequestsTotalTimeMs_ = 0L;
     /**
      * <code>optional int64 success_requests_total_time_ms = 3;</code>
      * @return Whether the successRequestsTotalTimeMs field is set.
@@ -396,7 +385,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUCCESS_REQUESTS_TOTAL_BYTES_DOWNLOADED_FIELD_NUMBER = 4;
-    private long successRequestsTotalBytesDownloaded_;
+    private long successRequestsTotalBytesDownloaded_ = 0L;
     /**
      * <code>optional int64 success_requests_total_bytes_downloaded = 4;</code>
      * @return Whether the successRequestsTotalBytesDownloaded field is set.
@@ -415,7 +404,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FAILED_REQUESTS_COUNT_FIELD_NUMBER = 5;
-    private int failedRequestsCount_;
+    private int failedRequestsCount_ = 0;
     /**
      * <code>optional int32 failed_requests_count = 5;</code>
      * @return Whether the failedRequestsCount field is set.
@@ -434,7 +423,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FAILED_REQUESTS_TOTAL_TIME_MS_FIELD_NUMBER = 6;
-    private long failedRequestsTotalTimeMs_;
+    private long failedRequestsTotalTimeMs_ = 0L;
     /**
      * <code>optional int64 failed_requests_total_time_ms = 6;</code>
      * @return Whether the failedRequestsTotalTimeMs field is set.
@@ -453,7 +442,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FAILED_REQUESTS_TOTAL_BYTES_DOWNLOADED_FIELD_NUMBER = 7;
-    private long failedRequestsTotalBytesDownloaded_;
+    private long failedRequestsTotalBytesDownloaded_ = 0L;
     /**
      * <code>optional int64 failed_requests_total_bytes_downloaded = 7;</code>
      * @return Whether the failedRequestsTotalBytesDownloaded field is set.
@@ -472,7 +461,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MISSED_REQUESTS_COUNT_FIELD_NUMBER = 8;
-    private int missedRequestsCount_;
+    private int missedRequestsCount_ = 0;
     /**
      * <pre>
      * Missed request is when file was not found in the repository.
@@ -501,7 +490,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MISSED_REQUESTS_TOTAL_TIME_MS_FIELD_NUMBER = 9;
-    private long missedRequestsTotalTimeMs_;
+    private long missedRequestsTotalTimeMs_ = 0L;
     /**
      * <code>optional int64 missed_requests_total_time_ms = 9;</code>
      * @return Whether the missedRequestsTotalTimeMs field is set.
@@ -844,24 +833,16 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         repositoryType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         successRequestsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         successRequestsTotalTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         successRequestsTotalBytesDownloaded_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
         failedRequestsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         failedRequestsTotalTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000020);
         failedRequestsTotalBytesDownloaded_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000040);
         missedRequestsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
         missedRequestsTotalTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -888,12 +869,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats buildPartial() {
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats result = new com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.repositoryType_ = repositoryType_;
           to_bitField0_ |= 0x00000001;
         }
-        result.repositoryType_ = repositoryType_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.successRequestsCount_ = successRequestsCount_;
           to_bitField0_ |= 0x00000002;
@@ -926,43 +913,9 @@ private static final long serialVersionUID = 0L;
           result.missedRequestsTotalTimeMs_ = missedRequestsTotalTimeMs_;
           to_bitField0_ |= 0x00000100;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats) {
@@ -1119,8 +1072,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType getRepositoryType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType result = com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.valueOf(repositoryType_);
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType result = com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.forNumber(repositoryType_);
         return result == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats.RepositoryType.UNKNOWN_REPOSITORY : result;
       }
       /**
@@ -1179,8 +1131,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccessRequestsCount(int value) {
-        bitField0_ |= 0x00000002;
+
         successRequestsCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1218,8 +1171,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccessRequestsTotalTimeMs(long value) {
-        bitField0_ |= 0x00000004;
+
         successRequestsTotalTimeMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1257,8 +1211,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccessRequestsTotalBytesDownloaded(long value) {
-        bitField0_ |= 0x00000008;
+
         successRequestsTotalBytesDownloaded_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1296,8 +1251,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFailedRequestsCount(int value) {
-        bitField0_ |= 0x00000010;
+
         failedRequestsCount_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1335,8 +1291,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFailedRequestsTotalTimeMs(long value) {
-        bitField0_ |= 0x00000020;
+
         failedRequestsTotalTimeMs_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1374,8 +1331,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFailedRequestsTotalBytesDownloaded(long value) {
-        bitField0_ |= 0x00000040;
+
         failedRequestsTotalBytesDownloaded_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1428,8 +1386,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMissedRequestsCount(int value) {
-        bitField0_ |= 0x00000080;
+
         missedRequestsCount_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1472,8 +1431,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMissedRequestsTotalTimeMs(long value) {
-        bitField0_ |= 0x00000100;
+
         missedRequestsTotalTimeMs_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1552,6 +1512,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPOSITORIES_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.RepositoryStats> repositories_;
   /**
    * <pre>
@@ -1801,6 +1762,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (repositoriesBuilder_ == null) {
         repositories_ = java.util.Collections.emptyList();
       } else {
@@ -1834,7 +1796,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData buildPartial() {
       com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData result = new com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData result) {
       if (repositoriesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           repositories_ = java.util.Collections.unmodifiableList(repositories_);
@@ -1844,42 +1812,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.repositories_ = repositoriesBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData) {

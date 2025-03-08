@@ -38,7 +38,6 @@ import com.android.sdklib.repository.PkgProps;
 import com.android.sdklib.repository.meta.DetailsTypes;
 import com.android.utils.ILogger;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Table;
@@ -51,6 +50,7 @@ import org.xml.sax.SAXException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -526,6 +526,15 @@ public class DeviceManager {
                 getBooleanVal(sensors.contains(Sensor.ACCELEROMETER)));
         props.put(HardwareProperties.HW_ORIENTATION_SENSOR,
                 getBooleanVal(sensors.contains(Sensor.GYROSCOPE)));
+        props.put(HardwareProperties.HW_GYROSCOPE,
+                getBooleanVal(sensors.contains(Sensor.GYROSCOPE)));
+        props.put(HardwareProperties.HW_MAGNETIC_FIELD_SENSOR,
+                getBooleanVal(sensors.contains(Sensor.COMPASS)));
+        props.put(HardwareProperties.HW_PRESSURE_SENSOR,
+                getBooleanVal(sensors.contains(Sensor.BAROMETER)));
+        props.put(HardwareProperties.HW_LIGHT_SENSOR,
+                getBooleanVal(sensors.contains(Sensor.LIGHT_SENSOR)));
+
         props.put(HardwareProperties.HW_AUDIO_INPUT, getBooleanVal(hw.hasMic()));
         props.put(HardwareProperties.HW_SDCARD, getBooleanVal(hw.hasSdCard()));
         props.put(HardwareProperties.HW_LCD_DENSITY,
@@ -626,9 +635,9 @@ public class DeviceManager {
         Collections.sort(keys);
         for (String key : keys) {
             if (key != null) {
-                hasher.putString(key, Charsets.UTF_8);
+                hasher.putString(key, StandardCharsets.UTF_8);
                 String value = props.get(key);
-                hasher.putString(value == null ? "null" : value, Charsets.UTF_8);
+                hasher.putString(value == null ? "null" : value, StandardCharsets.UTF_8);
             }
         }
         // store the hash method for potential future compatibility

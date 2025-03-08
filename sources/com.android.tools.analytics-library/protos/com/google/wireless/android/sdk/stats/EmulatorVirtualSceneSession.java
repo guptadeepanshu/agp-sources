@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorVirtualSceneSession();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorVirtualSceneSession_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
-  private long durationMs_;
+  private long durationMs_ = 0L;
   /**
    * <pre>
    * How long the session was running, in milliseconds.
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MIN_SENSOR_DELAY_MS_FIELD_NUMBER = 2;
-  private int minSensorDelayMs_;
+  private int minSensorDelayMs_ = 0;
   /**
    * <pre>
    * Minimum sensor update delay in milliseconds.
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TAP_COUNT_FIELD_NUMBER = 3;
-  private int tapCount_;
+  private int tapCount_ = 0;
   /**
    * <pre>
    * Total tap count when the camera is running.
@@ -130,7 +125,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ORIENTATION_CHANGE_COUNT_FIELD_NUMBER = 4;
-  private int orientationChangeCount_;
+  private int orientationChangeCount_ = 0;
   /**
    * <pre>
    * The number of times the orientation changed during the session.
@@ -157,7 +152,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRTUAL_SENSORS_VISIBLE_FIELD_NUMBER = 5;
-  private boolean virtualSensorsVisible_;
+  private boolean virtualSensorsVisible_ = false;
   /**
    * <pre>
    * Whether the virtual sensors window was visible at any point during the
@@ -186,7 +181,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRTUAL_SENSORS_INTERACTION_COUNT_FIELD_NUMBER = 6;
-  private int virtualSensorsInteractionCount_;
+  private int virtualSensorsInteractionCount_ = 0;
   /**
    * <pre>
    * How many interactions were performed on the virtual sensors page.
@@ -213,7 +208,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HOTKEY_INVOKE_COUNT_FIELD_NUMBER = 7;
-  private int hotkeyInvokeCount_;
+  private int hotkeyInvokeCount_ = 0;
   /**
    * <pre>
    * Invocation count of WASD/Mouselook hotkey.
@@ -240,7 +235,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HOTKEY_DURATION_MS_FIELD_NUMBER = 8;
-  private long hotkeyDurationMs_;
+  private long hotkeyDurationMs_ = 0L;
   /**
    * <pre>
    * Total time the user was in WASD/Mouselook mode during this session.
@@ -267,7 +262,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TAPS_AFTER_HOTKEY_INVOKE_FIELD_NUMBER = 9;
-  private int tapsAfterHotkeyInvoke_;
+  private int tapsAfterHotkeyInvoke_ = 0;
   /**
    * <pre>
    * Taps shortly after a hotkey invoke, to determine how much the user
@@ -296,7 +291,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_ROTATION_RADIANS_FIELD_NUMBER = 10;
-  private double totalRotationRadians_;
+  private double totalRotationRadians_ = 0D;
   /**
    * <pre>
    * Total rotation performed in the virtual scene.
@@ -323,7 +318,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_TRANSLATION_METERS_FIELD_NUMBER = 11;
-  private double totalTranslationMeters_;
+  private double totalTranslationMeters_ = 0D;
   /**
    * <pre>
    * Total translation performed in the virtual scene.
@@ -713,28 +708,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       durationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       minSensorDelayMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       tapCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       orientationChangeCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       virtualSensorsVisible_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       virtualSensorsInteractionCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       hotkeyInvokeCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       hotkeyDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       tapsAfterHotkeyInvoke_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       totalRotationRadians_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000200);
       totalTranslationMeters_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000400);
       return this;
     }
 
@@ -761,6 +746,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession result = new com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -807,43 +798,9 @@ private static final long serialVersionUID = 0L;
         result.totalTranslationMeters_ = totalTranslationMeters_;
         to_bitField0_ |= 0x00000400;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession) {
@@ -1022,8 +979,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(long value) {
-      bitField0_ |= 0x00000001;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1077,8 +1035,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMinSensorDelayMs(int value) {
-      bitField0_ |= 0x00000002;
+
       minSensorDelayMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1132,8 +1091,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTapCount(int value) {
-      bitField0_ |= 0x00000004;
+
       tapCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1187,8 +1147,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOrientationChangeCount(int value) {
-      bitField0_ |= 0x00000008;
+
       orientationChangeCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1245,8 +1206,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVirtualSensorsVisible(boolean value) {
-      bitField0_ |= 0x00000010;
+
       virtualSensorsVisible_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1301,8 +1263,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVirtualSensorsInteractionCount(int value) {
-      bitField0_ |= 0x00000020;
+
       virtualSensorsInteractionCount_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1356,8 +1319,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHotkeyInvokeCount(int value) {
-      bitField0_ |= 0x00000040;
+
       hotkeyInvokeCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1411,8 +1375,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHotkeyDurationMs(long value) {
-      bitField0_ |= 0x00000080;
+
       hotkeyDurationMs_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1469,8 +1434,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTapsAfterHotkeyInvoke(int value) {
-      bitField0_ |= 0x00000100;
+
       tapsAfterHotkeyInvoke_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1525,8 +1491,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalRotationRadians(double value) {
-      bitField0_ |= 0x00000200;
+
       totalRotationRadians_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1580,8 +1547,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalTranslationMeters(double value) {
-      bitField0_ |= 0x00000400;
+
       totalTranslationMeters_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }

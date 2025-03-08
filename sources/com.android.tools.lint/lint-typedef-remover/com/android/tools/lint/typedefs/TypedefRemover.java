@@ -18,21 +18,24 @@ package com.android.tools.lint.typedefs;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.google.common.base.Charsets;
+
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Finds and deletes typedef annotation classes (and also warns if their retention is wrong, such
@@ -96,7 +99,7 @@ public class TypedefRemover {
     @NonNull
     public TypedefRemover setTypedefFile(@NonNull File file) {
         try {
-            for (String line : Files.readLines(file, Charsets.UTF_8)) {
+            for (String line : Files.readLines(file, StandardCharsets.UTF_8)) {
                 if (line.startsWith("D ")) {
                     String clz = line.substring(2).trim();
                     addTypeDef(clz);

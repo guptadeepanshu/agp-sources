@@ -68,6 +68,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.tasks.SourceSet
+import org.gradle.declarative.dsl.model.annotations.Restricted
 import java.io.File
 
 /**
@@ -504,5 +505,7 @@ abstract class BaseExtension protected constructor(
     // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
     abstract val buildFeatures: BuildFeatures
+
+    @get:Restricted
     abstract var namespace: String?
 }

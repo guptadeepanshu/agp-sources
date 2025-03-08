@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorGLESv30Usages();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorGLESv30Usages_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IS_USED_FIELD_NUMBER = 1;
-  private boolean isUsed_;
+  private boolean isUsed_ = false;
   /**
    * <pre>
    * Has the client create any GLES3 contexts
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FENCE_SYNC_FIELD_NUMBER = 2;
-  private boolean fenceSync_;
+  private boolean fenceSync_ = false;
   /**
    * <pre>
    * Track glFenceSync command calls
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMEBUFFER_TEXTURE_LAYER_FIELD_NUMBER = 3;
-  private boolean framebufferTextureLayer_;
+  private boolean framebufferTextureLayer_ = false;
   /**
    * <pre>
    * Track glFramebufferTextureLayer command calls
@@ -130,7 +125,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RENDERBUFFER_STORAGE_MULTISAMPLE_FIELD_NUMBER = 4;
-  private boolean renderbufferStorageMultisample_;
+  private boolean renderbufferStorageMultisample_ = false;
   /**
    * <pre>
    * Track glRenderbufferStorageMultisample command calls
@@ -157,7 +152,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GEN_TRANSFORM_FEEDBACKS_FIELD_NUMBER = 5;
-  private boolean genTransformFeedbacks_;
+  private boolean genTransformFeedbacks_ = false;
   /**
    * <pre>
    * Track glGenTransformFeedbacks command calls
@@ -184,7 +179,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BEGIN_QUERY_FIELD_NUMBER = 6;
-  private boolean beginQuery_;
+  private boolean beginQuery_ = false;
   /**
    * <pre>
    * Track glBeginQuery command calls
@@ -493,18 +488,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       isUsed_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       fenceSync_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       framebufferTextureLayer_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       renderbufferStorageMultisample_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       genTransformFeedbacks_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       beginQuery_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -531,6 +521,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages result = new com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -557,43 +553,9 @@ private static final long serialVersionUID = 0L;
         result.beginQuery_ = beginQuery_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages) {
@@ -732,8 +694,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsUsed(boolean value) {
-      bitField0_ |= 0x00000001;
+
       isUsed_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -787,8 +750,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFenceSync(boolean value) {
-      bitField0_ |= 0x00000002;
+
       fenceSync_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -842,8 +806,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramebufferTextureLayer(boolean value) {
-      bitField0_ |= 0x00000004;
+
       framebufferTextureLayer_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -897,8 +862,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRenderbufferStorageMultisample(boolean value) {
-      bitField0_ |= 0x00000008;
+
       renderbufferStorageMultisample_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -952,8 +918,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenTransformFeedbacks(boolean value) {
-      bitField0_ |= 0x00000010;
+
       genTransformFeedbacks_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1007,8 +974,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBeginQuery(boolean value) {
-      bitField0_ |= 0x00000020;
+
       beginQuery_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

@@ -142,5 +142,5 @@ public interface SmlChatBotEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResultOrBuilder getHallucinationDetectorResultOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ContentCase getContentCase();
+  com.google.wireless.android.sdk.stats.SmlChatBotEvent.ContentCase getContentCase();
 }

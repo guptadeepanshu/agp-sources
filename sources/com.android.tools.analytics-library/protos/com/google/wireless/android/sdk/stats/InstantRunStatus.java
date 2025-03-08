@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new InstantRunStatus();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_InstantRunStatus_descriptor;
@@ -798,7 +793,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int BUILD_MODE_FIELD_NUMBER = 1;
-  private int buildMode_;
+  private int buildMode_ = 0;
   /**
    * <pre>
    * The type of artifacts built in this invocation.
@@ -823,13 +818,12 @@ private static final long serialVersionUID = 0L;
    * @return The buildMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode getBuildMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.valueOf(buildMode_);
+    com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.forNumber(buildMode_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.UNKNOWN_BUILD_MODE : result;
   }
 
   public static final int PATCHING_POLICY_FIELD_NUMBER = 2;
-  private int patchingPolicy_;
+  private int patchingPolicy_ = 0;
   /**
    * <pre>
    * The type of deploy that the build can generate artifacts for.
@@ -850,13 +844,12 @@ private static final long serialVersionUID = 0L;
    * @return The patchingPolicy.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy getPatchingPolicy() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.valueOf(patchingPolicy_);
+    com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.forNumber(patchingPolicy_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.UNKNOWN_PATCHING_POLICY : result;
   }
 
   public static final int VERIFIER_STATUS_FIELD_NUMBER = 3;
-  private int verifierStatus_;
+  private int verifierStatus_ = 0;
   /**
    * <pre>
    * The result of the verifier run, whether the users change can be hot-swapped
@@ -879,12 +872,12 @@ private static final long serialVersionUID = 0L;
    * @return The verifierStatus.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getVerifierStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(verifierStatus_);
+    com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.forNumber(verifierStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.UNKNOWN_VERIFIER_STATUS : result;
   }
 
   public static final int ARTIFACT_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.InstantRunArtifact> artifact_;
   /**
    * <pre>
@@ -1194,12 +1187,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       buildMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       patchingPolicy_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       verifierStatus_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       if (artifactBuilder_ == null) {
         artifact_ = java.util.Collections.emptyList();
       } else {
@@ -1233,20 +1224,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus buildPartial() {
       com.google.wireless.android.sdk.stats.InstantRunStatus result = new com.google.wireless.android.sdk.stats.InstantRunStatus(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.buildMode_ = buildMode_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.patchingPolicy_ = patchingPolicy_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.verifierStatus_ = verifierStatus_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.InstantRunStatus result) {
       if (artifactBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0)) {
           artifact_ = java.util.Collections.unmodifiableList(artifact_);
@@ -1256,43 +1240,26 @@ private static final long serialVersionUID = 0L;
       } else {
         result.artifact_ = artifactBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.InstantRunStatus result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.buildMode_ = buildMode_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.patchingPolicy_ = patchingPolicy_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.verifierStatus_ = verifierStatus_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.InstantRunStatus) {
@@ -1458,8 +1425,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode getBuildMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.valueOf(buildMode_);
+      com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.forNumber(buildMode_);
       return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.UNKNOWN_BUILD_MODE : result;
     }
     /**
@@ -1521,8 +1487,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy getPatchingPolicy() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.valueOf(patchingPolicy_);
+      com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.forNumber(patchingPolicy_);
       return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.UNKNOWN_PATCHING_POLICY : result;
     }
     /**
@@ -1582,8 +1547,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getVerifierStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(verifierStatus_);
+      com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.forNumber(verifierStatus_);
       return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.UNKNOWN_VERIFIER_STATUS : result;
     }
     /**

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new StudioPatchUpdaterEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_descriptor;
@@ -610,11 +605,6 @@ private static final long serialVersionUID = 0L;
       return new Patch();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_Patch_descriptor;
@@ -630,7 +620,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int STUDIO_VERSION_FROM_FIELD_NUMBER = 1;
-    private volatile java.lang.Object studioVersionFrom_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object studioVersionFrom_ = "";
     /**
      * <pre>
      * The version of studio patching from, e.g. '183.5153.38.35.5240547'
@@ -690,7 +681,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int STUDIO_VERSION_TO_FIELD_NUMBER = 2;
-    private volatile java.lang.Object studioVersionTo_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object studioVersionTo_ = "";
     /**
      * <pre>
      * The version of studio patching to, e.g. '183.5153.38.35.5256920'
@@ -960,10 +952,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         studioVersionFrom_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         studioVersionTo_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -990,53 +981,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch buildPartial() {
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.studioVersionFrom_ = studioVersionFrom_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.studioVersionTo_ = studioVersionTo_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.studioVersionFrom_ = studioVersionFrom_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.studioVersionTo_ = studioVersionTo_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch) {
@@ -1050,13 +1013,13 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch other) {
         if (other == com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.getDefaultInstance()) return this;
         if (other.hasStudioVersionFrom()) {
-          bitField0_ |= 0x00000001;
           studioVersionFrom_ = other.studioVersionFrom_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasStudioVersionTo()) {
-          bitField0_ |= 0x00000002;
           studioVersionTo_ = other.studioVersionTo_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -1178,11 +1141,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioVersionFrom(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         studioVersionFrom_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1195,8 +1156,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearStudioVersionFrom() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         studioVersionFrom_ = getDefaultInstance().getStudioVersionFrom();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1211,11 +1172,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioVersionFromBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         studioVersionFrom_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1286,11 +1245,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioVersionTo(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         studioVersionTo_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1303,8 +1260,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearStudioVersionTo() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         studioVersionTo_ = getDefaultInstance().getStudioVersionTo();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1319,11 +1276,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioVersionToBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         studioVersionTo_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1471,11 +1426,6 @@ private static final long serialVersionUID = 0L;
       return new IssueDialog();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_IssueDialog_descriptor;
@@ -1585,11 +1535,6 @@ private static final long serialVersionUID = 0L;
         return new Issue();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_IssueDialog_Issue_descriptor;
@@ -1859,7 +1804,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int KIND_FIELD_NUMBER = 1;
-      private int kind_;
+      private int kind_ = 0;
       /**
        * <pre>
        * The type of issue presented
@@ -1880,13 +1825,12 @@ private static final long serialVersionUID = 0L;
        * @return The kind.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind getKind() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.valueOf(kind_);
+        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.forNumber(kind_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.UNKNOWN_KIND : result;
       }
 
       public static final int ACTION_FIELD_NUMBER = 2;
-      private int action_;
+      private int action_ = 0;
       /**
        * <pre>
        * The action that the patcher was attempting to perform
@@ -1907,20 +1851,19 @@ private static final long serialVersionUID = 0L;
        * @return The action.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action getAction() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.valueOf(action_);
+        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.forNumber(action_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.UNKNOWN_ACTION : result;
       }
 
       public static final int PRESENTED_OPTION_FIELD_NUMBER = 3;
+      @SuppressWarnings("serial")
       private java.util.List<java.lang.Integer> presentedOption_;
       private static final com.google.protobuf.Internal.ListAdapter.Converter<
           java.lang.Integer, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption> presentedOption_converter_ =
               new com.google.protobuf.Internal.ListAdapter.Converter<
                   java.lang.Integer, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption>() {
                 public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption convert(java.lang.Integer from) {
-                  @SuppressWarnings("deprecation")
-                  com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.valueOf(from);
+                  com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.forNumber(from);
                   return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.UNKNOWN_VALIDATION_OPTION : result;
                 }
               };
@@ -2187,10 +2130,9 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           kind_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           action_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           presentedOption_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000004);
           return this;
@@ -2219,58 +2161,34 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue buildPartial() {
           com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.kind_ = kind_;
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            to_bitField0_ |= 0x00000002;
-          }
-          result.action_ = action_;
+          buildPartialRepeatedFields(result);
+          if (bitField0_ != 0) { buildPartial0(result); }
+          onBuilt();
+          return result;
+        }
+
+        private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue result) {
           if (((bitField0_ & 0x00000004) != 0)) {
             presentedOption_ = java.util.Collections.unmodifiableList(presentedOption_);
             bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.presentedOption_ = presentedOption_;
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
+        private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.kind_ = kind_;
+            to_bitField0_ |= 0x00000001;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.action_ = action_;
+            to_bitField0_ |= 0x00000002;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
+
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue) {
@@ -2417,8 +2335,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind getKind() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.valueOf(kind_);
+          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.forNumber(kind_);
           return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.UNKNOWN_KIND : result;
         }
         /**
@@ -2476,8 +2393,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action getAction() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.valueOf(action_);
+          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.forNumber(action_);
           return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.UNKNOWN_ACTION : result;
         }
         /**
@@ -2691,6 +2607,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ISSUE_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue> issue_;
     /**
      * <pre>
@@ -2949,6 +2866,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (issueBuilder_ == null) {
           issue_ = java.util.Collections.emptyList();
         } else {
@@ -2982,7 +2900,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog buildPartial() {
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog result) {
         if (issueBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             issue_ = java.util.Collections.unmodifiableList(issue_);
@@ -2992,42 +2916,12 @@ private static final long serialVersionUID = 0L;
         } else {
           result.issue_ = issueBuilder_.build();
         }
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog) {
@@ -3570,11 +3464,6 @@ private static final long serialVersionUID = 0L;
       return new IssueDialogChoices();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_IssueDialogChoices_descriptor;
@@ -3630,11 +3519,6 @@ private static final long serialVersionUID = 0L;
         return new Choice();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioPatchUpdaterEvent_IssueDialogChoices_Choice_descriptor;
@@ -3650,7 +3534,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int CHOSEN_OPTION_FIELD_NUMBER = 1;
-      private int chosenOption_;
+      private int chosenOption_ = 0;
       /**
        * <code>optional .android_studio.StudioPatchUpdaterEvent.ValidationOption chosen_option = 1;</code>
        * @return Whether the chosenOption field is set.
@@ -3663,8 +3547,7 @@ private static final long serialVersionUID = 0L;
        * @return The chosenOption.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getChosenOption() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.valueOf(chosenOption_);
+        com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.forNumber(chosenOption_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.UNKNOWN_VALIDATION_OPTION : result;
       }
 
@@ -3864,8 +3747,8 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           chosenOption_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           return this;
         }
 
@@ -3892,49 +3775,21 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice buildPartial() {
           com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.chosenOption_ = chosenOption_;
-          result.bitField0_ = to_bitField0_;
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
+        private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.chosenOption_ = chosenOption_;
+            to_bitField0_ |= 0x00000001;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
+
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice) {
@@ -4019,8 +3874,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getChosenOption() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.valueOf(chosenOption_);
+          com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.forNumber(chosenOption_);
           return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.UNKNOWN_VALIDATION_OPTION : result;
         }
         /**
@@ -4112,6 +3966,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CHOICE_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice> choice_;
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
@@ -4345,6 +4200,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (choiceBuilder_ == null) {
           choice_ = java.util.Collections.emptyList();
         } else {
@@ -4378,7 +4234,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices buildPartial() {
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices result) {
         if (choiceBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             choice_ = java.util.Collections.unmodifiableList(choice_);
@@ -4388,42 +4250,12 @@ private static final long serialVersionUID = 0L;
         } else {
           result.choice_ = choiceBuilder_.build();
         }
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices) {
@@ -4823,7 +4655,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int KIND_FIELD_NUMBER = 1;
-  private int kind_;
+  private int kind_ = 0;
   /**
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Kind kind = 1;</code>
    * @return Whether the kind field is set.
@@ -4836,8 +4668,7 @@ private static final long serialVersionUID = 0L;
    * @return The kind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind getKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.valueOf(kind_);
+    com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.forNumber(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.UNKNOWN_EVENT_KIND : result;
   }
 
@@ -5207,26 +5038,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       kind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (patchBuilder_ == null) {
-        patch_ = null;
-      } else {
-        patchBuilder_.clear();
+      patch_ = null;
+      if (patchBuilder_ != null) {
+        patchBuilder_.dispose();
+        patchBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (issueDialogBuilder_ == null) {
-        issueDialog_ = null;
-      } else {
-        issueDialogBuilder_.clear();
+      issueDialog_ = null;
+      if (issueDialogBuilder_ != null) {
+        issueDialogBuilder_.dispose();
+        issueDialogBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (issueDialogChoicesBuilder_ == null) {
-        issueDialogChoices_ = null;
-      } else {
-        issueDialogChoicesBuilder_.clear();
+      issueDialogChoices_ = null;
+      if (issueDialogChoicesBuilder_ != null) {
+        issueDialogChoicesBuilder_.dispose();
+        issueDialogChoicesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -5253,73 +5081,39 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent buildPartial() {
       com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent result = new com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.kind_ = kind_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (patchBuilder_ == null) {
-          result.patch_ = patch_;
-        } else {
-          result.patch_ = patchBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (issueDialogBuilder_ == null) {
-          result.issueDialog_ = issueDialog_;
-        } else {
-          result.issueDialog_ = issueDialogBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (issueDialogChoicesBuilder_ == null) {
-          result.issueDialogChoices_ = issueDialogChoices_;
-        } else {
-          result.issueDialogChoices_ = issueDialogChoicesBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.kind_ = kind_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.patch_ = patchBuilder_ == null
+            ? patch_
+            : patchBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.issueDialog_ = issueDialogBuilder_ == null
+            ? issueDialog_
+            : issueDialogBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.issueDialogChoices_ = issueDialogChoicesBuilder_ == null
+            ? issueDialogChoices_
+            : issueDialogChoicesBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent) {
@@ -5434,8 +5228,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind getKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.valueOf(kind_);
+      com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.forNumber(kind_);
       return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.UNKNOWN_EVENT_KIND : result;
     }
     /**
@@ -5505,11 +5298,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         patch_ = value;
-        onChanged();
       } else {
         patchBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5523,11 +5316,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.Builder builderForValue) {
       if (patchBuilder_ == null) {
         patch_ = builderForValue.build();
-        onChanged();
       } else {
         patchBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5540,18 +5333,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePatch(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch value) {
       if (patchBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            patch_ != null &&
-            patch_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.getDefaultInstance()) {
-          patch_ =
-            com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.newBuilder(patch_).mergeFrom(value).buildPartial();
+          patch_ != null &&
+          patch_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.getDefaultInstance()) {
+          getPatchBuilder().mergeFrom(value);
         } else {
           patch_ = value;
         }
-        onChanged();
       } else {
         patchBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5562,13 +5354,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2 [lazy = true];</code>
      */
     public Builder clearPatch() {
-      if (patchBuilder_ == null) {
-        patch_ = null;
-        onChanged();
-      } else {
-        patchBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      patch_ = null;
+      if (patchBuilder_ != null) {
+        patchBuilder_.dispose();
+        patchBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5661,11 +5453,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         issueDialog_ = value;
-        onChanged();
       } else {
         issueDialogBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5679,11 +5471,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Builder builderForValue) {
       if (issueDialogBuilder_ == null) {
         issueDialog_ = builderForValue.build();
-        onChanged();
       } else {
         issueDialogBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5696,18 +5488,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeIssueDialog(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog value) {
       if (issueDialogBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            issueDialog_ != null &&
-            issueDialog_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.getDefaultInstance()) {
-          issueDialog_ =
-            com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.newBuilder(issueDialog_).mergeFrom(value).buildPartial();
+          issueDialog_ != null &&
+          issueDialog_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.getDefaultInstance()) {
+          getIssueDialogBuilder().mergeFrom(value);
         } else {
           issueDialog_ = value;
         }
-        onChanged();
       } else {
         issueDialogBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5718,13 +5509,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3 [lazy = true];</code>
      */
     public Builder clearIssueDialog() {
-      if (issueDialogBuilder_ == null) {
-        issueDialog_ = null;
-        onChanged();
-      } else {
-        issueDialogBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      issueDialog_ = null;
+      if (issueDialogBuilder_ != null) {
+        issueDialogBuilder_.dispose();
+        issueDialogBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5817,11 +5608,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         issueDialogChoices_ = value;
-        onChanged();
       } else {
         issueDialogChoicesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5835,11 +5626,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Builder builderForValue) {
       if (issueDialogChoicesBuilder_ == null) {
         issueDialogChoices_ = builderForValue.build();
-        onChanged();
       } else {
         issueDialogChoicesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5852,18 +5643,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeIssueDialogChoices(com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices value) {
       if (issueDialogChoicesBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            issueDialogChoices_ != null &&
-            issueDialogChoices_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.getDefaultInstance()) {
-          issueDialogChoices_ =
-            com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.newBuilder(issueDialogChoices_).mergeFrom(value).buildPartial();
+          issueDialogChoices_ != null &&
+          issueDialogChoices_ != com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.getDefaultInstance()) {
+          getIssueDialogChoicesBuilder().mergeFrom(value);
         } else {
           issueDialogChoices_ = value;
         }
-        onChanged();
       } else {
         issueDialogChoicesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5874,13 +5664,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4 [lazy = true];</code>
      */
     public Builder clearIssueDialogChoices() {
-      if (issueDialogChoicesBuilder_ == null) {
-        issueDialogChoices_ = null;
-        onChanged();
-      } else {
-        issueDialogChoicesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      issueDialogChoices_ = null;
+      if (issueDialogChoicesBuilder_ != null) {
+        issueDialogChoicesBuilder_.dispose();
+        issueDialogChoicesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

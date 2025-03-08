@@ -99,7 +99,7 @@ abstract class ProguardConfigurableTask(
     abstract val componentType: Property<ComponentType>
 
     @get:Input
-    abstract val includeFeaturesInScopes: Property<Boolean>
+    abstract val shrinkingWithDynamicFeatures: Property<Boolean>
 
     @get:Optional
     @get:InputFiles
@@ -277,7 +277,7 @@ abstract class ProguardConfigurableTask(
             super.configure(task)
 
             task.componentType.set(ComponentTypeImpl.BASE_APK)
-            task.includeFeaturesInScopes.set(false)
+            task.shrinkingWithDynamicFeatures.set(false)
 
             val hasAllAccessTransformers = creationConfig.artifacts.forScope(Scope.ALL)
                 .getScopedArtifactsContainer(ScopedArtifact.CLASSES).artifactsAltered.get()
@@ -414,8 +414,8 @@ abstract class ProguardConfigurableTask(
         creationConfig
     ) {
 
-        private val includeFeaturesInScopes: Boolean = (creationConfig as? ApplicationCreationConfig)
-            ?.consumesDynamicFeatures == true
+        private val shrinkingWithDynamicFeatures: Boolean =
+            (creationConfig as? ApplicationCreationConfig)?.shrinkingWithDynamicFeatures == true
         protected val componentType: ComponentType = creationConfig.componentType
         private val testedConfig = (creationConfig as? TestComponentCreationConfig)?.mainVariant
 
@@ -440,7 +440,7 @@ abstract class ProguardConfigurableTask(
                 setOf(
                     InternalScopedArtifacts.InternalScope.SUB_PROJECTS,
                     InternalScopedArtifacts.InternalScope.EXTERNAL_LIBS,
-                    InternalScopedArtifacts.InternalScope.FEATURES.takeIf { includeFeaturesInScopes }
+                    InternalScopedArtifacts.InternalScope.FEATURES.takeIf { shrinkingWithDynamicFeatures }
                 ).filterNotNull().toSet()
             }
 
@@ -548,7 +548,7 @@ abstract class ProguardConfigurableTask(
 
             task.componentType.set(componentType)
 
-            task.includeFeaturesInScopes.set(includeFeaturesInScopes)
+            task.shrinkingWithDynamicFeatures.set(shrinkingWithDynamicFeatures)
 
             val hasAllAccessTransformers = creationConfig.artifacts.forScope(Scope.ALL)
                 .getScopedArtifactsContainer(ScopedArtifact.CLASSES).artifactsAltered.get()
@@ -692,17 +692,22 @@ abstract class ProguardConfigurableTask(
                 creationConfig.artifacts.get(GENERATED_PROGUARD_FILE)
             )
             task.configurationFiles.apply {
-                if (task.includeFeaturesInScopes.get()) {
-                    from(creationConfig.artifacts.get(InternalArtifactType.MERGED_AAPT_PROGUARD_FILE))
+                // R8's optimized shrinking does not need AAPT2-generated Proguard rules
+                if ((creationConfig as? ApplicationCreationConfig)?.runOptimizedShrinkingWithR8() != true) {
+                    if (task.shrinkingWithDynamicFeatures.get()) {
+                        from(creationConfig.artifacts.get(InternalArtifactType.MERGED_AAPT_PROGUARD_FILE))
+                    } else {
+                        from(Callable {
+                            // Consume AAPT_PROGUARD_FILE only if it is produced (see b/319132114).
+                            // The `Provider.isPresent` check needs to happen lazily when all
+                            // producers/consumers have been finalized, so we do this inside a Callable.
+                            creationConfig.artifacts.get(InternalArtifactType.AAPT_PROGUARD_FILE)
+                                .takeIf { it.isPresent }
+                        })
+                    }
+                }
+                if (task.shrinkingWithDynamicFeatures.get()) {
                     from(getFeatureProguardRules(creationConfig))
-                } else {
-                    from(Callable {
-                        // Consume AAPT_PROGUARD_FILE only if it is produced (see b/319132114).
-                        // The `Provider.isPresent` check needs to happen lazily when all
-                        // producers/consumers have been finalized, so we do this inside a Callable.
-                        creationConfig.artifacts.get(InternalArtifactType.AAPT_PROGUARD_FILE)
-                            .takeIf { it.isPresent }
-                    })
                 }
             }
         }

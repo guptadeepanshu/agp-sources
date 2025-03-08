@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new MemoryUsageReportEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_descriptor;
@@ -118,11 +113,6 @@ private static final long serialVersionUID = 0L;
       return new ObjectsStatistics();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_ObjectsStatistics_descriptor;
@@ -138,7 +128,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int OBJECTS_COUNT_FIELD_NUMBER = 1;
-    private int objectsCount_;
+    private int objectsCount_ = 0;
     /**
      * <pre>
      * Number of objects
@@ -165,7 +155,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_SIZE_BYTES_FIELD_NUMBER = 2;
-    private long totalSizeBytes_;
+    private long totalSizeBytes_ = 0L;
     /**
      * <pre>
      * Total size of objects in bytes
@@ -405,10 +395,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         objectsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         totalSizeBytes_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -435,6 +424,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -445,43 +440,9 @@ private static final long serialVersionUID = 0L;
           result.totalSizeBytes_ = totalSizeBytes_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics) {
@@ -588,8 +549,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setObjectsCount(int value) {
-        bitField0_ |= 0x00000001;
+
         objectsCount_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -643,8 +605,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalSizeBytes(long value) {
-        bitField0_ |= 0x00000002;
+
         totalSizeBytes_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -763,7 +726,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+     *     See studio_stats.proto;l=14575
      * @return Whether the newGenerationStats field is set.
      */
     @java.lang.Deprecated boolean hasNewGenerationStats();
@@ -773,7 +737,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+     *     See studio_stats.proto;l=14575
      * @return The newGenerationStats.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getNewGenerationStats();
@@ -892,6 +857,7 @@ private static final long serialVersionUID = 0L;
    * Characteristics of the object tree. It contains total number of objects in
    * the subtree and their total size. It also contains the number and total
    * size of objects declared in IntelliJ platform code from the subtree.
+   *
    * MemoryTrafficStatistics is an outdated name: data here no longer represents
    * memory traffic, but the name was kept to maintain backward compatibility.
    * ObjectTreeStatistics is
@@ -920,11 +886,6 @@ private static final long serialVersionUID = 0L;
       return new MemoryTrafficStatistics();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_MemoryTrafficStatistics_descriptor;
@@ -985,7 +946,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+     *     See studio_stats.proto;l=14575
      * @return Whether the newGenerationStats field is set.
      */
     @java.lang.Override
@@ -998,7 +960,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+     *     See studio_stats.proto;l=14575
      * @return The newGenerationStats.
      */
     @java.lang.Override
@@ -1018,6 +981,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int OLD_GENERATIONS_STATS_FIELD_NUMBER = 3;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics> oldGenerationsStats_;
     /**
      * <pre>
@@ -1382,6 +1346,7 @@ private static final long serialVersionUID = 0L;
      * Characteristics of the object tree. It contains total number of objects in
      * the subtree and their total size. It also contains the number and total
      * size of objects declared in IntelliJ platform code from the subtree.
+     *
      * MemoryTrafficStatistics is an outdated name: data here no longer represents
      * memory traffic, but the name was kept to maintain backward compatibility.
      * ObjectTreeStatistics is
@@ -1430,18 +1395,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (totalStatsBuilder_ == null) {
-          totalStats_ = null;
-        } else {
-          totalStatsBuilder_.clear();
+        bitField0_ = 0;
+        totalStats_ = null;
+        if (totalStatsBuilder_ != null) {
+          totalStatsBuilder_.dispose();
+          totalStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (newGenerationStatsBuilder_ == null) {
-          newGenerationStats_ = null;
-        } else {
-          newGenerationStatsBuilder_.clear();
+        newGenerationStats_ = null;
+        if (newGenerationStatsBuilder_ != null) {
+          newGenerationStatsBuilder_.dispose();
+          newGenerationStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         if (oldGenerationsStatsBuilder_ == null) {
           oldGenerationsStats_ = java.util.Collections.emptyList();
         } else {
@@ -1449,18 +1413,16 @@ private static final long serialVersionUID = 0L;
           oldGenerationsStatsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (platformObjectsStatsBuilder_ == null) {
-          platformObjectsStats_ = null;
-        } else {
-          platformObjectsStatsBuilder_.clear();
+        platformObjectsStats_ = null;
+        if (platformObjectsStatsBuilder_ != null) {
+          platformObjectsStatsBuilder_.dispose();
+          platformObjectsStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
-        if (platformRetainedStatsBuilder_ == null) {
-          platformRetainedStats_ = null;
-        } else {
-          platformRetainedStatsBuilder_.clear();
+        platformRetainedStats_ = null;
+        if (platformRetainedStatsBuilder_ != null) {
+          platformRetainedStatsBuilder_.dispose();
+          platformRetainedStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1487,24 +1449,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (totalStatsBuilder_ == null) {
-            result.totalStats_ = totalStats_;
-          } else {
-            result.totalStats_ = totalStatsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (newGenerationStatsBuilder_ == null) {
-            result.newGenerationStats_ = newGenerationStats_;
-          } else {
-            result.newGenerationStats_ = newGenerationStatsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics result) {
         if (oldGenerationsStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0)) {
             oldGenerationsStats_ = java.util.Collections.unmodifiableList(oldGenerationsStats_);
@@ -1514,59 +1465,38 @@ private static final long serialVersionUID = 0L;
         } else {
           result.oldGenerationsStats_ = oldGenerationsStatsBuilder_.build();
         }
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.totalStats_ = totalStatsBuilder_ == null
+              ? totalStats_
+              : totalStatsBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.newGenerationStats_ = newGenerationStatsBuilder_ == null
+              ? newGenerationStats_
+              : newGenerationStatsBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          if (platformObjectsStatsBuilder_ == null) {
-            result.platformObjectsStats_ = platformObjectsStats_;
-          } else {
-            result.platformObjectsStats_ = platformObjectsStatsBuilder_.build();
-          }
+          result.platformObjectsStats_ = platformObjectsStatsBuilder_ == null
+              ? platformObjectsStats_
+              : platformObjectsStatsBuilder_.build();
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
-          if (platformRetainedStatsBuilder_ == null) {
-            result.platformRetainedStats_ = platformRetainedStats_;
-          } else {
-            result.platformRetainedStats_ = platformRetainedStatsBuilder_.build();
-          }
+          result.platformRetainedStats_ = platformRetainedStatsBuilder_ == null
+              ? platformRetainedStats_
+              : platformRetainedStatsBuilder_.build();
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics) {
@@ -1743,11 +1673,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           totalStats_ = value;
-          onChanged();
         } else {
           totalStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1761,11 +1691,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
         if (totalStatsBuilder_ == null) {
           totalStats_ = builderForValue.build();
-          onChanged();
         } else {
           totalStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1778,18 +1708,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeTotalStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (totalStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              totalStats_ != null &&
-              totalStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
-            totalStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.newBuilder(totalStats_).mergeFrom(value).buildPartial();
+            totalStats_ != null &&
+            totalStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
+            getTotalStatsBuilder().mergeFrom(value);
           } else {
             totalStats_ = value;
           }
-          onChanged();
         } else {
           totalStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1800,13 +1729,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics total_stats = 1 [lazy = true];</code>
        */
       public Builder clearTotalStats() {
-        if (totalStatsBuilder_ == null) {
-          totalStats_ = null;
-          onChanged();
-        } else {
-          totalStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        totalStats_ = null;
+        if (totalStatsBuilder_ != null) {
+          totalStatsBuilder_.dispose();
+          totalStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1866,7 +1795,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+       *     See studio_stats.proto;l=14575
        * @return Whether the newGenerationStats field is set.
        */
       @java.lang.Deprecated public boolean hasNewGenerationStats() {
@@ -1878,7 +1808,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
+       *     See studio_stats.proto;l=14575
        * @return The newGenerationStats.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getNewGenerationStats() {
@@ -1901,11 +1832,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           newGenerationStats_ = value;
-          onChanged();
         } else {
           newGenerationStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1919,11 +1850,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
         if (newGenerationStatsBuilder_ == null) {
           newGenerationStats_ = builderForValue.build();
-          onChanged();
         } else {
           newGenerationStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1936,18 +1867,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Deprecated public Builder mergeNewGenerationStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (newGenerationStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              newGenerationStats_ != null &&
-              newGenerationStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
-            newGenerationStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.newBuilder(newGenerationStats_).mergeFrom(value).buildPartial();
+            newGenerationStats_ != null &&
+            newGenerationStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
+            getNewGenerationStatsBuilder().mergeFrom(value);
           } else {
             newGenerationStats_ = value;
           }
-          onChanged();
         } else {
           newGenerationStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1958,13 +1888,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearNewGenerationStats() {
-        if (newGenerationStatsBuilder_ == null) {
-          newGenerationStats_ = null;
-          onChanged();
-        } else {
-          newGenerationStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        newGenerationStats_ = null;
+        if (newGenerationStatsBuilder_ != null) {
+          newGenerationStatsBuilder_.dispose();
+          newGenerationStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -2369,11 +2299,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           platformObjectsStats_ = value;
-          onChanged();
         } else {
           platformObjectsStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -2387,11 +2317,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
         if (platformObjectsStatsBuilder_ == null) {
           platformObjectsStats_ = builderForValue.build();
-          onChanged();
         } else {
           platformObjectsStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -2404,18 +2334,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergePlatformObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformObjectsStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0) &&
-              platformObjectsStats_ != null &&
-              platformObjectsStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
-            platformObjectsStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.newBuilder(platformObjectsStats_).mergeFrom(value).buildPartial();
+            platformObjectsStats_ != null &&
+            platformObjectsStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
+            getPlatformObjectsStatsBuilder().mergeFrom(value);
           } else {
             platformObjectsStats_ = value;
           }
-          onChanged();
         } else {
           platformObjectsStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -2426,13 +2355,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_objects_stats = 4 [lazy = true];</code>
        */
       public Builder clearPlatformObjectsStats() {
-        if (platformObjectsStatsBuilder_ == null) {
-          platformObjectsStats_ = null;
-          onChanged();
-        } else {
-          platformObjectsStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000008);
+        platformObjectsStats_ = null;
+        if (platformObjectsStatsBuilder_ != null) {
+          platformObjectsStatsBuilder_.dispose();
+          platformObjectsStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -2528,11 +2457,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           platformRetainedStats_ = value;
-          onChanged();
         } else {
           platformRetainedStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -2547,11 +2476,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.Builder builderForValue) {
         if (platformRetainedStatsBuilder_ == null) {
           platformRetainedStats_ = builderForValue.build();
-          onChanged();
         } else {
           platformRetainedStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -2565,18 +2494,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergePlatformRetainedStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics value) {
         if (platformRetainedStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000010) != 0) &&
-              platformRetainedStats_ != null &&
-              platformRetainedStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
-            platformRetainedStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.newBuilder(platformRetainedStats_).mergeFrom(value).buildPartial();
+            platformRetainedStats_ != null &&
+            platformRetainedStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics.getDefaultInstance()) {
+            getPlatformRetainedStatsBuilder().mergeFrom(value);
           } else {
             platformRetainedStats_ = value;
           }
-          onChanged();
         } else {
           platformRetainedStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -2588,13 +2516,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics platform_retained_stats = 5 [lazy = true];</code>
        */
       public Builder clearPlatformRetainedStats() {
-        if (platformRetainedStatsBuilder_ == null) {
-          platformRetainedStats_ = null;
-          onChanged();
-        } else {
-          platformRetainedStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000010);
+        platformRetainedStats_ = null;
+        if (platformRetainedStatsBuilder_ != null) {
+          platformRetainedStatsBuilder_.dispose();
+          platformRetainedStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -2796,11 +2724,6 @@ private static final long serialVersionUID = 0L;
       return new ClusterObjectsStatistics();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_ClusterObjectsStatistics_descriptor;
@@ -3112,18 +3035,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (ownedClusterStatsBuilder_ == null) {
-          ownedClusterStats_ = null;
-        } else {
-          ownedClusterStatsBuilder_.clear();
+        bitField0_ = 0;
+        ownedClusterStats_ = null;
+        if (ownedClusterStatsBuilder_ != null) {
+          ownedClusterStatsBuilder_.dispose();
+          ownedClusterStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (retainedClusterStatsBuilder_ == null) {
-          retainedClusterStats_ = null;
-        } else {
-          retainedClusterStatsBuilder_.clear();
+        retainedClusterStats_ = null;
+        if (retainedClusterStatsBuilder_ != null) {
+          retainedClusterStatsBuilder_.dispose();
+          retainedClusterStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3150,61 +3072,29 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (ownedClusterStatsBuilder_ == null) {
-            result.ownedClusterStats_ = ownedClusterStats_;
-          } else {
-            result.ownedClusterStats_ = ownedClusterStatsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (retainedClusterStatsBuilder_ == null) {
-            result.retainedClusterStats_ = retainedClusterStats_;
-          } else {
-            result.retainedClusterStats_ = retainedClusterStatsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.ownedClusterStats_ = ownedClusterStatsBuilder_ == null
+              ? ownedClusterStats_
+              : ownedClusterStatsBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.retainedClusterStats_ = retainedClusterStatsBuilder_ == null
+              ? retainedClusterStats_
+              : retainedClusterStatsBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics) {
@@ -3322,11 +3212,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           ownedClusterStats_ = value;
-          onChanged();
         } else {
           ownedClusterStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3340,11 +3230,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
         if (ownedClusterStatsBuilder_ == null) {
           ownedClusterStats_ = builderForValue.build();
-          onChanged();
         } else {
           ownedClusterStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3357,18 +3247,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeOwnedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (ownedClusterStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              ownedClusterStats_ != null &&
-              ownedClusterStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
-            ownedClusterStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.newBuilder(ownedClusterStats_).mergeFrom(value).buildPartial();
+            ownedClusterStats_ != null &&
+            ownedClusterStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
+            getOwnedClusterStatsBuilder().mergeFrom(value);
           } else {
             ownedClusterStats_ = value;
           }
-          onChanged();
         } else {
           ownedClusterStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3379,13 +3268,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics owned_cluster_stats = 1 [lazy = true];</code>
        */
       public Builder clearOwnedClusterStats() {
-        if (ownedClusterStatsBuilder_ == null) {
-          ownedClusterStats_ = null;
-          onChanged();
-        } else {
-          ownedClusterStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        ownedClusterStats_ = null;
+        if (ownedClusterStatsBuilder_ != null) {
+          ownedClusterStatsBuilder_.dispose();
+          ownedClusterStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -3478,11 +3367,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           retainedClusterStats_ = value;
-          onChanged();
         } else {
           retainedClusterStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3496,11 +3385,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
         if (retainedClusterStatsBuilder_ == null) {
           retainedClusterStats_ = builderForValue.build();
-          onChanged();
         } else {
           retainedClusterStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3513,18 +3402,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeRetainedClusterStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (retainedClusterStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              retainedClusterStats_ != null &&
-              retainedClusterStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
-            retainedClusterStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.newBuilder(retainedClusterStats_).mergeFrom(value).buildPartial();
+            retainedClusterStats_ != null &&
+            retainedClusterStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
+            getRetainedClusterStatsBuilder().mergeFrom(value);
           } else {
             retainedClusterStats_ = value;
           }
-          onChanged();
         } else {
           retainedClusterStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3535,13 +3423,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics retained_cluster_stats = 2 [lazy = true];</code>
        */
       public Builder clearRetainedClusterStats() {
-        if (retainedClusterStatsBuilder_ == null) {
-          retainedClusterStats_ = null;
-          onChanged();
-        } else {
-          retainedClusterStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        retainedClusterStats_ = null;
+        if (retainedClusterStatsBuilder_ != null) {
+          retainedClusterStatsBuilder_.dispose();
+          retainedClusterStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -3758,7 +3646,6 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
-
     int getInstanceCountPerClassNameOrDefault(
         java.lang.String key,
         int defaultValue);
@@ -3770,7 +3657,6 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
-
     int getInstanceCountPerClassNameOrThrow(
         java.lang.String key);
   }
@@ -3801,11 +3687,6 @@ private static final long serialVersionUID = 0L;
       return new ClusterMemoryUsage();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_ClusterMemoryUsage_descriptor;
@@ -3833,7 +3714,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int LABEL_FIELD_NUMBER = 1;
-    private volatile java.lang.Object label_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object label_ = "";
     /**
      * <pre>
      * Label of the component/category.
@@ -3942,6 +3824,7 @@ private static final long serialVersionUID = 0L;
                   com.google.protobuf.WireFormat.FieldType.INT32,
                   0);
     }
+    @SuppressWarnings("serial")
     private com.google.protobuf.MapField<
         java.lang.String, java.lang.Integer> instanceCountPerClassName_;
     private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
@@ -3952,7 +3835,6 @@ private static final long serialVersionUID = 0L;
       }
       return instanceCountPerClassName_;
     }
-
     public int getInstanceCountPerClassNameCount() {
       return internalGetInstanceCountPerClassName().getMap().size();
     }
@@ -3964,7 +3846,6 @@ private static final long serialVersionUID = 0L;
      *
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
-
     @java.lang.Override
     public boolean containsInstanceCountPerClassName(
         java.lang.String key) {
@@ -3988,7 +3869,6 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
     @java.lang.Override
-
     public java.util.Map<java.lang.String, java.lang.Integer> getInstanceCountPerClassNameMap() {
       return internalGetInstanceCountPerClassName().getMap();
     }
@@ -4001,7 +3881,6 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
     @java.lang.Override
-
     public int getInstanceCountPerClassNameOrDefault(
         java.lang.String key,
         int defaultValue) {
@@ -4019,7 +3898,6 @@ private static final long serialVersionUID = 0L;
      * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
      */
     @java.lang.Override
-
     public int getInstanceCountPerClassNameOrThrow(
         java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
@@ -4293,14 +4171,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         label_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (statsBuilder_ == null) {
-          stats_ = null;
-        } else {
-          statsBuilder_.clear();
+        stats_ = null;
+        if (statsBuilder_ != null) {
+          statsBuilder_.dispose();
+          statsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         internalGetMutableInstanceCountPerClassName().clear();
         return this;
       }
@@ -4328,59 +4205,31 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.label_ = label_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (statsBuilder_ == null) {
-            result.stats_ = stats_;
-          } else {
-            result.stats_ = statsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        result.instanceCountPerClassName_ = internalGetInstanceCountPerClassName();
-        result.instanceCountPerClassName_.makeImmutable();
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.label_ = label_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.stats_ = statsBuilder_ == null
+              ? stats_
+              : statsBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.instanceCountPerClassName_ = internalGetInstanceCountPerClassName();
+          result.instanceCountPerClassName_.makeImmutable();
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage) {
@@ -4394,8 +4243,8 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage other) {
         if (other == com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage.getDefaultInstance()) return this;
         if (other.hasLabel()) {
-          bitField0_ |= 0x00000001;
           label_ = other.label_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasStats()) {
@@ -4403,6 +4252,7 @@ private static final long serialVersionUID = 0L;
         }
         internalGetMutableInstanceCountPerClassName().mergeFrom(
             other.internalGetInstanceCountPerClassName());
+        bitField0_ |= 0x00000004;
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
         return this;
@@ -4447,6 +4297,7 @@ private static final long serialVersionUID = 0L;
                     InstanceCountPerClassNameDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
                 internalGetMutableInstanceCountPerClassName().getMutableMap().put(
                     instanceCountPerClassName__.getKey(), instanceCountPerClassName__.getValue());
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               default: {
@@ -4532,11 +4383,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setLabel(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         label_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4549,8 +4398,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearLabel() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         label_ = getDefaultInstance().getLabel();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -4565,11 +4414,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setLabelBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         label_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4616,11 +4463,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           stats_ = value;
-          onChanged();
         } else {
           statsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -4634,11 +4481,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.Builder builderForValue) {
         if (statsBuilder_ == null) {
           stats_ = builderForValue.build();
-          onChanged();
         } else {
           statsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -4651,18 +4498,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics value) {
         if (statsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              stats_ != null &&
-              stats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.getDefaultInstance()) {
-            stats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.newBuilder(stats_).mergeFrom(value).buildPartial();
+            stats_ != null &&
+            stats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterObjectsStatistics.getDefaultInstance()) {
+            getStatsBuilder().mergeFrom(value);
           } else {
             stats_ = value;
           }
-          onChanged();
         } else {
           statsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -4673,13 +4519,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.ClusterObjectsStatistics stats = 2 [lazy = true];</code>
        */
       public Builder clearStats() {
-        if (statsBuilder_ == null) {
-          stats_ = null;
-          onChanged();
-        } else {
-          statsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        stats_ = null;
+        if (statsBuilder_ != null) {
+          statsBuilder_.dispose();
+          statsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4733,7 +4579,7 @@ private static final long serialVersionUID = 0L;
       private com.google.protobuf.MapField<
           java.lang.String, java.lang.Integer> instanceCountPerClassName_;
       private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
-      internalGetInstanceCountPerClassName() {
+          internalGetInstanceCountPerClassName() {
         if (instanceCountPerClassName_ == null) {
           return com.google.protobuf.MapField.emptyMapField(
               InstanceCountPerClassNameDefaultEntryHolder.defaultEntry);
@@ -4741,8 +4587,7 @@ private static final long serialVersionUID = 0L;
         return instanceCountPerClassName_;
       }
       private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
-      internalGetMutableInstanceCountPerClassName() {
-        onChanged();;
+          internalGetMutableInstanceCountPerClassName() {
         if (instanceCountPerClassName_ == null) {
           instanceCountPerClassName_ = com.google.protobuf.MapField.newMapField(
               InstanceCountPerClassNameDefaultEntryHolder.defaultEntry);
@@ -4750,9 +4595,10 @@ private static final long serialVersionUID = 0L;
         if (!instanceCountPerClassName_.isMutable()) {
           instanceCountPerClassName_ = instanceCountPerClassName_.copy();
         }
+        bitField0_ |= 0x00000004;
+        onChanged();
         return instanceCountPerClassName_;
       }
-
       public int getInstanceCountPerClassNameCount() {
         return internalGetInstanceCountPerClassName().getMap().size();
       }
@@ -4764,7 +4610,6 @@ private static final long serialVersionUID = 0L;
        *
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
-
       @java.lang.Override
       public boolean containsInstanceCountPerClassName(
           java.lang.String key) {
@@ -4788,7 +4633,6 @@ private static final long serialVersionUID = 0L;
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
       @java.lang.Override
-
       public java.util.Map<java.lang.String, java.lang.Integer> getInstanceCountPerClassNameMap() {
         return internalGetInstanceCountPerClassName().getMap();
       }
@@ -4801,7 +4645,6 @@ private static final long serialVersionUID = 0L;
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
       @java.lang.Override
-
       public int getInstanceCountPerClassNameOrDefault(
           java.lang.String key,
           int defaultValue) {
@@ -4819,7 +4662,6 @@ private static final long serialVersionUID = 0L;
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
       @java.lang.Override
-
       public int getInstanceCountPerClassNameOrThrow(
           java.lang.String key) {
         if (key == null) { throw new NullPointerException("map key"); }
@@ -4830,8 +4672,8 @@ private static final long serialVersionUID = 0L;
         }
         return map.get(key);
       }
-
       public Builder clearInstanceCountPerClassName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
         internalGetMutableInstanceCountPerClassName().getMutableMap()
             .clear();
         return this;
@@ -4844,7 +4686,6 @@ private static final long serialVersionUID = 0L;
        *
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
-
       public Builder removeInstanceCountPerClassName(
           java.lang.String key) {
         if (key == null) { throw new NullPointerException("map key"); }
@@ -4857,7 +4698,8 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Deprecated
       public java.util.Map<java.lang.String, java.lang.Integer>
-      getMutableInstanceCountPerClassName() {
+          getMutableInstanceCountPerClassName() {
+        bitField0_ |= 0x00000004;
         return internalGetMutableInstanceCountPerClassName().getMutableMap();
       }
       /**
@@ -4872,9 +4714,10 @@ private static final long serialVersionUID = 0L;
           java.lang.String key,
           int value) {
         if (key == null) { throw new NullPointerException("map key"); }
-        
+
         internalGetMutableInstanceCountPerClassName().getMutableMap()
             .put(key, value);
+        bitField0_ |= 0x00000004;
         return this;
       }
       /**
@@ -4885,11 +4728,11 @@ private static final long serialVersionUID = 0L;
        *
        * <code>map&lt;string, int32&gt; instance_count_per_class_name = 3;</code>
        */
-
       public Builder putAllInstanceCountPerClassName(
           java.util.Map<java.lang.String, java.lang.Integer> values) {
         internalGetMutableInstanceCountPerClassName().getMutableMap()
             .putAll(values);
+        bitField0_ |= 0x00000004;
         return this;
       }
       @java.lang.Override
@@ -5044,11 +4887,6 @@ private static final long serialVersionUID = 0L;
       return new SharedClusterMemoryUsage();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_SharedClusterMemoryUsage_descriptor;
@@ -5064,6 +4902,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int IDS_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private com.google.protobuf.Internal.IntList ids_;
     /**
      * <pre>
@@ -5373,14 +5212,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         ids_ = emptyIntList();
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (statsBuilder_ == null) {
-          stats_ = null;
-        } else {
-          statsBuilder_.clear();
+        stats_ = null;
+        if (statsBuilder_ != null) {
+          statsBuilder_.dispose();
+          statsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -5407,58 +5245,32 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage result) {
         if (((bitField0_ & 0x00000001) != 0)) {
           ids_.makeImmutable();
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.ids_ = ids_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (statsBuilder_ == null) {
-            result.stats_ = stats_;
-          } else {
-            result.stats_ = statsBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.stats_ = statsBuilder_ == null
+              ? stats_
+              : statsBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage) {
@@ -5555,7 +5367,7 @@ private static final long serialVersionUID = 0L;
         if (!((bitField0_ & 0x00000001) != 0)) {
           ids_ = mutableCopy(ids_);
           bitField0_ |= 0x00000001;
-         }
+        }
       }
       /**
        * <pre>
@@ -5605,6 +5417,7 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setIds(
           int index, int value) {
+
         ensureIdsIsMutable();
         ids_.setInt(index, value);
         onChanged();
@@ -5620,6 +5433,7 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder addIds(int value) {
+
         ensureIdsIsMutable();
         ids_.addInt(value);
         onChanged();
@@ -5699,11 +5513,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           stats_ = value;
-          onChanged();
         } else {
           statsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -5717,11 +5531,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
         if (statsBuilder_ == null) {
           stats_ = builderForValue.build();
-          onChanged();
         } else {
           statsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -5734,18 +5548,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (statsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              stats_ != null &&
-              stats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
-            stats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.newBuilder(stats_).mergeFrom(value).buildPartial();
+            stats_ != null &&
+            stats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
+            getStatsBuilder().mergeFrom(value);
           } else {
             stats_ = value;
           }
-          onChanged();
         } else {
           statsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -5756,13 +5569,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics stats = 2 [lazy = true];</code>
        */
       public Builder clearStats() {
-        if (statsBuilder_ == null) {
-          stats_ = null;
-          onChanged();
-        } else {
-          statsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        stats_ = null;
+        if (statsBuilder_ != null) {
+          statsBuilder_.dispose();
+          statsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6132,11 +5945,6 @@ private static final long serialVersionUID = 0L;
       return new MemoryUsageCollectionMetadata();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MemoryUsageReportEvent_MemoryUsageCollectionMetadata_descriptor;
@@ -6371,7 +6179,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int STATUS_CODE_FIELD_NUMBER = 1;
-    private int statusCode_;
+    private int statusCode_ = 0;
     /**
      * <pre>
      * Status code of the report collection
@@ -6392,8 +6200,7 @@ private static final long serialVersionUID = 0L;
      * @return The statusCode.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode getStatusCode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode result = com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.valueOf(statusCode_);
+      com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode result = com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.forNumber(statusCode_);
       return result == null ? com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.NO_ERROR : result;
     }
 
@@ -6436,7 +6243,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FIELD_CACHE_COUNT_PEAK_FIELD_NUMBER = 3;
-    private int fieldCacheCountPeak_;
+    private int fieldCacheCountPeak_ = 0;
     /**
      * <pre>
      * Peak size of internal field cache
@@ -6463,7 +6270,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int OBJECT_QUEUE_LENGTH_PEAK_FIELD_NUMBER = 4;
-    private int objectQueueLengthPeak_;
+    private int objectQueueLengthPeak_ = 0;
     /**
      * <pre>
      * Peak length of object queue used for traverse BFS
@@ -6490,7 +6297,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int GARBAGE_COLLECTED_BEFORE_2PASS_COUNT_FIELD_NUMBER = 5;
-    private int garbageCollectedBefore2PassCount_;
+    private int garbageCollectedBefore2PassCount_ = 0;
     /**
      * <pre>
      * number of objects that were enumerated during the first traverse, but
@@ -6519,7 +6326,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int COLLECTION_TIME_SECONDS_FIELD_NUMBER = 6;
-    private double collectionTimeSeconds_;
+    private double collectionTimeSeconds_ = 0D;
     /**
      * <pre>
      * The time it took to collect the report
@@ -6546,7 +6353,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_IN_POWER_SAVE_MODE_FIELD_NUMBER = 7;
-    private boolean isInPowerSaveMode_;
+    private boolean isInPowerSaveMode_ = false;
     /**
      * <pre>
      * Was the power save mode enabled at the time of sending the report
@@ -6573,7 +6380,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int UNSUCCESSFUL_FIELD_ACCESSES_COUNT_FIELD_NUMBER = 8;
-    private int unsuccessfulFieldAccessesCount_;
+    private int unsuccessfulFieldAccessesCount_ = 0;
     /**
      * <pre>
      * The number of unsuccessful attempts to access the field via reflection.
@@ -6604,7 +6411,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int COLLECTION_START_TIMESTAMP_SECONDS_FIELD_NUMBER = 9;
-    private double collectionStartTimestampSeconds_;
+    private double collectionStartTimestampSeconds_ = 0D;
     /**
      * <pre>
      * Uptime of the Java virtual machine at the start of the report collecting
@@ -6631,7 +6438,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int COLLECTION_ITERATION_FIELD_NUMBER = 10;
-    private int collectionIteration_;
+    private int collectionIteration_ = 0;
     /**
      * <pre>
      * Sequence number of report collection iteration that happened in this
@@ -6660,7 +6467,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_IN_ESSENTIALS_MODE_FIELD_NUMBER = 11;
-    private boolean isInEssentialsMode_;
+    private boolean isInEssentialsMode_ = false;
     /**
      * <pre>
      * Was essentials mode enabled at the time of sending the report
@@ -7054,32 +6861,22 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         statusCode_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (totalHeapObjectsStatsBuilder_ == null) {
-          totalHeapObjectsStats_ = null;
-        } else {
-          totalHeapObjectsStatsBuilder_.clear();
+        totalHeapObjectsStats_ = null;
+        if (totalHeapObjectsStatsBuilder_ != null) {
+          totalHeapObjectsStatsBuilder_.dispose();
+          totalHeapObjectsStatsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         fieldCacheCountPeak_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         objectQueueLengthPeak_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         garbageCollectedBefore2PassCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         collectionTimeSeconds_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000020);
         isInPowerSaveMode_ = false;
-        bitField0_ = (bitField0_ & ~0x00000040);
         unsuccessfulFieldAccessesCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
         collectionStartTimestampSeconds_ = 0D;
-        bitField0_ = (bitField0_ & ~0x00000100);
         collectionIteration_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
         isInEssentialsMode_ = false;
-        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -7106,18 +6903,22 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata buildPartial() {
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.statusCode_ = statusCode_;
           to_bitField0_ |= 0x00000001;
         }
-        result.statusCode_ = statusCode_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (totalHeapObjectsStatsBuilder_ == null) {
-            result.totalHeapObjectsStats_ = totalHeapObjectsStats_;
-          } else {
-            result.totalHeapObjectsStats_ = totalHeapObjectsStatsBuilder_.build();
-          }
+          result.totalHeapObjectsStats_ = totalHeapObjectsStatsBuilder_ == null
+              ? totalHeapObjectsStats_
+              : totalHeapObjectsStatsBuilder_.build();
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
@@ -7156,43 +6957,9 @@ private static final long serialVersionUID = 0L;
           result.isInEssentialsMode_ = isInEssentialsMode_;
           to_bitField0_ |= 0x00000400;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata) {
@@ -7367,8 +7134,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode getStatusCode() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode result = com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.valueOf(statusCode_);
+        com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode result = com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.forNumber(statusCode_);
         return result == null ? com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.StatusCode.NO_ERROR : result;
       }
       /**
@@ -7446,11 +7212,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           totalHeapObjectsStats_ = value;
-          onChanged();
         } else {
           totalHeapObjectsStatsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -7464,11 +7230,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.Builder builderForValue) {
         if (totalHeapObjectsStatsBuilder_ == null) {
           totalHeapObjectsStats_ = builderForValue.build();
-          onChanged();
         } else {
           totalHeapObjectsStatsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -7481,18 +7247,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeTotalHeapObjectsStats(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics value) {
         if (totalHeapObjectsStatsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              totalHeapObjectsStats_ != null &&
-              totalHeapObjectsStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
-            totalHeapObjectsStats_ =
-              com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.newBuilder(totalHeapObjectsStats_).mergeFrom(value).buildPartial();
+            totalHeapObjectsStats_ != null &&
+            totalHeapObjectsStats_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryTrafficStatistics.getDefaultInstance()) {
+            getTotalHeapObjectsStatsBuilder().mergeFrom(value);
           } else {
             totalHeapObjectsStats_ = value;
           }
-          onChanged();
         } else {
           totalHeapObjectsStatsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -7503,13 +7268,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics total_heap_objects_stats = 2 [lazy = true];</code>
        */
       public Builder clearTotalHeapObjectsStats() {
-        if (totalHeapObjectsStatsBuilder_ == null) {
-          totalHeapObjectsStats_ = null;
-          onChanged();
-        } else {
-          totalHeapObjectsStatsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        totalHeapObjectsStats_ = null;
+        if (totalHeapObjectsStatsBuilder_ != null) {
+          totalHeapObjectsStatsBuilder_.dispose();
+          totalHeapObjectsStatsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -7595,8 +7360,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFieldCacheCountPeak(int value) {
-        bitField0_ |= 0x00000004;
+
         fieldCacheCountPeak_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -7650,8 +7416,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setObjectQueueLengthPeak(int value) {
-        bitField0_ |= 0x00000008;
+
         objectQueueLengthPeak_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -7708,8 +7475,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setGarbageCollectedBefore2PassCount(int value) {
-        bitField0_ |= 0x00000010;
+
         garbageCollectedBefore2PassCount_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -7764,8 +7532,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCollectionTimeSeconds(double value) {
-        bitField0_ |= 0x00000020;
+
         collectionTimeSeconds_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -7819,8 +7588,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsInPowerSaveMode(boolean value) {
-        bitField0_ |= 0x00000040;
+
         isInPowerSaveMode_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -7880,8 +7650,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setUnsuccessfulFieldAccessesCount(int value) {
-        bitField0_ |= 0x00000080;
+
         unsuccessfulFieldAccessesCount_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -7937,8 +7708,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCollectionStartTimestampSeconds(double value) {
-        bitField0_ |= 0x00000100;
+
         collectionStartTimestampSeconds_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -7995,8 +7767,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCollectionIteration(int value) {
-        bitField0_ |= 0x00000200;
+
         collectionIteration_ = value;
+        bitField0_ |= 0x00000200;
         onChanged();
         return this;
       }
@@ -8051,8 +7824,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsInEssentialsMode(boolean value) {
-        bitField0_ |= 0x00000400;
+
         isInEssentialsMode_ = value;
+        bitField0_ |= 0x00000400;
         onChanged();
         return this;
       }
@@ -8136,6 +7910,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int COMPONENT_STATS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage> componentStats_;
   /**
    * <pre>
@@ -8196,6 +7971,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SHARED_COMPONENT_STATS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.SharedClusterMemoryUsage> sharedComponentStats_;
   /**
    * <pre>
@@ -8256,6 +8032,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPONENT_CATEGORY_STATS_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ClusterMemoryUsage> componentCategoryStats_;
   /**
    * <pre>
@@ -8598,6 +8375,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (componentStatsBuilder_ == null) {
         componentStats_ = java.util.Collections.emptyList();
       } else {
@@ -8619,12 +8397,11 @@ private static final long serialVersionUID = 0L;
         componentCategoryStatsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000004);
-      if (metadataBuilder_ == null) {
-        metadata_ = null;
-      } else {
-        metadataBuilder_.clear();
+      metadata_ = null;
+      if (metadataBuilder_ != null) {
+        metadataBuilder_.dispose();
+        metadataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -8651,8 +8428,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent buildPartial() {
       com.google.wireless.android.sdk.stats.MemoryUsageReportEvent result = new com.google.wireless.android.sdk.stats.MemoryUsageReportEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent result) {
       if (componentStatsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           componentStats_ = java.util.Collections.unmodifiableList(componentStats_);
@@ -8680,51 +8462,20 @@ private static final long serialVersionUID = 0L;
       } else {
         result.componentCategoryStats_ = componentCategoryStatsBuilder_.build();
       }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (metadataBuilder_ == null) {
-          result.metadata_ = metadata_;
-        } else {
-          result.metadata_ = metadataBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.metadata_ = metadataBuilder_ == null
+            ? metadata_
+            : metadataBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.MemoryUsageReportEvent) {
@@ -9885,11 +9636,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         metadata_ = value;
-        onChanged();
       } else {
         metadataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9903,11 +9654,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.Builder builderForValue) {
       if (metadataBuilder_ == null) {
         metadata_ = builderForValue.build();
-        onChanged();
       } else {
         metadataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9920,18 +9671,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeMetadata(com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata value) {
       if (metadataBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            metadata_ != null &&
-            metadata_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.getDefaultInstance()) {
-          metadata_ =
-            com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+          metadata_ != null &&
+          metadata_ != com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.MemoryUsageCollectionMetadata.getDefaultInstance()) {
+          getMetadataBuilder().mergeFrom(value);
         } else {
           metadata_ = value;
         }
-        onChanged();
       } else {
         metadataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9942,13 +9692,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemoryUsageReportEvent.MemoryUsageCollectionMetadata metadata = 6 [lazy = true];</code>
      */
     public Builder clearMetadata() {
-      if (metadataBuilder_ == null) {
-        metadata_ = null;
-        onChanged();
-      } else {
-        metadataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      metadata_ = null;
+      if (metadataBuilder_ != null) {
+        metadataBuilder_.dispose();
+        metadataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

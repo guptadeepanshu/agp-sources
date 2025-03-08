@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new GraphicsResourceUsage();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GraphicsResourceUsage_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int COLORBUFFER_COUNT_FIELD_NUMBER = 1;
-  private int colorbufferCount_;
+  private int colorbufferCount_ = 0;
   /**
    * <pre>
    * common betweek OpenGL and Vulkan
@@ -72,7 +67,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SHADER_COUNT_FIELD_NUMBER = 2;
-  private int shaderCount_;
+  private int shaderCount_ = 0;
   /**
    * <code>optional uint32 shader_count = 2;</code>
    * @return Whether the shaderCount field is set.
@@ -91,7 +86,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RENDERTHREAD_COUNT_FIELD_NUMBER = 3;
-  private int renderthreadCount_;
+  private int renderthreadCount_ = 0;
   /**
    * <code>optional uint32 renderthread_count = 3;</code>
    * @return Whether the renderthreadCount field is set.
@@ -110,7 +105,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COLORBUFFER_TOTAL_ALLOCATION_BYTES_FIELD_NUMBER = 4;
-  private long colorbufferTotalAllocationBytes_;
+  private long colorbufferTotalAllocationBytes_ = 0L;
   /**
    * <code>optional uint64 colorbuffer_total_allocation_bytes = 4;</code>
    * @return Whether the colorbufferTotalAllocationBytes field is set.
@@ -430,20 +425,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       colorbufferCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       shaderCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       renderthreadCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       colorbufferTotalAllocationBytes_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (vulkanResourceUsageBuilder_ == null) {
-        vulkanResourceUsage_ = null;
-      } else {
-        vulkanResourceUsageBuilder_.clear();
+      vulkanResourceUsage_ = null;
+      if (vulkanResourceUsageBuilder_ != null) {
+        vulkanResourceUsageBuilder_.dispose();
+        vulkanResourceUsageBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -470,6 +461,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GraphicsResourceUsage buildPartial() {
       com.google.wireless.android.sdk.stats.GraphicsResourceUsage result = new com.google.wireless.android.sdk.stats.GraphicsResourceUsage(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GraphicsResourceUsage result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -489,50 +486,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (vulkanResourceUsageBuilder_ == null) {
-          result.vulkanResourceUsage_ = vulkanResourceUsage_;
-        } else {
-          result.vulkanResourceUsage_ = vulkanResourceUsageBuilder_.build();
-        }
+        result.vulkanResourceUsage_ = vulkanResourceUsageBuilder_ == null
+            ? vulkanResourceUsage_
+            : vulkanResourceUsageBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GraphicsResourceUsage) {
@@ -665,8 +626,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setColorbufferCount(int value) {
-      bitField0_ |= 0x00000001;
+
       colorbufferCount_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -708,8 +670,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setShaderCount(int value) {
-      bitField0_ |= 0x00000002;
+
       shaderCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -747,8 +710,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRenderthreadCount(int value) {
-      bitField0_ |= 0x00000004;
+
       renderthreadCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -786,8 +750,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setColorbufferTotalAllocationBytes(long value) {
-      bitField0_ |= 0x00000008;
+
       colorbufferTotalAllocationBytes_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -844,11 +809,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         vulkanResourceUsage_ = value;
-        onChanged();
       } else {
         vulkanResourceUsageBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -862,11 +827,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.VulkanResourceUsage.Builder builderForValue) {
       if (vulkanResourceUsageBuilder_ == null) {
         vulkanResourceUsage_ = builderForValue.build();
-        onChanged();
       } else {
         vulkanResourceUsageBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -879,18 +844,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeVulkanResourceUsage(com.google.wireless.android.sdk.stats.VulkanResourceUsage value) {
       if (vulkanResourceUsageBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            vulkanResourceUsage_ != null &&
-            vulkanResourceUsage_ != com.google.wireless.android.sdk.stats.VulkanResourceUsage.getDefaultInstance()) {
-          vulkanResourceUsage_ =
-            com.google.wireless.android.sdk.stats.VulkanResourceUsage.newBuilder(vulkanResourceUsage_).mergeFrom(value).buildPartial();
+          vulkanResourceUsage_ != null &&
+          vulkanResourceUsage_ != com.google.wireless.android.sdk.stats.VulkanResourceUsage.getDefaultInstance()) {
+          getVulkanResourceUsageBuilder().mergeFrom(value);
         } else {
           vulkanResourceUsage_ = value;
         }
-        onChanged();
       } else {
         vulkanResourceUsageBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -901,13 +865,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5 [lazy = true];</code>
      */
     public Builder clearVulkanResourceUsage() {
-      if (vulkanResourceUsageBuilder_ == null) {
-        vulkanResourceUsage_ = null;
-        onChanged();
-      } else {
-        vulkanResourceUsageBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      vulkanResourceUsage_ = null;
+      if (vulkanResourceUsageBuilder_ != null) {
+        vulkanResourceUsageBuilder_.dispose();
+        vulkanResourceUsageBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

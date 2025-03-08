@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new PSDEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PSDEvent_descriptor;
@@ -1760,11 +1755,6 @@ private static final long serialVersionUID = 0L;
       return new PSDRepositoryUsage();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PSDEvent_PSDRepositoryUsage_descriptor;
@@ -1916,7 +1906,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int REPOSITORY_FIELD_NUMBER = 1;
-    private int repository_;
+    private int repository_ = 0;
     /**
      * <pre>
      * The repository being accessed.
@@ -1937,13 +1927,12 @@ private static final long serialVersionUID = 0L;
      * @return The repository.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository getRepository() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.valueOf(repository_);
+      com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.forNumber(repository_);
       return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.PROJECT_STRUCTURE_DIALOG_REPOSITORY_UNKNOWN : result;
     }
 
     public static final int DURATION_MS_FIELD_NUMBER = 2;
-    private long durationMs_;
+    private long durationMs_ = 0L;
     /**
      * <pre>
      * How long did it take to search the repository for a specific library
@@ -2186,10 +2175,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         repository_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         durationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -2216,53 +2204,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage buildPartial() {
         com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage result = new com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.repository_ = repository_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.durationMs_ = durationMs_;
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.repository_ = repository_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.durationMs_ = durationMs_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage) {
@@ -2363,8 +2323,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository getRepository() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.valueOf(repository_);
+        com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.forNumber(repository_);
         return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.PROJECT_STRUCTURE_DIALOG_REPOSITORY_UNKNOWN : result;
       }
       /**
@@ -2441,8 +2400,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDurationMs(long value) {
-        bitField0_ |= 0x00000002;
+
         durationMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2528,7 +2488,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int GENERATION_FIELD_NUMBER = 1;
-  private int generation_;
+  private int generation_ = 0;
   /**
    * <pre>
    * What PSD generation is used?
@@ -2549,13 +2509,12 @@ private static final long serialVersionUID = 0L;
    * @return The generation.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration getGeneration() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.valueOf(generation_);
+    com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.forNumber(generation_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.PROJECT_STRUCTURE_DIALOG_GENERATION_UNKNOWN : result;
   }
 
   public static final int LEFT_CONFIGURABLE_FIELD_NUMBER = 2;
-  private int leftConfigurable_;
+  private int leftConfigurable_ = 0;
   /**
    * <pre>
    * Left Configurable from which the event was created
@@ -2576,13 +2535,12 @@ private static final long serialVersionUID = 0L;
    * @return The leftConfigurable.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable getLeftConfigurable() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.valueOf(leftConfigurable_);
+    com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.forNumber(leftConfigurable_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.PROJECT_STRUCTURE_DIALOG_LEFT_CONFIGURABLE_UNKNOWN : result;
   }
 
   public static final int TOP_TAB_FIELD_NUMBER = 3;
-  private int topTab_;
+  private int topTab_ = 0;
   /**
    * <pre>
    * Tab from which the event is generated
@@ -2603,13 +2561,12 @@ private static final long serialVersionUID = 0L;
    * @return The topTab.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab getTopTab() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.valueOf(topTab_);
+    com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.forNumber(topTab_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.PROJECT_STRUCTURE_DIALOG_TOP_TAB_UNKNOWN : result;
   }
 
   public static final int DURATION_MS_FIELD_NUMBER = 4;
-  private long durationMs_;
+  private long durationMs_ = 0L;
   /**
    * <pre>
    * How long was PSD open?
@@ -2636,14 +2593,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODIFIED_FIELDS_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> modifiedFields_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.PSDEvent.PSDField> modifiedFields_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.PSDEvent.PSDField>() {
             public com.google.wireless.android.sdk.stats.PSDEvent.PSDField convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.PSDEvent.PSDField result = com.google.wireless.android.sdk.stats.PSDEvent.PSDField.valueOf(from);
+              com.google.wireless.android.sdk.stats.PSDEvent.PSDField result = com.google.wireless.android.sdk.stats.PSDEvent.PSDField.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDField.PROJECT_STRUCTURE_DIALOG_FIELD_UNKNOWN : result;
             }
           };
@@ -2687,6 +2644,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPOSITORIES_SEARCHED_FIELD_NUMBER = 6;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage> repositoriesSearched_;
   /**
    * <pre>
@@ -3019,14 +2977,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       generation_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       leftConfigurable_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       topTab_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       durationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       modifiedFields_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000010);
       if (repositoriesSearchedBuilder_ == null) {
@@ -3062,24 +3017,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent buildPartial() {
       com.google.wireless.android.sdk.stats.PSDEvent result = new com.google.wireless.android.sdk.stats.PSDEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.generation_ = generation_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.leftConfigurable_ = leftConfigurable_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.topTab_ = topTab_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.durationMs_ = durationMs_;
-        to_bitField0_ |= 0x00000008;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.PSDEvent result) {
       if (((bitField0_ & 0x00000010) != 0)) {
         modifiedFields_ = java.util.Collections.unmodifiableList(modifiedFields_);
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -3094,43 +3038,30 @@ private static final long serialVersionUID = 0L;
       } else {
         result.repositoriesSearched_ = repositoriesSearchedBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.PSDEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.generation_ = generation_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.leftConfigurable_ = leftConfigurable_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.topTab_ = topTab_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.durationMs_ = durationMs_;
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.PSDEvent) {
@@ -3339,8 +3270,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration getGeneration() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.valueOf(generation_);
+      com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.forNumber(generation_);
       return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.PROJECT_STRUCTURE_DIALOG_GENERATION_UNKNOWN : result;
     }
     /**
@@ -3398,8 +3328,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable getLeftConfigurable() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.valueOf(leftConfigurable_);
+      com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.forNumber(leftConfigurable_);
       return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.PROJECT_STRUCTURE_DIALOG_LEFT_CONFIGURABLE_UNKNOWN : result;
     }
     /**
@@ -3457,8 +3386,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab getTopTab() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.valueOf(topTab_);
+      com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.forNumber(topTab_);
       return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.PROJECT_STRUCTURE_DIALOG_TOP_TAB_UNKNOWN : result;
     }
     /**
@@ -3529,8 +3457,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(long value) {
-      bitField0_ |= 0x00000008;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new AdbUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_descriptor;
@@ -134,11 +129,6 @@ private static final long serialVersionUID = 0L;
       return new AdbDeviceStateChangeEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_AdbDeviceStateChangeEvent_descriptor;
@@ -312,7 +302,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int DEVICE_STATE_FIELD_NUMBER = 1;
-    private int deviceState_;
+    private int deviceState_ = 0;
     /**
      * <pre>
      * Current device state
@@ -333,13 +323,12 @@ private static final long serialVersionUID = 0L;
      * @return The deviceState.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getDeviceState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(deviceState_);
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(deviceState_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
     }
 
     public static final int PREVIOUS_DEVICE_STATE_FIELD_NUMBER = 2;
-    private int previousDeviceState_;
+    private int previousDeviceState_ = 0;
     /**
      * <pre>
      * Previously recorded device state
@@ -360,13 +349,12 @@ private static final long serialVersionUID = 0L;
      * @return The previousDeviceState.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getPreviousDeviceState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(previousDeviceState_);
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(previousDeviceState_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
     }
 
     public static final int LAST_ONLINE_MS_FIELD_NUMBER = 3;
-    private long lastOnlineMs_;
+    private long lastOnlineMs_ = 0L;
     /**
      * <pre>
      * Time since last online in milliseconds.
@@ -622,12 +610,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         deviceState_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         previousDeviceState_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         lastOnlineMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -654,57 +640,29 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent buildPartial() {
         com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent result = new com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.deviceState_ = deviceState_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.previousDeviceState_ = previousDeviceState_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.lastOnlineMs_ = lastOnlineMs_;
-          to_bitField0_ |= 0x00000004;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.deviceState_ = deviceState_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.previousDeviceState_ = previousDeviceState_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.lastOnlineMs_ = lastOnlineMs_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent) {
@@ -820,8 +778,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getDeviceState() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(deviceState_);
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(deviceState_);
         return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
       }
       /**
@@ -879,8 +836,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState getPreviousDeviceState() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.valueOf(previousDeviceState_);
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState result = com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.forNumber(previousDeviceState_);
         return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEvent.DeviceState.DEVICE_STATE_UNSPECIFIED : result;
       }
       /**
@@ -960,8 +916,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLastOnlineMs(long value) {
-        bitField0_ |= 0x00000004;
+
         lastOnlineMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1146,11 +1103,6 @@ private static final long serialVersionUID = 0L;
       return new JdwpProcessPropertiesCollectorEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbUsageEvent_JdwpProcessPropertiesCollectorEvent_descriptor;
@@ -1352,7 +1304,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * Whether the collection is successful
@@ -1379,7 +1331,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FAILURE_TYPE_FIELD_NUMBER = 2;
-    private int failureType_;
+    private int failureType_ = 0;
     /**
      * <code>optional .android_studio.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType failure_type = 2;</code>
      * @return Whether the failureType field is set.
@@ -1392,13 +1344,12 @@ private static final long serialVersionUID = 0L;
      * @return The failureType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType getFailureType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.valueOf(failureType_);
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.forNumber(failureType_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.FAILURE_TYPE_UNSPECIFIED : result;
     }
 
     public static final int PREVIOUSLY_FAILED_COUNT_FIELD_NUMBER = 3;
-    private int previouslyFailedCount_;
+    private int previouslyFailedCount_ = 0;
     /**
      * <pre>
      * If a property collection previously failed, specifies how many times it
@@ -1427,7 +1378,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PREVIOUS_FAILURE_TYPE_FIELD_NUMBER = 4;
-    private int previousFailureType_;
+    private int previousFailureType_ = 0;
     /**
      * <pre>
      * If a property collection previously failed, specifies the type of the
@@ -1450,8 +1401,7 @@ private static final long serialVersionUID = 0L;
      * @return The previousFailureType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType getPreviousFailureType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.valueOf(previousFailureType_);
+      com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.forNumber(previousFailureType_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.FAILURE_TYPE_UNSPECIFIED : result;
     }
 
@@ -1695,14 +1645,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         failureType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         previouslyFailedCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         previousFailureType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1729,6 +1676,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent buildPartial() {
         com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent result = new com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1736,54 +1689,20 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.failureType_ = failureType_;
           to_bitField0_ |= 0x00000002;
         }
-        result.failureType_ = failureType_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.previouslyFailedCount_ = previouslyFailedCount_;
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.previousFailureType_ = previousFailureType_;
           to_bitField0_ |= 0x00000008;
         }
-        result.previousFailureType_ = previousFailureType_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent) {
@@ -1920,8 +1839,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1954,8 +1874,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType getFailureType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.valueOf(failureType_);
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.forNumber(failureType_);
         return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.FAILURE_TYPE_UNSPECIFIED : result;
       }
       /**
@@ -2021,8 +1940,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPreviouslyFailedCount(int value) {
-        bitField0_ |= 0x00000004;
+
         previouslyFailedCount_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2066,8 +1986,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType getPreviousFailureType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.valueOf(previousFailureType_);
+        com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType result = com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.forNumber(previousFailureType_);
         return result == null ? com.google.wireless.android.sdk.stats.AdbUsageEvent.JdwpProcessPropertiesCollectorEvent.FailureType.FAILURE_TYPE_UNSPECIFIED : result;
       }
       /**
@@ -2170,6 +2089,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   private int eventCase_ = 0;
+  @SuppressWarnings("serial")
   private java.lang.Object event_;
   public enum EventCase
       implements com.google.protobuf.Internal.EnumLite,
@@ -2500,6 +2420,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (processPropertiesEventBuilder_ != null) {
         processPropertiesEventBuilder_.clear();
       }
@@ -2534,60 +2455,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.AdbUsageEvent result = new com.google.wireless.android.sdk.stats.AdbUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (eventCase_ == 1) {
-        if (processPropertiesEventBuilder_ == null) {
-          result.event_ = event_;
-        } else {
-          result.event_ = processPropertiesEventBuilder_.build();
-        }
-      }
-      if (eventCase_ == 2) {
-        if (deviceStateChangeEventBuilder_ == null) {
-          result.event_ = event_;
-        } else {
-          result.event_ = deviceStateChangeEventBuilder_.build();
-        }
-      }
-      result.bitField0_ = to_bitField0_;
-      result.eventCase_ = eventCase_;
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AdbUsageEvent result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(com.google.wireless.android.sdk.stats.AdbUsageEvent result) {
+      result.eventCase_ = eventCase_;
+      result.event_ = this.event_;
+      if (eventCase_ == 1 &&
+          processPropertiesEventBuilder_ != null) {
+        result.event_ = processPropertiesEventBuilder_.build();
+      }
+      if (eventCase_ == 2 &&
+          deviceStateChangeEventBuilder_ != null) {
+        result.event_ = deviceStateChangeEventBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AdbUsageEvent) {
@@ -2759,8 +2649,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (eventCase_ == 1) {
           processPropertiesEventBuilder_.mergeFrom(value);
+        } else {
+          processPropertiesEventBuilder_.setMessage(value);
         }
-        processPropertiesEventBuilder_.setMessage(value);
       }
       eventCase_ = 1;
       return this;
@@ -2822,7 +2713,7 @@ private static final long serialVersionUID = 0L;
         event_ = null;
       }
       eventCase_ = 1;
-      onChanged();;
+      onChanged();
       return processPropertiesEventBuilder_;
     }
 
@@ -2920,8 +2811,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (eventCase_ == 2) {
           deviceStateChangeEventBuilder_.mergeFrom(value);
+        } else {
+          deviceStateChangeEventBuilder_.setMessage(value);
         }
-        deviceStateChangeEventBuilder_.setMessage(value);
       }
       eventCase_ = 2;
       return this;
@@ -2999,7 +2891,7 @@ private static final long serialVersionUID = 0L;
         event_ = null;
       }
       eventCase_ = 2;
-      onChanged();;
+      onChanged();
       return deviceStateChangeEventBuilder_;
     }
     @java.lang.Override

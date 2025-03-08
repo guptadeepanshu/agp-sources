@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new ProjectViewSelectionChangeEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ProjectViewSelectionChangeEvent_descriptor;
@@ -161,7 +156,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int VIEW_BEFORE_CHANGE_FIELD_NUMBER = 1;
-  private int viewBeforeChange_;
+  private int viewBeforeChange_ = 0;
   /**
    * <pre>
    * For init event 'before' will be UNKNOWN
@@ -182,13 +177,12 @@ private static final long serialVersionUID = 0L;
    * @return The viewBeforeChange.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent getViewBeforeChange() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.valueOf(viewBeforeChange_);
+    com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.forNumber(viewBeforeChange_);
     return result == null ? com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.UNKNOWN : result;
   }
 
   public static final int VIEW_AFTER_CHANGE_FIELD_NUMBER = 2;
-  private int viewAfterChange_;
+  private int viewAfterChange_ = 0;
   /**
    * <code>optional .android_studio.ProjectViewSelectionChangeEvent.ProjectViewContent view_after_change = 2;</code>
    * @return Whether the viewAfterChange field is set.
@@ -201,8 +195,7 @@ private static final long serialVersionUID = 0L;
    * @return The viewAfterChange.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent getViewAfterChange() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.valueOf(viewAfterChange_);
+    com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.forNumber(viewAfterChange_);
     return result == null ? com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.UNKNOWN : result;
   }
 
@@ -413,10 +406,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       viewBeforeChange_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       viewAfterChange_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -443,53 +435,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent buildPartial() {
       com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent result = new com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.viewBeforeChange_ = viewBeforeChange_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.viewAfterChange_ = viewAfterChange_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.viewBeforeChange_ = viewBeforeChange_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.viewAfterChange_ = viewAfterChange_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent) {
@@ -597,8 +561,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent getViewBeforeChange() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.valueOf(viewBeforeChange_);
+      com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.forNumber(viewBeforeChange_);
       return result == null ? com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.UNKNOWN : result;
     }
     /**
@@ -648,8 +611,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent getViewAfterChange() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.valueOf(viewAfterChange_);
+      com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent result = com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.forNumber(viewAfterChange_);
       return result == null ? com.google.wireless.android.sdk.stats.ProjectViewSelectionChangeEvent.ProjectViewContent.UNKNOWN : result;
     }
     /**

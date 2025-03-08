@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new PercentileEstimator();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PercentileEstimator_descriptor;
@@ -50,6 +45,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RAW_SAMPLE_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.DoubleList rawSample_;
   /**
    * <pre>
@@ -92,6 +88,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUCKET_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.PercentileBucket> bucket_;
   /**
    * <pre>
@@ -360,8 +357,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       rawSample_ = emptyDoubleList();
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (bucketBuilder_ == null) {
         bucket_ = java.util.Collections.emptyList();
       } else {
@@ -395,7 +392,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimator buildPartial() {
       com.google.wireless.android.sdk.stats.PercentileEstimator result = new com.google.wireless.android.sdk.stats.PercentileEstimator(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.PercentileEstimator result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         rawSample_.makeImmutable();
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -410,42 +413,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.bucket_ = bucketBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.PercentileEstimator result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.PercentileEstimator) {
@@ -571,7 +544,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000001) != 0)) {
         rawSample_ = mutableCopy(rawSample_);
         bitField0_ |= 0x00000001;
-       }
+      }
     }
     /**
      * <pre>
@@ -625,6 +598,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRawSample(
         int index, double value) {
+
       ensureRawSampleIsMutable();
       rawSample_.setDouble(index, value);
       onChanged();
@@ -641,6 +615,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addRawSample(double value) {
+
       ensureRawSampleIsMutable();
       rawSample_.addDouble(value);
       onChanged();

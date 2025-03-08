@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new GradlePluginData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradlePluginData_descriptor;
@@ -51,7 +46,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CLASS_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object className_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object className_ = "";
   /**
    * <pre>
    * The name of the plugin class. e.g. com.android.build.gradle.LintPlugin
@@ -111,7 +107,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JAR_NAME_FIELD_NUMBER = 2;
-  private volatile java.lang.Object jarName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jarName_ = "";
   /**
    * <pre>
    * The name of the jar containing the plugin class, will be on the form:
@@ -384,10 +381,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       className_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       jarName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -414,53 +410,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradlePluginData buildPartial() {
       com.google.wireless.android.sdk.stats.GradlePluginData result = new com.google.wireless.android.sdk.stats.GradlePluginData(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.className_ = className_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.jarName_ = jarName_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradlePluginData result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.className_ = className_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.jarName_ = jarName_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradlePluginData) {
@@ -474,13 +442,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradlePluginData other) {
       if (other == com.google.wireless.android.sdk.stats.GradlePluginData.getDefaultInstance()) return this;
       if (other.hasClassName()) {
-        bitField0_ |= 0x00000001;
         className_ = other.className_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasJarName()) {
-        bitField0_ |= 0x00000002;
         jarName_ = other.jarName_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -602,11 +570,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       className_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -619,8 +585,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearClassName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       className_ = getDefaultInstance().getClassName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -635,11 +601,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setClassNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       className_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -714,11 +678,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJarName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       jarName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -732,8 +694,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJarName() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       jarName_ = getDefaultInstance().getJarName();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -749,11 +711,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJarNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       jarName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }

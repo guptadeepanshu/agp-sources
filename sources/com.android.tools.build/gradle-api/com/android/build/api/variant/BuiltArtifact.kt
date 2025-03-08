@@ -16,6 +16,9 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.Incubating
+import java.nio.file.Path
+
 /**
  * Represents a built artifact that is present in the file system.
  *
@@ -40,4 +43,10 @@ interface BuiltArtifact: VariantOutputConfiguration {
      * Absolute path to the built file
      */
     val outputFile: String
+
+    /**
+     * [Path] to the output file
+     */
+    @get:Incubating
+    val outputFilePath: Path
 }

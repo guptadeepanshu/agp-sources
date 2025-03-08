@@ -226,13 +226,14 @@ class ArtifactsImpl(
 
 
     private fun calculateFileName(type: Single<*>): String {
-        if (type.kind is ArtifactKind.FILE) {
-            return if (type.getFileSystemLocationName().isNotEmpty())
-                type.getFileSystemLocationName()
-            else
-                DEFAULT_FILE_NAME_OF_REGULAR_FILE_ARTIFACTS
+        return when (type.kind) {
+            is ArtifactKind.FILE -> type.getFileSystemLocationName().ifEmpty {
+                // Use ".dat" file name extension as we don't know the type of the file contents
+                "${type.name().lowercase().replace("_", "-")}.dat"
+            }
+
+            else -> ""
         }
-        return ""
     }
 
     /**
@@ -578,5 +579,3 @@ internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSyste
         }
     }
 }
-
-const val DEFAULT_FILE_NAME_OF_REGULAR_FILE_ARTIFACTS = "out.jar"

@@ -21,14 +21,20 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.google.common.base.Throwables
 import org.gradle.api.Project
+import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.logging.LogLevel
 import java.util.concurrent.atomic.AtomicBoolean
 
-/** Check to ensure dependencies are not resolved during configuration.
+/**
+ * Adds a check to ensure dependencies are not resolved during configuration phase.
  *
- * See  https://github.com/gradle/gradle/issues/2298
+ * See https://github.com/gradle/gradle/issues/2298
  */
-fun registerDependencyCheck(project: Project, projectOptions: ProjectOptions) {
+fun registerDependencyCheck(
+    project: Project,
+    projectOptions: ProjectOptions,
+    buildFeatures: BuildFeatures
+) {
     val fail = projectOptions[BooleanOption.DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION]
 
     if (skipDependencyCheck(projectOptions)) {
@@ -37,17 +43,28 @@ fun registerDependencyCheck(project: Project, projectOptions: ProjectOptions) {
 
     val isResolutionAllowed = AtomicBoolean(false)
     when {
-        // If configuration-on-demand is enabled and there are included builds, configurations may
-        // be resolved before all projects are evaluated, see http://b/154948828.
-        project.gradle.startParameter.isConfigureOnDemand
-                && project.gradle.includedBuilds.isNotEmpty() -> {
+        // There are 3 phases of interest:
+        //    1. Evaluation of the current project
+        //    2. Evaluation of all projects (which contains #1)
+        //    3. Task graph creation (which happens after #2)
+
+        // If project isolation is enabled (https://github.com/gradle/gradle/issues/31483)
+        // OR if configuration-on-demand is enabled and there are included builds (b/154948828),
+        // configurations may be resolved before all projects are evaluated but should not be
+        // resolved during the current project's evaluation.
+        buildFeatures.projectIsolationActive() ||
+                (project.gradle.startParameter.isConfigureOnDemand && project.gradle.includedBuilds.isNotEmpty()) -> {
             project.afterEvaluate { isResolutionAllowed.set(true) }
         }
-        // If this project is part of a composite build, configurations may be resolved before the
-        // task graph is ready.
+
+        // If this project is part of a composite build, configurations may be resolved during task
+        // graph creation but should not be resolved during all projects' evaluation.
         project.gradle.parent != null || project.gradle.includedBuilds.isNotEmpty() -> {
-             project.gradle.projectsEvaluated { isResolutionAllowed.set(true) }
+            project.gradle.projectsEvaluated { isResolutionAllowed.set(true) }
         }
+
+        // In all other cases, configurations should not be resolved during all projects' evaluation
+        // and task graph creation
         else -> project.gradle.taskGraph.whenReady { isResolutionAllowed.set(true) }
     }
 
@@ -68,11 +85,7 @@ fun registerDependencyCheck(project: Project, projectOptions: ProjectOptions) {
                 // TODO b/80230357: Heuristically sanitized stacktrace to show what triggered the resolution.
                 if (project.logger.isEnabled(LogLevel.INFO)) {
                     project.logger.info(
-                        Throwables.getStackTraceAsString(
-                            RuntimeException(
-                                errorMessage
-                            )
-                        )
+                        Throwables.getStackTraceAsString(RuntimeException(errorMessage))
                     )
                 }
             }
@@ -82,7 +95,7 @@ fun registerDependencyCheck(project: Project, projectOptions: ProjectOptions) {
 
 private fun skipDependencyCheck(projectOptions: ProjectOptions): Boolean {
     return projectOptions[BooleanOption.IDE_BUILD_MODEL_ONLY]
-            || projectOptions[BooleanOption.IDE_BUILD_MODEL_ONLY_V2]
+        || projectOptions[BooleanOption.IDE_BUILD_MODEL_ONLY_V2]
 }
 
 private fun errorMessage(configurationName: String): String {
@@ -90,5 +103,3 @@ private fun errorMessage(configurationName: String): String {
 This is a build performance and scalability issue.
 See https://github.com/gradle/gradle/issues/2298"""
 }
-
-

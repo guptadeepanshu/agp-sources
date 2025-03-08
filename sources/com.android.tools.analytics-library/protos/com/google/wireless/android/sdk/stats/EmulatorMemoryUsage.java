@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorMemoryUsage();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorMemoryUsage_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int RESIDENT_MEMORY_FIELD_NUMBER = 1;
-  private long residentMemory_;
+  private long residentMemory_ = 0L;
   /**
    * <code>optional uint64 resident_memory = 1;</code>
    * @return Whether the residentMemory field is set.
@@ -68,7 +63,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESIDENT_MEMORY_MAX_FIELD_NUMBER = 2;
-  private long residentMemoryMax_;
+  private long residentMemoryMax_ = 0L;
   /**
    * <code>optional uint64 resident_memory_max = 2;</code>
    * @return Whether the residentMemoryMax field is set.
@@ -87,7 +82,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRTUAL_MEMORY_FIELD_NUMBER = 3;
-  private long virtualMemory_;
+  private long virtualMemory_ = 0L;
   /**
    * <code>optional uint64 virtual_memory = 3;</code>
    * @return Whether the virtualMemory field is set.
@@ -106,7 +101,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRTUAL_MEMORY_MAX_FIELD_NUMBER = 4;
-  private long virtualMemoryMax_;
+  private long virtualMemoryMax_ = 0L;
   /**
    * <code>optional uint64 virtual_memory_max = 4;</code>
    * @return Whether the virtualMemoryMax field is set.
@@ -125,7 +120,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_PHYS_MEMORY_FIELD_NUMBER = 5;
-  private long totalPhysMemory_;
+  private long totalPhysMemory_ = 0L;
   /**
    * <code>optional uint64 total_phys_memory = 5;</code>
    * @return Whether the totalPhysMemory field is set.
@@ -144,7 +139,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_PAGE_FILE_FIELD_NUMBER = 6;
-  private long totalPageFile_;
+  private long totalPageFile_ = 0L;
   /**
    * <code>optional uint64 total_page_file = 6;</code>
    * @return Whether the totalPageFile field is set.
@@ -163,7 +158,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_GUEST_MEMORY_FIELD_NUMBER = 7;
-  private long totalGuestMemory_;
+  private long totalGuestMemory_ = 0L;
   /**
    * <code>optional uint64 total_guest_memory = 7;</code>
    * @return Whether the totalGuestMemory field is set.
@@ -481,20 +476,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       residentMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       residentMemoryMax_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       virtualMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       virtualMemoryMax_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       totalPhysMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       totalPageFile_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       totalGuestMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -521,6 +510,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorMemoryUsage buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorMemoryUsage result = new com.google.wireless.android.sdk.stats.EmulatorMemoryUsage(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorMemoryUsage result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -551,43 +546,9 @@ private static final long serialVersionUID = 0L;
         result.totalGuestMemory_ = totalGuestMemory_;
         to_bitField0_ |= 0x00000040;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorMemoryUsage) {
@@ -722,8 +683,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResidentMemory(long value) {
-      bitField0_ |= 0x00000001;
+
       residentMemory_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -761,8 +723,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResidentMemoryMax(long value) {
-      bitField0_ |= 0x00000002;
+
       residentMemoryMax_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -800,8 +763,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVirtualMemory(long value) {
-      bitField0_ |= 0x00000004;
+
       virtualMemory_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -839,8 +803,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVirtualMemoryMax(long value) {
-      bitField0_ |= 0x00000008;
+
       virtualMemoryMax_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -878,8 +843,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalPhysMemory(long value) {
-      bitField0_ |= 0x00000010;
+
       totalPhysMemory_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -917,8 +883,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalPageFile(long value) {
-      bitField0_ |= 0x00000020;
+
       totalPageFile_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -956,8 +923,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalGuestMemory(long value) {
-      bitField0_ |= 0x00000040;
+
       totalGuestMemory_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }

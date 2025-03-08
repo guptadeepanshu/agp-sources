@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new MultiViewEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MultiViewEvent_descriptor;
@@ -480,7 +475,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of event
@@ -501,13 +496,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int ASSOCIATED_SPLIT_EDITOR_MODE_FIELD_NUMBER = 2;
-  private int associatedSplitEditorMode_;
+  private int associatedSplitEditorMode_ = 0;
   /**
    * <pre>
    * The mode of the editor to the Validation Tool window
@@ -528,13 +522,12 @@ private static final long serialVersionUID = 0L;
    * @return The associatedSplitEditorMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);
+    com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.forNumber(associatedSplitEditorMode_);
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
   }
 
   public static final int TOGGLE_ISSUE_PANEL_FIELD_NUMBER = 3;
-  private int toggleIssuePanel_;
+  private int toggleIssuePanel_ = 0;
   /**
    * <pre>
    * The event of opening or closing the issue panel in Validation Tool
@@ -555,8 +548,7 @@ private static final long serialVersionUID = 0L;
    * @return The toggleIssuePanel.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel getToggleIssuePanel() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.valueOf(toggleIssuePanel_);
+    com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.forNumber(toggleIssuePanel_);
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.UNKNOWN_OPERATION : result;
   }
 
@@ -787,12 +779,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       associatedSplitEditorMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       toggleIssuePanel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -819,57 +809,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent buildPartial() {
       com.google.wireless.android.sdk.stats.MultiViewEvent result = new com.google.wireless.android.sdk.stats.MultiViewEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.associatedSplitEditorMode_ = associatedSplitEditorMode_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.toggleIssuePanel_ = toggleIssuePanel_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.MultiViewEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.associatedSplitEditorMode_ = associatedSplitEditorMode_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.toggleIssuePanel_ = toggleIssuePanel_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.MultiViewEvent) {
@@ -992,8 +954,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -1051,8 +1012,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);
+      com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.forNumber(associatedSplitEditorMode_);
       return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
     }
     /**
@@ -1110,8 +1070,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel getToggleIssuePanel() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.valueOf(toggleIssuePanel_);
+      com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.forNumber(toggleIssuePanel_);
       return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.UNKNOWN_OPERATION : result;
     }
     /**

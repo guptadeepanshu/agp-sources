@@ -72,4 +72,15 @@ public interface SdkIndexProjectStatsOrBuilder extends
    * @return The numVulnerabilityIssues.
    */
   int getNumVulnerabilityIssues();
+
+  /**
+   * <code>optional uint32 num_deprecated_issues = 7;</code>
+   * @return Whether the numDeprecatedIssues field is set.
+   */
+  boolean hasNumDeprecatedIssues();
+  /**
+   * <code>optional uint32 num_deprecated_issues = 7;</code>
+   * @return The numDeprecatedIssues.
+   */
+  int getNumDeprecatedIssues();
 }

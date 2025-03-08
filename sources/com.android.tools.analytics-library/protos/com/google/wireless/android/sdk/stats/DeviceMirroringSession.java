@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new DeviceMirroringSession();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceMirroringSession_descriptor;
@@ -151,7 +146,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DEVICE_KIND_FIELD_NUMBER = 1;
-  private int deviceKind_;
+  private int deviceKind_ = 0;
   /**
    * <code>optional .android_studio.DeviceMirroringSession.DeviceKind device_kind = 1;</code>
    * @return Whether the deviceKind field is set.
@@ -164,13 +159,12 @@ private static final long serialVersionUID = 0L;
    * @return The deviceKind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind getDeviceKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind result = com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.valueOf(deviceKind_);
+    com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind result = com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.forNumber(deviceKind_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.UNKNOWN_DEVICE_KIND : result;
   }
 
   public static final int DURATION_SEC_FIELD_NUMBER = 2;
-  private long durationSec_;
+  private long durationSec_ = 0L;
   /**
    * <code>optional int64 duration_sec = 2;</code>
    * @return Whether the durationSec field is set.
@@ -189,7 +183,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AGENT_PUSH_TIME_MILLIS_FIELD_NUMBER = 3;
-  private long agentPushTimeMillis_;
+  private long agentPushTimeMillis_ = 0L;
   /**
    * <pre>
    * Time it took to push the Screen Sharing Agent to the device.
@@ -216,7 +210,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FIRST_FRAME_DELAY_MILLIS_FIELD_NUMBER = 4;
-  private long firstFrameDelayMillis_;
+  private long firstFrameDelayMillis_ = 0L;
   /**
    * <pre>
    * Time between the end of agent push and the arrival of the first frame.
@@ -485,14 +479,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       deviceKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       durationSec_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       agentPushTimeMillis_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       firstFrameDelayMillis_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -519,12 +510,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceMirroringSession buildPartial() {
       com.google.wireless.android.sdk.stats.DeviceMirroringSession result = new com.google.wireless.android.sdk.stats.DeviceMirroringSession(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DeviceMirroringSession result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.deviceKind_ = deviceKind_;
         to_bitField0_ |= 0x00000001;
       }
-      result.deviceKind_ = deviceKind_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.durationSec_ = durationSec_;
         to_bitField0_ |= 0x00000002;
@@ -537,43 +534,9 @@ private static final long serialVersionUID = 0L;
         result.firstFrameDelayMillis_ = firstFrameDelayMillis_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DeviceMirroringSession) {
@@ -682,8 +645,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind getDeviceKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind result = com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.valueOf(deviceKind_);
+      com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind result = com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.forNumber(deviceKind_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceMirroringSession.DeviceKind.UNKNOWN_DEVICE_KIND : result;
     }
     /**
@@ -734,8 +696,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationSec(long value) {
-      bitField0_ |= 0x00000002;
+
       durationSec_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -785,8 +748,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAgentPushTimeMillis(long value) {
-      bitField0_ |= 0x00000004;
+
       agentPushTimeMillis_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -840,8 +804,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFirstFrameDelayMillis(long value) {
-      bitField0_ |= 0x00000008;
+
       firstFrameDelayMillis_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

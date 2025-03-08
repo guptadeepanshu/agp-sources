@@ -881,6 +881,7 @@ class UtpConfigFactory {
                     path = it.absolutePath
                 }.build()
             })
+            useSingleClassLoader = true
         }
         if (config != null) {
             builder.config = config

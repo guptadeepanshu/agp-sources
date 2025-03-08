@@ -67,6 +67,7 @@ import com.android.builder.core.ComponentType
 import com.android.builder.errors.IssueReporter
 import com.android.utils.appendCapitalized
 import org.gradle.api.JavaVersion
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
@@ -167,6 +168,28 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
 
     override fun computeTaskName(action: String, subject: String): String  =
         computeTaskName(name, action, subject)
+
+    override fun getResolvableConfiguration(sourceSetConfigurationsAffix: String): Configuration {
+        val lowercaseAffix = sourceSetConfigurationsAffix.lowercase()
+        val configurationName =
+            variantDependencies.sourceSetConfigurationsMap[lowercaseAffix]?.apply(name)
+                ?: throw RuntimeException(
+                    "Invalid call to " +
+                            "getResolvableConfiguration(\"$sourceSetConfigurationsAffix\"). " +
+                            "There must be a corresponding call to " +
+                            if (lowercaseAffix == "ksp") {
+                                "addKspConfigurations() "
+                            } else {
+                                "addSourceSetConfigurations(\"$sourceSetConfigurationsAffix\") "
+                            } +
+                            "to create the resolvable configuration."
+                )
+        val configuration = services.configurations.findByName(configurationName)
+            ?: throw RuntimeException(
+                "Cannot find expected resolvable configuration: \"$configurationName\"."
+            )
+        return configuration
+    }
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API

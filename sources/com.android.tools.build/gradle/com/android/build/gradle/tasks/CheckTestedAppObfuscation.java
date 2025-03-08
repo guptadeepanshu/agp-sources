@@ -56,17 +56,10 @@ public abstract class CheckTestedAppObfuscation extends NonIncrementalTask {
     protected void doTaskAction() {
         if (!mappingFile.isEmpty()) {
             throw new RuntimeException(
-                    "Mapping file found in tested application. Code shrinker must also be enabled in "
-                            + "test plugin with:\n"
-                            + "android {\n"
-                            + "    buildTypes {\n"
-                            + "        "
-                            + getVariantName()
-                            + " {\n"
-                            + "            minifyEnabled true\n"
-                            + "        }\n"
-                            + "    }\n"
-                            + "}\n");
+                    "Mapping file found in tested application: " + mappingFile.getFiles().iterator().next().getPath() + "\n" +
+                    "This means that the tested application has shrinking enabled.\n" +
+                    "For the test to work correctly, please enable shrinking in this test project as well (see https://developer.android.com/studio/build/shrink-code)."
+            );
         }
     }
 

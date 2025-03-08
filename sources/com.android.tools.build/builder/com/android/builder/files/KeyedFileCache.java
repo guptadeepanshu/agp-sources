@@ -19,14 +19,16 @@ package com.android.builder.files;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.utils.FileUtils;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.function.Function;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * File cache that stored files based on the given key function. The general contract of the {@code
@@ -161,7 +163,8 @@ public class KeyedFileCache {
     public static String fileNameKey(@NonNull File f) {
         String absolutePath = f.getAbsolutePath();
         byte[] sha1Sum = Hashing.sha1().hashString(absolutePath, Charsets.UTF_8).asBytes();
-        return new String(Base64.encodeBase64(sha1Sum), Charsets.US_ASCII).replaceAll("/", "_");
+        return new String(Base64.getEncoder().encode(sha1Sum), Charsets.US_ASCII)
+                .replaceAll("/", "_");
     }
 
     /**

@@ -361,7 +361,8 @@ class VariantManager<
                 project,
                 dslServices.projectOptions,
                 projectServices.issueReporter,
-                variantDslInfo)
+                variantDslInfo,
+                variantApiOperationsRegistrar.sourceSetConfigurationsMap.toMap())
                 .setFlavorSelection(getFlavorSelection(variantDslInfo))
                 .addSourceSets(variantSourceSets)
         if (dslExtension is ApplicationExtension) {
@@ -554,7 +555,8 @@ class VariantManager<
             project,
             dslServices.projectOptions,
             projectServices.issueReporter,
-            testFixturesComponentDslInfo
+            testFixturesComponentDslInfo,
+            variantApiOperationsRegistrar.sourceSetConfigurationsMap.toMap()
         )
             .addSourceSets(testFixturesVariantSourceSets)
             .setFlavorSelection(getFlavorSelection(testFixturesComponentDslInfo))
@@ -696,7 +698,8 @@ class VariantManager<
                 project,
                 dslServices.projectOptions,
                 projectServices.issueReporter,
-                testComponentDslInfo)
+                testComponentDslInfo,
+                variantApiOperationsRegistrar.sourceSetConfigurationsMap.toMap())
                 .addSourceSets(testVariantSourceSets)
                 .setFlavorSelection(getFlavorSelection(testComponentDslInfo))
                 .setTestedVariant(testedComponentInfo.variant)

@@ -17,11 +17,14 @@
 package com.android.build.gradle.internal.testing.utp
 
 import com.android.build.api.dsl.ManagedVirtualDevice
+import com.android.build.api.dsl.ManagedVirtualDevice.PageAlignment
 import com.android.build.gradle.internal.computeAbiFromArchitecture
+import com.android.build.gradle.internal.dsl.PAGE_16KB_SUFFIX
 import com.android.testing.utils.computeSystemImageHashFromDsl
 import com.android.testing.utils.isTvOrAutoSource
 import com.android.testing.utils.parseApiFromHash
-import com.android.testing.utils.parseVendorFromHash
+import com.android.testing.utils.parseExtensionFromHash
+import com.android.testing.utils.parseSystemImageSourceFromHash
 import com.android.testing.utils.parseAbiFromHash
 import com.android.utils.CpuArchitecture
 import kotlin.math.min
@@ -41,16 +44,19 @@ private fun isArm(architecture: CpuArchitecture) = when (architecture) {
  * @property architecture The architecture of the device that the
  * [ManagedVirtualDevice] will be run on. Affects which suggestions are made.
  * @property deviceName The name of the device from the DSL
- * @property apiLevel The api level specified in the [ManagedVirtualDevice]
+ * @property sdkVersion The api level specified in the [ManagedVirtualDevice]
  * @property systemImageSource The source specified in the [ManagedVirtualDevice]
+ * @property pageAlignmentSuffix the vendor page size suffix specified by the [ManagedVirtualDevice]
  * @property require64Bit Whether the [ManagedVirtualDevice] requires a 64 bit image.
  * @property allImages The list of all valid images that are available for download/use.
  */
 class ManagedDeviceImageSuggestionGenerator (
     private val architecture: CpuArchitecture,
     private val deviceName: String,
-    private val apiLevel: Int,
+    private val sdkVersion: Int,
+    private val sdkExtensionVersion: Int?,
     private val systemImageSource: String,
+    private val pageAlignmentSuffix: String,
     private val require64Bit: Boolean,
     private val allImages: List<String>
 ) {
@@ -97,11 +103,18 @@ class ManagedDeviceImageSuggestionGenerator (
             // Check to see if there are any alternative image sources.
             yield(checkAllSourcesSuggestion())
             // Step 4:
-            // Check for an api recommendation
-            yield(checkForOtherApiLevelSuggestion())
+            // Check for an extension level recommendation
+            yield(checkForExtensionSuggestion())
             // Step 5:
+            // Check for an api recommendation
+            yield(checkForOtherSdkVersionSuggestion())
+            // Step 6:
             // See if unsetting require64Bit makes a difference.
             yield(checkFor32BitSuggestion())
+            // Step 7:
+            // See if a different page size is available
+            // This is last as changing the page size will change how native code is run.
+            yield(checkForOtherPageAlignment())
         }
 
         val recommendations = suggestions.filterNotNull().take(MAX_SUGGESTIONS).toList()
@@ -125,12 +138,15 @@ class ManagedDeviceImageSuggestionGenerator (
     private fun computeHash(
         otherArch: CpuArchitecture = architecture,
         otherRequire64Bit: Boolean = require64Bit,
-        otherApiLevel: Int = apiLevel,
-        otherImageSource: String = systemImageSource
+        otherSdkVersion: Int = sdkVersion,
+        otherSdkExtensionVersion: Int? = sdkExtensionVersion,
+        otherImageSource: String = systemImageSource,
+        otherPageAlignment: String = pageAlignmentSuffix,
     ): String {
         val abi = computeAbiFromArchitecture(
-            otherRequire64Bit, otherApiLevel, otherImageSource, otherArch)
-        return computeSystemImageHashFromDsl(otherApiLevel, otherImageSource, abi)
+            otherRequire64Bit, otherSdkVersion, otherImageSource, otherArch)
+        return computeSystemImageHashFromDsl(
+            otherSdkVersion, otherSdkExtensionVersion, otherImageSource, otherPageAlignment, abi)
     }
 
     private fun checkForOtherArchitectureMessage(): String {
@@ -159,10 +175,60 @@ class ManagedDeviceImageSuggestionGenerator (
 
         return if (allImages.contains(newHash)) {
             "Automated Test Device image does not exist for this architecture on the given " +
-                    "apiLevel. However, a normal emulator image does exist from a comparable " +
+                    "sdkVersion. However, a normal emulator image does exist from a comparable " +
                     "source. Set systemImageSource = \"$newImageSource\" to use."
         } else {
             null
+        }
+    }
+
+    private fun checkForExtensionSuggestion(): String? {
+        // If not using an extension level, nothing to suggest.
+        sdkExtensionVersion ?: return null
+
+        val highestExtension = allImages.filter {
+            parseApiFromHash(it) == sdkVersion
+        }.maxOfOrNull {
+            parseExtensionFromHash(it) ?: 0
+        } ?: 0
+
+        // First look for the next highest extension available.
+        var nextAvailableExtension: Int? = null
+        for (extension in sdkExtensionVersion..highestExtension) {
+            val newHash = computeHash(otherSdkExtensionVersion = extension)
+            if (allImages.contains(newHash)) {
+                nextAvailableExtension = extension
+                break
+            }
+        }
+
+        if (nextAvailableExtension != null) {
+            return "The system image does not exist with extension version $sdkExtensionVersion. " +
+                    "However an image exists for extension version $nextAvailableExtension. Set " +
+                    "sdkExtensionVersion = $nextAvailableExtension to use."
+        }
+
+        // The extension specified may be too high for the sdk version,
+        // try to suggest the highest available.
+        var latestAvailableExtension: Int? = null
+
+        for (extension in min(sdkExtensionVersion, highestExtension) downTo 1) {
+            val newHash = computeHash(otherSdkExtensionVersion = extension)
+            if (allImages.contains(newHash)) {
+                latestAvailableExtension = extension
+                break
+            }
+        }
+
+        return if (latestAvailableExtension != null) {
+            "The system image does not presently exist for extension version " +
+                    "$sdkExtensionVersion. The latest available extension version for SDK " +
+                    "version $sdkVersion is $latestAvailableExtension. Set sdkExtensionVersion = " +
+                    "$latestAvailableExtension to use. Be aware this may not have all extension " +
+                    "apis needed for your application."
+        } else {
+            "No explicit extension levels exist for SDK version $sdkVersion. Either unset " +
+                    "sdkExtensionVersion or try a different sdkVersion."
         }
     }
 
@@ -183,22 +249,22 @@ class ManagedDeviceImageSuggestionGenerator (
 
         return if (validSources.isNotEmpty()) {
             "The image does not exist from $systemImageSource for this architecture on the given " +
-                    "apiLevel. However, other sources exist. Set systemImageSource to any of " +
+                    "sdkVersion. However, other sources exist. Set systemImageSource to any of " +
                     "$validSources to use."
         } else {
             null
         }
     }
 
-    private fun checkForOtherApiLevelSuggestion(): String? {
+    private fun checkForOtherSdkVersionSuggestion(): String? {
         // Figure out how far we should search.
         val highestApi = allImages.maxOfOrNull {
             parseApiFromHash(it) ?: 0
         } ?: 0
 
         var nextAvailableLevel: Int? = null
-        for (level in apiLevel..highestApi) {
-            val newHash = computeHash(otherApiLevel = level)
+        for (level in sdkVersion..highestApi) {
+            val newHash = computeHash(otherSdkVersion = level)
             if (allImages.contains(newHash)) {
                 nextAvailableLevel = level
                 break
@@ -206,15 +272,16 @@ class ManagedDeviceImageSuggestionGenerator (
         }
 
         if (nextAvailableLevel != null) {
-            return "The system image does not exist for apiLevel $apiLevel. However an image exists " +
-                    "for apiLevel $nextAvailableLevel. Set apiLevel = $nextAvailableLevel to use."
+            return "The system image does not exist for sdkVersion $sdkVersion. However an image " +
+                    "exists for sdkVersion $nextAvailableLevel. Set sdkVersion = " +
+                    "$nextAvailableLevel to use."
         }
 
         var latestAvailableLevel: Int? = null
 
-        // If an upgraded apiLevel does not exist. Then we should find the latest valid version.
-        for (level in min(apiLevel, highestApi) downTo 1) {
-            val newHash = computeHash(otherApiLevel = level)
+        // If an upgraded sdkVersion does not exist. Then we should find the latest valid version.
+        for (level in min(sdkVersion, highestApi) downTo 1) {
+            val newHash = computeHash(otherSdkVersion = level)
             if (allImages.contains(newHash)) {
                 latestAvailableLevel = level
                 break
@@ -222,8 +289,8 @@ class ManagedDeviceImageSuggestionGenerator (
         }
 
         if (latestAvailableLevel != null) {
-            return "The system image does not presently exist for apiLevel $apiLevel. The latest " +
-                    "available apiLevel is $latestAvailableLevel. Set apiLevel = " +
+            return "The system image does not presently exist for sdkVersion $sdkVersion. The " +
+                    "latest available sdkVersion is $latestAvailableLevel. Set sdkVersion = " +
                     "$latestAvailableLevel to use."
         }
 
@@ -241,9 +308,9 @@ class ManagedDeviceImageSuggestionGenerator (
             // 32 bit image does not exist.
             return null
         }
-        return "There is an available X86 image for apiLevel $apiLevel. Set require64Bit = false " +
-                "to use. Be aware tests involving native X86_64 code will not be run with this " +
-                "change."
+        return "There is an available X86 image for sdkVersion $sdkVersion. Set require64Bit = " +
+                "false to use. Be aware tests involving native X86_64 code will not be run with " +
+                "this change."
     }
 
     private fun suggestValidSource(): String? {
@@ -254,7 +321,7 @@ class ManagedDeviceImageSuggestionGenerator (
                     parseAbiFromHash(it)?.startsWith("x86") == true
                 }
             }.mapNotNull {
-                parseVendorFromHash(it)
+                parseSystemImageSourceFromHash(it)
             }.filterNot {
                 isTvOrAutoSource(it)
             }.toMutableSet()
@@ -271,5 +338,23 @@ class ManagedDeviceImageSuggestionGenerator (
                 "This is likely due to an invalid image source. The source specified by " +
                 "$deviceName is \"$systemImageSource\".\n" +
                 "Set systemImageSource to any of $sources to get more suggestions."
+    }
+
+    private fun checkForOtherPageAlignment(): String? {
+        val otherAlignment = when(pageAlignmentSuffix) {
+            PAGE_16KB_SUFFIX -> ""
+            else -> PAGE_16KB_SUFFIX
+        }
+
+        if (allImages.contains(computeHash(otherPageAlignment = otherAlignment))) {
+            val alignment = when (otherAlignment) {
+                PAGE_16KB_SUFFIX -> PageAlignment.FORCE_16KB_PAGES
+                else -> PageAlignment.FORCE_4KB_PAGES
+            }
+            return "There is a valid system image for a different page alignment. Set " +
+                    "pageAlignment = PageAlignment.$alignment to use. Be aware using a different " +
+                    "page alignment will affect how native code is run for testing purposes."
+        }
+        return null
     }
 }

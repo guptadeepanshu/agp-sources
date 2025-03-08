@@ -102,6 +102,8 @@ interface AndroidGradlePluginProjectFlags {
         /** Whether data binding is enabled */
         DATA_BINDING_ENABLED(false),
 
+        /** Whether to generate manifest classes */
+        GENERATE_MANIFEST_CLASS(false),
         ;
 
         /**
@@ -120,7 +122,7 @@ interface AndroidGradlePluginProjectFlags {
     /**
      * Do not directly call this method, use by BooleanFlag.FLAG_OF_INTEREST.getValue(flags)
      *
-     * Uses the string of the enum constant rather than the enum itself to avoid the Gradel tooling
+     * Uses the string of the enum constant rather than the enum itself to avoid the Gradle tooling
      * api proxy throwing if the enum constant is not present on the AGP side.
      * Returns null if the flag is unknown, or if the value is not set.
      */

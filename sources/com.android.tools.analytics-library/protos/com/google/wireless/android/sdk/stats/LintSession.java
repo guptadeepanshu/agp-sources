@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new LintSession();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LintSession_descriptor;
@@ -246,7 +241,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ANALYSIS_TYPE_FIELD_NUMBER = 1;
-  private int analysisType_;
+  private int analysisType_ = 0;
   /**
    * <pre>
    * analysis type - build, ide batch, ide incremental
@@ -267,8 +262,7 @@ private static final long serialVersionUID = 0L;
    * @return The analysisType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LintSession.AnalysisType getAnalysisType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.valueOf(analysisType_);
+    com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.forNumber(analysisType_);
     return result == null ? com.google.wireless.android.sdk.stats.LintSession.AnalysisType.UNKNOWN_ANALYSIS_TYPE : result;
   }
 
@@ -311,6 +305,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ISSUE_IDS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.LintIssueId> issueIds_;
   /**
    * <pre>
@@ -371,12 +366,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_ID_FIELD_NUMBER = 4;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -394,6 +391,7 @@ private static final long serialVersionUID = 0L;
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -422,6 +420,7 @@ private static final long serialVersionUID = 0L;
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -446,7 +445,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BASELINE_ENABLED_FIELD_NUMBER = 5;
-  private boolean baselineEnabled_;
+  private boolean baselineEnabled_ = false;
   /**
    * <pre>
    * true if user is using baselines
@@ -473,7 +472,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUDING_TEST_SOURCES_FIELD_NUMBER = 6;
-  private boolean includingTestSources_;
+  private boolean includingTestSources_ = false;
   /**
    * <pre>
    * true if user is analyzing test sources
@@ -500,7 +499,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUDING_GENERATED_SOURCES_FIELD_NUMBER = 7;
-  private boolean includingGeneratedSources_;
+  private boolean includingGeneratedSources_ = false;
   /**
    * <pre>
    * true if user is analyzing generated sources
@@ -527,7 +526,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUDING_DEPENDENCIES_FIELD_NUMBER = 8;
-  private boolean includingDependencies_;
+  private boolean includingDependencies_ = false;
   /**
    * <pre>
    * true if user is analyzing dependencies
@@ -554,7 +553,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ABORT_ON_ERROR_FIELD_NUMBER = 9;
-  private boolean abortOnError_;
+  private boolean abortOnError_ = false;
   /**
    * <pre>
    * true if the build is configured to abort on error
@@ -581,7 +580,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IGNORE_WARNINGS_FIELD_NUMBER = 10;
-  private boolean ignoreWarnings_;
+  private boolean ignoreWarnings_ = false;
   /**
    * <pre>
    * true if the build is configured to only check errors, not warnings
@@ -608,7 +607,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int WARNINGS_AS_ERRORS_FIELD_NUMBER = 11;
-  private boolean warningsAsErrors_;
+  private boolean warningsAsErrors_ = false;
   /**
    * <pre>
    * true if the build is configured to promote all warnings to errors
@@ -1000,14 +999,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       analysisType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (lintPerformanceBuilder_ == null) {
-        lintPerformance_ = null;
-      } else {
-        lintPerformanceBuilder_.clear();
+      lintPerformance_ = null;
+      if (lintPerformanceBuilder_ != null) {
+        lintPerformanceBuilder_.dispose();
+        lintPerformanceBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       if (issueIdsBuilder_ == null) {
         issueIds_ = java.util.Collections.emptyList();
       } else {
@@ -1016,21 +1014,13 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000004);
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       baselineEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       includingTestSources_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       includingGeneratedSources_ = false;
-      bitField0_ = (bitField0_ & ~0x00000040);
       includingDependencies_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       abortOnError_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       ignoreWarnings_ = false;
-      bitField0_ = (bitField0_ & ~0x00000200);
       warningsAsErrors_ = false;
-      bitField0_ = (bitField0_ & ~0x00000400);
       return this;
     }
 
@@ -1057,20 +1047,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintSession buildPartial() {
       com.google.wireless.android.sdk.stats.LintSession result = new com.google.wireless.android.sdk.stats.LintSession(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.analysisType_ = analysisType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (lintPerformanceBuilder_ == null) {
-          result.lintPerformance_ = lintPerformance_;
-        } else {
-          result.lintPerformance_ = lintPerformanceBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.LintSession result) {
       if (issueIdsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0)) {
           issueIds_ = java.util.Collections.unmodifiableList(issueIds_);
@@ -1080,10 +1063,25 @@ private static final long serialVersionUID = 0L;
       } else {
         result.issueIds_ = issueIdsBuilder_.build();
       }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LintSession result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.analysisType_ = analysisType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.lintPerformance_ = lintPerformanceBuilder_ == null
+            ? lintPerformance_
+            : lintPerformanceBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.projectId_ = projectId_;
         to_bitField0_ |= 0x00000004;
       }
-      result.projectId_ = projectId_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.baselineEnabled_ = baselineEnabled_;
         to_bitField0_ |= 0x00000008;
@@ -1112,43 +1110,9 @@ private static final long serialVersionUID = 0L;
         result.warningsAsErrors_ = warningsAsErrors_;
         to_bitField0_ |= 0x00000200;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LintSession) {
@@ -1194,8 +1158,8 @@ private static final long serialVersionUID = 0L;
         }
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x00000008;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasBaselineEnabled()) {
@@ -1356,8 +1320,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintSession.AnalysisType getAnalysisType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.valueOf(analysisType_);
+      com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.forNumber(analysisType_);
       return result == null ? com.google.wireless.android.sdk.stats.LintSession.AnalysisType.UNKNOWN_ANALYSIS_TYPE : result;
     }
     /**
@@ -1435,11 +1398,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         lintPerformance_ = value;
-        onChanged();
       } else {
         lintPerformanceBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1453,11 +1416,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.LintPerformance.Builder builderForValue) {
       if (lintPerformanceBuilder_ == null) {
         lintPerformance_ = builderForValue.build();
-        onChanged();
       } else {
         lintPerformanceBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1470,18 +1433,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLintPerformance(com.google.wireless.android.sdk.stats.LintPerformance value) {
       if (lintPerformanceBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            lintPerformance_ != null &&
-            lintPerformance_ != com.google.wireless.android.sdk.stats.LintPerformance.getDefaultInstance()) {
-          lintPerformance_ =
-            com.google.wireless.android.sdk.stats.LintPerformance.newBuilder(lintPerformance_).mergeFrom(value).buildPartial();
+          lintPerformance_ != null &&
+          lintPerformance_ != com.google.wireless.android.sdk.stats.LintPerformance.getDefaultInstance()) {
+          getLintPerformanceBuilder().mergeFrom(value);
         } else {
           lintPerformance_ = value;
         }
-        onChanged();
       } else {
         lintPerformanceBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1492,13 +1454,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintPerformance lint_performance = 2 [lazy = true];</code>
      */
     public Builder clearLintPerformance() {
-      if (lintPerformanceBuilder_ == null) {
-        lintPerformance_ = null;
-        onChanged();
-      } else {
-        lintPerformanceBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      lintPerformance_ = null;
+      if (lintPerformanceBuilder_ != null) {
+        lintPerformanceBuilder_.dispose();
+        lintPerformanceBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1867,6 +1829,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1883,6 +1846,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1910,6 +1874,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1936,6 +1901,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1947,11 +1913,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1960,6 +1924,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1969,8 +1934,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1979,6 +1944,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -1990,11 +1956,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2034,8 +1998,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBaselineEnabled(boolean value) {
-      bitField0_ |= 0x00000010;
+
       baselineEnabled_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2089,8 +2054,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncludingTestSources(boolean value) {
-      bitField0_ |= 0x00000020;
+
       includingTestSources_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2144,8 +2110,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncludingGeneratedSources(boolean value) {
-      bitField0_ |= 0x00000040;
+
       includingGeneratedSources_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2199,8 +2166,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncludingDependencies(boolean value) {
-      bitField0_ |= 0x00000080;
+
       includingDependencies_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2254,8 +2222,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAbortOnError(boolean value) {
-      bitField0_ |= 0x00000100;
+
       abortOnError_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2309,8 +2278,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIgnoreWarnings(boolean value) {
-      bitField0_ |= 0x00000200;
+
       ignoreWarnings_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -2364,8 +2334,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWarningsAsErrors(boolean value) {
-      bitField0_ |= 0x00000400;
+
       warningsAsErrors_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }

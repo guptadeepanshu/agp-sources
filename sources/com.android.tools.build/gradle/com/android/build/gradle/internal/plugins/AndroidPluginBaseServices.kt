@@ -61,7 +61,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
 import java.util.Locale
 
 abstract class AndroidPluginBaseServices(
-    private val listenerRegistry: BuildEventsListenerRegistry
+    private val listenerRegistry: BuildEventsListenerRegistry,
+    private val gradleBuildFeatures: BuildFeatures
 ) {
 
     private val optionService: ProjectOptionService by lazy {
@@ -173,7 +174,7 @@ abstract class AndroidPluginBaseServices(
             SyncOptions.getErrorFormatMode(projectOptions)
         ).execute()
 
-        registerDependencyCheck(project, projectOptions)
+        registerDependencyCheck(project, projectOptions, gradleBuildFeatures)
         checkPathForErrors()
         val attributionFileLocation =
             projectOptions.get(StringOption.IDE_ATTRIBUTION_FILE_LOCATION)

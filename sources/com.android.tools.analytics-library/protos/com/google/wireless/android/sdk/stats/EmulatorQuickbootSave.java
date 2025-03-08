@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorQuickbootSave();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorQuickbootSave_descriptor;
@@ -302,7 +297,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int STATE_FIELD_NUMBER = 1;
-  private int state_;
+  private int state_ = 0;
   /**
    * <pre>
    * The state of the quickboot save operation.
@@ -323,13 +318,12 @@ private static final long serialVersionUID = 0L;
    * @return The state.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState getState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.valueOf(state_);
+    com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.forNumber(state_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.EMULATOR_QUICKBOOT_SAVE_SUCCEEDED : result;
   }
 
   public static final int DURATION_MS_FIELD_NUMBER = 2;
-  private long durationMs_;
+  private long durationMs_ = 0L;
   /**
    * <pre>
    * How long it took, milliseconds.
@@ -394,7 +388,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SESION_UPTIME_MS_FIELD_NUMBER = 4;
-  private long sesionUptimeMs_;
+  private long sesionUptimeMs_ = 0L;
   /**
    * <pre>
    * What was the guest session uptime at the time of saving.
@@ -672,18 +666,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       state_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       durationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (snapshotBuilder_ == null) {
-        snapshot_ = null;
-      } else {
-        snapshotBuilder_.clear();
+      snapshot_ = null;
+      if (snapshotBuilder_ != null) {
+        snapshotBuilder_.dispose();
+        snapshotBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       sesionUptimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -710,65 +701,35 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorQuickbootSave result = new com.google.wireless.android.sdk.stats.EmulatorQuickbootSave(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorQuickbootSave result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.state_ = state_;
         to_bitField0_ |= 0x00000001;
       }
-      result.state_ = state_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.durationMs_ = durationMs_;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (snapshotBuilder_ == null) {
-          result.snapshot_ = snapshot_;
-        } else {
-          result.snapshot_ = snapshotBuilder_.build();
-        }
+        result.snapshot_ = snapshotBuilder_ == null
+            ? snapshot_
+            : snapshotBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.sesionUptimeMs_ = sesionUptimeMs_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorQuickbootSave) {
@@ -887,8 +848,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState getState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.valueOf(state_);
+      com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.forNumber(state_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.EMULATOR_QUICKBOOT_SAVE_SUCCEEDED : result;
     }
     /**
@@ -959,8 +919,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(long value) {
-      bitField0_ |= 0x00000002;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1021,11 +982,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         snapshot_ = value;
-        onChanged();
       } else {
         snapshotBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1039,11 +1000,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.EmulatorSnapshot.Builder builderForValue) {
       if (snapshotBuilder_ == null) {
         snapshot_ = builderForValue.build();
-        onChanged();
       } else {
         snapshotBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1056,18 +1017,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSnapshot(com.google.wireless.android.sdk.stats.EmulatorSnapshot value) {
       if (snapshotBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            snapshot_ != null &&
-            snapshot_ != com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance()) {
-          snapshot_ =
-            com.google.wireless.android.sdk.stats.EmulatorSnapshot.newBuilder(snapshot_).mergeFrom(value).buildPartial();
+          snapshot_ != null &&
+          snapshot_ != com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance()) {
+          getSnapshotBuilder().mergeFrom(value);
         } else {
           snapshot_ = value;
         }
-        onChanged();
       } else {
         snapshotBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1078,13 +1038,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshot snapshot = 3 [lazy = true];</code>
      */
     public Builder clearSnapshot() {
-      if (snapshotBuilder_ == null) {
-        snapshot_ = null;
-        onChanged();
-      } else {
-        snapshotBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      snapshot_ = null;
+      if (snapshotBuilder_ != null) {
+        snapshotBuilder_.dispose();
+        snapshotBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1170,8 +1130,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSesionUptimeMs(long value) {
-      bitField0_ |= 0x00000008;
+
       sesionUptimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

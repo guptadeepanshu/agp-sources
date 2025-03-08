@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new EditorCompletionStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditorCompletionStats_descriptor;
@@ -171,11 +166,6 @@ private static final long serialVersionUID = 0L;
       return new Stats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditorCompletionStats_Stats_descriptor;
@@ -191,7 +181,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int FILE_TYPE_FIELD_NUMBER = 1;
-    private int fileType_;
+    private int fileType_ = 0;
     /**
      * <pre>
      * File type (e.g., Java).
@@ -212,8 +202,7 @@ private static final long serialVersionUID = 0L;
      * @return The fileType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
@@ -579,26 +568,23 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         fileType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (popupLatencyBuilder_ == null) {
-          popupLatency_ = null;
-        } else {
-          popupLatencyBuilder_.clear();
+        popupLatency_ = null;
+        if (popupLatencyBuilder_ != null) {
+          popupLatencyBuilder_.dispose();
+          popupLatencyBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (fullCompletionLatencyBuilder_ == null) {
-          fullCompletionLatency_ = null;
-        } else {
-          fullCompletionLatencyBuilder_.clear();
+        fullCompletionLatency_ = null;
+        if (fullCompletionLatencyBuilder_ != null) {
+          fullCompletionLatencyBuilder_.dispose();
+          fullCompletionLatencyBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (insertionLatencyBuilder_ == null) {
-          insertionLatency_ = null;
-        } else {
-          insertionLatencyBuilder_.clear();
+        insertionLatency_ = null;
+        if (insertionLatencyBuilder_ != null) {
+          insertionLatencyBuilder_.dispose();
+          insertionLatencyBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -625,73 +611,39 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats buildPartial() {
         com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats result = new com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.fileType_ = fileType_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (popupLatencyBuilder_ == null) {
-            result.popupLatency_ = popupLatency_;
-          } else {
-            result.popupLatency_ = popupLatencyBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          if (fullCompletionLatencyBuilder_ == null) {
-            result.fullCompletionLatency_ = fullCompletionLatency_;
-          } else {
-            result.fullCompletionLatency_ = fullCompletionLatencyBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000004;
-        }
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          if (insertionLatencyBuilder_ == null) {
-            result.insertionLatency_ = insertionLatency_;
-          } else {
-            result.insertionLatency_ = insertionLatencyBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000008;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.popupLatency_ = popupLatencyBuilder_ == null
+              ? popupLatency_
+              : popupLatencyBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.fullCompletionLatency_ = fullCompletionLatencyBuilder_ == null
+              ? fullCompletionLatency_
+              : fullCompletionLatencyBuilder_.build();
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.insertionLatency_ = insertionLatencyBuilder_ == null
+              ? insertionLatency_
+              : insertionLatencyBuilder_.build();
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats) {
@@ -814,8 +766,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -893,11 +844,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           popupLatency_ = value;
-          onChanged();
         } else {
           popupLatencyBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -911,11 +862,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
         if (popupLatencyBuilder_ == null) {
           popupLatency_ = builderForValue.build();
-          onChanged();
         } else {
           popupLatencyBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -928,18 +879,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergePopupLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (popupLatencyBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              popupLatency_ != null &&
-              popupLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-            popupLatency_ =
-              com.google.wireless.android.sdk.stats.Histogram.newBuilder(popupLatency_).mergeFrom(value).buildPartial();
+            popupLatency_ != null &&
+            popupLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+            getPopupLatencyBuilder().mergeFrom(value);
           } else {
             popupLatency_ = value;
           }
-          onChanged();
         } else {
           popupLatencyBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -950,13 +900,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.Histogram popup_latency = 2 [lazy = true];</code>
        */
       public Builder clearPopupLatency() {
-        if (popupLatencyBuilder_ == null) {
-          popupLatency_ = null;
-          onChanged();
-        } else {
-          popupLatencyBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        popupLatency_ = null;
+        if (popupLatencyBuilder_ != null) {
+          popupLatencyBuilder_.dispose();
+          popupLatencyBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1049,11 +999,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           fullCompletionLatency_ = value;
-          onChanged();
         } else {
           fullCompletionLatencyBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1067,11 +1017,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
         if (fullCompletionLatencyBuilder_ == null) {
           fullCompletionLatency_ = builderForValue.build();
-          onChanged();
         } else {
           fullCompletionLatencyBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1084,18 +1034,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFullCompletionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (fullCompletionLatencyBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
-              fullCompletionLatency_ != null &&
-              fullCompletionLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-            fullCompletionLatency_ =
-              com.google.wireless.android.sdk.stats.Histogram.newBuilder(fullCompletionLatency_).mergeFrom(value).buildPartial();
+            fullCompletionLatency_ != null &&
+            fullCompletionLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+            getFullCompletionLatencyBuilder().mergeFrom(value);
           } else {
             fullCompletionLatency_ = value;
           }
-          onChanged();
         } else {
           fullCompletionLatencyBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1106,13 +1055,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.Histogram full_completion_latency = 3 [lazy = true];</code>
        */
       public Builder clearFullCompletionLatency() {
-        if (fullCompletionLatencyBuilder_ == null) {
-          fullCompletionLatency_ = null;
-          onChanged();
-        } else {
-          fullCompletionLatencyBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        fullCompletionLatency_ = null;
+        if (fullCompletionLatencyBuilder_ != null) {
+          fullCompletionLatencyBuilder_.dispose();
+          fullCompletionLatencyBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1205,11 +1154,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           insertionLatency_ = value;
-          onChanged();
         } else {
           insertionLatencyBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -1223,11 +1172,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
         if (insertionLatencyBuilder_ == null) {
           insertionLatency_ = builderForValue.build();
-          onChanged();
         } else {
           insertionLatencyBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -1240,18 +1189,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeInsertionLatency(com.google.wireless.android.sdk.stats.Histogram value) {
         if (insertionLatencyBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0) &&
-              insertionLatency_ != null &&
-              insertionLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-            insertionLatency_ =
-              com.google.wireless.android.sdk.stats.Histogram.newBuilder(insertionLatency_).mergeFrom(value).buildPartial();
+            insertionLatency_ != null &&
+            insertionLatency_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+            getInsertionLatencyBuilder().mergeFrom(value);
           } else {
             insertionLatency_ = value;
           }
-          onChanged();
         } else {
           insertionLatencyBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -1262,13 +1210,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.Histogram insertion_latency = 4 [lazy = true];</code>
        */
       public Builder clearInsertionLatency() {
-        if (insertionLatencyBuilder_ == null) {
-          insertionLatency_ = null;
-          onChanged();
-        } else {
-          insertionLatencyBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000008);
+        insertionLatency_ = null;
+        if (insertionLatencyBuilder_ != null) {
+          insertionLatencyBuilder_.dispose();
+          insertionLatencyBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1383,6 +1331,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BY_FILE_TYPE_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats> byFileType_;
   /**
    * <pre>
@@ -1632,6 +1581,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (byFileTypeBuilder_ == null) {
         byFileType_ = java.util.Collections.emptyList();
       } else {
@@ -1665,7 +1615,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EditorCompletionStats buildPartial() {
       com.google.wireless.android.sdk.stats.EditorCompletionStats result = new com.google.wireless.android.sdk.stats.EditorCompletionStats(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EditorCompletionStats result) {
       if (byFileTypeBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           byFileType_ = java.util.Collections.unmodifiableList(byFileType_);
@@ -1675,42 +1631,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.byFileType_ = byFileTypeBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EditorCompletionStats result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EditorCompletionStats) {

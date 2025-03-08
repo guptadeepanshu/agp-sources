@@ -17,8 +17,11 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
+import com.android.SdkConstants.EXT_AAR
 import com.android.SdkConstants.EXT_JAR
 import com.android.SdkConstants.FD_AAR_LIBS
+import com.android.SdkConstants.FD_OUTPUTS
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryConstants.VALIDATE_DEPENDENCIES_TASK_NAME
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
@@ -31,12 +34,17 @@ import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.packaging.JarFlinger
+import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Classpath
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.work.DisableCachingByDefault
@@ -49,6 +57,13 @@ abstract class FusedLibraryBundle: Jar() {
     // RegularFileProperty annotated with OutputFile so proper dependency can be expressed.
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
+
+    /**
+     * Not used, but intended to run [FusedLibraryDependencyValidationTask]
+     */
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val validationDir: DirectoryProperty
 
     abstract class CreationAction<T: FusedLibraryBundle>(
         val creationConfig: FusedLibraryGlobalScope,
@@ -68,6 +83,10 @@ abstract class FusedLibraryBundle: Jar() {
             // manually resets the output value to the one this task will use.
             task.outputFile.set(task.archiveFile)
             task.destinationDirectory.set(creationConfig.projectLayout.buildDirectory.dir(task.name))
+
+            task.validationDir.set(
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.DEPENDENCY_VALIDATION)
+            )
         }
     }
 }
@@ -90,7 +109,9 @@ abstract class FusedLibraryBundleAar: FusedLibraryBundle() {
 
         override fun configure(task: FusedLibraryBundleAar) {
             super.configure(task)
-            task.archiveFileName.set("bundle.aar")
+            task.destinationDirectory.set(
+                creationConfig.projectLayout.buildDirectory.dir("$FD_OUTPUTS/$EXT_AAR"))
+            task.archiveFileName.set("${task.project.name}${SdkConstants.DOT_AAR}")
             task.from(
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.CLASSES_JAR),
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_MANIFEST),

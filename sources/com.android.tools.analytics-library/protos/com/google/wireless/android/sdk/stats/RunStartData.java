@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new RunStartData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_RunStartData_descriptor;
@@ -51,7 +46,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IDE_ACTIVITY_ID_FIELD_NUMBER = 1;
-  private int ideActivityId_;
+  private int ideActivityId_ = 0;
   /**
    * <pre>
    * Unique id for activity. This number is generated sequentially
@@ -80,7 +75,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXECUTOR_FIELD_NUMBER = 2;
-  private volatile java.lang.Object executor_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object executor_ = "";
   /**
    * <pre>
    * Type of launch performed, i.e. Run, Debug, etc.
@@ -140,7 +136,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RUN_CONFIGURATION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object runConfiguration_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object runConfiguration_ = "";
   /**
    * <pre>
    * Type of run configuration, i.e. AndroidRunConfigurationType
@@ -426,12 +423,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       ideActivityId_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       executor_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       runConfiguration_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -458,6 +453,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunStartData buildPartial() {
       com.google.wireless.android.sdk.stats.RunStartData result = new com.google.wireless.android.sdk.stats.RunStartData(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.RunStartData result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -465,50 +466,16 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.executor_ = executor_;
         to_bitField0_ |= 0x00000002;
       }
-      result.executor_ = executor_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.runConfiguration_ = runConfiguration_;
         to_bitField0_ |= 0x00000004;
       }
-      result.runConfiguration_ = runConfiguration_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.RunStartData) {
@@ -525,13 +492,13 @@ private static final long serialVersionUID = 0L;
         setIdeActivityId(other.getIdeActivityId());
       }
       if (other.hasExecutor()) {
-        bitField0_ |= 0x00000002;
         executor_ = other.executor_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasRunConfiguration()) {
-        bitField0_ |= 0x00000004;
         runConfiguration_ = other.runConfiguration_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -630,8 +597,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIdeActivityId(int value) {
-      bitField0_ |= 0x00000001;
+
       ideActivityId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -717,11 +685,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutor(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       executor_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -734,8 +700,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearExecutor() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       executor_ = getDefaultInstance().getExecutor();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -750,11 +716,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setExecutorBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       executor_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -825,11 +789,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRunConfiguration(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       runConfiguration_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -842,8 +804,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRunConfiguration() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       runConfiguration_ = getDefaultInstance().getRunConfiguration();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -858,11 +820,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRunConfigurationBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       runConfiguration_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

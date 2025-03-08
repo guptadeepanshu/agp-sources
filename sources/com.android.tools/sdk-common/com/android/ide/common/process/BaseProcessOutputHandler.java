@@ -18,12 +18,13 @@ package com.android.ide.common.process;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.google.common.base.Charsets;
+
 import com.google.common.io.FileBackedOutputStream;
 import com.google.common.io.LineProcessor;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -101,14 +102,14 @@ public abstract class BaseProcessOutputHandler implements ProcessOutputHandler {
             }
             try {
                 return outputStream.asByteSource()
-                        .asCharSource(Charsets.UTF_8).readLines(lineProcessor);
+                        .asCharSource(StandardCharsets.UTF_8).readLines(lineProcessor);
             } catch (IOException e) {
                 throw new ProcessException(e);
             }
         }
 
         public Reader getStandardOutputAsReader() throws IOException {
-            return mStandardOutput.asByteSource().asCharSource(Charsets.UTF_8).openBufferedStream();
+            return mStandardOutput.asByteSource().asCharSource(StandardCharsets.UTF_8).openBufferedStream();
         }
 
         /**
@@ -138,7 +139,7 @@ public abstract class BaseProcessOutputHandler implements ProcessOutputHandler {
                 throw new ProcessException("Output and Error streams not closed");
             }
             try {
-                return stream.asByteSource().asCharSource(Charsets.UTF_8).read();
+                return stream.asByteSource().asCharSource(StandardCharsets.UTF_8).read();
             } catch (IOException e) {
                 throw new ProcessException(e);
             }

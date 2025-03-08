@@ -18,6 +18,8 @@ package com.android.testing.utils
 
 private const val SYSTEM_IMAGE_PREFIX = "system-images;"
 private const val API_PREFIX = "android-"
+private const val API_EXTENSION_PREFIX = "-ext"
+private const val PAGE_16K_SOURCE_SUFFIX = "_ps16k"
 private const val API_OFFSET = 1
 private const val VENDOR_OFFSET = 2
 private const val ABI_OFFSET = 3
@@ -34,12 +36,28 @@ private const val ABI_OFFSET = 3
  * A system image is not guaranteed to exist with the given values, but this gives the hash that the
  * sdkHandler can check.
  */
-fun computeSystemImageHashFromDsl(version: Int, imageSource: String, abi: String) =
-    "$SYSTEM_IMAGE_PREFIX${computeVersionString(version)};${computeVendorString(imageSource)};$abi"
+fun computeSystemImageHashFromDsl(
+    version: Int,
+    extensionVersion: Int?,
+    imageSource: String,
+    pageAlignmentSuffix: String,
+    abi: String) =
+    "$SYSTEM_IMAGE_PREFIX${computeVersionString(version, extensionVersion)};" +
+            "${computeVendorString(imageSource, pageAlignmentSuffix)};$abi"
 
-private fun computeVersionString(version: Int) = "android-${version}"
+fun computeVersionString(version: Int, extensionVersion: Int?): String {
+    val extensionSuffix = if (extensionVersion != null) {
+        "-ext$extensionVersion"
+    } else {
+        ""
+    }
+    return "android-${version}$extensionSuffix"
+}
 
-fun computeVendorString(imageSource: String) =
+fun computeVendorString(imageSource: String, pageAlignmentSuffix: String) =
+    computeImageSource(imageSource) + pageAlignmentSuffix
+
+private fun computeImageSource(imageSource: String) =
     when (imageSource) {
         "google" -> "google_apis"
         "google-atd" -> "google_atd"
@@ -50,6 +68,9 @@ fun computeVendorString(imageSource: String) =
 
 fun isTvOrAutoSource(imageSource: String) =
     imageSource.contains("-tv") || imageSource.contains("-auto")
+
+fun is16kPageSource(vendorString: String) =
+    vendorString.contains(PAGE_16K_SOURCE_SUFFIX)
 
 fun isTvOrAutoDevice(deviceName: String) =
     deviceName.contains("TV") || deviceName.contains("Auto")
@@ -63,14 +84,41 @@ fun parseApiFromHash(systemImageHash: String): Int? {
         return null
     }
     return try {
-        apiComponent.substringAfter(API_PREFIX).toInt()
+        apiComponent.substringAfter(API_PREFIX).substringBefore(API_EXTENSION_PREFIX).toInt()
     } catch (e: NumberFormatException) {
         null
     }
 }
 
+fun parseExtensionFromHash(systemImageHash: String): Int? {
+    val apiComponent = systemImageHash.split(";")[API_OFFSET]
+    if (!apiComponent.startsWith(API_PREFIX)) {
+        return null
+    }
+    return try {
+        apiComponent.substringAfter(API_EXTENSION_PREFIX)?.toInt()
+    } catch (e: NumberFormatException) {
+        null
+    }
+}
+
+/**
+ * Returns the vendor string for the given system image
+ *
+ * The vendor string is different from the system image source as it may contain
+ * additional information such as page size.
+ */
 fun parseVendorFromHash(systemImageHash: String): String? =
     systemImageHash.split(";").getOrNull(VENDOR_OFFSET)
+
+/**
+ * Returns the system image source for the given system image.
+ *
+ * The source will be one of "google_apis", "google_apis_playstore", "default", "google_atd",
+ * "aosp_atd". For the actual vendor string associated with the hash see [parseVendorFromHash]
+ */
+fun parseSystemImageSourceFromHash(systemImageHash: String): String? =
+    parseVendorFromHash(systemImageHash)?.removeSuffix(PAGE_16K_SOURCE_SUFFIX)
 
 fun parseAbiFromHash(systemImageHash: String): String? =
     systemImageHash.split(";").getOrNull(ABI_OFFSET)

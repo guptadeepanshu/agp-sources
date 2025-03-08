@@ -21,14 +21,19 @@ import static com.android.manifmerger.Actions.ActionType;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.utils.XmlUtils;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Validator that runs post merging activities and verifies that all "tools:" instructions
@@ -426,13 +431,60 @@ public class PostValidator {
             @NonNull XmlDocument manifest, @NonNull MergingReport.Builder mergingReport) {
         XmlElement root = manifest.getRootNode();
         Preconditions.checkNotNull(root);
+        var actions = mergingReport.build().getActions();
+        // Ignore uses-sdk elements with feature flag attribute. This may result in multiple
+        // definitions of uses-sdk when feature flags are resolved which should be validated
+        // by AAPT and not manifest-merger.
         List<XmlElement> list = root.getAllNodesByType(ManifestModel.NodeTypes.USES_SDK);
-        if (list.size() > 1) {
+        Map<String, Set<String>> duplicates =
+                list.stream()
+                        .collect(Collectors.groupingBy(XmlElement::getId, Collectors.toList()))
+                        .entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue().size() > 1)
+                        .flatMap(
+                                entry ->
+                                        entry.getValue().stream()
+                                                .map(
+                                                        element ->
+                                                                Map.entry(
+                                                                        entry.getKey(),
+                                                                        getElementLocation(
+                                                                                element, actions))))
+                        .collect(
+                                Collectors.groupingBy(
+                                        Map.Entry::getValue,
+                                        Collectors.mapping(
+                                                entry -> entry.getKey().toString(),
+                                                Collectors.toSet())));
+        if (!duplicates.isEmpty()) {
             mergingReport.addMessage(
                     manifest.getSourceFile(),
                     MergingReport.Record.Severity.ERROR,
-                    "Multiple <uses-sdk>s cannot be present in the merged AndroidManifest.xml. ");
+                    String.format(
+                            "Multiple <uses-sdk>s cannot be present in the merged"
+                                    + " AndroidManifest.xml. Found duplicates in these manifest"
+                                    + " files:\n"
+                                    + "    %1$s",
+                            duplicates.entrySet().stream()
+                                    .map(
+                                            entry ->
+                                                    String.format(
+                                                            "%1$s(%2$s)",
+                                                            entry.getKey(), entry.getValue()))
+                                    .collect(Collectors.joining(System.lineSeparator() + "    "))));
             mergingReport.build();
         }
+    }
+
+    private static String getElementLocation(XmlElement xmlElement, Actions actions) {
+        if (xmlElement.getFeatureFlagAttribute() == null) {
+            var nodeRecord = actions.findNodeRecord(xmlElement.getId());
+            return nodeRecord != null ? nodeRecord.mActionLocation.getFile().print(true) : "";
+        }
+        var attributeRecord =
+                actions.findAttributeRecord(
+                        xmlElement.getId(), xmlElement.getFeatureFlagAttribute().getName());
+        return attributeRecord != null ? attributeRecord.mActionLocation.getFile().print(true) : "";
     }
 }

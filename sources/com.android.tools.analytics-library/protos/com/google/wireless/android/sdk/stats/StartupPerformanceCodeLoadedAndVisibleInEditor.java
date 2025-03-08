@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new StartupPerformanceCodeLoadedAndVisibleInEditor();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StartupPerformanceCodeLoadedAndVisibleInEditor_descriptor;
@@ -175,7 +170,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
-  private int durationMs_;
+  private int durationMs_ = 0;
   /**
    * <pre>
    * How long did it take to load the code and show it in the editor.
@@ -202,7 +197,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_TYPE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object fileType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object fileType_ = "";
   /**
    * <pre>
    * Type of the file opened.
@@ -262,7 +258,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HAS_SETTINGS_FIELD_NUMBER = 3;
-  private boolean hasSettings_;
+  private boolean hasSettings_ = false;
   /**
    * <pre>
    * Shows if the opened project has settings to filter cases of importing which
@@ -291,7 +287,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOADED_CACHED_MARKUP_FIELD_NUMBER = 4;
-  private boolean loadedCachedMarkup_;
+  private boolean loadedCachedMarkup_ = false;
   /**
    * <pre>
    * While opening the file, the markup was loaded from the cache.
@@ -318,7 +314,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NO_EDITORS_TO_OPEN_FIELD_NUMBER = 5;
-  private boolean noEditorsToOpen_;
+  private boolean noEditorsToOpen_ = false;
   /**
    * <pre>
    * No editors were opened on the IDE startup.
@@ -345,7 +341,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SOURCE_OF_SELECTED_EDITOR_FIELD_NUMBER = 6;
-  private int sourceOfSelectedEditor_;
+  private int sourceOfSelectedEditor_ = 0;
   /**
    * <pre>
    * The reason why the selected editor was opened.
@@ -366,8 +362,7 @@ private static final long serialVersionUID = 0L;
    * @return The sourceOfSelectedEditor.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor getSourceOfSelectedEditor() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor result = com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.valueOf(sourceOfSelectedEditor_);
+    com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor result = com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.forNumber(sourceOfSelectedEditor_);
     return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.UNKNOWN_SOURCE_OF_SELECTED_EDITOR : result;
   }
 
@@ -652,18 +647,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       durationMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       fileType_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       hasSettings_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       loadedCachedMarkup_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       noEditorsToOpen_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       sourceOfSelectedEditor_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -690,6 +680,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor buildPartial() {
       com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor result = new com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -697,9 +693,9 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.fileType_ = fileType_;
         to_bitField0_ |= 0x00000002;
       }
-      result.fileType_ = fileType_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.hasSettings_ = hasSettings_;
         to_bitField0_ |= 0x00000004;
@@ -713,46 +709,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.sourceOfSelectedEditor_ = sourceOfSelectedEditor_;
         to_bitField0_ |= 0x00000020;
       }
-      result.sourceOfSelectedEditor_ = sourceOfSelectedEditor_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor) {
@@ -769,8 +731,8 @@ private static final long serialVersionUID = 0L;
         setDurationMs(other.getDurationMs());
       }
       if (other.hasFileType()) {
-        bitField0_ |= 0x00000002;
         fileType_ = other.fileType_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasHasSettings()) {
@@ -900,8 +862,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(int value) {
-      bitField0_ |= 0x00000001;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -986,11 +949,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1003,8 +964,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFileType() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       fileType_ = getDefaultInstance().getFileType();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1019,11 +980,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1066,8 +1025,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasSettings(boolean value) {
-      bitField0_ |= 0x00000004;
+
       hasSettings_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1122,8 +1082,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoadedCachedMarkup(boolean value) {
-      bitField0_ |= 0x00000008;
+
       loadedCachedMarkup_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1177,8 +1138,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNoEditorsToOpen(boolean value) {
-      bitField0_ |= 0x00000010;
+
       noEditorsToOpen_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1219,8 +1181,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor getSourceOfSelectedEditor() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor result = com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.valueOf(sourceOfSelectedEditor_);
+      com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor result = com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.forNumber(sourceOfSelectedEditor_);
       return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceCodeLoadedAndVisibleInEditor.SourceOfSelectedEditor.UNKNOWN_SOURCE_OF_SELECTED_EDITOR : result;
     }
     /**

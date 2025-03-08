@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new SdkIndexLoadingDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SdkIndexLoadingDetails_descriptor;
@@ -442,7 +437,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SOURCE_TYPE_FIELD_NUMBER = 1;
-  private int sourceType_;
+  private int sourceType_ = 0;
   /**
    * <pre>
    * Specify the source of the Index data
@@ -463,13 +458,12 @@ private static final long serialVersionUID = 0L;
    * @return The sourceType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType getSourceType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.valueOf(sourceType_);
+    com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.forNumber(sourceType_);
     return result == null ? com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.UNKNOWN_SOURCE : result;
   }
 
   public static final int READ_ERROR_TYPE_FIELD_NUMBER = 2;
-  private int readErrorType_;
+  private int readErrorType_ = 0;
   /**
    * <pre>
    * What is the type of error when the Index could not be loaded
@@ -490,8 +484,7 @@ private static final long serialVersionUID = 0L;
    * @return The readErrorType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType getReadErrorType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.valueOf(readErrorType_);
+    com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.forNumber(readErrorType_);
     return result == null ? com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.NO_ERROR : result;
   }
 
@@ -702,10 +695,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       sourceType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       readErrorType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -732,53 +724,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails buildPartial() {
       com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails result = new com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.sourceType_ = sourceType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.readErrorType_ = readErrorType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.sourceType_ = sourceType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.readErrorType_ = readErrorType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails) {
@@ -886,8 +850,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType getSourceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.valueOf(sourceType_);
+      com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.forNumber(sourceType_);
       return result == null ? com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.SourceType.UNKNOWN_SOURCE : result;
     }
     /**
@@ -945,8 +908,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType getReadErrorType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.valueOf(readErrorType_);
+      com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType result = com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.forNumber(readErrorType_);
       return result == null ? com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails.ReadErrorType.NO_ERROR : result;
     }
     /**

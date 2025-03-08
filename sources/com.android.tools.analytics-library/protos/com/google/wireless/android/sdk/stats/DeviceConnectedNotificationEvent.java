@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new DeviceConnectedNotificationEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceConnectedNotificationEvent_descriptor;
@@ -155,7 +150,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <code>optional .android_studio.DeviceConnectedNotificationEvent.DeviceConnectionType type = 1;</code>
    * @return Whether the type field is set.
@@ -168,13 +163,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType result = com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType result = com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.UNKNOWN_DEVICE_CONNECTION_TYPE : result;
   }
 
   public static final int MAX_SPEED_MBPS_FIELD_NUMBER = 2;
-  private long maxSpeedMbps_;
+  private long maxSpeedMbps_ = 0L;
   /**
    * <pre>
    * ADB's detected device maximum speed (Mbps)
@@ -201,7 +195,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NEGOTIATED_SPEED_MBPS_FIELD_NUMBER = 3;
-  private long negotiatedSpeedMbps_;
+  private long negotiatedSpeedMbps_ = 0L;
   /**
    * <pre>
    * ADB's detected device negotiated speed (Mbps)
@@ -228,7 +222,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SPEED_NOTIFICATIONS_STUDIO_DISABLED_FIELD_NUMBER = 4;
-  private boolean speedNotificationsStudioDisabled_;
+  private boolean speedNotificationsStudioDisabled_ = false;
   /**
    * <pre>
    * Is the notification disabled by StudioFlags
@@ -255,7 +249,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SPEED_NOTIFICATIONS_USER_DISABLED_FIELD_NUMBER = 5;
-  private boolean speedNotificationsUserDisabled_;
+  private boolean speedNotificationsUserDisabled_ = false;
   /**
    * <pre>
    * Is the notification disabled by user preferences
@@ -545,16 +539,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       maxSpeedMbps_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       negotiatedSpeedMbps_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       speedNotificationsStudioDisabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       speedNotificationsUserDisabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -581,12 +571,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent result = new com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.maxSpeedMbps_ = maxSpeedMbps_;
         to_bitField0_ |= 0x00000002;
@@ -603,43 +599,9 @@ private static final long serialVersionUID = 0L;
         result.speedNotificationsUserDisabled_ = speedNotificationsUserDisabled_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent) {
@@ -756,8 +718,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType result = com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType result = com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceConnectedNotificationEvent.DeviceConnectionType.UNKNOWN_DEVICE_CONNECTION_TYPE : result;
     }
     /**
@@ -820,8 +781,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaxSpeedMbps(long value) {
-      bitField0_ |= 0x00000002;
+
       maxSpeedMbps_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -875,8 +837,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNegotiatedSpeedMbps(long value) {
-      bitField0_ |= 0x00000004;
+
       negotiatedSpeedMbps_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -930,8 +893,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSpeedNotificationsStudioDisabled(boolean value) {
-      bitField0_ |= 0x00000008;
+
       speedNotificationsStudioDisabled_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -985,8 +949,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSpeedNotificationsUserDisabled(boolean value) {
-      bitField0_ |= 0x00000010;
+
       speedNotificationsUserDisabled_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

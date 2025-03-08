@@ -123,7 +123,8 @@ public final class AndroidApkInstallerConfigProto {
       super(builder);
     }
     private InstallableApk() {
-      apkPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      apkPaths_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
     }
 
     @java.lang.Override
@@ -133,11 +134,6 @@ public final class AndroidApkInstallerConfigProto {
       return new InstallableApk();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_descriptor;
@@ -268,7 +264,8 @@ public final class AndroidApkInstallerConfigProto {
         super(builder);
       }
       private InstallOption() {
-        commandLineParameter_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        commandLineParameter_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
         forceCompilation_ = 0;
       }
 
@@ -279,11 +276,6 @@ public final class AndroidApkInstallerConfigProto {
         return new InstallOption();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_InstallableApk_InstallOption_descriptor;
@@ -444,7 +436,9 @@ public final class AndroidApkInstallerConfigProto {
       }
 
       public static final int COMMAND_LINE_PARAMETER_FIELD_NUMBER = 1;
-      private com.google.protobuf.LazyStringList commandLineParameter_;
+      @SuppressWarnings("serial")
+      private com.google.protobuf.LazyStringArrayList commandLineParameter_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       /**
        * <pre>
        * A command line parameter to be passed into "adb install" command.
@@ -495,7 +489,7 @@ public final class AndroidApkInstallerConfigProto {
       }
 
       public static final int INSTALL_AS_SPLIT_APK_FIELD_NUMBER = 2;
-      private boolean installAsSplitApk_;
+      private boolean installAsSplitApk_ = false;
       /**
        * <pre>
        * If true, APK(s) in apk_paths will be installed as split APKs
@@ -510,7 +504,7 @@ public final class AndroidApkInstallerConfigProto {
       }
 
       public static final int INSTALL_APK_TIMEOUT_FIELD_NUMBER = 3;
-      private int installApkTimeout_;
+      private int installApkTimeout_ = 0;
       /**
        * <pre>
        * Optional timeout for installing test APKs
@@ -528,7 +522,7 @@ public final class AndroidApkInstallerConfigProto {
       }
 
       public static final int INSTALL_AS_TEST_SERVICE_FIELD_NUMBER = 4;
-      private boolean installAsTestService_;
+      private boolean installAsTestService_ = false;
       /**
        * <pre>
        * If true, install APKs as test service
@@ -544,7 +538,7 @@ public final class AndroidApkInstallerConfigProto {
       }
 
       public static final int FORCE_COMPILATION_FIELD_NUMBER = 5;
-      private int forceCompilation_;
+      private int forceCompilation_ = 0;
       /**
        * <pre>
        * Runs AOT compilation soon after the APK is installed.
@@ -567,8 +561,7 @@ public final class AndroidApkInstallerConfigProto {
        * @return The forceCompilation.
        */
       @java.lang.Override public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation getForceCompilation() {
-        @SuppressWarnings("deprecation")
-        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.valueOf(forceCompilation_);
+        com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.forNumber(forceCompilation_);
         return result == null ? com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.UNRECOGNIZED : result;
       }
 
@@ -732,11 +725,13 @@ public final class AndroidApkInstallerConfigProto {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
+
       public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
+
       public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -815,16 +810,13 @@ public final class AndroidApkInstallerConfigProto {
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          commandLineParameter_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = 0;
+          commandLineParameter_ =
+              com.google.protobuf.LazyStringArrayList.emptyList();
           installAsSplitApk_ = false;
-
           installApkTimeout_ = 0;
-
           installAsTestService_ = false;
-
           forceCompilation_ = 0;
-
           return this;
         }
 
@@ -851,18 +843,29 @@ public final class AndroidApkInstallerConfigProto {
         @java.lang.Override
         public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption buildPartial() {
           com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption result = new com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption(this);
-          int from_bitField0_ = bitField0_;
-          if (((bitField0_ & 0x00000001) != 0)) {
-            commandLineParameter_ = commandLineParameter_.getUnmodifiableView();
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.commandLineParameter_ = commandLineParameter_;
-          result.installAsSplitApk_ = installAsSplitApk_;
-          result.installApkTimeout_ = installApkTimeout_;
-          result.installAsTestService_ = installAsTestService_;
-          result.forceCompilation_ = forceCompilation_;
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
+        }
+
+        private void buildPartial0(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption result) {
+          int from_bitField0_ = bitField0_;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            commandLineParameter_.makeImmutable();
+            result.commandLineParameter_ = commandLineParameter_;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.installAsSplitApk_ = installAsSplitApk_;
+          }
+          if (((from_bitField0_ & 0x00000004) != 0)) {
+            result.installApkTimeout_ = installApkTimeout_;
+          }
+          if (((from_bitField0_ & 0x00000008) != 0)) {
+            result.installAsTestService_ = installAsTestService_;
+          }
+          if (((from_bitField0_ & 0x00000010) != 0)) {
+            result.forceCompilation_ = forceCompilation_;
+          }
         }
 
         @java.lang.Override
@@ -912,7 +915,7 @@ public final class AndroidApkInstallerConfigProto {
           if (!other.commandLineParameter_.isEmpty()) {
             if (commandLineParameter_.isEmpty()) {
               commandLineParameter_ = other.commandLineParameter_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ |= 0x00000001;
             } else {
               ensureCommandLineParameterIsMutable();
               commandLineParameter_.addAll(other.commandLineParameter_);
@@ -965,22 +968,22 @@ public final class AndroidApkInstallerConfigProto {
                 } // case 10
                 case 16: {
                   installAsSplitApk_ = input.readBool();
-
+                  bitField0_ |= 0x00000002;
                   break;
                 } // case 16
                 case 24: {
                   installApkTimeout_ = input.readInt32();
-
+                  bitField0_ |= 0x00000004;
                   break;
                 } // case 24
                 case 32: {
                   installAsTestService_ = input.readBool();
-
+                  bitField0_ |= 0x00000008;
                   break;
                 } // case 32
                 case 40: {
                   forceCompilation_ = input.readEnum();
-
+                  bitField0_ |= 0x00000010;
                   break;
                 } // case 40
                 default: {
@@ -1000,12 +1003,13 @@ public final class AndroidApkInstallerConfigProto {
         }
         private int bitField0_;
 
-        private com.google.protobuf.LazyStringList commandLineParameter_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        private com.google.protobuf.LazyStringArrayList commandLineParameter_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
         private void ensureCommandLineParameterIsMutable() {
-          if (!((bitField0_ & 0x00000001) != 0)) {
+          if (!commandLineParameter_.isModifiable()) {
             commandLineParameter_ = new com.google.protobuf.LazyStringArrayList(commandLineParameter_);
-            bitField0_ |= 0x00000001;
-           }
+          }
+          bitField0_ |= 0x00000001;
         }
         /**
          * <pre>
@@ -1017,7 +1021,8 @@ public final class AndroidApkInstallerConfigProto {
          */
         public com.google.protobuf.ProtocolStringList
             getCommandLineParameterList() {
-          return commandLineParameter_.getUnmodifiableView();
+          commandLineParameter_.makeImmutable();
+          return commandLineParameter_;
         }
         /**
          * <pre>
@@ -1067,11 +1072,10 @@ public final class AndroidApkInstallerConfigProto {
          */
         public Builder setCommandLineParameter(
             int index, java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureCommandLineParameterIsMutable();
+          if (value == null) { throw new NullPointerException(); }
+          ensureCommandLineParameterIsMutable();
           commandLineParameter_.set(index, value);
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1086,11 +1090,10 @@ public final class AndroidApkInstallerConfigProto {
          */
         public Builder addCommandLineParameter(
             java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureCommandLineParameterIsMutable();
+          if (value == null) { throw new NullPointerException(); }
+          ensureCommandLineParameterIsMutable();
           commandLineParameter_.add(value);
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1108,6 +1111,7 @@ public final class AndroidApkInstallerConfigProto {
           ensureCommandLineParameterIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
               values, commandLineParameter_);
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1120,8 +1124,9 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder clearCommandLineParameter() {
-          commandLineParameter_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-          bitField0_ = (bitField0_ & ~0x00000001);
+          commandLineParameter_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);;
           onChanged();
           return this;
         }
@@ -1136,12 +1141,11 @@ public final class AndroidApkInstallerConfigProto {
          */
         public Builder addCommandLineParameterBytes(
             com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+          if (value == null) { throw new NullPointerException(); }
+          checkByteStringIsUtf8(value);
           ensureCommandLineParameterIsMutable();
           commandLineParameter_.add(value);
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1169,8 +1173,9 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder setInstallAsSplitApk(boolean value) {
-          
+
           installAsSplitApk_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -1183,7 +1188,7 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder clearInstallAsSplitApk() {
-          
+          bitField0_ = (bitField0_ & ~0x00000002);
           installAsSplitApk_ = false;
           onChanged();
           return this;
@@ -1218,8 +1223,9 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder setInstallApkTimeout(int value) {
-          
+
           installApkTimeout_ = value;
+          bitField0_ |= 0x00000004;
           onChanged();
           return this;
         }
@@ -1235,7 +1241,7 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder clearInstallApkTimeout() {
-          
+          bitField0_ = (bitField0_ & ~0x00000004);
           installApkTimeout_ = 0;
           onChanged();
           return this;
@@ -1266,8 +1272,9 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder setInstallAsTestService(boolean value) {
-          
+
           installAsTestService_ = value;
+          bitField0_ |= 0x00000008;
           onChanged();
           return this;
         }
@@ -1281,7 +1288,7 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder clearInstallAsTestService() {
-          
+          bitField0_ = (bitField0_ & ~0x00000008);
           installAsTestService_ = false;
           onChanged();
           return this;
@@ -1311,8 +1318,8 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder setForceCompilationValue(int value) {
-          
           forceCompilation_ = value;
+          bitField0_ |= 0x00000010;
           onChanged();
           return this;
         }
@@ -1327,8 +1334,7 @@ public final class AndroidApkInstallerConfigProto {
          */
         @java.lang.Override
         public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation getForceCompilation() {
-          @SuppressWarnings("deprecation")
-          com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.valueOf(forceCompilation_);
+          com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation result = com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.forNumber(forceCompilation_);
           return result == null ? com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation.UNRECOGNIZED : result;
         }
         /**
@@ -1345,7 +1351,7 @@ public final class AndroidApkInstallerConfigProto {
           if (value == null) {
             throw new NullPointerException();
           }
-          
+          bitField0_ |= 0x00000010;
           forceCompilation_ = value.getNumber();
           onChanged();
           return this;
@@ -1360,7 +1366,7 @@ public final class AndroidApkInstallerConfigProto {
          * @return This builder for chaining.
          */
         public Builder clearForceCompilation() {
-          
+          bitField0_ = (bitField0_ & ~0x00000010);
           forceCompilation_ = 0;
           onChanged();
           return this;
@@ -1429,8 +1435,11 @@ public final class AndroidApkInstallerConfigProto {
 
     }
 
+    private int bitField0_;
     public static final int APK_PATHS_FIELD_NUMBER = 1;
-    private com.google.protobuf.LazyStringList apkPaths_;
+    @SuppressWarnings("serial")
+    private com.google.protobuf.LazyStringArrayList apkPaths_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     /**
      * <pre>
      * Paths to all APK(s) to install.
@@ -1492,7 +1501,7 @@ public final class AndroidApkInstallerConfigProto {
      */
     @java.lang.Override
     public boolean hasInstallOptions() {
-      return installOptions_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -1515,11 +1524,11 @@ public final class AndroidApkInstallerConfigProto {
      */
     @java.lang.Override
     public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOptionOrBuilder getInstallOptionsOrBuilder() {
-      return getInstallOptions();
+      return installOptions_ == null ? com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.getDefaultInstance() : installOptions_;
     }
 
     public static final int UNINSTALL_AFTER_TEST_FIELD_NUMBER = 3;
-    private boolean uninstallAfterTest_;
+    private boolean uninstallAfterTest_ = false;
     /**
      * <pre>
      * If true, the installed APK(s) are uninstalled after test execution.
@@ -1534,7 +1543,7 @@ public final class AndroidApkInstallerConfigProto {
     }
 
     public static final int FORCE_REINSTALL_BEFORE_TEST_FIELD_NUMBER = 5;
-    private boolean forceReinstallBeforeTest_;
+    private boolean forceReinstallBeforeTest_ = false;
     /**
      * <pre>
      * If true, the incompatible APKs will be reinstalled before installing test APKs
@@ -1565,7 +1574,7 @@ public final class AndroidApkInstallerConfigProto {
       for (int i = 0; i < apkPaths_.size(); i++) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, apkPaths_.getRaw(i));
       }
-      if (installOptions_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(2, getInstallOptions());
       }
       if (uninstallAfterTest_ != false) {
@@ -1591,7 +1600,7 @@ public final class AndroidApkInstallerConfigProto {
         size += dataSize;
         size += 1 * getApkPathsList().size();
       }
-      if (installOptions_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getInstallOptions());
       }
@@ -1703,11 +1712,13 @@ public final class AndroidApkInstallerConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1775,29 +1786,33 @@ public final class AndroidApkInstallerConfigProto {
 
       // Construct using com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getInstallOptionsFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        apkPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (installOptionsBuilder_ == null) {
-          installOptions_ = null;
-        } else {
-          installOptions_ = null;
+        bitField0_ = 0;
+        apkPaths_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
+        installOptions_ = null;
+        if (installOptionsBuilder_ != null) {
+          installOptionsBuilder_.dispose();
           installOptionsBuilder_ = null;
         }
         uninstallAfterTest_ = false;
-
         forceReinstallBeforeTest_ = false;
-
         return this;
       }
 
@@ -1824,21 +1839,31 @@ public final class AndroidApkInstallerConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk buildPartial() {
         com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk result = new com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk(this);
-        int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          apkPaths_ = apkPaths_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.apkPaths_ = apkPaths_;
-        if (installOptionsBuilder_ == null) {
-          result.installOptions_ = installOptions_;
-        } else {
-          result.installOptions_ = installOptionsBuilder_.build();
-        }
-        result.uninstallAfterTest_ = uninstallAfterTest_;
-        result.forceReinstallBeforeTest_ = forceReinstallBeforeTest_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          apkPaths_.makeImmutable();
+          result.apkPaths_ = apkPaths_;
+        }
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.installOptions_ = installOptionsBuilder_ == null
+              ? installOptions_
+              : installOptionsBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.uninstallAfterTest_ = uninstallAfterTest_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.forceReinstallBeforeTest_ = forceReinstallBeforeTest_;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -1888,7 +1913,7 @@ public final class AndroidApkInstallerConfigProto {
         if (!other.apkPaths_.isEmpty()) {
           if (apkPaths_.isEmpty()) {
             apkPaths_ = other.apkPaths_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ |= 0x00000001;
           } else {
             ensureApkPathsIsMutable();
             apkPaths_.addAll(other.apkPaths_);
@@ -1940,17 +1965,17 @@ public final class AndroidApkInstallerConfigProto {
                 input.readMessage(
                     getInstallOptionsFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 24: {
                 uninstallAfterTest_ = input.readBool();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 24
               case 40: {
                 forceReinstallBeforeTest_ = input.readBool();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 40
               default: {
@@ -1970,12 +1995,13 @@ public final class AndroidApkInstallerConfigProto {
       }
       private int bitField0_;
 
-      private com.google.protobuf.LazyStringList apkPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private com.google.protobuf.LazyStringArrayList apkPaths_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       private void ensureApkPathsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!apkPaths_.isModifiable()) {
           apkPaths_ = new com.google.protobuf.LazyStringArrayList(apkPaths_);
-          bitField0_ |= 0x00000001;
-         }
+        }
+        bitField0_ |= 0x00000001;
       }
       /**
        * <pre>
@@ -1987,7 +2013,8 @@ public final class AndroidApkInstallerConfigProto {
        */
       public com.google.protobuf.ProtocolStringList
           getApkPathsList() {
-        return apkPaths_.getUnmodifiableView();
+        apkPaths_.makeImmutable();
+        return apkPaths_;
       }
       /**
        * <pre>
@@ -2037,11 +2064,10 @@ public final class AndroidApkInstallerConfigProto {
        */
       public Builder setApkPaths(
           int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureApkPathsIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureApkPathsIsMutable();
         apkPaths_.set(index, value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2056,11 +2082,10 @@ public final class AndroidApkInstallerConfigProto {
        */
       public Builder addApkPaths(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureApkPathsIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureApkPathsIsMutable();
         apkPaths_.add(value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2078,6 +2103,7 @@ public final class AndroidApkInstallerConfigProto {
         ensureApkPathsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
             values, apkPaths_);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2090,8 +2116,9 @@ public final class AndroidApkInstallerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearApkPaths() {
-        apkPaths_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        apkPaths_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);;
         onChanged();
         return this;
       }
@@ -2106,12 +2133,11 @@ public final class AndroidApkInstallerConfigProto {
        */
       public Builder addApkPathsBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         ensureApkPathsIsMutable();
         apkPaths_.add(value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2128,7 +2154,7 @@ public final class AndroidApkInstallerConfigProto {
        * @return Whether the installOptions field is set.
        */
       public boolean hasInstallOptions() {
-        return installOptionsBuilder_ != null || installOptions_ != null;
+        return ((bitField0_ & 0x00000002) != 0);
       }
       /**
        * <pre>
@@ -2158,11 +2184,11 @@ public final class AndroidApkInstallerConfigProto {
             throw new NullPointerException();
           }
           installOptions_ = value;
-          onChanged();
         } else {
           installOptionsBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -2176,11 +2202,11 @@ public final class AndroidApkInstallerConfigProto {
           com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.Builder builderForValue) {
         if (installOptionsBuilder_ == null) {
           installOptions_ = builderForValue.build();
-          onChanged();
         } else {
           installOptionsBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -2192,17 +2218,20 @@ public final class AndroidApkInstallerConfigProto {
        */
       public Builder mergeInstallOptions(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption value) {
         if (installOptionsBuilder_ == null) {
-          if (installOptions_ != null) {
-            installOptions_ =
-              com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.newBuilder(installOptions_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000002) != 0) &&
+            installOptions_ != null &&
+            installOptions_ != com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.getDefaultInstance()) {
+            getInstallOptionsBuilder().mergeFrom(value);
           } else {
             installOptions_ = value;
           }
-          onChanged();
         } else {
           installOptionsBuilder_.mergeFrom(value);
         }
-
+        if (installOptions_ != null) {
+          bitField0_ |= 0x00000002;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -2213,14 +2242,13 @@ public final class AndroidApkInstallerConfigProto {
        * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption install_options = 2;</code>
        */
       public Builder clearInstallOptions() {
-        if (installOptionsBuilder_ == null) {
-          installOptions_ = null;
-          onChanged();
-        } else {
-          installOptions_ = null;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        installOptions_ = null;
+        if (installOptionsBuilder_ != null) {
+          installOptionsBuilder_.dispose();
           installOptionsBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -2231,7 +2259,7 @@ public final class AndroidApkInstallerConfigProto {
        * <code>.com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk.InstallOption install_options = 2;</code>
        */
       public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.Builder getInstallOptionsBuilder() {
-        
+        bitField0_ |= 0x00000002;
         onChanged();
         return getInstallOptionsFieldBuilder().getBuilder();
       }
@@ -2294,8 +2322,9 @@ public final class AndroidApkInstallerConfigProto {
        * @return This builder for chaining.
        */
       public Builder setUninstallAfterTest(boolean value) {
-        
+
         uninstallAfterTest_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2308,7 +2337,7 @@ public final class AndroidApkInstallerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearUninstallAfterTest() {
-        
+        bitField0_ = (bitField0_ & ~0x00000004);
         uninstallAfterTest_ = false;
         onChanged();
         return this;
@@ -2337,8 +2366,9 @@ public final class AndroidApkInstallerConfigProto {
        * @return This builder for chaining.
        */
       public Builder setForceReinstallBeforeTest(boolean value) {
-        
+
         forceReinstallBeforeTest_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -2351,7 +2381,7 @@ public final class AndroidApkInstallerConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearForceReinstallBeforeTest() {
-        
+        bitField0_ = (bitField0_ & ~0x00000008);
         forceReinstallBeforeTest_ = false;
         onChanged();
         return this;
@@ -2471,11 +2501,6 @@ public final class AndroidApkInstallerConfigProto {
       return new AndroidApkInstallerConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.internal_static_com_android_tools_utp_plugins_host_apkinstaller_proto_AndroidApkInstallerConfig_descriptor;
@@ -2490,6 +2515,7 @@ public final class AndroidApkInstallerConfigProto {
     }
 
     public static final int APKS_TO_INSTALL_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk> apksToInstall_;
     /**
      * <code>repeated .com.android.tools.utp.plugins.host.apkinstaller.proto.InstallableApk apks_to_install = 1;</code>
@@ -2640,11 +2666,13 @@ public final class AndroidApkInstallerConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2719,6 +2747,7 @@ public final class AndroidApkInstallerConfigProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (apksToInstallBuilder_ == null) {
           apksToInstall_ = java.util.Collections.emptyList();
         } else {
@@ -2752,7 +2781,13 @@ public final class AndroidApkInstallerConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig buildPartial() {
         com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig result = new com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig result) {
         if (apksToInstallBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             apksToInstall_ = java.util.Collections.unmodifiableList(apksToInstall_);
@@ -2762,8 +2797,10 @@ public final class AndroidApkInstallerConfigProto {
         } else {
           result.apksToInstall_ = apksToInstallBuilder_.build();
         }
-        onBuilt();
-        return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.AndroidApkInstallerConfig result) {
+        int from_bitField0_ = bitField0_;
       }
 
       @java.lang.Override

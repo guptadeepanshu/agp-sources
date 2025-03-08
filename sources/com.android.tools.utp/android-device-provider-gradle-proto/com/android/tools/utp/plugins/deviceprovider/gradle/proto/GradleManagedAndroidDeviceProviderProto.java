@@ -113,11 +113,6 @@ public final class GradleManagedAndroidDeviceProviderProto {
       return new GradleManagedAndroidDeviceProviderConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.internal_static_com_android_tools_utp_plugins_deviceprovider_gradle_proto_GradleManagedAndroidDeviceProviderConfig_descriptor;
@@ -131,6 +126,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
               com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig.class, com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig.Builder.class);
     }
 
+    private int bitField0_;
     public static final int MANAGED_DEVICE_FIELD_NUMBER = 1;
     private com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig managedDevice_;
     /**
@@ -143,7 +139,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      */
     @java.lang.Override
     public boolean hasManagedDevice() {
-      return managedDevice_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -166,11 +162,11 @@ public final class GradleManagedAndroidDeviceProviderProto {
      */
     @java.lang.Override
     public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfigOrBuilder getManagedDeviceOrBuilder() {
-      return getManagedDevice();
+      return managedDevice_ == null ? com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.getDefaultInstance() : managedDevice_;
     }
 
     public static final int ADB_SERVER_PORT_FIELD_NUMBER = 2;
-    private int adbServerPort_;
+    private int adbServerPort_ = 0;
     /**
      * <pre>
      * Port to start the ADB server on. Default is 5037
@@ -197,7 +193,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      */
     @java.lang.Override
     public boolean hasAdbConfig() {
-      return adbConfig_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -222,7 +218,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      */
     @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getAdbConfigOrBuilder() {
-      return getAdbConfig();
+      return adbConfig_ == null ? com.google.protobuf.Any.getDefaultInstance() : adbConfig_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -239,13 +235,13 @@ public final class GradleManagedAndroidDeviceProviderProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (managedDevice_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(1, getManagedDevice());
       }
       if (adbServerPort_ != 0) {
         output.writeInt32(2, adbServerPort_);
       }
-      if (adbConfig_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         output.writeMessage(3, getAdbConfig());
       }
       getUnknownFields().writeTo(output);
@@ -257,7 +253,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
       if (size != -1) return size;
 
       size = 0;
-      if (managedDevice_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getManagedDevice());
       }
@@ -265,7 +261,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, adbServerPort_);
       }
-      if (adbConfig_ != null) {
+      if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, getAdbConfig());
       }
@@ -366,11 +362,13 @@ public final class GradleManagedAndroidDeviceProviderProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -440,29 +438,34 @@ public final class GradleManagedAndroidDeviceProviderProto {
 
       // Construct using com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getManagedDeviceFieldBuilder();
+          getAdbConfigFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (managedDeviceBuilder_ == null) {
-          managedDevice_ = null;
-        } else {
-          managedDevice_ = null;
+        bitField0_ = 0;
+        managedDevice_ = null;
+        if (managedDeviceBuilder_ != null) {
+          managedDeviceBuilder_.dispose();
           managedDeviceBuilder_ = null;
         }
         adbServerPort_ = 0;
-
-        if (adbConfigBuilder_ == null) {
-          adbConfig_ = null;
-        } else {
-          adbConfig_ = null;
+        adbConfig_ = null;
+        if (adbConfigBuilder_ != null) {
+          adbConfigBuilder_.dispose();
           adbConfigBuilder_ = null;
         }
         return this;
@@ -491,19 +494,30 @@ public final class GradleManagedAndroidDeviceProviderProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig buildPartial() {
         com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig result = new com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig(this);
-        if (managedDeviceBuilder_ == null) {
-          result.managedDevice_ = managedDevice_;
-        } else {
-          result.managedDevice_ = managedDeviceBuilder_.build();
-        }
-        result.adbServerPort_ = adbServerPort_;
-        if (adbConfigBuilder_ == null) {
-          result.adbConfig_ = adbConfig_;
-        } else {
-          result.adbConfig_ = adbConfigBuilder_.build();
-        }
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderProto.GradleManagedAndroidDeviceProviderConfig result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.managedDevice_ = managedDeviceBuilder_ == null
+              ? managedDevice_
+              : managedDeviceBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.adbServerPort_ = adbServerPort_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.adbConfig_ = adbConfigBuilder_ == null
+              ? adbConfig_
+              : adbConfigBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -589,19 +603,19 @@ public final class GradleManagedAndroidDeviceProviderProto {
                 input.readMessage(
                     getManagedDeviceFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 16: {
                 adbServerPort_ = input.readInt32();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               case 26: {
                 input.readMessage(
                     getAdbConfigFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               default: {
@@ -619,6 +633,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig managedDevice_;
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -632,7 +647,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * @return Whether the managedDevice field is set.
        */
       public boolean hasManagedDevice() {
-        return managedDeviceBuilder_ != null || managedDevice_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -662,11 +677,11 @@ public final class GradleManagedAndroidDeviceProviderProto {
             throw new NullPointerException();
           }
           managedDevice_ = value;
-          onChanged();
         } else {
           managedDeviceBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -680,11 +695,11 @@ public final class GradleManagedAndroidDeviceProviderProto {
           com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.Builder builderForValue) {
         if (managedDeviceBuilder_ == null) {
           managedDevice_ = builderForValue.build();
-          onChanged();
         } else {
           managedDeviceBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -696,17 +711,20 @@ public final class GradleManagedAndroidDeviceProviderProto {
        */
       public Builder mergeManagedDevice(com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig value) {
         if (managedDeviceBuilder_ == null) {
-          if (managedDevice_ != null) {
-            managedDevice_ =
-              com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.newBuilder(managedDevice_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000001) != 0) &&
+            managedDevice_ != null &&
+            managedDevice_ != com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.getDefaultInstance()) {
+            getManagedDeviceBuilder().mergeFrom(value);
           } else {
             managedDevice_ = value;
           }
-          onChanged();
         } else {
           managedDeviceBuilder_.mergeFrom(value);
         }
-
+        if (managedDevice_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -717,14 +735,13 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig managed_device = 1;</code>
        */
       public Builder clearManagedDevice() {
-        if (managedDeviceBuilder_ == null) {
-          managedDevice_ = null;
-          onChanged();
-        } else {
-          managedDevice_ = null;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        managedDevice_ = null;
+        if (managedDeviceBuilder_ != null) {
+          managedDeviceBuilder_.dispose();
           managedDeviceBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -735,7 +752,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * <code>.com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig managed_device = 1;</code>
        */
       public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.Builder getManagedDeviceBuilder() {
-        
+        bitField0_ |= 0x00000001;
         onChanged();
         return getManagedDeviceFieldBuilder().getBuilder();
       }
@@ -798,8 +815,9 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * @return This builder for chaining.
        */
       public Builder setAdbServerPort(int value) {
-        
+
         adbServerPort_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -812,7 +830,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * @return This builder for chaining.
        */
       public Builder clearAdbServerPort() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         adbServerPort_ = 0;
         onChanged();
         return this;
@@ -831,7 +849,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * @return Whether the adbConfig field is set.
        */
       public boolean hasAdbConfig() {
-        return adbConfigBuilder_ != null || adbConfig_ != null;
+        return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <pre>
@@ -863,11 +881,11 @@ public final class GradleManagedAndroidDeviceProviderProto {
             throw new NullPointerException();
           }
           adbConfig_ = value;
-          onChanged();
         } else {
           adbConfigBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -882,11 +900,11 @@ public final class GradleManagedAndroidDeviceProviderProto {
           com.google.protobuf.Any.Builder builderForValue) {
         if (adbConfigBuilder_ == null) {
           adbConfig_ = builderForValue.build();
-          onChanged();
         } else {
           adbConfigBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -899,17 +917,20 @@ public final class GradleManagedAndroidDeviceProviderProto {
        */
       public Builder mergeAdbConfig(com.google.protobuf.Any value) {
         if (adbConfigBuilder_ == null) {
-          if (adbConfig_ != null) {
-            adbConfig_ =
-              com.google.protobuf.Any.newBuilder(adbConfig_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000004) != 0) &&
+            adbConfig_ != null &&
+            adbConfig_ != com.google.protobuf.Any.getDefaultInstance()) {
+            getAdbConfigBuilder().mergeFrom(value);
           } else {
             adbConfig_ = value;
           }
-          onChanged();
         } else {
           adbConfigBuilder_.mergeFrom(value);
         }
-
+        if (adbConfig_ != null) {
+          bitField0_ |= 0x00000004;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -921,14 +942,13 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * <code>.google.protobuf.Any adb_config = 3;</code>
        */
       public Builder clearAdbConfig() {
-        if (adbConfigBuilder_ == null) {
-          adbConfig_ = null;
-          onChanged();
-        } else {
-          adbConfig_ = null;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        adbConfig_ = null;
+        if (adbConfigBuilder_ != null) {
+          adbConfigBuilder_.dispose();
           adbConfigBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -940,7 +960,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * <code>.google.protobuf.Any adb_config = 3;</code>
        */
       public com.google.protobuf.Any.Builder getAdbConfigBuilder() {
-        
+        bitField0_ |= 0x00000004;
         onChanged();
         return getAdbConfigFieldBuilder().getBuilder();
       }

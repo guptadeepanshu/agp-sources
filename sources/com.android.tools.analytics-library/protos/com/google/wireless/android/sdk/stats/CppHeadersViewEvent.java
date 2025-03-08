@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new CppHeadersViewEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_CppHeadersViewEvent_descriptor;
@@ -154,7 +149,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Metrics related to enhanced C++ header files view enabled by
@@ -177,13 +172,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.UNKNOWN_CPP_HEADERS_VIEW_EVENT : result;
   }
 
   public static final int EVENT_DURATION_MS_FIELD_NUMBER = 2;
-  private long eventDurationMs_;
+  private long eventDurationMs_ = 0L;
   /**
    * <pre>
    * The amount of time taken for the event to complete in milliseconds.
@@ -210,7 +204,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NODE_IMMEDIATE_CHILDREN_FIELD_NUMBER = 3;
-  private int nodeImmediateChildren_;
+  private int nodeImmediateChildren_ = 0;
   /**
    * <pre>
    * The count of the immediate children of the node that was opened by
@@ -467,12 +461,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       eventDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       nodeImmediateChildren_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -499,12 +491,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CppHeadersViewEvent buildPartial() {
       com.google.wireless.android.sdk.stats.CppHeadersViewEvent result = new com.google.wireless.android.sdk.stats.CppHeadersViewEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.CppHeadersViewEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.eventDurationMs_ = eventDurationMs_;
         to_bitField0_ |= 0x00000002;
@@ -513,43 +511,9 @@ private static final long serialVersionUID = 0L;
         result.nodeImmediateChildren_ = nodeImmediateChildren_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.CppHeadersViewEvent) {
@@ -660,8 +624,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.UNKNOWN_CPP_HEADERS_VIEW_EVENT : result;
     }
     /**
@@ -734,8 +697,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEventDurationMs(long value) {
-      bitField0_ |= 0x00000002;
+
       eventDurationMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -792,8 +756,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNodeImmediateChildren(int value) {
-      bitField0_ |= 0x00000004;
+
       nodeImmediateChildren_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

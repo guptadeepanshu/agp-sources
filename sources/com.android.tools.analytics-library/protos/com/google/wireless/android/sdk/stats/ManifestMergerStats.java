@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new ManifestMergerStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ManifestMergerStats_descriptor;
@@ -408,24 +403,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (successRunTimeMsBuilder_ == null) {
-        successRunTimeMs_ = null;
-      } else {
-        successRunTimeMsBuilder_.clear();
+      bitField0_ = 0;
+      successRunTimeMs_ = null;
+      if (successRunTimeMsBuilder_ != null) {
+        successRunTimeMsBuilder_.dispose();
+        successRunTimeMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (canceledRunTimeMsBuilder_ == null) {
-        canceledRunTimeMs_ = null;
-      } else {
-        canceledRunTimeMsBuilder_.clear();
+      canceledRunTimeMs_ = null;
+      if (canceledRunTimeMsBuilder_ != null) {
+        canceledRunTimeMsBuilder_.dispose();
+        canceledRunTimeMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (failedRunTimeMsBuilder_ == null) {
-        failedRunTimeMs_ = null;
-      } else {
-        failedRunTimeMsBuilder_.clear();
+      failedRunTimeMs_ = null;
+      if (failedRunTimeMsBuilder_ != null) {
+        failedRunTimeMsBuilder_.dispose();
+        failedRunTimeMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -452,69 +445,35 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ManifestMergerStats buildPartial() {
       com.google.wireless.android.sdk.stats.ManifestMergerStats result = new com.google.wireless.android.sdk.stats.ManifestMergerStats(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (successRunTimeMsBuilder_ == null) {
-          result.successRunTimeMs_ = successRunTimeMs_;
-        } else {
-          result.successRunTimeMs_ = successRunTimeMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (canceledRunTimeMsBuilder_ == null) {
-          result.canceledRunTimeMs_ = canceledRunTimeMs_;
-        } else {
-          result.canceledRunTimeMs_ = canceledRunTimeMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (failedRunTimeMsBuilder_ == null) {
-          result.failedRunTimeMs_ = failedRunTimeMs_;
-        } else {
-          result.failedRunTimeMs_ = failedRunTimeMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ManifestMergerStats result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.successRunTimeMs_ = successRunTimeMsBuilder_ == null
+            ? successRunTimeMs_
+            : successRunTimeMsBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.canceledRunTimeMs_ = canceledRunTimeMsBuilder_ == null
+            ? canceledRunTimeMs_
+            : canceledRunTimeMsBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.failedRunTimeMs_ = failedRunTimeMsBuilder_ == null
+            ? failedRunTimeMs_
+            : failedRunTimeMsBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ManifestMergerStats) {
@@ -642,11 +601,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         successRunTimeMs_ = value;
-        onChanged();
       } else {
         successRunTimeMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -660,11 +619,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (successRunTimeMsBuilder_ == null) {
         successRunTimeMs_ = builderForValue.build();
-        onChanged();
       } else {
         successRunTimeMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -677,18 +636,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSuccessRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (successRunTimeMsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            successRunTimeMs_ != null &&
-            successRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          successRunTimeMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(successRunTimeMs_).mergeFrom(value).buildPartial();
+          successRunTimeMs_ != null &&
+          successRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getSuccessRunTimeMsBuilder().mergeFrom(value);
         } else {
           successRunTimeMs_ = value;
         }
-        onChanged();
       } else {
         successRunTimeMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -699,13 +657,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram success_run_time_ms = 1 [lazy = true];</code>
      */
     public Builder clearSuccessRunTimeMs() {
-      if (successRunTimeMsBuilder_ == null) {
-        successRunTimeMs_ = null;
-        onChanged();
-      } else {
-        successRunTimeMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      successRunTimeMs_ = null;
+      if (successRunTimeMsBuilder_ != null) {
+        successRunTimeMsBuilder_.dispose();
+        successRunTimeMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -801,11 +759,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         canceledRunTimeMs_ = value;
-        onChanged();
       } else {
         canceledRunTimeMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -820,11 +778,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (canceledRunTimeMsBuilder_ == null) {
         canceledRunTimeMs_ = builderForValue.build();
-        onChanged();
       } else {
         canceledRunTimeMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -838,18 +796,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeCanceledRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (canceledRunTimeMsBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            canceledRunTimeMs_ != null &&
-            canceledRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          canceledRunTimeMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(canceledRunTimeMs_).mergeFrom(value).buildPartial();
+          canceledRunTimeMs_ != null &&
+          canceledRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getCanceledRunTimeMsBuilder().mergeFrom(value);
         } else {
           canceledRunTimeMs_ = value;
         }
-        onChanged();
       } else {
         canceledRunTimeMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -861,13 +818,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram canceled_run_time_ms = 2 [lazy = true];</code>
      */
     public Builder clearCanceledRunTimeMs() {
-      if (canceledRunTimeMsBuilder_ == null) {
-        canceledRunTimeMs_ = null;
-        onChanged();
-      } else {
-        canceledRunTimeMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      canceledRunTimeMs_ = null;
+      if (canceledRunTimeMsBuilder_ != null) {
+        canceledRunTimeMsBuilder_.dispose();
+        canceledRunTimeMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -963,11 +920,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         failedRunTimeMs_ = value;
-        onChanged();
       } else {
         failedRunTimeMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -981,11 +938,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (failedRunTimeMsBuilder_ == null) {
         failedRunTimeMs_ = builderForValue.build();
-        onChanged();
       } else {
         failedRunTimeMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -998,18 +955,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFailedRunTimeMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (failedRunTimeMsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            failedRunTimeMs_ != null &&
-            failedRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          failedRunTimeMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(failedRunTimeMs_).mergeFrom(value).buildPartial();
+          failedRunTimeMs_ != null &&
+          failedRunTimeMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getFailedRunTimeMsBuilder().mergeFrom(value);
         } else {
           failedRunTimeMs_ = value;
         }
-        onChanged();
       } else {
         failedRunTimeMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1020,13 +976,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram failed_run_time_ms = 3 [lazy = true];</code>
      */
     public Builder clearFailedRunTimeMs() {
-      if (failedRunTimeMsBuilder_ == null) {
-        failedRunTimeMs_ = null;
-        onChanged();
-      } else {
-        failedRunTimeMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      failedRunTimeMs_ = null;
+      if (failedRunTimeMsBuilder_ != null) {
+        failedRunTimeMsBuilder_.dispose();
+        failedRunTimeMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

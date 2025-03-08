@@ -36,21 +36,54 @@ open class OperationsRegistrar<Component: ComponentIdentity> {
     private val noSelector = VariantSelectorImpl().all()
     private val actionsExecuted = AtomicBoolean(false)
 
-    fun addOperation(
+    /**
+     * Add a public callback to the end of the list of operations to be executed. A public callback
+     * is a callback defined by a user or a third party plugin, for example.
+     *
+     * @param callback the callback to be added to the list of operations
+     * @param callingFunctionName the name of the function that called this method (useful in case
+     *        of an error)
+     * @param selector the selector to use to determine which variants to execute the callback on
+     */
+    fun addPublicOperation(
         callback: Action<Component>,
-        selector: VariantSelector = noSelector
+        callingFunctionName: String,
+        selector: VariantSelector = noSelector,
     ) {
         if (actionsExecuted.get()) {
             throw RuntimeException(
                 """
                 It is too late to add actions as the callbacks already executed.
-                Did you try to call beforeVariants or onVariants from the old variant API
-                'applicationVariants' for instance ? you should always call beforeVariants or
-                onVariants directly from the androidComponents DSL block.
-                """
+                Did you try to call $callingFunctionName from the old variant API
+                'applicationVariants' for instance? You can instead call $callingFunctionName
+                directly from the androidComponents DSL block.
+                """.trimIndent()
             )
         }
         operations.add(Operation(selector as VariantSelectorImpl, callback))
+    }
+
+    /**
+     * Add an internal callback to the *beginning* of the list of operations to be executed, to
+     * ensure it's executed before any callbacks added via [addPublicOperation]. An internal
+     * callback is a callback defined by AGP.
+     *
+     * @param callback the callback to be added to the list of operations
+     * @param callingFunctionName the name of the function that called this method (useful in case
+     *        of an error)
+     * @param selector the selector to use to determine which variants to execute the callback on
+     */
+    fun addInternalOperation(
+        callback: Action<Component>,
+        callingFunctionName: String,
+        selector: VariantSelector = noSelector,
+    ) {
+        if (actionsExecuted.get()) {
+            throw RuntimeException(
+                "It is too late to call $callingFunctionName as the callbacks already executed."
+            )
+        }
+        operations.add(0, Operation(selector as VariantSelectorImpl, callback))
     }
 
     fun executeOperations(userVisibleVariant: Component) {

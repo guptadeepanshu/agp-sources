@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new IdePlugin();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IdePlugin_descriptor;
@@ -47,7 +42,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object id_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object id_ = "";
   /**
    * <pre>
    * Unique ID (e.g., "org.jetbrains.kotlin").
@@ -107,7 +103,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <pre>
    * Version (e.g., "1.3.21-release-Studio3.4-1").
@@ -167,7 +164,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUNDLED_FIELD_NUMBER = 3;
-  private boolean bundled_;
+  private boolean bundled_ = false;
   /**
    * <pre>
    * Whether this plugin (in its current version) came bundled with Studio.
@@ -417,12 +414,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       id_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       version_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       bundled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -449,57 +444,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IdePlugin buildPartial() {
       com.google.wireless.android.sdk.stats.IdePlugin result = new com.google.wireless.android.sdk.stats.IdePlugin(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.id_ = id_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.version_ = version_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.bundled_ = bundled_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.IdePlugin result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.id_ = id_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.version_ = version_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.bundled_ = bundled_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.IdePlugin) {
@@ -513,13 +480,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.IdePlugin other) {
       if (other == com.google.wireless.android.sdk.stats.IdePlugin.getDefaultInstance()) return this;
       if (other.hasId()) {
-        bitField0_ |= 0x00000001;
         id_ = other.id_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasVersion()) {
-        bitField0_ |= 0x00000002;
         version_ = other.version_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasBundled()) {
@@ -649,11 +616,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       id_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -666,8 +631,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       id_ = getDefaultInstance().getId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -682,11 +647,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       id_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -757,11 +720,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -774,8 +735,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -790,11 +751,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -834,8 +793,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBundled(boolean value) {
-      bitField0_ |= 0x00000004;
+
       bundled_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

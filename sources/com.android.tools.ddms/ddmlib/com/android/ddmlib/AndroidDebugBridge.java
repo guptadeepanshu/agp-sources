@@ -23,7 +23,6 @@ import com.android.ddmlib.internal.ClientImpl;
 import com.android.ddmlib.internal.DefaultJdwpProcessorFactory;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 
@@ -574,7 +573,8 @@ public class AndroidDebugBridge {
     }
 
     /** Creates a new bridge not linked to any particular adb executable. */
-    protected AndroidDebugBridge() {}
+    // TODO: temporarily public, as needed by `AdbLibAndroidDebugBridge`
+    public AndroidDebugBridge() {}
 
     interface AdbOutputProcessor<T> {
         T process(Process process, BufferedReader r) throws IOException;
@@ -700,6 +700,12 @@ public class AndroidDebugBridge {
     public boolean startAdb(long timeout, @NonNull TimeUnit unit) {
         delegateIsUsed = true;
         return delegate.startAdb(timeout, unit);
+    }
+
+    static String queryFeatures(String adbFeaturesRequest)
+            throws TimeoutException, AdbCommandRejectedException, IOException {
+        delegateIsUsed = true;
+        return delegate.queryFeatures(adbFeaturesRequest);
     }
 
     public static void setJdwpTracerFactory(@NonNull JdwpTracerFactory factory) {

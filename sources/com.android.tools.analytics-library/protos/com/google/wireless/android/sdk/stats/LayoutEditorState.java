@@ -35,11 +35,6 @@ private static final long serialVersionUID = 0L;
     return new LayoutEditorState();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LayoutEditorState_descriptor;
@@ -681,7 +676,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int MODE_FIELD_NUMBER = 1;
-  private int mode_;
+  private int mode_ = 0;
   /**
    * <pre>
    * layout editor preview or design mode
@@ -702,13 +697,12 @@ private static final long serialVersionUID = 0L;
    * @return The mode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Mode getMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.valueOf(mode_);
+    com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.forNumber(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.UNKOWN_MODE : result;
   }
 
   public static final int TYPE_FIELD_NUMBER = 2;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * layout type currently being displayed (layout, menu, drawable...)
@@ -729,13 +723,13 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Type getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.valueOf(type_);
+    com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Type.UNKNOWN_TYPE : result;
   }
 
   public static final int CONFIG_API_LEVEL_FIELD_NUMBER = 3;
-  private volatile java.lang.Object configApiLevel_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object configApiLevel_ = "";
   /**
    * <pre>
    * android api level  e.g. '23' or 'N'
@@ -795,7 +789,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONFIG_ZOOM_LEVEL_FIELD_NUMBER = 4;
-  private int configZoomLevel_;
+  private int configZoomLevel_ = 0;
   /**
    * <pre>
    * current layout zoom level
@@ -822,7 +816,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONFIG_ORIENTATION_FIELD_NUMBER = 5;
-  private int configOrientation_;
+  private int configOrientation_ = 0;
   /**
    * <pre>
    * current layout orientation
@@ -843,13 +837,12 @@ private static final long serialVersionUID = 0L;
    * @return The configOrientation.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation getConfigOrientation() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.valueOf(configOrientation_);
+    com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.forNumber(configOrientation_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.UNKNOWN_ORIENTATION : result;
   }
 
   public static final int SURFACES_FIELD_NUMBER = 6;
-  private int surfaces_;
+  private int surfaces_ = 0;
   /**
    * <pre>
    * surfaces being displyaed
@@ -870,13 +863,12 @@ private static final long serialVersionUID = 0L;
    * @return The surfaces.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces getSurfaces() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.valueOf(surfaces_);
+    com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.forNumber(surfaces_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.UNKNOWN_SURFACES : result;
   }
 
   public static final int PREVIEW_MODE_FIELD_NUMBER = 7;
-  private int previewMode_;
+  private int previewMode_ = 0;
   /**
    * <pre>
    * Indicates how user previews the layout, whether it is a static (classic)
@@ -899,8 +891,7 @@ private static final long serialVersionUID = 0L;
    * @return The previewMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode getPreviewMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.valueOf(previewMode_);
+    com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.forNumber(previewMode_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.UNKNOWN_PREVIEW_MODE : result;
   }
 
@@ -1191,20 +1182,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       mode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       configApiLevel_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       configZoomLevel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       configOrientation_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       surfaces_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       previewMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -1231,73 +1216,45 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState buildPartial() {
       com.google.wireless.android.sdk.stats.LayoutEditorState result = new com.google.wireless.android.sdk.stats.LayoutEditorState(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LayoutEditorState result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.mode_ = mode_;
         to_bitField0_ |= 0x00000001;
       }
-      result.mode_ = mode_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000002;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.configApiLevel_ = configApiLevel_;
         to_bitField0_ |= 0x00000004;
       }
-      result.configApiLevel_ = configApiLevel_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.configZoomLevel_ = configZoomLevel_;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.configOrientation_ = configOrientation_;
         to_bitField0_ |= 0x00000010;
       }
-      result.configOrientation_ = configOrientation_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.surfaces_ = surfaces_;
         to_bitField0_ |= 0x00000020;
       }
-      result.surfaces_ = surfaces_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.previewMode_ = previewMode_;
         to_bitField0_ |= 0x00000040;
       }
-      result.previewMode_ = previewMode_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LayoutEditorState) {
@@ -1317,8 +1274,8 @@ private static final long serialVersionUID = 0L;
         setType(other.getType());
       }
       if (other.hasConfigApiLevel()) {
-        bitField0_ |= 0x00000004;
         configApiLevel_ = other.configApiLevel_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasConfigZoomLevel()) {
@@ -1468,8 +1425,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Mode getMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.valueOf(mode_);
+      com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.forNumber(mode_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.UNKOWN_MODE : result;
     }
     /**
@@ -1527,8 +1483,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Type.UNKNOWN_TYPE : result;
     }
     /**
@@ -1630,11 +1585,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setConfigApiLevel(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       configApiLevel_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1647,8 +1600,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearConfigApiLevel() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       configApiLevel_ = getDefaultInstance().getConfigApiLevel();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1663,11 +1616,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setConfigApiLevelBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       configApiLevel_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1707,8 +1658,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setConfigZoomLevel(int value) {
-      bitField0_ |= 0x00000008;
+
       configZoomLevel_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1749,8 +1701,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation getConfigOrientation() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.valueOf(configOrientation_);
+      com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.forNumber(configOrientation_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.UNKNOWN_ORIENTATION : result;
     }
     /**
@@ -1808,8 +1759,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces getSurfaces() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.valueOf(surfaces_);
+      com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.forNumber(surfaces_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.UNKNOWN_SURFACES : result;
     }
     /**
@@ -1869,8 +1819,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode getPreviewMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.valueOf(previewMode_);
+      com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.forNumber(previewMode_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.UNKNOWN_PREVIEW_MODE : result;
     }
     /**

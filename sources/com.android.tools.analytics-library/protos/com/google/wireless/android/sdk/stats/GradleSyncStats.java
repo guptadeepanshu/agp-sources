@@ -39,11 +39,6 @@ private static final long serialVersionUID = 0L;
     return new GradleSyncStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_descriptor;
@@ -2804,11 +2799,6 @@ private static final long serialVersionUID = 0L;
       return new GradleSyncPhaseData();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncStats_GradleSyncPhaseData_descriptor;
@@ -3094,14 +3084,14 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int PHASE_STACK_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<java.lang.Integer> phaseStack_;
     private static final com.google.protobuf.Internal.ListAdapter.Converter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase> phaseStack_converter_ =
             new com.google.protobuf.Internal.ListAdapter.Converter<
                 java.lang.Integer, com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase>() {
               public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase convert(java.lang.Integer from) {
-                @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.valueOf(from);
+                com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.forNumber(from);
                 return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.SyncPhase.UNKNOWN_PHASE : result;
               }
             };
@@ -3149,7 +3139,7 @@ private static final long serialVersionUID = 0L;
     private int phaseStackMemoizedSerializedSize;
 
     public static final int PHASE_START_TIMESTAMP_MS_FIELD_NUMBER = 2;
-    private long phaseStartTimestampMs_;
+    private long phaseStartTimestampMs_ = 0L;
     /**
      * <code>optional int64 phase_start_timestamp_ms = 2;</code>
      * @return Whether the phaseStartTimestampMs field is set.
@@ -3168,7 +3158,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PHASE_END_TIMESTAMP_MS_FIELD_NUMBER = 3;
-    private long phaseEndTimestampMs_;
+    private long phaseEndTimestampMs_ = 0L;
     /**
      * <code>optional int64 phase_end_timestamp_ms = 3;</code>
      * @return Whether the phaseEndTimestampMs field is set.
@@ -3187,7 +3177,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PHASE_RESULT_FIELD_NUMBER = 4;
-    private int phaseResult_;
+    private int phaseResult_ = 0;
     /**
      * <code>optional .android_studio.GradleSyncStats.GradleSyncPhaseData.PhaseResult phase_result = 4;</code>
      * @return Whether the phaseResult field is set.
@@ -3200,8 +3190,7 @@ private static final long serialVersionUID = 0L;
      * @return The phaseResult.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult getPhaseResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.valueOf(phaseResult_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.forNumber(phaseResult_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.UNKNOWN_RESULT : result;
     }
 
@@ -3456,14 +3445,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         phaseStack_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         phaseStartTimestampMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         phaseEndTimestampMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         phaseResult_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -3490,13 +3477,23 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData buildPartial() {
         com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData result = new com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData result) {
         if (((bitField0_ & 0x00000001) != 0)) {
           phaseStack_ = java.util.Collections.unmodifiableList(phaseStack_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
         result.phaseStack_ = phaseStack_;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.phaseStartTimestampMs_ = phaseStartTimestampMs_;
           to_bitField0_ |= 0x00000001;
@@ -3506,46 +3503,12 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.phaseResult_ = phaseResult_;
           to_bitField0_ |= 0x00000004;
         }
-        result.phaseResult_ = phaseResult_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData) {
@@ -3815,8 +3778,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPhaseStartTimestampMs(long value) {
-        bitField0_ |= 0x00000002;
+
         phaseStartTimestampMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3854,8 +3818,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPhaseEndTimestampMs(long value) {
-        bitField0_ |= 0x00000004;
+
         phaseEndTimestampMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3884,8 +3849,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult getPhaseResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.valueOf(phaseResult_);
+        com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.forNumber(phaseResult_);
         return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData.PhaseResult.UNKNOWN_RESULT : result;
       }
       /**
@@ -3978,7 +3942,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TRIGGER_FIELD_NUMBER = 1;
-  private int trigger_;
+  private int trigger_ = 0;
   /**
    * <pre>
    * Cause of sync
@@ -3999,13 +3963,12 @@ private static final long serialVersionUID = 0L;
    * @return The trigger.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger getTrigger() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.valueOf(trigger_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.forNumber(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.TRIGGER_UNKNOWN : result;
   }
 
   public static final int TOTAL_TIME_MS_FIELD_NUMBER = 2;
-  private long totalTimeMs_;
+  private long totalTimeMs_ = 0L;
   /**
    * <pre>
    * Total time, the rest of the non negative times should add to this value
@@ -4032,7 +3995,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GRADLE_TIME_MS_FIELD_NUMBER = 3;
-  private long gradleTimeMs_;
+  private long gradleTimeMs_ = 0L;
   /**
    * <pre>
    * Time in ms spent on gradle (can be negative in case of failure)
@@ -4059,7 +4022,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IDE_TIME_MS_FIELD_NUMBER = 4;
-  private long ideTimeMs_;
+  private long ideTimeMs_ = 0L;
   /**
    * <pre>
    * Time in ms spent on IDE (can be negative in case of failure)
@@ -4086,7 +4049,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EMBEDDED_REPO_ENABLED_FIELD_NUMBER = 5;
-  private boolean embeddedRepoEnabled_;
+  private boolean embeddedRepoEnabled_ = false;
   /**
    * <pre>
    * Whether the embedded maven repository is enabled
@@ -4113,7 +4076,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SYNC_TYPE_FIELD_NUMBER = 6;
-  private int syncType_;
+  private int syncType_ = 0;
   /**
    * <pre>
    * What type of sync was requested
@@ -4134,13 +4097,12 @@ private static final long serialVersionUID = 0L;
    * @return The syncType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getSyncType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(syncType_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(syncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
   }
 
   public static final int ACTUAL_SYNC_TYPE_FIELD_NUMBER = 7;
-  private int actualSyncType_;
+  private int actualSyncType_ = 0;
   /**
    * <pre>
    * What type of sync was actually performed
@@ -4161,13 +4123,13 @@ private static final long serialVersionUID = 0L;
    * @return The actualSyncType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getActualSyncType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(actualSyncType_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(actualSyncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
   }
 
   public static final int LAST_KNOWN_ANDROID_GRADLE_PLUGIN_VERSION_FIELD_NUMBER = 8;
-  private volatile java.lang.Object lastKnownAndroidGradlePluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object lastKnownAndroidGradlePluginVersion_ = "";
   /**
    * <pre>
    * The version of our Android Gradle plugin from the last known successful
@@ -4230,7 +4192,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ANDROID_GRADLE_PLUGIN_VERSION_FIELD_NUMBER = 9;
-  private volatile java.lang.Object androidGradlePluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object androidGradlePluginVersion_ = "";
   /**
    * <pre>
    * The version of AGP used for this sync, if known. (e.g. 3.5.0)
@@ -4290,7 +4253,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USES_BUILD_GRADLE_FIELD_NUMBER = 10;
-  private boolean usesBuildGradle_;
+  private boolean usesBuildGradle_ = false;
   /**
    * <pre>
    * Whether or not the project uses Groovy build files ("build.gradle")
@@ -4317,7 +4280,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int USES_BUILD_GRADLE_KTS_FIELD_NUMBER = 11;
-  private boolean usesBuildGradleKts_;
+  private boolean usesBuildGradleKts_ = false;
   /**
    * <pre>
    * Whether or not the project uses Kotlin build files ("build.gradle.kts")
@@ -4344,7 +4307,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SYNC_EXECUTION_TYPE_FIELD_NUMBER = 12;
-  private int syncExecutionType_;
+  private int syncExecutionType_ = 0;
   /**
    * <pre>
    * Deprecated.
@@ -4354,7 +4317,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+   *     See studio_stats.proto;l=8490
    * @return Whether the syncExecutionType field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasSyncExecutionType() {
@@ -4369,17 +4333,17 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+   *     See studio_stats.proto;l=8490
    * @return The syncExecutionType.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(syncExecutionType_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.forNumber(syncExecutionType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.GRADLE_SYNC_RUNS_SEQUENTIALLY : result;
   }
 
   public static final int USER_REQUESTED_SYNC_TYPE_FIELD_NUMBER = 13;
-  private int userRequestedSyncType_;
+  private int userRequestedSyncType_ = 0;
   /**
    * <pre>
    * The type of sync execution user requested. Note that this may be overridden
@@ -4402,13 +4366,12 @@ private static final long serialVersionUID = 0L;
    * @return The userRequestedSyncType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution getUserRequestedSyncType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(userRequestedSyncType_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.forNumber(userRequestedSyncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.UNKNOWN_USER_REQUESTED_EXECUTION_TYPE : result;
   }
 
   public static final int STUDIO_REQUESTED_SYNC_TYPE_FIELD_NUMBER = 14;
-  private int studioRequestedSyncType_;
+  private int studioRequestedSyncType_ = 0;
   /**
    * <pre>
    * The type of sync execution Studio requested. Note that e.g. even if
@@ -4431,8 +4394,7 @@ private static final long serialVersionUID = 0L;
    * @return The studioRequestedSyncType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(studioRequestedSyncType_);
+    com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.forNumber(studioRequestedSyncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE : result;
   }
 
@@ -4475,7 +4437,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_CATALOG_DETECTOR_STATE_FIELD_NUMBER = 16;
-  private int versionCatalogDetectorState_;
+  private int versionCatalogDetectorState_ = 0;
   /**
    * <pre>
    * Data on Version Catalog use.
@@ -4496,12 +4458,12 @@ private static final long serialVersionUID = 0L;
    * @return The versionCatalogDetectorState.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(versionCatalogDetectorState_);
+    com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.forNumber(versionCatalogDetectorState_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
   }
 
   public static final int GRADLE_SYNC_PHASES_DATA_FIELD_NUMBER = 17;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncPhaseData> gradleSyncPhasesData_;
   /**
    * <pre>
@@ -5025,42 +4987,27 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       trigger_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       totalTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       gradleTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       ideTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       embeddedRepoEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       syncType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       actualSyncType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       lastKnownAndroidGradlePluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000080);
       androidGradlePluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000100);
       usesBuildGradle_ = false;
-      bitField0_ = (bitField0_ & ~0x00000200);
       usesBuildGradleKts_ = false;
-      bitField0_ = (bitField0_ & ~0x00000400);
       syncExecutionType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000800);
       userRequestedSyncType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00001000);
       studioRequestedSyncType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00002000);
-      if (downloadsDataBuilder_ == null) {
-        downloadsData_ = null;
-      } else {
-        downloadsDataBuilder_.clear();
+      downloadsData_ = null;
+      if (downloadsDataBuilder_ != null) {
+        downloadsDataBuilder_.dispose();
+        downloadsDataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00004000);
       versionCatalogDetectorState_ = 0;
-      bitField0_ = (bitField0_ & ~0x00008000);
       if (gradleSyncPhasesDataBuilder_ == null) {
         gradleSyncPhasesData_ = java.util.Collections.emptyList();
       } else {
@@ -5094,12 +5041,31 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats buildPartial() {
       com.google.wireless.android.sdk.stats.GradleSyncStats result = new com.google.wireless.android.sdk.stats.GradleSyncStats(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleSyncStats result) {
+      if (gradleSyncPhasesDataBuilder_ == null) {
+        if (((bitField0_ & 0x00010000) != 0)) {
+          gradleSyncPhasesData_ = java.util.Collections.unmodifiableList(gradleSyncPhasesData_);
+          bitField0_ = (bitField0_ & ~0x00010000);
+        }
+        result.gradleSyncPhasesData_ = gradleSyncPhasesData_;
+      } else {
+        result.gradleSyncPhasesData_ = gradleSyncPhasesDataBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleSyncStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.trigger_ = trigger_;
         to_bitField0_ |= 0x00000001;
       }
-      result.trigger_ = trigger_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.totalTimeMs_ = totalTimeMs_;
         to_bitField0_ |= 0x00000002;
@@ -5117,21 +5083,21 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.syncType_ = syncType_;
         to_bitField0_ |= 0x00000020;
       }
-      result.syncType_ = syncType_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.actualSyncType_ = actualSyncType_;
         to_bitField0_ |= 0x00000040;
       }
-      result.actualSyncType_ = actualSyncType_;
       if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.lastKnownAndroidGradlePluginVersion_ = lastKnownAndroidGradlePluginVersion_;
         to_bitField0_ |= 0x00000080;
       }
-      result.lastKnownAndroidGradlePluginVersion_ = lastKnownAndroidGradlePluginVersion_;
       if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.androidGradlePluginVersion_ = androidGradlePluginVersion_;
         to_bitField0_ |= 0x00000100;
       }
-      result.androidGradlePluginVersion_ = androidGradlePluginVersion_;
       if (((from_bitField0_ & 0x00000200) != 0)) {
         result.usesBuildGradle_ = usesBuildGradle_;
         to_bitField0_ |= 0x00000200;
@@ -5141,75 +5107,30 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000400;
       }
       if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.syncExecutionType_ = syncExecutionType_;
         to_bitField0_ |= 0x00000800;
       }
-      result.syncExecutionType_ = syncExecutionType_;
       if (((from_bitField0_ & 0x00001000) != 0)) {
+        result.userRequestedSyncType_ = userRequestedSyncType_;
         to_bitField0_ |= 0x00001000;
       }
-      result.userRequestedSyncType_ = userRequestedSyncType_;
       if (((from_bitField0_ & 0x00002000) != 0)) {
+        result.studioRequestedSyncType_ = studioRequestedSyncType_;
         to_bitField0_ |= 0x00002000;
       }
-      result.studioRequestedSyncType_ = studioRequestedSyncType_;
       if (((from_bitField0_ & 0x00004000) != 0)) {
-        if (downloadsDataBuilder_ == null) {
-          result.downloadsData_ = downloadsData_;
-        } else {
-          result.downloadsData_ = downloadsDataBuilder_.build();
-        }
+        result.downloadsData_ = downloadsDataBuilder_ == null
+            ? downloadsData_
+            : downloadsDataBuilder_.build();
         to_bitField0_ |= 0x00004000;
       }
       if (((from_bitField0_ & 0x00008000) != 0)) {
+        result.versionCatalogDetectorState_ = versionCatalogDetectorState_;
         to_bitField0_ |= 0x00008000;
       }
-      result.versionCatalogDetectorState_ = versionCatalogDetectorState_;
-      if (gradleSyncPhasesDataBuilder_ == null) {
-        if (((bitField0_ & 0x00010000) != 0)) {
-          gradleSyncPhasesData_ = java.util.Collections.unmodifiableList(gradleSyncPhasesData_);
-          bitField0_ = (bitField0_ & ~0x00010000);
-        }
-        result.gradleSyncPhasesData_ = gradleSyncPhasesData_;
-      } else {
-        result.gradleSyncPhasesData_ = gradleSyncPhasesDataBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleSyncStats) {
@@ -5244,13 +5165,13 @@ private static final long serialVersionUID = 0L;
         setActualSyncType(other.getActualSyncType());
       }
       if (other.hasLastKnownAndroidGradlePluginVersion()) {
-        bitField0_ |= 0x00000080;
         lastKnownAndroidGradlePluginVersion_ = other.lastKnownAndroidGradlePluginVersion_;
+        bitField0_ |= 0x00000080;
         onChanged();
       }
       if (other.hasAndroidGradlePluginVersion()) {
-        bitField0_ |= 0x00000100;
         androidGradlePluginVersion_ = other.androidGradlePluginVersion_;
+        bitField0_ |= 0x00000100;
         onChanged();
       }
       if (other.hasUsesBuildGradle()) {
@@ -5509,8 +5430,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger getTrigger() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.valueOf(trigger_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.forNumber(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.TRIGGER_UNKNOWN : result;
     }
     /**
@@ -5581,8 +5501,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalTimeMs(long value) {
-      bitField0_ |= 0x00000002;
+
       totalTimeMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -5636,8 +5557,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGradleTimeMs(long value) {
-      bitField0_ |= 0x00000004;
+
       gradleTimeMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -5691,8 +5613,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIdeTimeMs(long value) {
-      bitField0_ |= 0x00000008;
+
       ideTimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -5746,8 +5669,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEmbeddedRepoEnabled(boolean value) {
-      bitField0_ |= 0x00000010;
+
       embeddedRepoEnabled_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -5788,8 +5712,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getSyncType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(syncType_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(syncType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
     }
     /**
@@ -5847,8 +5770,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getActualSyncType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(actualSyncType_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.forNumber(actualSyncType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
     }
     /**
@@ -5954,11 +5876,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLastKnownAndroidGradlePluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       lastKnownAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -5972,8 +5892,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLastKnownAndroidGradlePluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000080);
       lastKnownAndroidGradlePluginVersion_ = getDefaultInstance().getLastKnownAndroidGradlePluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -5989,11 +5909,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLastKnownAndroidGradlePluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       lastKnownAndroidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -6064,11 +5982,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAndroidGradlePluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
+      if (value == null) { throw new NullPointerException(); }
       androidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -6081,8 +5997,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAndroidGradlePluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000100);
       androidGradlePluginVersion_ = getDefaultInstance().getAndroidGradlePluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000100);
       onChanged();
       return this;
     }
@@ -6097,11 +6013,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAndroidGradlePluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
+      if (value == null) { throw new NullPointerException(); }
       androidGradlePluginVersion_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -6141,8 +6055,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUsesBuildGradle(boolean value) {
-      bitField0_ |= 0x00000200;
+
       usesBuildGradle_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -6196,8 +6111,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUsesBuildGradleKts(boolean value) {
-      bitField0_ |= 0x00000400;
+
       usesBuildGradleKts_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -6226,7 +6142,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+     *     See studio_stats.proto;l=8490
      * @return Whether the syncExecutionType field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasSyncExecutionType() {
@@ -6241,13 +6158,13 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+     *     See studio_stats.proto;l=8490
      * @return The syncExecutionType.
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(syncExecutionType_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.forNumber(syncExecutionType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.GRADLE_SYNC_RUNS_SEQUENTIALLY : result;
     }
     /**
@@ -6259,7 +6176,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+     *     See studio_stats.proto;l=8490
      * @param value The syncExecutionType to set.
      * @return This builder for chaining.
      */
@@ -6281,7 +6199,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
+     *     See studio_stats.proto;l=8490
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearSyncExecutionType() {
@@ -6315,8 +6234,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution getUserRequestedSyncType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(userRequestedSyncType_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.forNumber(userRequestedSyncType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.UNKNOWN_USER_REQUESTED_EXECUTION_TYPE : result;
     }
     /**
@@ -6378,8 +6296,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(studioRequestedSyncType_);
+      com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.forNumber(studioRequestedSyncType_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE : result;
     }
     /**
@@ -6459,11 +6376,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         downloadsData_ = value;
-        onChanged();
       } else {
         downloadsDataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00004000;
+      onChanged();
       return this;
     }
     /**
@@ -6477,11 +6394,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder builderForValue) {
       if (downloadsDataBuilder_ == null) {
         downloadsData_ = builderForValue.build();
-        onChanged();
       } else {
         downloadsDataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00004000;
+      onChanged();
       return this;
     }
     /**
@@ -6494,18 +6411,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDownloadsData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
       if (downloadsDataBuilder_ == null) {
         if (((bitField0_ & 0x00004000) != 0) &&
-            downloadsData_ != null &&
-            downloadsData_ != com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance()) {
-          downloadsData_ =
-            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.newBuilder(downloadsData_).mergeFrom(value).buildPartial();
+          downloadsData_ != null &&
+          downloadsData_ != com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance()) {
+          getDownloadsDataBuilder().mergeFrom(value);
         } else {
           downloadsData_ = value;
         }
-        onChanged();
       } else {
         downloadsDataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00004000;
+      onChanged();
       return this;
     }
     /**
@@ -6516,13 +6432,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_data = 15 [lazy = true];</code>
      */
     public Builder clearDownloadsData() {
-      if (downloadsDataBuilder_ == null) {
-        downloadsData_ = null;
-        onChanged();
-      } else {
-        downloadsDataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00004000);
+      downloadsData_ = null;
+      if (downloadsDataBuilder_ != null) {
+        downloadsDataBuilder_.dispose();
+        downloadsDataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -6595,8 +6511,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getVersionCatalogDetectorState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(versionCatalogDetectorState_);
+      com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.forNumber(versionCatalogDetectorState_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
     }
     /**

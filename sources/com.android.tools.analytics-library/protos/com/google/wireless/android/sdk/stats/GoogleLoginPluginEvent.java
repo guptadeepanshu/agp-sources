@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new GoogleLoginPluginEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GoogleLoginPluginEvent_descriptor;
@@ -375,7 +370,8 @@ private static final long serialVersionUID = 0L;
       super(builder);
     }
     private LoginFeatures() {
-      features_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      features_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
     }
 
     @java.lang.Override
@@ -385,11 +381,6 @@ private static final long serialVersionUID = 0L;
       return new LoginFeatures();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GoogleLoginPluginEvent_LoginFeatures_descriptor;
@@ -404,7 +395,9 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FEATURES_FIELD_NUMBER = 1;
-    private com.google.protobuf.LazyStringList features_;
+    @SuppressWarnings("serial")
+    private com.google.protobuf.LazyStringArrayList features_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     /**
      * <pre>
      * e.g. "Gemini";
@@ -648,8 +641,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        features_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = 0;
+        features_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
         return this;
       }
 
@@ -676,48 +670,19 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures buildPartial() {
         com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures result = new com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures(this);
-        int from_bitField0_ = bitField0_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          features_ = features_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.features_ = features_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          features_.makeImmutable();
+          result.features_ = features_;
+        }
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures) {
@@ -733,7 +698,7 @@ private static final long serialVersionUID = 0L;
         if (!other.features_.isEmpty()) {
           if (features_.isEmpty()) {
             features_ = other.features_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ |= 0x00000001;
           } else {
             ensureFeaturesIsMutable();
             features_.addAll(other.features_);
@@ -789,12 +754,13 @@ private static final long serialVersionUID = 0L;
       }
       private int bitField0_;
 
-      private com.google.protobuf.LazyStringList features_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private com.google.protobuf.LazyStringArrayList features_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       private void ensureFeaturesIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!features_.isModifiable()) {
           features_ = new com.google.protobuf.LazyStringArrayList(features_);
-          bitField0_ |= 0x00000001;
-         }
+        }
+        bitField0_ |= 0x00000001;
       }
       /**
        * <pre>
@@ -806,7 +772,8 @@ private static final long serialVersionUID = 0L;
        */
       public com.google.protobuf.ProtocolStringList
           getFeaturesList() {
-        return features_.getUnmodifiableView();
+        features_.makeImmutable();
+        return features_;
       }
       /**
        * <pre>
@@ -856,11 +823,10 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setFeatures(
           int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFeaturesIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureFeaturesIsMutable();
         features_.set(index, value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -875,11 +841,10 @@ private static final long serialVersionUID = 0L;
        */
       public Builder addFeatures(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFeaturesIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureFeaturesIsMutable();
         features_.add(value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -897,6 +862,7 @@ private static final long serialVersionUID = 0L;
         ensureFeaturesIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
             values, features_);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -909,8 +875,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearFeatures() {
-        features_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        features_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);;
         onChanged();
         return this;
       }
@@ -925,11 +892,10 @@ private static final long serialVersionUID = 0L;
        */
       public Builder addFeaturesBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureFeaturesIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureFeaturesIsMutable();
         features_.add(value);
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -999,7 +965,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int EVENT_FIELD_NUMBER = 1;
-  private int event_;
+  private int event_ = 0;
   /**
    * <code>optional .android_studio.GoogleLoginPluginEvent.EventKind event = 1;</code>
    * @return Whether the event field is set.
@@ -1012,8 +978,7 @@ private static final long serialVersionUID = 0L;
    * @return The event.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind getEvent() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.valueOf(event_);
+    com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.forNumber(event_);
     return result == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.UNKNOWN_EVENT_TYPE : result;
   }
 
@@ -1044,7 +1009,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOGIN_TYPE_FIELD_NUMBER = 3;
-  private int loginType_;
+  private int loginType_ = 0;
   /**
    * <code>optional .android_studio.GoogleLoginPluginEvent.LoginType login_type = 3;</code>
    * @return Whether the loginType field is set.
@@ -1057,8 +1022,7 @@ private static final long serialVersionUID = 0L;
    * @return The loginType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType getLoginType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.valueOf(loginType_);
+    com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.forNumber(loginType_);
     return result == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.UNKNOWN_TYPE : result;
   }
 
@@ -1291,16 +1255,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       event_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (featuresBuilder_ == null) {
-        features_ = null;
-      } else {
-        featuresBuilder_.clear();
+      features_ = null;
+      if (featuresBuilder_ != null) {
+        featuresBuilder_.dispose();
+        featuresBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       loginType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1327,61 +1289,31 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent buildPartial() {
       com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent result = new com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.event_ = event_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (featuresBuilder_ == null) {
-          result.features_ = features_;
-        } else {
-          result.features_ = featuresBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.loginType_ = loginType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.event_ = event_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.features_ = featuresBuilder_ == null
+            ? features_
+            : featuresBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.loginType_ = loginType_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent) {
@@ -1491,8 +1423,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind getEvent() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.valueOf(event_);
+      com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.forNumber(event_);
       return result == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.EventKind.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -1550,11 +1481,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         features_ = value;
-        onChanged();
       } else {
         featuresBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1564,11 +1495,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.Builder builderForValue) {
       if (featuresBuilder_ == null) {
         features_ = builderForValue.build();
-        onChanged();
       } else {
         featuresBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1577,31 +1508,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFeatures(com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures value) {
       if (featuresBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            features_ != null &&
-            features_ != com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.getDefaultInstance()) {
-          features_ =
-            com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.newBuilder(features_).mergeFrom(value).buildPartial();
+          features_ != null &&
+          features_ != com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginFeatures.getDefaultInstance()) {
+          getFeaturesBuilder().mergeFrom(value);
         } else {
           features_ = value;
         }
-        onChanged();
       } else {
         featuresBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.GoogleLoginPluginEvent.LoginFeatures features = 2 [lazy = true];</code>
      */
     public Builder clearFeatures() {
-      if (featuresBuilder_ == null) {
-        features_ = null;
-        onChanged();
-      } else {
-        featuresBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      features_ = null;
+      if (featuresBuilder_ != null) {
+        featuresBuilder_.dispose();
+        featuresBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1654,8 +1584,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType getLoginType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.valueOf(loginType_);
+      com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType result = com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.forNumber(loginType_);
       return result == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.UNKNOWN_TYPE : result;
     }
     /**

@@ -32,7 +32,8 @@ public interface LogcatUsageEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+   *     See studio_stats.proto;l=13519
    * @return Whether the formatDialog field is set.
    */
   @java.lang.Deprecated boolean hasFormatDialog();
@@ -42,7 +43,8 @@ public interface LogcatUsageEventOrBuilder extends
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+   *     See studio_stats.proto;l=13519
    * @return The formatDialog.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatDialog();

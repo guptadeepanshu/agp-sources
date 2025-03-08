@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new SmlConfigurationEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlConfigurationEvent_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SML_AVAILABLE_FIELD_NUMBER = 1;
-  private boolean smlAvailable_;
+  private boolean smlAvailable_ = false;
   /**
    * <pre>
    * Whether SML features are available to this user.
@@ -72,7 +67,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BOT_ONBOARDING_STARTED_FIELD_NUMBER = 4;
-  private boolean botOnboardingStarted_;
+  private boolean botOnboardingStarted_ = false;
   /**
    * <pre>
    * Whether this user has started Studio Bot onboarding.
@@ -99,7 +94,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BOT_ONBOARDING_COMPLETED_FIELD_NUMBER = 5;
-  private boolean botOnboardingCompleted_;
+  private boolean botOnboardingCompleted_ = false;
   /**
    * <pre>
    * Whether this user has completed Studio Bot onboarding.
@@ -126,7 +121,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPLETION_ENABLED_FIELD_NUMBER = 2;
-  private boolean completionEnabled_;
+  private boolean completionEnabled_ = false;
   /**
    * <pre>
    * User has ML completion enabled.
@@ -153,7 +148,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRANSFORM_ENABLED_FIELD_NUMBER = 3;
-  private boolean transformEnabled_;
+  private boolean transformEnabled_ = false;
   /**
    * <pre>
    * User has ML based fixes enabled.
@@ -180,7 +175,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_CONTEXT_ENABLED_FIELD_NUMBER = 6;
-  private boolean projectContextEnabled_;
+  private boolean projectContextEnabled_ = false;
   /**
    * <pre>
    * User agrees to sending project context with queries
@@ -485,18 +480,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       smlAvailable_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       botOnboardingStarted_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       botOnboardingCompleted_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       completionEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       transformEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       projectContextEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -523,6 +513,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlConfigurationEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SmlConfigurationEvent result = new com.google.wireless.android.sdk.stats.SmlConfigurationEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SmlConfigurationEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -549,43 +545,9 @@ private static final long serialVersionUID = 0L;
         result.projectContextEnabled_ = projectContextEnabled_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SmlConfigurationEvent) {
@@ -724,8 +686,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSmlAvailable(boolean value) {
-      bitField0_ |= 0x00000001;
+
       smlAvailable_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -779,8 +742,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBotOnboardingStarted(boolean value) {
-      bitField0_ |= 0x00000002;
+
       botOnboardingStarted_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -834,8 +798,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBotOnboardingCompleted(boolean value) {
-      bitField0_ |= 0x00000004;
+
       botOnboardingCompleted_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -889,8 +854,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCompletionEnabled(boolean value) {
-      bitField0_ |= 0x00000008;
+
       completionEnabled_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -944,8 +910,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTransformEnabled(boolean value) {
-      bitField0_ |= 0x00000010;
+
       transformEnabled_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -999,8 +966,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setProjectContextEnabled(boolean value) {
-      bitField0_ |= 0x00000020;
+
       projectContextEnabled_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

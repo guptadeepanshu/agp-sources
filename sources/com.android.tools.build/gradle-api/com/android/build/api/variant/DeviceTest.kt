@@ -53,7 +53,7 @@ interface DeviceTest: GeneratesTestApk, HasAndroidResources, TestComponent {
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
     @get:Incubating
-    val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>
+    val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
 
     /**
      * List of proguard configuration files for this variant. The list is initialized from the

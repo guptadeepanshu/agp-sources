@@ -81,7 +81,7 @@ interface AndroidDsl: AndroidModel {
     /**
      * Returns the lint options.
      */
-    val lintOptions: LintOptions
+    val lintOptions: LintOptions?
 
     /**
      * The build tools version used by this module.

@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import java.io.File
 import java.io.IOException
 import java.io.Serializable
 import java.nio.file.Path
@@ -43,6 +44,9 @@ data class BuiltArtifactImpl private constructor(
     val variantOutputConfiguration: VariantOutputConfiguration = VariantOutputConfigurationImpl(),
     val attributes: Map<String, String> = mapOf(),
 ) : BuiltArtifact, CommonBuiltArtifact, Serializable, VariantOutputConfiguration by variantOutputConfiguration {
+
+    override val outputFilePath: Path
+        get() = File(outputFile).toPath()
 
     fun newOutput(newOutputFile: Path): BuiltArtifactImpl =
         copy(outputFile = newOutputFile.toFile().invariantSeparatorsPath)

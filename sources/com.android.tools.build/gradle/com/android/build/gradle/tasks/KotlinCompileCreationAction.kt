@@ -26,7 +26,10 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAP
 import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_JAVA_SOURCES
 import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.KotlinBaseApiVersion
 import com.android.build.gradle.internal.services.KotlinServices
+import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
@@ -34,15 +37,40 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class KotlinCompileCreationAction(
     creationConfig: ComponentCreationConfig,
-    kotlinServices: KotlinServices
+    private val kotlinServices: KotlinServices
 ) : KotlinTaskCreationAction<KotlinJvmCompile>(creationConfig) {
 
     private val kotlinJvmFactory = kotlinServices.factory
 
     override val taskName: String = creationConfig.computeTaskNameInternal("compile", "Kotlin")
 
-    override fun getTaskProvider(): TaskProvider<out KotlinJvmCompile> =
-        kotlinJvmFactory.registerKotlinJvmCompileTask(taskName, creationConfig.name)
+    override fun getTaskProvider(): TaskProvider<out KotlinJvmCompile> {
+        if (kotlinServices.kotlinBaseApiVersion > KotlinBaseApiVersion.VERSION_1) {
+            val compilerOptions =
+                creationConfig.global.kotlinAndroidProjectExtension?.compilerOptions
+            // TODO(b/341765853) never allow null compilerOptions once AGP always adds the kotlin
+            //  extension.
+            val allowNullCompilerOptions =
+                creationConfig.componentType.isTestFixturesComponent ||
+                        creationConfig.componentType.isForScreenshotPreview
+            if (compilerOptions == null && !allowNullCompilerOptions) {
+                // This should never happen.
+                creationConfig.services
+                    .issueReporter
+                    .reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException("Unable to access kotlin extension.")
+                    )
+            }
+            return kotlinJvmFactory.registerKotlinJvmCompileTask(
+                taskName,
+                compilerOptions ?: kotlinJvmFactory.createCompilerJvmOptions(),
+                creationConfig.services
+                    .provider { creationConfig.global.kotlinAndroidProjectExtension?.explicitApi }
+            )
+        }
+        return kotlinJvmFactory.registerKotlinJvmCompileTask(taskName, creationConfig.name)
+    }
 
     override fun handleProvider(task: TaskProvider<out KotlinJvmCompile>) {
         val artifacts = creationConfig.artifacts
@@ -64,12 +92,12 @@ class KotlinCompileCreationAction(
 
         val taskClasspath =
             creationConfig.services.fileCollection().from(
+                creationConfig.global.bootClasspath,
                 creationConfig.getJavaClasspath(
                     AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                     AndroidArtifacts.ArtifactType.CLASSES_JAR,
                     null
                 ),
-                creationConfig.global.bootClasspath
             )
         creationConfig.getBuiltInKaptArtifact(BUILT_IN_KAPT_CLASSES_DIR)?.let { taskClasspath.from(it) }
         task.libraries.setFrom(taskClasspath)
@@ -99,11 +127,12 @@ class KotlinCompileCreationAction(
             }
         }
 
-        // TODO(KT-69927) pass KotlinJvmCompilerOptions to registerKotlinJvmCompileTask()
-        creationConfig.global
-            .kotlinAndroidProjectExtension
-            ?.compilerOptions
-            ?.let { task.applyCompilerOptions(it) }
+        if (kotlinServices.kotlinBaseApiVersion < KotlinBaseApiVersion.VERSION_2) {
+            creationConfig.global
+                .kotlinAndroidProjectExtension
+                ?.compilerOptions
+                ?.let { task.applyCompilerOptions(it) }
+        }
     }
 }
 
@@ -120,7 +149,7 @@ abstract class KotlinTaskCreationAction<TASK : Task>(
 
     protected abstract fun configureTask(task: TASK)
 
-    fun registerTask() {
+    fun registerTask(): TaskProvider<out TASK> {
         val taskProvider = getTaskProvider()
         handleProvider(taskProvider)
 
@@ -131,11 +160,15 @@ abstract class KotlinTaskCreationAction<TASK : Task>(
 
             configureTask(it)
         }
+        return taskProvider
     }
 }
 
 /**
- * Add conventions for KotlinJvmCompile.compilerOptions properties based on [options]
+ * Add conventions for KotlinJvmCompile.compilerOptions properties based on [options].
+ *
+ * TODO(b/341765853) remove this after [MINIMUM_BUILT_IN_KOTLIN_VERSION] >= 2.1.0-Beta2 because the
+ *  compiler options are passed to the task registration functions starting with Kotlin 2.1.0-Beta2
  */
 internal fun KotlinJvmCompile.applyCompilerOptions(options: KotlinJvmCompilerOptions) {
     compilerOptions {
@@ -153,3 +186,4 @@ internal fun KotlinJvmCompile.applyCompilerOptions(options: KotlinJvmCompilerOpt
         verbose.convention(options.verbose)
     }
 }
+

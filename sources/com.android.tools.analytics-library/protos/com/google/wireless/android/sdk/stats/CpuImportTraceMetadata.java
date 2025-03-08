@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new CpuImportTraceMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_CpuImportTraceMetadata_descriptor;
@@ -303,7 +298,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IMPORT_STATUS_FIELD_NUMBER = 1;
-  private int importStatus_;
+  private int importStatus_ = 0;
   /**
    * <pre>
    * Status of the import trace action.
@@ -324,13 +319,12 @@ private static final long serialVersionUID = 0L;
    * @return The importStatus.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus getImportStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.valueOf(importStatus_);
+    com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.forNumber(importStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.UNDEFINED_IMPORT_TRACE_STATUS : result;
   }
 
   public static final int TECHNOLOGY_FIELD_NUMBER = 2;
-  private int technology_;
+  private int technology_ = 0;
   /**
    * <pre>
    * Technology used to generate the trace imported.
@@ -353,13 +347,12 @@ private static final long serialVersionUID = 0L;
    * @return The technology.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.valueOf(technology_);
+    com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.forNumber(technology_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.UNKNOWN_TECHNOLOGY : result;
   }
 
   public static final int HAS_COMPOSE_TRACING_NODES_FIELD_NUMBER = 3;
-  private boolean hasComposeTracingNodes_;
+  private boolean hasComposeTracingNodes_ = false;
   /**
    * <pre>
    * Whether the trace contains Compose Tracing nodes
@@ -613,12 +606,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       importStatus_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       technology_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       hasComposeTracingNodes_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -645,57 +636,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.CpuImportTraceMetadata result = new com.google.wireless.android.sdk.stats.CpuImportTraceMetadata(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.importStatus_ = importStatus_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.technology_ = technology_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.hasComposeTracingNodes_ = hasComposeTracingNodes_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.CpuImportTraceMetadata result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.importStatus_ = importStatus_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.technology_ = technology_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.hasComposeTracingNodes_ = hasComposeTracingNodes_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.CpuImportTraceMetadata) {
@@ -811,8 +774,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus getImportStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.valueOf(importStatus_);
+      com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.forNumber(importStatus_);
       return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.UNDEFINED_IMPORT_TRACE_STATUS : result;
     }
     /**
@@ -872,8 +834,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.valueOf(technology_);
+      com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.forNumber(technology_);
       return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.UNKNOWN_TECHNOLOGY : result;
     }
     /**
@@ -946,8 +907,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasComposeTracingNodes(boolean value) {
-      bitField0_ |= 0x00000004;
+
       hasComposeTracingNodes_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

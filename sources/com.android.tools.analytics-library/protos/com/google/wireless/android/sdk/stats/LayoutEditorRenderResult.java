@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new LayoutEditorRenderResult();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LayoutEditorRenderResult_descriptor;
@@ -206,7 +201,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TRIGGER_FIELD_NUMBER = 1;
-  private int trigger_;
+  private int trigger_ = 0;
   /**
    * <pre>
    * Action that triggered the render
@@ -227,13 +222,12 @@ private static final long serialVersionUID = 0L;
    * @return The trigger.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger getTrigger() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.valueOf(trigger_);
+    com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.forNumber(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.UNKNOWN_TRIGGER : result;
   }
 
   public static final int RESULT_CODE_FIELD_NUMBER = 2;
-  private int resultCode_;
+  private int resultCode_ = 0;
   /**
    * <pre>
    * Render result code
@@ -260,7 +254,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_RENDER_TIME_MS_FIELD_NUMBER = 4;
-  private long totalRenderTimeMs_;
+  private long totalRenderTimeMs_ = 0L;
   /**
    * <pre>
    * Full render time in ms
@@ -287,7 +281,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPONENT_COUNT_FIELD_NUMBER = 5;
-  private int componentCount_;
+  private int componentCount_ = 0;
   /**
    * <pre>
    * Number of components rendered
@@ -314,7 +308,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_ISSUE_COUNT_FIELD_NUMBER = 6;
-  private int totalIssueCount_;
+  private int totalIssueCount_ = 0;
   /**
    * <pre>
    * Total number of issues (warnings + errors) in the error panel
@@ -341,7 +335,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERROR_COUNT_FIELD_NUMBER = 7;
-  private int errorCount_;
+  private int errorCount_ = 0;
   /**
    * <pre>
    * Errors displayed in the error panel
@@ -368,7 +362,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FIDELITY_WARNING_COUNT_FIELD_NUMBER = 8;
-  private int fidelityWarningCount_;
+  private int fidelityWarningCount_ = 0;
   /**
    * <pre>
    * Fidelity warnings
@@ -395,7 +389,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_ID_FIELD_NUMBER = 9;
-  private volatile java.lang.Object deviceId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object deviceId_ = "";
   /**
    * <pre>
    * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
@@ -774,22 +769,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       trigger_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       resultCode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       totalRenderTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       componentCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       totalIssueCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       errorCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       fidelityWarningCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       deviceId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -816,12 +804,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult buildPartial() {
       com.google.wireless.android.sdk.stats.LayoutEditorRenderResult result = new com.google.wireless.android.sdk.stats.LayoutEditorRenderResult(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LayoutEditorRenderResult result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.trigger_ = trigger_;
         to_bitField0_ |= 0x00000001;
       }
-      result.trigger_ = trigger_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.resultCode_ = resultCode_;
         to_bitField0_ |= 0x00000002;
@@ -847,46 +841,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000040;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.deviceId_ = deviceId_;
         to_bitField0_ |= 0x00000080;
       }
-      result.deviceId_ = deviceId_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LayoutEditorRenderResult) {
@@ -921,8 +881,8 @@ private static final long serialVersionUID = 0L;
         setFidelityWarningCount(other.getFidelityWarningCount());
       }
       if (other.hasDeviceId()) {
-        bitField0_ |= 0x00000080;
         deviceId_ = other.deviceId_;
+        bitField0_ |= 0x00000080;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -1037,8 +997,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger getTrigger() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.valueOf(trigger_);
+      com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.forNumber(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.UNKNOWN_TRIGGER : result;
     }
     /**
@@ -1109,8 +1068,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResultCode(int value) {
-      bitField0_ |= 0x00000002;
+
       resultCode_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1164,8 +1124,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalRenderTimeMs(long value) {
-      bitField0_ |= 0x00000004;
+
       totalRenderTimeMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1219,8 +1180,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setComponentCount(int value) {
-      bitField0_ |= 0x00000008;
+
       componentCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1274,8 +1236,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalIssueCount(int value) {
-      bitField0_ |= 0x00000010;
+
       totalIssueCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1329,8 +1292,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setErrorCount(int value) {
-      bitField0_ |= 0x00000020;
+
       errorCount_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1384,8 +1348,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFidelityWarningCount(int value) {
-      bitField0_ |= 0x00000040;
+
       fidelityWarningCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1486,11 +1451,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       deviceId_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1507,8 +1470,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDeviceId() {
-      bitField0_ = (bitField0_ & ~0x00000080);
       deviceId_ = getDefaultInstance().getDeviceId();
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -1527,11 +1490,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+      if (value == null) { throw new NullPointerException(); }
       deviceId_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }

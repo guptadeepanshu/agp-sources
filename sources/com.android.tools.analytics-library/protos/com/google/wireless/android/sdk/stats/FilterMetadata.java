@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new FilterMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_FilterMetadata_descriptor;
@@ -355,7 +350,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTIVE_VIEW_FIELD_NUMBER = 1;
-  private int activeView_;
+  private int activeView_ = 0;
   /**
    * <pre>
    * The view that is active when opening / using the filter.
@@ -376,13 +371,12 @@ private static final long serialVersionUID = 0L;
    * @return The activeView.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.FilterMetadata.View getActiveView() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.valueOf(activeView_);
+    com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.forNumber(activeView_);
     return result == null ? com.google.wireless.android.sdk.stats.FilterMetadata.View.UNKNOWN_FILTER_VIEW : result;
   }
 
   public static final int FEATURES_USED_FIELD_NUMBER = 2;
-  private long featuresUsed_;
+  private long featuresUsed_ = 0L;
   /**
    * <pre>
    * Bitwise field used to store features used derived from
@@ -411,7 +405,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MATCHED_ELEMENTS_FIELD_NUMBER = 3;
-  private int matchedElements_;
+  private int matchedElements_ = 0;
   /**
    * <pre>
    * The count of elements matched.
@@ -438,7 +432,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_ELEMENTS_FIELD_NUMBER = 4;
-  private int totalElements_;
+  private int totalElements_ = 0;
   /**
    * <pre>
    * The number of total elements to be searched.
@@ -465,7 +459,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SEARCH_LENGTH_FIELD_NUMBER = 5;
-  private int searchLength_;
+  private int searchLength_ = 0;
   /**
    * <pre>
    * The length of the string used to filter.
@@ -752,16 +746,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       activeView_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       featuresUsed_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       matchedElements_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       totalElements_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       searchLength_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -788,12 +778,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FilterMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.FilterMetadata result = new com.google.wireless.android.sdk.stats.FilterMetadata(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.FilterMetadata result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.activeView_ = activeView_;
         to_bitField0_ |= 0x00000001;
       }
-      result.activeView_ = activeView_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.featuresUsed_ = featuresUsed_;
         to_bitField0_ |= 0x00000002;
@@ -810,43 +806,9 @@ private static final long serialVersionUID = 0L;
         result.searchLength_ = searchLength_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.FilterMetadata) {
@@ -971,8 +933,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FilterMetadata.View getActiveView() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.valueOf(activeView_);
+      com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.forNumber(activeView_);
       return result == null ? com.google.wireless.android.sdk.stats.FilterMetadata.View.UNKNOWN_FILTER_VIEW : result;
     }
     /**
@@ -1046,8 +1007,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFeaturesUsed(long value) {
-      bitField0_ |= 0x00000002;
+
       featuresUsed_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1102,8 +1064,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMatchedElements(int value) {
-      bitField0_ |= 0x00000004;
+
       matchedElements_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1157,8 +1120,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalElements(int value) {
-      bitField0_ |= 0x00000008;
+
       totalElements_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1212,8 +1176,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSearchLength(int value) {
-      bitField0_ |= 0x00000010;
+
       searchLength_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

@@ -42,6 +42,7 @@ import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -66,6 +67,9 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
 
     @get:Input
     abstract val minSdkVersion: Property<String>
+
+    @get:Input
+    abstract val manifestPlaceholders: MapProperty<String, String>
 
     @get:Internal
     abstract val tmpDir: DirectoryProperty
@@ -95,6 +99,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
         val identifierToManifestDependencyFile = libraryManifests.get().associate { getArtifactName(it) to it.file }
         parameters.dependencies.set(identifierToManifestDependencyFile)
         parameters.namespace.set(namespace)
+        parameters.manifestPlaceholders.set(manifestPlaceholders)
         parameters.minSdkVersion.set(minSdkVersion)
         parameters.outMergedManifestLocation.set(mergedFusedLibraryManifest)
         parameters.reportFile.set(reportFile)
@@ -104,6 +109,7 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
         abstract val mainAndroidManifest: RegularFileProperty
         abstract val dependencies: MapProperty<String, File>
         abstract val namespace: Property<String>
+        abstract val manifestPlaceholders: MapProperty<String, String>
         abstract val minSdkVersion: Property<String>
         abstract val outMergedManifestLocation: RegularFileProperty
         abstract val reportFile: RegularFileProperty
@@ -133,9 +139,9 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
                         extractNativeLibs = null,
                         outMergedManifestLocation = outMergedManifestLocation.get().asFile.absolutePath,
                         outAaptSafeManifestLocation = null,
-                        mergeType = ManifestMerger2.MergeType.FUSED_LIBRARY,
-                        placeHolders = emptyMap(),
-                        optionalFeatures = listOf(ManifestMerger2.Invoker.Feature.NO_PLACEHOLDER_REPLACEMENT),
+                        mergeType = ManifestMerger2.MergeType.LIBRARY,
+                        placeHolders = manifestPlaceholders.get(),
+                        optionalFeatures = emptyList(),
                         dependencyFeatureNames = emptyList(),
                         generatedLocaleConfigAttribute = null,
                         reportFile = reportFile.get().asFile,
@@ -180,8 +186,9 @@ abstract class FusedLibraryManifestMergerTask : ManifestProcessorTask() {
                 AndroidArtifacts.ArtifactType.MANIFEST
             )
             task.libraryManifests.set(libraryManifests)
-            task.minSdkVersion.setDisallowChanges(creationConfig.extension.minSdk.toString())
-            task.namespace.set(creationConfig.extension.namespace)
+            task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdk.toString())
+            task.namespace.set(creationConfig.namespace)
             task.tmpDir.setDisallowChanges(
                     creationConfig.projectLayout.buildDirectory.dir("tmp/FusedLibraryManifestMerger")
             )

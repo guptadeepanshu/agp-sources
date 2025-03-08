@@ -94,7 +94,7 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalGloba
 
         override fun configure(task: FusedLibraryMergeResourceCompileSymbolsTask) {
             super.configure(task)
-            task.namespace.setDisallowChanges(creationConfig.extension.namespace)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
             task.symbolTableBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry))
             task.symbolDependencyTables.fromDisallowChanges(

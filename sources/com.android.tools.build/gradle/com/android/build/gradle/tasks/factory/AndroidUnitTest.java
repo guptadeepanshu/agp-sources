@@ -73,6 +73,7 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.testing.JUnitXmlReport;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.TestTaskReports;
+import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension;
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
@@ -335,7 +336,14 @@ public abstract class AndroidUnitTest extends Test implements VariantTask, UsesA
 
             // Robolectric specific: add JVM flag to allow unit tests to run when using Java 17+.
             // Ref b/248929512.
-            task.jvmArgs((ImmutableList.of("--add-opens=java.base/java.io=ALL-UNNAMED")));
+            if (task.getJavaLauncher()
+                            .get()
+                            .getMetadata()
+                            .getLanguageVersion()
+                            .compareTo(JavaLanguageVersion.of(17))
+                    >= 0) {
+                task.jvmArgs((ImmutableList.of("--add-opens=java.base/java.io=ALL-UNNAMED")));
+            }
 
             task.dependencies =
                     creationConfig

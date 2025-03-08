@@ -37,11 +37,6 @@ private static final long serialVersionUID = 0L;
     return new DeviceTestSpanProfile();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceTestSpanProfile_descriptor;
@@ -460,7 +455,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DEVICE_TYPE_FIELD_NUMBER = 1;
-  private int deviceType_;
+  private int deviceType_ = 0;
   /**
    * <pre>
    * Type of device used in this test run
@@ -481,13 +476,12 @@ private static final long serialVersionUID = 0L;
    * @return The deviceType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType getDeviceType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.valueOf(deviceType_);
+    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.forNumber(deviceType_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.UNKNOWN_DEVICE_TYPE : result;
   }
 
   public static final int TEST_KIND_FIELD_NUMBER = 2;
-  private int testKind_;
+  private int testKind_ = 0;
   /**
    * <pre>
    * Type of test being run on this device
@@ -508,13 +502,12 @@ private static final long serialVersionUID = 0L;
    * @return The testKind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
+    com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.forNumber(testKind_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestKind.UNKNOWN_TEST_KIND : result;
   }
 
   public static final int PROCESS_TYPE_FIELD_NUMBER = 3;
-  private int processType_;
+  private int processType_ = 0;
   /**
    * <pre>
    * Type of process that is used to install, run, and manage the test.
@@ -535,13 +528,12 @@ private static final long serialVersionUID = 0L;
    * @return The processType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType getProcessType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.valueOf(processType_);
+    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.forNumber(processType_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.UNKNOWN_PROCESS_TYPE : result;
   }
 
   public static final int DEVICE_LOCK_WAIT_START_TIME_MS_FIELD_NUMBER = 5;
-  private long deviceLockWaitStartTimeMs_;
+  private long deviceLockWaitStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span of how long the test waited for device(s) to become available.
@@ -572,7 +564,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_LOCK_WAIT_DURATION_MS_FIELD_NUMBER = 6;
-  private long deviceLockWaitDurationMs_;
+  private long deviceLockWaitDurationMs_ = 0L;
   /**
    * <code>optional int64 device_lock_wait_duration_ms = 6;</code>
    * @return Whether the deviceLockWaitDurationMs field is set.
@@ -591,7 +583,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_SETUP_START_TIME_MS_FIELD_NUMBER = 7;
-  private long utpSetupStartTimeMs_;
+  private long utpSetupStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span of how long the Unified Test Platform needed for internal setup before
@@ -620,7 +612,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_SETUP_DURATION_MS_FIELD_NUMBER = 8;
-  private long utpSetupDurationMs_;
+  private long utpSetupDurationMs_ = 0L;
   /**
    * <code>optional int64 utp_setup_duration_ms = 8;</code>
    * @return Whether the utpSetupDurationMs field is set.
@@ -639,7 +631,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_PROVIDE_DEVICE_START_TIME_MS_FIELD_NUMBER = 9;
-  private long utpProvideDeviceStartTimeMs_;
+  private long utpProvideDeviceStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span of how long the device took to be provisioned by the device provider
@@ -666,7 +658,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_PROVIDE_DEVICE_DURATION_MS_FIELD_NUMBER = 10;
-  private long utpProvideDeviceDurationMs_;
+  private long utpProvideDeviceDurationMs_ = 0L;
   /**
    * <code>optional int64 utp_provide_device_duration_ms = 10;</code>
    * @return Whether the utpProvideDeviceDurationMs field is set.
@@ -685,7 +677,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEST_SETUP_START_TIME_MS_FIELD_NUMBER = 11;
-  private long utpTestSetupStartTimeMs_;
+  private long utpTestSetupStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span of how long the device took after device was provided, but before
@@ -716,7 +708,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEST_SETUP_DURATION_MS_FIELD_NUMBER = 12;
-  private long utpTestSetupDurationMs_;
+  private long utpTestSetupDurationMs_ = 0L;
   /**
    * <code>optional int64 utp_test_setup_duration_ms = 12;</code>
    * @return Whether the utpTestSetupDurationMs field is set.
@@ -735,7 +727,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEST_RUN_START_TIME_MS_FIELD_NUMBER = 13;
-  private long utpTestRunStartTimeMs_;
+  private long utpTestRunStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span for how long the tests actually took to run.
@@ -762,7 +754,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEST_RUN_DURATION_MS_FIELD_NUMBER = 14;
-  private long utpTestRunDurationMs_;
+  private long utpTestRunDurationMs_ = 0L;
   /**
    * <code>optional int64 utp_test_run_duration_ms = 14;</code>
    * @return Whether the utpTestRunDurationMs field is set.
@@ -781,7 +773,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEAR_DOWN_START_TIME_MS_FIELD_NUMBER = 15;
-  private long utpTearDownStartTimeMs_;
+  private long utpTearDownStartTimeMs_ = 0L;
   /**
    * <pre>
    * Span of how long it took to clean up the device and test process.
@@ -812,7 +804,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UTP_TEAR_DOWN_DURATION_MS_FIELD_NUMBER = 16;
-  private long utpTearDownDurationMs_;
+  private long utpTearDownDurationMs_ = 0L;
   /**
    * <code>optional int64 utp_tear_down_duration_ms = 16;</code>
    * @return Whether the utpTearDownDurationMs field is set.
@@ -831,7 +823,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROGRESS_RESULT_FIELD_NUMBER = 17;
-  private int progressResult_;
+  private int progressResult_ = 0;
   /**
    * <pre>
    * Whether or not the tests were able to finish, and, if failed, what caused
@@ -854,8 +846,7 @@ private static final long serialVersionUID = 0L;
    * @return The progressResult.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult getProgressResult() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.valueOf(progressResult_);
+    com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.forNumber(progressResult_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.UNKNOWN_RESULT : result;
   }
 
@@ -1308,38 +1299,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       deviceType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       testKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       processType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       deviceLockWaitStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       deviceLockWaitDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       utpSetupStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       utpSetupDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       utpProvideDeviceStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       utpProvideDeviceDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000100);
       utpTestSetupStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
       utpTestSetupDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000400);
       utpTestRunStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000800);
       utpTestRunDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00001000);
       utpTearDownStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00002000);
       utpTearDownDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00004000);
       progressResult_ = 0;
-      bitField0_ = (bitField0_ & ~0x00008000);
       return this;
     }
 
@@ -1366,20 +1342,26 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile buildPartial() {
       com.google.wireless.android.sdk.stats.DeviceTestSpanProfile result = new com.google.wireless.android.sdk.stats.DeviceTestSpanProfile(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DeviceTestSpanProfile result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.deviceType_ = deviceType_;
         to_bitField0_ |= 0x00000001;
       }
-      result.deviceType_ = deviceType_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.testKind_ = testKind_;
         to_bitField0_ |= 0x00000002;
       }
-      result.testKind_ = testKind_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.processType_ = processType_;
         to_bitField0_ |= 0x00000004;
       }
-      result.processType_ = processType_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.deviceLockWaitStartTimeMs_ = deviceLockWaitStartTimeMs_;
         to_bitField0_ |= 0x00000008;
@@ -1429,46 +1411,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00004000;
       }
       if (((from_bitField0_ & 0x00008000) != 0)) {
+        result.progressResult_ = progressResult_;
         to_bitField0_ |= 0x00008000;
       }
-      result.progressResult_ = progressResult_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DeviceTestSpanProfile) {
@@ -1702,8 +1650,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType getDeviceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.valueOf(deviceType_);
+      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.forNumber(deviceType_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.DeviceType.UNKNOWN_DEVICE_TYPE : result;
     }
     /**
@@ -1761,8 +1708,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
+      com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.forNumber(testKind_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestKind.UNKNOWN_TEST_KIND : result;
     }
     /**
@@ -1820,8 +1766,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType getProcessType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.valueOf(processType_);
+      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.forNumber(processType_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.ProcessType.UNKNOWN_PROCESS_TYPE : result;
     }
     /**
@@ -1898,8 +1843,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeviceLockWaitStartTimeMs(long value) {
-      bitField0_ |= 0x00000008;
+
       deviceLockWaitStartTimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1943,8 +1889,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeviceLockWaitDurationMs(long value) {
-      bitField0_ |= 0x00000010;
+
       deviceLockWaitDurationMs_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1997,8 +1944,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpSetupStartTimeMs(long value) {
-      bitField0_ |= 0x00000020;
+
       utpSetupStartTimeMs_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2041,8 +1989,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpSetupDurationMs(long value) {
-      bitField0_ |= 0x00000040;
+
       utpSetupDurationMs_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2092,8 +2041,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpProvideDeviceStartTimeMs(long value) {
-      bitField0_ |= 0x00000080;
+
       utpProvideDeviceStartTimeMs_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2135,8 +2085,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpProvideDeviceDurationMs(long value) {
-      bitField0_ |= 0x00000100;
+
       utpProvideDeviceDurationMs_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2192,8 +2143,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTestSetupStartTimeMs(long value) {
-      bitField0_ |= 0x00000200;
+
       utpTestSetupStartTimeMs_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -2237,8 +2189,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTestSetupDurationMs(long value) {
-      bitField0_ |= 0x00000400;
+
       utpTestSetupDurationMs_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -2288,8 +2241,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTestRunStartTimeMs(long value) {
-      bitField0_ |= 0x00000800;
+
       utpTestRunStartTimeMs_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -2331,8 +2285,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTestRunDurationMs(long value) {
-      bitField0_ |= 0x00001000;
+
       utpTestRunDurationMs_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -2388,8 +2343,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTearDownStartTimeMs(long value) {
-      bitField0_ |= 0x00002000;
+
       utpTearDownStartTimeMs_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2433,8 +2389,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUtpTearDownDurationMs(long value) {
-      bitField0_ |= 0x00004000;
+
       utpTearDownDurationMs_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -2473,8 +2430,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult getProgressResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.valueOf(progressResult_);
+      com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult result = com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.forNumber(progressResult_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceTestSpanProfile.TestProgressResult.UNKNOWN_RESULT : result;
     }
     /**

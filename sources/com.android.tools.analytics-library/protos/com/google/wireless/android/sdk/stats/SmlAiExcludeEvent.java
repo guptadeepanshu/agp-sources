@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new SmlAiExcludeEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlAiExcludeEvent_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int PASTE_BLOCKED_FIELD_NUMBER = 1;
-  private boolean pasteBlocked_;
+  private boolean pasteBlocked_ = false;
   /**
    * <pre>
    * Paste into chat
@@ -72,7 +67,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INTENTION_ACTION_BLOCKED_FIELD_NUMBER = 2;
-  private boolean intentionActionBlocked_;
+  private boolean intentionActionBlocked_ = false;
   /**
    * <pre>
    * Editor actions (e.g. document, simplify)
@@ -99,7 +94,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PASSIVE_ACTION_BLOCKED_FIELD_NUMBER = 3;
-  private boolean passiveActionBlocked_;
+  private boolean passiveActionBlocked_ = false;
   /**
    * <pre>
    * Passive editor effects/actions (e.g. transform)
@@ -126,7 +121,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONTEXT_BLOCKED_FIELD_NUMBER = 4;
-  private boolean contextBlocked_;
+  private boolean contextBlocked_ = false;
   /**
    * <pre>
    * Code included as context for a query
@@ -397,14 +392,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       pasteBlocked_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       intentionActionBlocked_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       passiveActionBlocked_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       contextBlocked_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -431,6 +423,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlAiExcludeEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SmlAiExcludeEvent result = new com.google.wireless.android.sdk.stats.SmlAiExcludeEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SmlAiExcludeEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -449,43 +447,9 @@ private static final long serialVersionUID = 0L;
         result.contextBlocked_ = contextBlocked_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SmlAiExcludeEvent) {
@@ -608,8 +572,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPasteBlocked(boolean value) {
-      bitField0_ |= 0x00000001;
+
       pasteBlocked_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -663,8 +628,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIntentionActionBlocked(boolean value) {
-      bitField0_ |= 0x00000002;
+
       intentionActionBlocked_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -718,8 +684,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPassiveActionBlocked(boolean value) {
-      bitField0_ |= 0x00000004;
+
       passiveActionBlocked_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -773,8 +740,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setContextBlocked(boolean value) {
-      bitField0_ |= 0x00000008;
+
       contextBlocked_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

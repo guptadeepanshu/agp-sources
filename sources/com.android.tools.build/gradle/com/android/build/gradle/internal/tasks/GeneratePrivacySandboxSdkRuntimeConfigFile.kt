@@ -143,7 +143,8 @@ abstract class GeneratePrivacySandboxSdkRuntimeConfigFile : NonIncrementalTask()
         override fun handleProvider(taskProvider: TaskProvider<GeneratePrivacySandboxSdkRuntimeConfigFile>) {
             super.handleProvider(taskProvider)
             creationConfig.artifacts.setInitialProvider(taskProvider, GeneratePrivacySandboxSdkRuntimeConfigFile::generatedRPackage)
-                    .on(InternalArtifactType.PRIVACY_SANDBOX_SDK_R_PACKAGE_JAR)
+                .withName("out.jar")
+                .on(InternalArtifactType.PRIVACY_SANDBOX_SDK_R_PACKAGE_JAR)
             creationConfig.artifacts.setInitialProvider(taskProvider, GeneratePrivacySandboxSdkRuntimeConfigFile::privacySandboxSdkRuntimeConfigFile)
                     .on(InternalArtifactType.PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE)
         }

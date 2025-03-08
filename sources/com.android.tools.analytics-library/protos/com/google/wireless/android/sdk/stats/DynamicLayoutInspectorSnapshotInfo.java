@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorSnapshotInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorSnapshotInfo_descriptor;
@@ -151,7 +146,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SNAPSHOT_VERSION_FIELD_NUMBER = 1;
-  private int snapshotVersion_;
+  private int snapshotVersion_ = 0;
   /**
    * <pre>
    * The version of the snapshot file format. Current versions are:
@@ -186,7 +181,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SAVE_SOURCE_FIELD_NUMBER = 2;
-  private int saveSource_;
+  private int saveSource_ = 0;
   /**
    * <pre>
    * What program saved the snapshot
@@ -207,13 +202,13 @@ private static final long serialVersionUID = 0L;
    * @return The saveSource.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource getSaveSource() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.valueOf(saveSource_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.forNumber(saveSource_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.UNKNOWN : result;
   }
 
   public static final int SAVE_VERSION_FIELD_NUMBER = 3;
-  private volatile java.lang.Object saveVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object saveVersion_ = "";
   /**
    * <pre>
    * The version of studio (or some other future tool) that saved it
@@ -273,7 +268,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LIVE_WHEN_SAVED_FIELD_NUMBER = 4;
-  private boolean liveWhenSaved_;
+  private boolean liveWhenSaved_ = false;
   /**
    * <pre>
    * Was the inspector in live mode when the snapshot was saved
@@ -300,7 +295,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SAVE_DURATION_MS_FIELD_NUMBER = 5;
-  private int saveDurationMs_;
+  private int saveDurationMs_ = 0;
   /**
    * <pre>
    * How long it took to save the snapshot in milliseconds
@@ -327,7 +322,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOAD_DURATION_MS_FIELD_NUMBER = 6;
-  private int loadDurationMs_;
+  private int loadDurationMs_ = 0;
   /**
    * <pre>
    * How long it took to load the snapshot in milliseconds
@@ -629,18 +624,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       snapshotVersion_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       saveSource_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       saveVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       liveWhenSaved_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       saveDurationMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       loadDurationMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -667,6 +657,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -674,13 +670,13 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.saveSource_ = saveSource_;
         to_bitField0_ |= 0x00000002;
       }
-      result.saveSource_ = saveSource_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.saveVersion_ = saveVersion_;
         to_bitField0_ |= 0x00000004;
       }
-      result.saveVersion_ = saveVersion_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.liveWhenSaved_ = liveWhenSaved_;
         to_bitField0_ |= 0x00000008;
@@ -693,43 +689,9 @@ private static final long serialVersionUID = 0L;
         result.loadDurationMs_ = loadDurationMs_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo) {
@@ -749,8 +711,8 @@ private static final long serialVersionUID = 0L;
         setSaveSource(other.getSaveSource());
       }
       if (other.hasSaveVersion()) {
-        bitField0_ |= 0x00000004;
         saveVersion_ = other.saveVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasLiveWhenSaved()) {
@@ -889,8 +851,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSnapshotVersion(int value) {
-      bitField0_ |= 0x00000001;
+
       snapshotVersion_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -935,8 +898,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource getSaveSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.valueOf(saveSource_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.forNumber(saveSource_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.UNKNOWN : result;
     }
     /**
@@ -1038,11 +1000,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSaveVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       saveVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1055,8 +1015,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearSaveVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       saveVersion_ = getDefaultInstance().getSaveVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1071,11 +1031,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setSaveVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       saveVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1115,8 +1073,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLiveWhenSaved(boolean value) {
-      bitField0_ |= 0x00000008;
+
       liveWhenSaved_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1170,8 +1129,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSaveDurationMs(int value) {
-      bitField0_ |= 0x00000010;
+
       saveDurationMs_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1225,8 +1185,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoadDurationMs(int value) {
-      bitField0_ |= 0x00000020;
+
       loadDurationMs_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

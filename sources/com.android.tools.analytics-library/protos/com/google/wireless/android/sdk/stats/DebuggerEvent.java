@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new DebuggerEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_descriptor;
@@ -222,11 +217,6 @@ private static final long serialVersionUID = 0L;
       return new BreakpointAdded();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_BreakpointAdded_descriptor;
@@ -242,7 +232,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int TYPE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object type_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object type_ = "";
     /**
      * <code>optional string type = 1;</code>
      * @return Whether the type field is set.
@@ -290,7 +281,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PLUGIN_TYPE_FIELD_NUMBER = 2;
-    private volatile java.lang.Object pluginType_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object pluginType_ = "";
     /**
      * <code>optional string plugin_type = 2;</code>
      * @return Whether the pluginType field is set.
@@ -338,7 +330,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IN_SESSION_FIELD_NUMBER = 3;
-    private boolean inSession_;
+    private boolean inSession_ = false;
     /**
      * <code>optional bool in_session = 3;</code>
      * @return Whether the inSession field is set.
@@ -580,12 +572,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         type_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         pluginType_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         inSession_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -612,57 +602,29 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded buildPartial() {
         com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded result = new com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.type_ = type_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.pluginType_ = pluginType_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.inSession_ = inSession_;
-          to_bitField0_ |= 0x00000004;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.type_ = type_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.pluginType_ = pluginType_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.inSession_ = inSession_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded) {
@@ -676,13 +638,13 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded other) {
         if (other == com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.getDefaultInstance()) return this;
         if (other.hasType()) {
-          bitField0_ |= 0x00000001;
           type_ = other.type_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasPluginType()) {
-          bitField0_ |= 0x00000002;
           pluginType_ = other.pluginType_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasInSession()) {
@@ -796,11 +758,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setType(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         type_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -809,8 +769,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearType() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         type_ = getDefaultInstance().getType();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -821,11 +781,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setTypeBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         type_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -880,11 +838,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setPluginType(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         pluginType_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -893,8 +849,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearPluginType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         pluginType_ = getDefaultInstance().getPluginType();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -905,11 +861,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setPluginTypeBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         pluginType_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -937,8 +891,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setInSession(boolean value) {
-        bitField0_ |= 0x00000004;
+
         inSession_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1089,11 +1044,6 @@ private static final long serialVersionUID = 0L;
       return new FramesViewUpdated();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_FramesViewUpdated_descriptor;
@@ -1162,11 +1112,6 @@ private static final long serialVersionUID = 0L;
         return new FileTypeInfo();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_FramesViewUpdated_FileTypeInfo_descriptor;
@@ -1182,7 +1127,8 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int FILE_TYPE_FIELD_NUMBER = 1;
-      private volatile java.lang.Object fileType_;
+      @SuppressWarnings("serial")
+      private volatile java.lang.Object fileType_ = "";
       /**
        * <code>optional string file_type = 1;</code>
        * @return Whether the fileType field is set.
@@ -1230,7 +1176,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int NUM_FRAMES_FIELD_NUMBER = 2;
-      private int numFrames_;
+      private int numFrames_ = 0;
       /**
        * <code>optional int32 num_frames = 2;</code>
        * @return Whether the numFrames field is set.
@@ -1456,10 +1402,9 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           fileType_ = "";
-          bitField0_ = (bitField0_ & ~0x00000001);
           numFrames_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
 
@@ -1486,53 +1431,25 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo buildPartial() {
           com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo result = new com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.fileType_ = fileType_;
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            result.numFrames_ = numFrames_;
-            to_bitField0_ |= 0x00000002;
-          }
-          result.bitField0_ = to_bitField0_;
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
+        private void buildPartial0(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.fileType_ = fileType_;
+            to_bitField0_ |= 0x00000001;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.numFrames_ = numFrames_;
+            to_bitField0_ |= 0x00000002;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
+
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo) {
@@ -1546,8 +1463,8 @@ private static final long serialVersionUID = 0L;
         public Builder mergeFrom(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo other) {
           if (other == com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo.getDefaultInstance()) return this;
           if (other.hasFileType()) {
-            bitField0_ |= 0x00000001;
             fileType_ = other.fileType_;
+            bitField0_ |= 0x00000001;
             onChanged();
           }
           if (other.hasNumFrames()) {
@@ -1656,11 +1573,9 @@ private static final long serialVersionUID = 0L;
          */
         public Builder setFileType(
             java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+          if (value == null) { throw new NullPointerException(); }
           fileType_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1669,8 +1584,8 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder clearFileType() {
-          bitField0_ = (bitField0_ & ~0x00000001);
           fileType_ = getDefaultInstance().getFileType();
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
           return this;
         }
@@ -1681,11 +1596,9 @@ private static final long serialVersionUID = 0L;
          */
         public Builder setFileTypeBytes(
             com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+          if (value == null) { throw new NullPointerException(); }
           fileType_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1713,8 +1626,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setNumFrames(int value) {
-          bitField0_ |= 0x00000002;
+
           numFrames_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -1794,7 +1708,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int DURATION_MS_FIELD_NUMBER = 1;
-    private long durationMs_;
+    private long durationMs_ = 0L;
     /**
      * <code>optional uint64 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
@@ -1813,7 +1727,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_FRAMES_FIELD_NUMBER = 2;
-    private int totalFrames_;
+    private int totalFrames_ = 0;
     /**
      * <code>optional int32 total_frames = 2;</code>
      * @return Whether the totalFrames field is set.
@@ -1832,6 +1746,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FILE_TYPE_INFOS_FIELD_NUMBER = 3;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.FileTypeInfo> fileTypeInfos_;
     /**
      * <code>repeated .android_studio.DebuggerEvent.FramesViewUpdated.FileTypeInfo file_type_infos = 3;</code>
@@ -2094,10 +2009,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         durationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
         totalFrames_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         if (fileTypeInfosBuilder_ == null) {
           fileTypeInfos_ = java.util.Collections.emptyList();
         } else {
@@ -2131,6 +2045,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated buildPartial() {
         com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated result = new com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated(this);
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated result) {
+        if (fileTypeInfosBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) != 0)) {
+            fileTypeInfos_ = java.util.Collections.unmodifiableList(fileTypeInfos_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.fileTypeInfos_ = fileTypeInfos_;
+        } else {
+          result.fileTypeInfos_ = fileTypeInfosBuilder_.build();
+        }
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2141,52 +2074,9 @@ private static final long serialVersionUID = 0L;
           result.totalFrames_ = totalFrames_;
           to_bitField0_ |= 0x00000002;
         }
-        if (fileTypeInfosBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
-            fileTypeInfos_ = java.util.Collections.unmodifiableList(fileTypeInfos_);
-            bitField0_ = (bitField0_ & ~0x00000004);
-          }
-          result.fileTypeInfos_ = fileTypeInfos_;
-        } else {
-          result.fileTypeInfos_ = fileTypeInfosBuilder_.build();
-        }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated) {
@@ -2320,8 +2210,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDurationMs(long value) {
-        bitField0_ |= 0x00000001;
+
         durationMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2359,8 +2250,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalFrames(int value) {
-        bitField0_ |= 0x00000002;
+
         totalFrames_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2680,7 +2572,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The event type
@@ -2701,8 +2593,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DebuggerEvent.Type getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DebuggerEvent.Type result = com.google.wireless.android.sdk.stats.DebuggerEvent.Type.valueOf(type_);
+    com.google.wireless.android.sdk.stats.DebuggerEvent.Type result = com.google.wireless.android.sdk.stats.DebuggerEvent.Type.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.Type.UNKNOWN : result;
   }
 
@@ -2989,20 +2880,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (breakpointAddedBuilder_ == null) {
-        breakpointAdded_ = null;
-      } else {
-        breakpointAddedBuilder_.clear();
+      breakpointAdded_ = null;
+      if (breakpointAddedBuilder_ != null) {
+        breakpointAddedBuilder_.dispose();
+        breakpointAddedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (framesViewUpdatedBuilder_ == null) {
-        framesViewUpdated_ = null;
-      } else {
-        framesViewUpdatedBuilder_.clear();
+      framesViewUpdated_ = null;
+      if (framesViewUpdatedBuilder_ != null) {
+        framesViewUpdatedBuilder_.dispose();
+        framesViewUpdatedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -3029,65 +2918,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DebuggerEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DebuggerEvent result = new com.google.wireless.android.sdk.stats.DebuggerEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (breakpointAddedBuilder_ == null) {
-          result.breakpointAdded_ = breakpointAdded_;
-        } else {
-          result.breakpointAdded_ = breakpointAddedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (framesViewUpdatedBuilder_ == null) {
-          result.framesViewUpdated_ = framesViewUpdated_;
-        } else {
-          result.framesViewUpdated_ = framesViewUpdatedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DebuggerEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.breakpointAdded_ = breakpointAddedBuilder_ == null
+            ? breakpointAdded_
+            : breakpointAddedBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.framesViewUpdated_ = framesViewUpdatedBuilder_ == null
+            ? framesViewUpdated_
+            : framesViewUpdatedBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DebuggerEvent) {
@@ -3200,8 +3057,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DebuggerEvent.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DebuggerEvent.Type result = com.google.wireless.android.sdk.stats.DebuggerEvent.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.DebuggerEvent.Type result = com.google.wireless.android.sdk.stats.DebuggerEvent.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.Type.UNKNOWN : result;
     }
     /**
@@ -3267,11 +3123,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         breakpointAdded_ = value;
-        onChanged();
       } else {
         breakpointAddedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -3281,11 +3137,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.Builder builderForValue) {
       if (breakpointAddedBuilder_ == null) {
         breakpointAdded_ = builderForValue.build();
-        onChanged();
       } else {
         breakpointAddedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -3294,31 +3150,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeBreakpointAdded(com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded value) {
       if (breakpointAddedBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            breakpointAdded_ != null &&
-            breakpointAdded_ != com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.getDefaultInstance()) {
-          breakpointAdded_ =
-            com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.newBuilder(breakpointAdded_).mergeFrom(value).buildPartial();
+          breakpointAdded_ != null &&
+          breakpointAdded_ != com.google.wireless.android.sdk.stats.DebuggerEvent.BreakpointAdded.getDefaultInstance()) {
+          getBreakpointAddedBuilder().mergeFrom(value);
         } else {
           breakpointAdded_ = value;
         }
-        onChanged();
       } else {
         breakpointAddedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.DebuggerEvent.BreakpointAdded breakpoint_added = 2 [lazy = true];</code>
      */
     public Builder clearBreakpointAdded() {
-      if (breakpointAddedBuilder_ == null) {
-        breakpointAdded_ = null;
-        onChanged();
-      } else {
-        breakpointAddedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      breakpointAdded_ = null;
+      if (breakpointAddedBuilder_ != null) {
+        breakpointAddedBuilder_.dispose();
+        breakpointAddedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -3387,11 +3242,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         framesViewUpdated_ = value;
-        onChanged();
       } else {
         framesViewUpdatedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -3401,11 +3256,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.Builder builderForValue) {
       if (framesViewUpdatedBuilder_ == null) {
         framesViewUpdated_ = builderForValue.build();
-        onChanged();
       } else {
         framesViewUpdatedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -3414,31 +3269,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFramesViewUpdated(com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated value) {
       if (framesViewUpdatedBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            framesViewUpdated_ != null &&
-            framesViewUpdated_ != com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.getDefaultInstance()) {
-          framesViewUpdated_ =
-            com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.newBuilder(framesViewUpdated_).mergeFrom(value).buildPartial();
+          framesViewUpdated_ != null &&
+          framesViewUpdated_ != com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.getDefaultInstance()) {
+          getFramesViewUpdatedBuilder().mergeFrom(value);
         } else {
           framesViewUpdated_ = value;
         }
-        onChanged();
       } else {
         framesViewUpdatedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
      */
     public Builder clearFramesViewUpdated() {
-      if (framesViewUpdatedBuilder_ == null) {
-        framesViewUpdated_ = null;
-        onChanged();
-      } else {
-        framesViewUpdatedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      framesViewUpdated_ = null;
+      if (framesViewUpdatedBuilder_ != null) {
+        framesViewUpdatedBuilder_.dispose();
+        framesViewUpdatedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -52,5 +52,5 @@ public interface EmulatorIceboxOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.EmulatorIcebox.FinishIceboxOrBuilder getFinishIceboxOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.EmulatorIcebox.KindCase getKindCase();
+  com.google.wireless.android.sdk.stats.EmulatorIcebox.KindCase getKindCase();
 }

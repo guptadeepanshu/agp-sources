@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new MachineDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MachineDetails_descriptor;
@@ -50,7 +45,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOTAL_RAM_FIELD_NUMBER = 1;
-  private long totalRam_;
+  private long totalRam_ = 0L;
   /**
    * <pre>
    * Amount of total memory available in megabytes.
@@ -77,7 +72,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_DISK_FIELD_NUMBER = 2;
-  private long totalDisk_;
+  private long totalDisk_ = 0L;
   /**
    * <pre>
    * Amount of total disk available in megabytes.
@@ -104,6 +99,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISPLAY_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.DisplayDetails> display_;
   /**
    * <pre>
@@ -164,7 +160,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AVAILABLE_PROCESSORS_FIELD_NUMBER = 4;
-  private int availableProcessors_;
+  private int availableProcessors_ = 0;
   /**
    * <pre>
    * Number of processors on the machine.
@@ -434,10 +430,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       totalRam_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       totalDisk_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       if (displayBuilder_ == null) {
         display_ = java.util.Collections.emptyList();
       } else {
@@ -446,7 +441,6 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000004);
       availableProcessors_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -473,6 +467,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MachineDetails buildPartial() {
       com.google.wireless.android.sdk.stats.MachineDetails result = new com.google.wireless.android.sdk.stats.MachineDetails(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.MachineDetails result) {
+      if (displayBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          display_ = java.util.Collections.unmodifiableList(display_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.display_ = display_;
+      } else {
+        result.display_ = displayBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.MachineDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -483,56 +496,13 @@ private static final long serialVersionUID = 0L;
         result.totalDisk_ = totalDisk_;
         to_bitField0_ |= 0x00000002;
       }
-      if (displayBuilder_ == null) {
-        if (((bitField0_ & 0x00000004) != 0)) {
-          display_ = java.util.Collections.unmodifiableList(display_);
-          bitField0_ = (bitField0_ & ~0x00000004);
-        }
-        result.display_ = display_;
-      } else {
-        result.display_ = displayBuilder_.build();
-      }
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.availableProcessors_ = availableProcessors_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.MachineDetails) {
@@ -686,8 +656,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalRam(long value) {
-      bitField0_ |= 0x00000001;
+
       totalRam_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -741,8 +712,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalDisk(long value) {
-      bitField0_ |= 0x00000002;
+
       totalDisk_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1108,8 +1080,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAvailableProcessors(int value) {
-      bitField0_ |= 0x00000008;
+
       availableProcessors_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

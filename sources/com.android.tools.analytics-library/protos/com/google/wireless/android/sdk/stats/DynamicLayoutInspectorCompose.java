@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorCompose();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorCompose_descriptor;
@@ -50,7 +45,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int KOTLIN_REFLECTION_AVAILABLE_FIELD_NUMBER = 1;
-  private boolean kotlinReflectionAvailable_;
+  private boolean kotlinReflectionAvailable_ = false;
   /**
    * <pre>
    * Is the kotlin reflection library included in the project
@@ -77,7 +72,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMAGE_CLICKS_FIELD_NUMBER = 2;
-  private int imageClicks_;
+  private int imageClicks_ = 0;
   /**
    * <pre>
    * Number of times a compose node was selected in image
@@ -104,7 +99,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPONENT_TREE_CLICKS_FIELD_NUMBER = 3;
-  private int componentTreeClicks_;
+  private int componentTreeClicks_ = 0;
   /**
    * <pre>
    * Number of times a compose node was selected in the component tree
@@ -131,7 +126,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GO_TO_SOURCE_FROM_PROPERTY_VALUE_CLICKS_FIELD_NUMBER = 4;
-  private int goToSourceFromPropertyValueClicks_;
+  private int goToSourceFromPropertyValueClicks_ = 0;
   /**
    * <pre>
    * Number of times a link in the property value section was clicked
@@ -158,7 +153,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAX_RECOMPOSITION_COUNT_FIELD_NUMBER = 5;
-  private int maxRecompositionCount_;
+  private int maxRecompositionCount_ = 0;
   /**
    * <pre>
    * The max recomposition count seen for a composable in a session
@@ -185,7 +180,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAX_RECOMPOSITION_SKIPS_FIELD_NUMBER = 6;
-  private int maxRecompositionSkips_;
+  private int maxRecompositionSkips_ = 0;
   /**
    * <pre>
    * The max recomposition skips seen for a composable in a session
@@ -212,7 +207,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAX_RECOMPOSITION_HIGHLIGHT_FIELD_NUMBER = 7;
-  private float maxRecompositionHighlight_;
+  private float maxRecompositionHighlight_ = 0F;
   /**
    * <pre>
    * The max highlight amount seen in a session
@@ -239,7 +234,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RECOMPOSITION_RESET_CLICKS_FIELD_NUMBER = 8;
-  private int recompositionResetClicks_;
+  private int recompositionResetClicks_ = 0;
   /**
    * <pre>
    * Number of times the recomposition counts were explicitly reset
@@ -266,7 +261,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COUNTS_ON_FIELD_NUMBER = 9;
-  private int framesWithRecompositionCountsOn_;
+  private int framesWithRecompositionCountsOn_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were shown
@@ -293,7 +288,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_RED_FIELD_NUMBER = 10;
-  private int framesWithRecompositionColorRed_;
+  private int framesWithRecompositionColorRed_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in red
@@ -320,7 +315,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_BLUE_FIELD_NUMBER = 11;
-  private int framesWithRecompositionColorBlue_;
+  private int framesWithRecompositionColorBlue_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in blue
@@ -347,7 +342,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_GREEN_FIELD_NUMBER = 12;
-  private int framesWithRecompositionColorGreen_;
+  private int framesWithRecompositionColorGreen_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in green
@@ -374,7 +369,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_YELLOW_FIELD_NUMBER = 13;
-  private int framesWithRecompositionColorYellow_;
+  private int framesWithRecompositionColorYellow_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in yellow
@@ -401,7 +396,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_PURPLE_FIELD_NUMBER = 14;
-  private int framesWithRecompositionColorPurple_;
+  private int framesWithRecompositionColorPurple_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in purple
@@ -428,7 +423,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FRAMES_WITH_RECOMPOSITION_COLOR_ORANGE_FIELD_NUMBER = 15;
-  private int framesWithRecompositionColorOrange_;
+  private int framesWithRecompositionColorOrange_ = 0;
   /**
    * <pre>
    * Number of frames received where the recomposition counts were in orange
@@ -879,36 +874,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       kotlinReflectionAvailable_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       imageClicks_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       componentTreeClicks_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       goToSourceFromPropertyValueClicks_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       maxRecompositionCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       maxRecompositionSkips_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       maxRecompositionHighlight_ = 0F;
-      bitField0_ = (bitField0_ & ~0x00000040);
       recompositionResetClicks_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       framesWithRecompositionCountsOn_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       framesWithRecompositionColorRed_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000200);
       framesWithRecompositionColorBlue_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000400);
       framesWithRecompositionColorGreen_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000800);
       framesWithRecompositionColorYellow_ = 0;
-      bitField0_ = (bitField0_ & ~0x00001000);
       framesWithRecompositionColorPurple_ = 0;
-      bitField0_ = (bitField0_ & ~0x00002000);
       framesWithRecompositionColorOrange_ = 0;
-      bitField0_ = (bitField0_ & ~0x00004000);
       return this;
     }
 
@@ -935,6 +916,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -997,43 +984,9 @@ private static final long serialVersionUID = 0L;
         result.framesWithRecompositionColorOrange_ = framesWithRecompositionColorOrange_;
         to_bitField0_ |= 0x00004000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose) {
@@ -1244,8 +1197,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setKotlinReflectionAvailable(boolean value) {
-      bitField0_ |= 0x00000001;
+
       kotlinReflectionAvailable_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1299,8 +1253,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setImageClicks(int value) {
-      bitField0_ |= 0x00000002;
+
       imageClicks_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1354,8 +1309,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setComponentTreeClicks(int value) {
-      bitField0_ |= 0x00000004;
+
       componentTreeClicks_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1409,8 +1365,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGoToSourceFromPropertyValueClicks(int value) {
-      bitField0_ |= 0x00000008;
+
       goToSourceFromPropertyValueClicks_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1464,8 +1421,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaxRecompositionCount(int value) {
-      bitField0_ |= 0x00000010;
+
       maxRecompositionCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1519,8 +1477,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaxRecompositionSkips(int value) {
-      bitField0_ |= 0x00000020;
+
       maxRecompositionSkips_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1574,8 +1533,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaxRecompositionHighlight(float value) {
-      bitField0_ |= 0x00000040;
+
       maxRecompositionHighlight_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1629,8 +1589,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRecompositionResetClicks(int value) {
-      bitField0_ |= 0x00000080;
+
       recompositionResetClicks_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1684,8 +1645,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionCountsOn(int value) {
-      bitField0_ |= 0x00000100;
+
       framesWithRecompositionCountsOn_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1739,8 +1701,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorRed(int value) {
-      bitField0_ |= 0x00000200;
+
       framesWithRecompositionColorRed_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1794,8 +1757,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorBlue(int value) {
-      bitField0_ |= 0x00000400;
+
       framesWithRecompositionColorBlue_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -1849,8 +1813,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorGreen(int value) {
-      bitField0_ |= 0x00000800;
+
       framesWithRecompositionColorGreen_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -1904,8 +1869,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorYellow(int value) {
-      bitField0_ |= 0x00001000;
+
       framesWithRecompositionColorYellow_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -1959,8 +1925,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorPurple(int value) {
-      bitField0_ |= 0x00002000;
+
       framesWithRecompositionColorPurple_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2014,8 +1981,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFramesWithRecompositionColorOrange(int value) {
-      bitField0_ |= 0x00004000;
+
       framesWithRecompositionColorOrange_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }

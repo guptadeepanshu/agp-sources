@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new LldbSessionStartDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LldbSessionStartDetails_descriptor;
@@ -168,7 +163,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DEBUG_SESSION_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object debugSessionId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object debugSessionId_ = "";
   /**
    * <pre>
    * A UUID used to relate start and end of a native debug session.
@@ -228,7 +224,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEBUGGER_TYPE_FIELD_NUMBER = 2;
-  private int debuggerType_;
+  private int debuggerType_ = 0;
   /**
    * <pre>
    * Debugger type for this session
@@ -249,13 +245,12 @@ private static final long serialVersionUID = 0L;
    * @return The debuggerType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
+    com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.forNumber(debuggerType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.UNKNOWN_DEBUGGER_TYPE : result;
   }
 
   public static final int RUN_CONFIGURATION_TYPE_FIELD_NUMBER = 3;
-  private int runConfigurationType_;
+  private int runConfigurationType_ = 0;
   /**
    * <pre>
    * Run configuration that was used to start this session.
@@ -276,13 +271,12 @@ private static final long serialVersionUID = 0L;
    * @return The runConfigurationType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
+    com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.forNumber(runConfigurationType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.UNKNOWN_RUN_CONFIGURATION_TYPE : result;
   }
 
   public static final int AUTO_DEBUGGER_FIELD_NUMBER = 4;
-  private boolean autoDebugger_;
+  private boolean autoDebugger_ = false;
   /**
    * <pre>
    * True if debugger_type was chosen via the Auto debugger type.
@@ -347,7 +341,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LLDB_VERSION_FIELD_NUMBER = 6;
-  private volatile java.lang.Object lldbVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object lldbVersion_ = "";
   /**
    * <pre>
    * Version of the native debugger.
@@ -407,7 +402,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int STARTER_TYPE_FIELD_NUMBER = 7;
-  private int starterType_;
+  private int starterType_ = 0;
   /**
    * <pre>
    * Type of starter used to start this session.
@@ -428,8 +423,7 @@ private static final long serialVersionUID = 0L;
    * @return The starterType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType getStarterType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.valueOf(starterType_);
+    com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.forNumber(starterType_);
     return result == null ? com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.UNKNOWN_STARTER_TYPE : result;
   }
 
@@ -724,24 +718,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       debugSessionId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       debuggerType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       runConfigurationType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       autoDebugger_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (deviceInfoBuilder_ == null) {
-        deviceInfo_ = null;
-      } else {
-        deviceInfoBuilder_.clear();
+      deviceInfo_ = null;
+      if (deviceInfoBuilder_ != null) {
+        deviceInfoBuilder_.dispose();
+        deviceInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
       lldbVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       starterType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -768,77 +756,47 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbSessionStartDetails buildPartial() {
       com.google.wireless.android.sdk.stats.LldbSessionStartDetails result = new com.google.wireless.android.sdk.stats.LldbSessionStartDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LldbSessionStartDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.debugSessionId_ = debugSessionId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.debugSessionId_ = debugSessionId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.debuggerType_ = debuggerType_;
         to_bitField0_ |= 0x00000002;
       }
-      result.debuggerType_ = debuggerType_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.runConfigurationType_ = runConfigurationType_;
         to_bitField0_ |= 0x00000004;
       }
-      result.runConfigurationType_ = runConfigurationType_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.autoDebugger_ = autoDebugger_;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (deviceInfoBuilder_ == null) {
-          result.deviceInfo_ = deviceInfo_;
-        } else {
-          result.deviceInfo_ = deviceInfoBuilder_.build();
-        }
+        result.deviceInfo_ = deviceInfoBuilder_ == null
+            ? deviceInfo_
+            : deviceInfoBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.lldbVersion_ = lldbVersion_;
         to_bitField0_ |= 0x00000020;
       }
-      result.lldbVersion_ = lldbVersion_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.starterType_ = starterType_;
         to_bitField0_ |= 0x00000040;
       }
-      result.starterType_ = starterType_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LldbSessionStartDetails) {
@@ -852,8 +810,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.LldbSessionStartDetails other) {
       if (other == com.google.wireless.android.sdk.stats.LldbSessionStartDetails.getDefaultInstance()) return this;
       if (other.hasDebugSessionId()) {
-        bitField0_ |= 0x00000001;
         debugSessionId_ = other.debugSessionId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasDebuggerType()) {
@@ -869,8 +827,8 @@ private static final long serialVersionUID = 0L;
         mergeDeviceInfo(other.getDeviceInfo());
       }
       if (other.hasLldbVersion()) {
-        bitField0_ |= 0x00000020;
         lldbVersion_ = other.lldbVersion_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (other.hasStarterType()) {
@@ -1043,11 +1001,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDebugSessionId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       debugSessionId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1060,8 +1016,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDebugSessionId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       debugSessionId_ = getDefaultInstance().getDebugSessionId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1076,11 +1032,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDebugSessionIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       debugSessionId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1107,8 +1061,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
+      com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.forNumber(debuggerType_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.UNKNOWN_DEBUGGER_TYPE : result;
     }
     /**
@@ -1166,8 +1119,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
+      com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.forNumber(runConfigurationType_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.UNKNOWN_RUN_CONFIGURATION_TYPE : result;
     }
     /**
@@ -1238,8 +1190,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAutoDebugger(boolean value) {
-      bitField0_ |= 0x00000008;
+
       autoDebugger_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1300,11 +1253,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         deviceInfo_ = value;
-        onChanged();
       } else {
         deviceInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1318,11 +1271,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DeviceInfo.Builder builderForValue) {
       if (deviceInfoBuilder_ == null) {
         deviceInfo_ = builderForValue.build();
-        onChanged();
       } else {
         deviceInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1335,18 +1288,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDeviceInfo(com.google.wireless.android.sdk.stats.DeviceInfo value) {
       if (deviceInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            deviceInfo_ != null &&
-            deviceInfo_ != com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance()) {
-          deviceInfo_ =
-            com.google.wireless.android.sdk.stats.DeviceInfo.newBuilder(deviceInfo_).mergeFrom(value).buildPartial();
+          deviceInfo_ != null &&
+          deviceInfo_ != com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance()) {
+          getDeviceInfoBuilder().mergeFrom(value);
         } else {
           deviceInfo_ = value;
         }
-        onChanged();
       } else {
         deviceInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1357,13 +1309,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo device_info = 5 [lazy = true];</code>
      */
     public Builder clearDeviceInfo() {
-      if (deviceInfoBuilder_ == null) {
-        deviceInfo_ = null;
-        onChanged();
-      } else {
-        deviceInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      deviceInfo_ = null;
+      if (deviceInfoBuilder_ != null) {
+        deviceInfoBuilder_.dispose();
+        deviceInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1480,11 +1432,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLldbVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       lldbVersion_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1497,8 +1447,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLldbVersion() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       lldbVersion_ = getDefaultInstance().getLldbVersion();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1513,11 +1463,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLldbVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       lldbVersion_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1544,8 +1492,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType getStarterType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.valueOf(starterType_);
+      com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.forNumber(starterType_);
       return result == null ? com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.UNKNOWN_STARTER_TYPE : result;
     }
     /**

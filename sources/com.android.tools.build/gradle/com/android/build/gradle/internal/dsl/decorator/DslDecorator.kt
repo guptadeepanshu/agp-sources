@@ -17,10 +17,14 @@
 package com.android.build.gradle.internal.dsl.decorator
 
 import com.android.build.gradle.internal.dsl.AgpDslLockedException
+import com.android.build.gradle.internal.dsl.AgpExperimentalApiOptInRequiredException
 import com.android.build.gradle.internal.dsl.Lockable
 import com.android.build.gradle.internal.dsl.decorator.annotation.NonNullableSetter
+import com.android.build.gradle.internal.dsl.decorator.annotation.RuntimeGuardedExperimentalApi
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.ProjectOptions
 import com.android.utils.usLocaleCapitalize
 import com.android.utils.usLocaleDecapitalize
 import com.google.common.annotations.VisibleForTesting
@@ -109,6 +113,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
 
         val abstractProperties = findAbstractProperties(dslClass)
 
+        val experimentalGuards: List<BooleanOption> = abstractProperties.mapNotNull { it.guardedBy }.toSet().toList()
+
         val constructors = (if (isInterface) Any::class.java else dslClass).declaredConstructors
         for (constructor in constructors) {
             val method = Method.getMethod(constructor)
@@ -192,19 +198,25 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                         )
                     )
                 }
+                if (experimentalGuards.isNotEmpty()) {
+                    populateExperimentalGuardsBooleanArray(generatedClass, dslServicesArgumentIndex, experimentalGuards)
+                }
                 returnValue()
                 endMethod()
             }
         }
         createLockField(classWriter)
+        if (experimentalGuards.isNotEmpty()) {
+            createExperimentalGuardField(classWriter)
+        }
         for (field in abstractProperties) {
             createField(classWriter, field)
         }
 
         for (field in abstractProperties) {
-            createFieldBackedGetters(classWriter, generatedClass, field)
-            createFieldBackedSetters(classWriter, generatedClass, field)
-            createBlockAccessor(classWriter, generatedClass, field)
+            createFieldBackedGetters(classWriter, generatedClass, field, experimentalGuards)
+            createFieldBackedSetters(classWriter, generatedClass, field, experimentalGuards)
+            createBlockAccessor(classWriter, generatedClass, field, experimentalGuards)
         }
 
         createLockMethod(classWriter, generatedClass, abstractProperties)
@@ -223,6 +235,15 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         visitInsn(Opcodes.ICONST_0)
         item()
         arrayStore(OBJECT_TYPE)
+    }
+
+    private val ManagedProperty.guardedBy: BooleanOption? get() {
+        val optionsFromAnnotation = (gettersAnnotations + settersAnnotations).filterIsInstance<RuntimeGuardedExperimentalApi>().map { it.enableFlag }.toSet()
+        return when {
+            optionsFromAnnotation.isEmpty() -> null
+            optionsFromAnnotation.size == 1 -> optionsFromAnnotation.single()
+            else -> throw IllegalStateException("Expected single enable flag in RuntimeGuardedExperimentalApi for property " + this.name + " but found multiple ${optionsFromAnnotation.map { it.name }}")
+        }
     }
 
     @VisibleForTesting
@@ -298,6 +319,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         val gettersToGenerate: Collection<Method>,
         val settersToGenerate: Collection<Method>,
         val blockAccessorToGenerate: Method?,
+        val gettersAnnotations: Collection<Annotation>,
         val settersAnnotations: Collection<Annotation>,
     )
 
@@ -315,6 +337,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
             val getterReturnTypes: MutableSet<Type> = mutableSetOf()
             var supportedPropertyType: SupportedPropertyType? = null
             var modifiers: Int = 0
+            var runtimeGuardingBooleanOption: BooleanOption? = null
 
             for (getter in getters) {
                 val returnType = Type.getReturnType(getter)
@@ -352,7 +375,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                 getters.asSequence().map { Method.getMethod(it) }.toSet(),
                 setters.asSequence().map { Method.getMethod(it) }.toSet(),
                 blockToGenerate?.let { Method.getMethod(it) },
-                setters.flatMap { it.annotations.toList() }.toSet()
+                getters.flatMap { it.annotations.toList() }.toSet(),
+                setters.flatMap { it.annotations.toList() }.toSet(),
             )
         }
     }
@@ -442,6 +466,42 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         }
     }
 
+    private fun createExperimentalGuardField(classWriter: ClassWriter) {
+        /**
+         * Create __experimental_guard__ array which will contain the state of each BooleanOption
+         * used to require opt-in for each experimental DSL element in the block currently being
+         * decorated.
+         *
+         * Indexes in the array are determined at generation time, from the order in
+         * experimentalGuards (List<BooleanOption>), used in both
+         * [populateExperimentalGuardsBooleanArray] and [checkExperimentalGuard].
+         */
+        classWriter.visitField(
+            Opcodes.ACC_PRIVATE,
+            EXPERIMENTAL_GUARD_FIELD_NAME,
+            "[Z",
+            null,
+            false
+        ).visitEnd()
+    }
+
+    private fun GeneratorAdapter.populateExperimentalGuardsBooleanArray(generatedClass: Type, dslServicesArgumentIndex: Int, experimentalGuards: List<BooleanOption>){
+        loadThis()
+        push(experimentalGuards.size)
+        newArray(Type.BOOLEAN_TYPE)
+        experimentalGuards.forEachIndexed { index, s ->
+            // ~ experimentalGuards[index] = dslServices.projectOptions.get(BooleanOption.s)
+            dup()
+            push(index)
+            loadArg(dslServicesArgumentIndex)
+            invokeInterface(DSL_SERVICES_TYPE, DSL_SERVICES_PROJECT_OPTIONS)
+            getStatic(BOOLEAN_OPTION_TYPE, s.name, BOOLEAN_OPTION_TYPE)
+            invokeVirtual(PROJECT_OPTIONS_TYPE, PROJECT_OPTIONS_GET_BOOLEAN_OPTION)
+            arrayStore(Type.BOOLEAN_TYPE)
+        }
+        putField(generatedClass, EXPERIMENTAL_GUARD_FIELD_NAME, EXPERIMENTAL_GUARD_FIELD_TYPE)
+    }
+
     private fun createField(
         classWriter: ClassWriter,
         managedProperty: ManagedProperty,
@@ -458,11 +518,12 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
     private fun createFieldBackedSetters(
         classWriter: ClassWriter,
         generatedClass: Type,
-        property: ManagedProperty
+        property: ManagedProperty,
+        experimentalGuards: List<BooleanOption>
     ) {
         when (property.supportedPropertyType) {
             is SupportedPropertyType.Collection -> {
-                createGroovyMutatingSetter(classWriter, generatedClass, property)
+                createGroovyMutatingSetter(classWriter, generatedClass, property, experimentalGuards)
             }
             is SupportedPropertyType.Var -> {
                 for (setter in property.settersToGenerate) {
@@ -473,7 +534,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                         setter,
                         disallowNullableValue = property.settersAnnotations.any {
                             it.annotationClass == NonNullableSetter::class
-                        }
+                        },
+                        experimentalGuards,
                     )
                 }
             }
@@ -486,7 +548,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         generatedClass: Type,
         property: ManagedProperty,
         setter: Method,
-        disallowNullableValue: Boolean
+        disallowNullableValue: Boolean,
+        experimentalGuards: List<BooleanOption>
     ) {
         val type = property.supportedPropertyType
         check(type.implementationType == setter.argumentTypes[0]) {
@@ -495,6 +558,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         // Mark bridge methods as synthetic.
         val access = if(type.type == setter.argumentTypes[0]) property.access else property.access.or(Opcodes.ACC_SYNTHETIC)
         GeneratorAdapter(access, setter, null, null, classWriter).apply {
+            checkExperimentalGuard(generatedClass, property, experimentalGuards)
             loadThis()
             // if (this.__locked__) { throw new AgpDslLockedExtension("...") }
             newLabel().also { actuallySet ->
@@ -533,7 +597,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
     private fun createGroovyMutatingSetter(
         classWriter: ClassWriter,
         generatedClass: Type,
-        property: ManagedProperty
+        property: ManagedProperty,
+        experimentalGuards: List<BooleanOption>,
     ) {
         val extraSetter = Method(
             "set${property.name.usLocaleCapitalize()}",
@@ -548,6 +613,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                 null,
                 classWriter
             ).apply {
+                checkExperimentalGuard(generatedClass, property, experimentalGuards)
                 // val newMap = HashMap(argument) // Take a copy so e.g. field = field doesn't clear the field!
                 // __backingField.clear()
                 // __backingField.putAll(newMap)
@@ -617,13 +683,36 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         }
     }
 
+    private fun GeneratorAdapter.checkExperimentalGuard(generatedClass: Type, property: ManagedProperty, experimentalGuards: List<BooleanOption>) {
+        if (experimentalGuards.isEmpty()) return
+        val guardedBy = property.guardedBy ?: return
+        val index = experimentalGuards.indexOf(guardedBy)
+        loadThis()
+        getField(generatedClass, EXPERIMENTAL_GUARD_FIELD_NAME, EXPERIMENTAL_GUARD_FIELD_TYPE)
+        push(index)
+        arrayLoad(Type.BOOLEAN_TYPE)
+        newLabel().also { dontThrow ->
+            visitJumpInsn(Opcodes.IFNE, dontThrow)
+            newInstance(EXPERIMENTAL_API_OPT_IN_REQUIRED_EXCEPTION)
+            dup()
+            push(property.name)
+            getStatic(BOOLEAN_OPTION_TYPE, guardedBy.name, BOOLEAN_OPTION_TYPE)
+            invokeConstructor(EXPERIMENTAL_API_OPT_IN_REQUIRED_EXCEPTION, EXPERIMENTAL_API_OPT_IN_REQUIRED_CONSTRUCTOR)
+            throwException()
+
+            visitLabel(dontThrow)
+        }
+
+    }
+
     private fun createFieldBackedGetters(
         classWriter: ClassWriter,
         generatedClass: Type,
         property: ManagedProperty,
+        experimentalGuards: List<BooleanOption>,
     ) {
         for (getter in property.gettersToGenerate) {
-            createFieldBackedGetter(classWriter, generatedClass, property, getter)
+            createFieldBackedGetter(classWriter, generatedClass, property, getter, experimentalGuards)
         }
     }
     private fun createFieldBackedGetter(
@@ -631,6 +720,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         generatedClass: Type,
         property: ManagedProperty,
         getter: Method,
+        experimentalGuards: List<BooleanOption>,
     ) {
         val type = property.supportedPropertyType
         // Mark bridge methods as synthetic.
@@ -640,6 +730,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         }
 
         GeneratorAdapter(access, getter, null, null, classWriter).apply {
+            checkExperimentalGuard(generatedClass, property, experimentalGuards)
             loadThis()
             getField(generatedClass, property.backingFieldName, type.implementationType)
             if (type.implementationType != getter.returnType) {
@@ -653,7 +744,8 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
     private fun createBlockAccessor(
         classWriter: ClassWriter,
         generatedClass: Type,
-        property: ManagedProperty
+        property: ManagedProperty,
+        experimentalGuards: List<BooleanOption>
     ) {
         if (property.supportedPropertyType !is SupportedPropertyType.Block) return
         val type = property.supportedPropertyType
@@ -666,6 +758,7 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         // }
         // ```
         GeneratorAdapter(access, method, null, null, classWriter).apply {
+            checkExperimentalGuard(generatedClass, property, experimentalGuards)
             loadArg(0)
             loadThis()
             getField(generatedClass, property.backingFieldName, type.implementationType)
@@ -692,6 +785,11 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
     companion object {
 
         private const val LOCK_FIELD_NAME = "__locked__"
+        private const val EXPERIMENTAL_GUARD_FIELD_NAME = "__experimental_guard__"
+        private val EXPERIMENTAL_GUARD_FIELD_TYPE = Type.getType("[Z")
+        private val EXPERIMENTAL_API_OPT_IN_REQUIRED_EXCEPTION = Type.getType(AgpExperimentalApiOptInRequiredException::class.java)
+        private val EXPERIMENTAL_API_OPT_IN_REQUIRED_CONSTRUCTOR =
+            Method.getMethod(AgpExperimentalApiOptInRequiredException::class.java.constructors.single())
 
         private fun notAbstract(modifiers: Int): Int = modifiers and Modifier.ABSTRACT.inv()
         private val OBJECT_TYPE = Type.getType(Any::class.java)
@@ -707,6 +805,12 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
         //    fun <T: Any> newDecoratedInstance(dslClass: Class<T>, vararg args: Any) : T
         private val DSL_SERVICES_NEW_DECORATED_INSTANCE =
             Method("newDecoratedInstance", OBJECT_TYPE, arrayOf(CLASS, ARRAY))
+        private val PROJECT_OPTIONS_TYPE = Type.getType(ProjectOptions::class.java)
+        private val DSL_SERVICES_PROJECT_OPTIONS =
+            Method("getProjectOptions", PROJECT_OPTIONS_TYPE, arrayOf())
+        private val BOOLEAN_OPTION_TYPE = Type.getType(BooleanOption::class.java)
+        private val PROJECT_OPTIONS_GET_BOOLEAN_OPTION =
+            Method("get", Type.BOOLEAN_TYPE, arrayOf(BOOLEAN_OPTION_TYPE))
 
         private val COLLECTION = Type.getType(Collection::class.java)
         private val ARRAY_LIST = Type.getType(ArrayList::class.java)

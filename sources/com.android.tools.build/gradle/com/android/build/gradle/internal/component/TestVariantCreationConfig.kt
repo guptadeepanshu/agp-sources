@@ -37,9 +37,9 @@ interface TestVariantCreationConfig: VariantCreationConfig, TestCreationConfig, 
      * therefore a [BuiltArtifactsLoaderImpl] must be used to load the metadata associated with
      * each APK.
      */
-    val privacySandboxCompatApks: Provider<Directory>
+    val privacySandboxCompatApks: Provider<Directory>?
 
-    val usesSdkLibrarySplitForLocalDeployment: Provider<Directory>
+    val usesSdkLibrarySplitForLocalDeployment: Provider<Directory>?
 
     val privacySandboxEnabled: Boolean
 }

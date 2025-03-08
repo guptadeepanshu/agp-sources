@@ -16,12 +16,13 @@
 
 package com.android.sdklib.internal.build;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.common.io.Files;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -66,7 +67,7 @@ public class SymbolLoader {
     }
 
     public void load() throws IOException {
-        List<String> lines = Files.readLines(mSymbolFile, Charsets.UTF_8);
+        List<String> lines = Files.readLines(mSymbolFile, StandardCharsets.UTF_8);
 
         mSymbols = HashBasedTable.create();
 

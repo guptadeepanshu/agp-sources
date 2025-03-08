@@ -17,9 +17,11 @@ package com.android.ide.common.rendering.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
+
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 /**
@@ -46,7 +48,8 @@ public class SampleDataResourceValueImpl extends ResourceValueImpl
         this.lines =
                 content != null
                         ? ImmutableList.copyOf(
-                                NEW_LINE_SPLITTER.splitToList(new String(content, Charsets.UTF_8)))
+                                NEW_LINE_SPLITTER.splitToList(
+                                        new String(content, StandardCharsets.UTF_8)))
                         : ImmutableList.of();
     }
 

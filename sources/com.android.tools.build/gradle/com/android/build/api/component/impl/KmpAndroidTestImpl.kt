@@ -16,6 +16,7 @@
 
 package com.android.build.api.component.impl
 
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.features.AndroidResourcesCreationConfigImpl
 import com.android.build.api.component.impl.features.DexingImpl
@@ -28,8 +29,13 @@ import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ApkInstallGroup
+import com.android.build.api.variant.ApkOutput
+import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.DeviceSpec
+import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.impl.AndroidResourcesImpl
@@ -56,12 +62,17 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.testing.TestData
+import com.android.build.gradle.internal.utils.DefaultDeviceApkOutput
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.ClasspathNormalizer
+import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
@@ -202,7 +213,7 @@ open class KmpAndroidTestImpl @Inject constructor(
         )
     }
 
-    override val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>> by lazy {
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>> by lazy {
         warnAboutAccessingVariantApiValueForDisabledFeature(
             featureName = FeatureNames.BUILD_CONFIG,
             apiName = "buildConfigFields",
@@ -260,6 +271,26 @@ open class KmpAndroidTestImpl @Inject constructor(
         get() = mainVariant.experimentalProperties.map {
             ModulePropertyKey.BooleanWithDefault.FORCE_AOT_COMPILATION.getValue(it)
         }.getOrElse(false)
+
+    override val outputProviders: ApkOutputProviders
+        get() = object: ApkOutputProviders {
+            override fun <TaskT: Task> provideApkOutputToTask(taskProvider: TaskProvider<TaskT>,
+                taskInput: (TaskT) -> Property<ApkOutput>,
+                deviceSpec: DeviceSpec
+            ) {
+                taskProvider.configure { task ->
+                    val testingApk = artifacts.get(SingleArtifact.APK)
+                    task.inputs.files(testingApk).withNormalizer(ClasspathNormalizer::class.java)
+                    taskInput(task).set(object: ApkOutput {
+                            override val apkInstallGroups: List<ApkInstallGroup>
+                                get() {
+                                    val testingApks = listOf(RegularFile { TestData.getTestingApk(testingApk.get()) })
+                                    return listOf(DefaultDeviceApkOutput.DefaultApkInstallGroup(testingApks, "Testing Apk"))
+                                }
+                    })
+                }
+            }
+        }
 
     // unsupported features
     override val shouldPackageProfilerDependencies: Boolean = false

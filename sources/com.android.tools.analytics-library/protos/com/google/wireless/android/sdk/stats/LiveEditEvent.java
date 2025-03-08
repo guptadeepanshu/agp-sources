@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new LiveEditEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LiveEditEvent_descriptor;
@@ -962,7 +957,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int STATUS_FIELD_NUMBER = 1;
-  private int status_;
+  private int status_ = 0;
   /**
    * <pre>
    * Result of the LiveEdit device push
@@ -983,13 +978,12 @@ private static final long serialVersionUID = 0L;
    * @return The status.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LiveEditEvent.Status getStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LiveEditEvent.Status result = com.google.wireless.android.sdk.stats.LiveEditEvent.Status.valueOf(status_);
+    com.google.wireless.android.sdk.stats.LiveEditEvent.Status result = com.google.wireless.android.sdk.stats.LiveEditEvent.Status.forNumber(status_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Status.UNKNOWN : result;
   }
 
   public static final int HAS_NON_COMPOSE_FIELD_NUMBER = 2;
-  private boolean hasNonCompose_;
+  private boolean hasNonCompose_ = false;
   /**
    * <pre>
    * Whether the changed code involves a non-&#64;Composable method
@@ -1016,7 +1010,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPILE_DURATION_MS_FIELD_NUMBER = 3;
-  private long compileDurationMs_;
+  private long compileDurationMs_ = 0L;
   /**
    * <pre>
    * The duration of the LiveEdit compile, in milliseconds
@@ -1043,7 +1037,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PUSH_DURATION_MS_FIELD_NUMBER = 4;
-  private long pushDurationMs_;
+  private long pushDurationMs_ = 0L;
   /**
    * <pre>
    * The duration of the LiveEdit push, in milliseconds
@@ -1070,7 +1064,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODE_FIELD_NUMBER = 5;
-  private int mode_;
+  private int mode_ = 0;
   /**
    * <pre>
    * How the LiveEdit push was triggered
@@ -1091,13 +1085,13 @@ private static final long serialVersionUID = 0L;
    * @return The mode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.valueOf(mode_);
+    com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.forNumber(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.UNKNOWN_MODE : result;
   }
 
   public static final int PROJECT_ID_FIELD_NUMBER = 6;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Client-side salted (rotating every 28 days), sha256 of the project base
@@ -1160,7 +1154,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TARGET_DEVICE_FIELD_NUMBER = 7;
-  private int targetDevice_;
+  private int targetDevice_ = 0;
   /**
    * <code>optional .android_studio.LiveEditEvent.Device target_device = 7;</code>
    * @return Whether the targetDevice field is set.
@@ -1173,8 +1167,7 @@ private static final long serialVersionUID = 0L;
    * @return The targetDevice.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LiveEditEvent.Device getTargetDevice() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.valueOf(targetDevice_);
+    com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.forNumber(targetDevice_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Device.NONE : result;
   }
 
@@ -1466,20 +1459,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       status_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       hasNonCompose_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       compileDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       pushDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       mode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       targetDevice_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -1506,12 +1493,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveEditEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LiveEditEvent result = new com.google.wireless.android.sdk.stats.LiveEditEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LiveEditEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.status_ = status_;
         to_bitField0_ |= 0x00000001;
       }
-      result.status_ = status_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.hasNonCompose_ = hasNonCompose_;
         to_bitField0_ |= 0x00000002;
@@ -1525,54 +1518,20 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.mode_ = mode_;
         to_bitField0_ |= 0x00000010;
       }
-      result.mode_ = mode_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.projectId_ = projectId_;
         to_bitField0_ |= 0x00000020;
       }
-      result.projectId_ = projectId_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.targetDevice_ = targetDevice_;
         to_bitField0_ |= 0x00000040;
       }
-      result.targetDevice_ = targetDevice_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LiveEditEvent) {
@@ -1601,8 +1560,8 @@ private static final long serialVersionUID = 0L;
         setMode(other.getMode());
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x00000020;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (other.hasTargetDevice()) {
@@ -1729,8 +1688,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveEditEvent.Status getStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveEditEvent.Status result = com.google.wireless.android.sdk.stats.LiveEditEvent.Status.valueOf(status_);
+      com.google.wireless.android.sdk.stats.LiveEditEvent.Status result = com.google.wireless.android.sdk.stats.LiveEditEvent.Status.forNumber(status_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Status.UNKNOWN : result;
     }
     /**
@@ -1801,8 +1759,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasNonCompose(boolean value) {
-      bitField0_ |= 0x00000002;
+
       hasNonCompose_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1856,8 +1815,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCompileDurationMs(long value) {
-      bitField0_ |= 0x00000004;
+
       compileDurationMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1911,8 +1871,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPushDurationMs(long value) {
-      bitField0_ |= 0x00000008;
+
       pushDurationMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1953,8 +1914,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveEditEvent.Mode getMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.valueOf(mode_);
+      com.google.wireless.android.sdk.stats.LiveEditEvent.Mode result = com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.forNumber(mode_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Mode.UNKNOWN_MODE : result;
     }
     /**
@@ -2060,11 +2020,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2078,8 +2036,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -2095,11 +2053,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2118,8 +2074,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveEditEvent.Device getTargetDevice() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.valueOf(targetDevice_);
+      com.google.wireless.android.sdk.stats.LiveEditEvent.Device result = com.google.wireless.android.sdk.stats.LiveEditEvent.Device.forNumber(targetDevice_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveEditEvent.Device.NONE : result;
     }
     /**

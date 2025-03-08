@@ -65,11 +65,6 @@ public final class IceboxOutputProto {
       return new IceboxOutput();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.internal_static_com_android_tools_utp_plugins_host_icebox_proto_IceboxOutput_descriptor;
@@ -84,7 +79,8 @@ public final class IceboxOutputProto {
     }
 
     public static final int APP_PACKAGE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object appPackage_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object appPackage_ = "";
     /**
      * <pre>
      * Test APP package name
@@ -237,11 +233,13 @@ public final class IceboxOutputProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -320,8 +318,8 @@ public final class IceboxOutputProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         appPackage_ = "";
-
         return this;
       }
 
@@ -348,9 +346,16 @@ public final class IceboxOutputProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput buildPartial() {
         com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput result = new com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput(this);
-        result.appPackage_ = appPackage_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.appPackage_ = appPackage_;
+        }
       }
 
       @java.lang.Override
@@ -399,6 +404,7 @@ public final class IceboxOutputProto {
         if (other == com.android.tools.utp.plugins.host.icebox.proto.IceboxOutputProto.IceboxOutput.getDefaultInstance()) return this;
         if (!other.getAppPackage().isEmpty()) {
           appPackage_ = other.appPackage_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -429,7 +435,7 @@ public final class IceboxOutputProto {
                 break;
               case 10: {
                 appPackage_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               default: {
@@ -447,6 +453,7 @@ public final class IceboxOutputProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object appPackage_ = "";
       /**
@@ -501,11 +508,9 @@ public final class IceboxOutputProto {
        */
       public Builder setAppPackage(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         appPackage_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -518,8 +523,8 @@ public final class IceboxOutputProto {
        * @return This builder for chaining.
        */
       public Builder clearAppPackage() {
-        
         appPackage_ = getDefaultInstance().getAppPackage();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -534,12 +539,10 @@ public final class IceboxOutputProto {
        */
       public Builder setAppPackageBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         appPackage_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }

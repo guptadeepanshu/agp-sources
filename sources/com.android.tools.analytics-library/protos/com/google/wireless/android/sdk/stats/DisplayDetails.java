@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new DisplayDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DisplayDetails_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int WIDTH_FIELD_NUMBER = 1;
-  private long width_;
+  private long width_ = 0L;
   /**
    * <pre>
    * Width of the display screen in pixels.
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HEIGHT_FIELD_NUMBER = 2;
-  private long height_;
+  private long height_ = 0L;
   /**
    * <pre>
    * Height of the display screen in pixels.
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DOTS_PER_INCH_HORIZONTAL_FIELD_NUMBER = 3;
-  private int dotsPerInchHorizontal_;
+  private int dotsPerInchHorizontal_ = 0;
   /**
    * <pre>
    * Density of the pixels on the screen horiziontally.
@@ -130,7 +125,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DOTS_PER_INCH_VERTICAL_FIELD_NUMBER = 4;
-  private int dotsPerInchVertical_;
+  private int dotsPerInchVertical_ = 0;
   /**
    * <pre>
    * Densitiy of the pixels on the screen vertically.
@@ -157,7 +152,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SYSTEM_SCALE_FIELD_NUMBER = 5;
-  private float systemScale_;
+  private float systemScale_ = 0F;
   /**
    * <pre>
    * System scale factor for the screen resolution.
@@ -448,16 +443,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       width_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       height_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       dotsPerInchHorizontal_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       dotsPerInchVertical_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       systemScale_ = 0F;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -484,6 +475,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DisplayDetails buildPartial() {
       com.google.wireless.android.sdk.stats.DisplayDetails result = new com.google.wireless.android.sdk.stats.DisplayDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DisplayDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -506,43 +503,9 @@ private static final long serialVersionUID = 0L;
         result.systemScale_ = systemScale_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DisplayDetails) {
@@ -673,8 +636,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWidth(long value) {
-      bitField0_ |= 0x00000001;
+
       width_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -728,8 +692,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHeight(long value) {
-      bitField0_ |= 0x00000002;
+
       height_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -783,8 +748,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDotsPerInchHorizontal(int value) {
-      bitField0_ |= 0x00000004;
+
       dotsPerInchHorizontal_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -838,8 +804,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDotsPerInchVertical(int value) {
-      bitField0_ |= 0x00000008;
+
       dotsPerInchVertical_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -893,8 +860,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSystemScale(float value) {
-      bitField0_ |= 0x00000010;
+
       systemScale_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new TasksConfigurationIssuesAnalyzerData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TasksConfigurationIssuesAnalyzerData_descriptor;
@@ -173,11 +168,6 @@ private static final long serialVersionUID = 0L;
       return new TasksSharingOutputData();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TasksConfigurationIssuesAnalyzerData_TasksSharingOutputData_descriptor;
@@ -192,6 +182,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PLUGINS_CREATED_SHARING_OUTPUT_TASKS_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier> pluginsCreatedSharingOutputTasks_;
     /**
      * <pre>
@@ -257,6 +248,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TASKS_SHARING_OUTPUT_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier> tasksSharingOutput_;
     /**
      * <pre>
@@ -523,6 +515,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (pluginsCreatedSharingOutputTasksBuilder_ == null) {
           pluginsCreatedSharingOutputTasks_ = java.util.Collections.emptyList();
         } else {
@@ -563,7 +556,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData buildPartial() {
         com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData result = new com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData(this);
-        int from_bitField0_ = bitField0_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData result) {
         if (pluginsCreatedSharingOutputTasksBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             pluginsCreatedSharingOutputTasks_ = java.util.Collections.unmodifiableList(pluginsCreatedSharingOutputTasks_);
@@ -582,42 +581,12 @@ private static final long serialVersionUID = 0L;
         } else {
           result.tasksSharingOutput_ = tasksSharingOutputBuilder_.build();
         }
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData) {
@@ -1457,6 +1426,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TASKS_SHARING_OUTPUT_DATA_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData> tasksSharingOutputData_;
   /**
    * <pre>
@@ -1710,6 +1680,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (tasksSharingOutputDataBuilder_ == null) {
         tasksSharingOutputData_ = java.util.Collections.emptyList();
       } else {
@@ -1743,7 +1714,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData buildPartial() {
       com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData result = new com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData result) {
       if (tasksSharingOutputDataBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           tasksSharingOutputData_ = java.util.Collections.unmodifiableList(tasksSharingOutputData_);
@@ -1753,42 +1730,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.tasksSharingOutputData_ = tasksSharingOutputDataBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData) {

@@ -432,13 +432,13 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
 
             task.device.setDisallowChanges(device)
 
-            if (device.apiLevel <= 26 &&
+            if (device.sdkVersion <= 26 &&
                 !projectOptions[BooleanOption.GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES]
             ) {
                 throw GradleException(
                     """
                     API level 26 and lower is currently not supported for Gradle Managed devices.
-                    Your current configuration requires API level ${device.apiLevel}.
+                    Your current configuration requires API level ${device.sdkVersion}.
                     While it's not recommended, you can use API levels 26 and lower by adding
                     android.experimental.testOptions.managedDevices.allowOldApiLevelDevices=true
                     to your gradle.properties file.

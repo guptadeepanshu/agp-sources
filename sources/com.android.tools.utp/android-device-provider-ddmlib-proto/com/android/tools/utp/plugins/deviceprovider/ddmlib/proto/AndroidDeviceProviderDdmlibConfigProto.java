@@ -86,11 +86,6 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
       return new DdmlibAndroidDeviceProviderConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.internal_static_com_android_tools_utp_plugins_deviceprovider_ddmlib_proto_DdmlibAndroidDeviceProviderConfig_descriptor;
@@ -104,6 +99,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
               com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig.class, com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig.Builder.class);
     }
 
+    private int bitField0_;
     public static final int LOCAL_ANDROID_DEVICE_PROVIDER_CONFIG_FIELD_NUMBER = 1;
     private com.google.protobuf.Any localAndroidDeviceProviderConfig_;
     /**
@@ -117,7 +113,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
      */
     @java.lang.Override
     public boolean hasLocalAndroidDeviceProviderConfig() {
-      return localAndroidDeviceProviderConfig_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -142,11 +138,11 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
      */
     @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getLocalAndroidDeviceProviderConfigOrBuilder() {
-      return getLocalAndroidDeviceProviderConfig();
+      return localAndroidDeviceProviderConfig_ == null ? com.google.protobuf.Any.getDefaultInstance() : localAndroidDeviceProviderConfig_;
     }
 
     public static final int UNINSTALL_INCOMPATIBLE_APKS_FIELD_NUMBER = 2;
-    private boolean uninstallIncompatibleApks_;
+    private boolean uninstallIncompatibleApks_ = false;
     /**
      * <pre>
      * DdmlibAndroidDeviceProvider uninstalls APKs on the device when an installation failure
@@ -176,7 +172,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (localAndroidDeviceProviderConfig_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(1, getLocalAndroidDeviceProviderConfig());
       }
       if (uninstallIncompatibleApks_ != false) {
@@ -191,7 +187,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
       if (size != -1) return size;
 
       size = 0;
-      if (localAndroidDeviceProviderConfig_ != null) {
+      if (((bitField0_ & 0x00000001) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getLocalAndroidDeviceProviderConfig());
       }
@@ -288,11 +284,13 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -360,25 +358,30 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
 
       // Construct using com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig.newBuilder()
       private Builder() {
-
+        maybeForceBuilderInitialization();
       }
 
       private Builder(
           com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
-
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getLocalAndroidDeviceProviderConfigFieldBuilder();
+        }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (localAndroidDeviceProviderConfigBuilder_ == null) {
-          localAndroidDeviceProviderConfig_ = null;
-        } else {
-          localAndroidDeviceProviderConfig_ = null;
+        bitField0_ = 0;
+        localAndroidDeviceProviderConfig_ = null;
+        if (localAndroidDeviceProviderConfigBuilder_ != null) {
+          localAndroidDeviceProviderConfigBuilder_.dispose();
           localAndroidDeviceProviderConfigBuilder_ = null;
         }
         uninstallIncompatibleApks_ = false;
-
         return this;
       }
 
@@ -405,14 +408,24 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig buildPartial() {
         com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig result = new com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig(this);
-        if (localAndroidDeviceProviderConfigBuilder_ == null) {
-          result.localAndroidDeviceProviderConfig_ = localAndroidDeviceProviderConfig_;
-        } else {
-          result.localAndroidDeviceProviderConfig_ = localAndroidDeviceProviderConfigBuilder_.build();
-        }
-        result.uninstallIncompatibleApks_ = uninstallIncompatibleApks_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.deviceprovider.ddmlib.proto.AndroidDeviceProviderDdmlibConfigProto.DdmlibAndroidDeviceProviderConfig result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.localAndroidDeviceProviderConfig_ = localAndroidDeviceProviderConfigBuilder_ == null
+              ? localAndroidDeviceProviderConfig_
+              : localAndroidDeviceProviderConfigBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.uninstallIncompatibleApks_ = uninstallIncompatibleApks_;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
 
       @java.lang.Override
@@ -495,12 +508,12 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
                 input.readMessage(
                     getLocalAndroidDeviceProviderConfigFieldBuilder().getBuilder(),
                     extensionRegistry);
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 16: {
                 uninstallIncompatibleApks_ = input.readBool();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 16
               default: {
@@ -518,6 +531,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private com.google.protobuf.Any localAndroidDeviceProviderConfig_;
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -532,7 +546,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        * @return Whether the localAndroidDeviceProviderConfig field is set.
        */
       public boolean hasLocalAndroidDeviceProviderConfig() {
-        return localAndroidDeviceProviderConfigBuilder_ != null || localAndroidDeviceProviderConfig_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -564,11 +578,11 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
             throw new NullPointerException();
           }
           localAndroidDeviceProviderConfig_ = value;
-          onChanged();
         } else {
           localAndroidDeviceProviderConfigBuilder_.setMessage(value);
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -583,11 +597,11 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
           com.google.protobuf.Any.Builder builderForValue) {
         if (localAndroidDeviceProviderConfigBuilder_ == null) {
           localAndroidDeviceProviderConfig_ = builderForValue.build();
-          onChanged();
         } else {
           localAndroidDeviceProviderConfigBuilder_.setMessage(builderForValue.build());
         }
-
+        bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -600,17 +614,20 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        */
       public Builder mergeLocalAndroidDeviceProviderConfig(com.google.protobuf.Any value) {
         if (localAndroidDeviceProviderConfigBuilder_ == null) {
-          if (localAndroidDeviceProviderConfig_ != null) {
-            localAndroidDeviceProviderConfig_ =
-              com.google.protobuf.Any.newBuilder(localAndroidDeviceProviderConfig_).mergeFrom(value).buildPartial();
+          if (((bitField0_ & 0x00000001) != 0) &&
+            localAndroidDeviceProviderConfig_ != null &&
+            localAndroidDeviceProviderConfig_ != com.google.protobuf.Any.getDefaultInstance()) {
+            getLocalAndroidDeviceProviderConfigBuilder().mergeFrom(value);
           } else {
             localAndroidDeviceProviderConfig_ = value;
           }
-          onChanged();
         } else {
           localAndroidDeviceProviderConfigBuilder_.mergeFrom(value);
         }
-
+        if (localAndroidDeviceProviderConfig_ != null) {
+          bitField0_ |= 0x00000001;
+          onChanged();
+        }
         return this;
       }
       /**
@@ -622,14 +639,13 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        * <code>.google.protobuf.Any local_android_device_provider_config = 1;</code>
        */
       public Builder clearLocalAndroidDeviceProviderConfig() {
-        if (localAndroidDeviceProviderConfigBuilder_ == null) {
-          localAndroidDeviceProviderConfig_ = null;
-          onChanged();
-        } else {
-          localAndroidDeviceProviderConfig_ = null;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        localAndroidDeviceProviderConfig_ = null;
+        if (localAndroidDeviceProviderConfigBuilder_ != null) {
+          localAndroidDeviceProviderConfigBuilder_.dispose();
           localAndroidDeviceProviderConfigBuilder_ = null;
         }
-
+        onChanged();
         return this;
       }
       /**
@@ -641,7 +657,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        * <code>.google.protobuf.Any local_android_device_provider_config = 1;</code>
        */
       public com.google.protobuf.Any.Builder getLocalAndroidDeviceProviderConfigBuilder() {
-        
+        bitField0_ |= 0x00000001;
         onChanged();
         return getLocalAndroidDeviceProviderConfigFieldBuilder().getBuilder();
       }
@@ -710,8 +726,9 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        * @return This builder for chaining.
        */
       public Builder setUninstallIncompatibleApks(boolean value) {
-        
+
         uninstallIncompatibleApks_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -726,7 +743,7 @@ public final class AndroidDeviceProviderDdmlibConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearUninstallIncompatibleApks() {
-        
+        bitField0_ = (bitField0_ & ~0x00000002);
         uninstallIncompatibleApks_ = false;
         onChanged();
         return this;

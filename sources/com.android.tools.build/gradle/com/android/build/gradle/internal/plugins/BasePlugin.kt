@@ -67,7 +67,6 @@ import com.android.build.gradle.internal.ide.v2.GlobalSyncService
 import com.android.build.gradle.internal.ide.v2.NativeModelBuilder
 import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
-import com.android.build.gradle.internal.projectIsolationActive
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
@@ -96,7 +95,6 @@ import com.android.build.gradle.internal.variant.VariantFactory
 import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.internal.variant.VariantModelImpl
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.errors.IssueReporter.Type
 import com.android.builder.model.v2.ide.ProjectType
@@ -151,7 +149,7 @@ abstract class BasePlugin<
     val componentFactory: SoftwareComponentFactory,
     listenerRegistry: BuildEventsListenerRegistry,
     private val gradleBuildFeatures: org.gradle.api.configuration.BuildFeatures,
-): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
+): AndroidPluginBaseServices(listenerRegistry, gradleBuildFeatures), Plugin<Project> {
 
     init {
         checkClasspathSanity()
@@ -543,12 +541,14 @@ abstract class BasePlugin<
         )
 
         // Register a builder for the native tooling model
-        val nativeModelBuilderV2 = NativeModelBuilder(
+        val nativeModelBuilderV2 = project.objects.newInstance(
+            NativeModelBuilder::class.java,
             project,
             projectServices.issueReporter,
             projectServices.projectOptions,
             variantModel
         )
+
         registry.register(nativeModelBuilderV2)
     }
 
@@ -619,11 +619,22 @@ abstract class BasePlugin<
                     ?: ("android-" + SdkVersionInfo.HIGHEST_KNOWN_STABLE_API)
                 extension.compileSdkVersion = newCompileSdkVersion
             }
+            val message = if (project.parent == null) {
+                """
+                    Android Gradle Plugin has been applied at the root build file. Please consider not applying in the root (use `apply false`). Read more https://docs.gradle.org/current/userguide/plugins.html#sec:subprojects_plugins_dsl
+
+                    To continue with the plugin in the resolved and applied state, specify `compileSdk` in ${project.buildFile.name} (${project.buildFile.path}).
+                """.trimIndent()
+            } else {
+                """
+                    Android Gradle Plugin: ${project.displayName} does not specify `compileSdk` in ${project.buildFile.name} (${project.buildFile.path}).
+                """.trimIndent()
+            }
             dslServices
                 .issueReporter
                 .reportError(
                     Type.COMPILE_SDK_VERSION_NOT_SET,
-                    "compileSdkVersion is not specified. Please add it to build.gradle"
+                    message
                 )
         }
 

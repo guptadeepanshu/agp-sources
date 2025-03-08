@@ -65,6 +65,7 @@ import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 class GlobalTaskCreationConfigImpl(
@@ -190,7 +191,13 @@ class GlobalTaskCreationConfigImpl(
         get() = oldExtension.testServers
 
     override val kotlinAndroidProjectExtension: KotlinAndroidProjectExtension? by lazy {
-        project.extensions.findByName("kotlin") as? KotlinAndroidProjectExtension
+        val extension = project.extensions.findByName("kotlin") as? KotlinAndroidProjectExtension
+        extension?.compilerOptions?.moduleName?.convention(project.name)
+        return@lazy extension
+    }
+
+    override val kaptExtension: KaptExtensionConfig? by lazy {
+        project.extensions.findByName("kapt") as? KaptExtensionConfig
     }
 
     override val namespacedAndroidResources: Boolean

@@ -92,6 +92,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Object that represents the dependencies of variant.
@@ -107,14 +108,17 @@ public class VariantDependenciesBuilder {
             @NonNull Project project,
             @NonNull ProjectOptions projectOptions,
             @NonNull IssueReporter errorReporter,
-            @NonNull ComponentDslInfo dslInfo) {
-        return new VariantDependenciesBuilder(project, projectOptions, errorReporter, dslInfo);
+            @NonNull ComponentDslInfo dslInfo,
+            @NonNull Map<String, Function<String, String>> sourceSetConfigurationsMap) {
+        return new VariantDependenciesBuilder(
+                project, projectOptions, errorReporter, dslInfo, sourceSetConfigurationsMap);
     }
 
     @NonNull private final Project project;
     @NonNull private final ProjectOptions projectOptions;
     @NonNull private final IssueReporter issueReporter;
     @NonNull private final ComponentDslInfo dslInfo;
+    @NonNull private final Map<String, Function<String, String>> sourceSetConfigurationsMap;
     private Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> flavorSelection;
 
     // default size should be enough. It's going to be rare for a variant to include
@@ -139,11 +143,13 @@ public class VariantDependenciesBuilder {
             @NonNull Project project,
             @NonNull ProjectOptions projectOptions,
             @NonNull IssueReporter issueReporter,
-            @NonNull ComponentDslInfo dslInfo) {
+            @NonNull ComponentDslInfo dslInfo,
+            @NonNull Map<String, Function<String, String>> sourceSetConfigurationsMap) {
         this.project = project;
         this.projectOptions = projectOptions;
         this.issueReporter = issueReporter;
         this.dslInfo = dslInfo;
+        this.sourceSetConfigurationsMap = sourceSetConfigurationsMap;
     }
 
     public VariantDependenciesBuilder addSourceSets(
@@ -708,7 +714,8 @@ public class VariantDependenciesBuilder {
                 project,
                 projectOptions,
                 isLibraryConstraintApplied,
-                isSelfInstrumenting);
+                isSelfInstrumenting,
+                sourceSetConfigurationsMap);
     }
 
     // TODO(b/338596003) Update this method to handle built-in kotlin support

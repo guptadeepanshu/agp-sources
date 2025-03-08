@@ -18,8 +18,11 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ApkOutput
+import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.DeviceSpec
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.GeneratesApk
@@ -28,11 +31,13 @@ import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.SigningConfig
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.TaskProvider
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -97,7 +102,7 @@ open class AnalyticsEnabledDeviceTest @Inject constructor(
             return delegate.testLabel
         }
 
-    override val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.BUILD_CONFIG_FIELDS_VALUE
@@ -166,4 +171,7 @@ open class AnalyticsEnabledDeviceTest @Inject constructor(
                 VariantPropertiesMethodType.DEVICE_TEST_CODE_COVERAGE_ENABLED_VALUE
             return delegate.codeCoverageEnabled
         }
+
+    override val outputProviders: ApkOutputProviders
+        get() = generatesApk.outputProviders
 }

@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new AndroidTestRetentionEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidTestRetentionEvent_descriptor;
@@ -119,11 +114,6 @@ private static final long serialVersionUID = 0L;
       return new SnapshotCompatibility();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidTestRetentionEvent_SnapshotCompatibility_descriptor;
@@ -271,7 +261,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int RESULT_FIELD_NUMBER = 1;
-    private int result_;
+    private int result_ = 0;
     /**
      * <pre>
      * Compatibility check result.
@@ -292,13 +282,12 @@ private static final long serialVersionUID = 0L;
      * @return The result.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.valueOf(result_);
+      com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.UNKNOWN_FAILURE : result;
     }
 
     public static final int EMULATOR_CHECK_FAILURE_REASON_FIELD_NUMBER = 2;
-    private int emulatorCheckFailureReason_;
+    private int emulatorCheckFailureReason_ = 0;
     /**
      * <pre>
      * More detailed failure reason returned by the emulator. Only set when
@@ -321,8 +310,7 @@ private static final long serialVersionUID = 0L;
      * @return The emulatorCheckFailureReason.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getEmulatorCheckFailureReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(emulatorCheckFailureReason_);
+      com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(emulatorCheckFailureReason_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
     }
 
@@ -537,10 +525,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         result_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         emulatorCheckFailureReason_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -567,53 +554,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility buildPartial() {
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility result = new com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.result_ = result_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.emulatorCheckFailureReason_ = emulatorCheckFailureReason_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.result_ = result_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.emulatorCheckFailureReason_ = emulatorCheckFailureReason_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility) {
@@ -721,8 +680,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result getResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.valueOf(result_);
+        com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.forNumber(result_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.UNKNOWN_FAILURE : result;
       }
       /**
@@ -782,8 +740,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getEmulatorCheckFailureReason() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(emulatorCheckFailureReason_);
+        com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.forNumber(emulatorCheckFailureReason_);
         return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
       }
       /**
@@ -1114,12 +1071,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (snapshotCompatibilityBuilder_ == null) {
-        snapshotCompatibility_ = null;
-      } else {
-        snapshotCompatibilityBuilder_.clear();
+      bitField0_ = 0;
+      snapshotCompatibility_ = null;
+      if (snapshotCompatibilityBuilder_ != null) {
+        snapshotCompatibilityBuilder_.dispose();
+        snapshotCompatibilityBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -1146,53 +1103,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent buildPartial() {
       com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent result = new com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (snapshotCompatibilityBuilder_ == null) {
-          result.snapshotCompatibility_ = snapshotCompatibility_;
-        } else {
-          result.snapshotCompatibility_ = snapshotCompatibilityBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.snapshotCompatibility_ = snapshotCompatibilityBuilder_ == null
+            ? snapshotCompatibility_
+            : snapshotCompatibilityBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent) {
@@ -1288,11 +1215,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         snapshotCompatibility_ = value;
-        onChanged();
       } else {
         snapshotCompatibilityBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1302,11 +1229,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Builder builderForValue) {
       if (snapshotCompatibilityBuilder_ == null) {
         snapshotCompatibility_ = builderForValue.build();
-        onChanged();
       } else {
         snapshotCompatibilityBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1315,31 +1242,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSnapshotCompatibility(com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility value) {
       if (snapshotCompatibilityBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            snapshotCompatibility_ != null &&
-            snapshotCompatibility_ != com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.getDefaultInstance()) {
-          snapshotCompatibility_ =
-            com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.newBuilder(snapshotCompatibility_).mergeFrom(value).buildPartial();
+          snapshotCompatibility_ != null &&
+          snapshotCompatibility_ != com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.getDefaultInstance()) {
+          getSnapshotCompatibilityBuilder().mergeFrom(value);
         } else {
           snapshotCompatibility_ = value;
         }
-        onChanged();
       } else {
         snapshotCompatibilityBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1 [lazy = true];</code>
      */
     public Builder clearSnapshotCompatibility() {
-      if (snapshotCompatibilityBuilder_ == null) {
-        snapshotCompatibility_ = null;
-        onChanged();
-      } else {
-        snapshotCompatibilityBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      snapshotCompatibility_ = null;
+      if (snapshotCompatibilityBuilder_ != null) {
+        snapshotCompatibilityBuilder_.dispose();
+        snapshotCompatibilityBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

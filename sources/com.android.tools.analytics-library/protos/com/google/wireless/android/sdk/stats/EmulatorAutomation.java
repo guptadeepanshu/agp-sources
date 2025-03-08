@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorAutomation();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorAutomation_descriptor;
@@ -200,7 +195,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOTAL_DURATION_MS_FIELD_NUMBER = 1;
-  private long totalDurationMs_;
+  private long totalDurationMs_ = 0L;
   /**
    * <pre>
    * Total sum of time of macros playing -&gt; Sum(Stop-Play).
@@ -227,7 +222,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MACRO_PLAYBACK_COUNT_FIELD_NUMBER = 2;
-  private long macroPlaybackCount_;
+  private long macroPlaybackCount_ = 0L;
   /**
    * <pre>
    * Total amount of times macros played.
@@ -254,7 +249,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PREVIEW_REPLAY_COUNT_FIELD_NUMBER = 3;
-  private long previewReplayCount_;
+  private long previewReplayCount_ = 0L;
   /**
    * <pre>
    * Total amount of times previews replayed.
@@ -281,14 +276,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLAYED_PRESET_MACRO_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> playedPresetMacro_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro> playedPresetMacro_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro>() {
             public com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro result = com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro result = com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro.EMULATOR_AUTOMATION_PRESET_MACRO_RESET : result;
             }
           };
@@ -332,7 +327,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RECORD_MACRO_COUNT_FIELD_NUMBER = 5;
-  private long recordMacroCount_;
+  private long recordMacroCount_ = 0L;
   /**
    * <pre>
    * Total amount of macros recorded.
@@ -359,7 +354,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DELETE_MACRO_COUNT_FIELD_NUMBER = 6;
-  private long deleteMacroCount_;
+  private long deleteMacroCount_ = 0L;
   /**
    * <pre>
    * Total amount of macros deleted.
@@ -386,7 +381,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EDIT_MACRO_COUNT_FIELD_NUMBER = 7;
-  private long editMacroCount_;
+  private long editMacroCount_ = 0L;
   /**
    * <pre>
    * Total amount of macros edited.
@@ -712,20 +707,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       totalDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       macroPlaybackCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       previewReplayCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       playedPresetMacro_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000008);
       recordMacroCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       deleteMacroCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       editMacroCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -752,6 +742,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAutomation buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorAutomation result = new com.google.wireless.android.sdk.stats.EmulatorAutomation(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EmulatorAutomation result) {
+      if (((bitField0_ & 0x00000008) != 0)) {
+        playedPresetMacro_ = java.util.Collections.unmodifiableList(playedPresetMacro_);
+        bitField0_ = (bitField0_ & ~0x00000008);
+      }
+      result.playedPresetMacro_ = playedPresetMacro_;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorAutomation result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -766,11 +771,6 @@ private static final long serialVersionUID = 0L;
         result.previewReplayCount_ = previewReplayCount_;
         to_bitField0_ |= 0x00000004;
       }
-      if (((bitField0_ & 0x00000008) != 0)) {
-        playedPresetMacro_ = java.util.Collections.unmodifiableList(playedPresetMacro_);
-        bitField0_ = (bitField0_ & ~0x00000008);
-      }
-      result.playedPresetMacro_ = playedPresetMacro_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.recordMacroCount_ = recordMacroCount_;
         to_bitField0_ |= 0x00000008;
@@ -783,43 +783,9 @@ private static final long serialVersionUID = 0L;
         result.editMacroCount_ = editMacroCount_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorAutomation) {
@@ -997,8 +963,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalDurationMs(long value) {
-      bitField0_ |= 0x00000001;
+
       totalDurationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1052,8 +1019,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMacroPlaybackCount(long value) {
-      bitField0_ |= 0x00000002;
+
       macroPlaybackCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1107,8 +1075,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPreviewReplayCount(long value) {
-      bitField0_ |= 0x00000004;
+
       previewReplayCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1276,8 +1245,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRecordMacroCount(long value) {
-      bitField0_ |= 0x00000010;
+
       recordMacroCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1331,8 +1301,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDeleteMacroCount(long value) {
-      bitField0_ |= 0x00000020;
+
       deleteMacroCount_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1386,8 +1357,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEditMacroCount(long value) {
-      bitField0_ |= 0x00000040;
+
       editMacroCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }

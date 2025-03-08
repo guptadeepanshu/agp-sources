@@ -74,6 +74,7 @@ import java.util.logging.Logger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.io.path.exists
+import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.writeText
 
 fun isProguardRule(name: String): Boolean {
@@ -86,6 +87,18 @@ fun isToolsConfigurationFile(name: String): Boolean {
     val lowerCaseName = name.toLowerCase(Locale.US)
     return lowerCaseName.startsWith("$TOOLS_CONFIGURATION_FOLDER/")
             || lowerCaseName.startsWith("/$TOOLS_CONFIGURATION_FOLDER/")
+}
+
+data class PartialShrinkingConfig(
+    val includedPatterns: String? = null,
+    val excludedPatterns: String? = null
+) : java.io.Serializable { // Serializable so it can be used in Gradle workers
+
+    companion object {
+
+        @Suppress("ConstPropertyName")
+        private const val serialVersionUID = 0L
+    }
 }
 
 /**
@@ -114,6 +127,7 @@ fun runR8(
     outputArtProfile: Path? = null,
     inputProfileForDexStartupOptimization: Path? = null,
     r8Metadata: Path? = null,
+    partialShrinkingConfig: PartialShrinkingConfig? = null,
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -135,6 +149,13 @@ fun runR8(
                 "R8"
             )
         )
+
+    if (partialShrinkingConfig != null) {
+        r8CommandBuilder.enableExperimentalPartialShrinking(
+            partialShrinkingConfig.includedPatterns,
+            partialShrinkingConfig.excludedPatterns
+        )
+    }
 
     if (!useFullR8) {
         r8CommandBuilder.setProguardCompatibility(true);
@@ -273,58 +294,6 @@ fun runR8(
 
     r8CommandBuilder.addProgramResourceProvider(r8ProgramResourceProvider)
 
-    val featureClassJarMap =
-        featureClassJars.associateBy({ it.toFile().nameWithoutExtension }, { it })
-    val featureJavaResourceJarMap =
-        featureJavaResourceJars.associateBy({ it.toFile().nameWithoutExtension }, { it })
-    // Check that each feature class jar has a corresponding feature java resources jar, and vice
-    // versa.
-    check(
-        featureClassJarMap.keys.containsAll(featureJavaResourceJarMap.keys)
-                && featureJavaResourceJarMap.keys.containsAll(featureClassJarMap.keys)
-    ) {
-        """
-            featureClassJarMap and featureJavaResourceJarMap must have the same keys.
-
-            featureClassJarMap keys:
-            ${featureClassJarMap.keys.sorted()}
-
-            featureJavaResourceJarMap keys:
-            ${featureJavaResourceJarMap.keys.sorted()}
-            """.trimIndent()
-    }
-    if (featureClassJarMap.isNotEmpty()) {
-        check(featureDexDir != null && featureJavaResourceOutputDir != null) {
-            "featureDexDir == null || featureJavaResourceOutputDir == null."
-        }
-        Files.createDirectories(featureJavaResourceOutputDir)
-        check(toolConfig.r8OutputType == R8OutputType.DEX) {
-            "toolConfig.r8OutputType != R8OutputType.DEX."
-        }
-        for (featureKey in featureClassJarMap.keys) {
-            r8CommandBuilder.addFeatureSplit {
-                it.addProgramResourceProvider(
-                    ArchiveProgramResourceProvider.fromArchive(featureClassJarMap[featureKey])
-                )
-                it.addProgramResourceProvider(
-                    ArchiveResourceProvider.fromArchive(featureJavaResourceJarMap[featureKey], true)
-                )
-                val javaResConsumer = JavaResourcesConsumer(
-                    featureJavaResourceOutputDir.resolve("$featureKey$DOT_JAR")
-                )
-                it.setProgramConsumer(
-                    object : DexIndexedConsumer.DirectoryConsumer(
-                        Files.createDirectories(featureDexDir.resolve(featureKey))
-                    ) {
-                        override fun getDataResourceConsumer(): DataResourceConsumer {
-                            return javaResConsumer
-                        }
-                    }
-                )
-                return@addFeatureSplit it.build()
-            }
-        }
-    }
     // handle art-profile rewriting if enabled
     inputArtProfile?.let {input ->
         if (input.exists() && outputArtProfile != null) {
@@ -341,7 +310,12 @@ fun runR8(
     // Enable workarounds for missing library APIs in R8 (see b/231547906).
     r8CommandBuilder.setEnableExperimentalMissingLibraryApiModeling(true);
 
-    resourceShrinkingConfig?.let { setupResourceShrinkingForApks(r8CommandBuilder, it) }
+    resourceShrinkingConfig?.let { setupResourceShrinking(r8CommandBuilder, it) }
+
+    setupFeatureSplits(
+        r8CommandBuilder, toolConfig, featureClassJars, featureDexDir,
+        featureJavaResourceJars, featureJavaResourceOutputDir, resourceShrinkingConfig
+    )
 
     ClassFileProviderFactory(libraries).use { libraryClasses ->
         ClassFileProviderFactory(classpath).use { classpathClasses ->
@@ -359,12 +333,7 @@ fun runR8(
     }
 }
 
-/**
- * Sets up resource shrinking in R8 when building APK(s).
- *
- * (Resource shrinking in R8 when building bundles will be supported later.)
- */
-private fun setupResourceShrinkingForApks(
+private fun setupResourceShrinking(
     r8CommandBuilder: R8Command.Builder,
     config: ResourceShrinkingConfig
 ) {
@@ -392,6 +361,9 @@ private fun setupResourceShrinkingForApks(
     r8CommandBuilder.setResourceShrinkerConfiguration {
         if (!config.usePreciseShrinking) {
             it.disablePreciseShrinking()
+        }
+        if (config.optimizedShrinking) {
+            it.enableOptimizedShrinkingWithR8()
         }
         config.logFile?.let { logFile ->
             it.setDebugConsumer(StringConsumer.FileConsumer(logFile.toPath()))
@@ -432,6 +404,72 @@ private class KeepRulesAndroidResourceInput(
     override fun getKind() = AndroidResourceInput.Kind.KEEP_RULE_FILE
 
     override fun getByteStream() = ByteArrayInputStream(resourceKeepRulesXmlFile.readBytes())
+}
+
+private fun setupFeatureSplits(
+    r8CommandBuilder: R8Command.Builder,
+    toolConfig: ToolConfig,
+    featureClassJars: Collection<Path>,
+    featureDexOutputDir: Path?,
+    featureJavaResourceJars: Collection<Path>,
+    featureJavaResourceOutputDir: Path?,
+    resourceShrinkingConfig: ResourceShrinkingConfig?,
+) {
+    if (featureClassJars.isEmpty()) return
+
+    check(toolConfig.r8OutputType == R8OutputType.DEX) {
+        "Unexpected toolConfig.r8OutputType: ${toolConfig.r8OutputType}"
+    }
+    val featureFileNamesWithoutExtension = featureClassJars.map { it.toFile().nameWithoutExtension }.distinct()
+    check(featureJavaResourceJars.map { it.toFile().nameWithoutExtension } == featureFileNamesWithoutExtension
+            && (resourceShrinkingConfig == null || resourceShrinkingConfig.featureLinkedResourcesInputFiles.map { it.nameWithoutExtension } == featureFileNamesWithoutExtension)) {
+        "Inconsistent featureFileNames:\n" +
+                "  featureClassJars: $featureClassJars\n" +
+                "  featureJavaResourceJars: $featureJavaResourceJars\n" +
+                "  featureLinkedResourcesInputFiles: ${resourceShrinkingConfig?.featureLinkedResourcesInputFiles}"
+    }
+    check(
+        featureDexOutputDir != null
+                && featureJavaResourceOutputDir != null
+                && (resourceShrinkingConfig == null || resourceShrinkingConfig.featureShrunkResourcesOutputDir != null)
+    ) {
+        "Expected not null but received:\n" +
+                "  featureDexDir=$featureDexOutputDir\n" +
+                "  featureJavaResourceOutputDir=$featureJavaResourceOutputDir\n" +
+                "  featureShrunkResourcesOutputDir=${resourceShrinkingConfig?.featureShrunkResourcesOutputDir}"
+    }
+
+    featureFileNamesWithoutExtension.forEach { featureFileNameWithoutExtension ->
+        val featureClassJar = featureClassJars.single { it.nameWithoutExtension == featureFileNameWithoutExtension }
+        val featureJavaResourceJar = featureJavaResourceJars.single { it.nameWithoutExtension == featureFileNameWithoutExtension }
+
+        val featureDexOutputDirectory = Files.createDirectories(featureDexOutputDir.resolve(featureFileNameWithoutExtension))
+        val featureJavaResourceOutputDirectory = featureJavaResourceOutputDir.resolve("$featureFileNameWithoutExtension$DOT_JAR")
+
+        r8CommandBuilder.addFeatureSplit {
+            it.addProgramResourceProvider(ArchiveProgramResourceProvider.fromArchive(featureClassJar))
+            it.addProgramResourceProvider(ArchiveResourceProvider.fromArchive(featureJavaResourceJar, true))
+
+            val javaResourcesConsumer = JavaResourcesConsumer(featureJavaResourceOutputDirectory)
+            it.setProgramConsumer(
+                object : DexIndexedConsumer.DirectoryConsumer(featureDexOutputDirectory) {
+                    override fun getDataResourceConsumer(): DataResourceConsumer {
+                        return javaResourcesConsumer
+                    }
+                }
+            )
+
+            if (resourceShrinkingConfig != null) {
+                val inputFile = resourceShrinkingConfig.featureLinkedResourcesInputFiles
+                    .single { file -> file.nameWithoutExtension == featureFileNameWithoutExtension }
+                val outputFile = resourceShrinkingConfig.featureShrunkResourcesOutputDir!!.resolve(inputFile.name)
+                it.setAndroidResourceProvider(ArchiveProtoAndroidResourceProvider(inputFile.toPath()))
+                it.setAndroidResourceConsumer(ArchiveProtoAndroidResourceConsumer(outputFile.toPath()))
+            }
+
+            it.build()
+        }
+    }
 }
 
 fun wireArtProfileRewriting(
@@ -538,9 +576,12 @@ data class ToolConfig(
 data class ResourceShrinkingConfig(
     val linkedResourcesInputFiles: List<File>,
     val mergedNotCompiledResourcesInputDir: File,
+    val featureLinkedResourcesInputFiles: List<File>,
     val usePreciseShrinking: Boolean,
+    val optimizedShrinking: Boolean,
     val logFile: File?,
-    val shrunkResourcesOutputFiles: List<File>
+    val shrunkResourcesOutputFiles: List<File>,
+    val featureShrunkResourcesOutputDir: File?
 ) : java.io.Serializable { // Serializable so it can be used in Gradle workers
 
     companion object {

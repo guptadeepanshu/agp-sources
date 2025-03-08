@@ -25,7 +25,7 @@ import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Optional
 
 private const val UTP_MAVEN_GROUP_ID = "com.google.testing.platform"
-private const val UTP_DEFAULT_VERSION = "0.0.9-alpha02"
+private const val UTP_DEFAULT_VERSION = "0.0.9-alpha03"
 private const val ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID = "com.android.tools.utp"
 private val ANDROID_TOOLS_UTP_PLUGIN_VERSION = ANDROID_TOOLS_BASE_VERSION
 
@@ -141,10 +141,6 @@ abstract class UtpDependencies {
     @get:Optional
     @get:Classpath
     abstract val deviceProviderGradle: ConfigurableFileCollection
-
-    @get:Optional
-    @get:Classpath
-    abstract val deviceProviderVirtual: ConfigurableFileCollection
 
     @get:Optional
     @get:Classpath

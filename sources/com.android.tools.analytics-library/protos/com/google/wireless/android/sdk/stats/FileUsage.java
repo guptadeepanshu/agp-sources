@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new FileUsage();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_FileUsage_descriptor;
@@ -177,7 +172,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int FILE_PATH_FIELD_NUMBER = 1;
-  private volatile java.lang.Object filePath_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object filePath_ = "";
   /**
    * <pre>
    * Anonymized guid representing file path
@@ -237,7 +233,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_TYPE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object fileType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object fileType_ = "";
   /**
    * <pre>
    * Type of file, i.e. kotlin, java
@@ -297,7 +294,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_TYPE_FIELD_NUMBER = 3;
-  private volatile java.lang.Object pluginType_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pluginType_ = "";
   /**
    * <pre>
    * Plugin type
@@ -357,7 +355,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLUGIN_VERSION_FIELD_NUMBER = 4;
-  private volatile java.lang.Object pluginVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object pluginVersion_ = "";
   /**
    * <pre>
    * Plugin version
@@ -417,7 +416,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EVENT_TYPE_FIELD_NUMBER = 5;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <pre>
    * Event type
@@ -438,8 +437,7 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.FileUsage.EventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.FileUsage.EventType result = com.google.wireless.android.sdk.stats.FileUsage.EventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.FileUsage.EventType result = com.google.wireless.android.sdk.stats.FileUsage.EventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.FileUsage.EventType.UNKNOWN_TYPE : result;
   }
 
@@ -699,16 +697,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       filePath_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       fileType_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       pluginType_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       pluginVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -735,65 +729,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FileUsage buildPartial() {
       com.google.wireless.android.sdk.stats.FileUsage result = new com.google.wireless.android.sdk.stats.FileUsage(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.filePath_ = filePath_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.fileType_ = fileType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.pluginType_ = pluginType_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.pluginVersion_ = pluginVersion_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.eventType_ = eventType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.FileUsage result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.filePath_ = filePath_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.fileType_ = fileType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.pluginType_ = pluginType_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.pluginVersion_ = pluginVersion_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.eventType_ = eventType_;
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.FileUsage) {
@@ -807,23 +773,23 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.FileUsage other) {
       if (other == com.google.wireless.android.sdk.stats.FileUsage.getDefaultInstance()) return this;
       if (other.hasFilePath()) {
-        bitField0_ |= 0x00000001;
         filePath_ = other.filePath_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasFileType()) {
-        bitField0_ |= 0x00000002;
         fileType_ = other.fileType_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasPluginType()) {
-        bitField0_ |= 0x00000004;
         pluginType_ = other.pluginType_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasPluginVersion()) {
-        bitField0_ |= 0x00000008;
         pluginVersion_ = other.pluginVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasEventType()) {
@@ -970,11 +936,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFilePath(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       filePath_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -987,8 +951,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFilePath() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       filePath_ = getDefaultInstance().getFilePath();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1003,11 +967,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFilePathBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       filePath_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1078,11 +1040,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1095,8 +1055,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFileType() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       fileType_ = getDefaultInstance().getFileType();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1111,11 +1071,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFileTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       fileType_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1186,11 +1144,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginType(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       pluginType_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1203,8 +1159,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPluginType() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       pluginType_ = getDefaultInstance().getPluginType();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1219,11 +1175,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginTypeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       pluginType_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1294,11 +1248,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1311,8 +1263,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPluginVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       pluginVersion_ = getDefaultInstance().getPluginVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1327,11 +1279,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPluginVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       pluginVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1358,8 +1308,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FileUsage.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.FileUsage.EventType result = com.google.wireless.android.sdk.stats.FileUsage.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.FileUsage.EventType result = com.google.wireless.android.sdk.stats.FileUsage.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.FileUsage.EventType.UNKNOWN_TYPE : result;
     }
     /**

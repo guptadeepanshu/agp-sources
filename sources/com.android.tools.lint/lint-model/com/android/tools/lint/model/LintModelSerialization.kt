@@ -32,7 +32,6 @@ import com.android.tools.lint.model.LintModelSerialization.TargetFile
 import com.android.tools.lint.model.LintModelSerialization.readDependencies
 import com.android.tools.lint.model.LintModelSerialization.writeModule
 import com.android.utils.XmlUtils
-import com.google.common.base.Charsets
 import com.google.common.io.Closer
 import java.io.BufferedReader
 import java.io.BufferedWriter
@@ -47,6 +46,7 @@ import java.io.OutputStreamWriter
 import java.io.PrintWriter
 import java.io.Reader
 import java.io.Writer
+import kotlin.text.Charsets
 import org.kxml2.io.KXmlParser
 import org.xmlpull.v1.XmlPullParser.END_DOCUMENT
 import org.xmlpull.v1.XmlPullParser.END_TAG

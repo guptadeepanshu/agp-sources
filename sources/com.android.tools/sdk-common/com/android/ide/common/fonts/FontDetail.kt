@@ -15,10 +15,19 @@
  */
 package com.android.ide.common.fonts
 
+import java.util.Locale
 import java.util.Objects
 
 const val DEFAULT_WEIGHT = 400
-const val DEFAULT_WIDTH = 100
+const val DEFAULT_WIDTH = 100f
+const val DEFAULT_EXACT = true
+const val ITALICS = 1f
+const val NORMAL = 0f
+
+enum class FontType {
+    SINGLE,
+    VARIABLE
+}
 
 /**
  * A [FontDetail] is a reference to a specific font with weight, width, and italics attributes.
@@ -26,21 +35,25 @@ const val DEFAULT_WIDTH = 100
  */
 class FontDetail {
     val family: FontFamily
+    val type: FontType
     val weight: Int
-    val width: Int
-    val italics: Boolean
+    val width: Float
+    val italics: Float
+    val exact: Boolean
     val fontUrl: String
     val styleName: String
     val hasExplicitStyle: Boolean
 
     val fontStyle: String
-        get() = if (italics) "italic" else "normal"
+        get() = if (italics != NORMAL) "italic" else "normal"
 
     constructor(fontFamily: FontFamily, font: MutableFontDetail) {
         family = fontFamily
+        type = font.type
         weight = font.weight
         width = font.width
         italics = font.italics
+        exact = font.exact
         fontUrl = font.fontUrl
         hasExplicitStyle = font.hasExplicitStyle
         styleName = generateStyleName(font)
@@ -51,9 +64,11 @@ class FontDetail {
      */
     constructor(detail: FontDetail, withStyle: MutableFontDetail) {
         family = detail.family
+        type = withStyle.type
         weight = withStyle.weight
         width = withStyle.width
         italics = withStyle.italics
+        exact = withStyle.exact
         fontUrl = detail.fontUrl
         hasExplicitStyle = detail.hasExplicitStyle
         styleName = generateStyleName(withStyle)
@@ -61,25 +76,49 @@ class FontDetail {
 
 
     fun toMutableFontDetail(): MutableFontDetail {
-        return MutableFontDetail(weight, width, italics, fontUrl, styleName, false, hasExplicitStyle)
+        return MutableFontDetail(family.name, type, weight, width, italics, exact, fontUrl, styleName, hasExplicitStyle)
     }
 
-    fun generateQuery(exact: Boolean): String {
-        if (weight == DEFAULT_WEIGHT && width == DEFAULT_WIDTH && !italics && !exact) {
+    fun generateQueryV12(): String {
+        val query = StringBuilder().append(family.name)
+        if (type == FontType.VARIABLE) {
+            query.append(":vf")
+            if (italics != 0f) {
+                query.append(":italic")
+            }
+            return query.toString()
+        }
+        if (weight != DEFAULT_WEIGHT) {
+            query.append(":wght").append(weight)
+        }
+        if (italics != NORMAL) {
+            query.append(":ital").append(italics.floatAsString())
+        }
+        if (width != DEFAULT_WIDTH) {
+            query.append(":wdth").append(width.floatAsString())
+        }
+        if (!exact) {
+            query.append(":nearest")
+        }
+        return query.toString()
+    }
+
+    fun generateQueryV11(): String {
+        if (weight == DEFAULT_WEIGHT && width == DEFAULT_WIDTH && italics == NORMAL && exact == DEFAULT_EXACT) {
             return family.name
         }
         val query = StringBuilder().append("name=").append(family.name)
         if (weight != DEFAULT_WEIGHT) {
             query.append("&weight=").append(weight)
         }
-        if (italics) {
-            query.append("&italic=1")
+        if (italics != NORMAL) {
+            query.append("&italic=").append(italics.floatAsString())
         }
         if (width != DEFAULT_WIDTH) {
-            query.append("&width=").append(width)
+            query.append("&width=").append(width.floatAsString())
         }
-        if (exact) {
-            query.append("&besteffort=false")
+        if (!exact) {
+            query.append("&besteffort=true")
         }
         return query.toString()
     }
@@ -121,7 +160,12 @@ class FontDetail {
         }
     }
 
-    private fun getItalicStyleNameSuffix(italics: Boolean): String {
-        return if (italics) " Italic" else ""
+    private fun getItalicStyleNameSuffix(italics: Float): String {
+        return if (italics != NORMAL) " Italic" else ""
+    }
+
+    /** Formats a float without trailing zeros and uses period for the decimal separator */
+    private fun Float.floatAsString(): String {
+        return String.format(Locale.ROOT, if (this % 1f != 0f) "%s" else "%.0f", this)
     }
 }

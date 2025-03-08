@@ -208,4 +208,10 @@ abstract class AnalyticsEnabledComponent(
             VariantPropertiesMethodType.COMPUTE_TASK_NAME_VALUE
         return delegate.computeTaskName(action, subject)
     }
+
+    override fun getResolvableConfiguration(sourceSetConfigurationsAffix: String): Configuration {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.GET_RESOLVABLE_CONFIGURATION_VALUE
+        return delegate.getResolvableConfiguration(sourceSetConfigurationsAffix)
+    }
 }

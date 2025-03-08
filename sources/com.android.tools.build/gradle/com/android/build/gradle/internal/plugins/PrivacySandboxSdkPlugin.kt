@@ -89,7 +89,7 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         val softwareComponentFactory: SoftwareComponentFactory,
         listenerRegistry: BuildEventsListenerRegistry,
         private val buildFeatures: BuildFeatures,
-) : AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
+) : AndroidPluginBaseServices(listenerRegistry, buildFeatures), Plugin<Project> {
 
     val dslServices: DslServices by lazy(LazyThreadSafetyMode.NONE) {
         withProject("dslServices") { project ->

@@ -36,7 +36,7 @@ interface AndroidSourceSet : Named {
 
     /** The Kotlin source for this source-set */
     val kotlin: AndroidSourceDirectorySet
-    /** The Java source for this source-set */
+    /** The Kotlin source for this source-set */
     fun kotlin(action: Action<AndroidSourceDirectorySet>)
 
     /** The Java-style resources for this source-set */

@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.transforms
 
 import com.android.build.api.artifact.SingleArtifact
-import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType.SHRUNK_RESOURCES_PROTO_FORMAT
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -89,8 +89,8 @@ abstract class ShrinkResourcesNewShrinkerTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        creationConfig: ApkCreationConfig
-    ) : VariantTaskCreationAction<ShrinkResourcesNewShrinkerTask, ApkCreationConfig>(
+        creationConfig: ApplicationCreationConfig
+    ) : VariantTaskCreationAction<ShrinkResourcesNewShrinkerTask, ApplicationCreationConfig>(
         creationConfig
     ) {
         override val type = ShrinkResourcesNewShrinkerTask::class.java

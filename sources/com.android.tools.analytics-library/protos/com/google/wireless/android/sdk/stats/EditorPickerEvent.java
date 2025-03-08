@@ -34,11 +34,6 @@ private static final long serialVersionUID = 0L;
     return new EditorPickerEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditorPickerEvent_descriptor;
@@ -197,7 +192,7 @@ private static final long serialVersionUID = 0L;
      */
     com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModificationOrBuilder getPreviewModificationOrBuilder();
 
-    public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.ActionInfoCase getActionInfoCase();
+    com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.ActionInfoCase getActionInfoCase();
   }
   /**
    * <pre>
@@ -225,11 +220,6 @@ private static final long serialVersionUID = 0L;
       return new EditorPickerAction();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditorPickerEvent_EditorPickerAction_descriptor;
@@ -337,11 +327,6 @@ private static final long serialVersionUID = 0L;
         return new PreviewPickerModification();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditorPickerEvent_EditorPickerAction_PreviewPickerModification_descriptor;
@@ -1508,7 +1493,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int PARAMETER_FIELD_NUMBER = 1;
-      private int parameter_;
+      private int parameter_ = 0;
       /**
        * <pre>
        * Parameter modified
@@ -1529,13 +1514,12 @@ private static final long serialVersionUID = 0L;
        * @return The parameter.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter getParameter() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.valueOf(parameter_);
+        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.forNumber(parameter_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.UNKNOWN_PREVIEW_PICKER_PARAMETER : result;
       }
 
       public static final int CLOSEST_DEVICE_TYPE_FIELD_NUMBER = 2;
-      private int closestDeviceType_;
+      private int closestDeviceType_ = 0;
       /**
        * <pre>
        * The device type that closest resembles the device used in the preview
@@ -1556,13 +1540,12 @@ private static final long serialVersionUID = 0L;
        * @return The closestDeviceType.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType getClosestDeviceType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.valueOf(closestDeviceType_);
+        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.forNumber(closestDeviceType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.UNKNOWN_DEVICE_TYPE : result;
       }
 
       public static final int ASSIGNED_VALUE_FIELD_NUMBER = 3;
-      private int assignedValue_;
+      private int assignedValue_ = 0;
       /**
        * <pre>
        * The assigned value, as described by PreviewPickerValue
@@ -1583,8 +1566,7 @@ private static final long serialVersionUID = 0L;
        * @return The assignedValue.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue getAssignedValue() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.valueOf(assignedValue_);
+        com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.forNumber(assignedValue_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.UNKNOWN_PREVIEW_PICKER_VALUE : result;
       }
 
@@ -1818,12 +1800,10 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           parameter_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           closestDeviceType_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           assignedValue_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000004);
           return this;
         }
 
@@ -1850,57 +1830,29 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification buildPartial() {
           com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification result = new com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.parameter_ = parameter_;
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            to_bitField0_ |= 0x00000002;
-          }
-          result.closestDeviceType_ = closestDeviceType_;
-          if (((from_bitField0_ & 0x00000004) != 0)) {
-            to_bitField0_ |= 0x00000004;
-          }
-          result.assignedValue_ = assignedValue_;
-          result.bitField0_ = to_bitField0_;
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
+        private void buildPartial0(com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.parameter_ = parameter_;
+            to_bitField0_ |= 0x00000001;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.closestDeviceType_ = closestDeviceType_;
+            to_bitField0_ |= 0x00000002;
+          }
+          if (((from_bitField0_ & 0x00000004) != 0)) {
+            result.assignedValue_ = assignedValue_;
+            to_bitField0_ |= 0x00000004;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
+
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification) {
@@ -2023,8 +1975,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter getParameter() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.valueOf(parameter_);
+          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.forNumber(parameter_);
           return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerParameter.UNKNOWN_PREVIEW_PICKER_PARAMETER : result;
         }
         /**
@@ -2082,8 +2033,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType getClosestDeviceType() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.valueOf(closestDeviceType_);
+          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.forNumber(closestDeviceType_);
           return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.DeviceType.UNKNOWN_DEVICE_TYPE : result;
         }
         /**
@@ -2141,8 +2091,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue getAssignedValue() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.valueOf(assignedValue_);
+          com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue result = com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.forNumber(assignedValue_);
           return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction.PreviewPickerModification.PreviewPickerValue.UNKNOWN_PREVIEW_PICKER_VALUE : result;
         }
         /**
@@ -2243,6 +2192,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     private int actionInfoCase_ = 0;
+    @SuppressWarnings("serial")
     private java.lang.Object actionInfo_;
     public enum ActionInfoCase
         implements com.google.protobuf.Internal.EnumLite,
@@ -2535,6 +2485,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (previewModificationBuilder_ != null) {
           previewModificationBuilder_.clear();
         }
@@ -2566,53 +2517,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction buildPartial() {
         com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction result = new com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (actionInfoCase_ == 1) {
-          if (previewModificationBuilder_ == null) {
-            result.actionInfo_ = actionInfo_;
-          } else {
-            result.actionInfo_ = previewModificationBuilder_.build();
-          }
-        }
-        result.bitField0_ = to_bitField0_;
-        result.actionInfoCase_ = actionInfoCase_;
+        if (bitField0_ != 0) { buildPartial0(result); }
+        buildPartialOneofs(result);
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
+
+      private void buildPartialOneofs(com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction result) {
+        result.actionInfoCase_ = actionInfoCase_;
+        result.actionInfo_ = this.actionInfo_;
+        if (actionInfoCase_ == 1 &&
+            previewModificationBuilder_ != null) {
+          result.actionInfo_ = previewModificationBuilder_.build();
+        }
       }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction) {
@@ -2803,8 +2726,9 @@ private static final long serialVersionUID = 0L;
         } else {
           if (actionInfoCase_ == 1) {
             previewModificationBuilder_.mergeFrom(value);
+          } else {
+            previewModificationBuilder_.setMessage(value);
           }
-          previewModificationBuilder_.setMessage(value);
         }
         actionInfoCase_ = 1;
         return this;
@@ -2890,7 +2814,7 @@ private static final long serialVersionUID = 0L;
           actionInfo_ = null;
         }
         actionInfoCase_ = 1;
-        onChanged();;
+        onChanged();
         return previewModificationBuilder_;
       }
       @java.lang.Override
@@ -2959,7 +2883,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Defines the type of picker invoked, this should be defined based on the
@@ -2984,12 +2908,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.UNKNOWN_PICKER_TYPE : result;
   }
 
   public static final int ACTION_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.EditorPickerEvent.EditorPickerAction> action_;
   /**
    * <pre>
@@ -3266,8 +3190,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (actionBuilder_ == null) {
         action_ = java.util.Collections.emptyList();
       } else {
@@ -3301,12 +3225,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EditorPickerEvent buildPartial() {
       com.google.wireless.android.sdk.stats.EditorPickerEvent result = new com.google.wireless.android.sdk.stats.EditorPickerEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EditorPickerEvent result) {
       if (actionBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0)) {
           action_ = java.util.Collections.unmodifiableList(action_);
@@ -3316,43 +3241,18 @@ private static final long serialVersionUID = 0L;
       } else {
         result.action_ = actionBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EditorPickerEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EditorPickerEvent) {
@@ -3488,8 +3388,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType result = com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.PickerType.UNKNOWN_PICKER_TYPE : result;
     }
     /**

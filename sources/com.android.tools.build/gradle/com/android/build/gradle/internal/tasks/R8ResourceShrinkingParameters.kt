@@ -21,13 +21,16 @@ import com.android.build.api.variant.MultiOutputHandler
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINKED_RESOURCES_PROTO_FORMAT
 import com.android.build.gradle.internal.scope.InternalArtifactType.SHRUNK_RESOURCES_PROTO_FORMAT
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.dexing.ResourceShrinkingConfig
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
@@ -48,7 +51,7 @@ abstract class R8ResourceShrinkingParameters {
     /**
      * Indicates whether resource shrinking will be performed.
      *
-     * NOTE: The other properties in this class will be set if and only if [enabled] == true.
+     * NOTE: The other properties in this class will be set only if [enabled] == true.
      */
     @get:Input
     abstract val enabled: Property<Boolean>
@@ -63,9 +66,18 @@ abstract class R8ResourceShrinkingParameters {
     @get:Optional // Set iff enabled == true
     abstract val mergedNotCompiledResourcesInputDir: DirectoryProperty
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Optional // Set iff enabled == true and the application has dynamic features
+    abstract val featureLinkedResourcesInputFiles: ConfigurableFileCollection
+
     @get:Input
     @get:Optional // Set iff enabled == true
     abstract val usePreciseShrinking: Property<Boolean>
+
+    @get:Input
+    @get:Optional // Set iff enabled == true
+    abstract val optimizedShrinking: Property<Boolean>
 
     @get:OutputFile
     @get:Optional // Set iff enabled == true && a log file is provided
@@ -74,6 +86,10 @@ abstract class R8ResourceShrinkingParameters {
     @get:OutputDirectory
     @get:Optional // Set iff enabled == true
     abstract val shrunkResourcesOutputDir: DirectoryProperty
+
+    @get:OutputDirectory
+    @get:Optional // Set iff enabled == true and the application has dynamic features
+    abstract val featureShrunkResourcesOutputDir: DirectoryProperty
 
     // This is to compute multi-APK file names
     @get:Nested
@@ -86,9 +102,12 @@ abstract class R8ResourceShrinkingParameters {
             ResourceShrinkingConfig(
                 linkedResourcesInputFiles = inputArtifacts.map { File(it.outputFile) },
                 mergedNotCompiledResourcesInputDir = mergedNotCompiledResourcesInputDir.get().asFile,
+                featureLinkedResourcesInputFiles = featureLinkedResourcesInputFiles.files.toList(),
                 usePreciseShrinking = usePreciseShrinking.get(),
+                optimizedShrinking = optimizedShrinking.get(),
                 logFile = logFile.asFile.orNull,
-                shrunkResourcesOutputFiles = inputArtifacts.map { File(getOutputBuiltArtifact(it).outputFile) }
+                shrunkResourcesOutputFiles = inputArtifacts.map { File(getOutputBuiltArtifact(it).outputFile) },
+                featureShrunkResourcesOutputDir = featureShrunkResourcesOutputDir.asFile.orNull
             )
         } else null
     }
@@ -119,17 +138,34 @@ abstract class R8ResourceShrinkingParameters {
 
 }
 
+/** Returns true if resource shrinking is enabled. */
+fun ApplicationCreationConfig.runResourceShrinking(): Boolean {
+    return androidResourcesCreationConfig?.useResourceShrinker == true
+}
+
 /**
  * Returns true if resource shrinking is enabled AND it will be performed by [R8Task] instead of
  * a separate task.
  */
-fun ConsumableCreationConfig.runResourceShrinkingWithR8(): Boolean {
-    return androidResourcesCreationConfig?.useResourceShrinker == true
+fun ApplicationCreationConfig.runResourceShrinkingWithR8(): Boolean {
+    return runResourceShrinking()
             && services.projectOptions[BooleanOption.R8_INTEGRATED_RESOURCE_SHRINKING]
 }
 
+/**
+ * Returns true if R8 will run optimized shrinking for both code and resources. That is:
+ *   - [runResourceShrinkingWithR8] == true, and
+ *   - [BooleanOption.R8_OPTIMIZED_SHRINKING] == true, and
+ *   - the feature additionally requires that [BooleanOption.USE_NON_FINAL_RES_IDS] == true
+ */
+fun ApplicationCreationConfig.runOptimizedShrinkingWithR8(): Boolean {
+    return runResourceShrinkingWithR8()
+            && services.projectOptions[BooleanOption.R8_OPTIMIZED_SHRINKING]
+            && services.projectOptions[BooleanOption.USE_NON_FINAL_RES_IDS]
+}
+
 fun R8ResourceShrinkingParameters.initialize(
-    creationConfig: ConsumableCreationConfig,
+    creationConfig: ApplicationCreationConfig,
     mappingFile: RegularFileProperty
 ) {
     enabled.setDisallowChanges(true)
@@ -141,9 +177,19 @@ fun R8ResourceShrinkingParameters.initialize(
         InternalArtifactType.MERGED_NOT_COMPILED_RES,
         mergedNotCompiledResourcesInputDir
     )
+    if (creationConfig.shrinkingWithDynamicFeatures) {
+        featureLinkedResourcesInputFiles.fromDisallowChanges(
+            creationConfig.variantDependencies.getArtifactFileCollection(
+                AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.REVERSE_METADATA_LINKED_RESOURCES_PROTO_FORMAT
+            )
+        )
+    }
     usePreciseShrinking.setDisallowChanges(
         creationConfig.services.projectOptions.get(BooleanOption.ENABLE_NEW_RESOURCE_SHRINKER_PRECISE)
     )
+    optimizedShrinking.setDisallowChanges(creationConfig.runOptimizedShrinkingWithR8())
     logFile.setDisallowChanges(
         mappingFile.flatMap {
             creationConfig.services.fileProvider(

@@ -28,11 +28,6 @@ private static final long serialVersionUID = 0L;
     return new DirectAccessUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_descriptor;
@@ -562,11 +557,6 @@ private static final long serialVersionUID = 0L;
       return new ReserveDeviceDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_ReserveDeviceDetails_descriptor;
@@ -582,7 +572,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if reserve device request succeeded
@@ -609,7 +599,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESERVE_TIME_MS_FIELD_NUMBER = 2;
-    private int reserveTimeMs_;
+    private int reserveTimeMs_ = 0;
     /**
      * <pre>
      * Time measured between the user clicking reserve (run) button and getting
@@ -847,10 +837,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         reserveTimeMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -877,6 +866,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -887,43 +882,9 @@ private static final long serialVersionUID = 0L;
           result.reserveTimeMs_ = reserveTimeMs_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails) {
@@ -1030,8 +991,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1088,8 +1050,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setReserveTimeMs(int value) {
-        bitField0_ |= 0x00000002;
+
         reserveTimeMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1255,11 +1218,6 @@ private static final long serialVersionUID = 0L;
       return new ConnectDeviceDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_ConnectDeviceDetails_descriptor;
@@ -1275,7 +1233,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if connect device request succeeded
@@ -1302,7 +1260,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RECONNECT_FIELD_NUMBER = 2;
-    private boolean reconnect_;
+    private boolean reconnect_ = false;
     /**
      * <pre>
      * Reconnecting to reserved device or connecting during reservation request
@@ -1329,7 +1287,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CONNECT_TIME_MS_FIELD_NUMBER = 3;
-    private int connectTimeMs_;
+    private int connectTimeMs_ = 0;
     /**
      * <pre>
      * Time taken to connect to device
@@ -1582,12 +1540,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         reconnect_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         connectTimeMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1614,6 +1570,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1628,43 +1590,9 @@ private static final long serialVersionUID = 0L;
           result.connectTimeMs_ = connectTimeMs_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails) {
@@ -1779,8 +1707,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1834,8 +1763,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setReconnect(boolean value) {
-        bitField0_ |= 0x00000002;
+
         reconnect_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1889,8 +1819,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setConnectTimeMs(int value) {
-        bitField0_ |= 0x00000004;
+
         connectTimeMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2036,11 +1967,6 @@ private static final long serialVersionUID = 0L;
       return new StreamStartedDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_StreamStartedDetails_descriptor;
@@ -2056,7 +1982,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if studio successfully received video stream from device
@@ -2083,7 +2009,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LATENCY_MS_FIELD_NUMBER = 2;
-    private int latencyMs_;
+    private int latencyMs_ = 0;
     /**
      * <pre>
      * Recorded latency of first stream
@@ -2319,10 +2245,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         latencyMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -2349,6 +2274,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2359,43 +2290,9 @@ private static final long serialVersionUID = 0L;
           result.latencyMs_ = latencyMs_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails) {
@@ -2502,8 +2399,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2557,8 +2455,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLatencyMs(int value) {
-        bitField0_ |= 0x00000002;
+
         latencyMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2705,11 +2604,6 @@ private static final long serialVersionUID = 0L;
       return new ExtendReservationDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_ExtendReservationDetails_descriptor;
@@ -2839,7 +2733,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if extend reservation request succeeded
@@ -2866,7 +2760,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int EXTEND_RESERVATION_DURATION_FIELD_NUMBER = 2;
-    private int extendReservationDuration_;
+    private int extendReservationDuration_ = 0;
     /**
      * <pre>
      * Duration for which session should be extended
@@ -2887,8 +2781,7 @@ private static final long serialVersionUID = 0L;
      * @return The extendReservationDuration.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration getExtendReservationDuration() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.valueOf(extendReservationDuration_);
+      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.forNumber(extendReservationDuration_);
       return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.NONE : result;
     }
 
@@ -3101,10 +2994,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         extendReservationDuration_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3131,6 +3023,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -3138,46 +3036,12 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.extendReservationDuration_ = extendReservationDuration_;
           to_bitField0_ |= 0x00000002;
         }
-        result.extendReservationDuration_ = extendReservationDuration_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails) {
@@ -3291,8 +3155,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3333,8 +3198,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration getExtendReservationDuration() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.valueOf(extendReservationDuration_);
+        com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.forNumber(extendReservationDuration_);
         return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.ExtendReservationDuration.NONE : result;
       }
       /**
@@ -3499,11 +3363,6 @@ private static final long serialVersionUID = 0L;
       return new DisconnectDeviceDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_DisconnectDeviceDetails_descriptor;
@@ -3519,7 +3378,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if device successfully disconnects
@@ -3546,7 +3405,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int USER_DISCONNECTED_FIELD_NUMBER = 2;
-    private boolean userDisconnected_;
+    private boolean userDisconnected_ = false;
     /**
      * <pre>
      * True if user disconnected device, false if it was disconnected by other
@@ -3785,10 +3644,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         userDisconnected_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3815,6 +3673,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -3825,43 +3689,9 @@ private static final long serialVersionUID = 0L;
           result.userDisconnected_ = userDisconnected_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails) {
@@ -3968,8 +3798,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4026,8 +3857,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setUserDisconnected(boolean value) {
-        bitField0_ |= 0x00000002;
+
         userDisconnected_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -4193,11 +4025,6 @@ private static final long serialVersionUID = 0L;
       return new ConnectionMetrics();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_ConnectionMetrics_descriptor;
@@ -4213,7 +4040,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int MAX_LATENCY_MS_FIELD_NUMBER = 1;
-    private int maxLatencyMs_;
+    private int maxLatencyMs_ = 0;
     /**
      * <pre>
      * Maximum observed latency
@@ -4240,7 +4067,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int P50_LATENCY_MS_FIELD_NUMBER = 2;
-    private int p50LatencyMs_;
+    private int p50LatencyMs_ = 0;
     /**
      * <pre>
      * p50 latency
@@ -4267,7 +4094,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int P90_LATENCY_MS_FIELD_NUMBER = 3;
-    private int p90LatencyMs_;
+    private int p90LatencyMs_ = 0;
     /**
      * <pre>
      * p90 latency
@@ -4518,12 +4345,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         maxLatencyMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         p50LatencyMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         p90LatencyMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -4550,6 +4375,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -4564,43 +4395,9 @@ private static final long serialVersionUID = 0L;
           result.p90LatencyMs_ = p90LatencyMs_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics) {
@@ -4715,8 +4512,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMaxLatencyMs(int value) {
-        bitField0_ |= 0x00000001;
+
         maxLatencyMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4770,8 +4568,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setP50LatencyMs(int value) {
-        bitField0_ |= 0x00000002;
+
         p50LatencyMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -4825,8 +4624,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setP90LatencyMs(int value) {
-        bitField0_ |= 0x00000004;
+
         p90LatencyMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -4938,7 +4738,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+     *     See studio_stats.proto;l=14876
      * @return Whether the userEnded field is set.
      */
     @java.lang.Deprecated boolean hasUserEnded();
@@ -4949,7 +4750,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+     *     See studio_stats.proto;l=14876
      * @return The userEnded.
      */
     @java.lang.Deprecated boolean getUserEnded();
@@ -4982,7 +4784,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+     *     See studio_stats.proto;l=14882
      * @return Whether the averageConnectionLatencyMs field is set.
      */
     @java.lang.Deprecated boolean hasAverageConnectionLatencyMs();
@@ -4993,7 +4796,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+     *     See studio_stats.proto;l=14882
      * @return The averageConnectionLatencyMs.
      */
     @java.lang.Deprecated int getAverageConnectionLatencyMs();
@@ -5067,11 +4871,6 @@ private static final long serialVersionUID = 0L;
       return new EndReservationDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DirectAccessUsageEvent_EndReservationDetails_descriptor;
@@ -5225,7 +5024,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SUCCESS_FIELD_NUMBER = 1;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * True if end reservation request succeeded
@@ -5252,7 +5051,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int USER_ENDED_FIELD_NUMBER = 2;
-    private boolean userEnded_;
+    private boolean userEnded_ = false;
     /**
      * <pre>
      * User ended reservation or reservation expired
@@ -5260,7 +5059,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+     *     See studio_stats.proto;l=14876
      * @return Whether the userEnded field is set.
      */
     @java.lang.Override
@@ -5274,7 +5074,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+     *     See studio_stats.proto;l=14876
      * @return The userEnded.
      */
     @java.lang.Override
@@ -5283,7 +5084,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_RESERVATION_TIME_SEC_FIELD_NUMBER = 3;
-    private int totalReservationTimeSec_;
+    private int totalReservationTimeSec_ = 0;
     /**
      * <pre>
      * Total reservation time
@@ -5312,7 +5113,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int AVERAGE_CONNECTION_LATENCY_MS_FIELD_NUMBER = 4;
-    private int averageConnectionLatencyMs_;
+    private int averageConnectionLatencyMs_ = 0;
     /**
      * <pre>
      * Average connection latency calculated over the entire session
@@ -5320,7 +5121,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+     *     See studio_stats.proto;l=14882
      * @return Whether the averageConnectionLatencyMs field is set.
      */
     @java.lang.Override
@@ -5334,7 +5136,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+     *     See studio_stats.proto;l=14882
      * @return The averageConnectionLatencyMs.
      */
     @java.lang.Override
@@ -5343,7 +5146,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int END_RESERVATION_TYPE_FIELD_NUMBER = 5;
-    private int endReservationType_;
+    private int endReservationType_ = 0;
     /**
      * <pre>
      * Tracks how the reservation ended.
@@ -5364,8 +5167,7 @@ private static final long serialVersionUID = 0L;
      * @return The endReservationType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType getEndReservationType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.valueOf(endReservationType_);
+      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.forNumber(endReservationType_);
       return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.UNKNOWN : result;
     }
 
@@ -5687,22 +5489,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         userEnded_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         totalReservationTimeSec_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         averageConnectionLatencyMs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         endReservationType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        if (connectionMetricsBuilder_ == null) {
-          connectionMetrics_ = null;
-        } else {
-          connectionMetricsBuilder_.clear();
+        connectionMetrics_ = null;
+        if (connectionMetricsBuilder_ != null) {
+          connectionMetricsBuilder_.dispose();
+          connectionMetricsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -5729,6 +5526,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails buildPartial() {
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -5748,54 +5551,18 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.endReservationType_ = endReservationType_;
           to_bitField0_ |= 0x00000010;
         }
-        result.endReservationType_ = endReservationType_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          if (connectionMetricsBuilder_ == null) {
-            result.connectionMetrics_ = connectionMetrics_;
-          } else {
-            result.connectionMetrics_ = connectionMetricsBuilder_.build();
-          }
+          result.connectionMetrics_ = connectionMetricsBuilder_ == null
+              ? connectionMetrics_
+              : connectionMetricsBuilder_.build();
           to_bitField0_ |= 0x00000020;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails) {
@@ -5943,8 +5710,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000001;
+
         success_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -5971,7 +5739,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+       *     See studio_stats.proto;l=14876
        * @return Whether the userEnded field is set.
        */
       @java.lang.Override
@@ -5985,7 +5754,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+       *     See studio_stats.proto;l=14876
        * @return The userEnded.
        */
       @java.lang.Override
@@ -5999,13 +5769,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+       *     See studio_stats.proto;l=14876
        * @param value The userEnded to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setUserEnded(boolean value) {
-        bitField0_ |= 0x00000002;
+
         userEnded_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -6016,7 +5788,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
+       *     See studio_stats.proto;l=14876
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearUserEnded() {
@@ -6064,8 +5837,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalReservationTimeSec(int value) {
-        bitField0_ |= 0x00000004;
+
         totalReservationTimeSec_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -6093,7 +5867,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+       *     See studio_stats.proto;l=14882
        * @return Whether the averageConnectionLatencyMs field is set.
        */
       @java.lang.Override
@@ -6107,7 +5882,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+       *     See studio_stats.proto;l=14882
        * @return The averageConnectionLatencyMs.
        */
       @java.lang.Override
@@ -6121,13 +5897,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+       *     See studio_stats.proto;l=14882
        * @param value The averageConnectionLatencyMs to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setAverageConnectionLatencyMs(int value) {
-        bitField0_ |= 0x00000008;
+
         averageConnectionLatencyMs_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -6138,7 +5916,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
+       *     See studio_stats.proto;l=14882
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearAverageConnectionLatencyMs() {
@@ -6170,8 +5949,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType getEndReservationType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.valueOf(endReservationType_);
+        com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.forNumber(endReservationType_);
         return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.EndReservationType.UNKNOWN : result;
       }
       /**
@@ -6249,11 +6027,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           connectionMetrics_ = value;
-          onChanged();
         } else {
           connectionMetricsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -6267,11 +6045,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.Builder builderForValue) {
         if (connectionMetricsBuilder_ == null) {
           connectionMetrics_ = builderForValue.build();
-          onChanged();
         } else {
           connectionMetricsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -6284,18 +6062,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeConnectionMetrics(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics value) {
         if (connectionMetricsBuilder_ == null) {
           if (((bitField0_ & 0x00000020) != 0) &&
-              connectionMetrics_ != null &&
-              connectionMetrics_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.getDefaultInstance()) {
-            connectionMetrics_ =
-              com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.newBuilder(connectionMetrics_).mergeFrom(value).buildPartial();
+            connectionMetrics_ != null &&
+            connectionMetrics_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectionMetrics.getDefaultInstance()) {
+            getConnectionMetricsBuilder().mergeFrom(value);
           } else {
             connectionMetrics_ = value;
           }
-          onChanged();
         } else {
           connectionMetricsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -6306,13 +6083,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DirectAccessUsageEvent.ConnectionMetrics connection_metrics = 6 [lazy = true];</code>
        */
       public Builder clearConnectionMetrics() {
-        if (connectionMetricsBuilder_ == null) {
-          connectionMetrics_ = null;
-          onChanged();
-        } else {
-          connectionMetricsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000020);
+        connectionMetrics_ = null;
+        if (connectionMetricsBuilder_ != null) {
+          connectionMetricsBuilder_.dispose();
+          connectionMetricsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6428,7 +6205,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of event
@@ -6449,13 +6226,13 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.UNKNOWN_EVENT : result;
   }
 
   public static final int DEVICE_SESSION_ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object deviceSessionId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object deviceSessionId_ = "";
   /**
    * <pre>
    * Session ID of current reservation/session for tracking events
@@ -6711,7 +6488,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILURE_REASON_FIELD_NUMBER = 8;
-  private int failureReason_;
+  private int failureReason_ = 0;
   /**
    * <pre>
    * set when any of the above event fails (success bool is marked false)
@@ -6732,8 +6509,7 @@ private static final long serialVersionUID = 0L;
    * @return The failureReason.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason getFailureReason() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.valueOf(failureReason_);
+    com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.forNumber(failureReason_);
     return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.UNKNOWN_FAILURE : result;
   }
 
@@ -7104,48 +6880,40 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       deviceSessionId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (reserveDeviceDetailsBuilder_ == null) {
-        reserveDeviceDetails_ = null;
-      } else {
-        reserveDeviceDetailsBuilder_.clear();
+      reserveDeviceDetails_ = null;
+      if (reserveDeviceDetailsBuilder_ != null) {
+        reserveDeviceDetailsBuilder_.dispose();
+        reserveDeviceDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (connectDeviceDetailsBuilder_ == null) {
-        connectDeviceDetails_ = null;
-      } else {
-        connectDeviceDetailsBuilder_.clear();
+      connectDeviceDetails_ = null;
+      if (connectDeviceDetailsBuilder_ != null) {
+        connectDeviceDetailsBuilder_.dispose();
+        connectDeviceDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (streamStartedDetailsBuilder_ == null) {
-        streamStartedDetails_ = null;
-      } else {
-        streamStartedDetailsBuilder_.clear();
+      streamStartedDetails_ = null;
+      if (streamStartedDetailsBuilder_ != null) {
+        streamStartedDetailsBuilder_.dispose();
+        streamStartedDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (extendReservationDetailsBuilder_ == null) {
-        extendReservationDetails_ = null;
-      } else {
-        extendReservationDetailsBuilder_.clear();
+      extendReservationDetails_ = null;
+      if (extendReservationDetailsBuilder_ != null) {
+        extendReservationDetailsBuilder_.dispose();
+        extendReservationDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (endReservationDetailsBuilder_ == null) {
-        endReservationDetails_ = null;
-      } else {
-        endReservationDetailsBuilder_.clear();
+      endReservationDetails_ = null;
+      if (endReservationDetailsBuilder_ != null) {
+        endReservationDetailsBuilder_.dispose();
+        endReservationDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       failureReason_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
-      if (disconnectDeviceDetailsBuilder_ == null) {
-        disconnectDeviceDetails_ = null;
-      } else {
-        disconnectDeviceDetailsBuilder_.clear();
+      disconnectDeviceDetails_ = null;
+      if (disconnectDeviceDetailsBuilder_ != null) {
+        disconnectDeviceDetailsBuilder_.dispose();
+        disconnectDeviceDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -7172,105 +6940,65 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DirectAccessUsageEvent result = new com.google.wireless.android.sdk.stats.DirectAccessUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.deviceSessionId_ = deviceSessionId_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (reserveDeviceDetailsBuilder_ == null) {
-          result.reserveDeviceDetails_ = reserveDeviceDetails_;
-        } else {
-          result.reserveDeviceDetails_ = reserveDeviceDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (connectDeviceDetailsBuilder_ == null) {
-          result.connectDeviceDetails_ = connectDeviceDetails_;
-        } else {
-          result.connectDeviceDetails_ = connectDeviceDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (streamStartedDetailsBuilder_ == null) {
-          result.streamStartedDetails_ = streamStartedDetails_;
-        } else {
-          result.streamStartedDetails_ = streamStartedDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000010;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (extendReservationDetailsBuilder_ == null) {
-          result.extendReservationDetails_ = extendReservationDetails_;
-        } else {
-          result.extendReservationDetails_ = extendReservationDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (endReservationDetailsBuilder_ == null) {
-          result.endReservationDetails_ = endReservationDetails_;
-        } else {
-          result.endReservationDetails_ = endReservationDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        to_bitField0_ |= 0x00000080;
-      }
-      result.failureReason_ = failureReason_;
-      if (((from_bitField0_ & 0x00000100) != 0)) {
-        if (disconnectDeviceDetailsBuilder_ == null) {
-          result.disconnectDeviceDetails_ = disconnectDeviceDetails_;
-        } else {
-          result.disconnectDeviceDetails_ = disconnectDeviceDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000100;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.deviceSessionId_ = deviceSessionId_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.reserveDeviceDetails_ = reserveDeviceDetailsBuilder_ == null
+            ? reserveDeviceDetails_
+            : reserveDeviceDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.connectDeviceDetails_ = connectDeviceDetailsBuilder_ == null
+            ? connectDeviceDetails_
+            : connectDeviceDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.streamStartedDetails_ = streamStartedDetailsBuilder_ == null
+            ? streamStartedDetails_
+            : streamStartedDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.extendReservationDetails_ = extendReservationDetailsBuilder_ == null
+            ? extendReservationDetails_
+            : extendReservationDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.endReservationDetails_ = endReservationDetailsBuilder_ == null
+            ? endReservationDetails_
+            : endReservationDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.failureReason_ = failureReason_;
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.disconnectDeviceDetails_ = disconnectDeviceDetailsBuilder_ == null
+            ? disconnectDeviceDetails_
+            : disconnectDeviceDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000100;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DirectAccessUsageEvent) {
@@ -7287,8 +7015,8 @@ private static final long serialVersionUID = 0L;
         setType(other.getType());
       }
       if (other.hasDeviceSessionId()) {
-        bitField0_ |= 0x00000002;
         deviceSessionId_ = other.deviceSessionId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasReserveDeviceDetails()) {
@@ -7448,8 +7176,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DirectAccessUsageEventType.UNKNOWN_EVENT : result;
     }
     /**
@@ -7559,11 +7286,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceSessionId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       deviceSessionId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -7578,8 +7303,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDeviceSessionId() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       deviceSessionId_ = getDefaultInstance().getDeviceSessionId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -7596,11 +7321,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceSessionIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       deviceSessionId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -7647,11 +7370,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         reserveDeviceDetails_ = value;
-        onChanged();
       } else {
         reserveDeviceDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -7665,11 +7388,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.Builder builderForValue) {
       if (reserveDeviceDetailsBuilder_ == null) {
         reserveDeviceDetails_ = builderForValue.build();
-        onChanged();
       } else {
         reserveDeviceDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -7682,18 +7405,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeReserveDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails value) {
       if (reserveDeviceDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            reserveDeviceDetails_ != null &&
-            reserveDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.getDefaultInstance()) {
-          reserveDeviceDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.newBuilder(reserveDeviceDetails_).mergeFrom(value).buildPartial();
+          reserveDeviceDetails_ != null &&
+          reserveDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ReserveDeviceDetails.getDefaultInstance()) {
+          getReserveDeviceDetailsBuilder().mergeFrom(value);
         } else {
           reserveDeviceDetails_ = value;
         }
-        onChanged();
       } else {
         reserveDeviceDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -7704,13 +7426,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.ReserveDeviceDetails reserve_device_details = 3 [lazy = true];</code>
      */
     public Builder clearReserveDeviceDetails() {
-      if (reserveDeviceDetailsBuilder_ == null) {
-        reserveDeviceDetails_ = null;
-        onChanged();
-      } else {
-        reserveDeviceDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      reserveDeviceDetails_ = null;
+      if (reserveDeviceDetailsBuilder_ != null) {
+        reserveDeviceDetailsBuilder_.dispose();
+        reserveDeviceDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -7803,11 +7525,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         connectDeviceDetails_ = value;
-        onChanged();
       } else {
         connectDeviceDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -7821,11 +7543,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.Builder builderForValue) {
       if (connectDeviceDetailsBuilder_ == null) {
         connectDeviceDetails_ = builderForValue.build();
-        onChanged();
       } else {
         connectDeviceDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -7838,18 +7560,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeConnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails value) {
       if (connectDeviceDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            connectDeviceDetails_ != null &&
-            connectDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.getDefaultInstance()) {
-          connectDeviceDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.newBuilder(connectDeviceDetails_).mergeFrom(value).buildPartial();
+          connectDeviceDetails_ != null &&
+          connectDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ConnectDeviceDetails.getDefaultInstance()) {
+          getConnectDeviceDetailsBuilder().mergeFrom(value);
         } else {
           connectDeviceDetails_ = value;
         }
-        onChanged();
       } else {
         connectDeviceDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -7860,13 +7581,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.ConnectDeviceDetails connect_device_details = 4 [lazy = true];</code>
      */
     public Builder clearConnectDeviceDetails() {
-      if (connectDeviceDetailsBuilder_ == null) {
-        connectDeviceDetails_ = null;
-        onChanged();
-      } else {
-        connectDeviceDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      connectDeviceDetails_ = null;
+      if (connectDeviceDetailsBuilder_ != null) {
+        connectDeviceDetailsBuilder_.dispose();
+        connectDeviceDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -7959,11 +7680,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         streamStartedDetails_ = value;
-        onChanged();
       } else {
         streamStartedDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -7977,11 +7698,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.Builder builderForValue) {
       if (streamStartedDetailsBuilder_ == null) {
         streamStartedDetails_ = builderForValue.build();
-        onChanged();
       } else {
         streamStartedDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -7994,18 +7715,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeStreamStartedDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails value) {
       if (streamStartedDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            streamStartedDetails_ != null &&
-            streamStartedDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.getDefaultInstance()) {
-          streamStartedDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.newBuilder(streamStartedDetails_).mergeFrom(value).buildPartial();
+          streamStartedDetails_ != null &&
+          streamStartedDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.StreamStartedDetails.getDefaultInstance()) {
+          getStreamStartedDetailsBuilder().mergeFrom(value);
         } else {
           streamStartedDetails_ = value;
         }
-        onChanged();
       } else {
         streamStartedDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -8016,13 +7736,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.StreamStartedDetails stream_started_details = 5 [lazy = true];</code>
      */
     public Builder clearStreamStartedDetails() {
-      if (streamStartedDetailsBuilder_ == null) {
-        streamStartedDetails_ = null;
-        onChanged();
-      } else {
-        streamStartedDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      streamStartedDetails_ = null;
+      if (streamStartedDetailsBuilder_ != null) {
+        streamStartedDetailsBuilder_.dispose();
+        streamStartedDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -8115,11 +7835,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         extendReservationDetails_ = value;
-        onChanged();
       } else {
         extendReservationDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -8133,11 +7853,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.Builder builderForValue) {
       if (extendReservationDetailsBuilder_ == null) {
         extendReservationDetails_ = builderForValue.build();
-        onChanged();
       } else {
         extendReservationDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -8150,18 +7870,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeExtendReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails value) {
       if (extendReservationDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            extendReservationDetails_ != null &&
-            extendReservationDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.getDefaultInstance()) {
-          extendReservationDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.newBuilder(extendReservationDetails_).mergeFrom(value).buildPartial();
+          extendReservationDetails_ != null &&
+          extendReservationDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.ExtendReservationDetails.getDefaultInstance()) {
+          getExtendReservationDetailsBuilder().mergeFrom(value);
         } else {
           extendReservationDetails_ = value;
         }
-        onChanged();
       } else {
         extendReservationDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -8172,13 +7891,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.ExtendReservationDetails extend_reservation_details = 6 [lazy = true];</code>
      */
     public Builder clearExtendReservationDetails() {
-      if (extendReservationDetailsBuilder_ == null) {
-        extendReservationDetails_ = null;
-        onChanged();
-      } else {
-        extendReservationDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      extendReservationDetails_ = null;
+      if (extendReservationDetailsBuilder_ != null) {
+        extendReservationDetailsBuilder_.dispose();
+        extendReservationDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -8271,11 +7990,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         endReservationDetails_ = value;
-        onChanged();
       } else {
         endReservationDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -8289,11 +8008,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.Builder builderForValue) {
       if (endReservationDetailsBuilder_ == null) {
         endReservationDetails_ = builderForValue.build();
-        onChanged();
       } else {
         endReservationDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -8306,18 +8025,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeEndReservationDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails value) {
       if (endReservationDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            endReservationDetails_ != null &&
-            endReservationDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.getDefaultInstance()) {
-          endReservationDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.newBuilder(endReservationDetails_).mergeFrom(value).buildPartial();
+          endReservationDetails_ != null &&
+          endReservationDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.EndReservationDetails.getDefaultInstance()) {
+          getEndReservationDetailsBuilder().mergeFrom(value);
         } else {
           endReservationDetails_ = value;
         }
-        onChanged();
       } else {
         endReservationDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -8328,13 +8046,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.EndReservationDetails end_reservation_details = 7 [lazy = true];</code>
      */
     public Builder clearEndReservationDetails() {
-      if (endReservationDetailsBuilder_ == null) {
-        endReservationDetails_ = null;
-        onChanged();
-      } else {
-        endReservationDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      endReservationDetails_ = null;
+      if (endReservationDetailsBuilder_ != null) {
+        endReservationDetailsBuilder_.dispose();
+        endReservationDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -8407,8 +8125,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason getFailureReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.valueOf(failureReason_);
+      com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason result = com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.forNumber(failureReason_);
       return result == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.FailureReason.UNKNOWN_FAILURE : result;
     }
     /**
@@ -8486,11 +8203,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         disconnectDeviceDetails_ = value;
-        onChanged();
       } else {
         disconnectDeviceDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -8504,11 +8221,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.Builder builderForValue) {
       if (disconnectDeviceDetailsBuilder_ == null) {
         disconnectDeviceDetails_ = builderForValue.build();
-        onChanged();
       } else {
         disconnectDeviceDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -8521,18 +8238,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDisconnectDeviceDetails(com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails value) {
       if (disconnectDeviceDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000100) != 0) &&
-            disconnectDeviceDetails_ != null &&
-            disconnectDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.getDefaultInstance()) {
-          disconnectDeviceDetails_ =
-            com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.newBuilder(disconnectDeviceDetails_).mergeFrom(value).buildPartial();
+          disconnectDeviceDetails_ != null &&
+          disconnectDeviceDetails_ != com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.getDefaultInstance()) {
+          getDisconnectDeviceDetailsBuilder().mergeFrom(value);
         } else {
           disconnectDeviceDetails_ = value;
         }
-        onChanged();
       } else {
         disconnectDeviceDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000100;
+      onChanged();
       return this;
     }
     /**
@@ -8543,13 +8259,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
      */
     public Builder clearDisconnectDeviceDetails() {
-      if (disconnectDeviceDetailsBuilder_ == null) {
-        disconnectDeviceDetails_ = null;
-        onChanged();
-      } else {
-        disconnectDeviceDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000100);
+      disconnectDeviceDetails_ = null;
+      if (disconnectDeviceDetailsBuilder_ != null) {
+        disconnectDeviceDetailsBuilder_.dispose();
+        disconnectDeviceDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

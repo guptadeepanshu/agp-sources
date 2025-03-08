@@ -149,6 +149,34 @@ public final class ResourcesInternal {
      */
     android.aapt.pb.internal.ResourcesInternal.CompiledFile.SymbolOrBuilder getExportedSymbolOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * The status of the flag the file is behind if any
+     * </pre>
+     *
+     * <code>uint32 flag_status = 6;</code>
+     * @return The flagStatus.
+     */
+    int getFlagStatus();
+
+    /**
+     * <code>bool flag_negated = 7;</code>
+     * @return The flagNegated.
+     */
+    boolean getFlagNegated();
+
+    /**
+     * <code>string flag_name = 8;</code>
+     * @return The flagName.
+     */
+    java.lang.String getFlagName();
+    /**
+     * <code>string flag_name = 8;</code>
+     * @return The bytes for flagName.
+     */
+    com.google.protobuf.ByteString
+        getFlagNameBytes();
   }
   /**
    * <pre>
@@ -172,6 +200,7 @@ public final class ResourcesInternal {
       type_ = 0;
       sourcePath_ = "";
       exportedSymbol_ = java.util.Collections.emptyList();
+      flagName_ = "";
     }
 
     @java.lang.Override
@@ -1225,6 +1254,71 @@ public final class ResourcesInternal {
       return exportedSymbol_.get(index);
     }
 
+    public static final int FLAG_STATUS_FIELD_NUMBER = 6;
+    private int flagStatus_ = 0;
+    /**
+     * <pre>
+     * The status of the flag the file is behind if any
+     * </pre>
+     *
+     * <code>uint32 flag_status = 6;</code>
+     * @return The flagStatus.
+     */
+    @java.lang.Override
+    public int getFlagStatus() {
+      return flagStatus_;
+    }
+
+    public static final int FLAG_NEGATED_FIELD_NUMBER = 7;
+    private boolean flagNegated_ = false;
+    /**
+     * <code>bool flag_negated = 7;</code>
+     * @return The flagNegated.
+     */
+    @java.lang.Override
+    public boolean getFlagNegated() {
+      return flagNegated_;
+    }
+
+    public static final int FLAG_NAME_FIELD_NUMBER = 8;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object flagName_ = "";
+    /**
+     * <code>string flag_name = 8;</code>
+     * @return The flagName.
+     */
+    @java.lang.Override
+    public java.lang.String getFlagName() {
+      java.lang.Object ref = flagName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        flagName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string flag_name = 8;</code>
+     * @return The bytes for flagName.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getFlagNameBytes() {
+      java.lang.Object ref = flagName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        flagName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1254,6 +1348,15 @@ public final class ResourcesInternal {
       for (int i = 0; i < exportedSymbol_.size(); i++) {
         output.writeMessage(5, exportedSymbol_.get(i));
       }
+      if (flagStatus_ != 0) {
+        output.writeUInt32(6, flagStatus_);
+      }
+      if (flagNegated_ != false) {
+        output.writeBool(7, flagNegated_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(flagName_)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, flagName_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1280,6 +1383,17 @@ public final class ResourcesInternal {
       for (int i = 0; i < exportedSymbol_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, exportedSymbol_.get(i));
+      }
+      if (flagStatus_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, flagStatus_);
+      }
+      if (flagNegated_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, flagNegated_);
+      }
+      if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(flagName_)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, flagName_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1308,6 +1422,12 @@ public final class ResourcesInternal {
           .equals(other.getSourcePath())) return false;
       if (!getExportedSymbolList()
           .equals(other.getExportedSymbolList())) return false;
+      if (getFlagStatus()
+          != other.getFlagStatus()) return false;
+      if (getFlagNegated()
+          != other.getFlagNegated()) return false;
+      if (!getFlagName()
+          .equals(other.getFlagName())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1333,6 +1453,13 @@ public final class ResourcesInternal {
         hash = (37 * hash) + EXPORTED_SYMBOL_FIELD_NUMBER;
         hash = (53 * hash) + getExportedSymbolList().hashCode();
       }
+      hash = (37 * hash) + FLAG_STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + getFlagStatus();
+      hash = (37 * hash) + FLAG_NEGATED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getFlagNegated());
+      hash = (37 * hash) + FLAG_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getFlagName().hashCode();
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1482,6 +1609,9 @@ public final class ResourcesInternal {
           exportedSymbolBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000010);
+        flagStatus_ = 0;
+        flagNegated_ = false;
+        flagName_ = "";
         return this;
       }
 
@@ -1542,6 +1672,15 @@ public final class ResourcesInternal {
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.sourcePath_ = sourcePath_;
         }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.flagStatus_ = flagStatus_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.flagNegated_ = flagNegated_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.flagName_ = flagName_;
+        }
       }
 
       @java.lang.Override
@@ -1597,6 +1736,17 @@ public final class ResourcesInternal {
               exportedSymbolBuilder_.addAllMessages(other.exportedSymbol_);
             }
           }
+        }
+        if (other.getFlagStatus() != 0) {
+          setFlagStatus(other.getFlagStatus());
+        }
+        if (other.getFlagNegated() != false) {
+          setFlagNegated(other.getFlagNegated());
+        }
+        if (!other.getFlagName().isEmpty()) {
+          flagName_ = other.flagName_;
+          bitField0_ |= 0x00000080;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -1659,6 +1809,21 @@ public final class ResourcesInternal {
                 }
                 break;
               } // case 42
+              case 48: {
+                flagStatus_ = input.readUInt32();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 56: {
+                flagNegated_ = input.readBool();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 66: {
+                flagName_ = input.readStringRequireUtf8();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 66
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -2404,6 +2569,154 @@ public final class ResourcesInternal {
         }
         return exportedSymbolBuilder_;
       }
+
+      private int flagStatus_ ;
+      /**
+       * <pre>
+       * The status of the flag the file is behind if any
+       * </pre>
+       *
+       * <code>uint32 flag_status = 6;</code>
+       * @return The flagStatus.
+       */
+      @java.lang.Override
+      public int getFlagStatus() {
+        return flagStatus_;
+      }
+      /**
+       * <pre>
+       * The status of the flag the file is behind if any
+       * </pre>
+       *
+       * <code>uint32 flag_status = 6;</code>
+       * @param value The flagStatus to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFlagStatus(int value) {
+
+        flagStatus_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The status of the flag the file is behind if any
+       * </pre>
+       *
+       * <code>uint32 flag_status = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFlagStatus() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        flagStatus_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean flagNegated_ ;
+      /**
+       * <code>bool flag_negated = 7;</code>
+       * @return The flagNegated.
+       */
+      @java.lang.Override
+      public boolean getFlagNegated() {
+        return flagNegated_;
+      }
+      /**
+       * <code>bool flag_negated = 7;</code>
+       * @param value The flagNegated to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFlagNegated(boolean value) {
+
+        flagNegated_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool flag_negated = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFlagNegated() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        flagNegated_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object flagName_ = "";
+      /**
+       * <code>string flag_name = 8;</code>
+       * @return The flagName.
+       */
+      public java.lang.String getFlagName() {
+        java.lang.Object ref = flagName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          flagName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string flag_name = 8;</code>
+       * @return The bytes for flagName.
+       */
+      public com.google.protobuf.ByteString
+          getFlagNameBytes() {
+        java.lang.Object ref = flagName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          flagName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string flag_name = 8;</code>
+       * @param value The flagName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFlagName(
+          java.lang.String value) {
+        if (value == null) { throw new NullPointerException(); }
+        flagName_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string flag_name = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFlagName() {
+        flagName_ = getDefaultInstance().getFlagName();
+        bitField0_ = (bitField0_ & ~0x00000080);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string flag_name = 8;</code>
+       * @param value The bytes for flagName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFlagNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
+        flagName_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2489,14 +2802,16 @@ public final class ResourcesInternal {
     java.lang.String[] descriptorData = {
       "\n\027ResourcesInternal.proto\022\020aapt.pb.inter" +
       "nal\032\023Configuration.proto\032\017Resources.prot" +
-      "o\"\227\002\n\014CompiledFile\022\025\n\rresource_name\030\001 \001(" +
+      "o\"\325\002\n\014CompiledFile\022\025\n\rresource_name\030\001 \001(" +
       "\t\022&\n\006config\030\002 \001(\0132\026.aapt.pb.Configuratio" +
       "n\022)\n\004type\030\003 \001(\0162\033.aapt.pb.FileReference." +
       "Type\022\023\n\013source_path\030\004 \001(\t\022>\n\017exported_sy" +
       "mbol\030\005 \003(\0132%.aapt.pb.internal.CompiledFi" +
-      "le.Symbol\032H\n\006Symbol\022\025\n\rresource_name\030\001 \001" +
-      "(\t\022\'\n\006source\030\002 \001(\0132\027.aapt.pb.SourcePosit" +
-      "ionB\032\n\030android.aapt.pb.internalb\006proto3"
+      "le.Symbol\022\023\n\013flag_status\030\006 \001(\r\022\024\n\014flag_n" +
+      "egated\030\007 \001(\010\022\021\n\tflag_name\030\010 \001(\t\032H\n\006Symbo" +
+      "l\022\025\n\rresource_name\030\001 \001(\t\022\'\n\006source\030\002 \001(\013" +
+      "2\027.aapt.pb.SourcePositionB\032\n\030android.aap" +
+      "t.pb.internalb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2509,7 +2824,7 @@ public final class ResourcesInternal {
     internal_static_aapt_pb_internal_CompiledFile_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_internal_CompiledFile_descriptor,
-        new java.lang.String[] { "ResourceName", "Config", "Type", "SourcePath", "ExportedSymbol", });
+        new java.lang.String[] { "ResourceName", "Config", "Type", "SourcePath", "ExportedSymbol", "FlagStatus", "FlagNegated", "FlagName", });
     internal_static_aapt_pb_internal_CompiledFile_Symbol_descriptor =
       internal_static_aapt_pb_internal_CompiledFile_descriptor.getNestedTypes().get(0);
     internal_static_aapt_pb_internal_CompiledFile_Symbol_fieldAccessorTable = new

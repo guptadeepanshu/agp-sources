@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new PreviewRefreshEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PreviewRefreshEvent_descriptor;
@@ -443,11 +438,6 @@ private static final long serialVersionUID = 0L;
       return new SinglePreviewRender();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PreviewRefreshEvent_SinglePreviewRender_descriptor;
@@ -568,7 +558,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int RESULT_FIELD_NUMBER = 1;
-    private int result_;
+    private int result_ = 0;
     /**
      * <code>optional .android_studio.PreviewRefreshEvent.SinglePreviewRender.RenderResult result = 1;</code>
      * @return Whether the result field is set.
@@ -581,13 +571,12 @@ private static final long serialVersionUID = 0L;
      * @return The result.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.valueOf(result_);
+      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.UNKNOWN_RESULT : result;
     }
 
     public static final int INFLATE_FIELD_NUMBER = 2;
-    private boolean inflate_;
+    private boolean inflate_ = false;
     /**
      * <pre>
      * True when the render also included executing the inflation step
@@ -614,7 +603,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RENDER_QUALITY_FIELD_NUMBER = 3;
-    private float renderQuality_;
+    private float renderQuality_ = 0F;
     /**
      * <pre>
      * Quality value between 0 and 1 used for rendering
@@ -641,7 +630,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RENDER_TIME_MILLIS_FIELD_NUMBER = 4;
-    private int renderTimeMillis_;
+    private int renderTimeMillis_ = 0;
     /**
      * <pre>
      * Time taken by the render, including inflation time when corresponds
@@ -668,7 +657,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RENDER_EXCEPTION_SIMPLE_NAME_FIELD_NUMBER = 5;
-    private volatile java.lang.Object renderExceptionSimpleName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object renderExceptionSimpleName_ = "";
     /**
      * <pre>
      * Simple class name of the exception thrown in a render error, e.g.
@@ -988,16 +978,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         result_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         inflate_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         renderQuality_ = 0F;
-        bitField0_ = (bitField0_ & ~0x00000004);
         renderTimeMillis_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         renderExceptionSimpleName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1024,12 +1010,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender buildPartial() {
         com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender result = new com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.result_ = result_;
           to_bitField0_ |= 0x00000001;
         }
-        result.result_ = result_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.inflate_ = inflate_;
           to_bitField0_ |= 0x00000002;
@@ -1043,46 +1035,12 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.renderExceptionSimpleName_ = renderExceptionSimpleName_;
           to_bitField0_ |= 0x00000010;
         }
-        result.renderExceptionSimpleName_ = renderExceptionSimpleName_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender) {
@@ -1108,8 +1066,8 @@ private static final long serialVersionUID = 0L;
           setRenderTimeMillis(other.getRenderTimeMillis());
         }
         if (other.hasRenderExceptionSimpleName()) {
-          bitField0_ |= 0x00000010;
           renderExceptionSimpleName_ = other.renderExceptionSimpleName_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -1201,8 +1159,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult getResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.valueOf(result_);
+        com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.forNumber(result_);
         return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender.RenderResult.UNKNOWN_RESULT : result;
       }
       /**
@@ -1265,8 +1222,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setInflate(boolean value) {
-        bitField0_ |= 0x00000002;
+
         inflate_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1320,8 +1278,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setRenderQuality(float value) {
-        bitField0_ |= 0x00000004;
+
         renderQuality_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1375,8 +1334,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setRenderTimeMillis(int value) {
-        bitField0_ |= 0x00000008;
+
         renderTimeMillis_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1465,11 +1425,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setRenderExceptionSimpleName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         renderExceptionSimpleName_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1483,8 +1441,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearRenderExceptionSimpleName() {
-        bitField0_ = (bitField0_ & ~0x00000010);
         renderExceptionSimpleName_ = getDefaultInstance().getRenderExceptionSimpleName();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -1500,11 +1458,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setRenderExceptionSimpleNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         renderExceptionSimpleName_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1574,7 +1530,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <code>optional .android_studio.PreviewRefreshEvent.PreviewType type = 1;</code>
    * @return Whether the type field is set.
@@ -1587,13 +1543,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.UNKNOWN_TYPE : result;
   }
 
   public static final int RESULT_FIELD_NUMBER = 2;
-  private int result_;
+  private int result_ = 0;
   /**
    * <code>optional .android_studio.PreviewRefreshEvent.RefreshResult result = 2;</code>
    * @return Whether the result field is set.
@@ -1606,13 +1561,12 @@ private static final long serialVersionUID = 0L;
    * @return The result.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult getResult() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.valueOf(result_);
+    com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.forNumber(result_);
     return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.UNKNOWN_RESULT : result;
   }
 
   public static final int IN_QUEUE_TIME_MILLIS_FIELD_NUMBER = 3;
-  private int inQueueTimeMillis_;
+  private int inQueueTimeMillis_ = 0;
   /**
    * <pre>
    * The in queue time corresponds to the time that a refresh request waits
@@ -1641,7 +1595,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REFRESH_TIME_MILLIS_FIELD_NUMBER = 4;
-  private int refreshTimeMillis_;
+  private int refreshTimeMillis_ = 0;
   /**
    * <pre>
    * The refresh time starts when the refresh request is taken out of the
@@ -1672,7 +1626,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PREVIEWS_COUNT_FIELD_NUMBER = 5;
-  private int previewsCount_;
+  private int previewsCount_ = 0;
   /**
    * <pre>
    * The total number of previews not filtered out by the flows and present
@@ -1701,7 +1655,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PREVIEWS_TO_REFRESH_FIELD_NUMBER = 6;
-  private int previewsToRefresh_;
+  private int previewsToRefresh_ = 0;
   /**
    * <pre>
    * The number of previews out of previews_count that this refresh should
@@ -1730,6 +1684,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PREVIEW_RENDERS_FIELD_NUMBER = 7;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.PreviewRefreshEvent.SinglePreviewRender> previewRenders_;
   /**
    * <pre>
@@ -2077,18 +2032,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       result_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       inQueueTimeMillis_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       refreshTimeMillis_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       previewsCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       previewsToRefresh_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       if (previewRendersBuilder_ == null) {
         previewRenders_ = java.util.Collections.emptyList();
       } else {
@@ -2122,16 +2072,35 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PreviewRefreshEvent buildPartial() {
       com.google.wireless.android.sdk.stats.PreviewRefreshEvent result = new com.google.wireless.android.sdk.stats.PreviewRefreshEvent(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.PreviewRefreshEvent result) {
+      if (previewRendersBuilder_ == null) {
+        if (((bitField0_ & 0x00000040) != 0)) {
+          previewRenders_ = java.util.Collections.unmodifiableList(previewRenders_);
+          bitField0_ = (bitField0_ & ~0x00000040);
+        }
+        result.previewRenders_ = previewRenders_;
+      } else {
+        result.previewRenders_ = previewRendersBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.PreviewRefreshEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.result_ = result_;
         to_bitField0_ |= 0x00000002;
       }
-      result.result_ = result_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.inQueueTimeMillis_ = inQueueTimeMillis_;
         to_bitField0_ |= 0x00000004;
@@ -2148,52 +2117,9 @@ private static final long serialVersionUID = 0L;
         result.previewsToRefresh_ = previewsToRefresh_;
         to_bitField0_ |= 0x00000020;
       }
-      if (previewRendersBuilder_ == null) {
-        if (((bitField0_ & 0x00000040) != 0)) {
-          previewRenders_ = java.util.Collections.unmodifiableList(previewRenders_);
-          bitField0_ = (bitField0_ & ~0x00000040);
-        }
-        result.previewRenders_ = previewRenders_;
-      } else {
-        result.previewRenders_ = previewRendersBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.PreviewRefreshEvent) {
@@ -2364,8 +2290,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.PreviewType.UNKNOWN_TYPE : result;
     }
     /**
@@ -2407,8 +2332,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.valueOf(result_);
+      com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult result = com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.PreviewRefreshEvent.RefreshResult.UNKNOWN_RESULT : result;
     }
     /**
@@ -2474,8 +2398,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInQueueTimeMillis(int value) {
-      bitField0_ |= 0x00000004;
+
       inQueueTimeMillis_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2536,8 +2461,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRefreshTimeMillis(int value) {
-      bitField0_ |= 0x00000008;
+
       refreshTimeMillis_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2596,8 +2522,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPreviewsCount(int value) {
-      bitField0_ |= 0x00000010;
+
       previewsCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2655,8 +2582,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPreviewsToRefresh(int value) {
-      bitField0_ |= 0x00000020;
+
       previewsToRefresh_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

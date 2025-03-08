@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new JvmDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_JvmDetails_descriptor;
@@ -189,7 +184,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object name_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object name_ = "";
   /**
    * <pre>
    * Name of the JVM (e.g. "OpenJDK 64-Bit Server by JetBrains s.r.o").
@@ -249,7 +245,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <pre>
    * Version of the JVM (e.g. "1.8.0_76-release-b198 amd")
@@ -309,7 +306,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VENDOR_FIELD_NUMBER = 3;
-  private volatile java.lang.Object vendor_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object vendor_ = "";
   /**
    * <pre>
    * Vendor of the JVM (e.g. "JetBrains s.r.o.")
@@ -369,7 +367,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MINIMUM_HEAP_SIZE_FIELD_NUMBER = 4;
-  private long minimumHeapSize_;
+  private long minimumHeapSize_ = 0L;
   /**
    * <pre>
    * VM Option specified to set minimum heap_size in bytes ("-Xms" flag).
@@ -396,7 +394,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAXIMUM_HEAP_SIZE_FIELD_NUMBER = 5;
-  private long maximumHeapSize_;
+  private long maximumHeapSize_ = 0L;
   /**
    * <pre>
    * VM Option specified to set maximum heap_size in bytes ("-Xmx" flag).
@@ -423,7 +421,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAXIMUM_PERMANENT_SPACE_SIZE_FIELD_NUMBER = 6;
-  private long maximumPermanentSpaceSize_;
+  private long maximumPermanentSpaceSize_ = 0L;
   /**
    * <pre>
    * VM Option specified to set maximum permanent space size in bytes.
@@ -452,7 +450,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAXIMUM_CODE_CACHE_SIZE_FIELD_NUMBER = 7;
-  private long maximumCodeCacheSize_;
+  private long maximumCodeCacheSize_ = 0L;
   /**
    * <pre>
    * VM Option specified to set maximum permanent space size in bytes.
@@ -481,7 +479,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SOFT_REFERENCE_LRU_POLICY_FIELD_NUMBER = 8;
-  private long softReferenceLruPolicy_;
+  private long softReferenceLruPolicy_ = 0L;
   /**
    * <pre>
    * VM Option specified to set time soft referenced objects remain alive in ms.
@@ -510,7 +508,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GARBAGE_COLLECTOR_FIELD_NUMBER = 9;
-  private int garbageCollector_;
+  private int garbageCollector_ = 0;
   /**
    * <pre>
    * Type of Garbage Collector to use (various VM Option flags).
@@ -531,8 +529,7 @@ private static final long serialVersionUID = 0L;
    * @return The garbageCollector.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector getGarbageCollector() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.valueOf(garbageCollector_);
+    com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.forNumber(garbageCollector_);
     return result == null ? com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.UNSPECIFIED_GC : result;
   }
 
@@ -862,24 +859,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       name_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       version_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       vendor_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       minimumHeapSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       maximumHeapSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       maximumPermanentSpaceSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       maximumCodeCacheSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       softReferenceLruPolicy_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       garbageCollector_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -906,20 +895,26 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.JvmDetails buildPartial() {
       com.google.wireless.android.sdk.stats.JvmDetails result = new com.google.wireless.android.sdk.stats.JvmDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.JvmDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.name_ = name_;
         to_bitField0_ |= 0x00000001;
       }
-      result.name_ = name_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.version_ = version_;
         to_bitField0_ |= 0x00000002;
       }
-      result.version_ = version_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.vendor_ = vendor_;
         to_bitField0_ |= 0x00000004;
       }
-      result.vendor_ = vendor_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.minimumHeapSize_ = minimumHeapSize_;
         to_bitField0_ |= 0x00000008;
@@ -941,46 +936,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000080;
       }
       if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.garbageCollector_ = garbageCollector_;
         to_bitField0_ |= 0x00000100;
       }
-      result.garbageCollector_ = garbageCollector_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.JvmDetails) {
@@ -994,18 +955,18 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.JvmDetails other) {
       if (other == com.google.wireless.android.sdk.stats.JvmDetails.getDefaultInstance()) return this;
       if (other.hasName()) {
-        bitField0_ |= 0x00000001;
         name_ = other.name_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasVersion()) {
-        bitField0_ |= 0x00000002;
         version_ = other.version_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasVendor()) {
-        bitField0_ |= 0x00000004;
         vendor_ = other.vendor_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasMinimumHeapSize()) {
@@ -1187,11 +1148,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1204,8 +1163,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       name_ = getDefaultInstance().getName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1220,11 +1179,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1295,11 +1252,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1312,8 +1267,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1328,11 +1283,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1403,11 +1356,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVendor(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       vendor_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1420,8 +1371,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVendor() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       vendor_ = getDefaultInstance().getVendor();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1436,11 +1387,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVendorBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       vendor_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1480,8 +1429,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMinimumHeapSize(long value) {
-      bitField0_ |= 0x00000008;
+
       minimumHeapSize_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1535,8 +1485,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaximumHeapSize(long value) {
-      bitField0_ |= 0x00000010;
+
       maximumHeapSize_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1593,8 +1544,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaximumPermanentSpaceSize(long value) {
-      bitField0_ |= 0x00000020;
+
       maximumPermanentSpaceSize_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1652,8 +1604,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaximumCodeCacheSize(long value) {
-      bitField0_ |= 0x00000040;
+
       maximumCodeCacheSize_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1711,8 +1664,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSoftReferenceLruPolicy(long value) {
-      bitField0_ |= 0x00000080;
+
       softReferenceLruPolicy_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1754,8 +1708,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector getGarbageCollector() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.valueOf(garbageCollector_);
+      com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.forNumber(garbageCollector_);
       return result == null ? com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.UNSPECIFIED_GC : result;
     }
     /**

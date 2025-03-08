@@ -16,7 +16,7 @@
 package com.android.ide.common.resources.sampledata;
 
 import com.android.annotations.NonNull;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
@@ -24,7 +24,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +62,7 @@ public class SampleDataJsonParser {
         ArrayList<String> content = new ArrayList<>();
         visitElementAndGetContent(myRootObject, pathItems, content);
 
-        return NEW_LINE_JOINER.join(content).getBytes(Charsets.UTF_8);
+        return NEW_LINE_JOINER.join(content).getBytes(StandardCharsets.UTF_8);
     }
 
     /** Returns all the possible paths that lead to an array within the JSON file */

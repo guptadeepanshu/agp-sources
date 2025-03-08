@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new UiToolsPreferencesEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UiToolsPreferencesEvent_descriptor;
@@ -404,7 +399,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int RESOURCES_VIEW_MODE_FIELD_NUMBER = 1;
-  private int resourcesViewMode_;
+  private int resourcesViewMode_ = 0;
   /**
    * <pre>
    * View mode of the first opening of resources files. It can be code, split or
@@ -427,13 +422,12 @@ private static final long serialVersionUID = 0L;
    * @return The resourcesViewMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode getResourcesViewMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.valueOf(resourcesViewMode_);
+    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.forNumber(resourcesViewMode_);
     return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.UNKNOWN_VIEW_MODE : result;
   }
 
   public static final int EDITOR_VIEW_MODE_FIELD_NUMBER = 2;
-  private int editorViewMode_;
+  private int editorViewMode_ = 0;
   /**
    * <pre>
    * Kotlin files view mode can be code, split or design
@@ -454,13 +448,12 @@ private static final long serialVersionUID = 0L;
    * @return The editorViewMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode getEditorViewMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.valueOf(editorViewMode_);
+    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.forNumber(editorViewMode_);
     return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.UNKNOWN_VIEW_MODE : result;
   }
 
   public static final int SHOW_SPLIT_MODE_ON_ANNOTATIONS_FIELD_NUMBER = 3;
-  private boolean showSplitModeOnAnnotations_;
+  private boolean showSplitModeOnAnnotations_ = false;
   /**
    * <pre>
    * When true, it always shows the split mode whenever a code file contains
@@ -489,7 +482,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRACK_PAD_SENSITIVITY_LEVEL_FIELD_NUMBER = 4;
-  private int trackPadSensitivityLevel_;
+  private int trackPadSensitivityLevel_ = 0;
   /**
    * <pre>
    * The percentage of sensitivity level of the Trackpad, the value is in an
@@ -518,7 +511,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PREVIEW_LAYOUT_MODE_FIELD_NUMBER = 6;
-  private int previewLayoutMode_;
+  private int previewLayoutMode_ = 0;
   /**
    * <pre>
    * The layout mode of previews when its file is opened for the first time, it
@@ -541,13 +534,12 @@ private static final long serialVersionUID = 0L;
    * @return The previewLayoutMode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode getPreviewLayoutMode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.valueOf(previewLayoutMode_);
+    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.forNumber(previewLayoutMode_);
     return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.UNKNOWN_LAYOUT_MODE : result;
   }
 
   public static final int RESOURCE_USAGE_FIELD_NUMBER = 7;
-  private int resourceUsage_;
+  private int resourceUsage_ = 0;
   /**
    * <pre>
    * Amount or resources used to show previews: can be default, default without
@@ -570,8 +562,7 @@ private static final long serialVersionUID = 0L;
    * @return The resourceUsage.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage getResourceUsage() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.valueOf(resourceUsage_);
+    com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.forNumber(resourceUsage_);
     return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.DEFAULT : result;
   }
 
@@ -849,18 +840,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       resourcesViewMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       editorViewMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       showSplitModeOnAnnotations_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       trackPadSensitivityLevel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       previewLayoutMode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       resourceUsage_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -887,16 +873,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent buildPartial() {
       com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent result = new com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.resourcesViewMode_ = resourcesViewMode_;
         to_bitField0_ |= 0x00000001;
       }
-      result.resourcesViewMode_ = resourcesViewMode_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.editorViewMode_ = editorViewMode_;
         to_bitField0_ |= 0x00000002;
       }
-      result.editorViewMode_ = editorViewMode_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.showSplitModeOnAnnotations_ = showSplitModeOnAnnotations_;
         to_bitField0_ |= 0x00000004;
@@ -906,50 +898,16 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.previewLayoutMode_ = previewLayoutMode_;
         to_bitField0_ |= 0x00000010;
       }
-      result.previewLayoutMode_ = previewLayoutMode_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.resourceUsage_ = resourceUsage_;
         to_bitField0_ |= 0x00000020;
       }
-      result.resourceUsage_ = resourceUsage_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent) {
@@ -1105,8 +1063,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode getResourcesViewMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.valueOf(resourcesViewMode_);
+      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.forNumber(resourcesViewMode_);
       return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.UNKNOWN_VIEW_MODE : result;
     }
     /**
@@ -1166,8 +1123,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode getEditorViewMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.valueOf(editorViewMode_);
+      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.forNumber(editorViewMode_);
       return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ViewMode.UNKNOWN_VIEW_MODE : result;
     }
     /**
@@ -1241,8 +1197,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setShowSplitModeOnAnnotations(boolean value) {
-      bitField0_ |= 0x00000004;
+
       showSplitModeOnAnnotations_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1300,8 +1257,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTrackPadSensitivityLevel(int value) {
-      bitField0_ |= 0x00000008;
+
       trackPadSensitivityLevel_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1345,8 +1303,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode getPreviewLayoutMode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.valueOf(previewLayoutMode_);
+      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.forNumber(previewLayoutMode_);
       return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.LayoutMode.UNKNOWN_LAYOUT_MODE : result;
     }
     /**
@@ -1408,8 +1365,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage getResourceUsage() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.valueOf(resourceUsage_);
+      com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage result = com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.forNumber(resourceUsage_);
       return result == null ? com.google.wireless.android.sdk.stats.UiToolsPreferencesEvent.ResourceUsage.DEFAULT : result;
     }
     /**

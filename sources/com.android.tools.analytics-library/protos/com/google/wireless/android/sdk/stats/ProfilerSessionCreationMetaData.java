@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new ProfilerSessionCreationMetaData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ProfilerSessionCreationMetaData_descriptor;
@@ -269,7 +264,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CREATED_TYPE_FIELD_NUMBER = 1;
-  private int createdType_;
+  private int createdType_ = 0;
   /**
    * <pre>
    * The type of session created
@@ -290,13 +285,12 @@ private static final long serialVersionUID = 0L;
    * @return The createdType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType getCreatedType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.valueOf(createdType_);
+    com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.forNumber(createdType_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.UNKNOWN_SESSION : result;
   }
 
   public static final int CREATION_SOURCE_FIELD_NUMBER = 2;
-  private int creationSource_;
+  private int creationSource_ = 0;
   /**
    * <pre>
    * How the session is created.
@@ -317,8 +311,7 @@ private static final long serialVersionUID = 0L;
    * @return The creationSource.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource getCreationSource() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.valueOf(creationSource_);
+    com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.forNumber(creationSource_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.UNKNOWN_SOURCE : result;
   }
 
@@ -533,10 +526,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       createdType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       creationSource_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -563,53 +555,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData buildPartial() {
       com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData result = new com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.createdType_ = createdType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.creationSource_ = creationSource_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.createdType_ = createdType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.creationSource_ = creationSource_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData) {
@@ -717,8 +681,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType getCreatedType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.valueOf(createdType_);
+      com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.forNumber(createdType_);
       return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.UNKNOWN_SESSION : result;
     }
     /**
@@ -776,8 +739,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource getCreationSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.valueOf(creationSource_);
+      com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.forNumber(creationSource_);
       return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.UNKNOWN_SOURCE : result;
     }
     /**

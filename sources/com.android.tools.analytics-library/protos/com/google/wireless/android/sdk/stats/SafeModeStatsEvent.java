@@ -23,8 +23,10 @@ private static final long serialVersionUID = 0L;
     studioVersion_ = "";
     jdkModified_ = "";
     kotlinModified_ = "";
-    disabledPlugins_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    vmoptionsModified_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    disabledPlugins_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+    vmoptionsModified_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -34,11 +36,6 @@ private static final long serialVersionUID = 0L;
     return new SafeModeStatsEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SafeModeStatsEvent_descriptor;
@@ -492,7 +489,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int OS_FIELD_NUMBER = 1;
-  private int os_;
+  private int os_ = 0;
   /**
    * <code>optional .android_studio.SafeModeStatsEvent.OS os = 1;</code>
    * @return Whether the os field is set.
@@ -505,13 +502,12 @@ private static final long serialVersionUID = 0L;
    * @return The os.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS getOs() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.valueOf(os_);
+    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.forNumber(os_);
     return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.UNKNOWN_OS : result;
   }
 
   public static final int ENTRY_POINT_FIELD_NUMBER = 2;
-  private int entryPoint_;
+  private int entryPoint_ = 0;
   /**
    * <code>optional .android_studio.SafeModeStatsEvent.EntryPoint entry_point = 2;</code>
    * @return Whether the entryPoint field is set.
@@ -524,13 +520,12 @@ private static final long serialVersionUID = 0L;
    * @return The entryPoint.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint getEntryPoint() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.valueOf(entryPoint_);
+    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.forNumber(entryPoint_);
     return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.UNKNOWN_ENTRY_POINT : result;
   }
 
   public static final int TRIGGER_FIELD_NUMBER = 3;
-  private int trigger_;
+  private int trigger_ = 0;
   /**
    * <code>optional .android_studio.SafeModeStatsEvent.Trigger trigger = 3;</code>
    * @return Whether the trigger field is set.
@@ -543,13 +538,12 @@ private static final long serialVersionUID = 0L;
    * @return The trigger.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger getTrigger() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.valueOf(trigger_);
+    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.forNumber(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.UNKNOWN_TRIGGER : result;
   }
 
   public static final int START_UP_RESULT_FIELD_NUMBER = 4;
-  private int startUpResult_;
+  private int startUpResult_ = 0;
   /**
    * <code>optional .android_studio.SafeModeStatsEvent.StartUpResult start_up_result = 4;</code>
    * @return Whether the startUpResult field is set.
@@ -562,13 +556,13 @@ private static final long serialVersionUID = 0L;
    * @return The startUpResult.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult getStartUpResult() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.valueOf(startUpResult_);
+    com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.forNumber(startUpResult_);
     return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.UNKNOWN_STARTUP_RESULT : result;
   }
 
   public static final int STUDIO_VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object studioVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object studioVersion_ = "";
   /**
    * <code>optional string studio_version = 5;</code>
    * @return Whether the studioVersion field is set.
@@ -616,7 +610,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JDK_MODIFIED_FIELD_NUMBER = 6;
-  private volatile java.lang.Object jdkModified_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object jdkModified_ = "";
   /**
    * <code>optional string jdk_modified = 6;</code>
    * @return Whether the jdkModified field is set.
@@ -664,7 +659,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_MODIFIED_FIELD_NUMBER = 7;
-  private volatile java.lang.Object kotlinModified_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object kotlinModified_ = "";
   /**
    * <code>optional string kotlin_modified = 7;</code>
    * @return Whether the kotlinModified field is set.
@@ -712,7 +708,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISABLED_PLUGINS_FIELD_NUMBER = 8;
-  private com.google.protobuf.LazyStringList disabledPlugins_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList disabledPlugins_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <code>repeated string disabled_plugins = 8;</code>
    * @return A list containing the disabledPlugins.
@@ -747,7 +745,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VMOPTIONS_MODIFIED_FIELD_NUMBER = 9;
-  private com.google.protobuf.LazyStringList vmoptionsModified_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList vmoptionsModified_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <code>repeated string vmoptions_modified = 9;</code>
    * @return A list containing the vmoptionsModified.
@@ -1097,24 +1097,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       os_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       entryPoint_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       trigger_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       startUpResult_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       studioVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       jdkModified_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       kotlinModified_ = "";
-      bitField0_ = (bitField0_ & ~0x00000040);
-      disabledPlugins_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
-      vmoptionsModified_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000100);
+      disabledPlugins_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+      vmoptionsModified_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       return this;
     }
 
@@ -1141,83 +1135,53 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SafeModeStatsEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SafeModeStatsEvent result = new com.google.wireless.android.sdk.stats.SafeModeStatsEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.os_ = os_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.entryPoint_ = entryPoint_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.trigger_ = trigger_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.startUpResult_ = startUpResult_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.studioVersion_ = studioVersion_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        to_bitField0_ |= 0x00000020;
-      }
-      result.jdkModified_ = jdkModified_;
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        to_bitField0_ |= 0x00000040;
-      }
-      result.kotlinModified_ = kotlinModified_;
-      if (((bitField0_ & 0x00000080) != 0)) {
-        disabledPlugins_ = disabledPlugins_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000080);
-      }
-      result.disabledPlugins_ = disabledPlugins_;
-      if (((bitField0_ & 0x00000100) != 0)) {
-        vmoptionsModified_ = vmoptionsModified_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000100);
-      }
-      result.vmoptionsModified_ = vmoptionsModified_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SafeModeStatsEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.os_ = os_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.entryPoint_ = entryPoint_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.trigger_ = trigger_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.startUpResult_ = startUpResult_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.studioVersion_ = studioVersion_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.jdkModified_ = jdkModified_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.kotlinModified_ = kotlinModified_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        disabledPlugins_.makeImmutable();
+        result.disabledPlugins_ = disabledPlugins_;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        vmoptionsModified_.makeImmutable();
+        result.vmoptionsModified_ = vmoptionsModified_;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SafeModeStatsEvent) {
@@ -1243,24 +1207,24 @@ private static final long serialVersionUID = 0L;
         setStartUpResult(other.getStartUpResult());
       }
       if (other.hasStudioVersion()) {
-        bitField0_ |= 0x00000010;
         studioVersion_ = other.studioVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasJdkModified()) {
-        bitField0_ |= 0x00000020;
         jdkModified_ = other.jdkModified_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       if (other.hasKotlinModified()) {
-        bitField0_ |= 0x00000040;
         kotlinModified_ = other.kotlinModified_;
+        bitField0_ |= 0x00000040;
         onChanged();
       }
       if (!other.disabledPlugins_.isEmpty()) {
         if (disabledPlugins_.isEmpty()) {
           disabledPlugins_ = other.disabledPlugins_;
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ |= 0x00000080;
         } else {
           ensureDisabledPluginsIsMutable();
           disabledPlugins_.addAll(other.disabledPlugins_);
@@ -1270,7 +1234,7 @@ private static final long serialVersionUID = 0L;
       if (!other.vmoptionsModified_.isEmpty()) {
         if (vmoptionsModified_.isEmpty()) {
           vmoptionsModified_ = other.vmoptionsModified_;
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ |= 0x00000100;
         } else {
           ensureVmoptionsModifiedIsMutable();
           vmoptionsModified_.addAll(other.vmoptionsModified_);
@@ -1409,8 +1373,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS getOs() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.valueOf(os_);
+      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.forNumber(os_);
       return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.OS.UNKNOWN_OS : result;
     }
     /**
@@ -1452,8 +1415,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint getEntryPoint() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.valueOf(entryPoint_);
+      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.forNumber(entryPoint_);
       return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.EntryPoint.UNKNOWN_ENTRY_POINT : result;
     }
     /**
@@ -1495,8 +1457,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger getTrigger() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.valueOf(trigger_);
+      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.forNumber(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.Trigger.UNKNOWN_TRIGGER : result;
     }
     /**
@@ -1538,8 +1499,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult getStartUpResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.valueOf(startUpResult_);
+      com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult result = com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.forNumber(startUpResult_);
       return result == null ? com.google.wireless.android.sdk.stats.SafeModeStatsEvent.StartUpResult.UNKNOWN_STARTUP_RESULT : result;
     }
     /**
@@ -1617,11 +1577,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setStudioVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       studioVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1630,8 +1588,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearStudioVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       studioVersion_ = getDefaultInstance().getStudioVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1642,11 +1600,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setStudioVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       studioVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1701,11 +1657,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJdkModified(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       jdkModified_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1714,8 +1668,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJdkModified() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       jdkModified_ = getDefaultInstance().getJdkModified();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1726,11 +1680,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJdkModifiedBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       jdkModified_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1785,11 +1737,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinModified(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+      if (value == null) { throw new NullPointerException(); }
       kotlinModified_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1798,8 +1748,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearKotlinModified() {
-      bitField0_ = (bitField0_ & ~0x00000040);
       kotlinModified_ = getDefaultInstance().getKotlinModified();
+      bitField0_ = (bitField0_ & ~0x00000040);
       onChanged();
       return this;
     }
@@ -1810,21 +1760,20 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setKotlinModifiedBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+      if (value == null) { throw new NullPointerException(); }
       kotlinModified_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList disabledPlugins_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList disabledPlugins_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureDisabledPluginsIsMutable() {
-      if (!((bitField0_ & 0x00000080) != 0)) {
+      if (!disabledPlugins_.isModifiable()) {
         disabledPlugins_ = new com.google.protobuf.LazyStringArrayList(disabledPlugins_);
-        bitField0_ |= 0x00000080;
-       }
+      }
+      bitField0_ |= 0x00000080;
     }
     /**
      * <code>repeated string disabled_plugins = 8;</code>
@@ -1832,7 +1781,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getDisabledPluginsList() {
-      return disabledPlugins_.getUnmodifiableView();
+      disabledPlugins_.makeImmutable();
+      return disabledPlugins_;
     }
     /**
      * <code>repeated string disabled_plugins = 8;</code>
@@ -1866,11 +1816,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDisabledPlugins(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureDisabledPluginsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureDisabledPluginsIsMutable();
       disabledPlugins_.set(index, value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1881,11 +1830,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addDisabledPlugins(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureDisabledPluginsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureDisabledPluginsIsMutable();
       disabledPlugins_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1899,6 +1847,7 @@ private static final long serialVersionUID = 0L;
       ensureDisabledPluginsIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, disabledPlugins_);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1907,8 +1856,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDisabledPlugins() {
-      disabledPlugins_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000080);
+      disabledPlugins_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000080);;
       onChanged();
       return this;
     }
@@ -1919,21 +1869,21 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addDisabledPluginsBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureDisabledPluginsIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureDisabledPluginsIsMutable();
       disabledPlugins_.add(value);
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList vmoptionsModified_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList vmoptionsModified_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureVmoptionsModifiedIsMutable() {
-      if (!((bitField0_ & 0x00000100) != 0)) {
+      if (!vmoptionsModified_.isModifiable()) {
         vmoptionsModified_ = new com.google.protobuf.LazyStringArrayList(vmoptionsModified_);
-        bitField0_ |= 0x00000100;
-       }
+      }
+      bitField0_ |= 0x00000100;
     }
     /**
      * <code>repeated string vmoptions_modified = 9;</code>
@@ -1941,7 +1891,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getVmoptionsModifiedList() {
-      return vmoptionsModified_.getUnmodifiableView();
+      vmoptionsModified_.makeImmutable();
+      return vmoptionsModified_;
     }
     /**
      * <code>repeated string vmoptions_modified = 9;</code>
@@ -1975,11 +1926,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVmoptionsModified(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureVmoptionsModifiedIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureVmoptionsModifiedIsMutable();
       vmoptionsModified_.set(index, value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1990,11 +1940,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addVmoptionsModified(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureVmoptionsModifiedIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureVmoptionsModifiedIsMutable();
       vmoptionsModified_.add(value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2008,6 +1957,7 @@ private static final long serialVersionUID = 0L;
       ensureVmoptionsModifiedIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, vmoptionsModified_);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2016,8 +1966,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVmoptionsModified() {
-      vmoptionsModified_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000100);
+      vmoptionsModified_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000100);;
       onChanged();
       return this;
     }
@@ -2028,11 +1979,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addVmoptionsModifiedBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureVmoptionsModifiedIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureVmoptionsModifiedIsMutable();
       vmoptionsModified_.add(value);
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }

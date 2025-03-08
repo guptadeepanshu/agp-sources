@@ -278,6 +278,17 @@ public class XmlElement extends OrphanXmlElement {
         return mAttributes;
     }
 
+    @Nullable
+    public XmlAttribute getFeatureFlagAttribute() {
+        for (XmlAttribute attribute : getAttributes()) {
+            if (attribute.getName().isInNamespace(NAMESPACE_URI)
+                    && attribute.getName().getLocalName().equals(FeatureFlag.ATTRIBUTE_NAME)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
     /**
      * Removes given child from DOM and from this list of {@code mMergeableChildren}
      *

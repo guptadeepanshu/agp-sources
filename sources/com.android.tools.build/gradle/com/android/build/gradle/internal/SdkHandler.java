@@ -20,6 +20,7 @@ import com.android.SdkConstants;
 import com.android.Version;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.gradle.internal.utils.ConsoleProgressIndicatorFactory;
 import com.android.builder.core.ToolsRevisionUtils;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.errors.IssueReporter.Type;
@@ -35,7 +36,6 @@ import com.android.builder.utils.SynchronizedFile;
 import com.android.prefs.AndroidLocationsException;
 import com.android.prefs.AndroidLocationsProvider;
 import com.android.repository.Revision;
-import com.android.repository.api.ConsoleProgressIndicator;
 import com.android.repository.api.LocalPackage;
 import com.android.repository.api.ProgressIndicator;
 import com.android.repository.api.RepoPackage;
@@ -44,9 +44,11 @@ import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.utils.ILogger;
 import com.android.utils.Pair;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
+
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -65,16 +67,19 @@ public class SdkHandler {
     @Nullable private final String suppressWarningUnsupportedCompileSdk;
     @NonNull private SdkLibData sdkLibData = SdkLibData.dontDownload();
     private SdkLoader sdkLoader;
+    @NonNull private final ConsoleProgressIndicatorFactory consoleProgressIndicatorFactory;
 
     public SdkHandler(
             @NonNull AndroidLocationsProvider androidLocationsProvider,
             @NonNull SdkLocationSourceSet sdkLocationSourceSet,
             @NonNull IssueReporter issueReporter,
-            @Nullable String suppressWarningUnsupportedCompileSdk) {
+            @Nullable String suppressWarningUnsupportedCompileSdk,
+            @NonNull ConsoleProgressIndicatorFactory consoleProgressIndicatorFactory) {
         this.androidLocationsProvider = androidLocationsProvider;
         this.sdkLocationSourceSet = sdkLocationSourceSet;
         this.issueReporter = issueReporter;
         this.suppressWarningUnsupportedCompileSdk = suppressWarningUnsupportedCompileSdk;
+        this.consoleProgressIndicatorFactory = consoleProgressIndicatorFactory;
     }
 
     /**
@@ -167,7 +172,7 @@ public class SdkHandler {
     public boolean ensurePlatformToolsIsInstalledWarnOnFailure() {
         // Check if platform-tools are installed. We check here because realistically, all projects
         // should have platform-tools in order to build.
-        ProgressIndicator progress = new ConsoleProgressIndicator();
+        ProgressIndicator progress = consoleProgressIndicatorFactory.create();
         File sdkDir = SdkLocator.getSdkLocation(sdkLocationSourceSet, issueReporter).getDirectory();
         AndroidSdkHandler sdk =
                 AndroidSdkHandler.getInstance(
@@ -184,13 +189,15 @@ public class SdkHandler {
                     issueReporter.reportWarning(
                             IssueReporter.Type.MISSING_SDK_PACKAGE,
                             SdkConstants.FD_PLATFORM_TOOLS
-                                    + " package is not installed. Please accept the installation licence to continue",
+                                    + " package is not installed. Please accept the installation"
+                                    + " licence to continue",
                             SdkConstants.FD_PLATFORM_TOOLS);
                 } catch (InstallFailedException e) {
                     issueReporter.reportWarning(
                             IssueReporter.Type.MISSING_SDK_PACKAGE,
                             SdkConstants.FD_PLATFORM_TOOLS
-                                    + " package is not installed, and automatic installation failed.",
+                                    + " package is not installed, and automatic installation"
+                                    + " failed.",
                             SdkConstants.FD_PLATFORM_TOOLS);
                 }
             } else {

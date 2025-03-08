@@ -52,6 +52,7 @@ public final class DeviceSystemImageMatcher {
                     && !SystemImageTags.isDesktopImage(tags)
                     && !SystemImageTags.isTvImage(tags)
                     && !SystemImageTags.isAutomotiveImage(tags)
+                    && !SystemImageTags.isXrImage(tags)
                     && !tags.contains(SystemImageTags.CHROMEOS_TAG);
         }
 

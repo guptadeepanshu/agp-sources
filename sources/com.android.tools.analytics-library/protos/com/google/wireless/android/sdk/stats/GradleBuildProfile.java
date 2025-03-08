@@ -29,7 +29,8 @@ private static final long serialVersionUID = 0L;
     memorySample_ = java.util.Collections.emptyList();
     span_ = java.util.Collections.emptyList();
     projectId_ = "";
-    rawProjectId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    rawProjectId_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
   }
 
   @java.lang.Override
@@ -39,11 +40,6 @@ private static final long serialVersionUID = 0L;
     return new GradleBuildProfile();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProfile_descriptor;
@@ -59,7 +55,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int GRADLE_VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object gradleVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object gradleVersion_ = "";
   /**
    * <pre>
    * Version of the open source Gradle application used.
@@ -122,7 +119,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OS_NAME_FIELD_NUMBER = 6;
-  private volatile java.lang.Object osName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object osName_ = "";
   /**
    * <pre>
    * The value of the "os.name" system property.
@@ -185,7 +183,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OS_VERSION_FIELD_NUMBER = 7;
-  private volatile java.lang.Object osVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object osVersion_ = "";
   /**
    * <pre>
    * The value of the "os.version" system property.
@@ -248,7 +247,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JAVA_VERSION_FIELD_NUMBER = 8;
-  private volatile java.lang.Object javaVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object javaVersion_ = "";
   /**
    * <pre>
    * The value of the "java.version" system property.
@@ -311,7 +311,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JAVA_VM_VERSION_FIELD_NUMBER = 9;
-  private volatile java.lang.Object javaVmVersion_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object javaVmVersion_ = "";
   /**
    * <pre>
    * The value of the "java.vm.version" system property.
@@ -374,7 +375,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MAX_MEMORY_FIELD_NUMBER = 10;
-  private long maxMemory_;
+  private long maxMemory_ = 0L;
   /**
    * <pre>
    * The value of Runtime.getRuntime().maxMemory()
@@ -401,7 +402,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_TIME_FIELD_NUMBER = 11;
-  private long buildTime_;
+  private long buildTime_ = 0L;
   /**
    * <pre>
    * The total time taken for this build in milliseconds.
@@ -432,7 +433,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GC_COUNT_FIELD_NUMBER = 12;
-  private long gcCount_;
+  private long gcCount_ = 0L;
   /**
    * <pre>
    * The number of garbage collections during this build
@@ -440,7 +441,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+   *     See studio_stats.proto;l=4420
    * @return Whether the gcCount field is set.
    */
   @java.lang.Override
@@ -454,7 +456,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+   *     See studio_stats.proto;l=4420
    * @return The gcCount.
    */
   @java.lang.Override
@@ -463,7 +466,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GC_TIME_FIELD_NUMBER = 13;
-  private long gcTime_;
+  private long gcTime_ = 0L;
   /**
    * <pre>
    * The time spent garbage collecting during this build.
@@ -471,7 +474,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+   *     See studio_stats.proto;l=4424
    * @return Whether the gcTime field is set.
    */
   @java.lang.Override
@@ -485,7 +489,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+   *     See studio_stats.proto;l=4424
    * @return The gcTime.
    */
   @java.lang.Override
@@ -494,6 +499,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_FIELD_NUMBER = 14;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleBuildProject> project_;
   /**
    * <pre>
@@ -554,6 +560,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MEMORY_SAMPLE_FIELD_NUMBER = 15;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleBuildMemorySample> memorySample_;
   /**
    * <pre>
@@ -614,6 +621,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SPAN_FIELD_NUMBER = 16;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GradleBuildProfileSpan> span_;
   /**
    * <pre>
@@ -712,12 +720,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_ID_FIELD_NUMBER = 18;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -735,6 +745,7 @@ private static final long serialVersionUID = 0L;
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -763,6 +774,7 @@ private static final long serialVersionUID = 0L;
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -787,7 +799,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RAW_PROJECT_ID_FIELD_NUMBER = 19;
-  private com.google.protobuf.LazyStringList rawProjectId_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList rawProjectId_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * the project id as used in the playstore, e.g.
@@ -858,7 +872,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPOSE_ENABLED_FIELD_NUMBER = 20;
-  private boolean composeEnabled_;
+  private boolean composeEnabled_ = false;
   /**
    * <pre>
    * If at least one module has enableCompose set to true
@@ -885,7 +899,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONFIGURATION_CACHING_ENABLED_FIELD_NUMBER = 21;
-  private boolean configurationCachingEnabled_;
+  private boolean configurationCachingEnabled_ = false;
   /**
    * <pre>
    * If Gradle configuration caching is enabled.
@@ -912,7 +926,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PARALLEL_TASK_EXECUTION_FIELD_NUMBER = 22;
-  private boolean parallelTaskExecution_;
+  private boolean parallelTaskExecution_ = false;
   /**
    * <pre>
    * If Gradle parallel task execution is enabled.
@@ -1409,24 +1423,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       gradleVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       osName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       osVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       javaVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       javaVmVersion_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       maxMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       buildTime_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       gcCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       gcTime_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000100);
       if (projectBuilder_ == null) {
         project_ = java.util.Collections.emptyList();
       } else {
@@ -1448,22 +1454,17 @@ private static final long serialVersionUID = 0L;
         spanBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000800);
-      if (instantRunStatusBuilder_ == null) {
-        instantRunStatus_ = null;
-      } else {
-        instantRunStatusBuilder_.clear();
+      instantRunStatus_ = null;
+      if (instantRunStatusBuilder_ != null) {
+        instantRunStatusBuilder_.dispose();
+        instantRunStatusBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00001000);
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x00002000);
-      rawProjectId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00004000);
+      rawProjectId_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       composeEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00008000);
       configurationCachingEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00010000);
       parallelTaskExecution_ = false;
-      bitField0_ = (bitField0_ & ~0x00020000);
       return this;
     }
 
@@ -1490,44 +1491,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProfile buildPartial() {
       com.google.wireless.android.sdk.stats.GradleBuildProfile result = new com.google.wireless.android.sdk.stats.GradleBuildProfile(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.gradleVersion_ = gradleVersion_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.osName_ = osName_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.osVersion_ = osVersion_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.javaVersion_ = javaVersion_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.javaVmVersion_ = javaVmVersion_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.maxMemory_ = maxMemory_;
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        result.buildTime_ = buildTime_;
-        to_bitField0_ |= 0x00000040;
-      }
-      if (((from_bitField0_ & 0x00000080) != 0)) {
-        result.gcCount_ = gcCount_;
-        to_bitField0_ |= 0x00000080;
-      }
-      if (((from_bitField0_ & 0x00000100) != 0)) {
-        result.gcTime_ = gcTime_;
-        to_bitField0_ |= 0x00000100;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleBuildProfile result) {
       if (projectBuilder_ == null) {
         if (((bitField0_ & 0x00000200) != 0)) {
           project_ = java.util.Collections.unmodifiableList(project_);
@@ -1555,23 +1525,61 @@ private static final long serialVersionUID = 0L;
       } else {
         result.span_ = spanBuilder_.build();
       }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleBuildProfile result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gradleVersion_ = gradleVersion_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.osName_ = osName_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.osVersion_ = osVersion_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.javaVersion_ = javaVersion_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.javaVmVersion_ = javaVmVersion_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.maxMemory_ = maxMemory_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.buildTime_ = buildTime_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.gcCount_ = gcCount_;
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.gcTime_ = gcTime_;
+        to_bitField0_ |= 0x00000100;
+      }
       if (((from_bitField0_ & 0x00001000) != 0)) {
-        if (instantRunStatusBuilder_ == null) {
-          result.instantRunStatus_ = instantRunStatus_;
-        } else {
-          result.instantRunStatus_ = instantRunStatusBuilder_.build();
-        }
+        result.instantRunStatus_ = instantRunStatusBuilder_ == null
+            ? instantRunStatus_
+            : instantRunStatusBuilder_.build();
         to_bitField0_ |= 0x00000200;
       }
       if (((from_bitField0_ & 0x00002000) != 0)) {
+        result.projectId_ = projectId_;
         to_bitField0_ |= 0x00000400;
       }
-      result.projectId_ = projectId_;
-      if (((bitField0_ & 0x00004000) != 0)) {
-        rawProjectId_ = rawProjectId_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00004000);
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        rawProjectId_.makeImmutable();
+        result.rawProjectId_ = rawProjectId_;
       }
-      result.rawProjectId_ = rawProjectId_;
       if (((from_bitField0_ & 0x00008000) != 0)) {
         result.composeEnabled_ = composeEnabled_;
         to_bitField0_ |= 0x00000800;
@@ -1584,43 +1592,9 @@ private static final long serialVersionUID = 0L;
         result.parallelTaskExecution_ = parallelTaskExecution_;
         to_bitField0_ |= 0x00002000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleBuildProfile) {
@@ -1634,28 +1608,28 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.GradleBuildProfile other) {
       if (other == com.google.wireless.android.sdk.stats.GradleBuildProfile.getDefaultInstance()) return this;
       if (other.hasGradleVersion()) {
-        bitField0_ |= 0x00000001;
         gradleVersion_ = other.gradleVersion_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasOsName()) {
-        bitField0_ |= 0x00000002;
         osName_ = other.osName_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasOsVersion()) {
-        bitField0_ |= 0x00000004;
         osVersion_ = other.osVersion_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasJavaVersion()) {
-        bitField0_ |= 0x00000008;
         javaVersion_ = other.javaVersion_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasJavaVmVersion()) {
-        bitField0_ |= 0x00000010;
         javaVmVersion_ = other.javaVmVersion_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasMaxMemory()) {
@@ -1752,14 +1726,14 @@ private static final long serialVersionUID = 0L;
         mergeInstantRunStatus(other.getInstantRunStatus());
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x00002000;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x00002000;
         onChanged();
       }
       if (!other.rawProjectId_.isEmpty()) {
         if (rawProjectId_.isEmpty()) {
           rawProjectId_ = other.rawProjectId_;
-          bitField0_ = (bitField0_ & ~0x00004000);
+          bitField0_ |= 0x00004000;
         } else {
           ensureRawProjectIdIsMutable();
           rawProjectId_.addAll(other.rawProjectId_);
@@ -2005,11 +1979,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradleVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       gradleVersion_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2023,8 +1995,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearGradleVersion() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       gradleVersion_ = getDefaultInstance().getGradleVersion();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -2040,11 +2012,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setGradleVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       gradleVersion_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2119,11 +2089,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setOsName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       osName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2137,8 +2105,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOsName() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       osName_ = getDefaultInstance().getOsName();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -2154,11 +2122,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setOsNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       osName_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2233,11 +2199,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setOsVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       osVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2251,8 +2215,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOsVersion() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       osVersion_ = getDefaultInstance().getOsVersion();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -2268,11 +2232,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setOsVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       osVersion_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2347,11 +2309,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJavaVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       javaVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2365,8 +2325,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJavaVersion() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       javaVersion_ = getDefaultInstance().getJavaVersion();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -2382,11 +2342,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJavaVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       javaVersion_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2461,11 +2419,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJavaVmVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       javaVmVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2479,8 +2435,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJavaVmVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       javaVmVersion_ = getDefaultInstance().getJavaVmVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -2496,11 +2452,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setJavaVmVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       javaVmVersion_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2540,8 +2494,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMaxMemory(long value) {
-      bitField0_ |= 0x00000020;
+
       maxMemory_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2601,8 +2556,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBuildTime(long value) {
-      bitField0_ |= 0x00000040;
+
       buildTime_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -2631,7 +2587,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+     *     See studio_stats.proto;l=4420
      * @return Whether the gcCount field is set.
      */
     @java.lang.Override
@@ -2645,7 +2602,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+     *     See studio_stats.proto;l=4420
      * @return The gcCount.
      */
     @java.lang.Override
@@ -2659,13 +2617,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+     *     See studio_stats.proto;l=4420
      * @param value The gcCount to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setGcCount(long value) {
-      bitField0_ |= 0x00000080;
+
       gcCount_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2676,7 +2636,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+     *     See studio_stats.proto;l=4420
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearGcCount() {
@@ -2694,7 +2655,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+     *     See studio_stats.proto;l=4424
      * @return Whether the gcTime field is set.
      */
     @java.lang.Override
@@ -2708,7 +2670,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+     *     See studio_stats.proto;l=4424
      * @return The gcTime.
      */
     @java.lang.Override
@@ -2722,13 +2685,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+     *     See studio_stats.proto;l=4424
      * @param value The gcTime to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setGcTime(long value) {
-      bitField0_ |= 0x00000100;
+
       gcTime_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2739,7 +2704,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+     *     See studio_stats.proto;l=4424
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearGcTime() {
@@ -3727,11 +3693,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         instantRunStatus_ = value;
-        onChanged();
       } else {
         instantRunStatusBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -3745,11 +3711,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.InstantRunStatus.Builder builderForValue) {
       if (instantRunStatusBuilder_ == null) {
         instantRunStatus_ = builderForValue.build();
-        onChanged();
       } else {
         instantRunStatusBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -3762,18 +3728,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeInstantRunStatus(com.google.wireless.android.sdk.stats.InstantRunStatus value) {
       if (instantRunStatusBuilder_ == null) {
         if (((bitField0_ & 0x00001000) != 0) &&
-            instantRunStatus_ != null &&
-            instantRunStatus_ != com.google.wireless.android.sdk.stats.InstantRunStatus.getDefaultInstance()) {
-          instantRunStatus_ =
-            com.google.wireless.android.sdk.stats.InstantRunStatus.newBuilder(instantRunStatus_).mergeFrom(value).buildPartial();
+          instantRunStatus_ != null &&
+          instantRunStatus_ != com.google.wireless.android.sdk.stats.InstantRunStatus.getDefaultInstance()) {
+          getInstantRunStatusBuilder().mergeFrom(value);
         } else {
           instantRunStatus_ = value;
         }
-        onChanged();
       } else {
         instantRunStatusBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00001000;
+      onChanged();
       return this;
     }
     /**
@@ -3784,13 +3749,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus instant_run_status = 17 [lazy = true];</code>
      */
     public Builder clearInstantRunStatus() {
-      if (instantRunStatusBuilder_ == null) {
-        instantRunStatus_ = null;
-        onChanged();
-      } else {
-        instantRunStatusBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00001000);
+      instantRunStatus_ = null;
+      if (instantRunStatusBuilder_ != null) {
+        instantRunStatusBuilder_.dispose();
+        instantRunStatusBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -3847,6 +3812,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3863,6 +3829,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3890,6 +3857,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3916,6 +3884,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3927,11 +3896,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00002000;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -3940,6 +3907,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3949,8 +3917,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x00002000);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x00002000);
       onChanged();
       return this;
     }
@@ -3959,6 +3927,7 @@ private static final long serialVersionUID = 0L;
      * Client-side salted, sha256 of the root project path.
      * This exists to allow multiple instant run builds in one project by one
      * user to be correlated.
+     *
      * The salt is rotated every 28 days, so it is not a permanent pseudonymous
      * identifier. It is anonymized and is unique per user, but has a 1-N
      * relation.
@@ -3970,21 +3939,20 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00002000;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
 
-    private com.google.protobuf.LazyStringList rawProjectId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList rawProjectId_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureRawProjectIdIsMutable() {
-      if (!((bitField0_ & 0x00004000) != 0)) {
+      if (!rawProjectId_.isModifiable()) {
         rawProjectId_ = new com.google.protobuf.LazyStringArrayList(rawProjectId_);
-        bitField0_ |= 0x00004000;
-       }
+      }
+      bitField0_ |= 0x00004000;
     }
     /**
      * <pre>
@@ -4001,7 +3969,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getRawProjectIdList() {
-      return rawProjectId_.getUnmodifiableView();
+      rawProjectId_.makeImmutable();
+      return rawProjectId_;
     }
     /**
      * <pre>
@@ -4071,11 +4040,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRawProjectId(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRawProjectIdIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRawProjectIdIsMutable();
       rawProjectId_.set(index, value);
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -4095,11 +4063,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRawProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRawProjectIdIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRawProjectIdIsMutable();
       rawProjectId_.add(value);
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -4122,6 +4089,7 @@ private static final long serialVersionUID = 0L;
       ensureRawProjectIdIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, rawProjectId_);
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -4139,8 +4107,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRawProjectId() {
-      rawProjectId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00004000);
+      rawProjectId_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00004000);;
       onChanged();
       return this;
     }
@@ -4160,11 +4129,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addRawProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureRawProjectIdIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureRawProjectIdIsMutable();
       rawProjectId_.add(value);
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -4204,8 +4172,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setComposeEnabled(boolean value) {
-      bitField0_ |= 0x00008000;
+
       composeEnabled_ = value;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -4259,8 +4228,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setConfigurationCachingEnabled(boolean value) {
-      bitField0_ |= 0x00010000;
+
       configurationCachingEnabled_ = value;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -4314,8 +4284,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setParallelTaskExecution(boolean value) {
-      bitField0_ |= 0x00020000;
+
       parallelTaskExecution_ = value;
+      bitField0_ |= 0x00020000;
       onChanged();
       return this;
     }

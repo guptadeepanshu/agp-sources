@@ -43,6 +43,8 @@ public abstract class Bridge {
      * @param nativeLibDirPath the absolute path of the directory containing all the native
      *     libraries for layoutlib.
      * @param icuDataPath the location of the ICU data used natively.
+     * @param hyphenDirPath the path of the directory containing all the data files for hyphenation
+     *     support
      * @param keyboardPaths an array of paths to key character map files for keyboard support.
      * @param enumValueMap map attrName ⇒ { map enumFlagName ⇒ Integer value }. This is typically
      *     read from attrs.xml in the SDK target.
@@ -54,6 +56,7 @@ public abstract class Bridge {
             File fontLocation,
             String nativeLibDirPath,
             String icuDataPath,
+            String hyphenDirPath,
             String[] keyboardPaths,
             Map<String, Map<String, Integer>> enumValueMap,
             ILayoutLog log) {

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.plugins
 
+import com.android.SdkConstants
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.attributes.BuildTypeAttr
@@ -42,12 +43,14 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.FusedLibraryBundleAar
 import com.android.build.gradle.tasks.FusedLibraryBundleClasses
 import com.android.build.gradle.tasks.FusedLibraryClassesRewriteTask
+import com.android.build.gradle.tasks.FusedLibraryDependencyValidationTask
 import com.android.build.gradle.tasks.FusedLibraryManifestMergerTask
 import com.android.build.gradle.tasks.FusedLibraryMergeArtifactTask
 import com.android.build.gradle.tasks.FusedLibraryMergeClasses
 import com.android.build.gradle.tasks.FusedLibraryMergeResourceCompileSymbolsTask
 import com.android.build.gradle.tasks.FusedLibraryMergeResourcesTask
 import com.android.build.gradle.tasks.FusedLibraryReportTask
+import com.android.builder.errors.IssueReporter
 import com.google.wireless.android.sdk.stats.GradleBuildProject
 import groovy.namespace.QName
 import groovy.util.Node
@@ -67,6 +70,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.specs.Spec
 import org.gradle.build.event.BuildEventsListenerRegistry
 import javax.inject.Inject
 
@@ -75,7 +79,7 @@ class FusedLibraryPlugin @Inject constructor(
         private val softwareComponentFactory: SoftwareComponentFactory,
         listenerRegistry: BuildEventsListenerRegistry,
         private val buildFeatures: BuildFeatures
-) : AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
+) : AndroidPluginBaseServices(listenerRegistry, buildFeatures), Plugin<Project> {
 
     val dslServices: DslServices by lazy(LazyThreadSafetyMode.NONE) {
         withProject("dslServices") { project ->
@@ -124,7 +128,7 @@ class FusedLibraryPlugin @Inject constructor(
 
         return project.extensions.create(
                 FusedLibraryExtension::class.java,
-                "androidFusedLibrary",
+                FusedLibraryConstants.EXTENSION_NAME,
                 Extension::class.java,
                 fusedLibraryExtensionImpl
         )
@@ -172,6 +176,7 @@ class FusedLibraryPlugin @Inject constructor(
             it.dependencies.addAllLater(fusedAarRuntimeDependenciesProvider)
             it.outgoing.artifact(bundleTaskProvider) { artifact ->
                 artifact.type = AndroidArtifacts.ArtifactType.AAR.type
+                artifact.extension = SdkConstants.EXT_AAR
             }
         }
 
@@ -188,11 +193,22 @@ class FusedLibraryPlugin @Inject constructor(
             project.extensions.findByType(PublishingExtension::class.java)?.also {
                 component(
                     it.publications.create("maven", MavenPublication::class.java)
-                            .also { mavenPublication ->
-                                mavenPublication.from(adhocComponent)
-                            },
+                        .also { mavenPublication ->
+                            mavenPublication.from(adhocComponent)
+                        },
                     fusedAarRuntimeDependenciesComponentIdProvider,
                 )
+                val publishPlugin = "maven-publish"
+                project.pluginManager.withPlugin(publishPlugin) {
+                    val publicationTasks = setOf(
+                        "publish",
+                        "generatePomFileForMavenPublication",
+                        "generateMetadataFileForMavenPublication"
+                    )
+                    project.tasks.named { it in publicationTasks }.forEach {
+                        it.dependsOn(FusedLibraryConstants.VALIDATE_DEPENDENCIES_TASK_NAME)
+                    }
+                }
             }
         }
     }
@@ -236,7 +252,8 @@ class FusedLibraryPlugin @Inject constructor(
                         FusedLibraryBundleAar.CreationAction(variantScope),
                         MergeJavaResourceTask.FusedLibraryCreationAction(variantScope),
                         FusedLibraryMergeResourceCompileSymbolsTask.CreationAction(variantScope),
-                        FusedLibraryReportTask.CreationAction(variantScope)
+                        FusedLibraryReportTask.CreationAction(variantScope),
+                        FusedLibraryDependencyValidationTask.CreationAction(variantScope)
                 ) + FusedLibraryMergeArtifactTask.getCreationActions(variantScope),
         )
     }
@@ -247,9 +264,20 @@ class FusedLibraryPlugin @Inject constructor(
     override fun apply(project: Project) {
         super.basePluginApply(project, buildFeatures)
 
-        if (!projectServices.projectOptions[BooleanOption.FUSED_LIBRARY_SUPPORT]) {
-            throw GradleException(
-                "The fused library plugin does not work yet."
+        val unstableNotice =
+            "*Important* Fused Library Plugin is currently in an early testing phase. Artifacts published by the\n" +
+                    "plugin and plugin behaviour may not be stable at this time. Take caution before distributing\n" +
+                    "published artifacts created by the plugin; there is no guarantee of correctness.\n" +
+                    "As an early adopter, please be aware that there may be frequent breaking changes that may require\n" +
+                    "you to make changes to your project.\n"
+        if (projectServices.projectOptions[BooleanOption.FUSED_LIBRARY_SUPPORT]) {
+            syncIssueReporter.reportWarning(IssueReporter.Type.GENERIC, unstableNotice)
+        }
+        else {
+            syncIssueReporter.reportError(IssueReporter.Type.GENERIC,
+                unstableNotice +
+                        "If you still wish to use the plugin, acknowledge the warning by " +
+                        "setting `${BooleanOption.FUSED_LIBRARY_SUPPORT.propertyName}=true` to gradle.properties"
             )
         }
 
@@ -336,8 +364,7 @@ class FusedLibraryPlugin @Inject constructor(
         variantScope.incomingConfigurations.addAll(configurationsToAdd)
 
         val dependenciesModuleVersionIds =
-            getFusedLibraryDependencyModuleVersionIdentifiers(
-                include, variantScope.services.issueReporter)
+            getFusedLibraryDependencyModuleVersionIdentifiers(include)
         val dependenciesProvider = dependenciesModuleVersionIds.toDependenciesProvider(project)
 
         maybePublishToMaven(

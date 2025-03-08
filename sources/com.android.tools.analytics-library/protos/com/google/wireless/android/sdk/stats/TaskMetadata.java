@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new TaskMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_descriptor;
@@ -655,7 +650,7 @@ private static final long serialVersionUID = 0L;
      */
     com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfigOrBuilder getNativeAllocationsTaskConfigOrBuilder();
 
-    public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.UnionCase getUnionCase();
+    com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.UnionCase getUnionCase();
   }
   /**
    * Protobuf type {@code android_studio.TaskMetadata.TaskConfig}
@@ -679,11 +674,6 @@ private static final long serialVersionUID = 0L;
       return new TaskConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_TaskConfig_descriptor;
@@ -699,6 +689,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     private int unionCase_ = 0;
+    @SuppressWarnings("serial")
     private java.lang.Object union_;
     public enum UnionCase
         implements com.google.protobuf.Internal.EnumLite,
@@ -1113,6 +1104,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (callstackSampleTaskConfigBuilder_ != null) {
           callstackSampleTaskConfigBuilder_.clear();
         }
@@ -1153,74 +1145,37 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig buildPartial() {
         com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig result = new com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (unionCase_ == 1) {
-          if (callstackSampleTaskConfigBuilder_ == null) {
-            result.union_ = union_;
-          } else {
-            result.union_ = callstackSampleTaskConfigBuilder_.build();
-          }
-        }
-        if (unionCase_ == 2) {
-          if (javaKotlinMethodTraceTaskConfigBuilder_ == null) {
-            result.union_ = union_;
-          } else {
-            result.union_ = javaKotlinMethodTraceTaskConfigBuilder_.build();
-          }
-        }
-        if (unionCase_ == 3) {
-          if (javaKotlinMethodSampleTaskConfigBuilder_ == null) {
-            result.union_ = union_;
-          } else {
-            result.union_ = javaKotlinMethodSampleTaskConfigBuilder_.build();
-          }
-        }
-        if (unionCase_ == 4) {
-          if (nativeAllocationsTaskConfigBuilder_ == null) {
-            result.union_ = union_;
-          } else {
-            result.union_ = nativeAllocationsTaskConfigBuilder_.build();
-          }
-        }
-        result.bitField0_ = to_bitField0_;
-        result.unionCase_ = unionCase_;
+        if (bitField0_ != 0) { buildPartial0(result); }
+        buildPartialOneofs(result);
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig result) {
+        int from_bitField0_ = bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
+
+      private void buildPartialOneofs(com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig result) {
+        result.unionCase_ = unionCase_;
+        result.union_ = this.union_;
+        if (unionCase_ == 1 &&
+            callstackSampleTaskConfigBuilder_ != null) {
+          result.union_ = callstackSampleTaskConfigBuilder_.build();
+        }
+        if (unionCase_ == 2 &&
+            javaKotlinMethodTraceTaskConfigBuilder_ != null) {
+          result.union_ = javaKotlinMethodTraceTaskConfigBuilder_.build();
+        }
+        if (unionCase_ == 3 &&
+            javaKotlinMethodSampleTaskConfigBuilder_ != null) {
+          result.union_ = javaKotlinMethodSampleTaskConfigBuilder_.build();
+        }
+        if (unionCase_ == 4 &&
+            nativeAllocationsTaskConfigBuilder_ != null) {
+          result.union_ = nativeAllocationsTaskConfigBuilder_.build();
+        }
       }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig) {
@@ -1414,8 +1369,9 @@ private static final long serialVersionUID = 0L;
         } else {
           if (unionCase_ == 1) {
             callstackSampleTaskConfigBuilder_.mergeFrom(value);
+          } else {
+            callstackSampleTaskConfigBuilder_.setMessage(value);
           }
-          callstackSampleTaskConfigBuilder_.setMessage(value);
         }
         unionCase_ = 1;
         return this;
@@ -1477,7 +1433,7 @@ private static final long serialVersionUID = 0L;
           union_ = null;
         }
         unionCase_ = 1;
-        onChanged();;
+        onChanged();
         return callstackSampleTaskConfigBuilder_;
       }
 
@@ -1555,8 +1511,9 @@ private static final long serialVersionUID = 0L;
         } else {
           if (unionCase_ == 2) {
             javaKotlinMethodTraceTaskConfigBuilder_.mergeFrom(value);
+          } else {
+            javaKotlinMethodTraceTaskConfigBuilder_.setMessage(value);
           }
-          javaKotlinMethodTraceTaskConfigBuilder_.setMessage(value);
         }
         unionCase_ = 2;
         return this;
@@ -1618,7 +1575,7 @@ private static final long serialVersionUID = 0L;
           union_ = null;
         }
         unionCase_ = 2;
-        onChanged();;
+        onChanged();
         return javaKotlinMethodTraceTaskConfigBuilder_;
       }
 
@@ -1696,8 +1653,9 @@ private static final long serialVersionUID = 0L;
         } else {
           if (unionCase_ == 3) {
             javaKotlinMethodSampleTaskConfigBuilder_.mergeFrom(value);
+          } else {
+            javaKotlinMethodSampleTaskConfigBuilder_.setMessage(value);
           }
-          javaKotlinMethodSampleTaskConfigBuilder_.setMessage(value);
         }
         unionCase_ = 3;
         return this;
@@ -1759,7 +1717,7 @@ private static final long serialVersionUID = 0L;
           union_ = null;
         }
         unionCase_ = 3;
-        onChanged();;
+        onChanged();
         return javaKotlinMethodSampleTaskConfigBuilder_;
       }
 
@@ -1837,8 +1795,9 @@ private static final long serialVersionUID = 0L;
         } else {
           if (unionCase_ == 4) {
             nativeAllocationsTaskConfigBuilder_.mergeFrom(value);
+          } else {
+            nativeAllocationsTaskConfigBuilder_.setMessage(value);
           }
-          nativeAllocationsTaskConfigBuilder_.setMessage(value);
         }
         unionCase_ = 4;
         return this;
@@ -1900,7 +1859,7 @@ private static final long serialVersionUID = 0L;
           union_ = null;
         }
         unionCase_ = 4;
-        onChanged();;
+        onChanged();
         return nativeAllocationsTaskConfigBuilder_;
       }
       @java.lang.Override
@@ -2004,11 +1963,6 @@ private static final long serialVersionUID = 0L;
       return new CallstackSampleTaskConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_CallstackSampleTaskConfig_descriptor;
@@ -2024,7 +1978,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SAMPLE_INTERVAL_US_FIELD_NUMBER = 1;
-    private int sampleIntervalUs_;
+    private int sampleIntervalUs_ = 0;
     /**
      * <code>optional int32 sample_interval_us = 1;</code>
      * @return Whether the sampleIntervalUs field is set.
@@ -2235,8 +2189,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         sampleIntervalUs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -2263,49 +2217,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig buildPartial() {
         com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig result = new com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.sampleIntervalUs_ = sampleIntervalUs_;
           to_bitField0_ |= 0x00000001;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata.CallstackSampleTaskConfig) {
@@ -2392,8 +2318,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSampleIntervalUs(int value) {
-        bitField0_ |= 0x00000001;
+
         sampleIntervalUs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2508,11 +2435,6 @@ private static final long serialVersionUID = 0L;
       return new JavaKotlinMethodTraceTaskConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_JavaKotlinMethodTraceTaskConfig_descriptor;
@@ -2528,7 +2450,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int BUFFER_SIZE_MB_FIELD_NUMBER = 1;
-    private int bufferSizeMb_;
+    private int bufferSizeMb_ = 0;
     /**
      * <code>optional int32 buffer_size_mb = 1;</code>
      * @return Whether the bufferSizeMb field is set.
@@ -2739,8 +2661,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         bufferSizeMb_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -2767,49 +2689,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig buildPartial() {
         com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig result = new com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.bufferSizeMb_ = bufferSizeMb_;
           to_bitField0_ |= 0x00000001;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodTraceTaskConfig) {
@@ -2896,8 +2790,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setBufferSizeMb(int value) {
-        bitField0_ |= 0x00000001;
+
         bufferSizeMb_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3023,11 +2918,6 @@ private static final long serialVersionUID = 0L;
       return new JavaKotlinMethodSampleTaskConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_JavaKotlinMethodSampleTaskConfig_descriptor;
@@ -3043,7 +2933,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SAMPLE_INTERVAL_US_FIELD_NUMBER = 1;
-    private int sampleIntervalUs_;
+    private int sampleIntervalUs_ = 0;
     /**
      * <code>optional int32 sample_interval_us = 1;</code>
      * @return Whether the sampleIntervalUs field is set.
@@ -3062,7 +2952,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int BUFFER_SIZE_MB_FIELD_NUMBER = 2;
-    private int bufferSizeMb_;
+    private int bufferSizeMb_ = 0;
     /**
      * <code>optional int32 buffer_size_mb = 2;</code>
      * @return Whether the bufferSizeMb field is set.
@@ -3289,10 +3179,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         sampleIntervalUs_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         bufferSizeMb_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3319,6 +3208,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig buildPartial() {
         com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig result = new com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -3329,43 +3224,9 @@ private static final long serialVersionUID = 0L;
           result.bufferSizeMb_ = bufferSizeMb_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata.JavaKotlinMethodSampleTaskConfig) {
@@ -3460,8 +3321,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSampleIntervalUs(int value) {
-        bitField0_ |= 0x00000001;
+
         sampleIntervalUs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3499,8 +3361,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setBufferSizeMb(int value) {
-        bitField0_ |= 0x00000002;
+
         bufferSizeMb_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3615,11 +3478,6 @@ private static final long serialVersionUID = 0L;
       return new NativeAllocationsTaskConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TaskMetadata_NativeAllocationsTaskConfig_descriptor;
@@ -3635,7 +3493,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SAMPLE_INTERVAL_BYTES_FIELD_NUMBER = 1;
-    private int sampleIntervalBytes_;
+    private int sampleIntervalBytes_ = 0;
     /**
      * <code>optional int32 sample_interval_bytes = 1;</code>
      * @return Whether the sampleIntervalBytes field is set.
@@ -3846,8 +3704,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         sampleIntervalBytes_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -3874,49 +3732,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig buildPartial() {
         com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig result = new com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
           result.sampleIntervalBytes_ = sampleIntervalBytes_;
           to_bitField0_ |= 0x00000001;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata.NativeAllocationsTaskConfig) {
@@ -4003,8 +3833,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSampleIntervalBytes(int value) {
-        bitField0_ |= 0x00000001;
+
         sampleIntervalBytes_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -4084,7 +3915,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TASK_TYPE_FIELD_NUMBER = 1;
-  private int taskType_;
+  private int taskType_ = 0;
   /**
    * <pre>
    * The type of task recorded.
@@ -4105,13 +3936,12 @@ private static final long serialVersionUID = 0L;
    * @return The taskType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType getTaskType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType result = com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.valueOf(taskType_);
+    com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType result = com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.forNumber(taskType_);
     return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.PROFILER_TASK_TYPE_UNSPECIFIED : result;
   }
 
   public static final int TASK_ID_FIELD_NUMBER = 2;
-  private long taskId_;
+  private long taskId_ = 0L;
   /**
    * <pre>
    * The task id is the same to the id of the session backing the task. This id
@@ -4140,7 +3970,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TASK_DATA_ORIGIN_FIELD_NUMBER = 3;
-  private int taskDataOrigin_;
+  private int taskDataOrigin_ = 0;
   /**
    * <pre>
    * The origin of a task's recording data.
@@ -4161,13 +3991,12 @@ private static final long serialVersionUID = 0L;
    * @return The taskDataOrigin.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin getTaskDataOrigin() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.valueOf(taskDataOrigin_);
+    com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.forNumber(taskDataOrigin_);
     return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.TASK_DATA_ORIGIN_UNSPECIFIED : result;
   }
 
   public static final int TASK_ATTACHMENT_POINT_FIELD_NUMBER = 4;
-  private int taskAttachmentPoint_;
+  private int taskAttachmentPoint_ = 0;
   /**
    * <pre>
    * The point in the process lifecycle the task began. Only set to a
@@ -4190,13 +4019,12 @@ private static final long serialVersionUID = 0L;
    * @return The taskAttachmentPoint.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint getTaskAttachmentPoint() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.valueOf(taskAttachmentPoint_);
+    com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.forNumber(taskAttachmentPoint_);
     return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.TASK_ATTACHMENT_POINT_UNSPECIFIED : result;
   }
 
   public static final int EXPOSURE_LEVEL_FIELD_NUMBER = 5;
-  private int exposureLevel_;
+  private int exposureLevel_ = 0;
   /**
    * <pre>
    * The exposure level of the process the task utilized. Only set to a
@@ -4219,8 +4047,7 @@ private static final long serialVersionUID = 0L;
    * @return The exposureLevel.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel getExposureLevel() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel result = com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.valueOf(exposureLevel_);
+    com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel result = com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.forNumber(exposureLevel_);
     return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.UNKNOWN : result;
   }
 
@@ -4542,22 +4369,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       taskType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       taskId_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       taskDataOrigin_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       taskAttachmentPoint_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       exposureLevel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (taskConfigBuilder_ == null) {
-        taskConfig_ = null;
-      } else {
-        taskConfigBuilder_.clear();
+      taskConfig_ = null;
+      if (taskConfigBuilder_ != null) {
+        taskConfigBuilder_.dispose();
+        taskConfigBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -4584,73 +4406,43 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.TaskMetadata result = new com.google.wireless.android.sdk.stats.TaskMetadata(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.TaskMetadata result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.taskType_ = taskType_;
         to_bitField0_ |= 0x00000001;
       }
-      result.taskType_ = taskType_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.taskId_ = taskId_;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.taskDataOrigin_ = taskDataOrigin_;
         to_bitField0_ |= 0x00000004;
       }
-      result.taskDataOrigin_ = taskDataOrigin_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.taskAttachmentPoint_ = taskAttachmentPoint_;
         to_bitField0_ |= 0x00000008;
       }
-      result.taskAttachmentPoint_ = taskAttachmentPoint_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.exposureLevel_ = exposureLevel_;
         to_bitField0_ |= 0x00000010;
       }
-      result.exposureLevel_ = exposureLevel_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (taskConfigBuilder_ == null) {
-          result.taskConfig_ = taskConfig_;
-        } else {
-          result.taskConfig_ = taskConfigBuilder_.build();
-        }
+        result.taskConfig_ = taskConfigBuilder_ == null
+            ? taskConfig_
+            : taskConfigBuilder_.build();
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.TaskMetadata) {
@@ -4806,8 +4598,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType getTaskType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType result = com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.valueOf(taskType_);
+      com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType result = com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.forNumber(taskType_);
       return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.ProfilerTaskType.PROFILER_TASK_TYPE_UNSPECIFIED : result;
     }
     /**
@@ -4881,8 +4672,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTaskId(long value) {
-      bitField0_ |= 0x00000002;
+
       taskId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -4924,8 +4716,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin getTaskDataOrigin() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.valueOf(taskDataOrigin_);
+      com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.forNumber(taskDataOrigin_);
       return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.TaskDataOrigin.TASK_DATA_ORIGIN_UNSPECIFIED : result;
     }
     /**
@@ -4985,8 +4776,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint getTaskAttachmentPoint() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.valueOf(taskAttachmentPoint_);
+      com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint result = com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.forNumber(taskAttachmentPoint_);
       return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.TaskAttachmentPoint.TASK_ATTACHMENT_POINT_UNSPECIFIED : result;
     }
     /**
@@ -5048,8 +4838,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel getExposureLevel() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel result = com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.valueOf(exposureLevel_);
+      com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel result = com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.forNumber(exposureLevel_);
       return result == null ? com.google.wireless.android.sdk.stats.TaskMetadata.ExposureLevel.UNKNOWN : result;
     }
     /**
@@ -5129,11 +4918,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         taskConfig_ = value;
-        onChanged();
       } else {
         taskConfigBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -5147,11 +4936,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.Builder builderForValue) {
       if (taskConfigBuilder_ == null) {
         taskConfig_ = builderForValue.build();
-        onChanged();
       } else {
         taskConfigBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -5164,18 +4953,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeTaskConfig(com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig value) {
       if (taskConfigBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            taskConfig_ != null &&
-            taskConfig_ != com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.getDefaultInstance()) {
-          taskConfig_ =
-            com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.newBuilder(taskConfig_).mergeFrom(value).buildPartial();
+          taskConfig_ != null &&
+          taskConfig_ != com.google.wireless.android.sdk.stats.TaskMetadata.TaskConfig.getDefaultInstance()) {
+          getTaskConfigBuilder().mergeFrom(value);
         } else {
           taskConfig_ = value;
         }
-        onChanged();
       } else {
         taskConfigBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -5186,13 +4974,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TaskMetadata.TaskConfig task_config = 6 [lazy = true];</code>
      */
     public Builder clearTaskConfig() {
-      if (taskConfigBuilder_ == null) {
-        taskConfig_ = null;
-        onChanged();
-      } else {
-        taskConfigBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      taskConfig_ = null;
+      if (taskConfigBuilder_ != null) {
+        taskConfigBuilder_.dispose();
+        taskConfigBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

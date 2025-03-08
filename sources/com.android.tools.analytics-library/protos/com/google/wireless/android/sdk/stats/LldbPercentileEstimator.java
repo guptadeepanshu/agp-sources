@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new LldbPercentileEstimator();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LldbPercentileEstimator_descriptor;
@@ -191,7 +186,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int METRIC_FIELD_NUMBER = 1;
-  private int metric_;
+  private int metric_ = 0;
   /**
    * <pre>
    * Type of performance metric.
@@ -212,8 +207,7 @@ private static final long serialVersionUID = 0L;
    * @return The metric.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric getMetric() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.valueOf(metric_);
+    com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.forNumber(metric_);
     return result == null ? com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.ATTACH_TIME_MICROS : result;
   }
 
@@ -469,14 +463,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       metric_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (estimatorBuilder_ == null) {
-        estimator_ = null;
-      } else {
-        estimatorBuilder_.clear();
+      estimator_ = null;
+      if (estimatorBuilder_ != null) {
+        estimatorBuilder_.dispose();
+        estimatorBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -503,57 +496,27 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbPercentileEstimator buildPartial() {
       com.google.wireless.android.sdk.stats.LldbPercentileEstimator result = new com.google.wireless.android.sdk.stats.LldbPercentileEstimator(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.metric_ = metric_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (estimatorBuilder_ == null) {
-          result.estimator_ = estimator_;
-        } else {
-          result.estimator_ = estimatorBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LldbPercentileEstimator result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.metric_ = metric_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.estimator_ = estimatorBuilder_ == null
+            ? estimator_
+            : estimatorBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LldbPercentileEstimator) {
@@ -656,8 +619,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric getMetric() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.valueOf(metric_);
+      com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.forNumber(metric_);
       return result == null ? com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.ATTACH_TIME_MICROS : result;
     }
     /**
@@ -735,11 +697,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         estimator_ = value;
-        onChanged();
       } else {
         estimatorBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -753,11 +715,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (estimatorBuilder_ == null) {
         estimator_ = builderForValue.build();
-        onChanged();
       } else {
         estimatorBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -770,18 +732,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeEstimator(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (estimatorBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            estimator_ != null &&
-            estimator_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          estimator_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(estimator_).mergeFrom(value).buildPartial();
+          estimator_ != null &&
+          estimator_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getEstimatorBuilder().mergeFrom(value);
         } else {
           estimator_ = value;
         }
-        onChanged();
       } else {
         estimatorBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -792,13 +753,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator estimator = 2 [lazy = true];</code>
      */
     public Builder clearEstimator() {
-      if (estimatorBuilder_ == null) {
-        estimator_ = null;
-        onChanged();
-      } else {
-        estimatorBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      estimator_ = null;
+      if (estimatorBuilder_ != null) {
+        estimatorBuilder_.dispose();
+        estimatorBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new UndoAppliedAtfFixEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UndoAppliedAtfFixEvent_descriptor;
@@ -344,18 +339,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (atfResultBuilder_ == null) {
-        atfResult_ = null;
-      } else {
-        atfResultBuilder_.clear();
+      bitField0_ = 0;
+      atfResult_ = null;
+      if (atfResultBuilder_ != null) {
+        atfResultBuilder_.dispose();
+        atfResultBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (atfFixBuilder_ == null) {
-        atfFix_ = null;
-      } else {
-        atfFixBuilder_.clear();
+      atfFix_ = null;
+      if (atfFixBuilder_ != null) {
+        atfFixBuilder_.dispose();
+        atfFixBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -382,61 +376,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent buildPartial() {
       com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent result = new com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (atfResultBuilder_ == null) {
-          result.atfResult_ = atfResult_;
-        } else {
-          result.atfResult_ = atfResultBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (atfFixBuilder_ == null) {
-          result.atfFix_ = atfFix_;
-        } else {
-          result.atfFix_ = atfFixBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.atfResult_ = atfResultBuilder_ == null
+            ? atfResult_
+            : atfResultBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.atfFix_ = atfFixBuilder_ == null
+            ? atfFix_
+            : atfFixBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent) {
@@ -554,11 +516,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         atfResult_ = value;
-        onChanged();
       } else {
         atfResultBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -572,11 +534,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.AtfResultDetail.Builder builderForValue) {
       if (atfResultBuilder_ == null) {
         atfResult_ = builderForValue.build();
-        onChanged();
       } else {
         atfResultBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -589,18 +551,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAtfResult(com.google.wireless.android.sdk.stats.AtfResultDetail value) {
       if (atfResultBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            atfResult_ != null &&
-            atfResult_ != com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance()) {
-          atfResult_ =
-            com.google.wireless.android.sdk.stats.AtfResultDetail.newBuilder(atfResult_).mergeFrom(value).buildPartial();
+          atfResult_ != null &&
+          atfResult_ != com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance()) {
+          getAtfResultBuilder().mergeFrom(value);
         } else {
           atfResult_ = value;
         }
-        onChanged();
       } else {
         atfResultBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -611,13 +572,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfResultDetail atf_result = 1 [lazy = true];</code>
      */
     public Builder clearAtfResult() {
-      if (atfResultBuilder_ == null) {
-        atfResult_ = null;
-        onChanged();
-      } else {
-        atfResultBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      atfResult_ = null;
+      if (atfResultBuilder_ != null) {
+        atfResultBuilder_.dispose();
+        atfResultBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -710,11 +671,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         atfFix_ = value;
-        onChanged();
       } else {
         atfFixBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -728,11 +689,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.AtfFixDetail.Builder builderForValue) {
       if (atfFixBuilder_ == null) {
         atfFix_ = builderForValue.build();
-        onChanged();
       } else {
         atfFixBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -745,18 +706,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAtfFix(com.google.wireless.android.sdk.stats.AtfFixDetail value) {
       if (atfFixBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            atfFix_ != null &&
-            atfFix_ != com.google.wireless.android.sdk.stats.AtfFixDetail.getDefaultInstance()) {
-          atfFix_ =
-            com.google.wireless.android.sdk.stats.AtfFixDetail.newBuilder(atfFix_).mergeFrom(value).buildPartial();
+          atfFix_ != null &&
+          atfFix_ != com.google.wireless.android.sdk.stats.AtfFixDetail.getDefaultInstance()) {
+          getAtfFixBuilder().mergeFrom(value);
         } else {
           atfFix_ = value;
         }
-        onChanged();
       } else {
         atfFixBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -767,13 +727,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfFixDetail atf_fix = 2 [lazy = true];</code>
      */
     public Builder clearAtfFix() {
-      if (atfFixBuilder_ == null) {
-        atfFix_ = null;
-        onChanged();
-      } else {
-        atfFixBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      atfFix_ = null;
+      if (atfFixBuilder_ != null) {
+        atfFixBuilder_.dispose();
+        atfFixBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -66,6 +66,7 @@ import com.android.build.gradle.internal.dsl.ModulePropertyKey
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
+import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.AutoNamespacePreProcessTransform
@@ -75,7 +76,7 @@ import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
-import com.android.build.gradle.internal.tasks.AsarToApksTransform
+import com.android.build.gradle.internal.tasks.AsarToExtractedApksTransform
 import com.android.build.gradle.internal.tasks.AsarTransform
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.ATTR_ENABLE_CORE_LIBRARY_DESUGARING
@@ -665,9 +666,9 @@ class DependencyConfigurator(
                                         "Set the same signing config using experimental properties in each variant explicitly.")
                     }
             registerTransform(
-                    AsarToApksTransform::class.java,
+                    AsarToExtractedApksTransform::class.java,
                     AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
-                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS
             ) { params ->
                 projectServices.initializeAapt2Input(params.aapt2, task = null)
 
@@ -676,6 +677,7 @@ class DependencyConfigurator(
                         ArtifactsImpl(project,
                                 "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
                 )
+                params.analyticsService.set(getBuildService<AnalyticsService, AnalyticsService.Params>(project.gradle.sharedServices))
             }
         }
         registerAsarToApksTransform(variants)

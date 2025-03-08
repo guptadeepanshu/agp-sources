@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new SdkIndexProjectStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SdkIndexProjectStats_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int NUM_ERRORS_AND_WARNINGS_FIELD_NUMBER = 1;
-  private int numErrorsAndWarnings_;
+  private int numErrorsAndWarnings_ = 0;
   /**
    * <code>optional uint32 num_errors_and_warnings = 1;</code>
    * @return Whether the numErrorsAndWarnings field is set.
@@ -64,7 +59,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUM_BLOCKING_ISSUES_FIELD_NUMBER = 2;
-  private int numBlockingIssues_;
+  private int numBlockingIssues_ = 0;
   /**
    * <code>optional uint32 num_blocking_issues = 2;</code>
    * @return Whether the numBlockingIssues field is set.
@@ -83,7 +78,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUM_POLICY_ISSUES_FIELD_NUMBER = 3;
-  private int numPolicyIssues_;
+  private int numPolicyIssues_ = 0;
   /**
    * <code>optional uint32 num_policy_issues = 3;</code>
    * @return Whether the numPolicyIssues field is set.
@@ -102,7 +97,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUM_CRITICAL_ISSUES_FIELD_NUMBER = 4;
-  private int numCriticalIssues_;
+  private int numCriticalIssues_ = 0;
   /**
    * <code>optional uint32 num_critical_issues = 4;</code>
    * @return Whether the numCriticalIssues field is set.
@@ -121,7 +116,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUM_OUTDATED_ISSUES_FIELD_NUMBER = 5;
-  private int numOutdatedIssues_;
+  private int numOutdatedIssues_ = 0;
   /**
    * <code>optional uint32 num_outdated_issues = 5;</code>
    * @return Whether the numOutdatedIssues field is set.
@@ -140,7 +135,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUM_VULNERABILITY_ISSUES_FIELD_NUMBER = 6;
-  private int numVulnerabilityIssues_;
+  private int numVulnerabilityIssues_ = 0;
   /**
    * <code>optional uint32 num_vulnerability_issues = 6;</code>
    * @return Whether the numVulnerabilityIssues field is set.
@@ -156,6 +151,25 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public int getNumVulnerabilityIssues() {
     return numVulnerabilityIssues_;
+  }
+
+  public static final int NUM_DEPRECATED_ISSUES_FIELD_NUMBER = 7;
+  private int numDeprecatedIssues_ = 0;
+  /**
+   * <code>optional uint32 num_deprecated_issues = 7;</code>
+   * @return Whether the numDeprecatedIssues field is set.
+   */
+  @java.lang.Override
+  public boolean hasNumDeprecatedIssues() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <code>optional uint32 num_deprecated_issues = 7;</code>
+   * @return The numDeprecatedIssues.
+   */
+  @java.lang.Override
+  public int getNumDeprecatedIssues() {
+    return numDeprecatedIssues_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -190,6 +204,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       output.writeUInt32(6, numVulnerabilityIssues_);
     }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeUInt32(7, numDeprecatedIssues_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -222,6 +239,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(6, numVulnerabilityIssues_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(7, numDeprecatedIssues_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -268,6 +289,11 @@ private static final long serialVersionUID = 0L;
       if (getNumVulnerabilityIssues()
           != other.getNumVulnerabilityIssues()) return false;
     }
+    if (hasNumDeprecatedIssues() != other.hasNumDeprecatedIssues()) return false;
+    if (hasNumDeprecatedIssues()) {
+      if (getNumDeprecatedIssues()
+          != other.getNumDeprecatedIssues()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -302,6 +328,10 @@ private static final long serialVersionUID = 0L;
     if (hasNumVulnerabilityIssues()) {
       hash = (37 * hash) + NUM_VULNERABILITY_ISSUES_FIELD_NUMBER;
       hash = (53 * hash) + getNumVulnerabilityIssues();
+    }
+    if (hasNumDeprecatedIssues()) {
+      hash = (37 * hash) + NUM_DEPRECATED_ISSUES_FIELD_NUMBER;
+      hash = (53 * hash) + getNumDeprecatedIssues();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -431,18 +461,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       numErrorsAndWarnings_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       numBlockingIssues_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       numPolicyIssues_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       numCriticalIssues_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       numOutdatedIssues_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       numVulnerabilityIssues_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
+      numDeprecatedIssues_ = 0;
       return this;
     }
 
@@ -469,6 +495,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SdkIndexProjectStats buildPartial() {
       com.google.wireless.android.sdk.stats.SdkIndexProjectStats result = new com.google.wireless.android.sdk.stats.SdkIndexProjectStats(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SdkIndexProjectStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -495,43 +527,13 @@ private static final long serialVersionUID = 0L;
         result.numVulnerabilityIssues_ = numVulnerabilityIssues_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.numDeprecatedIssues_ = numDeprecatedIssues_;
+        to_bitField0_ |= 0x00000040;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SdkIndexProjectStats) {
@@ -561,6 +563,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasNumVulnerabilityIssues()) {
         setNumVulnerabilityIssues(other.getNumVulnerabilityIssues());
+      }
+      if (other.hasNumDeprecatedIssues()) {
+        setNumDeprecatedIssues(other.getNumDeprecatedIssues());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -618,6 +623,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000020;
               break;
             } // case 48
+            case 56: {
+              numDeprecatedIssues_ = input.readUInt32();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -658,8 +668,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumErrorsAndWarnings(int value) {
-      bitField0_ |= 0x00000001;
+
       numErrorsAndWarnings_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -697,8 +708,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumBlockingIssues(int value) {
-      bitField0_ |= 0x00000002;
+
       numBlockingIssues_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -736,8 +748,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumPolicyIssues(int value) {
-      bitField0_ |= 0x00000004;
+
       numPolicyIssues_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -775,8 +788,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumCriticalIssues(int value) {
-      bitField0_ |= 0x00000008;
+
       numCriticalIssues_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -814,8 +828,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumOutdatedIssues(int value) {
-      bitField0_ |= 0x00000010;
+
       numOutdatedIssues_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -853,8 +868,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumVulnerabilityIssues(int value) {
-      bitField0_ |= 0x00000020;
+
       numVulnerabilityIssues_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -865,6 +881,46 @@ private static final long serialVersionUID = 0L;
     public Builder clearNumVulnerabilityIssues() {
       bitField0_ = (bitField0_ & ~0x00000020);
       numVulnerabilityIssues_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int numDeprecatedIssues_ ;
+    /**
+     * <code>optional uint32 num_deprecated_issues = 7;</code>
+     * @return Whether the numDeprecatedIssues field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumDeprecatedIssues() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <code>optional uint32 num_deprecated_issues = 7;</code>
+     * @return The numDeprecatedIssues.
+     */
+    @java.lang.Override
+    public int getNumDeprecatedIssues() {
+      return numDeprecatedIssues_;
+    }
+    /**
+     * <code>optional uint32 num_deprecated_issues = 7;</code>
+     * @param value The numDeprecatedIssues to set.
+     * @return This builder for chaining.
+     */
+    public Builder setNumDeprecatedIssues(int value) {
+
+      numDeprecatedIssues_ = value;
+      bitField0_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional uint32 num_deprecated_issues = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearNumDeprecatedIssues() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      numDeprecatedIssues_ = 0;
       onChanged();
       return this;
     }

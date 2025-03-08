@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new OSMetrics();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_OSMetrics_descriptor;
@@ -458,11 +453,6 @@ private static final long serialVersionUID = 0L;
       return new Process();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_OSMetrics_Process_descriptor;
@@ -478,7 +468,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int PID_FIELD_NUMBER = 1;
-    private int pid_;
+    private int pid_ = 0;
     /**
      * <pre>
      * Process ID
@@ -505,7 +495,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PARENT_PID_FIELD_NUMBER = 2;
-    private int parentPid_;
+    private int parentPid_ = 0;
     /**
      * <pre>
      * Parent's process ID
@@ -532,7 +522,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int START_TIMESTAMP_MS_FIELD_NUMBER = 3;
-    private long startTimestampMs_;
+    private long startTimestampMs_ = 0L;
     /**
      * <pre>
      * Process start time
@@ -559,7 +549,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TOTAL_CPU_USE_MILLISECONDS_FIELD_NUMBER = 4;
-    private long totalCpuUseMilliseconds_;
+    private long totalCpuUseMilliseconds_ = 0L;
     /**
      * <pre>
      * Total CPU used by the process so far
@@ -586,7 +576,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TYPE_FIELD_NUMBER = 5;
-    private int type_;
+    private int type_ = 0;
     /**
      * <pre>
      * Detected process type
@@ -607,13 +597,12 @@ private static final long serialVersionUID = 0L;
      * @return The type.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.OSMetrics.ProcessType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.UNKNOWN_PROCESS_TYPE : result;
     }
 
     public static final int LAST_KNOWN_PARENT_TYPE_FIELD_NUMBER = 6;
-    private int lastKnownParentType_;
+    private int lastKnownParentType_ = 0;
     /**
      * <pre>
      * Type of last not-unknown parent process
@@ -634,13 +623,12 @@ private static final long serialVersionUID = 0L;
      * @return The lastKnownParentType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.OSMetrics.ProcessType getLastKnownParentType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.valueOf(lastKnownParentType_);
+      com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.forNumber(lastKnownParentType_);
       return result == null ? com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.UNKNOWN_PROCESS_TYPE : result;
     }
 
     public static final int RSS_FIELD_NUMBER = 7;
-    private long rss_;
+    private long rss_ = 0L;
     /**
      * <pre>
      * Linux, MacOS: Resident Set Size in 1024-units.
@@ -669,7 +657,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int WORKING_SET_SIZE_FIELD_NUMBER = 8;
-    private long workingSetSize_;
+    private long workingSetSize_ = 0L;
     /**
      * <pre>
      * Windows: Working Set Size (in bytes).
@@ -698,7 +686,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PRIVATE_PAGE_COUNT_FIELD_NUMBER = 9;
-    private long privatePageCount_;
+    private long privatePageCount_ = 0L;
     /**
      * <pre>
      * Windows: Private Page Count (in bytes).
@@ -1054,24 +1042,16 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         pid_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         parentPid_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         startTimestampMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         totalCpuUseMilliseconds_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
         type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         lastKnownParentType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         rss_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000040);
         workingSetSize_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000080);
         privatePageCount_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -1098,6 +1078,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.OSMetrics.Process buildPartial() {
         com.google.wireless.android.sdk.stats.OSMetrics.Process result = new com.google.wireless.android.sdk.stats.OSMetrics.Process(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.OSMetrics.Process result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1117,13 +1103,13 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.type_ = type_;
           to_bitField0_ |= 0x00000010;
         }
-        result.type_ = type_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.lastKnownParentType_ = lastKnownParentType_;
           to_bitField0_ |= 0x00000020;
         }
-        result.lastKnownParentType_ = lastKnownParentType_;
         if (((from_bitField0_ & 0x00000040) != 0)) {
           result.rss_ = rss_;
           to_bitField0_ |= 0x00000040;
@@ -1136,43 +1122,9 @@ private static final long serialVersionUID = 0L;
           result.privatePageCount_ = privatePageCount_;
           to_bitField0_ |= 0x00000100;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.OSMetrics.Process) {
@@ -1349,8 +1301,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPid(int value) {
-        bitField0_ |= 0x00000001;
+
         pid_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1404,8 +1357,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setParentPid(int value) {
-        bitField0_ |= 0x00000002;
+
         parentPid_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1459,8 +1413,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setStartTimestampMs(long value) {
-        bitField0_ |= 0x00000004;
+
         startTimestampMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1514,8 +1469,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTotalCpuUseMilliseconds(long value) {
-        bitField0_ |= 0x00000008;
+
         totalCpuUseMilliseconds_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1556,8 +1512,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.OSMetrics.ProcessType getType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.valueOf(type_);
+        com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.forNumber(type_);
         return result == null ? com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.UNKNOWN_PROCESS_TYPE : result;
       }
       /**
@@ -1615,8 +1570,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.OSMetrics.ProcessType getLastKnownParentType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.valueOf(lastKnownParentType_);
+        com.google.wireless.android.sdk.stats.OSMetrics.ProcessType result = com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.forNumber(lastKnownParentType_);
         return result == null ? com.google.wireless.android.sdk.stats.OSMetrics.ProcessType.UNKNOWN_PROCESS_TYPE : result;
       }
       /**
@@ -1690,8 +1644,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setRss(long value) {
-        bitField0_ |= 0x00000040;
+
         rss_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1749,8 +1704,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setWorkingSetSize(long value) {
-        bitField0_ |= 0x00000080;
+
         workingSetSize_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1808,8 +1764,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPrivatePageCount(long value) {
-        bitField0_ |= 0x00000100;
+
         privatePageCount_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1893,6 +1850,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROCESSES_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.OSMetrics.Process> processes_;
   /**
    * <pre>
@@ -2151,6 +2109,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (processesBuilder_ == null) {
         processes_ = java.util.Collections.emptyList();
       } else {
@@ -2184,7 +2143,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.OSMetrics buildPartial() {
       com.google.wireless.android.sdk.stats.OSMetrics result = new com.google.wireless.android.sdk.stats.OSMetrics(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.OSMetrics result) {
       if (processesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           processes_ = java.util.Collections.unmodifiableList(processes_);
@@ -2194,42 +2159,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.processes_ = processesBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.OSMetrics result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.OSMetrics) {

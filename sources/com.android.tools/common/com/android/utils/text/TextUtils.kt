@@ -26,29 +26,29 @@ import kotlin.text.Typography
  */
 @JvmOverloads
 fun Collection<Any>.toCommaSeparatedList(
-  lastSeparator: String,
-  oxfordComma: Boolean = false,
+    lastSeparator: String,
+    oxfordComma: Boolean = false,
 ): String =
-  when (size) {
-    0 -> ""
-    1 -> single().toString()
-    else ->
-      chunked(size - 1).let {
-        val postfix = if (oxfordComma) "," else ""
-        "${it[0].joinToString(", ")}$postfix $lastSeparator ${it[1].single()}"
-      }
-  }
+    when (size) {
+        0 -> ""
+        1 -> single().toString()
+        else ->
+            chunked(size - 1).let {
+                val postfix = if (oxfordComma) "," else ""
+                "${it[0].joinToString(", ")}$postfix $lastSeparator ${it[1].single()}"
+            }
+    }
 
 /**
  * Returns a shortened version of this [String] by replacing characters in the middle with an
  * ellipsis if it is longer than [maxSize]. Otherwise, returns `this`.
  */
 fun String.ellipsize(maxSize: Int): String =
-  when {
-    maxSize < 1 -> ""
-    length <= maxSize -> this
-    else -> "${take(maxSize / 2)}${Typography.ellipsis}${takeLast((maxSize - 1) / 2)}"
-  }
+    when {
+        maxSize < 1 -> ""
+        length <= maxSize -> this
+        else -> "${take(maxSize / 2)}${Typography.ellipsis}${takeLast((maxSize - 1) / 2)}"
+    }
 
 /**
  * Returns a shortened version of this [String] by replacing characters at the end with an ellipsis
@@ -57,8 +57,10 @@ fun String.ellipsize(maxSize: Int): String =
  * To use a character other than ellipsis, provide a [lastChar] argument.
  */
 fun String.truncate(maxSize: Int, lastChar: Char = Typography.ellipsis): String =
-  when {
-    maxSize < 1 -> ""
-    length <= maxSize -> this
-    else -> take(maxSize - 1) + lastChar
-  }
+    when {
+        maxSize < 1 -> ""
+        length <= maxSize -> this
+        else -> take(maxSize - 1) + lastChar
+    }
+
+fun String.dropPrefix(prefix: String) = if (startsWith(prefix)) drop(prefix.length) else this

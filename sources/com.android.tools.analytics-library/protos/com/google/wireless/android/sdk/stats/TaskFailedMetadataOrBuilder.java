@@ -134,5 +134,5 @@ public interface TaskFailedMetadataOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.TaskFailedMetadata.TaskProcessingFailedMetadataOrBuilder getTaskProcessingFailureMetadataOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.TaskFailedMetadata.UnionCase getUnionCase();
+  com.google.wireless.android.sdk.stats.TaskFailedMetadata.UnionCase getUnionCase();
 }

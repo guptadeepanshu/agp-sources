@@ -195,7 +195,7 @@ abstract class BundleAar : Zip(), VariantTask {
             if (creationConfig !is KmpCreationConfig) {
                 task.from(artifacts.get(InternalArtifactType.ANNOTATIONS_ZIP))
                 task.from(
-                    creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ASSETS),
+                    creationConfig.artifacts.get(SingleArtifact.ASSETS),
                     prependToCopyPath(SdkConstants.FD_ASSETS)
                 )
             }
@@ -440,9 +440,12 @@ abstract class BundleAar : Zip(), VariantTask {
 
             task.from(creationConfig.artifacts.get(InternalArtifactType.LINT_PUBLISH_JAR))
 
+            if (creationConfig.global.publishConsumerProguardRules) {
+                task.from(creationConfig.artifacts.get(InternalArtifactType.MERGED_CONSUMER_PROGUARD_FILE))
+            }
             if (creationConfig.buildFeatures.androidResources) {
                 task.from(
-                    creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ASSETS),
+                    creationConfig.artifacts.get(SingleArtifact.ASSETS),
                     prependToCopyPath(SdkConstants.FD_ASSETS)
                 )
             }

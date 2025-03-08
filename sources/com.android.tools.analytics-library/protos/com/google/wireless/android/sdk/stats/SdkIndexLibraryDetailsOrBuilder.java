@@ -67,7 +67,7 @@ public interface SdkIndexLibraryDetailsOrBuilder extends
 
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>
@@ -76,7 +76,7 @@ public interface SdkIndexLibraryDetailsOrBuilder extends
   boolean hasVersionString();
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>
@@ -85,7 +85,7 @@ public interface SdkIndexLibraryDetailsOrBuilder extends
   java.lang.String getVersionString();
   /**
    * <pre>
-   * Version of library
+   * Version of library (can be empty for SDK_INDEX_LIBRARY_IS_DEPRECATED)
    * </pre>
    *
    * <code>optional string version_string = 3;</code>

@@ -28,8 +28,4 @@ interface BundleApkFetcher {
     ): List<Path> {
         return com.android.build.gradle.internal.tasks.getApkFiles(apkBundles, deviceSpec)
     }
-
-    fun getPrivacySandboxSdkApkFiles(apk: Path): List<File> {
-        return extractApkFilesBypassingBundleTool(apk).map {it.toFile()}
-    }
 }

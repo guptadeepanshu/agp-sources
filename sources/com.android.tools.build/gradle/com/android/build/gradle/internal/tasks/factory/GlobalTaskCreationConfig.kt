@@ -45,6 +45,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
+import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 /**
@@ -95,6 +96,7 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val testServers: List<TestServer>
 
     val kotlinAndroidProjectExtension: KotlinAndroidProjectExtension?
+    val kaptExtension: KaptExtensionConfig?
 
     // processed access to some DSL values
 

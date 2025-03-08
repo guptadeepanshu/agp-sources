@@ -24,11 +24,11 @@ import org.gradle.api.file.RegularFile
  */
 interface SdkApkInstallGroup: ApkInstallGroup {
     /**
-     * Sdk file from which the installable Apks are derived from.
+     * Sdk from which the installable Apks are derived from.
      */
-    val sdkFile: RegularFile
+    val sourceSdk: String
 
     override val description: String
-        get() = "Source Sdk: ${sdkFile.asFile.name}"
+        get() = "Source Sdk: $sourceSdk"
 }
 

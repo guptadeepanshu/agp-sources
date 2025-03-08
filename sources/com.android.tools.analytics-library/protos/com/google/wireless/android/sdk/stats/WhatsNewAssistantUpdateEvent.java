@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new WhatsNewAssistantUpdateEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_WhatsNewAssistantUpdateEvent_descriptor;
@@ -158,11 +153,6 @@ private static final long serialVersionUID = 0L;
       return new ActionButtonEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_WhatsNewAssistantUpdateEvent_ActionButtonEvent_descriptor;
@@ -611,7 +601,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int ACTION_BUTTON_TYPE_FIELD_NUMBER = 1;
-    private int actionButtonType_;
+    private int actionButtonType_ = 0;
     /**
      * <pre>
      * Type of the action button
@@ -632,13 +622,12 @@ private static final long serialVersionUID = 0L;
      * @return The actionButtonType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType getActionButtonType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.valueOf(actionButtonType_);
+      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.forNumber(actionButtonType_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.UNKNOWN_BUTTON : result;
     }
 
     public static final int EVENT_TYPE_FIELD_NUMBER = 2;
-    private int eventType_;
+    private int eventType_ = 0;
     /**
      * <pre>
      * Type of the event
@@ -659,13 +648,12 @@ private static final long serialVersionUID = 0L;
      * @return The eventType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.UNKNOWN_TYPE : result;
     }
 
     public static final int ACTION_BUTTON_STATE_FIELD_NUMBER = 3;
-    private int actionButtonState_;
+    private int actionButtonState_ = 0;
     /**
      * <pre>
      * State of the button action at the moment of the event
@@ -686,13 +674,12 @@ private static final long serialVersionUID = 0L;
      * @return The actionButtonState.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState getActionButtonState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.valueOf(actionButtonState_);
+      com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.forNumber(actionButtonState_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.UNKNOWN_STATE : result;
     }
 
     public static final int TIME_FROM_WNA_OPEN_FIELD_NUMBER = 4;
-    private long timeFromWnaOpen_;
+    private long timeFromWnaOpen_ = 0L;
     /**
      * <pre>
      * Time between opening window and clicking state button
@@ -962,14 +949,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         actionButtonType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         eventType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         actionButtonState_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         timeFromWnaOpen_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -996,61 +980,33 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent buildPartial() {
         com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent result = new com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.actionButtonType_ = actionButtonType_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.eventType_ = eventType_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.actionButtonState_ = actionButtonState_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.timeFromWnaOpen_ = timeFromWnaOpen_;
-          to_bitField0_ |= 0x00000008;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.actionButtonType_ = actionButtonType_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.eventType_ = eventType_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.actionButtonState_ = actionButtonState_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.timeFromWnaOpen_ = timeFromWnaOpen_;
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent) {
@@ -1181,8 +1137,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType getActionButtonType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.valueOf(actionButtonType_);
+        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.forNumber(actionButtonType_);
         return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.UNKNOWN_BUTTON : result;
       }
       /**
@@ -1240,8 +1195,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType getEventType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.valueOf(eventType_);
+        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.forNumber(eventType_);
         return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.UNKNOWN_TYPE : result;
       }
       /**
@@ -1299,8 +1253,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState getActionButtonState() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.valueOf(actionButtonState_);
+        com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.forNumber(actionButtonState_);
         return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.UNKNOWN_STATE : result;
       }
       /**
@@ -1371,8 +1324,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTimeFromWnaOpen(long value) {
-        bitField0_ |= 0x00000008;
+
         timeFromWnaOpen_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1456,7 +1410,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int AUTO_OPENED_FIELD_NUMBER = 1;
-  private boolean autoOpened_;
+  private boolean autoOpened_ = false;
   /**
    * <pre>
    * Whether this window was auto opened
@@ -1483,7 +1437,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UPDATE_FLOW_FIELD_NUMBER = 2;
-  private boolean updateFlow_;
+  private boolean updateFlow_ = false;
   /**
    * <pre>
    * Whether this is the update flow or regular WNA
@@ -1510,7 +1464,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SCROLLED_TO_BOTTOM_FIELD_NUMBER = 3;
-  private boolean scrolledToBottom_;
+  private boolean scrolledToBottom_ = false;
   /**
    * <pre>
    * Whether the user scrolled to the bottom of the pane
@@ -1537,7 +1491,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TIME_TO_SCROLLED_TO_BOTTOM_FIELD_NUMBER = 7;
-  private long timeToScrolledToBottom_;
+  private long timeToScrolledToBottom_ = 0L;
   /**
    * <pre>
    * Time between opening window and scrolling to bottom
@@ -1564,7 +1518,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISMISSED_FIELD_NUMBER = 4;
-  private boolean dismissed_;
+  private boolean dismissed_ = false;
   /**
    * <pre>
    * Whether the window was closed due to clicking "Dismiss"
@@ -1591,7 +1545,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TIME_TO_UPDATE_MS_FIELD_NUMBER = 5;
-  private long timeToUpdateMs_;
+  private long timeToUpdateMs_ = 0L;
   /**
    * <pre>
    * Time between opening window and clicking update button
@@ -1618,7 +1572,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TIME_TO_CLOSE_MS_FIELD_NUMBER = 6;
-  private long timeToCloseMs_;
+  private long timeToCloseMs_ = 0L;
   /**
    * <pre>
    * Time between opening window and closing it
@@ -1645,6 +1599,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ACTION_BUTTON_EVENTS_FIELD_NUMBER = 8;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent> actionButtonEvents_;
   /**
    * <pre>
@@ -2017,20 +1972,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       autoOpened_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       updateFlow_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       scrolledToBottom_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       timeToScrolledToBottom_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       dismissed_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       timeToUpdateMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       timeToCloseMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       if (actionButtonEventsBuilder_ == null) {
         actionButtonEvents_ = java.util.Collections.emptyList();
       } else {
@@ -2064,6 +2013,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent buildPartial() {
       com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent result = new com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent result) {
+      if (actionButtonEventsBuilder_ == null) {
+        if (((bitField0_ & 0x00000080) != 0)) {
+          actionButtonEvents_ = java.util.Collections.unmodifiableList(actionButtonEvents_);
+          bitField0_ = (bitField0_ & ~0x00000080);
+        }
+        result.actionButtonEvents_ = actionButtonEvents_;
+      } else {
+        result.actionButtonEvents_ = actionButtonEventsBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2094,52 +2062,9 @@ private static final long serialVersionUID = 0L;
         result.timeToCloseMs_ = timeToCloseMs_;
         to_bitField0_ |= 0x00000040;
       }
-      if (actionButtonEventsBuilder_ == null) {
-        if (((bitField0_ & 0x00000080) != 0)) {
-          actionButtonEvents_ = java.util.Collections.unmodifiableList(actionButtonEvents_);
-          bitField0_ = (bitField0_ & ~0x00000080);
-        }
-        result.actionButtonEvents_ = actionButtonEvents_;
-      } else {
-        result.actionButtonEvents_ = actionButtonEventsBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent) {
@@ -2325,8 +2250,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAutoOpened(boolean value) {
-      bitField0_ |= 0x00000001;
+
       autoOpened_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2380,8 +2306,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUpdateFlow(boolean value) {
-      bitField0_ |= 0x00000002;
+
       updateFlow_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2435,8 +2362,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setScrolledToBottom(boolean value) {
-      bitField0_ |= 0x00000004;
+
       scrolledToBottom_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2490,8 +2418,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTimeToScrolledToBottom(long value) {
-      bitField0_ |= 0x00000008;
+
       timeToScrolledToBottom_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2545,8 +2474,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDismissed(boolean value) {
-      bitField0_ |= 0x00000010;
+
       dismissed_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2600,8 +2530,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTimeToUpdateMs(long value) {
-      bitField0_ |= 0x00000020;
+
       timeToUpdateMs_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2655,8 +2586,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTimeToCloseMs(long value) {
-      bitField0_ |= 0x00000040;
+
       timeToCloseMs_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }

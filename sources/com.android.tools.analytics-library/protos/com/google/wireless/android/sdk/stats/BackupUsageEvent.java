@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new BackupUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BackupUsageEvent_descriptor;
@@ -477,7 +472,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+     *     See studio_stats.proto;l=16131
      * @return Whether the type field is set.
      */
     @java.lang.Deprecated boolean hasType();
@@ -487,7 +483,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+     *     See studio_stats.proto;l=16131
      * @return The type.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType();
@@ -498,7 +495,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+     *     See studio_stats.proto;l=16133
      * @return Whether the source field is set.
      */
     @java.lang.Deprecated boolean hasSource();
@@ -508,7 +506,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+     *     See studio_stats.proto;l=16133
      * @return The source.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
@@ -519,7 +518,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+     *     See studio_stats.proto;l=16135
      * @return Whether the result field is set.
      */
     @java.lang.Deprecated boolean hasResult();
@@ -529,7 +529,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+     *     See studio_stats.proto;l=16135
      * @return The result.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
@@ -540,7 +541,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+     *     See studio_stats.proto;l=16137
      * @return Whether the typeValue field is set.
      */
     @java.lang.Deprecated boolean hasTypeValue();
@@ -550,7 +552,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+     *     See studio_stats.proto;l=16137
      * @return The typeValue.
      */
     @java.lang.Deprecated int getTypeValue();
@@ -561,7 +564,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16139
      * @return Whether the sourceValue field is set.
      */
     @java.lang.Deprecated boolean hasSourceValue();
@@ -571,7 +575,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16139
      * @return The sourceValue.
      */
     @java.lang.Deprecated int getSourceValue();
@@ -582,7 +587,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16141
      * @return Whether the resultValue field is set.
      */
     @java.lang.Deprecated boolean hasResultValue();
@@ -592,7 +598,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16141
      * @return The resultValue.
      */
     @java.lang.Deprecated int getResultValue();
@@ -716,11 +723,6 @@ private static final long serialVersionUID = 0L;
       return new BackupEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BackupUsageEvent_BackupEvent_descriptor;
@@ -845,14 +847,15 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int TYPE_FIELD_NUMBER = 1;
-    private int type_;
+    private int type_ = 0;
     /**
      * <pre>
      * Deprecated: use type_value
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+     *     See studio_stats.proto;l=16131
      * @return Whether the type field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasType() {
@@ -864,24 +867,25 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+     *     See studio_stats.proto;l=16131
      * @return The type.
      */
     @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.UNKNOWN_BACKUP_TYPE : result;
     }
 
     public static final int SOURCE_FIELD_NUMBER = 2;
-    private int source_;
+    private int source_ = 0;
     /**
      * <pre>
      * Deprecated: use source_value
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+     *     See studio_stats.proto;l=16133
      * @return Whether the source field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
@@ -893,24 +897,25 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+     *     See studio_stats.proto;l=16133
      * @return The source.
      */
     @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.forNumber(source_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
     }
 
     public static final int RESULT_FIELD_NUMBER = 3;
-    private int result_;
+    private int result_ = 0;
     /**
      * <pre>
      * Deprecated: use result_value
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+     *     See studio_stats.proto;l=16135
      * @return Whether the result field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
@@ -922,24 +927,25 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+     *     See studio_stats.proto;l=16135
      * @return The result.
      */
     @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
     }
 
     public static final int TYPE_VALUE_FIELD_NUMBER = 4;
-    private int typeValue_;
+    private int typeValue_ = 0;
     /**
      * <pre>
      * Deprecated: use type_string
      * </pre>
      *
      * <code>optional int32 type_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+     *     See studio_stats.proto;l=16137
      * @return Whether the typeValue field is set.
      */
     @java.lang.Override
@@ -952,7 +958,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 type_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+     *     See studio_stats.proto;l=16137
      * @return The typeValue.
      */
     @java.lang.Override
@@ -961,14 +968,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SOURCE_VALUE_FIELD_NUMBER = 5;
-    private int sourceValue_;
+    private int sourceValue_ = 0;
     /**
      * <pre>
      * Deprecated: use source_string
      * </pre>
      *
      * <code>optional int32 source_value = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16139
      * @return Whether the sourceValue field is set.
      */
     @java.lang.Override
@@ -981,7 +989,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 5 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16139
      * @return The sourceValue.
      */
     @java.lang.Override
@@ -990,14 +999,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESULT_VALUE_FIELD_NUMBER = 6;
-    private int resultValue_;
+    private int resultValue_ = 0;
     /**
      * <pre>
      * Deprecated: use result_string
      * </pre>
      *
      * <code>optional int32 result_value = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16141
      * @return Whether the resultValue field is set.
      */
     @java.lang.Override
@@ -1010,7 +1020,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16141
      * @return The resultValue.
      */
     @java.lang.Override
@@ -1019,7 +1030,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TYPE_STRING_FIELD_NUMBER = 7;
-    private volatile java.lang.Object typeString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object typeString_ = "";
     /**
      * <pre>
      * e.g. CLOUD
@@ -1079,7 +1091,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SOURCE_STRING_FIELD_NUMBER = 8;
-    private volatile java.lang.Object sourceString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object sourceString_ = "";
     /**
      * <pre>
      * e.g. DEVICE_EXPLORER
@@ -1139,7 +1152,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESULT_STRING_FIELD_NUMBER = 9;
-    private volatile java.lang.Object resultString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object resultString_ = "";
     /**
      * <pre>
      * e.g. SUCCESS
@@ -1517,24 +1531,16 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         source_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         result_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         typeValue_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         sourceValue_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         resultValue_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         typeString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
         sourceString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000080);
         resultString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -1561,20 +1567,26 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent buildPartial() {
         com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent result = new com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.type_ = type_;
           to_bitField0_ |= 0x00000001;
         }
-        result.type_ = type_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.source_ = source_;
           to_bitField0_ |= 0x00000002;
         }
-        result.source_ = source_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.result_ = result_;
           to_bitField0_ |= 0x00000004;
         }
-        result.result_ = result_;
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.typeValue_ = typeValue_;
           to_bitField0_ |= 0x00000008;
@@ -1588,54 +1600,20 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000020;
         }
         if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.typeString_ = typeString_;
           to_bitField0_ |= 0x00000040;
         }
-        result.typeString_ = typeString_;
         if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.sourceString_ = sourceString_;
           to_bitField0_ |= 0x00000080;
         }
-        result.sourceString_ = sourceString_;
         if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.resultString_ = resultString_;
           to_bitField0_ |= 0x00000100;
         }
-        result.resultString_ = resultString_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent) {
@@ -1667,18 +1645,18 @@ private static final long serialVersionUID = 0L;
           setResultValue(other.getResultValue());
         }
         if (other.hasTypeString()) {
-          bitField0_ |= 0x00000040;
           typeString_ = other.typeString_;
+          bitField0_ |= 0x00000040;
           onChanged();
         }
         if (other.hasSourceString()) {
-          bitField0_ |= 0x00000080;
           sourceString_ = other.sourceString_;
+          bitField0_ |= 0x00000080;
           onChanged();
         }
         if (other.hasResultString()) {
-          bitField0_ |= 0x00000100;
           resultString_ = other.resultString_;
+          bitField0_ |= 0x00000100;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -1797,7 +1775,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+       *     See studio_stats.proto;l=16131
        * @return Whether the type field is set.
        */
       @java.lang.Override @java.lang.Deprecated public boolean hasType() {
@@ -1809,13 +1788,13 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+       *     See studio_stats.proto;l=16131
        * @return The type.
        */
       @java.lang.Override
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type getType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.valueOf(type_);
+        com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.forNumber(type_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Type.UNKNOWN_BACKUP_TYPE : result;
       }
       /**
@@ -1824,7 +1803,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+       *     See studio_stats.proto;l=16131
        * @param value The type to set.
        * @return This builder for chaining.
        */
@@ -1843,7 +1823,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.BackupEvent.Type type = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type is deprecated.
+       *     See studio_stats.proto;l=16131
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearType() {
@@ -1860,7 +1841,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+       *     See studio_stats.proto;l=16133
        * @return Whether the source field is set.
        */
       @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
@@ -1872,13 +1854,13 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+       *     See studio_stats.proto;l=16133
        * @return The source.
        */
       @java.lang.Override
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
+        com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.forNumber(source_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
       }
       /**
@@ -1887,7 +1869,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+       *     See studio_stats.proto;l=16133
        * @param value The source to set.
        * @return This builder for chaining.
        */
@@ -1906,7 +1889,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source is deprecated.
+       *     See studio_stats.proto;l=16133
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearSource() {
@@ -1923,7 +1907,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+       *     See studio_stats.proto;l=16135
        * @return Whether the result field is set.
        */
       @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
@@ -1935,13 +1920,13 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+       *     See studio_stats.proto;l=16135
        * @return The result.
        */
       @java.lang.Override
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
+        com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.forNumber(result_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
       }
       /**
@@ -1950,7 +1935,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+       *     See studio_stats.proto;l=16135
        * @param value The result to set.
        * @return This builder for chaining.
        */
@@ -1969,7 +1955,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result is deprecated.
+       *     See studio_stats.proto;l=16135
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearResult() {
@@ -1986,7 +1973,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 type_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+       *     See studio_stats.proto;l=16137
        * @return Whether the typeValue field is set.
        */
       @java.lang.Override
@@ -1999,7 +1987,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 type_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+       *     See studio_stats.proto;l=16137
        * @return The typeValue.
        */
       @java.lang.Override
@@ -2012,13 +2001,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 type_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+       *     See studio_stats.proto;l=16137
        * @param value The typeValue to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setTypeValue(int value) {
-        bitField0_ |= 0x00000008;
+
         typeValue_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -2028,7 +2019,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 type_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.type_value is deprecated.
+       *     See studio_stats.proto;l=16137
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTypeValue() {
@@ -2045,7 +2037,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 5 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16139
        * @return Whether the sourceValue field is set.
        */
       @java.lang.Override
@@ -2058,7 +2051,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 5 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16139
        * @return The sourceValue.
        */
       @java.lang.Override
@@ -2071,13 +2065,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 5 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16139
        * @param value The sourceValue to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setSourceValue(int value) {
-        bitField0_ |= 0x00000010;
+
         sourceValue_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -2087,7 +2083,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 5 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16139
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearSourceValue() {
@@ -2104,7 +2101,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 6 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16141
        * @return Whether the resultValue field is set.
        */
       @java.lang.Override
@@ -2117,7 +2115,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 6 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16141
        * @return The resultValue.
        */
       @java.lang.Override
@@ -2130,13 +2129,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 6 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16141
        * @param value The resultValue to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setResultValue(int value) {
-        bitField0_ |= 0x00000020;
+
         resultValue_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -2146,7 +2147,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 6 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.BackupEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16141
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearResultValue() {
@@ -2222,11 +2224,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setTypeString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+        if (value == null) { throw new NullPointerException(); }
         typeString_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -2239,8 +2239,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearTypeString() {
-        bitField0_ = (bitField0_ & ~0x00000040);
         typeString_ = getDefaultInstance().getTypeString();
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
@@ -2255,11 +2255,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setTypeStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+        if (value == null) { throw new NullPointerException(); }
         typeString_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -2330,11 +2328,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setSourceString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+        if (value == null) { throw new NullPointerException(); }
         sourceString_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -2347,8 +2343,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearSourceString() {
-        bitField0_ = (bitField0_ & ~0x00000080);
         sourceString_ = getDefaultInstance().getSourceString();
+        bitField0_ = (bitField0_ & ~0x00000080);
         onChanged();
         return this;
       }
@@ -2363,11 +2359,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setSourceStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000080;
+        if (value == null) { throw new NullPointerException(); }
         sourceString_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -2438,11 +2432,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setResultString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
+        if (value == null) { throw new NullPointerException(); }
         resultString_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -2455,8 +2447,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearResultString() {
-        bitField0_ = (bitField0_ & ~0x00000100);
         resultString_ = getDefaultInstance().getResultString();
+        bitField0_ = (bitField0_ & ~0x00000100);
         onChanged();
         return this;
       }
@@ -2471,11 +2463,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setResultStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000100;
+        if (value == null) { throw new NullPointerException(); }
         resultString_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -2553,7 +2543,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+     *     See studio_stats.proto;l=16150
      * @return Whether the source field is set.
      */
     @java.lang.Deprecated boolean hasSource();
@@ -2563,7 +2554,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+     *     See studio_stats.proto;l=16150
      * @return The source.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource();
@@ -2574,7 +2566,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+     *     See studio_stats.proto;l=16152
      * @return Whether the result field is set.
      */
     @java.lang.Deprecated boolean hasResult();
@@ -2584,7 +2577,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+     *     See studio_stats.proto;l=16152
      * @return The result.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult();
@@ -2595,7 +2589,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16154
      * @return Whether the sourceValue field is set.
      */
     @java.lang.Deprecated boolean hasSourceValue();
@@ -2605,7 +2600,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16154
      * @return The sourceValue.
      */
     @java.lang.Deprecated int getSourceValue();
@@ -2616,7 +2612,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16156
      * @return Whether the resultValue field is set.
      */
     @java.lang.Deprecated boolean hasResultValue();
@@ -2626,7 +2623,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16156
      * @return The resultValue.
      */
     @java.lang.Deprecated int getResultValue();
@@ -2719,11 +2717,6 @@ private static final long serialVersionUID = 0L;
       return new RestoreEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_BackupUsageEvent_RestoreEvent_descriptor;
@@ -2739,14 +2732,15 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int SOURCE_FIELD_NUMBER = 1;
-    private int source_;
+    private int source_ = 0;
     /**
      * <pre>
      * Deprecated: use source_value
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+     *     See studio_stats.proto;l=16150
      * @return Whether the source field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
@@ -2758,24 +2752,25 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+     *     See studio_stats.proto;l=16150
      * @return The source.
      */
     @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.forNumber(source_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
     }
 
     public static final int RESULT_FIELD_NUMBER = 2;
-    private int result_;
+    private int result_ = 0;
     /**
      * <pre>
      * Deprecated: use result_value
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+     *     See studio_stats.proto;l=16152
      * @return Whether the result field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
@@ -2787,24 +2782,25 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+     *     See studio_stats.proto;l=16152
      * @return The result.
      */
     @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
     }
 
     public static final int SOURCE_VALUE_FIELD_NUMBER = 3;
-    private int sourceValue_;
+    private int sourceValue_ = 0;
     /**
      * <pre>
      * Deprecated: use source_value
      * </pre>
      *
      * <code>optional int32 source_value = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16154
      * @return Whether the sourceValue field is set.
      */
     @java.lang.Override
@@ -2817,7 +2813,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 source_value = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+     *     See studio_stats.proto;l=16154
      * @return The sourceValue.
      */
     @java.lang.Override
@@ -2826,14 +2823,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESULT_VALUE_FIELD_NUMBER = 4;
-    private int resultValue_;
+    private int resultValue_ = 0;
     /**
      * <pre>
      * Deprecated: use result_string
      * </pre>
      *
      * <code>optional int32 result_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16156
      * @return Whether the resultValue field is set.
      */
     @java.lang.Override
@@ -2846,7 +2844,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 result_value = 4 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+     *     See studio_stats.proto;l=16156
      * @return The resultValue.
      */
     @java.lang.Override
@@ -2855,7 +2854,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SOURCE_STRING_FIELD_NUMBER = 5;
-    private volatile java.lang.Object sourceString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object sourceString_ = "";
     /**
      * <pre>
      * e.g. DEVICE_EXPLORER
@@ -2915,7 +2915,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESULT_STRING_FIELD_NUMBER = 6;
-    private volatile java.lang.Object resultString_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object resultString_ = "";
     /**
      * <pre>
      * e.g. SUCCESS
@@ -3247,18 +3248,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         source_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         result_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         sourceValue_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         resultValue_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         sourceString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
         resultString_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -3285,16 +3281,22 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent buildPartial() {
         com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent result = new com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.source_ = source_;
           to_bitField0_ |= 0x00000001;
         }
-        result.source_ = source_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.result_ = result_;
           to_bitField0_ |= 0x00000002;
         }
-        result.result_ = result_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.sourceValue_ = sourceValue_;
           to_bitField0_ |= 0x00000004;
@@ -3304,50 +3306,16 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.sourceString_ = sourceString_;
           to_bitField0_ |= 0x00000010;
         }
-        result.sourceString_ = sourceString_;
         if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.resultString_ = resultString_;
           to_bitField0_ |= 0x00000020;
         }
-        result.resultString_ = resultString_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent) {
@@ -3373,13 +3341,13 @@ private static final long serialVersionUID = 0L;
           setResultValue(other.getResultValue());
         }
         if (other.hasSourceString()) {
-          bitField0_ |= 0x00000010;
           sourceString_ = other.sourceString_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         if (other.hasResultString()) {
-          bitField0_ |= 0x00000020;
           resultString_ = other.resultString_;
+          bitField0_ |= 0x00000020;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -3476,7 +3444,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+       *     See studio_stats.proto;l=16150
        * @return Whether the source field is set.
        */
       @java.lang.Override @java.lang.Deprecated public boolean hasSource() {
@@ -3488,13 +3457,13 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+       *     See studio_stats.proto;l=16150
        * @return The source.
        */
       @java.lang.Override
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Source getSource() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.valueOf(source_);
+        com.google.wireless.android.sdk.stats.BackupUsageEvent.Source result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.forNumber(source_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Source.UNKNOWN_SOURCE : result;
       }
       /**
@@ -3503,7 +3472,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+       *     See studio_stats.proto;l=16150
        * @param value The source to set.
        * @return This builder for chaining.
        */
@@ -3522,7 +3492,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Source source = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source is deprecated.
+       *     See studio_stats.proto;l=16150
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearSource() {
@@ -3539,7 +3510,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+       *     See studio_stats.proto;l=16152
        * @return Whether the result field is set.
        */
       @java.lang.Override @java.lang.Deprecated public boolean hasResult() {
@@ -3551,13 +3523,13 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+       *     See studio_stats.proto;l=16152
        * @return The result.
        */
       @java.lang.Override
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BackupUsageEvent.Result getResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.valueOf(result_);
+        com.google.wireless.android.sdk.stats.BackupUsageEvent.Result result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.forNumber(result_);
         return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Result.UNKNOWN_RESULT : result;
       }
       /**
@@ -3566,7 +3538,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+       *     See studio_stats.proto;l=16152
        * @param value The result to set.
        * @return This builder for chaining.
        */
@@ -3585,7 +3558,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.BackupUsageEvent.Result result = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result is deprecated.
+       *     See studio_stats.proto;l=16152
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearResult() {
@@ -3602,7 +3576,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16154
        * @return Whether the sourceValue field is set.
        */
       @java.lang.Override
@@ -3615,7 +3590,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16154
        * @return The sourceValue.
        */
       @java.lang.Override
@@ -3628,13 +3604,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16154
        * @param value The sourceValue to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setSourceValue(int value) {
-        bitField0_ |= 0x00000004;
+
         sourceValue_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3644,7 +3622,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 source_value = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.source_value is deprecated.
+       *     See studio_stats.proto;l=16154
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearSourceValue() {
@@ -3661,7 +3640,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16156
        * @return Whether the resultValue field is set.
        */
       @java.lang.Override
@@ -3674,7 +3654,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16156
        * @return The resultValue.
        */
       @java.lang.Override
@@ -3687,13 +3668,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16156
        * @param value The resultValue to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setResultValue(int value) {
-        bitField0_ |= 0x00000008;
+
         resultValue_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -3703,7 +3686,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 result_value = 4 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.BackupUsageEvent.RestoreEvent.result_value is deprecated.
+       *     See studio_stats.proto;l=16156
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearResultValue() {
@@ -3779,11 +3763,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setSourceString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         sourceString_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -3796,8 +3778,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearSourceString() {
-        bitField0_ = (bitField0_ & ~0x00000010);
         sourceString_ = getDefaultInstance().getSourceString();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -3812,11 +3794,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setSourceStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         sourceString_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -3887,11 +3867,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setResultString(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+        if (value == null) { throw new NullPointerException(); }
         resultString_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -3904,8 +3882,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearResultString() {
-        bitField0_ = (bitField0_ & ~0x00000020);
         resultString_ = getDefaultInstance().getResultString();
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
@@ -3920,11 +3898,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setResultStringBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+        if (value == null) { throw new NullPointerException(); }
         resultString_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -3994,7 +3970,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The event type
@@ -4015,8 +3991,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.BackupUsageEvent.Type getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.BackupUsageEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.valueOf(type_);
+    com.google.wireless.android.sdk.stats.BackupUsageEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.UNKNOWN_EVENT_TYPE : result;
   }
 
@@ -4331,20 +4306,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (backupBuilder_ == null) {
-        backup_ = null;
-      } else {
-        backupBuilder_.clear();
+      backup_ = null;
+      if (backupBuilder_ != null) {
+        backupBuilder_.dispose();
+        backupBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (restoreBuilder_ == null) {
-        restore_ = null;
-      } else {
-        restoreBuilder_.clear();
+      restore_ = null;
+      if (restoreBuilder_ != null) {
+        restoreBuilder_.dispose();
+        restoreBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -4371,65 +4344,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BackupUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.BackupUsageEvent result = new com.google.wireless.android.sdk.stats.BackupUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (backupBuilder_ == null) {
-          result.backup_ = backup_;
-        } else {
-          result.backup_ = backupBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (restoreBuilder_ == null) {
-          result.restore_ = restore_;
-        } else {
-          result.restore_ = restoreBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.BackupUsageEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.backup_ = backupBuilder_ == null
+            ? backup_
+            : backupBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.restore_ = restoreBuilder_ == null
+            ? restore_
+            : restoreBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.BackupUsageEvent) {
@@ -4542,8 +4483,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.BackupUsageEvent.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.BackupUsageEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.BackupUsageEvent.Type result = com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.BackupUsageEvent.Type.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -4621,11 +4561,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         backup_ = value;
-        onChanged();
       } else {
         backupBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -4639,11 +4579,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.Builder builderForValue) {
       if (backupBuilder_ == null) {
         backup_ = builderForValue.build();
-        onChanged();
       } else {
         backupBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -4656,18 +4596,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeBackup(com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent value) {
       if (backupBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            backup_ != null &&
-            backup_ != com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.getDefaultInstance()) {
-          backup_ =
-            com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.newBuilder(backup_).mergeFrom(value).buildPartial();
+          backup_ != null &&
+          backup_ != com.google.wireless.android.sdk.stats.BackupUsageEvent.BackupEvent.getDefaultInstance()) {
+          getBackupBuilder().mergeFrom(value);
         } else {
           backup_ = value;
         }
-        onChanged();
       } else {
         backupBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -4678,13 +4617,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BackupUsageEvent.BackupEvent backup = 2 [lazy = true];</code>
      */
     public Builder clearBackup() {
-      if (backupBuilder_ == null) {
-        backup_ = null;
-        onChanged();
-      } else {
-        backupBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      backup_ = null;
+      if (backupBuilder_ != null) {
+        backupBuilder_.dispose();
+        backupBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -4777,11 +4716,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         restore_ = value;
-        onChanged();
       } else {
         restoreBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -4795,11 +4734,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent.Builder builderForValue) {
       if (restoreBuilder_ == null) {
         restore_ = builderForValue.build();
-        onChanged();
       } else {
         restoreBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -4812,18 +4751,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRestore(com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent value) {
       if (restoreBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            restore_ != null &&
-            restore_ != com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent.getDefaultInstance()) {
-          restore_ =
-            com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent.newBuilder(restore_).mergeFrom(value).buildPartial();
+          restore_ != null &&
+          restore_ != com.google.wireless.android.sdk.stats.BackupUsageEvent.RestoreEvent.getDefaultInstance()) {
+          getRestoreBuilder().mergeFrom(value);
         } else {
           restore_ = value;
         }
-        onChanged();
       } else {
         restoreBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -4834,13 +4772,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BackupUsageEvent.RestoreEvent restore = 3 [lazy = true];</code>
      */
     public Builder clearRestore() {
-      if (restoreBuilder_ == null) {
-        restore_ = null;
-        onChanged();
-      } else {
-        restoreBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      restore_ = null;
+      if (restoreBuilder_ != null) {
+        restoreBuilder_.dispose();
+        restoreBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -31,11 +31,13 @@ import com.android.sdklib.OptionalLibrary;
 import com.android.sdklib.SystemImageTags;
 import com.android.sdklib.devices.Abi;
 import com.android.sdklib.repository.IdDisplay;
+
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -140,6 +142,7 @@ public final class DetailsTypes {
          * Gets the codename of this release. Should be {@code null} for regular releases, and non-
          * null for preview releases.
          */
+        @Nullable
         String getCodename();
 
         @Override

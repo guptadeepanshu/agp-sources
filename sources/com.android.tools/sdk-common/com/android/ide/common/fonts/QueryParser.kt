@@ -119,7 +119,7 @@ class QueryParser {
         fontDetail.weight = scanner.number.toInt()
         if (scanner.peek() == Symbol.ITALIC) {
             scanner.next()
-            fontDetail.italics = true
+            fontDetail.italics = ITALICS
         }
     }
 
@@ -136,22 +136,22 @@ class QueryParser {
     private fun parseWidth() {
         symbol = scanner.next()
         expect(Symbol.NUMBER)
-        fontDetail.width = scanner.number.toInt()
+        fontDetail.width = scanner.number
     }
 
     private fun parseItal() {
         symbol = scanner.next()
         expect(Symbol.NUMBER)
-        fontDetail.italics = (scanner.number >= .5f)
+        fontDetail.italics = scanner.number
     }
 
     private fun parseItalic() {
-        fontDetail.italics = true
+        fontDetail.italics = ITALICS
     }
 
     private fun parseBoldItalic() {
         fontDetail.weight = 700
-        fontDetail.italics = true
+        fontDetail.italics = ITALICS
     }
 
     private fun parseNearest() {
@@ -177,7 +177,7 @@ class QueryParser {
     }
 
     private fun parseV11(authority: String): DownloadableParseResult {
-        fontDetail.exact = false  // default in v11
+        fontDetail.exact = true  // default in v11
 
         symbol = scanner.next()
         expect(Symbol.EQUALS)

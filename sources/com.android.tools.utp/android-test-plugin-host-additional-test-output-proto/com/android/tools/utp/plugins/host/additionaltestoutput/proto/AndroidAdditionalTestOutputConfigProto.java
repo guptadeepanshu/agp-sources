@@ -96,11 +96,6 @@ public final class AndroidAdditionalTestOutputConfigProto {
       return new AndroidAdditionalTestOutputConfig();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.internal_static_com_android_tools_utp_plugins_host_additionaltestoutput_proto_AndroidAdditionalTestOutputConfig_descriptor;
@@ -115,7 +110,8 @@ public final class AndroidAdditionalTestOutputConfigProto {
     }
 
     public static final int ADDITIONAL_OUTPUT_DIRECTORY_ON_DEVICE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object additionalOutputDirectoryOnDevice_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object additionalOutputDirectoryOnDevice_ = "";
     /**
      * <pre>
      * A path to the output directory on device.
@@ -167,7 +163,8 @@ public final class AndroidAdditionalTestOutputConfigProto {
     }
 
     public static final int ADDITIONAL_OUTPUT_DIRECTORY_ON_HOST_FIELD_NUMBER = 2;
-    private volatile java.lang.Object additionalOutputDirectoryOnHost_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object additionalOutputDirectoryOnHost_ = "";
     /**
      * <pre>
      * A path to the output directory on host.
@@ -334,11 +331,13 @@ public final class AndroidAdditionalTestOutputConfigProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -417,10 +416,9 @@ public final class AndroidAdditionalTestOutputConfigProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         additionalOutputDirectoryOnDevice_ = "";
-
         additionalOutputDirectoryOnHost_ = "";
-
         return this;
       }
 
@@ -447,10 +445,19 @@ public final class AndroidAdditionalTestOutputConfigProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig buildPartial() {
         com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig result = new com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig(this);
-        result.additionalOutputDirectoryOnDevice_ = additionalOutputDirectoryOnDevice_;
-        result.additionalOutputDirectoryOnHost_ = additionalOutputDirectoryOnHost_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.additionalOutputDirectoryOnDevice_ = additionalOutputDirectoryOnDevice_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.additionalOutputDirectoryOnHost_ = additionalOutputDirectoryOnHost_;
+        }
       }
 
       @java.lang.Override
@@ -499,10 +506,12 @@ public final class AndroidAdditionalTestOutputConfigProto {
         if (other == com.android.tools.utp.plugins.host.additionaltestoutput.proto.AndroidAdditionalTestOutputConfigProto.AndroidAdditionalTestOutputConfig.getDefaultInstance()) return this;
         if (!other.getAdditionalOutputDirectoryOnDevice().isEmpty()) {
           additionalOutputDirectoryOnDevice_ = other.additionalOutputDirectoryOnDevice_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (!other.getAdditionalOutputDirectoryOnHost().isEmpty()) {
           additionalOutputDirectoryOnHost_ = other.additionalOutputDirectoryOnHost_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -533,12 +542,12 @@ public final class AndroidAdditionalTestOutputConfigProto {
                 break;
               case 10: {
                 additionalOutputDirectoryOnDevice_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 10
               case 18: {
                 additionalOutputDirectoryOnHost_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               default: {
@@ -556,6 +565,7 @@ public final class AndroidAdditionalTestOutputConfigProto {
         } // finally
         return this;
       }
+      private int bitField0_;
 
       private java.lang.Object additionalOutputDirectoryOnDevice_ = "";
       /**
@@ -619,11 +629,9 @@ public final class AndroidAdditionalTestOutputConfigProto {
        */
       public Builder setAdditionalOutputDirectoryOnDevice(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         additionalOutputDirectoryOnDevice_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -639,8 +647,8 @@ public final class AndroidAdditionalTestOutputConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearAdditionalOutputDirectoryOnDevice() {
-        
         additionalOutputDirectoryOnDevice_ = getDefaultInstance().getAdditionalOutputDirectoryOnDevice();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -658,12 +666,10 @@ public final class AndroidAdditionalTestOutputConfigProto {
        */
       public Builder setAdditionalOutputDirectoryOnDeviceBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         additionalOutputDirectoryOnDevice_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -727,11 +733,9 @@ public final class AndroidAdditionalTestOutputConfigProto {
        */
       public Builder setAdditionalOutputDirectoryOnHost(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         additionalOutputDirectoryOnHost_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -746,8 +750,8 @@ public final class AndroidAdditionalTestOutputConfigProto {
        * @return This builder for chaining.
        */
       public Builder clearAdditionalOutputDirectoryOnHost() {
-        
         additionalOutputDirectoryOnHost_ = getDefaultInstance().getAdditionalOutputDirectoryOnHost();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -764,12 +768,10 @@ public final class AndroidAdditionalTestOutputConfigProto {
        */
       public Builder setAdditionalOutputDirectoryOnHostBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         additionalOutputDirectoryOnHost_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }

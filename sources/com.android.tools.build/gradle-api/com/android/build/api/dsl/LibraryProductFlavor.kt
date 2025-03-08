@@ -16,8 +16,6 @@
 
 package com.android.build.api.dsl
 
-import org.gradle.api.Incubating
-
 /**
  * Encapsulates all product flavors properties for library projects.
  *

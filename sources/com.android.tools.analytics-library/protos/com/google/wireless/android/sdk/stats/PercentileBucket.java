@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new PercentileBucket();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_PercentileBucket_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TARGET_PERCENTILE_FIELD_NUMBER = 1;
-  private double targetPercentile_;
+  private double targetPercentile_ = 0D;
   /**
    * <pre>
    * The target percentile for this bucket.
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VALUE_FIELD_NUMBER = 2;
-  private double value_;
+  private double value_ = 0D;
   /**
    * <pre>
    * Estimated value at this bucket.
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNT_FIELD_NUMBER = 3;
-  private long count_;
+  private long count_ = 0L;
   /**
    * <pre>
    * Number of samples less than value.
@@ -363,12 +358,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       targetPercentile_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000001);
       value_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000002);
       count_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -395,6 +388,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileBucket buildPartial() {
       com.google.wireless.android.sdk.stats.PercentileBucket result = new com.google.wireless.android.sdk.stats.PercentileBucket(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.PercentileBucket result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -409,43 +408,9 @@ private static final long serialVersionUID = 0L;
         result.count_ = count_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.PercentileBucket) {
@@ -560,8 +525,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTargetPercentile(double value) {
-      bitField0_ |= 0x00000001;
+
       targetPercentile_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -615,8 +581,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setValue(double value) {
-      bitField0_ |= 0x00000002;
+
       value_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -670,8 +637,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCount(long value) {
-      bitField0_ |= 0x00000004;
+
       count_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

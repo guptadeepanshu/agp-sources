@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new LintPerformance();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LintPerformance_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ANALYSIS_TIME_MS_FIELD_NUMBER = 1;
-  private long analysisTimeMs_;
+  private long analysisTimeMs_ = 0L;
   /**
    * <pre>
    * time to run lint in micro seconds
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILE_COUNT_FIELD_NUMBER = 2;
-  private long fileCount_;
+  private long fileCount_ = 0L;
   /**
    * <pre>
    * number of files in project
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODULE_COUNT_FIELD_NUMBER = 3;
-  private long moduleCount_;
+  private long moduleCount_ = 0L;
   /**
    * <pre>
    * number of gradle projects in session
@@ -130,7 +125,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int JAVA_SOURCE_COUNT_FIELD_NUMBER = 4;
-  private long javaSourceCount_;
+  private long javaSourceCount_ = 0L;
   /**
    * <pre>
    * number of Java source files in session
@@ -157,7 +152,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_SOURCE_COUNT_FIELD_NUMBER = 5;
-  private long kotlinSourceCount_;
+  private long kotlinSourceCount_ = 0L;
   /**
    * <pre>
    * number of Kotlin source files in session
@@ -184,7 +179,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESOURCE_FILE_COUNT_FIELD_NUMBER = 6;
-  private long resourceFileCount_;
+  private long resourceFileCount_ = 0L;
   /**
    * <pre>
    * number of resource files in session
@@ -211,7 +206,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_SOURCE_COUNT_FIELD_NUMBER = 7;
-  private long testSourceCount_;
+  private long testSourceCount_ = 0L;
   /**
    * <pre>
    * number of test soursce files in session. Note that test sources
@@ -240,7 +235,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INITIALIZE_TIME_MS_FIELD_NUMBER = 8;
-  private long initializeTimeMs_;
+  private long initializeTimeMs_ = 0L;
   /**
    * <pre>
    * time to initialize lint projects
@@ -267,7 +262,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REGISTER_CUSTOM_DETECTORS_TIME_MS_FIELD_NUMBER = 9;
-  private long registerCustomDetectorsTimeMs_;
+  private long registerCustomDetectorsTimeMs_ = 0L;
   /**
    * <pre>
    * time to register custom detectors
@@ -294,7 +289,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPUTE_DETECTORS_TIME_MS_FIELD_NUMBER = 10;
-  private long computeDetectorsTimeMs_;
+  private long computeDetectorsTimeMs_ = 0L;
   /**
    * <pre>
    * time to compute the applicable detectors
@@ -321,7 +316,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHECK_PROJECT_TIME_MS_FIELD_NUMBER = 11;
-  private long checkProjectTimeMs_;
+  private long checkProjectTimeMs_ = 0L;
   /**
    * <pre>
    * time to run the first round of checks
@@ -348,7 +343,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXTRA_PHASES_TIME_MS_FIELD_NUMBER = 12;
-  private long extraPhasesTimeMs_;
+  private long extraPhasesTimeMs_ = 0L;
   /**
    * <pre>
    * time to run any extra phases
@@ -375,7 +370,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPORT_BASELINE_ISSUES_TIME_MS_FIELD_NUMBER = 13;
-  private long reportBaselineIssuesTimeMs_;
+  private long reportBaselineIssuesTimeMs_ = 0L;
   /**
    * <pre>
    * time to report baseline issues
@@ -402,7 +397,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISPOSE_PROJECTS_TIME_MS_FIELD_NUMBER = 14;
-  private long disposeProjectsTimeMs_;
+  private long disposeProjectsTimeMs_ = 0L;
   /**
    * <pre>
    * time to dispose projects
@@ -429,7 +424,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REPORT_GENERATION_TIME_MS_FIELD_NUMBER = 15;
-  private long reportGenerationTimeMs_;
+  private long reportGenerationTimeMs_ = 0L;
   /**
    * <pre>
    * time to generate repors
@@ -891,36 +886,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       analysisTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       fileCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       moduleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       javaSourceCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       kotlinSourceCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       resourceFileCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       testSourceCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       initializeTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       registerCustomDetectorsTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000100);
       computeDetectorsTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
       checkProjectTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000400);
       extraPhasesTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000800);
       reportBaselineIssuesTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00001000);
       disposeProjectsTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00002000);
       reportGenerationTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00004000);
       return this;
     }
 
@@ -947,6 +928,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintPerformance buildPartial() {
       com.google.wireless.android.sdk.stats.LintPerformance result = new com.google.wireless.android.sdk.stats.LintPerformance(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LintPerformance result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1009,43 +996,9 @@ private static final long serialVersionUID = 0L;
         result.reportGenerationTimeMs_ = reportGenerationTimeMs_;
         to_bitField0_ |= 0x00004000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LintPerformance) {
@@ -1256,8 +1209,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAnalysisTimeMs(long value) {
-      bitField0_ |= 0x00000001;
+
       analysisTimeMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1311,8 +1265,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFileCount(long value) {
-      bitField0_ |= 0x00000002;
+
       fileCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1366,8 +1321,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setModuleCount(long value) {
-      bitField0_ |= 0x00000004;
+
       moduleCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1421,8 +1377,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setJavaSourceCount(long value) {
-      bitField0_ |= 0x00000008;
+
       javaSourceCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1476,8 +1433,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setKotlinSourceCount(long value) {
-      bitField0_ |= 0x00000010;
+
       kotlinSourceCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1531,8 +1489,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResourceFileCount(long value) {
-      bitField0_ |= 0x00000020;
+
       resourceFileCount_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1589,8 +1548,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTestSourceCount(long value) {
-      bitField0_ |= 0x00000040;
+
       testSourceCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1645,8 +1605,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInitializeTimeMs(long value) {
-      bitField0_ |= 0x00000080;
+
       initializeTimeMs_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1700,8 +1661,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRegisterCustomDetectorsTimeMs(long value) {
-      bitField0_ |= 0x00000100;
+
       registerCustomDetectorsTimeMs_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1755,8 +1717,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setComputeDetectorsTimeMs(long value) {
-      bitField0_ |= 0x00000200;
+
       computeDetectorsTimeMs_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1810,8 +1773,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCheckProjectTimeMs(long value) {
-      bitField0_ |= 0x00000400;
+
       checkProjectTimeMs_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -1865,8 +1829,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExtraPhasesTimeMs(long value) {
-      bitField0_ |= 0x00000800;
+
       extraPhasesTimeMs_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -1920,8 +1885,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setReportBaselineIssuesTimeMs(long value) {
-      bitField0_ |= 0x00001000;
+
       reportBaselineIssuesTimeMs_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -1975,8 +1941,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDisposeProjectsTimeMs(long value) {
-      bitField0_ |= 0x00002000;
+
       disposeProjectsTimeMs_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2030,8 +1997,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setReportGenerationTimeMs(long value) {
-      bitField0_ |= 0x00004000;
+
       reportGenerationTimeMs_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }

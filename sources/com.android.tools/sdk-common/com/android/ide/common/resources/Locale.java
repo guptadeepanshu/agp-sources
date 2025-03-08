@@ -16,15 +16,18 @@
 package com.android.ide.common.resources;
 
 import static com.android.ide.common.resources.configuration.LocaleQualifier.FAKE_VALUE;
+
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 import static java.util.Comparator.nullsFirst;
 
 import com.android.ide.common.resources.configuration.FolderConfiguration;
 import com.android.ide.common.resources.configuration.LocaleQualifier;
-import java.util.Comparator;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Comparator;
 
 /** A language,region pair */
 public class Locale {
@@ -242,16 +245,29 @@ public class Locale {
         } else {
             String regionCode = locale.qualifier.getRegion();
             assert regionCode != null : locale.qualifier; // because hasRegion() is true
-            if (!brief && languageName != null) {
-                String regionName = LocaleManager.getRegionName(regionCode);
+            if (brief) {
+                if (languageName != null) {
+                    return String.format(
+                            "%1$s (%2$s / %3$s)", languageName, languageCode, regionCode);
+                } else {
+                    return String.format("%1$s (%2$s)", languageCode, regionCode);
+                }
+            }
+            String regionName = LocaleManager.getRegionName(regionCode);
+            if (languageName != null) {
                 if (regionName != null) {
                     return String.format(
                             "%1$s (%2$s) in %3$s (%4$s)",
                             languageName, languageCode, regionName, regionCode);
                 }
                 return String.format("%1$s (%2$s) in %3$s", languageName, languageCode, regionCode);
+            } else {
+                if (regionName != null) {
+                    return String.format(
+                            "%1$s in %2$s (%3$s)", languageCode, regionName, regionCode);
+                }
+                return String.format("%1$s (%2$s)", languageCode, regionCode);
             }
-            return String.format("%1$s (%2$s / %3$s)", languageName, languageCode, regionCode);
         }
     }
 }

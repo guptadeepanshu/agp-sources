@@ -15,8 +15,18 @@
  */
 package com.android.utils;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.io.Files.asCharSink;
+import static com.google.common.io.Files.createParentDirs;
+import static com.google.common.io.Files.fileTraverser;
+import static com.google.common.io.Files.getNameWithoutExtension;
+import static com.google.common.io.Files.isFile;
+import static com.google.common.io.Files.toByteArray;
+
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+
 import com.android.annotations.NonNull;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -26,7 +36,9 @@ import com.google.common.collect.Lists;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
+
 import kotlin.io.FilesKt;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -49,15 +61,6 @@ import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.io.Files.asCharSink;
-import static com.google.common.io.Files.createParentDirs;
-import static com.google.common.io.Files.fileTraverser;
-import static com.google.common.io.Files.getNameWithoutExtension;
-import static com.google.common.io.Files.isFile;
-import static com.google.common.io.Files.toByteArray;
-import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
 @SuppressWarnings("WeakerAccess") // These are utility methods, meant to be public.
 public final class FileUtils {
@@ -552,7 +555,7 @@ public final class FileUtils {
     public static String getDirectoryNameForJar(@NonNull File inputFile) {
         // add a hash of the original file path.
         HashFunction hashFunction = Hashing.sha1();
-        HashCode hashCode = hashFunction.hashString(inputFile.getAbsolutePath(), Charsets.UTF_16LE);
+        HashCode hashCode = hashFunction.hashString(inputFile.getAbsolutePath(), StandardCharsets.UTF_16LE);
 
         String name = getNameWithoutExtension(inputFile.getName());
         if (name.equals("classes") && inputFile.getAbsolutePath().contains("exploded-aar")) {

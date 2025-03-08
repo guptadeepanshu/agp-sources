@@ -97,8 +97,7 @@ abstract class FusedLibraryReportTask : NonIncrementalGlobalTask() {
                 includeConfiguration.incoming.resolutionResult.rootComponent
             )
             task.dependencies.setDisallowChanges(
-                getFusedLibraryDependencyModuleVersionIdentifiers(
-                    includeConfiguration, creationConfig.services.issueReporter)
+                getFusedLibraryDependencyModuleVersionIdentifiers(includeConfiguration)
             )
         }
     }

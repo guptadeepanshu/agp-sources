@@ -18,13 +18,11 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.ApkOutput
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApplicationAndroidResources
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.BundleConfig
 import com.android.build.api.variant.DependenciesInfo
-import com.android.build.api.variant.DeviceSpec
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.Dexing
 import com.android.build.api.variant.HostTest
@@ -36,10 +34,8 @@ import com.android.build.api.variant.VariantOutput
 import com.android.build.api.variant.ApkOutputProviders
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.TaskProvider
 import javax.inject.Inject
 
 open class AnalyticsEnabledApplicationVariant @Inject constructor(
@@ -219,15 +215,5 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
         }
 
     override val outputProviders: ApkOutputProviders
-        get() = object: ApkOutputProviders {
-            override fun <TaskT : Task> provideApkOutputToTask(
-                taskProvider: TaskProvider<TaskT>,
-                taskInput: (TaskT) -> Property<ApkOutput>,
-                deviceSpec: DeviceSpec
-            ) {
-                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                    VariantPropertiesMethodType.PROVIDE_APK_OUTPUT_TO_TASK_VALUE
-                delegate.outputProviders.provideApkOutputToTask(taskProvider, taskInput, deviceSpec)
-            }
-        }
+        get() = generatesApk.outputProviders
 }

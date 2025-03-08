@@ -17,6 +17,7 @@ package com.android.build.gradle.internal
 
 import android.databinding.tool.DataBindingBuilder
 import com.android.SdkConstants.DOT_JAR
+import com.android.SdkConstants.DOT_RES
 import com.android.build.api.artifact.Artifact.Single
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
@@ -53,7 +54,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
-import com.android.build.gradle.internal.res.ConvertLinkedResourcesToProtoTask
+import com.android.build.gradle.internal.res.ConvertLinkedResourcesToBinaryTask
 import com.android.build.gradle.internal.res.ConvertShrunkResourcesToBinaryTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkAndroidResForBundleTask
@@ -73,6 +74,7 @@ import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
+import com.android.build.gradle.internal.services.KotlinBaseApiVersion
 import com.android.build.gradle.internal.services.KotlinServices
 import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.internal.services.getBuildService
@@ -131,13 +133,17 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.getFeatureName
 import com.android.build.gradle.internal.tasks.mlkit.GenerateMlModelClass
+import com.android.build.gradle.internal.tasks.runResourceShrinking
 import com.android.build.gradle.internal.tasks.runResourceShrinkingWithR8
 import com.android.build.gradle.internal.test.AbstractTestDataImpl
 import com.android.build.gradle.internal.testing.utp.TEST_RESULT_PB_FILE_NAME
 import com.android.build.gradle.internal.transforms.ShrinkAppBundleResourcesTask
 import com.android.build.gradle.internal.transforms.ShrinkResourcesNewShrinkerTask
+import com.android.build.gradle.internal.utils.COMPOSE_COMPILER_PLUGIN_ID
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
-import com.android.build.gradle.internal.utils.checkKotlinStdLibIsInDependencies
+import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
+import com.android.build.gradle.internal.utils.getKotlinAndroidPluginVersion
+import com.android.build.gradle.internal.utils.maybeAddKotlinStdlibDependency
 import com.android.build.gradle.internal.utils.isKotlinKaptPluginApplied
 import com.android.build.gradle.internal.utils.isKspPluginApplied
 import com.android.build.gradle.internal.variant.ApkVariantData
@@ -185,6 +191,7 @@ import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolutionStrategy
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
@@ -198,6 +205,12 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
+import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
+import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.CompilerPluginOptions
+import org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.Callable
@@ -363,11 +376,11 @@ abstract class TaskManager(
 
         }
 
-        // if consumesFeatureJars, add streams of classes from features or
+        // if consumesDynamicFeatures, add streams of classes from features or
         // dynamic-features.
         // The main dex list calculation for the bundle also needs the feature classes for reference
         // only
-        if ((creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true ||
+        if ((creationConfig as? ApplicationCreationConfig)?.shrinkingWithDynamicFeatures == true ||
             (creationConfig as? ApkCreationConfig)?.dexing?.needsMainDexListForBundle == true) {
             creationConfig.artifacts.forScope(InternalScopedArtifacts.InternalScope.FEATURES)
                 .setInitialContent(
@@ -543,8 +556,11 @@ abstract class TaskManager(
         return mergeResourcesTask
     }
 
-    fun createMergeAssetsTask(creationConfig: ComponentCreationConfig) {
-        taskFactory.register(MergeSourceSetFolders.MergeAppAssetCreationAction(creationConfig))
+    fun createMergeAssetsTask(
+        creationConfig: ComponentCreationConfig,
+        includeDependencies: Boolean = true,
+    ) {
+        taskFactory.register(MergeSourceSetFolders.MergeAssetCreationAction(creationConfig, includeDependencies))
     }
 
     fun createMergeJniLibFoldersTasks(creationConfig: ConsumableCreationConfig) {
@@ -596,7 +612,7 @@ abstract class TaskManager(
         val packageOutputType: InternalArtifactType<Directory>? =
                 if (componentType.isApk && !componentType.isForTesting) FEATURE_RESOURCE_PKG else null
         createApkProcessResTask(creationConfig, packageOutputType)
-        if ((creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true) {
+        if ((creationConfig as? ApplicationCreationConfig)?.shrinkingWithDynamicFeatures == true) {
             taskFactory.register(MergeAaptProguardFilesCreationAction(creationConfig))
         }
     }
@@ -752,6 +768,17 @@ abstract class TaskManager(
                         )
                 )
                 if (packageOutputType != null) {
+                    // When resource shrinking is enabled, LinkApplicationAndroidResourcesTask
+                    // produces LINKED_RESOURCES_PROTO_FORMAT instead of
+                    // LINKED_RESOURCES_BINARY_FORMAT. Because we'll still need the binary format
+                    // (see below), we'll have to convert the proto format to binary format.
+                    if ((creationConfig as? ApplicationCreationConfig)?.runResourceShrinking() == true) {
+                        taskFactory.register(ConvertLinkedResourcesToBinaryTask.CreationAction(creationConfig))
+                    }
+                    // Publish binary format instead of proto format because when linking resources
+                    // for a dynamic feature module, the `-I` argument of `aapt2 link` expects APKs,
+                    // which means it requires the binary format published from the base module (it
+                    // doesn't work with the proto format).
                     creationConfig.artifacts.republish(LINKED_RESOURCES_BINARY_FORMAT, packageOutputType)
                 }
 
@@ -941,13 +968,51 @@ abstract class TaskManager(
                     )
                 )
         } else {
-            checkKotlinStdLibIsInDependencies(project, creationConfig)
-            if (creationConfig.useBuiltInKaptSupport) {
-                copyKaptExtensionProperties(kotlinServices)
-                KaptStubGenerationCreationAction(creationConfig, kotlinServices).registerTask()
-                KaptCreationAction(creationConfig, project, kotlinServices).registerTask()
+            maybeAddKotlinStdlibDependency(project, creationConfig)
+            val kotlinCompileTaskProvider =
+                KotlinCompileCreationAction(creationConfig, kotlinServices).registerTask()
+            val kaptGenerateStubsProvider =
+                if (creationConfig.useBuiltInKaptSupport) {
+                    if (kotlinServices.kotlinBaseApiVersion < KotlinBaseApiVersion.VERSION_2) {
+                        copyKaptExtensionProperties(kotlinServices)
+                    }
+                    val kaptCreationAction =
+                        KaptCreationAction(
+                            creationConfig,
+                            project,
+                            kotlinServices,
+                            creationConfig.global.kaptExtension
+                        )
+                    kaptCreationAction.registerTask()
+                    val kaptStubGenerationCreationAction =
+                        KaptStubGenerationCreationAction(
+                            creationConfig,
+                            kotlinServices,
+                            kotlinCompileTaskProvider,
+                            creationConfig.global.kaptExtension
+                        )
+                    kaptStubGenerationCreationAction.registerTask()
+                } else {
+                    null
+                }
+
+            val androidTarget = creationConfig.global.kotlinAndroidProjectExtension?.target
+            val kotlinCompilation =
+                androidTarget?.let {
+                    BuiltInKotlinJvmAndroidCompilation(
+                        creationConfig.name,
+                        it,
+                        kotlinCompileTaskProvider
+                    )
+                }
+            if (kotlinCompilation != null) {
+                if (project.plugins.hasPlugin(COMPOSE_COMPILER_PLUGIN_ID)) {
+                    // Ensure "kotlin-extension" configuration exists here, because the Compose
+                    // Compiler Gradle plugin assumes it will have been created already.
+                    maybeCreateKotlinExtensionConfiguration()
+                }
+                addSubpluginOptionsForBuiltInKotlin(kotlinCompilation, kaptGenerateStubsProvider)
             }
-            KotlinCompileCreationAction(creationConfig, kotlinServices).registerTask()
         }
     }
 
@@ -955,8 +1020,9 @@ abstract class TaskManager(
      * If the Jetbrains KAPT plugin is applied, copy the properties from its kapt extension to the
      * kotlinServices.factory.kaptExtension.
      *
-     * TODO(b/341765853) - request a proper API for this from Jetbrains
-     * TODO(b/341765853) - remove this after AGP stops supporting the [KOTLIN_KAPT_PLUGIN_ID] plugin
+     * TODO(b/341765853) - remove this after [MINIMUM_BUILT_IN_KOTLIN_VERSION] >= 2.1.0-Beta2
+     *  because the kapt extension is passed to the task registration functions starting with Kotlin
+     *  2.1.0-Beta2
      */
     private fun copyKaptExtensionProperties(kotlinServices: KotlinServices) {
         project.pluginManager.withPlugin(KOTLIN_KAPT_PLUGIN_ID) {
@@ -981,6 +1047,106 @@ abstract class TaskManager(
                 }
             }
         }
+    }
+
+    // Allowlist for Kotlin compiler plugins supported by AGP's built-in Kotlin support. We need an
+    // allowlist until BuiltInKotlinJvmAndroidCompilation has been fully implemented.
+    private val builtInKotlinCompilerPluginIdAllowlist =
+        listOf("androidx.compose.compiler.plugins.kotlin")
+
+    // Similar to SubpluginEnvironment.addSubpluginOptions in KGP
+    private fun addSubpluginOptionsForBuiltInKotlin(
+        kotlinCompilation: BuiltInKotlinJvmAndroidCompilation,
+        kaptGenerateStubsTaskProvider: TaskProvider<out KaptGenerateStubs>?
+    ) {
+        val appliedSubplugins =
+            project.plugins
+                .filterIsInstance<KotlinCompilerPluginSupportPlugin>()
+                .filter { it.isApplicable(kotlinCompilation) }
+                .filter { it.getCompilerPluginId() in builtInKotlinCompilerPluginIdAllowlist }
+
+        // Similar to addMavenDependency function in SubpluginEnvironment in KGP
+        fun Project.addMavenDependency(configuration: String, artifact: SubpluginArtifact) {
+            val artifactVersion = artifact.version ?: getKotlinAndroidPluginVersion(this)
+            val mavenCoordinate =
+                "${artifact.groupId}:${artifact.artifactId}${artifactVersion?.let { ":$it" }.orEmpty()}"
+            project.logger.debug("Adding $mavenCoordinate to $configuration configuration")
+            this.dependencies.add(configuration, mavenCoordinate)
+        }
+
+        // Use the same pluginConfigurationName as
+        // KotlinCompilationDependencyConfigurationsContainer in KGP
+        val targetId =
+            kotlinCompilation.target.disambiguationClassifier?.replaceFirstChar { it.uppercase() } ?: ""
+        val compilationName = kotlinCompilation.compilationName.replaceFirstChar { it.uppercase() }
+        val pluginConfigurationName = "kotlinCompilerPluginClasspath${targetId}${compilationName}"
+
+        if (appliedSubplugins.isNotEmpty()) {
+            val pluginConfiguration =
+                project.configurations
+                    .maybeCreate(pluginConfigurationName)
+                    .also {
+                        it.isCanBeResolved = true
+                        it.isCanBeConsumed = false
+                    }
+            kotlinCompilation.compileTaskProvider.configure {
+                (it as? AbstractKotlinCompile<*>)?.pluginClasspath?.from(pluginConfiguration)
+            }
+            kaptGenerateStubsTaskProvider?.configure { it.pluginClasspath.from(pluginConfiguration) }
+        }
+
+        for (subplugin in appliedSubplugins) {
+            val subpluginId = subplugin.getCompilerPluginId()
+            project.logger.debug("Loading subplugin $subpluginId")
+
+            project.addMavenDependency(pluginConfigurationName, subplugin.getPluginArtifact())
+
+            val subpluginOptionsProvider = subplugin.applyToCompilation(kotlinCompilation)
+            val compilerOptions = subpluginOptionsProvider.map { subpluginOptions ->
+                val options = CompilerPluginOptions()
+                subpluginOptions.forEach { opt -> options.addPluginArgument(subpluginId, opt) }
+                options
+            }
+
+            val configureKotlinTask: (KotlinCompilationTask<*>) -> Unit = {
+                when (it) {
+                    is AbstractKotlinCompile<*> -> it.pluginOptions.add(compilerOptions)
+                    else -> error("Unexpected task ${it.name}, class: ${it.javaClass}")
+                }
+            }
+
+            kotlinCompilation.compileTaskProvider.configure(configureKotlinTask)
+
+            kaptGenerateStubsTaskProvider?.configure { it.pluginOptions.add(compilerOptions) }
+
+            project.logger.debug("Subplugin $subpluginId loaded")
+        }
+    }
+
+    /**
+     * Create a "kotlin-extension" configuration that holds the androidx compose kotlin compiler
+     * extension, if the configuration doesn't already exist.
+     *
+     * Returns the "kotlin-extension" configuration.
+     */
+    protected fun maybeCreateKotlinExtensionConfiguration(): Configuration {
+        project.configurations.findByName("kotlin-extension")?.also { return it }
+        val kotlinExtension =
+            project.configurations
+                .create("kotlin-extension") {
+                    it.isTransitive = false
+                    it.description = "Configuration for Compose related kotlin compiler extension"
+                }
+        // use the version from the DSL, if specified.
+        val kotlinCompilerExtensionVersion =
+            globalConfig.composeOptions.kotlinCompilerExtensionVersion
+                ?: COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION
+        project.dependencies
+            .add(
+                kotlinExtension.name,
+                "androidx.compose.compiler:compiler:$kotlinCompilerExtensionVersion"
+            )
+        return kotlinExtension
     }
 
     /**
@@ -1234,7 +1400,7 @@ abstract class TaskManager(
         // or a base module consuming feature jars. Merged runtime classes are needed if code
         // minification is enabled in a project with features or dynamic-features.
         if (creationConfig.componentType.isDynamicFeature
-                || (creationConfig as? ApplicationCreationConfig)?.consumesDynamicFeatures == true) {
+                || (creationConfig as? ApplicationCreationConfig)?.shrinkingWithDynamicFeatures == true) {
             taskFactory.register(MergeClassesTask.CreationAction(creationConfig))
         }
 
@@ -1756,6 +1922,11 @@ abstract class TaskManager(
                     taskFactory.register(CheckProguardFiles.CreationAction(creationConfig))
             task.dependsOn(checkFilesTask)
         }
+        if ((creationConfig as? ApplicationCreationConfig)?.runResourceShrinkingWithR8() == true) {
+            // Also convert shrunk resources from proto format to binary format so it can be
+            // included in an APK
+            taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(creationConfig))
+        }
     }
 
     private fun createR8Task(
@@ -1773,6 +1944,14 @@ abstract class TaskManager(
                     InternalArtifactType.FEATURE_SHRUNK_JAVA_RES,
                     AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_JAVA_RES,
                     DOT_JAR)
+            if (creationConfig.runResourceShrinkingWithR8()) {
+                publishArtifactsToDynamicFeatures(
+                    creationConfig,
+                    InternalArtifactType.FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT,
+                    AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT,
+                    DOT_RES
+                )
+            }
         }
 
         if (creationConfig.debuggable) {
@@ -1859,25 +2038,16 @@ abstract class TaskManager(
     private fun maybeCreateResourcesShrinkerTasks(
         creationConfig: ApkCreationConfig
     ) {
-        if (creationConfig.androidResourcesCreationConfig?.useResourceShrinker != true) {
-            return
-        }
-        if (creationConfig.componentType.isDynamicFeature) {
-            // For bundles resources are shrunk once bundle is packaged so the task is applicable
-            // for base module only.
-            return
-        }
-
-        // Shrink resources in APK with a new resource shrinker and produce stripped res
-        // package.
-        taskFactory.register(ConvertLinkedResourcesToProtoTask.CreationAction(creationConfig))
-        if (!creationConfig.runResourceShrinkingWithR8()) {
+        if ((creationConfig as? ApplicationCreationConfig)?.runResourceShrinking() == true
+            && !creationConfig.runResourceShrinkingWithR8()
+        ) {
+            // For the APK
             taskFactory.register(ShrinkResourcesNewShrinkerTask.CreationAction(creationConfig))
-        }
-        taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(creationConfig))
+            taskFactory.register(ConvertShrunkResourcesToBinaryTask.CreationAction(creationConfig))
 
-        // Shrink resources in bundles with new resource shrinker.
-        taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
+            // For the bundle
+            taskFactory.register(ShrinkAppBundleResourcesTask.CreationAction(creationConfig))
+        }
     }
 
     protected fun createAnchorTasks(creationConfig: ComponentCreationConfig) {
@@ -2077,7 +2247,7 @@ abstract class TaskManager(
 
 
         // Temporary static variables for Kotlin+Compose configuration
-        const val COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION = "1.3.2"
+        private const val COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION = "1.3.2"
         const val COMPOSE_UI_VERSION = "1.3.0"
 
         /**

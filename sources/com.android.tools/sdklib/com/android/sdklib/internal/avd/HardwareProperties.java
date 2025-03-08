@@ -48,11 +48,29 @@ public class HardwareProperties {
     /** AVD/config.ini key indicating whether the device is running on battery. */
     public static final String HW_BATTERY = "hw.battery";
 
-    /** AVD/config.ini key indicating whether accelerometer is present. */
+    /** AVD/config.ini key indicating whether an accelerometer is present. */
     public static final String HW_ACCELEROMETER = "hw.accelerometer";
 
-    /** AVD/config.ini key indicating whether gyroscope is present. */
+    /** AVD/config.ini key indicating whether a light sensor present. */
+    public static final String HW_LIGHT_SENSOR = "hw.sensors.light";
+
+    /** AVD/config.ini key indicating whether a magnetic field sensor (electronic compass) is present. */
+    public static final String HW_MAGNETIC_FIELD_SENSOR = "hw.sensors.magnetic_field";
+
+    /** AVD/config.ini key indicating whether a gyroscope is present. */
+    public static final String HW_GYROSCOPE = "hw.gyroscope";
+
+    /** AVD/config.ini key indicating whether an orientation sensor is present. */
     public static final String HW_ORIENTATION_SENSOR = "hw.sensors.orientation";
+
+    /** AVD/config.ini key indicating whether an atmospheric pressure sensor (barometer) is present. */
+    public static final String HW_PRESSURE_SENSOR = "hw.sensors.pressure";
+
+    /** AVD/config.ini key indicating whether a proximity sensor is present. */
+    public static final String HW_PROXIMITY_SENSOR = "hw.sensors.proximity";
+
+    /** AVD/config.ini key indicating whether an ambient temperature sensor is present. */
+    public static final String HW_TEMPERATURE_SENSOR = "hw.sensors.temperature";
 
     /** AVD/config.ini key indicating whether h/w mic is present. */
     public static final String HW_AUDIO_INPUT = "hw.audioInput";
@@ -86,12 +104,8 @@ public class HardwareProperties {
     public static final String HW_LCD_FOLDED_WIDTH_3 = "hw.displayRegion.0.3.width";
     public static final String HW_LCD_FOLDED_HEIGHT_3 = "hw.displayRegion.0.3.height";
 
-    /** AVD/config.ini key indicating whether proximity sensor present. */
-    public static final String HW_PROXIMITY_SENSOR = "hw.sensors.proximity";
-
     /** AVD/config.ini key for initial device orientation. */
     public static final String HW_INITIAL_ORIENTATION = "hw.initialOrientation";
-
 
     private static final Pattern PATTERN_PROP = Pattern.compile(
     "^([a-zA-Z0-9._-]+)\\s*=\\s*(.*)\\s*$");

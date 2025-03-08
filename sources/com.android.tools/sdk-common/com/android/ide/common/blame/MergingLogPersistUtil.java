@@ -20,9 +20,8 @@ import static com.android.SdkConstants.DOT_JSON;
 
 import com.android.annotations.NonNull;
 import com.android.ide.common.blame.MergingLogPersistUtil.SourcePositionsSerializer.Kind;
-import com.android.ide.common.resources.RelativeResourceUtils;
 import com.android.utils.Pair;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
@@ -30,9 +29,11 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -190,7 +191,7 @@ public class MergingLogPersistUtil {
             throws IOException {
         File file = getMultiFile(folder, shard);
         file.getParentFile().mkdir();
-        try (JsonWriter out = new JsonWriter(Files.newWriter(file, Charsets.UTF_8))) {
+        try (JsonWriter out = new JsonWriter(Files.newWriter(file, StandardCharsets.UTF_8))) {
             out.setIndent(INDENT_STRING);
             out.beginObject().name(KEY_LOGS);
             out.beginArray();
@@ -382,7 +383,7 @@ public class MergingLogPersistUtil {
             return map;
         }
         try {
-            reader = new JsonReader(Files.newReader(file, Charsets.UTF_8));
+            reader = new JsonReader(Files.newReader(file, StandardCharsets.UTF_8));
         } catch (FileNotFoundException e) {
             // Shouldn't happen unless it disappears under us.
             return map;
@@ -533,7 +534,7 @@ public class MergingLogPersistUtil {
             throws IOException {
         File file = getSingleFile(folder, shard);
         file.getParentFile().mkdir();
-        try (JsonWriter out = new JsonWriter(Files.newWriter(file, Charsets.UTF_8))) {
+        try (JsonWriter out = new JsonWriter(Files.newWriter(file, StandardCharsets.UTF_8))) {
             out.setIndent(INDENT_STRING);
             out.beginArray();
             for (Map.Entry<SourceFile, SourceFile> entry : map.entrySet()) {
@@ -558,7 +559,7 @@ public class MergingLogPersistUtil {
             return fileMap;
         }
 
-        try (JsonReader reader = new JsonReader(Files.newReader(file, Charsets.UTF_8))) {
+        try (JsonReader reader = new JsonReader(Files.newReader(file, StandardCharsets.UTF_8))) {
             reader.beginArray();
             while (reader.peek() != JsonToken.END_ARRAY) {
                 reader.beginObject();

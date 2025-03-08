@@ -22,6 +22,7 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
+import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
@@ -45,6 +46,7 @@ interface DslServices: BaseServices {
     @Deprecated("Should not be used in new DSL object. Only for older DSL objects.")
     val versionedSdkLoaderService: VersionedSdkLoaderService
     val projectType: ProjectType?
+    val configurations: ConfigurationContainer
 
 
     fun <T> domainObjectSet(type: Class<T>): DomainObjectSet<T>

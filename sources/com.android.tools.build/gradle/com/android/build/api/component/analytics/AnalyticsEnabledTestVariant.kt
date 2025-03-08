@@ -125,16 +125,6 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
         get() = generatesApk.dexing
 
     override val outputProviders: ApkOutputProviders
-        get() = object: ApkOutputProviders {
-            override fun <TaskT : Task> provideApkOutputToTask(
-                taskProvider: TaskProvider<TaskT>,
-                taskInput: (TaskT) -> Property<ApkOutput>,
-                deviceSpec: DeviceSpec
-            ) {
-                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                    VariantPropertiesMethodType.PROVIDE_APK_OUTPUT_TO_TASK_VALUE
-                delegate.outputProviders.provideApkOutputToTask(taskProvider, taskInput, deviceSpec)
-            }
-        }
+        get() = generatesApk.outputProviders
 
 }

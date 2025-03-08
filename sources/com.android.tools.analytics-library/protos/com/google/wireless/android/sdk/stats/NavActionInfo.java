@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new NavActionInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NavActionInfo_descriptor;
@@ -169,7 +164,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of the action affected
@@ -190,13 +185,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NavActionInfo.ActionType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.UNKNOWN : result;
   }
 
   public static final int HAS_POP_FIELD_NUMBER = 2;
-  private boolean hasPop_;
+  private boolean hasPop_ = false;
   /**
    * <pre>
    * Whether the action has popTo set
@@ -223,7 +217,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUSIVE_FIELD_NUMBER = 3;
-  private boolean inclusive_;
+  private boolean inclusive_ = false;
   /**
    * <pre>
    * Whether the action has popToInclusive set
@@ -250,7 +244,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNT_FROM_SOURCE_FIELD_NUMBER = 4;
-  private int countFromSource_;
+  private int countFromSource_ = 0;
   /**
    * <pre>
    * The number of actions originating from the same destination as this one
@@ -277,7 +271,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNT_TO_DESTINATION_FIELD_NUMBER = 5;
-  private int countToDestination_;
+  private int countToDestination_ = 0;
   /**
    * <pre>
    * The number of actions targeting the same destination as this one
@@ -304,7 +298,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COUNT_SAME_FIELD_NUMBER = 6;
-  private int countSame_;
+  private int countSame_ = 0;
   /**
    * <pre>
    * The number of actions with the same source and destination as this one
@@ -604,18 +598,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       hasPop_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       inclusive_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       countFromSource_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       countToDestination_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       countSame_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -642,12 +631,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavActionInfo buildPartial() {
       com.google.wireless.android.sdk.stats.NavActionInfo result = new com.google.wireless.android.sdk.stats.NavActionInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NavActionInfo result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.hasPop_ = hasPop_;
         to_bitField0_ |= 0x00000002;
@@ -668,43 +663,9 @@ private static final long serialVersionUID = 0L;
         result.countSame_ = countSame_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NavActionInfo) {
@@ -837,8 +798,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavActionInfo.ActionType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.UNKNOWN : result;
     }
     /**
@@ -909,8 +869,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHasPop(boolean value) {
-      bitField0_ |= 0x00000002;
+
       hasPop_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -964,8 +925,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInclusive(boolean value) {
-      bitField0_ |= 0x00000004;
+
       inclusive_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1019,8 +981,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCountFromSource(int value) {
-      bitField0_ |= 0x00000008;
+
       countFromSource_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1074,8 +1037,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCountToDestination(int value) {
-      bitField0_ |= 0x00000010;
+
       countToDestination_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1129,8 +1093,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCountSame(int value) {
-      bitField0_ |= 0x00000020;
+
       countSame_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

@@ -41,10 +41,8 @@ interface UnitTestOptions {
      * `android_resource_apk`: the path to the APK-like zip file containing merged resources, which
      * includes all the resources from the current subproject and all its dependencies.
      *
-     * `android_merged_assets`: the path to the directory containing merged assets. For app
-     * subprojects, the merged assets directory contains assets from the current subproject and its
-     * dependencies. For library subprojects, the merged assets directory contains only assets from
-     * the current subproject.
+     * `android_merged_assets`: the path to the directory containing merged assets. The merged
+     * assets directory contains assets from the current subproject and it dependencies.
      *
      * `android_merged_manifest`: the path to the merged manifest file. Only app subprojects have
      * the manifest merged from their dependencies. Library subprojects do not include manifest

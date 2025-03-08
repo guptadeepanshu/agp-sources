@@ -73,7 +73,7 @@ public class ReadOnlyBuildType extends ReadOnlyBaseConfig implements BuildType {
 
     @Override
     public boolean isRenderscriptDebuggable() {
-        return buildType.isRenderscriptDebuggable();
+        return false;
     }
 
     @Override

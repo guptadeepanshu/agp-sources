@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AtfAuditResult();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AtfAuditResult_descriptor;
@@ -334,11 +329,6 @@ private static final long serialVersionUID = 0L;
       return new AtfResultCount();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AtfAuditResult_AtfResultCount_descriptor;
@@ -490,7 +480,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int CHECK_NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object checkName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object checkName_ = "";
     /**
      * <pre>
      * Accessibility Testing Framework result's source check name, to uniquely
@@ -553,7 +544,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RESULT_TYPE_FIELD_NUMBER = 2;
-    private int resultType_;
+    private int resultType_ = 0;
     /**
      * <pre>
      * Its result type
@@ -574,13 +565,12 @@ private static final long serialVersionUID = 0L;
      * @return The resultType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);
+      com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.forNumber(resultType_);
       return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.UNKNOWN : result;
     }
 
     public static final int ERROR_EXPANDED_FIELD_NUMBER = 3;
-    private boolean errorExpanded_;
+    private boolean errorExpanded_ = false;
     /**
      * <pre>
      * Error expanded for more information by user
@@ -607,6 +597,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FIXES_FIELD_NUMBER = 4;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.AtfFixDetail> fixes_;
     /**
      * <pre>
@@ -907,12 +898,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         checkName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         resultType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         errorExpanded_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         if (fixesBuilder_ == null) {
           fixes_ = java.util.Collections.emptyList();
         } else {
@@ -946,20 +935,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount buildPartial() {
         com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount result = new com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.checkName_ = checkName_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.resultType_ = resultType_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          result.errorExpanded_ = errorExpanded_;
-          to_bitField0_ |= 0x00000004;
-        }
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount result) {
         if (fixesBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0)) {
             fixes_ = java.util.Collections.unmodifiableList(fixes_);
@@ -969,43 +951,26 @@ private static final long serialVersionUID = 0L;
         } else {
           result.fixes_ = fixesBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.checkName_ = checkName_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.resultType_ = resultType_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.errorExpanded_ = errorExpanded_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount) {
@@ -1019,8 +984,8 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount other) {
         if (other == com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.getDefaultInstance()) return this;
         if (other.hasCheckName()) {
-          bitField0_ |= 0x00000001;
           checkName_ = other.checkName_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasResultType()) {
@@ -1203,11 +1168,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setCheckName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         checkName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1221,8 +1184,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearCheckName() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         checkName_ = getDefaultInstance().getCheckName();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1238,11 +1201,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setCheckNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         checkName_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1269,8 +1230,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);
+        com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.forNumber(resultType_);
         return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.UNKNOWN : result;
       }
       /**
@@ -1341,8 +1301,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setErrorExpanded(boolean value) {
-        bitField0_ |= 0x00000004;
+
         errorExpanded_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1738,7 +1699,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TRIGGER_FIELD_NUMBER = 1;
-  private int trigger_;
+  private int trigger_ = 0;
   /**
    * <pre>
    * What triggered Accessibility testing framework
@@ -1759,12 +1720,12 @@ private static final long serialVersionUID = 0L;
    * @return The trigger.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger getTrigger() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.valueOf(trigger_);
+    com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.forNumber(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.UNKNOWN_TRIGGER : result;
   }
 
   public static final int COUNTS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount> counts_;
   /**
    * <pre>
@@ -1825,7 +1786,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RENDER_RESULT_FIELD_NUMBER = 3;
-  private boolean renderResult_;
+  private boolean renderResult_ = false;
   /**
    * <pre>
    * Render result. True if render was successful. False otherwise.
@@ -1852,7 +1813,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPONENT_COUNT_FIELD_NUMBER = 4;
-  private int componentCount_;
+  private int componentCount_ = 0;
   /**
    * <pre>
    * Number of components rendered
@@ -1879,7 +1840,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AUDIT_DURATION_MS_FIELD_NUMBER = 5;
-  private long auditDurationMs_;
+  private long auditDurationMs_ = 0L;
   /**
    * <pre>
    * Time it took for audit to run in milliseconds, per render.
@@ -1906,7 +1867,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOTAL_RENDER_TIME_MS_FIELD_NUMBER = 6;
-  private long totalRenderTimeMs_;
+  private long totalRenderTimeMs_ = 0L;
   /**
    * <pre>
    * Full render time in ms
@@ -1933,7 +1894,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERROR_COUNT_FIELD_NUMBER = 7;
-  private int errorCount_;
+  private int errorCount_ = 0;
   /**
    * <pre>
    * Errors displayed in the error panel, including non ATF errors.
@@ -2251,8 +2212,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       trigger_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (countsBuilder_ == null) {
         counts_ = java.util.Collections.emptyList();
       } else {
@@ -2261,15 +2222,10 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000002);
       renderResult_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       componentCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       auditDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       totalRenderTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       errorCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -2296,12 +2252,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfAuditResult buildPartial() {
       com.google.wireless.android.sdk.stats.AtfAuditResult result = new com.google.wireless.android.sdk.stats.AtfAuditResult(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.trigger_ = trigger_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.AtfAuditResult result) {
       if (countsBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0)) {
           counts_ = java.util.Collections.unmodifiableList(counts_);
@@ -2310,6 +2267,15 @@ private static final long serialVersionUID = 0L;
         result.counts_ = counts_;
       } else {
         result.counts_ = countsBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AtfAuditResult result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.trigger_ = trigger_;
+        to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.renderResult_ = renderResult_;
@@ -2331,43 +2297,9 @@ private static final long serialVersionUID = 0L;
         result.errorCount_ = errorCount_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AtfAuditResult) {
@@ -2539,8 +2471,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger getTrigger() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.valueOf(trigger_);
+      com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.forNumber(trigger_);
       return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.UNKNOWN_TRIGGER : result;
     }
     /**
@@ -2923,8 +2854,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRenderResult(boolean value) {
-      bitField0_ |= 0x00000004;
+
       renderResult_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2978,8 +2910,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setComponentCount(int value) {
-      bitField0_ |= 0x00000008;
+
       componentCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -3033,8 +2966,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAuditDurationMs(long value) {
-      bitField0_ |= 0x00000010;
+
       auditDurationMs_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -3088,8 +3022,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalRenderTimeMs(long value) {
-      bitField0_ |= 0x00000020;
+
       totalRenderTimeMs_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -3143,8 +3078,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setErrorCount(int value) {
-      bitField0_ |= 0x00000040;
+
       errorCount_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }

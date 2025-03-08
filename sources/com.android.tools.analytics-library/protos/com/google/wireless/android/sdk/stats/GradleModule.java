@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new GradleModule();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleModule_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOTAL_MODULE_COUNT_FIELD_NUMBER = 1;
-  private long totalModuleCount_;
+  private long totalModuleCount_ = 0L;
   /**
    * <pre>
    * Total number of modules in this app.
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APP_MODULE_COUNT_FIELD_NUMBER = 2;
-  private long appModuleCount_;
+  private long appModuleCount_ = 0L;
   /**
    * <pre>
    * Number of aar modules in  this app.
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LIB_MODULE_COUNT_FIELD_NUMBER = 3;
-  private long libModuleCount_;
+  private long libModuleCount_ = 0L;
   /**
    * <pre>
    * Number of library modules in this app.
@@ -130,7 +125,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DYNAMIC_FEATURE_MODULE_COUNT_FIELD_NUMBER = 4;
-  private long dynamicFeatureModuleCount_;
+  private long dynamicFeatureModuleCount_ = 0L;
   /**
    * <pre>
    * Number of dynamic feature modules in this app.
@@ -157,7 +152,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEST_MODULE_COUNT_FIELD_NUMBER = 5;
-  private long testModuleCount_;
+  private long testModuleCount_ = 0L;
   /**
    * <pre>
    * Number of android test modules in this app.
@@ -184,7 +179,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KOTLIN_MULTIPLATFORM_MODULE_COUNT_FIELD_NUMBER = 6;
-  private long kotlinMultiplatformModuleCount_;
+  private long kotlinMultiplatformModuleCount_ = 0L;
   /**
    * <pre>
    * Number of kotlin multiplatform modules in this app.
@@ -493,18 +488,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       totalModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       appModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       libModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       dynamicFeatureModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       testModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       kotlinMultiplatformModuleCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -531,6 +521,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleModule buildPartial() {
       com.google.wireless.android.sdk.stats.GradleModule result = new com.google.wireless.android.sdk.stats.GradleModule(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleModule result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -557,43 +553,9 @@ private static final long serialVersionUID = 0L;
         result.kotlinMultiplatformModuleCount_ = kotlinMultiplatformModuleCount_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleModule) {
@@ -732,8 +694,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTotalModuleCount(long value) {
-      bitField0_ |= 0x00000001;
+
       totalModuleCount_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -787,8 +750,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAppModuleCount(long value) {
-      bitField0_ |= 0x00000002;
+
       appModuleCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -842,8 +806,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLibModuleCount(long value) {
-      bitField0_ |= 0x00000004;
+
       libModuleCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -897,8 +862,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDynamicFeatureModuleCount(long value) {
-      bitField0_ |= 0x00000008;
+
       dynamicFeatureModuleCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -952,8 +918,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTestModuleCount(long value) {
-      bitField0_ |= 0x00000010;
+
       testModuleCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1007,8 +974,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setKotlinMultiplatformModuleCount(long value) {
-      bitField0_ |= 0x00000020;
+
       kotlinMultiplatformModuleCount_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

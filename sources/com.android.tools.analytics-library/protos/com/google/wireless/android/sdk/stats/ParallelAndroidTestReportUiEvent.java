@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new ParallelAndroidTestReportUiEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ParallelAndroidTestReportUiEvent_descriptor;
@@ -307,11 +302,6 @@ private static final long serialVersionUID = 0L;
       return new UserInteraction();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ParallelAndroidTestReportUiEvent_UserInteraction_descriptor;
@@ -536,7 +526,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int TYPE_FIELD_NUMBER = 1;
-    private int type_;
+    private int type_ = 0;
     /**
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType type = 1;</code>
      * @return Whether the type field is set.
@@ -549,13 +539,12 @@ private static final long serialVersionUID = 0L;
      * @return The type.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.UNKNOWN_UI_INTERACTION : result;
     }
 
     public static final int UI_ELEMENT_FIELD_NUMBER = 2;
-    private int uiElement_;
+    private int uiElement_ = 0;
     /**
      * <pre>
      * The UI element ID of which this user interaction occurred.
@@ -576,13 +565,12 @@ private static final long serialVersionUID = 0L;
      * @return The uiElement.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getUiElement() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.valueOf(uiElement_);
+      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.forNumber(uiElement_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.UNKNOWN_UI_ELEMENT : result;
     }
 
     public static final int RESULT_FIELD_NUMBER = 3;
-    private int result_;
+    private int result_ = 0;
     /**
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = 3;</code>
      * @return Whether the result field is set.
@@ -595,8 +583,7 @@ private static final long serialVersionUID = 0L;
      * @return The result.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType getResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.valueOf(result_);
+      com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.forNumber(result_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.UNKNOWN_UI_INTERACTION_RESULT : result;
     }
 
@@ -826,12 +813,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         type_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         uiElement_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         result_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -858,57 +843,29 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction buildPartial() {
         com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction result = new com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.type_ = type_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.uiElement_ = uiElement_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.result_ = result_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.type_ = type_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.uiElement_ = uiElement_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.result_ = result_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction) {
@@ -1023,8 +980,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType getType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.valueOf(type_);
+        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.forNumber(type_);
         return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.UNKNOWN_UI_INTERACTION : result;
       }
       /**
@@ -1074,8 +1030,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getUiElement() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.valueOf(uiElement_);
+        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.forNumber(uiElement_);
         return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.UNKNOWN_UI_ELEMENT : result;
       }
       /**
@@ -1125,8 +1080,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType getResult() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.valueOf(result_);
+        com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.forNumber(result_);
         return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.UNKNOWN_UI_INTERACTION_RESULT : result;
       }
       /**
@@ -1218,14 +1172,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMPRESSIONS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> impressions_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement> impressions_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement>() {
             public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.valueOf(from);
+              com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.UNKNOWN_UI_ELEMENT : result;
             }
           };
@@ -1269,6 +1223,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INTERACTIONS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction> interactions_;
   /**
    * <pre>
@@ -1539,6 +1494,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       impressions_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000001);
       if (interactionsBuilder_ == null) {
@@ -1574,7 +1530,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent buildPartial() {
       com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent result = new com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent result) {
       if (((bitField0_ & 0x00000001) != 0)) {
         impressions_ = java.util.Collections.unmodifiableList(impressions_);
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1589,42 +1551,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.interactions_ = interactionsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent) {

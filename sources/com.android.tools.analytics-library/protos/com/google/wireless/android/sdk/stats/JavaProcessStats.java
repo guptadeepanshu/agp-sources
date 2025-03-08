@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new JavaProcessStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_JavaProcessStats_descriptor;
@@ -50,7 +45,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int HEAP_MEMORY_USAGE_FIELD_NUMBER = 1;
-  private long heapMemoryUsage_;
+  private long heapMemoryUsage_ = 0L;
   /**
    * <pre>
    * Number of bytes of memory in use as heap memory.
@@ -77,7 +72,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NON_HEAP_MEMORY_USAGE_FIELD_NUMBER = 2;
-  private long nonHeapMemoryUsage_;
+  private long nonHeapMemoryUsage_ = 0L;
   /**
    * <pre>
    * Number of bytes of memory in use as non heap memory.
@@ -104,7 +99,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOADED_CLASS_COUNT_FIELD_NUMBER = 3;
-  private int loadedClassCount_;
+  private int loadedClassCount_ = 0;
   /**
    * <pre>
    * Current amount of java classes loaded.
@@ -131,7 +126,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int THREAD_COUNT_FIELD_NUMBER = 4;
-  private int threadCount_;
+  private int threadCount_ = 0;
   /**
    * <pre>
    * Current amount of threads.
@@ -158,6 +153,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GARBAGE_COLLECTION_STATS_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.GarbageCollectionStats> garbageCollectionStats_;
   /**
    * <pre>
@@ -477,14 +473,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       heapMemoryUsage_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       nonHeapMemoryUsage_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       loadedClassCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       threadCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       if (garbageCollectionStatsBuilder_ == null) {
         garbageCollectionStats_ = java.util.Collections.emptyList();
       } else {
@@ -518,6 +511,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.JavaProcessStats buildPartial() {
       com.google.wireless.android.sdk.stats.JavaProcessStats result = new com.google.wireless.android.sdk.stats.JavaProcessStats(this);
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.JavaProcessStats result) {
+      if (garbageCollectionStatsBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0)) {
+          garbageCollectionStats_ = java.util.Collections.unmodifiableList(garbageCollectionStats_);
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.garbageCollectionStats_ = garbageCollectionStats_;
+      } else {
+        result.garbageCollectionStats_ = garbageCollectionStatsBuilder_.build();
+      }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.JavaProcessStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -536,52 +548,9 @@ private static final long serialVersionUID = 0L;
         result.threadCount_ = threadCount_;
         to_bitField0_ |= 0x00000008;
       }
-      if (garbageCollectionStatsBuilder_ == null) {
-        if (((bitField0_ & 0x00000010) != 0)) {
-          garbageCollectionStats_ = java.util.Collections.unmodifiableList(garbageCollectionStats_);
-          bitField0_ = (bitField0_ & ~0x00000010);
-        }
-        result.garbageCollectionStats_ = garbageCollectionStats_;
-      } else {
-        result.garbageCollectionStats_ = garbageCollectionStatsBuilder_.build();
-      }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.JavaProcessStats) {
@@ -743,8 +712,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHeapMemoryUsage(long value) {
-      bitField0_ |= 0x00000001;
+
       heapMemoryUsage_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -798,8 +768,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNonHeapMemoryUsage(long value) {
-      bitField0_ |= 0x00000002;
+
       nonHeapMemoryUsage_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -853,8 +824,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoadedClassCount(int value) {
-      bitField0_ |= 0x00000004;
+
       loadedClassCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -908,8 +880,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setThreadCount(int value) {
-      bitField0_ |= 0x00000008;
+
       threadCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

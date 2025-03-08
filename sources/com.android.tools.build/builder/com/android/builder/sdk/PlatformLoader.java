@@ -28,13 +28,13 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.builder.internal.FakeAndroidTarget;
 import com.android.repository.Revision;
-import com.android.repository.api.ConsoleProgressIndicator;
-import com.android.repository.api.ProgressIndicator;
 import com.android.sdklib.BuildToolInfo;
 import com.android.sdklib.IAndroidTarget;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
+
 import com.google.common.collect.ImmutableList;
+
 import java.io.File;
 import java.nio.file.Path;
 
@@ -53,6 +53,7 @@ public class PlatformLoader implements SdkLoader {
 
     private File mHostToolsFolder;
     private SdkInfo mSdkInfo;
+    private ILogger mLogger;
     @NonNull
     private final ImmutableList<File> mRepositories;
 
@@ -123,8 +124,7 @@ public class PlatformLoader implements SdkLoader {
     @Override
     @Nullable
     public File installSdkTool(@NonNull SdkLibData sdkLibData, @NonNull String packageId) {
-        ProgressIndicator progress = new ConsoleProgressIndicator();
-        progress.logWarning(
+        warn(
                 "Installing missing SDK components is not supported when building"
                         + " using an SDK from platform prebuilds.");
         return null;
@@ -134,8 +134,7 @@ public class PlatformLoader implements SdkLoader {
     @Nullable
     public ImmutableList<String> retrieveRepoIdsWithPrefix(
             @NonNull SdkLibData sdkLibData, @NonNull String prefix) {
-        ProgressIndicator progress = new ConsoleProgressIndicator();
-        progress.logWarning(
+        warn(
                 "Retrieving remote repositories is not supported when building"
                         + " using an SDK from platform prebuilds.");
         return null;
@@ -144,8 +143,7 @@ public class PlatformLoader implements SdkLoader {
     @Nullable
     @Override
     public File getLocalEmulator(@NonNull ILogger logger) {
-        ProgressIndicator progress = new ConsoleProgressIndicator();
-        progress.logWarning(
+        warn(
                 "Retrieving the Emulator is not supported when building using an"
                         + " SDK from platform prebuilds.");
         return null;
@@ -171,6 +169,7 @@ public class PlatformLoader implements SdkLoader {
             mSdkInfo = new SdkInfo(
                     new File(mTreeLocation, "out/host/" + host + "/framework/annotations.jar"),
                     new File(mTreeLocation, "out/host/" + host + "/bin/adb"));
+            mLogger = logger;
         }
     }
 
@@ -194,5 +193,13 @@ public class PlatformLoader implements SdkLoader {
         }
 
         return mHostToolsFolder;
+    }
+
+    private void warn(String message) {
+        if (mLogger != null) {
+            mLogger.warning(message);
+        } else {
+            System.err.println(message);
+        }
     }
 }

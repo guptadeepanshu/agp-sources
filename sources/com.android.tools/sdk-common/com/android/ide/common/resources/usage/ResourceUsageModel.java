@@ -46,7 +46,8 @@ import static com.android.ide.common.resources.ResourcesUtil.resourceNameToField
 import static com.android.support.FragmentTagUtil.isFragmentTag;
 import static com.android.utils.SdkUtils.endsWithIgnoreCase;
 import static com.android.utils.SdkUtils.fileNameToResourceName;
-import static com.google.common.base.Charsets.UTF_8;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
@@ -57,19 +58,14 @@ import com.android.resources.ResourceFolderType;
 import com.android.resources.ResourceType;
 import com.android.resources.ResourceUrl;
 import com.android.utils.SdkUtils;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -77,9 +73,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * A model for Android resource declarations and usages
- */
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+/** A model for Android resource declarations and usages */
 public class ResourceUsageModel {
     /** All known resources store. */
     protected ResourceStore mResourceStore;

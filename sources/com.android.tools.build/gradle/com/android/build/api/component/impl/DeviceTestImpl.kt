@@ -25,9 +25,12 @@ import com.android.build.api.component.impl.features.RenderscriptCreationConfigI
 import com.android.build.api.component.impl.features.ShadersCreationConfigImpl
 import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ApkOutput
+import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DeviceSpec
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.impl.AndroidResourcesImpl
@@ -57,14 +60,17 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.DeviceTestApkOutput
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.builder.core.ComponentTypeImpl
+import org.gradle.api.Task
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskProvider
 import java.io.Serializable
 import javax.inject.Inject
 
@@ -356,4 +362,17 @@ open class DeviceTestImpl @Inject constructor(
     // can be added to the variant, we will need to find a unique name so the model builder
     // can sync all these device tests correctly.
     val artifactName = ComponentTypeImpl.ANDROID_TEST.artifactName
+
+    override val outputProviders: ApkOutputProviders
+        get() = object: ApkOutputProviders {
+            override fun <TaskT: Task> provideApkOutputToTask(taskProvider: TaskProvider<TaskT>,
+                taskInput: (TaskT) -> Property<ApkOutput>,
+                deviceSpec: DeviceSpec) {
+                val apkOutput = DeviceTestApkOutput(mainVariant, this@DeviceTestImpl, deviceSpec)
+                taskProvider.configure { task ->
+                    apkOutput.setInputs(task.inputs)
+                    taskInput(task).set(apkOutput)
+                }
+            }
+        }
 }

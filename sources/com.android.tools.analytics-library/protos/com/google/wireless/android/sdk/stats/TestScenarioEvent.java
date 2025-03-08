@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new TestScenarioEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_descriptor;
@@ -182,7 +177,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+     *     See studio_stats.proto;l=15489
      * @return Whether the targetFileType field is set.
      */
     @java.lang.Deprecated boolean hasTargetFileType();
@@ -192,7 +188,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+     *     See studio_stats.proto;l=15489
      * @return The targetFileType.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileType getTargetFileType();
@@ -211,7 +208,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+     *     See studio_stats.proto;l=15491
      * @return Whether the testFileType field is set.
      */
     @java.lang.Deprecated boolean hasTestFileType();
@@ -221,7 +219,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+     *     See studio_stats.proto;l=15491
      * @return The testFileType.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileType getTestFileType();
@@ -300,11 +299,6 @@ private static final long serialVersionUID = 0L;
       return new TestScenarioRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioRequest_descriptor;
@@ -320,7 +314,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int CONTEXT_LENGTH_FIELD_NUMBER = 1;
-    private int contextLength_;
+    private int contextLength_ = 0;
     /**
      * <pre>
      * Length of the initial test scenario prompt
@@ -354,7 +348,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+     *     See studio_stats.proto;l=15489
      * @return Whether the targetFileType field is set.
      */
     @java.lang.Override
@@ -367,7 +362,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+     *     See studio_stats.proto;l=15489
      * @return The targetFileType.
      */
     @java.lang.Override
@@ -394,7 +390,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+     *     See studio_stats.proto;l=15491
      * @return Whether the testFileType field is set.
      */
     @java.lang.Override
@@ -407,7 +404,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+     *     See studio_stats.proto;l=15491
      * @return The testFileType.
      */
     @java.lang.Override
@@ -427,7 +425,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TARGET_FILE_LANGUAGE_FIELD_NUMBER = 4;
-    private int targetFileLanguage_;
+    private int targetFileLanguage_ = 0;
     /**
      * <pre>
      * EditorFileType of target / selected file
@@ -448,13 +446,12 @@ private static final long serialVersionUID = 0L;
      * @return The targetFileLanguage.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getTargetFileLanguage() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(targetFileLanguage_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(targetFileLanguage_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
     public static final int TEST_FILE_LANGUAGE_FIELD_NUMBER = 5;
-    private int testFileLanguage_;
+    private int testFileLanguage_ = 0;
     /**
      * <pre>
      * EditorFileType of generated test file
@@ -475,8 +472,7 @@ private static final long serialVersionUID = 0L;
      * @return The testFileLanguage.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getTestFileLanguage() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(testFileLanguage_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(testFileLanguage_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
@@ -746,24 +742,20 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         contextLength_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (targetFileTypeBuilder_ == null) {
-          targetFileType_ = null;
-        } else {
-          targetFileTypeBuilder_.clear();
+        targetFileType_ = null;
+        if (targetFileTypeBuilder_ != null) {
+          targetFileTypeBuilder_.dispose();
+          targetFileTypeBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (testFileTypeBuilder_ == null) {
-          testFileType_ = null;
-        } else {
-          testFileTypeBuilder_.clear();
+        testFileType_ = null;
+        if (testFileTypeBuilder_ != null) {
+          testFileTypeBuilder_.dispose();
+          testFileTypeBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
         targetFileLanguage_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         testFileLanguage_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -790,6 +782,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest buildPartial() {
         com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest result = new com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -797,66 +795,28 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (targetFileTypeBuilder_ == null) {
-            result.targetFileType_ = targetFileType_;
-          } else {
-            result.targetFileType_ = targetFileTypeBuilder_.build();
-          }
+          result.targetFileType_ = targetFileTypeBuilder_ == null
+              ? targetFileType_
+              : targetFileTypeBuilder_.build();
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
-          if (testFileTypeBuilder_ == null) {
-            result.testFileType_ = testFileType_;
-          } else {
-            result.testFileType_ = testFileTypeBuilder_.build();
-          }
+          result.testFileType_ = testFileTypeBuilder_ == null
+              ? testFileType_
+              : testFileTypeBuilder_.build();
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.targetFileLanguage_ = targetFileLanguage_;
           to_bitField0_ |= 0x00000008;
         }
-        result.targetFileLanguage_ = targetFileLanguage_;
         if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.testFileLanguage_ = testFileLanguage_;
           to_bitField0_ |= 0x00000010;
         }
-        result.testFileLanguage_ = testFileLanguage_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioRequest) {
@@ -1005,8 +965,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setContextLength(int value) {
-        bitField0_ |= 0x00000001;
+
         contextLength_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1034,7 +995,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+       *     See studio_stats.proto;l=15489
        * @return Whether the targetFileType field is set.
        */
       @java.lang.Deprecated public boolean hasTargetFileType() {
@@ -1046,7 +1008,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
+       *     See studio_stats.proto;l=15489
        * @return The targetFileType.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType getTargetFileType() {
@@ -1069,11 +1032,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           targetFileType_ = value;
-          onChanged();
         } else {
           targetFileTypeBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1087,11 +1050,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.FileType.Builder builderForValue) {
         if (targetFileTypeBuilder_ == null) {
           targetFileType_ = builderForValue.build();
-          onChanged();
         } else {
           targetFileTypeBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1104,18 +1067,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Deprecated public Builder mergeTargetFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (targetFileTypeBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              targetFileType_ != null &&
-              targetFileType_ != com.google.wireless.android.sdk.stats.FileType.getDefaultInstance()) {
-            targetFileType_ =
-              com.google.wireless.android.sdk.stats.FileType.newBuilder(targetFileType_).mergeFrom(value).buildPartial();
+            targetFileType_ != null &&
+            targetFileType_ != com.google.wireless.android.sdk.stats.FileType.getDefaultInstance()) {
+            getTargetFileTypeBuilder().mergeFrom(value);
           } else {
             targetFileType_ = value;
           }
-          onChanged();
         } else {
           targetFileTypeBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -1126,13 +1088,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearTargetFileType() {
-        if (targetFileTypeBuilder_ == null) {
-          targetFileType_ = null;
-          onChanged();
-        } else {
-          targetFileTypeBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        targetFileType_ = null;
+        if (targetFileTypeBuilder_ != null) {
+          targetFileTypeBuilder_.dispose();
+          targetFileTypeBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1192,7 +1154,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+       *     See studio_stats.proto;l=15491
        * @return Whether the testFileType field is set.
        */
       @java.lang.Deprecated public boolean hasTestFileType() {
@@ -1204,7 +1167,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
+       *     See studio_stats.proto;l=15491
        * @return The testFileType.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType getTestFileType() {
@@ -1227,11 +1191,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           testFileType_ = value;
-          onChanged();
         } else {
           testFileTypeBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1245,11 +1209,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.FileType.Builder builderForValue) {
         if (testFileTypeBuilder_ == null) {
           testFileType_ = builderForValue.build();
-          onChanged();
         } else {
           testFileTypeBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1262,18 +1226,17 @@ private static final long serialVersionUID = 0L;
       @java.lang.Deprecated public Builder mergeTestFileType(com.google.wireless.android.sdk.stats.FileType value) {
         if (testFileTypeBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
-              testFileType_ != null &&
-              testFileType_ != com.google.wireless.android.sdk.stats.FileType.getDefaultInstance()) {
-            testFileType_ =
-              com.google.wireless.android.sdk.stats.FileType.newBuilder(testFileType_).mergeFrom(value).buildPartial();
+            testFileType_ != null &&
+            testFileType_ != com.google.wireless.android.sdk.stats.FileType.getDefaultInstance()) {
+            getTestFileTypeBuilder().mergeFrom(value);
           } else {
             testFileType_ = value;
           }
-          onChanged();
         } else {
           testFileTypeBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -1284,13 +1247,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        */
       @java.lang.Deprecated public Builder clearTestFileType() {
-        if (testFileTypeBuilder_ == null) {
-          testFileType_ = null;
-          onChanged();
-        } else {
-          testFileTypeBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        testFileType_ = null;
+        if (testFileTypeBuilder_ != null) {
+          testFileTypeBuilder_.dispose();
+          testFileTypeBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1363,8 +1326,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getTargetFileLanguage() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(targetFileLanguage_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(targetFileLanguage_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -1422,8 +1384,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getTestFileLanguage() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(testFileLanguage_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(testFileLanguage_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -1533,7 +1494,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+     *     See studio_stats.proto;l=15501
      * @return Whether the testScenariosCount field is set.
      */
     @java.lang.Deprecated boolean hasTestScenariosCount();
@@ -1544,7 +1506,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+     *     See studio_stats.proto;l=15501
      * @return The testScenariosCount.
      */
     @java.lang.Deprecated int getTestScenariosCount();
@@ -1555,7 +1518,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+     *     See studio_stats.proto;l=15503
      * @return Whether the testSignaturesCount field is set.
      */
     @java.lang.Deprecated boolean hasTestSignaturesCount();
@@ -1565,7 +1529,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+     *     See studio_stats.proto;l=15503
      * @return The testSignaturesCount.
      */
     @java.lang.Deprecated int getTestSignaturesCount();
@@ -1592,11 +1557,6 @@ private static final long serialVersionUID = 0L;
       return new InconsistentCount();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_InconsistentCount_descriptor;
@@ -1612,7 +1572,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int TEST_SCENARIOS_COUNT_FIELD_NUMBER = 1;
-    private int testScenariosCount_;
+    private int testScenariosCount_ = 0;
     /**
      * <pre>
      * Deprecated. This is only logged if the number of test scenarios
@@ -1620,7 +1580,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+     *     See studio_stats.proto;l=15501
      * @return Whether the testScenariosCount field is set.
      */
     @java.lang.Override
@@ -1634,7 +1595,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+     *     See studio_stats.proto;l=15501
      * @return The testScenariosCount.
      */
     @java.lang.Override
@@ -1643,14 +1605,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TEST_SIGNATURES_COUNT_FIELD_NUMBER = 2;
-    private int testSignaturesCount_;
+    private int testSignaturesCount_ = 0;
     /**
      * <pre>
      * Deprecated.
      * </pre>
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+     *     See studio_stats.proto;l=15503
      * @return Whether the testSignaturesCount field is set.
      */
     @java.lang.Override
@@ -1663,7 +1626,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+     *     See studio_stats.proto;l=15503
      * @return The testSignaturesCount.
      */
     @java.lang.Override
@@ -1880,10 +1844,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         testScenariosCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         testSignaturesCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1910,6 +1873,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount buildPartial() {
         com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount result = new com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1920,43 +1889,9 @@ private static final long serialVersionUID = 0L;
           result.testSignaturesCount_ = testSignaturesCount_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount) {
@@ -2036,7 +1971,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+       *     See studio_stats.proto;l=15501
        * @return Whether the testScenariosCount field is set.
        */
       @java.lang.Override
@@ -2050,7 +1986,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+       *     See studio_stats.proto;l=15501
        * @return The testScenariosCount.
        */
       @java.lang.Override
@@ -2064,13 +2001,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+       *     See studio_stats.proto;l=15501
        * @param value The testScenariosCount to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setTestScenariosCount(int value) {
-        bitField0_ |= 0x00000001;
+
         testScenariosCount_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2081,7 +2020,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
+       *     See studio_stats.proto;l=15501
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTestScenariosCount() {
@@ -2098,7 +2038,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+       *     See studio_stats.proto;l=15503
        * @return Whether the testSignaturesCount field is set.
        */
       @java.lang.Override
@@ -2111,7 +2052,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+       *     See studio_stats.proto;l=15503
        * @return The testSignaturesCount.
        */
       @java.lang.Override
@@ -2124,13 +2066,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+       *     See studio_stats.proto;l=15503
        * @param value The testSignaturesCount to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setTestSignaturesCount(int value) {
-        bitField0_ |= 0x00000002;
+
         testSignaturesCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2140,7 +2084,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
+       *     See studio_stats.proto;l=15503
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTestSignaturesCount() {
@@ -2322,11 +2267,6 @@ private static final long serialVersionUID = 0L;
       return new TestScenarioResult();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestScenarioEvent_TestScenarioResult_descriptor;
@@ -2342,7 +2282,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int MISFORMATTED_RESPONSE_COUNT_FIELD_NUMBER = 1;
-    private int misformattedResponseCount_;
+    private int misformattedResponseCount_ = 0;
     /**
      * <pre>
      * Number of misformatted model response
@@ -2369,7 +2309,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int GENERATION_TYPE_FIELD_NUMBER = 2;
-    private int generationType_;
+    private int generationType_ = 0;
     /**
      * <pre>
      * Indicates whether user is creating new tests or enhancing existing
@@ -2392,13 +2332,12 @@ private static final long serialVersionUID = 0L;
      * @return The generationType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType getGenerationType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.valueOf(generationType_);
+      com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.forNumber(generationType_);
       return result == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.GENERATION_TYPE_UNDEFINED : result;
     }
 
     public static final int NUM_ACCEPT_FIELD_NUMBER = 3;
-    private int numAccept_;
+    private int numAccept_ = 0;
     /**
      * <pre>
      * Number of accepted test scenarios
@@ -2425,7 +2364,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int NUM_DECLINE_FIELD_NUMBER = 4;
-    private int numDecline_;
+    private int numDecline_ = 0;
     /**
      * <pre>
      * Number of declined test scenarios
@@ -2695,14 +2634,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         misformattedResponseCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         generationType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         numAccept_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         numDecline_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -2729,6 +2665,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult buildPartial() {
         com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult result = new com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2736,9 +2678,9 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.generationType_ = generationType_;
           to_bitField0_ |= 0x00000002;
         }
-        result.generationType_ = generationType_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.numAccept_ = numAccept_;
           to_bitField0_ |= 0x00000004;
@@ -2747,43 +2689,9 @@ private static final long serialVersionUID = 0L;
           result.numDecline_ = numDecline_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent.TestScenarioResult) {
@@ -2913,8 +2821,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMisformattedResponseCount(int value) {
-        bitField0_ |= 0x00000001;
+
         misformattedResponseCount_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2957,8 +2866,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType getGenerationType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.valueOf(generationType_);
+        com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType result = com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.forNumber(generationType_);
         return result == null ? com.google.wireless.android.sdk.stats.TestScenarioEvent.GenerationType.GENERATION_TYPE_UNDEFINED : result;
       }
       /**
@@ -3031,8 +2939,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setNumAccept(int value) {
-        bitField0_ |= 0x00000004;
+
         numAccept_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3086,8 +2995,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setNumDecline(int value) {
-        bitField0_ |= 0x00000008;
+
         numDecline_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -3171,6 +3081,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   private int transformCase_ = 0;
+  @SuppressWarnings("serial")
   private java.lang.Object transform_;
   public enum TransformCase
       implements com.google.protobuf.Internal.EnumLite,
@@ -3251,7 +3162,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+   *     See studio_stats.proto;l=15530
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Override
@@ -3264,7 +3176,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+   *     See studio_stats.proto;l=15530
    * @return The inconsistentCount.
    */
   @java.lang.Override
@@ -3551,6 +3464,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (requestBuilder_ != null) {
         requestBuilder_.clear();
       }
@@ -3588,67 +3502,33 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestScenarioEvent buildPartial() {
       com.google.wireless.android.sdk.stats.TestScenarioEvent result = new com.google.wireless.android.sdk.stats.TestScenarioEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (transformCase_ == 1) {
-        if (requestBuilder_ == null) {
-          result.transform_ = transform_;
-        } else {
-          result.transform_ = requestBuilder_.build();
-        }
-      }
-      if (transformCase_ == 2) {
-        if (inconsistentCountBuilder_ == null) {
-          result.transform_ = transform_;
-        } else {
-          result.transform_ = inconsistentCountBuilder_.build();
-        }
-      }
-      if (transformCase_ == 3) {
-        if (testScenarioResultBuilder_ == null) {
-          result.transform_ = transform_;
-        } else {
-          result.transform_ = testScenarioResultBuilder_.build();
-        }
-      }
-      result.bitField0_ = to_bitField0_;
-      result.transformCase_ = transformCase_;
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.TestScenarioEvent result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(com.google.wireless.android.sdk.stats.TestScenarioEvent result) {
+      result.transformCase_ = transformCase_;
+      result.transform_ = this.transform_;
+      if (transformCase_ == 1 &&
+          requestBuilder_ != null) {
+        result.transform_ = requestBuilder_.build();
+      }
+      if (transformCase_ == 2 &&
+          inconsistentCountBuilder_ != null) {
+        result.transform_ = inconsistentCountBuilder_.build();
+      }
+      if (transformCase_ == 3 &&
+          testScenarioResultBuilder_ != null) {
+        result.transform_ = testScenarioResultBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.TestScenarioEvent) {
@@ -3831,8 +3711,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (transformCase_ == 1) {
           requestBuilder_.mergeFrom(value);
+        } else {
+          requestBuilder_.setMessage(value);
         }
-        requestBuilder_.setMessage(value);
       }
       transformCase_ = 1;
       return this;
@@ -3894,7 +3775,7 @@ private static final long serialVersionUID = 0L;
         transform_ = null;
       }
       transformCase_ = 1;
-      onChanged();;
+      onChanged();
       return requestBuilder_;
     }
 
@@ -3906,7 +3787,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+     *     See studio_stats.proto;l=15530
      * @return Whether the inconsistentCount field is set.
      */
     @java.lang.Override
@@ -3919,7 +3801,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
+     *     See studio_stats.proto;l=15530
      * @return The inconsistentCount.
      */
     @java.lang.Override
@@ -3994,8 +3877,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (transformCase_ == 2) {
           inconsistentCountBuilder_.mergeFrom(value);
+        } else {
+          inconsistentCountBuilder_.setMessage(value);
         }
-        inconsistentCountBuilder_.setMessage(value);
       }
       transformCase_ = 2;
       return this;
@@ -4073,7 +3957,7 @@ private static final long serialVersionUID = 0L;
         transform_ = null;
       }
       transformCase_ = 2;
-      onChanged();;
+      onChanged();
       return inconsistentCountBuilder_;
     }
 
@@ -4151,8 +4035,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (transformCase_ == 3) {
           testScenarioResultBuilder_.mergeFrom(value);
+        } else {
+          testScenarioResultBuilder_.setMessage(value);
         }
-        testScenarioResultBuilder_.setMessage(value);
       }
       transformCase_ = 3;
       return this;
@@ -4214,7 +4099,7 @@ private static final long serialVersionUID = 0L;
         transform_ = null;
       }
       transformCase_ = 3;
-      onChanged();;
+      onChanged();
       return testScenarioResultBuilder_;
     }
     @java.lang.Override

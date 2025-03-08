@@ -44,6 +44,7 @@ public interface LintActionOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -58,6 +59,7 @@ public interface LintActionOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -72,6 +74,7 @@ public interface LintActionOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.

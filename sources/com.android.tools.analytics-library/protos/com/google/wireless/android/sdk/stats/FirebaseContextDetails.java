@@ -37,11 +37,6 @@ private static final long serialVersionUID = 0L;
     return new FirebaseContextDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_FirebaseContextDetails_descriptor;
@@ -203,7 +198,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int PROJECT_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Public project id, used for attributing project growth to the plugin.
@@ -263,7 +259,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_NUMBER_FIELD_NUMBER = 2;
-  private volatile java.lang.Object projectNumber_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectNumber_ = "";
   /**
    * <pre>
    * Secondary identifier for the project, also stored for more flexibility with
@@ -326,7 +323,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LOGGED_IN_FIELD_NUMBER = 3;
-  private boolean loggedIn_;
+  private boolean loggedIn_ = false;
   /**
    * <pre>
    * Whether the action was performed while the user was logged in.
@@ -353,7 +350,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CONNECT_STATUS_FIELD_NUMBER = 4;
-  private int connectStatus_;
+  private int connectStatus_ = 1;
   /**
    * <pre>
    * Whether the action was performed on while the related Studio project's
@@ -376,13 +373,13 @@ private static final long serialVersionUID = 0L;
    * @return The connectStatus.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus getConnectStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.valueOf(connectStatus_);
+    com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.forNumber(connectStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.UNKNOWN_CONNECT_STATUS : result;
   }
 
   public static final int PERFORMED_ON_FIELD_NUMBER = 5;
-  private volatile java.lang.Object performedOn_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object performedOn_ = "";
   /**
    * <pre>
    * Tutorial resource event relates to. Restricted to non PII such as the id
@@ -445,7 +442,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DURATION_FIELD_NUMBER = 6;
-  private long duration_;
+  private long duration_ = 0L;
   /**
    * <pre>
    * Time that an action took to be performed. A primary example is how long
@@ -752,18 +749,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       projectNumber_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       loggedIn_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       connectStatus_ = 1;
-      bitField0_ = (bitField0_ & ~0x00000008);
       performedOn_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       duration_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -790,69 +782,41 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FirebaseContextDetails buildPartial() {
       com.google.wireless.android.sdk.stats.FirebaseContextDetails result = new com.google.wireless.android.sdk.stats.FirebaseContextDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.FirebaseContextDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.projectId_ = projectId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.projectId_ = projectId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.projectNumber_ = projectNumber_;
         to_bitField0_ |= 0x00000002;
       }
-      result.projectNumber_ = projectNumber_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.loggedIn_ = loggedIn_;
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.connectStatus_ = connectStatus_;
         to_bitField0_ |= 0x00000008;
       }
-      result.connectStatus_ = connectStatus_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.performedOn_ = performedOn_;
         to_bitField0_ |= 0x00000010;
       }
-      result.performedOn_ = performedOn_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
         result.duration_ = duration_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.FirebaseContextDetails) {
@@ -866,13 +830,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.FirebaseContextDetails other) {
       if (other == com.google.wireless.android.sdk.stats.FirebaseContextDetails.getDefaultInstance()) return this;
       if (other.hasProjectId()) {
-        bitField0_ |= 0x00000001;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasProjectNumber()) {
-        bitField0_ |= 0x00000002;
         projectNumber_ = other.projectNumber_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasLoggedIn()) {
@@ -882,8 +846,8 @@ private static final long serialVersionUID = 0L;
         setConnectStatus(other.getConnectStatus());
       }
       if (other.hasPerformedOn()) {
-        bitField0_ |= 0x00000010;
         performedOn_ = other.performedOn_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasDuration()) {
@@ -1035,11 +999,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1052,8 +1014,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1068,11 +1030,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1147,11 +1107,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectNumber(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       projectNumber_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1165,8 +1123,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectNumber() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       projectNumber_ = getDefaultInstance().getProjectNumber();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1182,11 +1140,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectNumberBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       projectNumber_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1226,8 +1182,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLoggedIn(boolean value) {
-      bitField0_ |= 0x00000004;
+
       loggedIn_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1270,8 +1227,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus getConnectStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.valueOf(connectStatus_);
+      com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.forNumber(connectStatus_);
       return result == null ? com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.UNKNOWN_CONNECT_STATUS : result;
     }
     /**
@@ -1379,11 +1335,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPerformedOn(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       performedOn_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1397,8 +1351,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearPerformedOn() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       performedOn_ = getDefaultInstance().getPerformedOn();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1414,11 +1368,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setPerformedOnBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       performedOn_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1461,8 +1413,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDuration(long value) {
-      bitField0_ |= 0x00000020;
+
       duration_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

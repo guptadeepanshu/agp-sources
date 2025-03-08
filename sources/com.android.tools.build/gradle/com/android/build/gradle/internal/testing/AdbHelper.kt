@@ -38,7 +38,15 @@ class AdbHelper(
 ) {
 
     val adbExecutable: File by lazy {
-        versionedSdkLoader.get().adbExecutableProvider.get().asFile
+        versionedSdkLoader.get().adbExecutableProvider.get().asFile.also { adbFile ->
+            if (!adbFile.canExecute()) {
+                error(
+                    """
+                        Cannot execute adb executable: ${adbFile.absolutePath}
+                        Add permission to execute this file to run Gradle Managed Devices.
+                    """.trimIndent())
+            }
+        }
     }
 
     /**

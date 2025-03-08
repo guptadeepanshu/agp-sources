@@ -49,5 +49,5 @@ public interface AdbUsageEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.AdbUsageEvent.AdbDeviceStateChangeEventOrBuilder getDeviceStateChangeEventOrBuilder();
 
-  public com.google.wireless.android.sdk.stats.AdbUsageEvent.EventCase getEventCase();
+  com.google.wireless.android.sdk.stats.AdbUsageEvent.EventCase getEventCase();
 }

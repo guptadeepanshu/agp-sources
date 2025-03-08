@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EditingMetricsEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_descriptor;
@@ -144,11 +139,6 @@ private static final long serialVersionUID = 0L;
       return new CharacterMetrics();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_CharacterMetrics_descriptor;
@@ -434,11 +424,6 @@ private static final long serialVersionUID = 0L;
         return new SourceCount();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_CharacterMetrics_SourceCount_descriptor;
@@ -454,7 +439,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int SOURCE_FIELD_NUMBER = 1;
-      private int source_;
+      private int source_ = 0;
       /**
        * <code>optional .android_studio.EditingMetricsEvent.CharacterMetrics.Source source = 1;</code>
        * @return Whether the source field is set.
@@ -467,13 +452,12 @@ private static final long serialVersionUID = 0L;
        * @return The source.
        */
       @java.lang.Override public com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source getSource() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source result = com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.valueOf(source_);
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source result = com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.forNumber(source_);
         return result == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.UNKNOWN : result;
       }
 
       public static final int COUNT_FIELD_NUMBER = 2;
-      private long count_;
+      private long count_ = 0L;
       /**
        * <code>optional uint64 count = 2;</code>
        * @return Whether the count field is set.
@@ -700,10 +684,9 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           source_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           count_ = 0L;
-          bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
 
@@ -730,53 +713,25 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount buildPartial() {
           com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount result = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) != 0)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.source_ = source_;
-          if (((from_bitField0_ & 0x00000002) != 0)) {
-            result.count_ = count_;
-            to_bitField0_ |= 0x00000002;
-          }
-          result.bitField0_ = to_bitField0_;
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
+        private void buildPartial0(com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.source_ = source_;
+            to_bitField0_ |= 0x00000001;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.count_ = count_;
+            to_bitField0_ |= 0x00000002;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
+
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount) {
@@ -869,8 +824,7 @@ private static final long serialVersionUID = 0L;
          */
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source getSource() {
-          @SuppressWarnings("deprecation")
-          com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source result = com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.valueOf(source_);
+          com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source result = com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.forNumber(source_);
           return result == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Source.UNKNOWN : result;
         }
         /**
@@ -921,8 +875,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCount(long value) {
-          bitField0_ |= 0x00000002;
+
           count_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -1002,6 +957,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int CHARS_ADDED_FIELD_NUMBER = 1;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount> charsAdded_;
     /**
      * <code>repeated .android_studio.EditingMetricsEvent.CharacterMetrics.SourceCount chars_added = 1;</code>
@@ -1042,6 +998,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CHARS_DELETED_FIELD_NUMBER = 2;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.SourceCount> charsDeleted_;
     /**
      * <code>repeated .android_studio.EditingMetricsEvent.CharacterMetrics.SourceCount chars_deleted = 2;</code>
@@ -1082,7 +1039,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DURATION_MS_FIELD_NUMBER = 3;
-    private long durationMs_;
+    private long durationMs_ = 0L;
     /**
      * <pre>
      * Duration of period during which the metrics were collected, in
@@ -1330,6 +1287,7 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (charsAddedBuilder_ == null) {
           charsAdded_ = java.util.Collections.emptyList();
         } else {
@@ -1345,7 +1303,6 @@ private static final long serialVersionUID = 0L;
         }
         bitField0_ = (bitField0_ & ~0x00000002);
         durationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1372,8 +1329,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics buildPartial() {
         com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics result = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics result) {
         if (charsAddedBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
             charsAdded_ = java.util.Collections.unmodifiableList(charsAdded_);
@@ -1392,47 +1354,18 @@ private static final long serialVersionUID = 0L;
         } else {
           result.charsDeleted_ = charsDeletedBuilder_.build();
         }
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.durationMs_ = durationMs_;
           to_bitField0_ |= 0x00000001;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics) {
@@ -2092,8 +2025,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDurationMs(long value) {
-        bitField0_ |= 0x00000004;
+
         durationMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2406,12 +2340,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (characterMetricsBuilder_ == null) {
-        characterMetrics_ = null;
-      } else {
-        characterMetricsBuilder_.clear();
+      bitField0_ = 0;
+      characterMetrics_ = null;
+      if (characterMetricsBuilder_ != null) {
+        characterMetricsBuilder_.dispose();
+        characterMetricsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -2438,53 +2372,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EditingMetricsEvent buildPartial() {
       com.google.wireless.android.sdk.stats.EditingMetricsEvent result = new com.google.wireless.android.sdk.stats.EditingMetricsEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (characterMetricsBuilder_ == null) {
-          result.characterMetrics_ = characterMetrics_;
-        } else {
-          result.characterMetrics_ = characterMetricsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EditingMetricsEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.characterMetrics_ = characterMetricsBuilder_ == null
+            ? characterMetrics_
+            : characterMetricsBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent) {
@@ -2580,11 +2484,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         characterMetrics_ = value;
-        onChanged();
       } else {
         characterMetricsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -2594,11 +2498,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.Builder builderForValue) {
       if (characterMetricsBuilder_ == null) {
         characterMetrics_ = builderForValue.build();
-        onChanged();
       } else {
         characterMetricsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -2607,31 +2511,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeCharacterMetrics(com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics value) {
       if (characterMetricsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            characterMetrics_ != null &&
-            characterMetrics_ != com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.getDefaultInstance()) {
-          characterMetrics_ =
-            com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.newBuilder(characterMetrics_).mergeFrom(value).buildPartial();
+          characterMetrics_ != null &&
+          characterMetrics_ != com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.getDefaultInstance()) {
+          getCharacterMetricsBuilder().mergeFrom(value);
         } else {
           characterMetrics_ = value;
         }
-        onChanged();
       } else {
         characterMetricsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.EditingMetricsEvent.CharacterMetrics character_metrics = 1;</code>
      */
     public Builder clearCharacterMetrics() {
-      if (characterMetricsBuilder_ == null) {
-        characterMetrics_ = null;
-        onChanged();
-      } else {
-        characterMetricsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      characterMetrics_ = null;
+      if (characterMetricsBuilder_ != null) {
+        characterMetricsBuilder_.dispose();
+        characterMetricsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

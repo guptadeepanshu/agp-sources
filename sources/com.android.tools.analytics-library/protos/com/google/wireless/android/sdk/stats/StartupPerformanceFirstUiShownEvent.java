@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new StartupPerformanceFirstUiShownEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StartupPerformanceFirstUiShownEvent_descriptor;
@@ -172,7 +167,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DURATION_MS_FIELD_NUMBER = 1;
-  private int durationMs_;
+  private int durationMs_ = 0;
   /**
    * <pre>
    * How long did it take to show the first UI element since the IDE startup.
@@ -199,7 +194,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 2;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of the first UI element shown.
@@ -220,8 +215,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType result = com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType result = com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.UNKNOWN_UI_RESPONSE_TYPE : result;
   }
 
@@ -438,10 +432,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       durationMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -468,6 +461,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent buildPartial() {
       com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent result = new com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -475,46 +474,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000002;
       }
-      result.type_ = type_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent) {
@@ -628,8 +593,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(int value) {
-      bitField0_ |= 0x00000001;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -670,8 +636,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType result = com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType result = com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.StartupPerformanceFirstUiShownEvent.UiResponseType.UNKNOWN_UI_RESPONSE_TYPE : result;
     }
     /**

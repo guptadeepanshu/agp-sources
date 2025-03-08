@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new NonTransitiveRClassMigrationEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NonTransitiveRClassMigrationEvent_descriptor;
@@ -192,7 +187,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int MIGRATION_UUID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object migrationUuid_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object migrationUuid_ = "";
   /**
    * <pre>
    * The uuid for a session of the migration.
@@ -252,7 +248,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int KIND_FIELD_NUMBER = 2;
-  private int kind_;
+  private int kind_ = 0;
   /**
    * <pre>
    * The kind of event.
@@ -273,13 +269,12 @@ private static final long serialVersionUID = 0L;
    * @return The kind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind getKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.valueOf(kind_);
+    com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.forNumber(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.UNKNOWN_MIGRATION_EVENT_KIND : result;
   }
 
   public static final int USAGES_FIELD_NUMBER = 3;
-  private int usages_;
+  private int usages_ = 0;
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
@@ -534,12 +529,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       migrationUuid_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       kind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       usages_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -566,57 +559,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent buildPartial() {
       com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent result = new com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.migrationUuid_ = migrationUuid_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.kind_ = kind_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.usages_ = usages_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.migrationUuid_ = migrationUuid_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.kind_ = kind_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.usages_ = usages_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent) {
@@ -630,8 +595,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent other) {
       if (other == com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.getDefaultInstance()) return this;
       if (other.hasMigrationUuid()) {
-        bitField0_ |= 0x00000001;
         migrationUuid_ = other.migrationUuid_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasKind()) {
@@ -771,11 +736,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMigrationUuid(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       migrationUuid_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -788,8 +751,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMigrationUuid() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       migrationUuid_ = getDefaultInstance().getMigrationUuid();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -804,11 +767,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMigrationUuidBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       migrationUuid_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -835,8 +796,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind getKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.valueOf(kind_);
+      com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.forNumber(kind_);
       return result == null ? com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.UNKNOWN_MIGRATION_EVENT_KIND : result;
     }
     /**
@@ -910,8 +870,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUsages(int value) {
-      bitField0_ |= 0x00000004;
+
       usages_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

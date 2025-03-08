@@ -174,14 +174,10 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
                     task.keepRulesConfigurations.set(listOf("-dontobfuscate", "-dontoptimize"))
                 }
 
-                if (creationConfig is ApplicationCreationConfig && creationConfig.consumesDynamicFeatures) {
-                    task.dexFiles.from(creationConfig.artifacts.get(InternalArtifactType.BASE_DEX))
-                } else {
-                    task.dexFiles.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
-                }
+                task.dexFiles.from(creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX))
                 // For feature dex, it is produced by d8/r8 in feature module and published to
                 // application(not for androidTest component). The reason why we don't use
-                //  consumesFeatureJars is because that API is only for minified build.
+                // consumesDynamicFeatures is because that API is only for minified build.
                 if (!creationConfig.componentType.isForTesting &&
                     creationConfig.global.hasDynamicFeatures) {
                     task.dexFiles.from(

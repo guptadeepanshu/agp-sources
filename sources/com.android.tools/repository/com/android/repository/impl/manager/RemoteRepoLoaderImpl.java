@@ -30,7 +30,9 @@ import com.android.repository.api.RepositorySource;
 import com.android.repository.api.RepositorySourceProvider;
 import com.android.repository.api.SettingsController;
 import com.android.repository.impl.meta.SchemaModuleUtil;
+
 import com.google.common.collect.Lists;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -44,6 +46,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 import javax.xml.bind.JAXBException;
 
 /**
@@ -286,14 +289,13 @@ public class RemoteRepoLoaderImpl implements RemoteRepoLoader {
             legacy = true;
         }
 
-        if (parsedPackages != null && !parsedPackages.isEmpty()) {
+        if (parsedPackages != null) {
             (legacy ? legacyResult : result).put(source, parsedPackages);
         } else {
             progress.logWarning("Errors during XML parse:");
             for (String error : errors) {
                 progress.logWarning(error);
             }
-            //noinspection VariableNotUsedInsideIf
             if (mFallback != null) {
                 progress.logWarning("Additionally, the fallback loader failed to parse the XML.");
             }

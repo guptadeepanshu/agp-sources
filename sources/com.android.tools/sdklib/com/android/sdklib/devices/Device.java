@@ -705,12 +705,18 @@ public final class Device {
         return device != null && "android-desktop".equals(device.getTagId());
     }
 
+    /** Whether the given device is an XR device */
+    public static boolean isXr(@Nullable Device device) {
+        return device != null && "android-xr".equals(device.getTagId());
+    }
+
     /** Whether the given device appears to be a mobile device (e.g. not wear, tv, auto, etc) */
     public static boolean isMobile(@Nullable Device device) {
         return !isTv(device)
                 && !isWear(device)
                 && !isThings(device)
                 && !isAutomotive(device)
-                && !isDesktop(device);
+                && !isDesktop(device)
+                && !isXr(device);
     }
 }

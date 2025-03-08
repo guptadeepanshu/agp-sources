@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new IDeviceUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_IDeviceUsageEvent_descriptor;
@@ -796,7 +791,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int METHOD_FIELD_NUMBER = 1;
-  private int method_;
+  private int method_ = 0;
   /**
    * <pre>
    * 'IDevice' method
@@ -817,13 +812,12 @@ private static final long serialVersionUID = 0L;
    * @return The method.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method getMethod() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.valueOf(method_);
+    com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.forNumber(method_);
     return result == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.METHOD_UNSPECIFIED : result;
   }
 
   public static final int SOURCE_TYPE_FIELD_NUMBER = 2;
-  private int sourceType_;
+  private int sourceType_ = 0;
   /**
    * <pre>
    * `IDevice` implementation
@@ -844,13 +838,12 @@ private static final long serialVersionUID = 0L;
    * @return The sourceType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType getSourceType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.valueOf(sourceType_);
+    com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.forNumber(sourceType_);
     return result == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.SOURCE_TYPE_UNSPECIFIED : result;
   }
 
   public static final int IS_EXCEPTION_FIELD_NUMBER = 3;
-  private boolean isException_;
+  private boolean isException_ = false;
   /**
    * <pre>
    * Whether method threw an exception
@@ -1100,12 +1093,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       method_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       sourceType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       isException_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1132,57 +1123,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IDeviceUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.IDeviceUsageEvent result = new com.google.wireless.android.sdk.stats.IDeviceUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.method_ = method_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.sourceType_ = sourceType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.isException_ = isException_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.IDeviceUsageEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.method_ = method_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.sourceType_ = sourceType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.isException_ = isException_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.IDeviceUsageEvent) {
@@ -1298,8 +1261,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method getMethod() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.valueOf(method_);
+      com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.forNumber(method_);
       return result == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.Method.METHOD_UNSPECIFIED : result;
     }
     /**
@@ -1357,8 +1319,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType getSourceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.valueOf(sourceType_);
+      com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType result = com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.forNumber(sourceType_);
       return result == null ? com.google.wireless.android.sdk.stats.IDeviceUsageEvent.SourceType.SOURCE_TYPE_UNSPECIFIED : result;
     }
     /**
@@ -1429,8 +1390,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsException(boolean value) {
-      bitField0_ |= 0x00000004;
+
       isException_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new SmlGeolocationEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlGeolocationEvent_descriptor;
@@ -46,7 +41,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int MODEL_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object modelId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object modelId_ = "";
   /**
    * <code>optional string model_id = 1;</code>
    * @return Whether the modelId field is set.
@@ -94,7 +90,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CHECK_SUCCESSFUL_FIELD_NUMBER = 2;
-  private boolean checkSuccessful_;
+  private boolean checkSuccessful_ = false;
   /**
    * <code>optional bool check_successful = 2;</code>
    * @return Whether the checkSuccessful field is set.
@@ -113,7 +109,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GRPC_ERROR_RESPONSE_CODE_FIELD_NUMBER = 3;
-  private int grpcErrorResponseCode_;
+  private int grpcErrorResponseCode_ = 0;
   /**
    * <code>optional int32 grpc_error_response_code = 3;</code>
    * @return Whether the grpcErrorResponseCode field is set.
@@ -356,12 +352,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       modelId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       checkSuccessful_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       grpcErrorResponseCode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -388,12 +382,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlGeolocationEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SmlGeolocationEvent result = new com.google.wireless.android.sdk.stats.SmlGeolocationEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SmlGeolocationEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.modelId_ = modelId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.modelId_ = modelId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.checkSuccessful_ = checkSuccessful_;
         to_bitField0_ |= 0x00000002;
@@ -402,43 +402,9 @@ private static final long serialVersionUID = 0L;
         result.grpcErrorResponseCode_ = grpcErrorResponseCode_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SmlGeolocationEvent) {
@@ -452,8 +418,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.SmlGeolocationEvent other) {
       if (other == com.google.wireless.android.sdk.stats.SmlGeolocationEvent.getDefaultInstance()) return this;
       if (other.hasModelId()) {
-        bitField0_ |= 0x00000001;
         modelId_ = other.modelId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasCheckSuccessful()) {
@@ -570,11 +536,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModelId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       modelId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -583,8 +547,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModelId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       modelId_ = getDefaultInstance().getModelId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -595,11 +559,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModelIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       modelId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -627,8 +589,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCheckSuccessful(boolean value) {
-      bitField0_ |= 0x00000002;
+
       checkSuccessful_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -666,8 +629,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGrpcErrorResponseCode(int value) {
-      bitField0_ |= 0x00000004;
+
       grpcErrorResponseCode_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

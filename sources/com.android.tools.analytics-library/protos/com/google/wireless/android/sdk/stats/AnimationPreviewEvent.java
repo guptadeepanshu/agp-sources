@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AnimationPreviewEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AnimationPreviewEvent_descriptor;
@@ -374,7 +369,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOOLBAR_TYPE_FIELD_NUMBER = 1;
-  private int toolbarType_;
+  private int toolbarType_ = 0;
   /**
    * <pre>
    * The type of tool bar which provided for the previewed animation.
@@ -395,13 +390,12 @@ private static final long serialVersionUID = 0L;
    * @return The toolbarType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType getToolbarType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.valueOf(toolbarType_);
+    com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.forNumber(toolbarType_);
     return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.UNKNOWN_TOOLBAR_TYPE : result;
   }
 
   public static final int USER_ACTION_FIELD_NUMBER = 2;
-  private int userAction_;
+  private int userAction_ = 0;
   /**
    * <pre>
    * The operation from user to control the animation preview, such like play,
@@ -424,8 +418,7 @@ private static final long serialVersionUID = 0L;
    * @return The userAction.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction getUserAction() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.valueOf(userAction_);
+    com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.forNumber(userAction_);
     return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.UNKNOWN_CONTROL : result;
   }
 
@@ -640,10 +633,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       toolbarType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       userAction_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -670,53 +662,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent buildPartial() {
       com.google.wireless.android.sdk.stats.AnimationPreviewEvent result = new com.google.wireless.android.sdk.stats.AnimationPreviewEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.toolbarType_ = toolbarType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.userAction_ = userAction_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AnimationPreviewEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.toolbarType_ = toolbarType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.userAction_ = userAction_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AnimationPreviewEvent) {
@@ -824,8 +788,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType getToolbarType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.valueOf(toolbarType_);
+      com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.forNumber(toolbarType_);
       return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.UNKNOWN_TOOLBAR_TYPE : result;
     }
     /**
@@ -885,8 +848,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction getUserAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.valueOf(userAction_);
+      com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.forNumber(userAction_);
       return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.UNKNOWN_CONTROL : result;
     }
     /**

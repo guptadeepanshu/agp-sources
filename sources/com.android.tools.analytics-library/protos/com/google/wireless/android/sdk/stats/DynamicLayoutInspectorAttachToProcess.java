@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorAttachToProcess();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorAttachToProcess_descriptor;
@@ -201,7 +196,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CLIENT_TYPE_FIELD_NUMBER = 1;
-  private int clientType_;
+  private int clientType_ = 0;
   /**
    * <pre>
    * Client type: Legacy or AppInspection
@@ -222,13 +217,12 @@ private static final long serialVersionUID = 0L;
    * @return The clientType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType getClientType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.valueOf(clientType_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.forNumber(clientType_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.UNKNOWN_CLIENT_TYPE : result;
   }
 
   public static final int SUCCESS_FIELD_NUMBER = 2;
-  private boolean success_;
+  private boolean success_ = false;
   /**
    * <pre>
    * True if the attach to process succeeded
@@ -293,7 +287,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int COMPOSE_ERROR_CODE_FIELD_NUMBER = 4;
-  private int composeErrorCode_;
+  private int composeErrorCode_ = 0;
   /**
    * <pre>
    * Error information if the compose inspector failed
@@ -314,13 +308,12 @@ private static final long serialVersionUID = 0L;
    * @return The composeErrorCode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getComposeErrorCode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(composeErrorCode_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.forNumber(composeErrorCode_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
   }
 
   public static final int MULTIPLE_PROJECTS_OPEN_FIELD_NUMBER = 5;
-  private boolean multipleProjectsOpen_;
+  private boolean multipleProjectsOpen_ = false;
   /**
    * <pre>
    * When we attached to a process, were there multiple projects open?
@@ -347,7 +340,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEBUGGER_ATTACHED_FIELD_NUMBER = 6;
-  private boolean debuggerAttached_;
+  private boolean debuggerAttached_ = false;
   /**
    * <pre>
    * Was the debugger running for this session
@@ -374,7 +367,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEBUGGER_PAUSED_DURING_ATTACH_FIELD_NUMBER = 7;
-  private boolean debuggerPausedDuringAttach_;
+  private boolean debuggerPausedDuringAttach_ = false;
   /**
    * <pre>
    * Was the debugger paused during the attach
@@ -401,7 +394,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AUTO_CONNECT_ENABLED_FIELD_NUMBER = 8;
-  private boolean autoConnectEnabled_;
+  private boolean autoConnectEnabled_ = false;
   /**
    * <pre>
    * Was auto connect enabled for this session
@@ -428,7 +421,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_EMBEDDED_LAYOUT_INSPECTOR_FIELD_NUMBER = 9;
-  private boolean isEmbeddedLayoutInspector_;
+  private boolean isEmbeddedLayoutInspector_ = false;
   /**
    * <pre>
    * Was Layout Inspector embedded in the Running Devices Tool Window
@@ -455,7 +448,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ATTACH_DURATION_MS_FIELD_NUMBER = 10;
-  private long attachDurationMs_;
+  private long attachDurationMs_ = 0L;
   /**
    * <pre>
    * The time it took for attach to start and end.
@@ -835,30 +828,21 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       clientType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       success_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (errorInfoBuilder_ == null) {
-        errorInfo_ = null;
-      } else {
-        errorInfoBuilder_.clear();
+      errorInfo_ = null;
+      if (errorInfoBuilder_ != null) {
+        errorInfoBuilder_.dispose();
+        errorInfoBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       composeErrorCode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       multipleProjectsOpen_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       debuggerAttached_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       debuggerPausedDuringAttach_ = false;
-      bitField0_ = (bitField0_ & ~0x00000040);
       autoConnectEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       isEmbeddedLayoutInspector_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       attachDurationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -885,28 +869,32 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.clientType_ = clientType_;
         to_bitField0_ |= 0x00000001;
       }
-      result.clientType_ = clientType_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.success_ = success_;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (errorInfoBuilder_ == null) {
-          result.errorInfo_ = errorInfo_;
-        } else {
-          result.errorInfo_ = errorInfoBuilder_.build();
-        }
+        result.errorInfo_ = errorInfoBuilder_ == null
+            ? errorInfo_
+            : errorInfoBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.composeErrorCode_ = composeErrorCode_;
         to_bitField0_ |= 0x00000008;
       }
-      result.composeErrorCode_ = composeErrorCode_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.multipleProjectsOpen_ = multipleProjectsOpen_;
         to_bitField0_ |= 0x00000010;
@@ -931,43 +919,9 @@ private static final long serialVersionUID = 0L;
         result.attachDurationMs_ = attachDurationMs_;
         to_bitField0_ |= 0x00000200;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess) {
@@ -1141,8 +1095,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType getClientType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.valueOf(clientType_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.forNumber(clientType_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.ClientType.UNKNOWN_CLIENT_TYPE : result;
     }
     /**
@@ -1213,8 +1166,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSuccess(boolean value) {
-      bitField0_ |= 0x00000002;
+
       success_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1275,11 +1229,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         errorInfo_ = value;
-        onChanged();
       } else {
         errorInfoBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1293,11 +1247,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.Builder builderForValue) {
       if (errorInfoBuilder_ == null) {
         errorInfo_ = builderForValue.build();
-        onChanged();
       } else {
         errorInfoBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1310,18 +1264,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeErrorInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo value) {
       if (errorInfoBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            errorInfo_ != null &&
-            errorInfo_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDefaultInstance()) {
-          errorInfo_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.newBuilder(errorInfo_).mergeFrom(value).buildPartial();
+          errorInfo_ != null &&
+          errorInfo_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDefaultInstance()) {
+          getErrorInfoBuilder().mergeFrom(value);
         } else {
           errorInfo_ = value;
         }
-        onChanged();
       } else {
         errorInfoBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1332,13 +1285,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 3 [lazy = true];</code>
      */
     public Builder clearErrorInfo() {
-      if (errorInfoBuilder_ == null) {
-        errorInfo_ = null;
-        onChanged();
-      } else {
-        errorInfoBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      errorInfo_ = null;
+      if (errorInfoBuilder_ != null) {
+        errorInfoBuilder_.dispose();
+        errorInfoBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1411,8 +1364,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getComposeErrorCode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(composeErrorCode_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.forNumber(composeErrorCode_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
     }
     /**
@@ -1483,8 +1435,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMultipleProjectsOpen(boolean value) {
-      bitField0_ |= 0x00000010;
+
       multipleProjectsOpen_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1538,8 +1491,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDebuggerAttached(boolean value) {
-      bitField0_ |= 0x00000020;
+
       debuggerAttached_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1593,8 +1547,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDebuggerPausedDuringAttach(boolean value) {
-      bitField0_ |= 0x00000040;
+
       debuggerPausedDuringAttach_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1648,8 +1603,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAutoConnectEnabled(boolean value) {
-      bitField0_ |= 0x00000080;
+
       autoConnectEnabled_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1703,8 +1659,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsEmbeddedLayoutInspector(boolean value) {
-      bitField0_ |= 0x00000100;
+
       isEmbeddedLayoutInspector_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1761,8 +1718,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAttachDurationMs(long value) {
-      bitField0_ |= 0x00000200;
+
       attachDurationMs_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }

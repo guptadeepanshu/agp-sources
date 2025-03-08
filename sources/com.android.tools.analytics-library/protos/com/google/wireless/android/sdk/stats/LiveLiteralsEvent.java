@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new LiveLiteralsEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LiveLiteralsEvent_descriptor;
@@ -501,11 +496,6 @@ private static final long serialVersionUID = 0L;
       return new LiveLiteralsDeployStats();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LiveLiteralsEvent_LiveLiteralsDeployStats_descriptor;
@@ -521,7 +511,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int DEVICE_TYPE_FIELD_NUMBER = 1;
-    private int deviceType_;
+    private int deviceType_ = 0;
     /**
      * <pre>
      * The device type for these aggregated stats.
@@ -542,13 +532,12 @@ private static final long serialVersionUID = 0L;
      * @return The deviceType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
+      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.forNumber(deviceType_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
     }
 
     public static final int DEVICES_COUNT_FIELD_NUMBER = 2;
-    private int devicesCount_;
+    private int devicesCount_ = 0;
     /**
      * <pre>
      * Devices of this type.
@@ -575,7 +564,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUCCESSFUL_DEPLOYMENTS_FIELD_NUMBER = 3;
-    private int successfulDeployments_;
+    private int successfulDeployments_ = 0;
     /**
      * <pre>
      * Number of successful deployments.
@@ -602,7 +591,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FAILED_DEPLOYMENTS_FIELD_NUMBER = 4;
-    private int failedDeployments_;
+    private int failedDeployments_ = 0;
     /**
      * <pre>
      * Number of failed deployments.
@@ -987,26 +976,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         deviceType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         devicesCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         successfulDeployments_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         failedDeployments_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
-        if (numberOfProblemsBuilder_ == null) {
-          numberOfProblems_ = null;
-        } else {
-          numberOfProblemsBuilder_.clear();
+        numberOfProblems_ = null;
+        if (numberOfProblemsBuilder_ != null) {
+          numberOfProblemsBuilder_.dispose();
+          numberOfProblemsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        if (deploymentTimeMsBuilder_ == null) {
-          deploymentTimeMs_ = null;
-        } else {
-          deploymentTimeMsBuilder_.clear();
+        deploymentTimeMs_ = null;
+        if (deploymentTimeMsBuilder_ != null) {
+          deploymentTimeMsBuilder_.dispose();
+          deploymentTimeMsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -1033,12 +1017,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats buildPartial() {
         com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats result = new com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.deviceType_ = deviceType_;
           to_bitField0_ |= 0x00000001;
         }
-        result.deviceType_ = deviceType_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.devicesCount_ = devicesCount_;
           to_bitField0_ |= 0x00000002;
@@ -1052,58 +1042,20 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
-          if (numberOfProblemsBuilder_ == null) {
-            result.numberOfProblems_ = numberOfProblems_;
-          } else {
-            result.numberOfProblems_ = numberOfProblemsBuilder_.build();
-          }
+          result.numberOfProblems_ = numberOfProblemsBuilder_ == null
+              ? numberOfProblems_
+              : numberOfProblemsBuilder_.build();
           to_bitField0_ |= 0x00000010;
         }
         if (((from_bitField0_ & 0x00000020) != 0)) {
-          if (deploymentTimeMsBuilder_ == null) {
-            result.deploymentTimeMs_ = deploymentTimeMs_;
-          } else {
-            result.deploymentTimeMs_ = deploymentTimeMsBuilder_.build();
-          }
+          result.deploymentTimeMs_ = deploymentTimeMsBuilder_ == null
+              ? deploymentTimeMs_
+              : deploymentTimeMsBuilder_.build();
           to_bitField0_ |= 0x00000020;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats) {
@@ -1240,8 +1192,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
+        com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.forNumber(deviceType_);
         return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
       }
       /**
@@ -1312,8 +1263,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDevicesCount(int value) {
-        bitField0_ |= 0x00000002;
+
         devicesCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1367,8 +1319,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccessfulDeployments(int value) {
-        bitField0_ |= 0x00000004;
+
         successfulDeployments_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1422,8 +1375,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFailedDeployments(int value) {
-        bitField0_ |= 0x00000008;
+
         failedDeployments_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1484,11 +1438,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           numberOfProblems_ = value;
-          onChanged();
         } else {
           numberOfProblemsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -1502,11 +1456,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
         if (numberOfProblemsBuilder_ == null) {
           numberOfProblems_ = builderForValue.build();
-          onChanged();
         } else {
           numberOfProblemsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -1519,18 +1473,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeNumberOfProblems(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (numberOfProblemsBuilder_ == null) {
           if (((bitField0_ & 0x00000010) != 0) &&
-              numberOfProblems_ != null &&
-              numberOfProblems_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-            numberOfProblems_ =
-              com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(numberOfProblems_).mergeFrom(value).buildPartial();
+            numberOfProblems_ != null &&
+            numberOfProblems_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+            getNumberOfProblemsBuilder().mergeFrom(value);
           } else {
             numberOfProblems_ = value;
           }
-          onChanged();
         } else {
           numberOfProblemsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000010;
+        onChanged();
         return this;
       }
       /**
@@ -1541,13 +1494,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.PercentileEstimator number_of_problems = 5 [lazy = true];</code>
        */
       public Builder clearNumberOfProblems() {
-        if (numberOfProblemsBuilder_ == null) {
-          numberOfProblems_ = null;
-          onChanged();
-        } else {
-          numberOfProblemsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000010);
+        numberOfProblems_ = null;
+        if (numberOfProblemsBuilder_ != null) {
+          numberOfProblemsBuilder_.dispose();
+          numberOfProblemsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1640,11 +1593,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           deploymentTimeMs_ = value;
-          onChanged();
         } else {
           deploymentTimeMsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -1658,11 +1611,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
         if (deploymentTimeMsBuilder_ == null) {
           deploymentTimeMs_ = builderForValue.build();
-          onChanged();
         } else {
           deploymentTimeMsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -1675,18 +1628,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeDeploymentTimeMs(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
         if (deploymentTimeMsBuilder_ == null) {
           if (((bitField0_ & 0x00000020) != 0) &&
-              deploymentTimeMs_ != null &&
-              deploymentTimeMs_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-            deploymentTimeMs_ =
-              com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(deploymentTimeMs_).mergeFrom(value).buildPartial();
+            deploymentTimeMs_ != null &&
+            deploymentTimeMs_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+            getDeploymentTimeMsBuilder().mergeFrom(value);
           } else {
             deploymentTimeMs_ = value;
           }
-          onChanged();
         } else {
           deploymentTimeMsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000020;
+        onChanged();
         return this;
       }
       /**
@@ -1697,13 +1649,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6 [lazy = true];</code>
        */
       public Builder clearDeploymentTimeMs() {
-        if (deploymentTimeMsBuilder_ == null) {
-          deploymentTimeMs_ = null;
-          onChanged();
-        } else {
-          deploymentTimeMsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000020);
+        deploymentTimeMs_ = null;
+        if (deploymentTimeMsBuilder_ != null) {
+          deploymentTimeMsBuilder_.dispose();
+          deploymentTimeMsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1819,7 +1771,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int EVENT_TYPE_FIELD_NUMBER = 1;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <pre>
    * Type of event
@@ -1840,13 +1792,12 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int DEVICE_TYPE_FIELD_NUMBER = 2;
-  private int deviceType_;
+  private int deviceType_ = 0;
   /**
    * <pre>
    * Device type for [START, STOP] events
@@ -1867,12 +1818,12 @@ private static final long serialVersionUID = 0L;
    * @return The deviceType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
+    com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.forNumber(deviceType_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
   }
 
   public static final int DEPLOY_STATS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats> deployStats_;
   /**
    * <pre>
@@ -2156,10 +2107,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       deviceType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       if (deployStatsBuilder_ == null) {
         deployStats_ = java.util.Collections.emptyList();
       } else {
@@ -2193,16 +2143,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveLiteralsEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LiveLiteralsEvent result = new com.google.wireless.android.sdk.stats.LiveLiteralsEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.eventType_ = eventType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.deviceType_ = deviceType_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.LiveLiteralsEvent result) {
       if (deployStatsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0)) {
           deployStats_ = java.util.Collections.unmodifiableList(deployStats_);
@@ -2212,43 +2159,22 @@ private static final long serialVersionUID = 0L;
       } else {
         result.deployStats_ = deployStatsBuilder_.build();
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LiveLiteralsEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.eventType_ = eventType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.deviceType_ = deviceType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LiveLiteralsEvent) {
@@ -2395,8 +2321,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -2454,8 +2379,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
+      com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.forNumber(deviceType_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
     }
     /**

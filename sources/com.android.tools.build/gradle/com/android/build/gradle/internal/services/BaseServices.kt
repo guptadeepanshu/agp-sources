@@ -52,6 +52,7 @@ interface KotlinServices {
 
     val kgpVersion: String
     val factory: KotlinJvmFactory
+    val kotlinBaseApiVersion: KotlinBaseApiVersion
 
     companion object {
 
@@ -78,7 +79,30 @@ interface KotlinServices {
             return object : KotlinServices {
                 override val kgpVersion: String = plugin.pluginVersion
                 override val factory: KotlinJvmFactory = plugin
+                override val kotlinBaseApiVersion = kgpVersion.kotlinBaseApiVersion()
             }
         }
     }
 }
+
+/**
+ *  AGP's internal versioning of [KotlinBaseApiPlugin] to track availability of APIs.
+ */
+enum class KotlinBaseApiVersion {
+    /** Represents versions < 2.1.0-Beta2  */
+    VERSION_1,
+
+    /** Represents versions >= 2.1.0-Beta2  */
+    VERSION_2;
+}
+
+/**
+ * Calculate the [KotlinBaseApiVersion] for the given KGP version
+ */
+private fun String.kotlinBaseApiVersion(): KotlinBaseApiVersion =
+    when {
+        Version.parse(this) >= Version.parse("2.1.0-Beta2") -> {
+            KotlinBaseApiVersion.VERSION_2
+        }
+        else -> KotlinBaseApiVersion.VERSION_1
+    }

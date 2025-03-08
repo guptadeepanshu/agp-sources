@@ -25,6 +25,7 @@ import com.android.sdklib.devices.DeviceManager
 import com.android.sdklib.internal.avd.AvdCamera
 import com.android.sdklib.internal.avd.AvdInfo
 import com.android.sdklib.internal.avd.AvdInfo.AvdStatus
+import com.android.sdklib.internal.avd.AvdManagerException
 import com.android.sdklib.internal.avd.EmulatedProperties
 import com.android.sdklib.internal.avd.GpuMode
 import com.android.sdklib.internal.avd.HardwareProperties
@@ -157,7 +158,8 @@ class AvdManager(
                         deviceName,
                         false)
 
-        return avdManager.createAvd(
+        try {
+            return avdManager.createAvd(
                 deviceFolder,
                 deviceName,
                 systemImage,
@@ -169,7 +171,11 @@ class AvdManager(
                 device.hasPlayStore(),
                 false,
                 false
-        )
+            )
+        } catch (e: AvdManagerException) {
+            logger.warning("%s", e)
+            return null
+        }
     }
 
     /**

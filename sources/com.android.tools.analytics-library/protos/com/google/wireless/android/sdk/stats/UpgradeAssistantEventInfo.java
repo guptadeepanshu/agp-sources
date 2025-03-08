@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new UpgradeAssistantEventInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantEventInfo_descriptor;
@@ -214,7 +209,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int KIND_FIELD_NUMBER = 1;
-  private int kind_;
+  private int kind_ = 0;
   /**
    * <pre>
    * The kind of event.
@@ -235,13 +230,12 @@ private static final long serialVersionUID = 0L;
    * @return The kind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind getKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.valueOf(kind_);
+    com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.forNumber(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.UNKNOWN_UPGRADE_ASSISTANT_EVENT_KIND : result;
   }
 
   public static final int USAGES_FIELD_NUMBER = 2;
-  private int usages_;
+  private int usages_ = 0;
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
@@ -272,7 +266,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FILES_FIELD_NUMBER = 3;
-  private int files_;
+  private int files_ = 0;
   /**
    * <pre>
    * The number of files involved in the build.  Will be set if
@@ -526,12 +520,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       kind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       usages_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       files_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -558,12 +550,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo buildPartial() {
       com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo result = new com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.kind_ = kind_;
         to_bitField0_ |= 0x00000001;
       }
-      result.kind_ = kind_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.usages_ = usages_;
         to_bitField0_ |= 0x00000002;
@@ -572,43 +570,9 @@ private static final long serialVersionUID = 0L;
         result.files_ = files_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo) {
@@ -717,8 +681,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind getKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.valueOf(kind_);
+      com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.forNumber(kind_);
       return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.UNKNOWN_UPGRADE_ASSISTANT_EVENT_KIND : result;
     }
     /**
@@ -795,8 +758,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUsages(int value) {
-      bitField0_ |= 0x00000002;
+
       usages_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -858,8 +822,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFiles(int value) {
-      bitField0_ |= 0x00000004;
+
       files_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

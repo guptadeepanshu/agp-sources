@@ -18,6 +18,7 @@ package com.android.utils
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.System.identityHashCode
+import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -119,4 +120,23 @@ object TraceUtils {
   @JvmStatic
   val currentTime: String
     get() = DATE_FORMAT.format(Date())
+
+  /** Returns the contents of a ByteBuffer in hexadecimal form. */
+  @JvmStatic
+  fun ByteBuffer.toHexString(): String {
+    val length = remaining()
+    if (length == 0) {
+      return ""
+    }
+    val savedPosition = position()
+    val result = StringBuilder(length * 3 - 1)
+    for (i in 0 until length) {
+      if (i > 0) {
+        result.append(' ')
+      }
+      result.append(String.format("%02x", get().toInt() and 0xFF))
+    }
+    position(savedPosition)
+    return result.toString()
+  }
 }

@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new GradleBuildProfileSpan();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProfileSpan_descriptor;
@@ -172,6 +167,7 @@ private static final long serialVersionUID = 0L;
      * parts of the task implementation that can help determine the performance
      * of sub parts of the task implementation.
      * For instance a task spans can look like :
+     *
      * &lt;---------------------- TASK_EXECUTION -------------------&gt;
      * &lt;--PRE--&gt;&lt;------- TASK_EXECUTION_ALL_PHASES ----&gt;&lt;--POST--&gt;
      *          &lt;---PHASE_1---&gt;&lt;-PHASE_2-&gt;&lt;--PHASE_3---&gt;
@@ -899,6 +895,7 @@ private static final long serialVersionUID = 0L;
      * parts of the task implementation that can help determine the performance
      * of sub parts of the task implementation.
      * For instance a task spans can look like :
+     *
      * &lt;---------------------- TASK_EXECUTION -------------------&gt;
      * &lt;--PRE--&gt;&lt;------- TASK_EXECUTION_ALL_PHASES ----&gt;&lt;--POST--&gt;
      *          &lt;---PHASE_1---&gt;&lt;-PHASE_2-&gt;&lt;--PHASE_3---&gt;
@@ -1623,7 +1620,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ID_FIELD_NUMBER = 1;
-  private long id_;
+  private long id_ = 0L;
   /**
    * <pre>
    * Identifier for this span, created by sequentially allocating IDs to spans
@@ -1656,7 +1653,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PARENT_ID_FIELD_NUMBER = 2;
-  private long parentId_;
+  private long parentId_ = 0L;
   /**
    * <pre>
    * For nested spans: the id for containing span.
@@ -1685,7 +1682,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int START_TIME_IN_MS_FIELD_NUMBER = 3;
-  private long startTimeInMs_;
+  private long startTimeInMs_ = 0L;
   /**
    * <pre>
    * The start time of this event
@@ -1712,7 +1709,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DURATION_IN_MS_FIELD_NUMBER = 4;
-  private long durationInMs_;
+  private long durationInMs_ = 0L;
   /**
    * <pre>
    * The duration of this event. May be zero.
@@ -1739,7 +1736,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 5;
-  private int type_;
+  private int type_ = 1;
   /**
    * <pre>
    * The type of event recorded
@@ -1760,8 +1757,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.SOME_RANDOM_PROCESSING : result;
   }
 
@@ -1851,7 +1847,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROJECT_FIELD_NUMBER = 7;
-  private long project_;
+  private long project_ = 0L;
   /**
    * <pre>
    * Session id of the GradleBuildProject that this span is part of.
@@ -1882,7 +1878,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VARIANT_FIELD_NUMBER = 8;
-  private long variant_;
+  private long variant_ = 0L;
   /**
    * <pre>
    * Session id of the GradleBuildVariant that this span is part of.
@@ -1913,7 +1909,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int THREAD_ID_FIELD_NUMBER = 10;
-  private long threadId_;
+  private long threadId_ = 0L;
   /**
    * <pre>
    * Thread that this execution occurs on.
@@ -2302,34 +2298,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       id_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       parentId_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       startTimeInMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       durationInMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       type_ = 1;
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (transformBuilder_ == null) {
-        transform_ = null;
-      } else {
-        transformBuilder_.clear();
+      transform_ = null;
+      if (transformBuilder_ != null) {
+        transformBuilder_.dispose();
+        transformBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (taskBuilder_ == null) {
-        task_ = null;
-      } else {
-        taskBuilder_.clear();
+      task_ = null;
+      if (taskBuilder_ != null) {
+        taskBuilder_.dispose();
+        taskBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       project_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       variant_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000100);
       threadId_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -2356,6 +2343,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan buildPartial() {
       com.google.wireless.android.sdk.stats.GradleBuildProfileSpan result = new com.google.wireless.android.sdk.stats.GradleBuildProfileSpan(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleBuildProfileSpan result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2375,23 +2368,19 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000010;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (transformBuilder_ == null) {
-          result.transform_ = transform_;
-        } else {
-          result.transform_ = transformBuilder_.build();
-        }
+        result.transform_ = transformBuilder_ == null
+            ? transform_
+            : transformBuilder_.build();
         to_bitField0_ |= 0x00000020;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (taskBuilder_ == null) {
-          result.task_ = task_;
-        } else {
-          result.task_ = taskBuilder_.build();
-        }
+        result.task_ = taskBuilder_ == null
+            ? task_
+            : taskBuilder_.build();
         to_bitField0_ |= 0x00000040;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
@@ -2406,43 +2395,9 @@ private static final long serialVersionUID = 0L;
         result.threadId_ = threadId_;
         to_bitField0_ |= 0x00000200;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleBuildProfileSpan) {
@@ -2633,8 +2588,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setId(long value) {
-      bitField0_ |= 0x00000001;
+
       id_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2694,8 +2650,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setParentId(long value) {
-      bitField0_ |= 0x00000002;
+
       parentId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2750,8 +2707,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStartTimeInMs(long value) {
-      bitField0_ |= 0x00000004;
+
       startTimeInMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -2805,8 +2763,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationInMs(long value) {
-      bitField0_ |= 0x00000008;
+
       durationInMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2847,8 +2806,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.SOME_RANDOM_PROCESSING : result;
     }
     /**
@@ -2932,11 +2890,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         transform_ = value;
-        onChanged();
       } else {
         transformBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2952,11 +2910,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.GradleTransformExecution.Builder builderForValue) {
       if (transformBuilder_ == null) {
         transform_ = builderForValue.build();
-        onChanged();
       } else {
         transformBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2971,18 +2929,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeTransform(com.google.wireless.android.sdk.stats.GradleTransformExecution value) {
       if (transformBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            transform_ != null &&
-            transform_ != com.google.wireless.android.sdk.stats.GradleTransformExecution.getDefaultInstance()) {
-          transform_ =
-            com.google.wireless.android.sdk.stats.GradleTransformExecution.newBuilder(transform_).mergeFrom(value).buildPartial();
+          transform_ != null &&
+          transform_ != com.google.wireless.android.sdk.stats.GradleTransformExecution.getDefaultInstance()) {
+          getTransformBuilder().mergeFrom(value);
         } else {
           transform_ = value;
         }
-        onChanged();
       } else {
         transformBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -2995,13 +2952,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleTransformExecution transform = 6 [lazy = true];</code>
      */
     public Builder clearTransform() {
-      if (transformBuilder_ == null) {
-        transform_ = null;
-        onChanged();
-      } else {
-        transformBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      transform_ = null;
+      if (transformBuilder_ != null) {
+        transformBuilder_.dispose();
+        transformBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -3103,11 +3060,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         task_ = value;
-        onChanged();
       } else {
         taskBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3122,11 +3079,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.GradleTaskExecution.Builder builderForValue) {
       if (taskBuilder_ == null) {
         task_ = builderForValue.build();
-        onChanged();
       } else {
         taskBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3140,18 +3097,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeTask(com.google.wireless.android.sdk.stats.GradleTaskExecution value) {
       if (taskBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            task_ != null &&
-            task_ != com.google.wireless.android.sdk.stats.GradleTaskExecution.getDefaultInstance()) {
-          task_ =
-            com.google.wireless.android.sdk.stats.GradleTaskExecution.newBuilder(task_).mergeFrom(value).buildPartial();
+          task_ != null &&
+          task_ != com.google.wireless.android.sdk.stats.GradleTaskExecution.getDefaultInstance()) {
+          getTaskBuilder().mergeFrom(value);
         } else {
           task_ = value;
         }
-        onChanged();
       } else {
         taskBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -3163,13 +3119,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleTaskExecution task = 9 [lazy = true];</code>
      */
     public Builder clearTask() {
-      if (taskBuilder_ == null) {
-        task_ = null;
-        onChanged();
-      } else {
-        taskBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      task_ = null;
+      if (taskBuilder_ != null) {
+        taskBuilder_.dispose();
+        taskBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -3264,8 +3220,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setProject(long value) {
-      bitField0_ |= 0x00000080;
+
       project_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -3327,8 +3284,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVariant(long value) {
-      bitField0_ |= 0x00000100;
+
       variant_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -3396,8 +3354,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setThreadId(long value) {
-      bitField0_ |= 0x00000200;
+
       threadId_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }

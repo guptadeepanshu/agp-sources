@@ -18,16 +18,18 @@ package com.android.sdklib.internal.build;
 
 import com.android.SdkConstants;
 import com.android.sdklib.internal.build.SymbolLoader.SymbolEntry;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Splitter;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.google.common.io.Closer;
 import com.google.common.io.Files;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +84,7 @@ public class SymbolWriter {
 
         Closer closer = Closer.create();
         try {
-            BufferedWriter writer = closer.register(Files.newWriter(file, Charsets.UTF_8));
+            BufferedWriter writer = closer.register(Files.newWriter(file, StandardCharsets.UTF_8));
 
             writer.write("/* AUTO-GENERATED FILE.  DO NOT MODIFY.\n");
             writer.write(" *\n");

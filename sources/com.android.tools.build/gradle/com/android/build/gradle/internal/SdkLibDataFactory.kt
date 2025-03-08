@@ -18,11 +18,9 @@ package com.android.build.gradle.internal
 
 import com.android.builder.sdk.SdkLibData
 import com.android.repository.api.Channel
-import com.android.repository.api.ConsoleProgressIndicator
 import com.android.repository.api.Downloader
 import com.android.repository.api.SettingsController
 import com.android.repository.impl.downloader.LocalFileAwareDownloader
-import com.android.repository.io.FileOpUtils
 import com.android.sdklib.repository.legacy.LegacyDownloader
 import com.android.utils.ILogger
 import com.google.common.annotations.VisibleForTesting
@@ -36,7 +34,8 @@ class SdkLibDataFactory(
     private val enableDownload: Boolean,
     private val androidSdkChannel: Int?, // projectOptions.get(IntegerOption.ANDROID_SDK_CHANNEL)
     private val logger: ILogger,
-    private val prefsLocation: Path) {
+    private val prefsLocation: Path
+) {
 
     abstract class Environment {
 
@@ -132,7 +131,7 @@ class SdkLibDataFactory(
             val address = InetAddress.getByName(proxyHost)
             InetSocketAddress(address, proxyPort)
         } catch (e: UnknownHostException) {
-            ConsoleProgressIndicator().logWarning("Failed to parse host $proxyHost")
+            logger.warning("Failed to parse host $proxyHost")
             null
         }
     }

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorLatencyStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorLatencyStats_descriptor;
@@ -232,7 +227,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int LATENCY_SOURCE_FIELD_NUMBER = 1;
-  private int latencySource_;
+  private int latencySource_ = 0;
   /**
    * <code>optional .android_studio.EmulatorLatencyStats.EmulatorLatencySource latency_source = 1;</code>
    * @return Whether the latencySource field is set.
@@ -245,13 +240,12 @@ private static final long serialVersionUID = 0L;
    * @return The latencySource.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource getLatencySource() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.valueOf(latencySource_);
+    com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.forNumber(latencySource_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.EMULATOR_LATENCY_SOURCE_DEFAULT : result;
   }
 
   public static final int VCPU_HANDLING_MMIO_ADDRESS_FIELD_NUMBER = 2;
-  private long vcpuHandlingMmioAddress_;
+  private long vcpuHandlingMmioAddress_ = 0L;
   /**
    * <pre>
    * if vcpu mmio access was involved, this holds the MMIO address.
@@ -278,7 +272,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INPUT_QUEUE_FULL_LOOPS_FIELD_NUMBER = 8;
-  private int inputQueueFullLoops_;
+  private int inputQueueFullLoops_ = 0;
   /**
    * <pre>
    * Number of loops where the input queue was full.
@@ -305,7 +299,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_MAX_US_FIELD_NUMBER = 3;
-  private long latencyMaxUs_;
+  private long latencyMaxUs_ = 0L;
   /**
    * <pre>
    * Time stats for the latency in microseconds.
@@ -332,7 +326,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_99_9_US_FIELD_NUMBER = 4;
-  private long latency999Us_;
+  private long latency999Us_ = 0L;
   /**
    * <code>optional uint64 latency_99_9_us = 4;</code>
    * @return Whether the latency999Us field is set.
@@ -351,7 +345,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_99_US_FIELD_NUMBER = 5;
-  private long latency99Us_;
+  private long latency99Us_ = 0L;
   /**
    * <code>optional uint64 latency_99_us = 5;</code>
    * @return Whether the latency99Us field is set.
@@ -370,7 +364,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_90_US_FIELD_NUMBER = 6;
-  private long latency90Us_;
+  private long latency90Us_ = 0L;
   /**
    * <code>optional uint64 latency_90_us = 6;</code>
    * @return Whether the latency90Us field is set.
@@ -389,7 +383,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_50_US_FIELD_NUMBER = 7;
-  private long latency50Us_;
+  private long latency50Us_ = 0L;
   /**
    * <code>optional uint64 latency_50_us = 7;</code>
    * @return Whether the latency50Us field is set.
@@ -721,22 +715,15 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       latencySource_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       vcpuHandlingMmioAddress_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       inputQueueFullLoops_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       latencyMaxUs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       latency999Us_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000010);
       latency99Us_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       latency90Us_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       latency50Us_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -763,12 +750,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStats buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorLatencyStats result = new com.google.wireless.android.sdk.stats.EmulatorLatencyStats(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorLatencyStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.latencySource_ = latencySource_;
         to_bitField0_ |= 0x00000001;
       }
-      result.latencySource_ = latencySource_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.vcpuHandlingMmioAddress_ = vcpuHandlingMmioAddress_;
         to_bitField0_ |= 0x00000002;
@@ -797,43 +790,9 @@ private static final long serialVersionUID = 0L;
         result.latency50Us_ = latency50Us_;
         to_bitField0_ |= 0x00000080;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorLatencyStats) {
@@ -974,8 +933,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource getLatencySource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.valueOf(latencySource_);
+      com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.forNumber(latencySource_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.EMULATOR_LATENCY_SOURCE_DEFAULT : result;
     }
     /**
@@ -1038,8 +996,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVcpuHandlingMmioAddress(long value) {
-      bitField0_ |= 0x00000002;
+
       vcpuHandlingMmioAddress_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1093,8 +1052,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInputQueueFullLoops(int value) {
-      bitField0_ |= 0x00000004;
+
       inputQueueFullLoops_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1148,8 +1108,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatencyMaxUs(long value) {
-      bitField0_ |= 0x00000008;
+
       latencyMaxUs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1191,8 +1152,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatency999Us(long value) {
-      bitField0_ |= 0x00000010;
+
       latency999Us_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1230,8 +1192,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatency99Us(long value) {
-      bitField0_ |= 0x00000020;
+
       latency99Us_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1269,8 +1232,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatency90Us(long value) {
-      bitField0_ |= 0x00000040;
+
       latency90Us_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1308,8 +1272,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatency50Us(long value) {
-      bitField0_ |= 0x00000080;
+
       latency50Us_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }

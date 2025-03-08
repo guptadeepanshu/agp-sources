@@ -53,7 +53,7 @@ public class EmulatedProperties {
     public static final int MAX_NUMBER_OF_CORES = Integer.max(1, Runtime.getRuntime().availableProcessors() / 2);
     public static final int RECOMMENDED_NUMBER_OF_CORES = Integer.min(4, MAX_NUMBER_OF_CORES);
 
-    public static final Storage DEFAULT_INTERNAL_STORAGE = new Storage(800, Storage.Unit.MiB);
+    public static final Storage DEFAULT_INTERNAL_STORAGE = new Storage(2, Storage.Unit.GiB);
     public static final Storage DEFAULT_HEAP = new Storage(16, Storage.Unit.MiB);
     public static final AvdNetworkSpeed DEFAULT_NETWORK_SPEED = AvdNetworkSpeed.FULL;
     public static final AvdNetworkLatency DEFAULT_NETWORK_LATENCY = AvdNetworkLatency.NONE;
@@ -80,6 +80,9 @@ public class EmulatedProperties {
      * services and apps running simultaneously)
      */
     public static Storage defaultRamSize(@NonNull Device device) {
+        if (Device.isXr(device)) {
+            return new Storage(4, Storage.Unit.GiB);
+        }
         return min(
                 device.getDefaultHardware().getRam(),
                 MAX_DEFAULT_RAM_SIZE,
@@ -88,6 +91,9 @@ public class EmulatedProperties {
 
     /** Returns the default VM heap size for the given device. */
     public static Storage defaultVmHeapSize(@NonNull Device device) {
+        if (Device.isXr(device)) {
+            return new Storage(512, Storage.Unit.MiB);
+        }
         return minimumVmHeapSize(
                 ScreenSize.getScreenSize(
                         device.getDefaultHardware().getScreen().getDiagonalLength()),
@@ -206,6 +212,9 @@ public class EmulatedProperties {
     }
 
     public static Storage defaultInternalStorage(@NonNull Device device) {
+        if (Device.isXr(device)) {
+            return new Storage(4, Storage.Unit.GiB);
+        }
         return DEFAULT_INTERNAL_STORAGE;
     }
 }

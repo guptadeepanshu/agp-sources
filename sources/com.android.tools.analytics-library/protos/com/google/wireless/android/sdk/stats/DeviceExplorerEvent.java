@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new DeviceExplorerEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DeviceExplorerEvent_descriptor;
@@ -464,7 +459,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTION_FIELD_NUMBER = 1;
-  private int action_;
+  private int action_ = 0;
   /**
    * <code>optional .android_studio.DeviceExplorerEvent.Action action = 1;</code>
    * @return Whether the action field is set.
@@ -477,13 +472,12 @@ private static final long serialVersionUID = 0L;
    * @return The action.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action getAction() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.valueOf(action_);
+    com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.forNumber(action_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.UNSPECIFIED : result;
   }
 
   public static final int TRANSFER_FILE_COUNT_FIELD_NUMBER = 2;
-  private int transferFileCount_;
+  private int transferFileCount_ = 0;
   /**
    * <pre>
    * Number of files (Only valid for transfer actions)
@@ -510,7 +504,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRANSFER_TOTAL_SIZE_FIELD_NUMBER = 3;
-  private int transferTotalSize_;
+  private int transferTotalSize_ = 0;
   /**
    * <pre>
    * Total size in bytes (Only valid for transfer actions)
@@ -537,7 +531,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TRANSFER_TIME_MS_FIELD_NUMBER = 4;
-  private int transferTimeMs_;
+  private int transferTimeMs_ = 0;
   /**
    * <pre>
    * Total time in ms (Only valid for transfer actions)
@@ -803,14 +797,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       action_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       transferFileCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       transferTotalSize_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       transferTimeMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -837,12 +828,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceExplorerEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DeviceExplorerEvent result = new com.google.wireless.android.sdk.stats.DeviceExplorerEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DeviceExplorerEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.action_ = action_;
         to_bitField0_ |= 0x00000001;
       }
-      result.action_ = action_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.transferFileCount_ = transferFileCount_;
         to_bitField0_ |= 0x00000002;
@@ -855,43 +852,9 @@ private static final long serialVersionUID = 0L;
         result.transferTimeMs_ = transferTimeMs_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DeviceExplorerEvent) {
@@ -1000,8 +963,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action getAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.valueOf(action_);
+      com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.forNumber(action_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.UNSPECIFIED : result;
     }
     /**
@@ -1064,8 +1026,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTransferFileCount(int value) {
-      bitField0_ |= 0x00000002;
+
       transferFileCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1119,8 +1082,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTransferTotalSize(int value) {
-      bitField0_ |= 0x00000004;
+
       transferTotalSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1174,8 +1138,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTransferTimeMs(int value) {
-      bitField0_ |= 0x00000008;
+
       transferTimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

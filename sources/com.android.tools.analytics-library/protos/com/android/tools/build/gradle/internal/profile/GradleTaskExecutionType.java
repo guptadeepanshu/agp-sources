@@ -1380,8 +1380,9 @@ public enum GradleTaskExecutionType
    */
   CONVERT_SHRUNK_RESOURCES_TO_BINARY(340),
   /**
-   * <code>CONVERT_LINKED_RESOURCES_TO_PROTO = 341;</code>
+   * <code>CONVERT_LINKED_RESOURCES_TO_PROTO = 341 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   CONVERT_LINKED_RESOURCES_TO_PROTO(341),
   /**
    * <code>FUSED_LIBRARY_MERGE_RESOURCE_COMPILE_SYMBOLS = 342;</code>
@@ -1391,6 +1392,14 @@ public enum GradleTaskExecutionType
    * <code>FUSED_LIBRARY_REPORT = 343;</code>
    */
   FUSED_LIBRARY_REPORT(343),
+  /**
+   * <code>FUSED_LIBRARY_DEPENDENCY_VALIDATION = 344;</code>
+   */
+  FUSED_LIBRARY_DEPENDENCY_VALIDATION(344),
+  /**
+   * <code>CONVERT_LINKED_RESOURCES_TO_BINARY = 345;</code>
+   */
+  CONVERT_LINKED_RESOURCES_TO_BINARY(345),
   UNRECOGNIZED(-1),
   ;
 
@@ -2759,9 +2768,9 @@ public enum GradleTaskExecutionType
    */
   public static final int CONVERT_SHRUNK_RESOURCES_TO_BINARY_VALUE = 340;
   /**
-   * <code>CONVERT_LINKED_RESOURCES_TO_PROTO = 341;</code>
+   * <code>CONVERT_LINKED_RESOURCES_TO_PROTO = 341 [deprecated = true];</code>
    */
-  public static final int CONVERT_LINKED_RESOURCES_TO_PROTO_VALUE = 341;
+  @java.lang.Deprecated public static final int CONVERT_LINKED_RESOURCES_TO_PROTO_VALUE = 341;
   /**
    * <code>FUSED_LIBRARY_MERGE_RESOURCE_COMPILE_SYMBOLS = 342;</code>
    */
@@ -2770,6 +2779,14 @@ public enum GradleTaskExecutionType
    * <code>FUSED_LIBRARY_REPORT = 343;</code>
    */
   public static final int FUSED_LIBRARY_REPORT_VALUE = 343;
+  /**
+   * <code>FUSED_LIBRARY_DEPENDENCY_VALIDATION = 344;</code>
+   */
+  public static final int FUSED_LIBRARY_DEPENDENCY_VALIDATION_VALUE = 344;
+  /**
+   * <code>CONVERT_LINKED_RESOURCES_TO_BINARY = 345;</code>
+   */
+  public static final int CONVERT_LINKED_RESOURCES_TO_BINARY_VALUE = 345;
 
 
   public final int getNumber() {
@@ -3140,6 +3157,8 @@ public enum GradleTaskExecutionType
       case 341: return CONVERT_LINKED_RESOURCES_TO_PROTO;
       case 342: return FUSED_LIBRARY_MERGE_RESOURCE_COMPILE_SYMBOLS;
       case 343: return FUSED_LIBRARY_REPORT;
+      case 344: return FUSED_LIBRARY_DEPENDENCY_VALIDATION;
+      case 345: return CONVERT_LINKED_RESOURCES_TO_BINARY;
       default: return null;
     }
   }

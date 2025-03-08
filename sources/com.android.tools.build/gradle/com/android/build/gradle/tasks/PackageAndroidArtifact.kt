@@ -825,23 +825,11 @@ abstract class PackageAndroidArtifact : NewIncrementalTask() {
 
         companion object {
             fun getDexFolders(creationConfig: ApkCreationConfig): FileCollection {
-                val artifacts = creationConfig.artifacts
-                return if (creationConfig is ApplicationCreationConfig
-                        && creationConfig.consumesDynamicFeatures) {
-                    creationConfig
-                            .services
-                            .fileCollection(
-                                    artifacts.get(InternalArtifactType.BASE_DEX),
-                                    getDesugarLibDexIfExists(creationConfig),
-                                    getGlobalSyntheticsDex(creationConfig))
-                } else {
-                    creationConfig
-                            .services
-                            .fileCollection(
-                                    artifacts.getAll(InternalMultipleArtifactType.DEX),
-                                    getDesugarLibDexIfExists(creationConfig),
-                                    getGlobalSyntheticsDex(creationConfig))
-                }
+                return creationConfig.services.fileCollection(
+                    creationConfig.artifacts.getAll(InternalMultipleArtifactType.DEX),
+                    getDesugarLibDexIfExists(creationConfig),
+                    getGlobalSyntheticsDex(creationConfig)
+                )
             }
 
             fun getFeatureDexFolder(

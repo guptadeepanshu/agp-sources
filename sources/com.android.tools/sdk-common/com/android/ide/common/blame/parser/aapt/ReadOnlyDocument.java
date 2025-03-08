@@ -17,13 +17,14 @@ package com.android.ide.common.blame.parser.aapt;
 
 import com.android.annotations.NonNull;
 import com.android.ide.common.blame.SourcePosition;
-import com.google.common.base.Charsets;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ class ReadOnlyDocument {
      */
     @SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
     ReadOnlyDocument(@NonNull File file) throws IOException {
-        String xml = Files.toString(file, Charsets.UTF_8);
+        String xml = Files.toString(file, StandardCharsets.UTF_8);
         if (xml.startsWith("\uFEFF")) { // Strip byte order mark if necessary
             xml = xml.substring(1);
         }

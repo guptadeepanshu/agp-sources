@@ -364,9 +364,9 @@ abstract class JacocoTask : NewIncrementalTask() {
         private val ORG_JACOCO_PATTERN = Pattern.compile("^org/jacoco.*")
         private val JUNIT_RUNLISTENER_PATTERN =
             Pattern.compile("^org/junit/runner/notification/RunListener.*")
-        private val R_CLASS_PATTERN = Pattern.compile(".+?R\\\$?.*?\\.class\$")
-        private val MANIFEST_CLASS_PATTERN = Pattern.compile(".+?Manifest\\\$?.*?\\.class$")
-        private val BUILD_CONFIG_CLASS_PATTERN = Pattern.compile(".+?BuildConfig.class$")
+        private val R_CLASS_PATTERN = Pattern.compile(".+?/R\\$?.*?\\.class$")
+        private val MANIFEST_CLASS_PATTERN = Pattern.compile(".+?/Manifest\\\$?.*?\\.class$")
+        private val BUILD_CONFIG_CLASS_PATTERN = Pattern.compile(".+?/BuildConfig.class$")
 
         // META-INF/*.kotlin_module files need to be copied to output so they show up
         // in the intermediate classes jar.

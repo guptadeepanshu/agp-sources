@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new LayoutInspectorEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LayoutInspectorEvent_descriptor;
@@ -256,7 +251,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of event
@@ -277,13 +272,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int DURATION_IN_MS_FIELD_NUMBER = 2;
-  private long durationInMs_;
+  private long durationInMs_ = 0L;
   /**
    * <pre>
    * defined if LayoutInspectorEventType = CAPTURE, CAPTURE_TIME_OUT
@@ -310,7 +304,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DATA_SIZE_FIELD_NUMBER = 3;
-  private long dataSize_;
+  private long dataSize_ = 0L;
   /**
    * <pre>
    * defined if LayoutInspectorEventType = CAPTURE
@@ -339,7 +333,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 4;
-  private int version_;
+  private int version_ = 0;
   /**
    * <pre>
    * defined if LayoutInspectorEventType = CAPTURE or OPEN
@@ -613,14 +607,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       durationInMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       dataSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       version_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -647,12 +638,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutInspectorEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LayoutInspectorEvent result = new com.google.wireless.android.sdk.stats.LayoutInspectorEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LayoutInspectorEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.durationInMs_ = durationInMs_;
         to_bitField0_ |= 0x00000002;
@@ -665,43 +662,9 @@ private static final long serialVersionUID = 0L;
         result.version_ = version_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LayoutInspectorEvent) {
@@ -818,8 +781,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -890,8 +852,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationInMs(long value) {
-      bitField0_ |= 0x00000002;
+
       durationInMs_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -948,8 +911,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDataSize(long value) {
-      bitField0_ |= 0x00000004;
+
       dataSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1007,8 +971,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVersion(int value) {
-      bitField0_ |= 0x00000008;
+
       version_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

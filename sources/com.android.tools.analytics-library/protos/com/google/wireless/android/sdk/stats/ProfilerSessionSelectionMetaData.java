@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new ProfilerSessionSelectionMetaData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ProfilerSessionSelectionMetaData_descriptor;
@@ -173,7 +168,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int SELECTED_TYPE_FIELD_NUMBER = 1;
-  private int selectedType_;
+  private int selectedType_ = 0;
   /**
    * <pre>
    * The type of the artifact selected
@@ -194,13 +189,12 @@ private static final long serialVersionUID = 0L;
    * @return The selectedType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType getSelectedType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.valueOf(selectedType_);
+    com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.forNumber(selectedType_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.UNKNOWN_ARTIFACT_TYPE : result;
   }
 
   public static final int IS_SESSION_ALIVE_FIELD_NUMBER = 2;
-  private boolean isSessionAlive_;
+  private boolean isSessionAlive_ = false;
   /**
    * <pre>
    * Whether the session is live when the artifact was selected
@@ -439,10 +433,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       selectedType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       isSessionAlive_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -469,53 +462,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData buildPartial() {
       com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData result = new com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.selectedType_ = selectedType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.isSessionAlive_ = isSessionAlive_;
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.selectedType_ = selectedType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.isSessionAlive_ = isSessionAlive_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData) {
@@ -616,8 +581,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType getSelectedType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.valueOf(selectedType_);
+      com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.forNumber(selectedType_);
       return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.UNKNOWN_ARTIFACT_TYPE : result;
     }
     /**
@@ -688,8 +652,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsSessionAlive(boolean value) {
-      bitField0_ |= 0x00000002;
+
       isSessionAlive_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }

@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorSnapshotUICounts();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorSnapshotUICounts_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int QUICKBOOT_SELECTION_YES_FIELD_NUMBER = 1;
-  private int quickbootSelectionYes_;
+  private int quickbootSelectionYes_ = 0;
   /**
    * <pre>
    * Quickboot selection for exit behavior
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_SELECTION_NO_FIELD_NUMBER = 2;
-  private int quickbootSelectionNo_;
+  private int quickbootSelectionNo_ = 0;
   /**
    * <code>optional uint32 quickboot_selection_no = 2;</code>
    * @return Whether the quickbootSelectionNo field is set.
@@ -95,7 +90,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_SELECTION_ASK_FIELD_NUMBER = 3;
-  private int quickbootSelectionAsk_;
+  private int quickbootSelectionAsk_ = 0;
   /**
    * <pre>
    * Next for quickboot selection: 4
@@ -122,7 +117,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_ASK_CANCELED_FIELD_NUMBER = 10;
-  private int quickbootAskCanceled_;
+  private int quickbootAskCanceled_ = 0;
   /**
    * <pre>
    * Ask dialog
@@ -149,7 +144,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_ASK_YES_FIELD_NUMBER = 11;
-  private int quickbootAskYes_;
+  private int quickbootAskYes_ = 0;
   /**
    * <code>optional uint32 quickboot_ask_yes = 11;</code>
    * @return Whether the quickbootAskYes field is set.
@@ -168,7 +163,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_ASK_NO_FIELD_NUMBER = 12;
-  private int quickbootAskNo_;
+  private int quickbootAskNo_ = 0;
   /**
    * <code>optional uint32 quickboot_ask_no = 12;</code>
    * @return Whether the quickbootAskNo field is set.
@@ -187,7 +182,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_ASK_TOTAL_TIME_MS_FIELD_NUMBER = 13;
-  private int quickbootAskTotalTimeMs_;
+  private int quickbootAskTotalTimeMs_ = 0;
   /**
    * <pre>
    * Next for ask dialog: 14
@@ -214,7 +209,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int QUICKBOOT_SAVE_NOW_FIELD_NUMBER = 100;
-  private int quickbootSaveNow_;
+  private int quickbootSaveNow_ = 0;
   /**
    * <pre>
    * Quickboot "save now" metrics
@@ -241,7 +236,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_SAVE_FIELD_NUMBER = 1000;
-  private int genericSave_;
+  private int genericSave_ = 0;
   /**
    * <pre>
    * Generic snapshot dialog
@@ -268,7 +263,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_LOAD_FIELD_NUMBER = 1001;
-  private int genericLoad_;
+  private int genericLoad_ = 0;
   /**
    * <code>optional uint32 generic_load = 1001;</code>
    * @return Whether the genericLoad field is set.
@@ -287,7 +282,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_DELETE_FIELD_NUMBER = 1002;
-  private int genericDelete_;
+  private int genericDelete_ = 0;
   /**
    * <code>optional uint32 generic_delete = 1002;</code>
    * @return Whether the genericDelete field is set.
@@ -306,7 +301,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_CLONE_FIELD_NUMBER = 1003;
-  private int genericClone_;
+  private int genericClone_ = 0;
   /**
    * <code>optional uint32 generic_clone = 1003;</code>
    * @return Whether the genericClone field is set.
@@ -325,7 +320,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_EDIT_FIELD_NUMBER = 1004;
-  private int genericEdit_;
+  private int genericEdit_ = 0;
   /**
    * <code>optional uint32 generic_edit = 1004;</code>
    * @return Whether the genericEdit field is set.
@@ -344,7 +339,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_EDITED_NAME_FIELD_NUMBER = 1005;
-  private int genericEditedName_;
+  private int genericEditedName_ = 0;
   /**
    * <code>optional uint32 generic_edited_name = 1005;</code>
    * @return Whether the genericEditedName field is set.
@@ -363,7 +358,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_EDITED_DESCRIPTION_FIELD_NUMBER = 1006;
-  private int genericEditedDescription_;
+  private int genericEditedDescription_ = 0;
   /**
    * <code>optional uint32 generic_edited_description = 1006;</code>
    * @return Whether the genericEditedDescription field is set.
@@ -382,7 +377,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_EXPORT_FIELD_NUMBER = 1007;
-  private int genericExport_;
+  private int genericExport_ = 0;
   /**
    * <code>optional uint32 generic_export = 1007;</code>
    * @return Whether the genericExport field is set.
@@ -401,7 +396,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_IMPORT_FIELD_NUMBER = 1008;
-  private int genericImport_;
+  private int genericImport_ = 0;
   /**
    * <code>optional uint32 generic_import = 1008;</code>
    * @return Whether the genericImport field is set.
@@ -420,7 +415,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_FLAT_VIEW_FIELD_NUMBER = 1009;
-  private int genericFlatView_;
+  private int genericFlatView_ = 0;
   /**
    * <code>optional uint32 generic_flat_view = 1009;</code>
    * @return Whether the genericFlatView field is set.
@@ -439,7 +434,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_TREE_VIEW_FIELD_NUMBER = 1010;
-  private int genericTreeView_;
+  private int genericTreeView_ = 0;
   /**
    * <code>optional uint32 generic_tree_view = 1010;</code>
    * @return Whether the genericTreeView field is set.
@@ -458,7 +453,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_TOTAL_TIME_FLAT_VIEW_MS_FIELD_NUMBER = 1011;
-  private int genericTotalTimeFlatViewMs_;
+  private int genericTotalTimeFlatViewMs_ = 0;
   /**
    * <code>optional uint32 generic_total_time_flat_view_ms = 1011;</code>
    * @return Whether the genericTotalTimeFlatViewMs field is set.
@@ -477,7 +472,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_TOTAL_TIME_TREE_VIEW_MS_FIELD_NUMBER = 1012;
-  private int genericTotalTimeTreeViewMs_;
+  private int genericTotalTimeTreeViewMs_ = 0;
   /**
    * <code>optional uint32 generic_total_time_tree_view_ms = 1012;</code>
    * @return Whether the genericTotalTimeTreeViewMs field is set.
@@ -496,7 +491,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GENERIC_TOTAL_TIME_MS_FIELD_NUMBER = 1013;
-  private int genericTotalTimeMs_;
+  private int genericTotalTimeMs_ = 0;
   /**
    * <pre>
    * Next for generic snapshot dialog: 1014
@@ -1055,50 +1050,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       quickbootSelectionYes_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       quickbootSelectionNo_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       quickbootSelectionAsk_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       quickbootAskCanceled_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       quickbootAskYes_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       quickbootAskNo_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       quickbootAskTotalTimeMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       quickbootSaveNow_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       genericSave_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       genericLoad_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000200);
       genericDelete_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000400);
       genericClone_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000800);
       genericEdit_ = 0;
-      bitField0_ = (bitField0_ & ~0x00001000);
       genericEditedName_ = 0;
-      bitField0_ = (bitField0_ & ~0x00002000);
       genericEditedDescription_ = 0;
-      bitField0_ = (bitField0_ & ~0x00004000);
       genericExport_ = 0;
-      bitField0_ = (bitField0_ & ~0x00008000);
       genericImport_ = 0;
-      bitField0_ = (bitField0_ & ~0x00010000);
       genericFlatView_ = 0;
-      bitField0_ = (bitField0_ & ~0x00020000);
       genericTreeView_ = 0;
-      bitField0_ = (bitField0_ & ~0x00040000);
       genericTotalTimeFlatViewMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00080000);
       genericTotalTimeTreeViewMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00100000);
       genericTotalTimeMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00200000);
       return this;
     }
 
@@ -1125,6 +1099,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts result = new com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1215,43 +1195,9 @@ private static final long serialVersionUID = 0L;
         result.genericTotalTimeMs_ = genericTotalTimeMs_;
         to_bitField0_ |= 0x00200000;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts) {
@@ -1518,8 +1464,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootSelectionYes(int value) {
-      bitField0_ |= 0x00000001;
+
       quickbootSelectionYes_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1561,8 +1508,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootSelectionNo(int value) {
-      bitField0_ |= 0x00000002;
+
       quickbootSelectionNo_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1612,8 +1560,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootSelectionAsk(int value) {
-      bitField0_ |= 0x00000004;
+
       quickbootSelectionAsk_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1667,8 +1616,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootAskCanceled(int value) {
-      bitField0_ |= 0x00000008;
+
       quickbootAskCanceled_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1710,8 +1660,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootAskYes(int value) {
-      bitField0_ |= 0x00000010;
+
       quickbootAskYes_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1749,8 +1700,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootAskNo(int value) {
-      bitField0_ |= 0x00000020;
+
       quickbootAskNo_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1800,8 +1752,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootAskTotalTimeMs(int value) {
-      bitField0_ |= 0x00000040;
+
       quickbootAskTotalTimeMs_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1855,8 +1808,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setQuickbootSaveNow(int value) {
-      bitField0_ |= 0x00000080;
+
       quickbootSaveNow_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1910,8 +1864,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericSave(int value) {
-      bitField0_ |= 0x00000100;
+
       genericSave_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1953,8 +1908,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericLoad(int value) {
-      bitField0_ |= 0x00000200;
+
       genericLoad_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -1992,8 +1948,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericDelete(int value) {
-      bitField0_ |= 0x00000400;
+
       genericDelete_ = value;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -2031,8 +1988,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericClone(int value) {
-      bitField0_ |= 0x00000800;
+
       genericClone_ = value;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -2070,8 +2028,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericEdit(int value) {
-      bitField0_ |= 0x00001000;
+
       genericEdit_ = value;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -2109,8 +2068,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericEditedName(int value) {
-      bitField0_ |= 0x00002000;
+
       genericEditedName_ = value;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -2148,8 +2108,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericEditedDescription(int value) {
-      bitField0_ |= 0x00004000;
+
       genericEditedDescription_ = value;
+      bitField0_ |= 0x00004000;
       onChanged();
       return this;
     }
@@ -2187,8 +2148,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericExport(int value) {
-      bitField0_ |= 0x00008000;
+
       genericExport_ = value;
+      bitField0_ |= 0x00008000;
       onChanged();
       return this;
     }
@@ -2226,8 +2188,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericImport(int value) {
-      bitField0_ |= 0x00010000;
+
       genericImport_ = value;
+      bitField0_ |= 0x00010000;
       onChanged();
       return this;
     }
@@ -2265,8 +2228,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericFlatView(int value) {
-      bitField0_ |= 0x00020000;
+
       genericFlatView_ = value;
+      bitField0_ |= 0x00020000;
       onChanged();
       return this;
     }
@@ -2304,8 +2268,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericTreeView(int value) {
-      bitField0_ |= 0x00040000;
+
       genericTreeView_ = value;
+      bitField0_ |= 0x00040000;
       onChanged();
       return this;
     }
@@ -2343,8 +2308,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericTotalTimeFlatViewMs(int value) {
-      bitField0_ |= 0x00080000;
+
       genericTotalTimeFlatViewMs_ = value;
+      bitField0_ |= 0x00080000;
       onChanged();
       return this;
     }
@@ -2382,8 +2348,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericTotalTimeTreeViewMs(int value) {
-      bitField0_ |= 0x00100000;
+
       genericTotalTimeTreeViewMs_ = value;
+      bitField0_ |= 0x00100000;
       onChanged();
       return this;
     }
@@ -2433,8 +2400,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGenericTotalTimeMs(int value) {
-      bitField0_ |= 0x00200000;
+
       genericTotalTimeMs_ = value;
+      bitField0_ |= 0x00200000;
       onChanged();
       return this;
     }

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal
 
 import com.android.SdkConstants
 import com.android.Version
+import com.android.build.gradle.internal.utils.ConsoleProgressIndicatorFactory
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.builder.errors.IssueReporter
 import com.android.builder.internal.compiler.RenderScriptProcessor
@@ -54,7 +55,7 @@ class SdkDirectLoadingStrategy(
     private val useAndroidX: Boolean,
     private val issueReporter: IssueReporter,
     private val suppressWarningIfTooNewForVersions: String?,
-    private val providerFactory: ProviderFactory,
+    private val providerFactory: ProviderFactory
 ) {
 
     companion object {
@@ -136,7 +137,8 @@ class SdkDirectLoadingStrategy(
             Optional.ofNullable(
                 PlatformComponents.build(
                     sdkDirectory,
-                    targetHash
+                    targetHash,
+                    ConsoleProgressIndicatorFactory(providerFactory)
                 )
             )
         }.orElse(null)
@@ -328,7 +330,11 @@ private class PlatformComponents(
 
     // TODO: fix documentation.
     companion object {
-        internal fun build(sdkDirectory: File, targetHash: String): PlatformComponents? {
+
+        internal fun build(
+            sdkDirectory: File, targetHash: String,
+            consoleProgressIndicatorFactory: ConsoleProgressIndicatorFactory
+        ): PlatformComponents? {
             if (!AndroidTargetHash.isPlatform(targetHash)) {
                 // We don't support add-on SDKs as we cannot predict where they
                 // are installed given only the targetHash, so we return null in order to fallback
@@ -343,7 +349,7 @@ private class PlatformComponents(
             val platformBase = sdkDirectory.resolve(platformId.replace(';', '/'))
             val platformXml = platformBase.resolve("package.xml")
             val platformPackage =
-                parsePackage(platformXml)
+                parsePackage(platformXml, consoleProgressIndicatorFactory)
             if (platformPackage == null || !platformId.equals(platformPackage.path)) {
                 return null
             }

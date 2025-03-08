@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new LayoutPaletteEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LayoutPaletteEvent_descriptor;
@@ -706,7 +701,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIEW_OPTION_FIELD_NUMBER = 2;
-  private int viewOption_;
+  private int viewOption_ = 0;
   /**
    * <pre>
    * The view option used.
@@ -727,13 +722,12 @@ private static final long serialVersionUID = 0L;
    * @return The viewOption.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption getViewOption() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.valueOf(viewOption_);
+    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.forNumber(viewOption_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.NORMAL : result;
   }
 
   public static final int SELECTED_GROUP_FIELD_NUMBER = 3;
-  private int selectedGroup_;
+  private int selectedGroup_ = 0;
   /**
    * <pre>
    * The group selected to find the view
@@ -754,13 +748,12 @@ private static final long serialVersionUID = 0L;
    * @return The selectedGroup.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup getSelectedGroup() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.valueOf(selectedGroup_);
+    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.forNumber(selectedGroup_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.UNKNOWN_GROUP : result;
   }
 
   public static final int SEARCH_OPTION_FIELD_NUMBER = 4;
-  private int searchOption_;
+  private int searchOption_ = 0;
   /**
    * <pre>
    * The result of the usage of the search field
@@ -781,13 +774,12 @@ private static final long serialVersionUID = 0L;
    * @return The searchOption.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
+    com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.forNumber(searchOption_);
     return result == null ? com.google.wireless.android.sdk.stats.SearchOption.UNKNOWN_SEARCH_OPTION : result;
   }
 
   public static final int VIEW_TYPE_FIELD_NUMBER = 5;
-  private int viewType_;
+  private int viewType_ = 0;
   /**
    * <pre>
    * The display option used when this view was dropped from the palette
@@ -808,8 +800,7 @@ private static final long serialVersionUID = 0L;
    * @return The viewType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType getViewType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.valueOf(viewType_);
+    com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.forNumber(viewType_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.UNKNOWN_VIEW_TYPE : result;
   }
 
@@ -1076,20 +1067,16 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (viewBuilder_ == null) {
-        view_ = null;
-      } else {
-        viewBuilder_.clear();
+      bitField0_ = 0;
+      view_ = null;
+      if (viewBuilder_ != null) {
+        viewBuilder_.dispose();
+        viewBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       viewOption_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       selectedGroup_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       searchOption_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       viewType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -1116,69 +1103,39 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LayoutPaletteEvent result = new com.google.wireless.android.sdk.stats.LayoutPaletteEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (viewBuilder_ == null) {
-          result.view_ = view_;
-        } else {
-          result.view_ = viewBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.viewOption_ = viewOption_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.selectedGroup_ = selectedGroup_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.searchOption_ = searchOption_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.viewType_ = viewType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LayoutPaletteEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.view_ = viewBuilder_ == null
+            ? view_
+            : viewBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.viewOption_ = viewOption_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.selectedGroup_ = selectedGroup_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.searchOption_ = searchOption_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.viewType_ = viewType_;
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LayoutPaletteEvent) {
@@ -1346,11 +1303,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         view_ = value;
-        onChanged();
       } else {
         viewBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1364,11 +1321,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.AndroidView.Builder builderForValue) {
       if (viewBuilder_ == null) {
         view_ = builderForValue.build();
-        onChanged();
       } else {
         viewBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1381,18 +1338,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeView(com.google.wireless.android.sdk.stats.AndroidView value) {
       if (viewBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            view_ != null &&
-            view_ != com.google.wireless.android.sdk.stats.AndroidView.getDefaultInstance()) {
-          view_ =
-            com.google.wireless.android.sdk.stats.AndroidView.newBuilder(view_).mergeFrom(value).buildPartial();
+          view_ != null &&
+          view_ != com.google.wireless.android.sdk.stats.AndroidView.getDefaultInstance()) {
+          getViewBuilder().mergeFrom(value);
         } else {
           view_ = value;
         }
-        onChanged();
       } else {
         viewBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1403,13 +1359,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidView view = 1 [lazy = true];</code>
      */
     public Builder clearView() {
-      if (viewBuilder_ == null) {
-        view_ = null;
-        onChanged();
-      } else {
-        viewBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      view_ = null;
+      if (viewBuilder_ != null) {
+        viewBuilder_.dispose();
+        viewBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1482,8 +1438,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption getViewOption() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.valueOf(viewOption_);
+      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.forNumber(viewOption_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.NORMAL : result;
     }
     /**
@@ -1541,8 +1496,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup getSelectedGroup() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.valueOf(selectedGroup_);
+      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.forNumber(selectedGroup_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.UNKNOWN_GROUP : result;
     }
     /**
@@ -1600,8 +1554,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
+      com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.forNumber(searchOption_);
       return result == null ? com.google.wireless.android.sdk.stats.SearchOption.UNKNOWN_SEARCH_OPTION : result;
     }
     /**
@@ -1659,8 +1612,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType getViewType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.valueOf(viewType_);
+      com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.forNumber(viewType_);
       return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.UNKNOWN_VIEW_TYPE : result;
     }
     /**

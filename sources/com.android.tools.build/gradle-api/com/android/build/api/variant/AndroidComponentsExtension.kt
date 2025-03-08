@@ -254,4 +254,54 @@ interface AndroidComponentsExtension<
     fun registerSourceType(
         name: String,
     )
+
+    /**
+     * Adds a custom configuration for each source set.
+     *
+     * The [suffix] parameter determines the naming convention for the generated configurations.
+     * For example, if [suffix] is "custom", the generated configurations would be "custom",
+     * "debugCustom", "releaseCustom", "testCustom", etc.
+     *
+     * Under the hood, this API:
+     * 1. Creates a configuration for each source set.
+     * 2. Creates resolvable configurations for each component.
+     * 3. Ensures that each resolvable configuration extends the corresponding source set
+     *    configurations.
+     *
+     * Each component's corresponding resolvable configuration can be accessed via
+     * [Component.getResolvableConfiguration].
+     *
+     * Example usage:
+     * ```kotlin
+     *  androidComponents {
+     *      addSourceSetConfigurations("foo")
+     *      onVariants { variant ->
+     *          val resolvableConfiguration = variant.getResolvableConfiguration("foo")
+     *          variant.nestedComponents.forEach { component ->
+     *              val nestedResolvableConfiguration =
+     *                  component.getResolvableConfiguration("foo")
+     *          }
+     *      }
+     *  }
+     * ```
+     *
+     * @param suffix the suffix to append to the generated configuration names.
+     */
+    @Incubating
+    fun addSourceSetConfigurations(suffix: String)
+
+    /**
+     * This API is provided only for the KSP Gradle plugin to use and should not be used otherwise.
+     * Use [addSourceSetConfigurations] instead.
+     *
+     * Adds a KSP configuration for each source set. The generated configurations are named "ksp",
+     * "kspDebug", "kspRelease", "kspTest", etc.
+     *
+     * @param useGlobalConfiguration whether dependencies added to the plain "ksp" configuration
+     * should be added to all resolvable configurations. Defaults to true.
+     * @suppress This API is only intended to be used by the KSP Gradle plugin. Other users should
+     * instead use [addSourceSetConfigurations]
+     */
+    @Incubating
+    fun addKspConfigurations(useGlobalConfiguration: Boolean)
 }

@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new GradleBuildProjectMetrics();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildProjectMetrics_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int METRICS_TIME_NS_FIELD_NUMBER = 1;
-  private long metricsTimeNs_;
+  private long metricsTimeNs_ = 0L;
   /**
    * <pre>
    * The time taken to collect these metrics
@@ -72,7 +67,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int APK_SIZE_FIELD_NUMBER = 2;
-  private long apkSize_;
+  private long apkSize_ = 0L;
   /**
    * <pre>
    * The size of the APK built, if relevant.
@@ -99,7 +94,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESOURCES_AP_SIZE_FIELD_NUMBER = 3;
-  private long resourcesApSize_;
+  private long resourcesApSize_ = 0L;
   /**
    * <pre>
    * The size of the resources_ap included in that apk.
@@ -353,12 +348,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       metricsTimeNs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000001);
       apkSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       resourcesApSize_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -385,6 +378,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics buildPartial() {
       com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics result = new com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -399,43 +398,9 @@ private static final long serialVersionUID = 0L;
         result.resourcesApSize_ = resourcesApSize_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics) {
@@ -550,8 +515,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setMetricsTimeNs(long value) {
-      bitField0_ |= 0x00000001;
+
       metricsTimeNs_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -605,8 +571,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApkSize(long value) {
-      bitField0_ |= 0x00000002;
+
       apkSize_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -660,8 +627,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResourcesApSize(long value) {
-      bitField0_ |= 0x00000004;
+
       resourcesApSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

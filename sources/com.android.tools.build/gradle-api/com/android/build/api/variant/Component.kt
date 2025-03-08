@@ -149,4 +149,27 @@ interface Component: ComponentIdentity {
      */
     @Incubating
     fun computeTaskName(action: String, subject: String): String
+
+    /**
+     * Access to the component's resolvable configuration corresponding to the source set
+     * configurations added via [AndroidComponentsExtension.addSourceSetConfigurations].
+     *
+     * Example usage:
+     * ```kotlin
+     *  androidComponents {
+     *      addSourceSetConfigurations("foo")
+     *      onVariants { variant ->
+     *          val resolvableConfiguration = variant.getResolvableConfiguration("foo")
+     *          variant.nestedComponents.forEach { component ->
+     *              val nestedResolvableConfiguration =
+     *                  component.getResolvableConfiguration("foo")
+     *          }
+     *      }
+     *  }
+     * ```
+     *
+     * The returned [Configuration] should not be resolved until execution time.
+     */
+    @Incubating
+    fun getResolvableConfiguration(sourceSetConfigurationsAffix: String): Configuration
 }

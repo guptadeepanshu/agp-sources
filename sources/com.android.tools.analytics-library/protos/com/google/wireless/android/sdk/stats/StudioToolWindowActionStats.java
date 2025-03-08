@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new StudioToolWindowActionStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioToolWindowActionStats_descriptor;
@@ -333,7 +328,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOOL_WINDOW_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object toolWindowId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object toolWindowId_ = "";
   /**
    * <pre>
    * Id of the tool window
@@ -396,7 +392,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EVENT_TYPE_FIELD_NUMBER = 2;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <code>optional .android_studio.StudioToolWindowActionStats.EventType event_type = 2;</code>
    * @return Whether the eventType field is set.
@@ -409,13 +405,12 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int TOOL_WINDOW_TYPE_FIELD_NUMBER = 3;
-  private int toolWindowType_;
+  private int toolWindowType_ = 0;
   /**
    * <pre>
    * "View Mode" in the UI
@@ -436,8 +431,7 @@ private static final long serialVersionUID = 0L;
    * @return The toolWindowType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);
+    com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.forNumber(toolWindowType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
   }
 
@@ -667,12 +661,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       toolWindowId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       toolWindowType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -699,57 +691,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats buildPartial() {
       com.google.wireless.android.sdk.stats.StudioToolWindowActionStats result = new com.google.wireless.android.sdk.stats.StudioToolWindowActionStats(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.toolWindowId_ = toolWindowId_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.eventType_ = eventType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.toolWindowType_ = toolWindowType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioToolWindowActionStats result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.toolWindowId_ = toolWindowId_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.eventType_ = eventType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.toolWindowType_ = toolWindowType_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioToolWindowActionStats) {
@@ -763,8 +727,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.StudioToolWindowActionStats other) {
       if (other == com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.getDefaultInstance()) return this;
       if (other.hasToolWindowId()) {
-        bitField0_ |= 0x00000001;
         toolWindowId_ = other.toolWindowId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasEventType()) {
@@ -915,11 +879,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setToolWindowId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       toolWindowId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -933,8 +895,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearToolWindowId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       toolWindowId_ = getDefaultInstance().getToolWindowId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -950,11 +912,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setToolWindowIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       toolWindowId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -973,8 +933,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -1024,8 +983,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);
+      com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.forNumber(toolWindowType_);
       return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
     }
     /**

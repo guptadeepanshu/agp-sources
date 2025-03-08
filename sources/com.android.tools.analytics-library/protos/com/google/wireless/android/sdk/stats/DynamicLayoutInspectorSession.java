@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorSession();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorSession_descriptor;
@@ -619,48 +614,42 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (liveBuilder_ == null) {
-        live_ = null;
-      } else {
-        liveBuilder_.clear();
+      bitField0_ = 0;
+      live_ = null;
+      if (liveBuilder_ != null) {
+        liveBuilder_.dispose();
+        liveBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (rotationBuilder_ == null) {
-        rotation_ = null;
-      } else {
-        rotationBuilder_.clear();
+      rotation_ = null;
+      if (rotationBuilder_ != null) {
+        rotationBuilder_.dispose();
+        rotationBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (memoryBuilder_ == null) {
-        memory_ = null;
-      } else {
-        memoryBuilder_.clear();
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (composeBuilder_ == null) {
-        compose_ = null;
-      } else {
-        composeBuilder_.clear();
+      compose_ = null;
+      if (composeBuilder_ != null) {
+        composeBuilder_.dispose();
+        composeBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (systemBuilder_ == null) {
-        system_ = null;
-      } else {
-        systemBuilder_.clear();
+      system_ = null;
+      if (systemBuilder_ != null) {
+        systemBuilder_.dispose();
+        systemBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (gotoDeclarationBuilder_ == null) {
-        gotoDeclaration_ = null;
-      } else {
-        gotoDeclarationBuilder_.clear();
+      gotoDeclaration_ = null;
+      if (gotoDeclarationBuilder_ != null) {
+        gotoDeclarationBuilder_.dispose();
+        gotoDeclarationBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (attachBuilder_ == null) {
-        attach_ = null;
-      } else {
-        attachBuilder_.clear();
+      attach_ = null;
+      if (attachBuilder_ != null) {
+        attachBuilder_.dispose();
+        attachBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -687,101 +676,59 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (liveBuilder_ == null) {
-          result.live_ = live_;
-        } else {
-          result.live_ = liveBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (rotationBuilder_ == null) {
-          result.rotation_ = rotation_;
-        } else {
-          result.rotation_ = rotationBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (memoryBuilder_ == null) {
-          result.memory_ = memory_;
-        } else {
-          result.memory_ = memoryBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (composeBuilder_ == null) {
-          result.compose_ = compose_;
-        } else {
-          result.compose_ = composeBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (systemBuilder_ == null) {
-          result.system_ = system_;
-        } else {
-          result.system_ = systemBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000010;
-      }
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (gotoDeclarationBuilder_ == null) {
-          result.gotoDeclaration_ = gotoDeclaration_;
-        } else {
-          result.gotoDeclaration_ = gotoDeclarationBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (attachBuilder_ == null) {
-          result.attach_ = attach_;
-        } else {
-          result.attach_ = attachBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000040;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.live_ = liveBuilder_ == null
+            ? live_
+            : liveBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.rotation_ = rotationBuilder_ == null
+            ? rotation_
+            : rotationBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.memory_ = memoryBuilder_ == null
+            ? memory_
+            : memoryBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.compose_ = composeBuilder_ == null
+            ? compose_
+            : composeBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.system_ = systemBuilder_ == null
+            ? system_
+            : systemBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.gotoDeclaration_ = gotoDeclarationBuilder_ == null
+            ? gotoDeclaration_
+            : gotoDeclarationBuilder_.build();
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.attach_ = attachBuilder_ == null
+            ? attach_
+            : attachBuilder_.build();
+        to_bitField0_ |= 0x00000040;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSession) {
@@ -949,11 +896,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         live_ = value;
-        onChanged();
       } else {
         liveBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -967,11 +914,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.Builder builderForValue) {
       if (liveBuilder_ == null) {
         live_ = builderForValue.build();
-        onChanged();
       } else {
         liveBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -984,18 +931,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLive(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode value) {
       if (liveBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            live_ != null &&
-            live_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.getDefaultInstance()) {
-          live_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.newBuilder(live_).mergeFrom(value).buildPartial();
+          live_ != null &&
+          live_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.getDefaultInstance()) {
+          getLiveBuilder().mergeFrom(value);
         } else {
           live_ = value;
         }
-        onChanged();
       } else {
         liveBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -1006,13 +952,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1 [lazy = true];</code>
      */
     public Builder clearLive() {
-      if (liveBuilder_ == null) {
-        live_ = null;
-        onChanged();
-      } else {
-        liveBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      live_ = null;
+      if (liveBuilder_ != null) {
+        liveBuilder_.dispose();
+        liveBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1105,11 +1051,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         rotation_ = value;
-        onChanged();
       } else {
         rotationBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1123,11 +1069,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.Builder builderForValue) {
       if (rotationBuilder_ == null) {
         rotation_ = builderForValue.build();
-        onChanged();
       } else {
         rotationBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1140,18 +1086,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRotation(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation value) {
       if (rotationBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            rotation_ != null &&
-            rotation_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.getDefaultInstance()) {
-          rotation_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.newBuilder(rotation_).mergeFrom(value).buildPartial();
+          rotation_ != null &&
+          rotation_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.getDefaultInstance()) {
+          getRotationBuilder().mergeFrom(value);
         } else {
           rotation_ = value;
         }
-        onChanged();
       } else {
         rotationBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1162,13 +1107,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2 [lazy = true];</code>
      */
     public Builder clearRotation() {
-      if (rotationBuilder_ == null) {
-        rotation_ = null;
-        onChanged();
-      } else {
-        rotationBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      rotation_ = null;
+      if (rotationBuilder_ != null) {
+        rotationBuilder_.dispose();
+        rotationBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1261,11 +1206,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         memory_ = value;
-        onChanged();
       } else {
         memoryBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1279,11 +1224,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Builder builderForValue) {
       if (memoryBuilder_ == null) {
         memory_ = builderForValue.build();
-        onChanged();
       } else {
         memoryBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1296,18 +1241,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeMemory(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory value) {
       if (memoryBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            memory_ != null &&
-            memory_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.getDefaultInstance()) {
-          memory_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.newBuilder(memory_).mergeFrom(value).buildPartial();
+          memory_ != null &&
+          memory_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.getDefaultInstance()) {
+          getMemoryBuilder().mergeFrom(value);
         } else {
           memory_ = value;
         }
-        onChanged();
       } else {
         memoryBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1318,13 +1262,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3 [lazy = true];</code>
      */
     public Builder clearMemory() {
-      if (memoryBuilder_ == null) {
-        memory_ = null;
-        onChanged();
-      } else {
-        memoryBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1417,11 +1361,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         compose_ = value;
-        onChanged();
       } else {
         composeBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1435,11 +1379,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.Builder builderForValue) {
       if (composeBuilder_ == null) {
         compose_ = builderForValue.build();
-        onChanged();
       } else {
         composeBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1452,18 +1396,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeCompose(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose value) {
       if (composeBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            compose_ != null &&
-            compose_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.getDefaultInstance()) {
-          compose_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.newBuilder(compose_).mergeFrom(value).buildPartial();
+          compose_ != null &&
+          compose_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.getDefaultInstance()) {
+          getComposeBuilder().mergeFrom(value);
         } else {
           compose_ = value;
         }
-        onChanged();
       } else {
         composeBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1474,13 +1417,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4 [lazy = true];</code>
      */
     public Builder clearCompose() {
-      if (composeBuilder_ == null) {
-        compose_ = null;
-        onChanged();
-      } else {
-        composeBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      compose_ = null;
+      if (composeBuilder_ != null) {
+        composeBuilder_.dispose();
+        composeBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1573,11 +1516,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         system_ = value;
-        onChanged();
       } else {
         systemBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1591,11 +1534,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.Builder builderForValue) {
       if (systemBuilder_ == null) {
         system_ = builderForValue.build();
-        onChanged();
       } else {
         systemBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1608,18 +1551,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSystem(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode value) {
       if (systemBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            system_ != null &&
-            system_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.getDefaultInstance()) {
-          system_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.newBuilder(system_).mergeFrom(value).buildPartial();
+          system_ != null &&
+          system_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.getDefaultInstance()) {
+          getSystemBuilder().mergeFrom(value);
         } else {
           system_ = value;
         }
-        onChanged();
       } else {
         systemBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1630,13 +1572,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5 [lazy = true];</code>
      */
     public Builder clearSystem() {
-      if (systemBuilder_ == null) {
-        system_ = null;
-        onChanged();
-      } else {
-        systemBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      system_ = null;
+      if (systemBuilder_ != null) {
+        systemBuilder_.dispose();
+        systemBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1729,11 +1671,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         gotoDeclaration_ = value;
-        onChanged();
       } else {
         gotoDeclarationBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1747,11 +1689,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder builderForValue) {
       if (gotoDeclarationBuilder_ == null) {
         gotoDeclaration_ = builderForValue.build();
-        onChanged();
       } else {
         gotoDeclarationBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1764,18 +1706,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeGotoDeclaration(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration value) {
       if (gotoDeclarationBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            gotoDeclaration_ != null &&
-            gotoDeclaration_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance()) {
-          gotoDeclaration_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.newBuilder(gotoDeclaration_).mergeFrom(value).buildPartial();
+          gotoDeclaration_ != null &&
+          gotoDeclaration_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance()) {
+          getGotoDeclarationBuilder().mergeFrom(value);
         } else {
           gotoDeclaration_ = value;
         }
-        onChanged();
       } else {
         gotoDeclarationBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1786,13 +1727,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6 [lazy = true];</code>
      */
     public Builder clearGotoDeclaration() {
-      if (gotoDeclarationBuilder_ == null) {
-        gotoDeclaration_ = null;
-        onChanged();
-      } else {
-        gotoDeclarationBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      gotoDeclaration_ = null;
+      if (gotoDeclarationBuilder_ != null) {
+        gotoDeclarationBuilder_.dispose();
+        gotoDeclarationBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1885,11 +1826,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         attach_ = value;
-        onChanged();
       } else {
         attachBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1903,11 +1844,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder builderForValue) {
       if (attachBuilder_ == null) {
         attach_ = builderForValue.build();
-        onChanged();
       } else {
         attachBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1920,18 +1861,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeAttach(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess value) {
       if (attachBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            attach_ != null &&
-            attach_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance()) {
-          attach_ =
-            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.newBuilder(attach_).mergeFrom(value).buildPartial();
+          attach_ != null &&
+          attach_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance()) {
+          getAttachBuilder().mergeFrom(value);
         } else {
           attach_ = value;
         }
-        onChanged();
       } else {
         attachBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1942,13 +1882,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7 [lazy = true];</code>
      */
     public Builder clearAttach() {
-      if (attachBuilder_ == null) {
-        attach_ = null;
-        onChanged();
-      } else {
-        attachBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      attach_ = null;
+      if (attachBuilder_ != null) {
+        attachBuilder_.dispose();
+        attachBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

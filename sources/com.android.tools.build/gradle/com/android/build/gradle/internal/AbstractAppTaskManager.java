@@ -53,15 +53,18 @@ import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.ExtractDeepLinksTask;
 import com.android.build.gradle.tasks.MergeResources;
 import com.android.builder.core.ComponentType;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import java.util.Collection;
-import java.util.Set;
+
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.resources.TextResourceFactory;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
+
+import java.util.Collection;
+import java.util.Set;
 
 /** TaskManager for creating tasks in an Android application project. */
 public abstract class AbstractAppTaskManager<
@@ -128,7 +131,7 @@ public abstract class AbstractAppTaskManager<
         createShaderTask(creationConfig);
 
         // Add a task to merge the asset folders
-        createMergeAssetsTask(creationConfig);
+        createMergeAssetsTask(creationConfig, true);
 
         taskFactory.register(new CompressAssetsTask.CreationAction(creationConfig));
 

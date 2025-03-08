@@ -18,6 +18,7 @@ package com.android.build.api.component.analytics
 
 import com.android.build.api.artifact.Artifacts
 import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DeviceTest
 import com.android.build.api.variant.HostTest
@@ -29,6 +30,7 @@ import com.android.build.api.variant.Sources
 import com.android.build.api.variant.TestedComponentPackaging
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
@@ -81,6 +83,13 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.COMPILE_CLASSPATH_VALUE
             return delegate.compileClasspath
+        }
+
+    override val compileConfiguration: Configuration
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.COMPILE_CONFIGURATION_VALUE
+            return delegate.compileConfiguration
         }
 
     override val lifecycleTasks: LifecycleTasks
@@ -160,5 +169,12 @@ open class AnalyticsEnabledKotlinMultiplatformAndroidVariant @Inject constructor
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
             return userVisiblePackaging
+        }
+
+    override val minSdk: AndroidVersion
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.MIN_SDK_VERSION_VALUE
+            return delegate.minSdk
         }
 }

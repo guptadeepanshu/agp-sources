@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new DesignEditorHelpPanelEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DesignEditorHelpPanelEvent_descriptor;
@@ -346,7 +341,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTION_FIELD_NUMBER = 1;
-  private int action_;
+  private int action_ = 0;
   /**
    * <pre>
    * What sort of action was performed
@@ -367,13 +362,12 @@ private static final long serialVersionUID = 0L;
    * @return The action.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction getAction() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.valueOf(action_);
+    com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.forNumber(action_);
     return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.UNKNOWN_ACTION : result;
   }
 
   public static final int HELP_PANEL_TYPE_FIELD_NUMBER = 2;
-  private int helpPanelType_;
+  private int helpPanelType_ = 0;
   /**
    * <pre>
    * Help panel type
@@ -394,13 +388,12 @@ private static final long serialVersionUID = 0L;
    * @return The helpPanelType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType getHelpPanelType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.valueOf(helpPanelType_);
+    com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.forNumber(helpPanelType_);
     return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.UNKNOWN_PANEL_TYPE : result;
   }
 
   public static final int TIME_TO_CLOSE_MS_FIELD_NUMBER = 3;
-  private long timeToCloseMs_;
+  private long timeToCloseMs_ = 0L;
   /**
    * <pre>
    * Time between opening window and closing it
@@ -654,12 +647,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       action_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       helpPanelType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       timeToCloseMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -686,57 +677,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent result = new com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.action_ = action_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.helpPanelType_ = helpPanelType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.timeToCloseMs_ = timeToCloseMs_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.action_ = action_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.helpPanelType_ = helpPanelType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.timeToCloseMs_ = timeToCloseMs_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent) {
@@ -852,8 +815,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction getAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.valueOf(action_);
+      com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.forNumber(action_);
       return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.UNKNOWN_ACTION : result;
     }
     /**
@@ -911,8 +873,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType getHelpPanelType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.valueOf(helpPanelType_);
+      com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.forNumber(helpPanelType_);
       return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.UNKNOWN_PANEL_TYPE : result;
     }
     /**
@@ -983,8 +944,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTimeToCloseMs(long value) {
-      bitField0_ |= 0x00000004;
+
       timeToCloseMs_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

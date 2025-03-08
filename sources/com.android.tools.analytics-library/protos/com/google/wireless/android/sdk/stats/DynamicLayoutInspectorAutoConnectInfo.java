@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new DynamicLayoutInspectorAutoConnectInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DynamicLayoutInspectorAutoConnectInfo_descriptor;
@@ -642,7 +637,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int HANDSHAKE_RESULT_FIELD_NUMBER = 1;
-  private int handshakeResult_;
+  private int handshakeResult_ = 0;
   /**
    * <pre>
    * The result of the handshake. Does the device support auto connect?
@@ -663,20 +658,20 @@ private static final long serialVersionUID = 0L;
    * @return The handshakeResult.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult getHandshakeResult() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.valueOf(handshakeResult_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.forNumber(handshakeResult_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.UNSPECIFIED_RESULT : result;
   }
 
   public static final int HANDSHAKE_CONVERSION_FIELD_NUMBER = 2;
-  private int handshakeConversion_;
+  private int handshakeConversion_ = 0;
   /**
    * <pre>
    * Deprecated, use handshake_conversion_info instead
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+   *     See studio_stats.proto;l=9083
    * @return Whether the handshakeConversion field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasHandshakeConversion() {
@@ -688,17 +683,17 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+   *     See studio_stats.proto;l=9083
    * @return The handshakeConversion.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.valueOf(handshakeConversion_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.forNumber(handshakeConversion_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.UNKNOWN_TO_SUPPORTED : result;
   }
 
   public static final int REASON_NOT_SUPPORTED_FIELD_NUMBER = 3;
-  private int reasonNotSupported_;
+  private int reasonNotSupported_ = 0;
   /**
    * <pre>
    * Additional info about why the handshake_result is NOT_SUPPORTED
@@ -719,13 +714,12 @@ private static final long serialVersionUID = 0L;
    * @return The reasonNotSupported.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported getReasonNotSupported() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.valueOf(reasonNotSupported_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.forNumber(reasonNotSupported_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.UNSPECIFIED_REASON : result;
   }
 
   public static final int HANDSHAKE_CONVERSION_INFO_FIELD_NUMBER = 4;
-  private int handshakeConversionInfo_;
+  private int handshakeConversionInfo_ = 0;
   /**
    * <pre>
    * Indicates when a handshake state converts to another
@@ -746,13 +740,12 @@ private static final long serialVersionUID = 0L;
    * @return The handshakeConversionInfo.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion getHandshakeConversionInfo() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.valueOf(handshakeConversionInfo_);
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.forNumber(handshakeConversionInfo_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.UNSPECIFIED_CONVERSION : result;
   }
 
   public static final int IS_RECOVERY_HANDSHAKE_FIELD_NUMBER = 5;
-  private boolean isRecoveryHandshake_;
+  private boolean isRecoveryHandshake_ = false;
   /**
    * <pre>
    * Indicates whether this auto-connect info is about a recovery handshake
@@ -1032,16 +1025,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       handshakeResult_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       handshakeConversion_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       reasonNotSupported_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       handshakeConversionInfo_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       isRecoveryHandshake_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -1068,65 +1057,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo buildPartial() {
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo result = new com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.handshakeResult_ = handshakeResult_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.handshakeConversion_ = handshakeConversion_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.reasonNotSupported_ = reasonNotSupported_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.handshakeConversionInfo_ = handshakeConversionInfo_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        result.isRecoveryHandshake_ = isRecoveryHandshake_;
-        to_bitField0_ |= 0x00000010;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.handshakeResult_ = handshakeResult_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.handshakeConversion_ = handshakeConversion_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.reasonNotSupported_ = reasonNotSupported_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.handshakeConversionInfo_ = handshakeConversionInfo_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.isRecoveryHandshake_ = isRecoveryHandshake_;
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo) {
@@ -1272,8 +1233,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult getHandshakeResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.valueOf(handshakeResult_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.forNumber(handshakeResult_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeResult.UNSPECIFIED_RESULT : result;
     }
     /**
@@ -1316,7 +1276,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+     *     See studio_stats.proto;l=9083
      * @return Whether the handshakeConversion field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasHandshakeConversion() {
@@ -1328,13 +1289,13 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+     *     See studio_stats.proto;l=9083
      * @return The handshakeConversion.
      */
     @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.valueOf(handshakeConversion_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.forNumber(handshakeConversion_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion.UNKNOWN_TO_SUPPORTED : result;
     }
     /**
@@ -1343,7 +1304,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+     *     See studio_stats.proto;l=9083
      * @param value The handshakeConversion to set.
      * @return This builder for chaining.
      */
@@ -1362,7 +1324,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
+     *     See studio_stats.proto;l=9083
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearHandshakeConversion() {
@@ -1394,8 +1357,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported getReasonNotSupported() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.valueOf(reasonNotSupported_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.forNumber(reasonNotSupported_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.AutoConnectReasonNotSupported.UNSPECIFIED_REASON : result;
     }
     /**
@@ -1453,8 +1415,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion getHandshakeConversionInfo() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.valueOf(handshakeConversionInfo_);
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.forNumber(handshakeConversionInfo_);
       return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeConversion.UNSPECIFIED_CONVERSION : result;
     }
     /**
@@ -1525,8 +1486,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsRecoveryHandshake(boolean value) {
-      bitField0_ |= 0x00000010;
+
       isRecoveryHandshake_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

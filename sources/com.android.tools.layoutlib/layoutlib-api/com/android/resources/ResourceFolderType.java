@@ -18,29 +18,30 @@ package com.android.resources;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Enum representing a type of resource folder.
- */
+/** Enum representing a type of resource folder. */
 public enum ResourceFolderType {
-    ANIM(ResourceConstants.FD_RES_ANIM),
-    ANIMATOR(ResourceConstants.FD_RES_ANIMATOR),
-    COLOR(ResourceConstants.FD_RES_COLOR),
-    DRAWABLE(ResourceConstants.FD_RES_DRAWABLE),
-    FONT(ResourceConstants.FD_RES_FONT),
-    INTERPOLATOR(ResourceConstants.FD_RES_INTERPOLATOR),
-    LAYOUT(ResourceConstants.FD_RES_LAYOUT),
-    MENU(ResourceConstants.FD_RES_MENU),
-    MIPMAP(ResourceConstants.FD_RES_MIPMAP),
-    NAVIGATION(ResourceConstants.FD_NAVIGATION),
-    RAW(ResourceConstants.FD_RES_RAW),
-    TRANSITION(ResourceConstants.FD_RES_TRANSITION),
-    VALUES(ResourceConstants.FD_RES_VALUES),
-    XML(ResourceConstants.FD_RES_XML);
+    ANIM(ResourceConstants.FD_RES_ANIM, ResourceType.ANIM),
+    ANIMATOR(ResourceConstants.FD_RES_ANIMATOR, ResourceType.ANIMATOR),
+    COLOR(ResourceConstants.FD_RES_COLOR, ResourceType.COLOR),
+    DRAWABLE(ResourceConstants.FD_RES_DRAWABLE, ResourceType.DRAWABLE),
+    FONT(ResourceConstants.FD_RES_FONT, ResourceType.FONT),
+    INTERPOLATOR(ResourceConstants.FD_RES_INTERPOLATOR, ResourceType.FONT),
+    LAYOUT(ResourceConstants.FD_RES_LAYOUT, ResourceType.LAYOUT),
+    MENU(ResourceConstants.FD_RES_MENU, ResourceType.MENU),
+    MIPMAP(ResourceConstants.FD_RES_MIPMAP, ResourceType.MIPMAP),
+    NAVIGATION(ResourceConstants.FD_NAVIGATION, ResourceType.NAVIGATION),
+    RAW(ResourceConstants.FD_RES_RAW, ResourceType.RAW),
+    TRANSITION(ResourceConstants.FD_RES_TRANSITION, ResourceType.TRANSITION),
+    /** VALUES doesn't have a specific ResourceType. */
+    VALUES(ResourceConstants.FD_RES_VALUES, null),
+    XML(ResourceConstants.FD_RES_XML, ResourceType.XML);
 
     private final String name;
+    @Nullable private final ResourceType resourceType;
 
     private static final Map<String, ResourceFolderType> nameToType;
 
@@ -53,8 +54,9 @@ public enum ResourceFolderType {
         }
     }
 
-    ResourceFolderType(String name) {
+    ResourceFolderType(String name, @Nullable ResourceType resourceType) {
         this.name = name;
+        this.resourceType = resourceType;
     }
 
     /**
@@ -63,6 +65,12 @@ public enum ResourceFolderType {
     @NonNull
     public String getName() {
         return name;
+    }
+
+    /** Returns the ResourceType, if any, for this resource folder type. */
+    @Nullable
+    public ResourceType getResourceType() {
+        return resourceType;
     }
 
     /**

@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorResizableDisplay();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorResizableDisplay_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DISPLAY_PHONE_COUNT_FIELD_NUMBER = 1;
-  private int displayPhoneCount_;
+  private int displayPhoneCount_ = 0;
   /**
    * <pre>
    * Counts for different display size types
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISPLAY_FOLDABLE_COUNT_FIELD_NUMBER = 2;
-  private int displayFoldableCount_;
+  private int displayFoldableCount_ = 0;
   /**
    * <code>optional uint32 display_foldable_count = 2;</code>
    * @return Whether the displayFoldableCount field is set.
@@ -95,7 +90,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISPLAY_TABLET_COUNT_FIELD_NUMBER = 3;
-  private int displayTabletCount_;
+  private int displayTabletCount_ = 0;
   /**
    * <code>optional uint32 display_tablet_count = 3;</code>
    * @return Whether the displayTabletCount field is set.
@@ -114,7 +109,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DISPLAY_DESKTOP_COUNT_FIELD_NUMBER = 4;
-  private int displayDesktopCount_;
+  private int displayDesktopCount_ = 0;
   /**
    * <code>optional uint32 display_desktop_count = 4;</code>
    * @return Whether the displayDesktopCount field is set.
@@ -377,14 +372,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       displayPhoneCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       displayFoldableCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       displayTabletCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       displayDesktopCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -411,6 +403,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorResizableDisplay result = new com.google.wireless.android.sdk.stats.EmulatorResizableDisplay(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -429,43 +427,9 @@ private static final long serialVersionUID = 0L;
         result.displayDesktopCount_ = displayDesktopCount_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorResizableDisplay) {
@@ -588,8 +552,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDisplayPhoneCount(int value) {
-      bitField0_ |= 0x00000001;
+
       displayPhoneCount_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -631,8 +596,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDisplayFoldableCount(int value) {
-      bitField0_ |= 0x00000002;
+
       displayFoldableCount_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -670,8 +636,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDisplayTabletCount(int value) {
-      bitField0_ |= 0x00000004;
+
       displayTabletCount_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -709,8 +676,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDisplayDesktopCount(int value) {
-      bitField0_ |= 0x00000008;
+
       displayDesktopCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

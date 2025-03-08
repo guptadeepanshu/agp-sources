@@ -35,6 +35,7 @@ interface ManagedDevices {
      *
      * This is replaced with [allDevices]
      */
+    @Deprecated("devices is deprecated in managedDevices, use allDevices instead")
     val devices: ExtensiblePolymorphicDomainObjectContainer<Device>
 
     /**

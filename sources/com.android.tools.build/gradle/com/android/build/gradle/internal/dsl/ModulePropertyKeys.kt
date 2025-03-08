@@ -84,6 +84,11 @@ sealed interface ModulePropertyKey<OutputT> {
          * Whether to configure the DEVICE_GROUP split dimension.
          */
         DTTV2_DEVICE_GROUP_ENABLE_SPLIT("android_experimental_bundle_deviceGroup_enableSplit"),
+
+        /**
+         * Whether to use R8 Partial Shrinking.
+         */
+        R8_EXPERIMENTAL_PARTIAL_SHRINKING_ENABLED("com.android.tools.r8.experimentalPartialShrinkingEnabled")
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean? {
@@ -114,6 +119,14 @@ sealed interface ModulePropertyKey<OutputT> {
         ),
         ANDROID_PRIVACY_SANDBOX_LOCAL_DEPLOYMENT_SIGNING_KEY_PASSWORD(
                 "android.privacy_sandbox.local_deployment_signing_key_password"
+        ),
+
+        R8_EXPERIMENTAL_PARTIAL_SHRINKING_INCLUDE_PATTERNS(
+            "com.android.tools.r8.experimentalPartialShrinkingIncludePatterns"
+        ),
+
+        R8_EXPERIMENTAL_PARTIAL_SHRINKING_EXCLUDE_PATTERNS(
+            "com.android.tools.r8.experimentalPartialShrinkingExcludePatterns"
         ),
 
         /**
@@ -181,6 +194,12 @@ sealed interface ModulePropertyKey<OutputT> {
          * If true - Android resources will be enabled in kmp
          */
         KMP_ANDROID_RESOURCES_ENABLED("android.experimental.kmp.enableAndroidResources", false),
+
+        /**
+         * If false - [FusedLibraryDependencyValidationTask] allows all dependencies included in the fused library
+         * if true - [FusedLibraryDependencyValidationTask] fails build if a dependency doesn't meet validation checks
+         */
+        FUSED_LIBRARY_VALIDATE_DEPENDENCIES("android.experimental.fusedlibrary.validateDependencies", true)
         ;
 
         override fun getValue(properties: Map<String, Any>): Boolean {

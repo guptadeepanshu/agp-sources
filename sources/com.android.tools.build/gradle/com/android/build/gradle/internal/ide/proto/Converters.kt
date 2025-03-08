@@ -96,6 +96,8 @@ internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.Bo
             AndroidGradlePluginProjectFlags.BooleanFlag.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS
         com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.DATA_BINDING_ENABLED ->
             AndroidGradlePluginProjectFlags.BooleanFlag.DATA_BINDING_ENABLED
+        com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag.GENERATE_MANIFEST_CLASS ->
+            AndroidGradlePluginProjectFlags.BooleanFlag.GENERATE_MANIFEST_CLASS
     }
 
 internal fun com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.convert() =

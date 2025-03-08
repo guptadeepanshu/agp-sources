@@ -63,6 +63,8 @@ public class AdbInitOptions {
 
     public final IDeviceUsageTracker iDeviceUsageTracker;
 
+    public final AdbDelegateUsageTracker adbDelegateUsageTracker;
+
     /**
      * Enable user managed ADB mode where ddmlib will not start, restart, or terminate the ADB
      * server.
@@ -111,7 +113,8 @@ public class AdbInitOptions {
             boolean useJdwpService,
             boolean useDdmlibCommandService,
             int maxJdwpPacketSize,
-            IDeviceUsageTracker iDeviceUsageTracker) {
+            IDeviceUsageTracker iDeviceUsageTracker,
+            AdbDelegateUsageTracker adbDelegateUsageTracker) {
         this.iDeviceManagerFactory = iDeviceManagerFactory;
         this.clientSupport = clientSupport;
         this.clientManager = clientManager;
@@ -122,6 +125,7 @@ public class AdbInitOptions {
         this.useDdmlibCommandService = useDdmlibCommandService;
         this.maxJdwpPacketSize = maxJdwpPacketSize;
         this.iDeviceUsageTracker = iDeviceUsageTracker;
+        this.adbDelegateUsageTracker = adbDelegateUsageTracker;
     }
 
     /**
@@ -137,6 +141,7 @@ public class AdbInitOptions {
     public static class Builder {
         private IDeviceManagerFactory myIDeviceManagerFactory;
         private IDeviceUsageTracker iDeviceUsageTracker;
+        private AdbDelegateUsageTracker adbDelegateUsageTracker;
         boolean clientSupport = false;
         private ClientManager clientManager;
         boolean userManagedAdbMode = false;
@@ -156,6 +161,12 @@ public class AdbInitOptions {
         /** See {@link AdbInitOptions#iDeviceUsageTracker}. */
         public Builder setIDeviceUsageTracker(IDeviceUsageTracker iDeviceUsageTracker) {
             this.iDeviceUsageTracker = iDeviceUsageTracker;
+            return this;
+        }
+
+        /** See {@link AdbInitOptions#adbDelegateUsageTracker}. */
+        public Builder setAdbDelegateUsageTracker(AdbDelegateUsageTracker adbDelegateUsageTracker) {
+            this.adbDelegateUsageTracker = adbDelegateUsageTracker;
             return this;
         }
 
@@ -229,7 +240,8 @@ public class AdbInitOptions {
                     useJdwpProxyService,
                     useDdmlibCommandService,
                     jdwpMaxPacketSize,
-                    iDeviceUsageTracker);
+                    iDeviceUsageTracker,
+                    adbDelegateUsageTracker);
         }
 
     }

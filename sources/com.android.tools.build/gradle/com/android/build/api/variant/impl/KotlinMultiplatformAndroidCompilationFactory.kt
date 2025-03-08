@@ -111,10 +111,6 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
                 }
             }
             sourceSetTreeClassifierV2 = compilationBuilder.getSourceSetTreeClassifier()
-        }.also {
-            it.compilerOptions.options.jvmTarget.set(
-                JvmTarget.fromTarget(CompileOptions.DEFAULT_JAVA_VERSION.toString())
-            )
         }
     }
 

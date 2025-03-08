@@ -64,7 +64,6 @@ import com.android.build.gradle.tasks.ExtractSupportedLocalesTask
 import com.android.build.gradle.tasks.JavaDocGenerationTask
 import com.android.build.gradle.tasks.JavaDocJarTask
 import com.android.build.gradle.tasks.MergeResources
-import com.android.build.gradle.tasks.MergeSourceSetFolders.LibraryAssetCreationAction
 import com.android.build.gradle.tasks.ProcessLibraryArtProfileTask
 import com.android.build.gradle.tasks.ProcessLibraryManifest
 import com.android.build.gradle.tasks.SourceJarTask
@@ -138,8 +137,7 @@ class LibraryTaskManager(
         createShaderTask(libraryVariant)
 
         // Add tasks to merge the assets folders
-        createMergeAssetsTask(libraryVariant)
-        createLibraryAssetsTask(libraryVariant)
+        createMergeAssetsTask(libraryVariant, false)
 
         // Add a task to create the BuildConfig class
         createBuildConfigTask(libraryVariant)
@@ -417,10 +415,6 @@ class LibraryTaskManager(
                 creationConfig, PublishedConfigType.API_ELEMENTS
             )
         )
-    }
-
-    private fun createLibraryAssetsTask(variant: LibraryCreationConfig) {
-        taskFactory.register(LibraryAssetCreationAction(variant))
     }
 
     override val javaResMergingScopes = setOf(

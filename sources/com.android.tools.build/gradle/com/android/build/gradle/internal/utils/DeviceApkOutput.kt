@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.utils
 
 import com.android.build.api.variant.ApkInstallGroup
 import com.android.build.api.variant.DeviceSpec
+import org.gradle.api.tasks.TaskInputs
 
 interface DeviceApkOutput {
     /**
@@ -26,6 +27,8 @@ interface DeviceApkOutput {
      * @param deviceSpec An object that describes the device on which we intend to install Apks.
      */
     fun getApks(deviceSpec: DeviceSpec): List<ApkInstallGroup>
+
+    fun setInputs(inputs: TaskInputs, deviceSpec: DeviceSpec)
 }
 
 

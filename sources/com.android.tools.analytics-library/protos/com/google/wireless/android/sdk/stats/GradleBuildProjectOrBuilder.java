@@ -438,7 +438,8 @@ public interface GradleBuildProjectOrBuilder extends
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
+   *     See studio_stats.proto;l=4524
    * @return A list containing the pluginNames.
    */
   @java.lang.Deprecated java.util.List<java.lang.String>
@@ -451,7 +452,8 @@ public interface GradleBuildProjectOrBuilder extends
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
+   *     See studio_stats.proto;l=4524
    * @return The count of pluginNames.
    */
   @java.lang.Deprecated int getPluginNamesCount();
@@ -463,7 +465,8 @@ public interface GradleBuildProjectOrBuilder extends
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
+   *     See studio_stats.proto;l=4524
    * @param index The index of the element to return.
    * @return The pluginNames at the given index.
    */
@@ -476,7 +479,8 @@ public interface GradleBuildProjectOrBuilder extends
    * </pre>
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
+   *     See studio_stats.proto;l=4524
    * @param index The index of the value to return.
    * @return The bytes of the pluginNames at the given index.
    */

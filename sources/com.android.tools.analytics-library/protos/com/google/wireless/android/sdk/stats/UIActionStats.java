@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new UIActionStats();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UIActionStats_descriptor;
@@ -188,7 +183,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTION_CLASS_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object actionClassName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object actionClassName_ = "";
   /**
    * <pre>
    * java class name (our code, not customer) of the UI Action reported on
@@ -251,7 +247,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INVOCATIONS_FIELD_NUMBER = 2;
-  private long invocations_;
+  private long invocations_ = 0L;
   /**
    * <pre>
    * How often since the last report this action was invoked.
@@ -278,7 +274,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INVOCATION_KIND_FIELD_NUMBER = 3;
-  private int invocationKind_;
+  private int invocationKind_ = 0;
   /**
    * <pre>
    * The way this action was invoked by the user.
@@ -299,13 +295,12 @@ private static final long serialVersionUID = 0L;
    * @return The invocationKind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind getInvocationKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.valueOf(invocationKind_);
+    com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.forNumber(invocationKind_);
     return result == null ? com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.UNKNOWN_INVOCATION_KIND : result;
   }
 
   public static final int DIRECT_FIELD_NUMBER = 4;
-  private boolean direct_;
+  private boolean direct_ = false;
   /**
    * <pre>
    * true if this message is sent directly, false if sent
@@ -334,7 +329,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int UI_PLACE_FIELD_NUMBER = 5;
-  private volatile java.lang.Object uiPlace_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object uiPlace_ = "";
   /**
    * <pre>
    * The parent window/menu/toolbar that contains this action.
@@ -400,7 +396,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOGGLING_ON_FIELD_NUMBER = 6;
-  private boolean togglingOn_;
+  private boolean togglingOn_ = false;
   /**
    * <pre>
    * For toggle UI actions to track whether they are turning on or off.
@@ -703,18 +699,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       actionClassName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       invocations_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       invocationKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       direct_ = false;
-      bitField0_ = (bitField0_ & ~0x00000008);
       uiPlace_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       togglingOn_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -741,69 +732,41 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UIActionStats buildPartial() {
       com.google.wireless.android.sdk.stats.UIActionStats result = new com.google.wireless.android.sdk.stats.UIActionStats(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UIActionStats result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.actionClassName_ = actionClassName_;
         to_bitField0_ |= 0x00000001;
       }
-      result.actionClassName_ = actionClassName_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.invocations_ = invocations_;
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.invocationKind_ = invocationKind_;
         to_bitField0_ |= 0x00000004;
       }
-      result.invocationKind_ = invocationKind_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.direct_ = direct_;
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.uiPlace_ = uiPlace_;
         to_bitField0_ |= 0x00000010;
       }
-      result.uiPlace_ = uiPlace_;
       if (((from_bitField0_ & 0x00000020) != 0)) {
         result.togglingOn_ = togglingOn_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UIActionStats) {
@@ -817,8 +780,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.UIActionStats other) {
       if (other == com.google.wireless.android.sdk.stats.UIActionStats.getDefaultInstance()) return this;
       if (other.hasActionClassName()) {
-        bitField0_ |= 0x00000001;
         actionClassName_ = other.actionClassName_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasInvocations()) {
@@ -831,8 +794,8 @@ private static final long serialVersionUID = 0L;
         setDirect(other.getDirect());
       }
       if (other.hasUiPlace()) {
-        bitField0_ |= 0x00000010;
         uiPlace_ = other.uiPlace_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasTogglingOn()) {
@@ -988,11 +951,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setActionClassName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       actionClassName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1006,8 +967,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearActionClassName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       actionClassName_ = getDefaultInstance().getActionClassName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1023,11 +984,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setActionClassNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       actionClassName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1067,8 +1026,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInvocations(long value) {
-      bitField0_ |= 0x00000002;
+
       invocations_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1109,8 +1069,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind getInvocationKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.valueOf(invocationKind_);
+      com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.forNumber(invocationKind_);
       return result == null ? com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.UNKNOWN_INVOCATION_KIND : result;
     }
     /**
@@ -1184,8 +1143,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDirect(boolean value) {
-      bitField0_ |= 0x00000008;
+
       direct_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1279,11 +1239,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUiPlace(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       uiPlace_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1298,8 +1256,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearUiPlace() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       uiPlace_ = getDefaultInstance().getUiPlace();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1316,11 +1274,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setUiPlaceBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       uiPlace_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1360,8 +1316,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTogglingOn(boolean value) {
-      bitField0_ |= 0x00000020;
+
       togglingOn_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

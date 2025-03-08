@@ -162,8 +162,7 @@ class TestFixturesTaskManager(
         )
 
         // Add tasks to merge the assets folders
-        createMergeAssetsTask(testFixturesComponent)
-        taskFactory.register(MergeSourceSetFolders.LibraryAssetCreationAction(testFixturesComponent))
+        createMergeAssetsTask(testFixturesComponent, includeDependencies = false)
 
         // compilation tasks
 

@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new SystemHealthEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_descriptor;
@@ -646,11 +641,6 @@ private static final long serialVersionUID = 0L;
       return new UIFreeze();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_UIFreeze_descriptor;
@@ -666,7 +656,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int FREEZE_ID_FIELD_NUMBER = 1;
-    private long freezeId_;
+    private long freezeId_ = 0L;
     /**
      * <pre>
      * Unique freeze id (per session)
@@ -693,7 +683,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DURATION_MS_FIELD_NUMBER = 2;
-    private long durationMs_;
+    private long durationMs_ = 0L;
     /**
      * <pre>
      * Duration of the freeze so far. Total duration when UI_FREEZE_FINISHED
@@ -720,7 +710,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DEADLOCK_FIELD_NUMBER = 3;
-    private int deadlock_;
+    private int deadlock_ = 0;
     /**
      * <pre>
      * Current status of deadlock detection
@@ -741,8 +731,7 @@ private static final long serialVersionUID = 0L;
      * @return The deadlock.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus getDeadlock() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus result = com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.valueOf(deadlock_);
+      com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus result = com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.forNumber(deadlock_);
       return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.UNKNOWN : result;
     }
 
@@ -972,12 +961,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         freezeId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
         durationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         deadlock_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1004,6 +991,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze buildPartial() {
         com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze result = new com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1015,46 +1008,12 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.deadlock_ = deadlock_;
           to_bitField0_ |= 0x00000004;
         }
-        result.deadlock_ = deadlock_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze) {
@@ -1176,8 +1135,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFreezeId(long value) {
-        bitField0_ |= 0x00000001;
+
         freezeId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1231,8 +1191,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDurationMs(long value) {
-        bitField0_ |= 0x00000002;
+
         durationMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1273,8 +1234,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus getDeadlock() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus result = com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.valueOf(deadlock_);
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus result = com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.forNumber(deadlock_);
         return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.DeadlockStatus.UNKNOWN : result;
       }
       /**
@@ -1454,11 +1414,6 @@ private static final long serialVersionUID = 0L;
       return new Exit();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exit_descriptor;
@@ -1474,7 +1429,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int STUDIO_SESSION_ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object studioSessionId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object studioSessionId_ = "";
     /**
      * <pre>
      * Session ID of:
@@ -1540,7 +1496,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int JVM_SIGNAL_NUMBER_FIELD_NUMBER = 2;
-    private int jvmSignalNumber_;
+    private int jvmSignalNumber_ = 0;
     /**
      * <pre>
      * For EXIT_JVM_CRASH, UNIX signal number
@@ -1774,10 +1730,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         studioSessionId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         jvmSignalNumber_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1804,53 +1759,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit buildPartial() {
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit result = new com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.studioSessionId_ = studioSessionId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.jvmSignalNumber_ = jvmSignalNumber_;
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.studioSessionId_ = studioSessionId_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.jvmSignalNumber_ = jvmSignalNumber_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit) {
@@ -1864,8 +1791,8 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit other) {
         if (other == com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.getDefaultInstance()) return this;
         if (other.hasStudioSessionId()) {
-          bitField0_ |= 0x00000001;
           studioSessionId_ = other.studioSessionId_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasJvmSignalNumber()) {
@@ -1998,11 +1925,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioSessionId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         studioSessionId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2017,8 +1942,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearStudioSessionId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         studioSessionId_ = getDefaultInstance().getStudioSessionId();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -2035,11 +1960,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStudioSessionIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         studioSessionId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2079,8 +2002,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setJvmSignalNumber(int value) {
-        bitField0_ |= 0x00000002;
+
         jvmSignalNumber_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2238,11 +2162,6 @@ private static final long serialVersionUID = 0L;
       return new Memory();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Memory_descriptor;
@@ -2258,7 +2177,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int LOW_MEMORY_WARNING_TYPE_FIELD_NUMBER = 1;
-    private int lowMemoryWarningType_;
+    private int lowMemoryWarningType_ = 0;
     /**
      * <code>optional .android_studio.SystemHealthEvent.LowMemoryWarningType low_memory_warning_type = 1;</code>
      * @return Whether the lowMemoryWarningType field is set.
@@ -2271,13 +2190,12 @@ private static final long serialVersionUID = 0L;
      * @return The lowMemoryWarningType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType getLowMemoryWarningType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.valueOf(lowMemoryWarningType_);
+      com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.forNumber(lowMemoryWarningType_);
       return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.UNKNOWN_TYPE : result;
     }
 
     public static final int PERIOD_CUMULATIVE_GC_TIME_MS_FIELD_NUMBER = 2;
-    private long periodCumulativeGcTimeMs_;
+    private long periodCumulativeGcTimeMs_ = 0L;
     /**
      * <pre>
      * Time spent in GC over reported period (GC pause reporting)
@@ -2304,7 +2222,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PERIOD_DURATION_MS_FIELD_NUMBER = 3;
-    private long periodDurationMs_;
+    private long periodDurationMs_ = 0L;
     /**
      * <pre>
      * Duration of the sampled period (GC pause reporting)
@@ -2556,12 +2474,10 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         lowMemoryWarningType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         periodCumulativeGcTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         periodDurationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -2588,12 +2504,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory buildPartial() {
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory result = new com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.lowMemoryWarningType_ = lowMemoryWarningType_;
           to_bitField0_ |= 0x00000001;
         }
-        result.lowMemoryWarningType_ = lowMemoryWarningType_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.periodCumulativeGcTimeMs_ = periodCumulativeGcTimeMs_;
           to_bitField0_ |= 0x00000002;
@@ -2602,43 +2524,9 @@ private static final long serialVersionUID = 0L;
           result.periodDurationMs_ = periodDurationMs_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory) {
@@ -2739,8 +2627,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType getLowMemoryWarningType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.valueOf(lowMemoryWarningType_);
+        com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.forNumber(lowMemoryWarningType_);
         return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.LowMemoryWarningType.UNKNOWN_TYPE : result;
       }
       /**
@@ -2803,8 +2690,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPeriodCumulativeGcTimeMs(long value) {
-        bitField0_ |= 0x00000002;
+
         periodCumulativeGcTimeMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2858,8 +2746,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPeriodDurationMs(long value) {
-        bitField0_ |= 0x00000004;
+
         periodDurationMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3092,11 +2981,6 @@ private static final long serialVersionUID = 0L;
       return new Exception();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SystemHealthEvent_Exception_descriptor;
@@ -3112,7 +2996,8 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int STABLE_SIGNATURE_FIELD_NUMBER = 1;
-    private volatile java.lang.Object stableSignature_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object stableSignature_ = "";
     /**
      * <pre>
      * Stable signature for the exception
@@ -3172,7 +3057,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CRASH_REPORT_ID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object crashReportId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object crashReportId_ = "";
     /**
      * <pre>
      * Crash ReportID if assigned for the report
@@ -3238,7 +3124,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int EXCEPTION_INDEX_FIELD_NUMBER = 3;
-    private long exceptionIndex_;
+    private long exceptionIndex_ = 0L;
     /**
      * <pre>
      * Index of the exception in this session
@@ -3265,7 +3151,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SIGNATURE_INDEX_FIELD_NUMBER = 4;
-    private long signatureIndex_;
+    private long signatureIndex_ = 0L;
     /**
      * <pre>
      * Index of exception with this signature in this session
@@ -3292,7 +3178,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SIGNATURE_REPORTS_SKIPPED_FIELD_NUMBER = 5;
-    private long signatureReportsSkipped_;
+    private long signatureReportsSkipped_ = 0L;
     /**
      * <pre>
      * As some reports may be skipped if they happen too often,
@@ -3578,16 +3464,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         stableSignature_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         crashReportId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         exceptionIndex_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         signatureIndex_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000008);
         signatureReportsSkipped_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -3614,16 +3496,22 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception buildPartial() {
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception result = new com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.stableSignature_ = stableSignature_;
           to_bitField0_ |= 0x00000001;
         }
-        result.stableSignature_ = stableSignature_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.crashReportId_ = crashReportId_;
           to_bitField0_ |= 0x00000002;
         }
-        result.crashReportId_ = crashReportId_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.exceptionIndex_ = exceptionIndex_;
           to_bitField0_ |= 0x00000004;
@@ -3636,43 +3524,9 @@ private static final long serialVersionUID = 0L;
           result.signatureReportsSkipped_ = signatureReportsSkipped_;
           to_bitField0_ |= 0x00000010;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception) {
@@ -3686,13 +3540,13 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFrom(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception other) {
         if (other == com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance()) return this;
         if (other.hasStableSignature()) {
-          bitField0_ |= 0x00000001;
           stableSignature_ = other.stableSignature_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasCrashReportId()) {
-          bitField0_ |= 0x00000002;
           crashReportId_ = other.crashReportId_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasExceptionIndex()) {
@@ -3838,11 +3692,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStableSignature(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         stableSignature_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3855,8 +3707,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearStableSignature() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         stableSignature_ = getDefaultInstance().getStableSignature();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -3871,11 +3723,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setStableSignatureBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         stableSignature_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3954,11 +3804,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setCrashReportId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         crashReportId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3973,8 +3821,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearCrashReportId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         crashReportId_ = getDefaultInstance().getCrashReportId();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -3991,11 +3839,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setCrashReportIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         crashReportId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -4035,8 +3881,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setExceptionIndex(long value) {
-        bitField0_ |= 0x00000004;
+
         exceptionIndex_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -4090,8 +3937,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSignatureIndex(long value) {
-        bitField0_ |= 0x00000008;
+
         signatureIndex_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -4148,8 +3996,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSignatureReportsSkipped(long value) {
-        bitField0_ |= 0x00000010;
+
         signatureReportsSkipped_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -4234,7 +4083,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int EVENT_TYPE_FIELD_NUMBER = 1;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <code>optional .android_studio.SystemHealthEvent.SystemHealthEventType event_type = 1;</code>
    * @return Whether the eventType field is set.
@@ -4247,8 +4096,7 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.UNKNOWN_EVENT : result;
   }
 
@@ -4405,7 +4253,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ESSENTIALS_MODE_FIELD_NUMBER = 6;
-  private boolean essentialsMode_;
+  private boolean essentialsMode_ = false;
   /**
    * <pre>
    * Whether the IDE is in Essentials Mode
@@ -4713,34 +4561,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (uiFreezeBuilder_ == null) {
-        uiFreeze_ = null;
-      } else {
-        uiFreezeBuilder_.clear();
+      uiFreeze_ = null;
+      if (uiFreezeBuilder_ != null) {
+        uiFreezeBuilder_.dispose();
+        uiFreezeBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (exitBuilder_ == null) {
-        exit_ = null;
-      } else {
-        exitBuilder_.clear();
+      exit_ = null;
+      if (exitBuilder_ != null) {
+        exitBuilder_.dispose();
+        exitBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (memoryBuilder_ == null) {
-        memory_ = null;
-      } else {
-        memoryBuilder_.clear();
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (exceptionBuilder_ == null) {
-        exception_ = null;
-      } else {
-        exceptionBuilder_.clear();
+      exception_ = null;
+      if (exceptionBuilder_ != null) {
+        exceptionBuilder_.dispose();
+        exceptionBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
       essentialsMode_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -4767,85 +4610,49 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SystemHealthEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SystemHealthEvent result = new com.google.wireless.android.sdk.stats.SystemHealthEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SystemHealthEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.eventType_ = eventType_;
         to_bitField0_ |= 0x00000001;
       }
-      result.eventType_ = eventType_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (uiFreezeBuilder_ == null) {
-          result.uiFreeze_ = uiFreeze_;
-        } else {
-          result.uiFreeze_ = uiFreezeBuilder_.build();
-        }
+        result.uiFreeze_ = uiFreezeBuilder_ == null
+            ? uiFreeze_
+            : uiFreezeBuilder_.build();
         to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (exitBuilder_ == null) {
-          result.exit_ = exit_;
-        } else {
-          result.exit_ = exitBuilder_.build();
-        }
+        result.exit_ = exitBuilder_ == null
+            ? exit_
+            : exitBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (memoryBuilder_ == null) {
-          result.memory_ = memory_;
-        } else {
-          result.memory_ = memoryBuilder_.build();
-        }
+        result.memory_ = memoryBuilder_ == null
+            ? memory_
+            : memoryBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (exceptionBuilder_ == null) {
-          result.exception_ = exception_;
-        } else {
-          result.exception_ = exceptionBuilder_.build();
-        }
+        result.exception_ = exceptionBuilder_ == null
+            ? exception_
+            : exceptionBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
         result.essentialsMode_ = essentialsMode_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SystemHealthEvent) {
@@ -4978,8 +4785,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType result = com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.SystemHealthEvent.SystemHealthEventType.UNKNOWN_EVENT : result;
     }
     /**
@@ -5049,11 +4855,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         uiFreeze_ = value;
-        onChanged();
       } else {
         uiFreezeBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5067,11 +4873,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.Builder builderForValue) {
       if (uiFreezeBuilder_ == null) {
         uiFreeze_ = builderForValue.build();
-        onChanged();
       } else {
         uiFreezeBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5084,18 +4890,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeUiFreeze(com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze value) {
       if (uiFreezeBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            uiFreeze_ != null &&
-            uiFreeze_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.getDefaultInstance()) {
-          uiFreeze_ =
-            com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.newBuilder(uiFreeze_).mergeFrom(value).buildPartial();
+          uiFreeze_ != null &&
+          uiFreeze_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.UIFreeze.getDefaultInstance()) {
+          getUiFreezeBuilder().mergeFrom(value);
         } else {
           uiFreeze_ = value;
         }
-        onChanged();
       } else {
         uiFreezeBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -5106,13 +4911,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SystemHealthEvent.UIFreeze ui_freeze = 2 [lazy = true];</code>
      */
     public Builder clearUiFreeze() {
-      if (uiFreezeBuilder_ == null) {
-        uiFreeze_ = null;
-        onChanged();
-      } else {
-        uiFreezeBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      uiFreeze_ = null;
+      if (uiFreezeBuilder_ != null) {
+        uiFreezeBuilder_.dispose();
+        uiFreezeBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5205,11 +5010,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         exit_ = value;
-        onChanged();
       } else {
         exitBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5223,11 +5028,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.Builder builderForValue) {
       if (exitBuilder_ == null) {
         exit_ = builderForValue.build();
-        onChanged();
       } else {
         exitBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5240,18 +5045,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeExit(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit value) {
       if (exitBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            exit_ != null &&
-            exit_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.getDefaultInstance()) {
-          exit_ =
-            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.newBuilder(exit_).mergeFrom(value).buildPartial();
+          exit_ != null &&
+          exit_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Exit.getDefaultInstance()) {
+          getExitBuilder().mergeFrom(value);
         } else {
           exit_ = value;
         }
-        onChanged();
       } else {
         exitBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -5262,13 +5066,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SystemHealthEvent.Exit exit = 3 [lazy = true];</code>
      */
     public Builder clearExit() {
-      if (exitBuilder_ == null) {
-        exit_ = null;
-        onChanged();
-      } else {
-        exitBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      exit_ = null;
+      if (exitBuilder_ != null) {
+        exitBuilder_.dispose();
+        exitBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5361,11 +5165,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         memory_ = value;
-        onChanged();
       } else {
         memoryBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5379,11 +5183,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.Builder builderForValue) {
       if (memoryBuilder_ == null) {
         memory_ = builderForValue.build();
-        onChanged();
       } else {
         memoryBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5396,18 +5200,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeMemory(com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory value) {
       if (memoryBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            memory_ != null &&
-            memory_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.getDefaultInstance()) {
-          memory_ =
-            com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.newBuilder(memory_).mergeFrom(value).buildPartial();
+          memory_ != null &&
+          memory_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Memory.getDefaultInstance()) {
+          getMemoryBuilder().mergeFrom(value);
         } else {
           memory_ = value;
         }
-        onChanged();
       } else {
         memoryBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -5418,13 +5221,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SystemHealthEvent.Memory memory = 4 [lazy = true];</code>
      */
     public Builder clearMemory() {
-      if (memoryBuilder_ == null) {
-        memory_ = null;
-        onChanged();
-      } else {
-        memoryBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5517,11 +5320,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         exception_ = value;
-        onChanged();
       } else {
         exceptionBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -5535,11 +5338,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.Builder builderForValue) {
       if (exceptionBuilder_ == null) {
         exception_ = builderForValue.build();
-        onChanged();
       } else {
         exceptionBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -5552,18 +5355,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeException(com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception value) {
       if (exceptionBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            exception_ != null &&
-            exception_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance()) {
-          exception_ =
-            com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.newBuilder(exception_).mergeFrom(value).buildPartial();
+          exception_ != null &&
+          exception_ != com.google.wireless.android.sdk.stats.SystemHealthEvent.Exception.getDefaultInstance()) {
+          getExceptionBuilder().mergeFrom(value);
         } else {
           exception_ = value;
         }
-        onChanged();
       } else {
         exceptionBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -5574,13 +5376,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SystemHealthEvent.Exception exception = 5 [lazy = true];</code>
      */
     public Builder clearException() {
-      if (exceptionBuilder_ == null) {
-        exception_ = null;
-        onChanged();
-      } else {
-        exceptionBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      exception_ = null;
+      if (exceptionBuilder_ != null) {
+        exceptionBuilder_.dispose();
+        exceptionBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -5666,8 +5468,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setEssentialsMode(boolean value) {
-      bitField0_ |= 0x00000020;
+
       essentialsMode_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

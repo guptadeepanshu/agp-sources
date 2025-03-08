@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new HeapReportEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_HeapReportEvent_descriptor;
@@ -450,7 +445,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int STATUS_FIELD_NUMBER = 1;
-  private int status_;
+  private int status_ = 0;
   /**
    * <code>optional .android_studio.HeapReportEvent.Status status = 1;</code>
    * @return Whether the status field is set.
@@ -463,13 +458,12 @@ private static final long serialVersionUID = 0L;
    * @return The status.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.HeapReportEvent.Status getStatus() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.HeapReportEvent.Status result = com.google.wireless.android.sdk.stats.HeapReportEvent.Status.valueOf(status_);
+    com.google.wireless.android.sdk.stats.HeapReportEvent.Status result = com.google.wireless.android.sdk.stats.HeapReportEvent.Status.forNumber(status_);
     return result == null ? com.google.wireless.android.sdk.stats.HeapReportEvent.Status.UNKNOWN : result;
   }
 
   public static final int REASON_FIELD_NUMBER = 2;
-  private int reason_;
+  private int reason_ = 0;
   /**
    * <pre>
    * set when status = LOW_MEMORY_EVENT
@@ -490,13 +484,12 @@ private static final long serialVersionUID = 0L;
    * @return The reason.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.HeapReportEvent.Reason getReason() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.HeapReportEvent.Reason result = com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.valueOf(reason_);
+    com.google.wireless.android.sdk.stats.HeapReportEvent.Reason result = com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.forNumber(reason_);
     return result == null ? com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.NONE : result;
   }
 
   public static final int FREED_MEMORY_FIELD_NUMBER = 3;
-  private long freedMemory_;
+  private long freedMemory_ = 0L;
   /**
    * <pre>
    * set when status = FORCED_GC
@@ -746,12 +739,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       status_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       reason_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       freedMemory_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -778,57 +769,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HeapReportEvent buildPartial() {
       com.google.wireless.android.sdk.stats.HeapReportEvent result = new com.google.wireless.android.sdk.stats.HeapReportEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.status_ = status_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.reason_ = reason_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.freedMemory_ = freedMemory_;
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.HeapReportEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.status_ = status_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.reason_ = reason_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.freedMemory_ = freedMemory_;
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.HeapReportEvent) {
@@ -936,8 +899,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HeapReportEvent.Status getStatus() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.HeapReportEvent.Status result = com.google.wireless.android.sdk.stats.HeapReportEvent.Status.valueOf(status_);
+      com.google.wireless.android.sdk.stats.HeapReportEvent.Status result = com.google.wireless.android.sdk.stats.HeapReportEvent.Status.forNumber(status_);
       return result == null ? com.google.wireless.android.sdk.stats.HeapReportEvent.Status.UNKNOWN : result;
     }
     /**
@@ -987,8 +949,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.HeapReportEvent.Reason getReason() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.HeapReportEvent.Reason result = com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.valueOf(reason_);
+      com.google.wireless.android.sdk.stats.HeapReportEvent.Reason result = com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.forNumber(reason_);
       return result == null ? com.google.wireless.android.sdk.stats.HeapReportEvent.Reason.NONE : result;
     }
     /**
@@ -1059,8 +1020,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFreedMemory(long value) {
-      bitField0_ |= 0x00000004;
+
       freedMemory_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new MlModelBindingEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MlModelBindingEvent_descriptor;
@@ -424,11 +419,6 @@ private static final long serialVersionUID = 0L;
       return new ModelMetadata();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_MlModelBindingEvent_ModelMetadata_descriptor;
@@ -444,7 +434,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int FILE_SIZE_FIELD_NUMBER = 1;
-    private long fileSize_;
+    private long fileSize_ = 0L;
     /**
      * <pre>
      * Model file size in bytes.
@@ -471,7 +461,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FILE_HASH_FIELD_NUMBER = 2;
-    private volatile java.lang.Object fileHash_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object fileHash_ = "";
     /**
      * <pre>
      * Model content hash that we use to identify popular public models.
@@ -531,7 +522,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_VALID_MODEL_FIELD_NUMBER = 3;
-    private boolean isValidModel_;
+    private boolean isValidModel_ = false;
     /**
      * <pre>
      * Whether or not the model has valid model format.
@@ -558,7 +549,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int HAS_METADATA_FIELD_NUMBER = 4;
-    private boolean hasMetadata_;
+    private boolean hasMetadata_ = false;
     /**
      * <pre>
      * Whether or not the model has metadata included.
@@ -827,14 +818,11 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         fileSize_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
         fileHash_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         isValidModel_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         hasMetadata_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -861,6 +849,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata buildPartial() {
         com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata result = new com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -868,9 +862,9 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.fileHash_ = fileHash_;
           to_bitField0_ |= 0x00000002;
         }
-        result.fileHash_ = fileHash_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.isValidModel_ = isValidModel_;
           to_bitField0_ |= 0x00000004;
@@ -879,43 +873,9 @@ private static final long serialVersionUID = 0L;
           result.hasMetadata_ = hasMetadata_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata) {
@@ -932,8 +892,8 @@ private static final long serialVersionUID = 0L;
           setFileSize(other.getFileSize());
         }
         if (other.hasFileHash()) {
-          bitField0_ |= 0x00000002;
           fileHash_ = other.fileHash_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasIsValidModel()) {
@@ -1040,8 +1000,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setFileSize(long value) {
-        bitField0_ |= 0x00000001;
+
         fileSize_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1126,11 +1087,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setFileHash(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         fileHash_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1143,8 +1102,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearFileHash() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         fileHash_ = getDefaultInstance().getFileHash();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1159,11 +1118,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setFileHashBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         fileHash_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1203,8 +1160,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsValidModel(boolean value) {
-        bitField0_ |= 0x00000004;
+
         isValidModel_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1258,8 +1216,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setHasMetadata(boolean value) {
-        bitField0_ |= 0x00000008;
+
         hasMetadata_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1343,7 +1302,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int EVENT_TYPE_FIELD_NUMBER = 1;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <pre>
    * The detailed type of this event.
@@ -1364,12 +1323,12 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.UNKNOWN_EVENT_TYPE : result;
   }
 
   public static final int MODEL_METADATAS_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata> modelMetadatas_;
   /**
    * <pre>
@@ -1430,7 +1389,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERROR_CODE_FIELD_NUMBER = 3;
-  private int errorCode_;
+  private int errorCode_ = 0;
   /**
    * <pre>
    * Set only when the event contains failure.
@@ -1451,8 +1410,7 @@ private static final long serialVersionUID = 0L;
    * @return The errorCode.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode getErrorCode() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.valueOf(errorCode_);
+    com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.forNumber(errorCode_);
     return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.UNKNOWN_ERROR_CODE : result;
   }
 
@@ -1680,8 +1638,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       if (modelMetadatasBuilder_ == null) {
         modelMetadatas_ = java.util.Collections.emptyList();
       } else {
@@ -1690,7 +1648,6 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000002);
       errorCode_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1717,12 +1674,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MlModelBindingEvent buildPartial() {
       com.google.wireless.android.sdk.stats.MlModelBindingEvent result = new com.google.wireless.android.sdk.stats.MlModelBindingEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.eventType_ = eventType_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.MlModelBindingEvent result) {
       if (modelMetadatasBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0)) {
           modelMetadatas_ = java.util.Collections.unmodifiableList(modelMetadatas_);
@@ -1732,47 +1690,22 @@ private static final long serialVersionUID = 0L;
       } else {
         result.modelMetadatas_ = modelMetadatasBuilder_.build();
       }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.errorCode_ = errorCode_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.MlModelBindingEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.eventType_ = eventType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.errorCode_ = errorCode_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.MlModelBindingEvent) {
@@ -1919,8 +1852,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -2290,8 +2222,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode getErrorCode() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.valueOf(errorCode_);
+      com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.forNumber(errorCode_);
       return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.UNKNOWN_ERROR_CODE : result;
     }
     /**

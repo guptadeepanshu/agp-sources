@@ -3,9 +3,10 @@ package com.android.build.gradle.internal.lint
 import com.android.build.api.dsl.Lint
 import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.gradle.internal.TaskManager
-import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.DeviceTestCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
@@ -214,11 +215,7 @@ class LintTaskManager constructor(
                 }
             }
 
-            if (mainVariant.componentType.isBaseModule &&
-                !mainVariant.debuggable &&
-                !(mainVariant as ApplicationCreationConfig).profileable &&
-                globalTaskCreationConfig.lintOptions.checkReleaseBuilds
-            ) {
+            if (shouldRegisterLintVitalTasks(mainVariant)) {
                 if (isPerComponent) {
                     taskFactory.register(
                         AndroidLintAnalysisTask.PerComponentCreationAction(
@@ -417,6 +414,13 @@ class LintTaskManager constructor(
                     (lintOptions.htmlReport && lintOptions.htmlOutput != null) ||
                     (lintOptions.xmlReport && lintOptions.xmlOutput != null) ||
                     (lintOptions.sarifReport && lintOptions.sarifOutput != null)
+        }
+
+        fun shouldRegisterLintVitalTasks(variant: ComponentCreationConfig): Boolean {
+            return variant.componentType.isBaseModule &&
+                !variant.debuggable &&
+                !(variant as ApplicationCreationConfig).profileable &&
+                variant.global.lintOptions.checkReleaseBuilds
         }
     }
 }

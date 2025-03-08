@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorResourceUsage();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorResourceUsage_descriptor;
@@ -316,7 +311,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int RUN_CONDITION_FIELD_NUMBER = 1;
-  private int runCondition_;
+  private int runCondition_ = 0;
   /**
    * <code>optional .android_studio.EmulatorResourceUsage.RunCondition run_condition = 1;</code>
    * @return Whether the runCondition field is set.
@@ -329,8 +324,7 @@ private static final long serialVersionUID = 0L;
    * @return The runCondition.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.valueOf(runCondition_);
+    com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.forNumber(runCondition_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.RUN_CONDITION_DEFAULT : result;
   }
 
@@ -361,6 +355,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VCPU_SLICES_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.CpuTimeSlice> vcpuSlices_;
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
@@ -401,6 +396,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GUEST_CPU_SLICES_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.CpuTimeSlice> guestCpuSlices_;
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
@@ -441,14 +437,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TOP_GUEST_CPU_USAGE_SOURCES_FIELD_NUMBER = 5;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> topGuestCpuUsageSources_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource> topGuestCpuUsageSources_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource>() {
             public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource.GUEST_CPU_USAGE_DEFAULT : result;
             }
           };
@@ -828,14 +824,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       runCondition_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (mainLoopSliceBuilder_ == null) {
-        mainLoopSlice_ = null;
-      } else {
-        mainLoopSliceBuilder_.clear();
+      mainLoopSlice_ = null;
+      if (mainLoopSliceBuilder_ != null) {
+        mainLoopSliceBuilder_.dispose();
+        mainLoopSliceBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       if (vcpuSlicesBuilder_ == null) {
         vcpuSlices_ = java.util.Collections.emptyList();
       } else {
@@ -852,18 +847,16 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000008);
       topGuestCpuUsageSources_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000010);
-      if (memoryUsageBuilder_ == null) {
-        memoryUsage_ = null;
-      } else {
-        memoryUsageBuilder_.clear();
+      memoryUsage_ = null;
+      if (memoryUsageBuilder_ != null) {
+        memoryUsageBuilder_.dispose();
+        memoryUsageBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (graphicsResourceUsageBuilder_ == null) {
-        graphicsResourceUsage_ = null;
-      } else {
-        graphicsResourceUsageBuilder_.clear();
+      graphicsResourceUsage_ = null;
+      if (graphicsResourceUsageBuilder_ != null) {
+        graphicsResourceUsageBuilder_.dispose();
+        graphicsResourceUsageBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -890,20 +883,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsage buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorResourceUsage result = new com.google.wireless.android.sdk.stats.EmulatorResourceUsage(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.runCondition_ = runCondition_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (mainLoopSliceBuilder_ == null) {
-          result.mainLoopSlice_ = mainLoopSlice_;
-        } else {
-          result.mainLoopSlice_ = mainLoopSliceBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EmulatorResourceUsage result) {
       if (vcpuSlicesBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0)) {
           vcpuSlices_ = java.util.Collections.unmodifiableList(vcpuSlices_);
@@ -927,59 +913,36 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
       }
       result.topGuestCpuUsageSources_ = topGuestCpuUsageSources_;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorResourceUsage result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.runCondition_ = runCondition_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.mainLoopSlice_ = mainLoopSliceBuilder_ == null
+            ? mainLoopSlice_
+            : mainLoopSliceBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (memoryUsageBuilder_ == null) {
-          result.memoryUsage_ = memoryUsage_;
-        } else {
-          result.memoryUsage_ = memoryUsageBuilder_.build();
-        }
+        result.memoryUsage_ = memoryUsageBuilder_ == null
+            ? memoryUsage_
+            : memoryUsageBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (graphicsResourceUsageBuilder_ == null) {
-          result.graphicsResourceUsage_ = graphicsResourceUsage_;
-        } else {
-          result.graphicsResourceUsage_ = graphicsResourceUsageBuilder_.build();
-        }
+        result.graphicsResourceUsage_ = graphicsResourceUsageBuilder_ == null
+            ? graphicsResourceUsage_
+            : graphicsResourceUsageBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorResourceUsage) {
@@ -1211,8 +1174,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.valueOf(runCondition_);
+      com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.forNumber(runCondition_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.RUN_CONDITION_DEFAULT : result;
     }
     /**
@@ -1270,11 +1232,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         mainLoopSlice_ = value;
-        onChanged();
       } else {
         mainLoopSliceBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1284,11 +1246,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.CpuTimeSlice.Builder builderForValue) {
       if (mainLoopSliceBuilder_ == null) {
         mainLoopSlice_ = builderForValue.build();
-        onChanged();
       } else {
         mainLoopSliceBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -1297,31 +1259,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeMainLoopSlice(com.google.wireless.android.sdk.stats.CpuTimeSlice value) {
       if (mainLoopSliceBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            mainLoopSlice_ != null &&
-            mainLoopSlice_ != com.google.wireless.android.sdk.stats.CpuTimeSlice.getDefaultInstance()) {
-          mainLoopSlice_ =
-            com.google.wireless.android.sdk.stats.CpuTimeSlice.newBuilder(mainLoopSlice_).mergeFrom(value).buildPartial();
+          mainLoopSlice_ != null &&
+          mainLoopSlice_ != com.google.wireless.android.sdk.stats.CpuTimeSlice.getDefaultInstance()) {
+          getMainLoopSliceBuilder().mergeFrom(value);
         } else {
           mainLoopSlice_ = value;
         }
-        onChanged();
       } else {
         mainLoopSliceBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2 [lazy = true];</code>
      */
     public Builder clearMainLoopSlice() {
-      if (mainLoopSliceBuilder_ == null) {
-        mainLoopSlice_ = null;
-        onChanged();
-      } else {
-        mainLoopSliceBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      mainLoopSlice_ = null;
+      if (mainLoopSliceBuilder_ != null) {
+        mainLoopSliceBuilder_.dispose();
+        mainLoopSliceBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1956,11 +1917,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         memoryUsage_ = value;
-        onChanged();
       } else {
         memoryUsageBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1970,11 +1931,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.Builder builderForValue) {
       if (memoryUsageBuilder_ == null) {
         memoryUsage_ = builderForValue.build();
-        onChanged();
       } else {
         memoryUsageBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1983,31 +1944,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeMemoryUsage(com.google.wireless.android.sdk.stats.EmulatorMemoryUsage value) {
       if (memoryUsageBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            memoryUsage_ != null &&
-            memoryUsage_ != com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.getDefaultInstance()) {
-          memoryUsage_ =
-            com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.newBuilder(memoryUsage_).mergeFrom(value).buildPartial();
+          memoryUsage_ != null &&
+          memoryUsage_ != com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.getDefaultInstance()) {
+          getMemoryUsageBuilder().mergeFrom(value);
         } else {
           memoryUsage_ = value;
         }
-        onChanged();
       } else {
         memoryUsageBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6 [lazy = true];</code>
      */
     public Builder clearMemoryUsage() {
-      if (memoryUsageBuilder_ == null) {
-        memoryUsage_ = null;
-        onChanged();
-      } else {
-        memoryUsageBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      memoryUsage_ = null;
+      if (memoryUsageBuilder_ != null) {
+        memoryUsageBuilder_.dispose();
+        memoryUsageBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2076,11 +2036,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         graphicsResourceUsage_ = value;
-        onChanged();
       } else {
         graphicsResourceUsageBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -2090,11 +2050,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.GraphicsResourceUsage.Builder builderForValue) {
       if (graphicsResourceUsageBuilder_ == null) {
         graphicsResourceUsage_ = builderForValue.build();
-        onChanged();
       } else {
         graphicsResourceUsageBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -2103,31 +2063,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeGraphicsResourceUsage(com.google.wireless.android.sdk.stats.GraphicsResourceUsage value) {
       if (graphicsResourceUsageBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            graphicsResourceUsage_ != null &&
-            graphicsResourceUsage_ != com.google.wireless.android.sdk.stats.GraphicsResourceUsage.getDefaultInstance()) {
-          graphicsResourceUsage_ =
-            com.google.wireless.android.sdk.stats.GraphicsResourceUsage.newBuilder(graphicsResourceUsage_).mergeFrom(value).buildPartial();
+          graphicsResourceUsage_ != null &&
+          graphicsResourceUsage_ != com.google.wireless.android.sdk.stats.GraphicsResourceUsage.getDefaultInstance()) {
+          getGraphicsResourceUsageBuilder().mergeFrom(value);
         } else {
           graphicsResourceUsage_ = value;
         }
-        onChanged();
       } else {
         graphicsResourceUsageBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7 [lazy = true];</code>
      */
     public Builder clearGraphicsResourceUsage() {
-      if (graphicsResourceUsageBuilder_ == null) {
-        graphicsResourceUsage_ = null;
-        onChanged();
-      } else {
-        graphicsResourceUsageBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      graphicsResourceUsage_ = null;
+      if (graphicsResourceUsageBuilder_ != null) {
+        graphicsResourceUsageBuilder_.dispose();
+        graphicsResourceUsageBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

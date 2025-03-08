@@ -21,7 +21,6 @@ import com.android.utils.ILogger;
 import com.android.utils.StdLogger;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.io.Files;
@@ -29,6 +28,7 @@ import com.google.common.io.Files;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -64,7 +64,8 @@ public class Merger {
                     return 1;
                 }
                 String argumentsString =
-                        java.nio.file.Files.readString(argumentFile.toPath(), Charsets.UTF_8);
+                        java.nio.file.Files.readString(
+                                argumentFile.toPath(), StandardCharsets.UTF_8);
                 argumentsList.addAll(List.of(argumentsString.split("\\s+")));
             } else {
                 argumentsList.add(arg);
@@ -195,7 +196,7 @@ public class Merger {
                 if (mergedDocument != null) {
                     if (outFile != null) {
                         try {
-                            Files.asCharSink(outFile, Charsets.UTF_8).write(mergedDocument);
+                            Files.asCharSink(outFile, StandardCharsets.UTF_8).write(mergedDocument);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -251,5 +252,4 @@ public class Merger {
     protected ILogger createLogger(@NonNull StdLogger.Level level) {
         return new StdLogger(level);
     }
-
 }

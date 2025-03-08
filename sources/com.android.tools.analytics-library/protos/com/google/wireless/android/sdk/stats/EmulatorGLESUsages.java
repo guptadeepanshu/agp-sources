@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorGLESUsages();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorGLESUsages_descriptor;
@@ -344,18 +339,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (gles1UsagesBuilder_ == null) {
-        gles1Usages_ = null;
-      } else {
-        gles1UsagesBuilder_.clear();
+      bitField0_ = 0;
+      gles1Usages_ = null;
+      if (gles1UsagesBuilder_ != null) {
+        gles1UsagesBuilder_.dispose();
+        gles1UsagesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (gles30UsagesBuilder_ == null) {
-        gles30Usages_ = null;
-      } else {
-        gles30UsagesBuilder_.clear();
+      gles30Usages_ = null;
+      if (gles30UsagesBuilder_ != null) {
+        gles30UsagesBuilder_.dispose();
+        gles30UsagesBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -382,61 +376,29 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGLESUsages buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorGLESUsages result = new com.google.wireless.android.sdk.stats.EmulatorGLESUsages(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (gles1UsagesBuilder_ == null) {
-          result.gles1Usages_ = gles1Usages_;
-        } else {
-          result.gles1Usages_ = gles1UsagesBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (gles30UsagesBuilder_ == null) {
-          result.gles30Usages_ = gles30Usages_;
-        } else {
-          result.gles30Usages_ = gles30UsagesBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorGLESUsages result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.gles1Usages_ = gles1UsagesBuilder_ == null
+            ? gles1Usages_
+            : gles1UsagesBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.gles30Usages_ = gles30UsagesBuilder_ == null
+            ? gles30Usages_
+            : gles30UsagesBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorGLESUsages) {
@@ -554,11 +516,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         gles1Usages_ = value;
-        onChanged();
       } else {
         gles1UsagesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -572,11 +534,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.Builder builderForValue) {
       if (gles1UsagesBuilder_ == null) {
         gles1Usages_ = builderForValue.build();
-        onChanged();
       } else {
         gles1UsagesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -589,18 +551,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeGles1Usages(com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages value) {
       if (gles1UsagesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            gles1Usages_ != null &&
-            gles1Usages_ != com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.getDefaultInstance()) {
-          gles1Usages_ =
-            com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.newBuilder(gles1Usages_).mergeFrom(value).buildPartial();
+          gles1Usages_ != null &&
+          gles1Usages_ != com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.getDefaultInstance()) {
+          getGles1UsagesBuilder().mergeFrom(value);
         } else {
           gles1Usages_ = value;
         }
-        onChanged();
       } else {
         gles1UsagesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -611,13 +572,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1 [lazy = true];</code>
      */
     public Builder clearGles1Usages() {
-      if (gles1UsagesBuilder_ == null) {
-        gles1Usages_ = null;
-        onChanged();
-      } else {
-        gles1UsagesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      gles1Usages_ = null;
+      if (gles1UsagesBuilder_ != null) {
+        gles1UsagesBuilder_.dispose();
+        gles1UsagesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -710,11 +671,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         gles30Usages_ = value;
-        onChanged();
       } else {
         gles30UsagesBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -728,11 +689,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.Builder builderForValue) {
       if (gles30UsagesBuilder_ == null) {
         gles30Usages_ = builderForValue.build();
-        onChanged();
       } else {
         gles30UsagesBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -745,18 +706,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeGles30Usages(com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages value) {
       if (gles30UsagesBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            gles30Usages_ != null &&
-            gles30Usages_ != com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.getDefaultInstance()) {
-          gles30Usages_ =
-            com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.newBuilder(gles30Usages_).mergeFrom(value).buildPartial();
+          gles30Usages_ != null &&
+          gles30Usages_ != com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.getDefaultInstance()) {
+          getGles30UsagesBuilder().mergeFrom(value);
         } else {
           gles30Usages_ = value;
         }
-        onChanged();
       } else {
         gles30UsagesBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -767,13 +727,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2 [lazy = true];</code>
      */
     public Builder clearGles30Usages() {
-      if (gles30UsagesBuilder_ == null) {
-        gles30Usages_ = null;
-        onChanged();
-      } else {
-        gles30UsagesBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      gles30Usages_ = null;
+      if (gles30UsagesBuilder_ != null) {
+        gles30UsagesBuilder_.dispose();
+        gles30UsagesBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

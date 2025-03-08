@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new LldbSessionEndDetails();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LldbSessionEndDetails_descriptor;
@@ -47,7 +42,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DEBUG_SESSION_ID_FIELD_NUMBER = 1;
-  private volatile java.lang.Object debugSessionId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object debugSessionId_ = "";
   /**
    * <pre>
    * A UUID used to relate start and end of a native debug session.
@@ -107,7 +103,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILURE_MESSAGE_FIELD_NUMBER = 2;
-  private volatile java.lang.Object failureMessage_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object failureMessage_ = "";
   /**
    * <pre>
    * If the session ended with a failure, the related message.
@@ -170,7 +167,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int STOPS_FIELD_NUMBER = 3;
-  private long stops_;
+  private long stops_ = 0L;
   /**
    * <pre>
    * Number of times the program was stopped by the debugger.
@@ -199,7 +196,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ERRORS_FIELD_NUMBER = 4;
-  private long errors_;
+  private long errors_ = 0L;
   /**
    * <pre>
    * Number of errors encountered during the session.
@@ -468,14 +465,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       debugSessionId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       failureMessage_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       stops_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000004);
       errors_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -502,16 +496,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbSessionEndDetails buildPartial() {
       com.google.wireless.android.sdk.stats.LldbSessionEndDetails result = new com.google.wireless.android.sdk.stats.LldbSessionEndDetails(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LldbSessionEndDetails result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.debugSessionId_ = debugSessionId_;
         to_bitField0_ |= 0x00000001;
       }
-      result.debugSessionId_ = debugSessionId_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.failureMessage_ = failureMessage_;
         to_bitField0_ |= 0x00000002;
       }
-      result.failureMessage_ = failureMessage_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.stops_ = stops_;
         to_bitField0_ |= 0x00000004;
@@ -520,43 +520,9 @@ private static final long serialVersionUID = 0L;
         result.errors_ = errors_;
         to_bitField0_ |= 0x00000008;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LldbSessionEndDetails) {
@@ -570,13 +536,13 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.LldbSessionEndDetails other) {
       if (other == com.google.wireless.android.sdk.stats.LldbSessionEndDetails.getDefaultInstance()) return this;
       if (other.hasDebugSessionId()) {
-        bitField0_ |= 0x00000001;
         debugSessionId_ = other.debugSessionId_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasFailureMessage()) {
-        bitField0_ |= 0x00000002;
         failureMessage_ = other.failureMessage_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasStops()) {
@@ -714,11 +680,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDebugSessionId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       debugSessionId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -731,8 +695,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDebugSessionId() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       debugSessionId_ = getDefaultInstance().getDebugSessionId();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -747,11 +711,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDebugSessionIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       debugSessionId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -826,11 +788,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFailureMessage(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       failureMessage_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -844,8 +804,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearFailureMessage() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       failureMessage_ = getDefaultInstance().getFailureMessage();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -861,11 +821,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setFailureMessageBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       failureMessage_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -908,8 +866,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStops(long value) {
-      bitField0_ |= 0x00000004;
+
       stops_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -967,8 +926,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setErrors(long value) {
-      bitField0_ |= 0x00000008;
+
       errors_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }

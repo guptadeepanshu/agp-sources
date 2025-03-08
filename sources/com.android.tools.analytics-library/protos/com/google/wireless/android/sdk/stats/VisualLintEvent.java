@@ -32,11 +32,6 @@ private static final long serialVersionUID = 0L;
     return new VisualLintEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_VisualLintEvent_descriptor;
@@ -523,7 +518,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ISSUE_TYPE_FIELD_NUMBER = 1;
-  private int issueType_;
+  private int issueType_ = 0;
   /**
    * <pre>
    * The type of the visual lint issue affected by this event
@@ -544,13 +539,12 @@ private static final long serialVersionUID = 0L;
    * @return The issueType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType getIssueType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.valueOf(issueType_);
+    com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.forNumber(issueType_);
     return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.UNKNOWN_TYPE : result;
   }
 
   public static final int ISSUE_EVENT_FIELD_NUMBER = 2;
-  private int issueEvent_;
+  private int issueEvent_ = 0;
   /**
    * <pre>
    * The kind of event affecting the issue
@@ -571,13 +565,12 @@ private static final long serialVersionUID = 0L;
    * @return The issueEvent.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.valueOf(issueEvent_);
+    com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.forNumber(issueEvent_);
     return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.UNKNOWN_EVENT : result;
   }
 
   public static final int EVENT_ORIGIN_FIELD_NUMBER = 3;
-  private int eventOrigin_;
+  private int eventOrigin_ = 0;
   /**
    * <pre>
    * The origin that triggered the visual lint event
@@ -598,13 +591,12 @@ private static final long serialVersionUID = 0L;
    * @return The eventOrigin.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin getEventOrigin() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin result = com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.valueOf(eventOrigin_);
+    com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin result = com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.forNumber(eventOrigin_);
     return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.UNKNOWN_ORIGIN : result;
   }
 
   public static final int UI_CHECK_START_TIME_MS_FIELD_NUMBER = 4;
-  private long uiCheckStartTimeMs_;
+  private long uiCheckStartTimeMs_ = 0L;
   /**
    * <pre>
    * The time it took for UI Check mode to start in ms
@@ -631,7 +623,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VISIBLE_PREVIEWS_NUMBER_FIELD_NUMBER = 5;
-  private int visiblePreviewsNumber_;
+  private int visiblePreviewsNumber_ = 0;
   /**
    * <pre>
    * The number of visible previews in UI Check
@@ -916,16 +908,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       issueType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       issueEvent_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       eventOrigin_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       uiCheckStartTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       visiblePreviewsNumber_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -952,20 +940,26 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent buildPartial() {
       com.google.wireless.android.sdk.stats.VisualLintEvent result = new com.google.wireless.android.sdk.stats.VisualLintEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.VisualLintEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.issueType_ = issueType_;
         to_bitField0_ |= 0x00000001;
       }
-      result.issueType_ = issueType_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.issueEvent_ = issueEvent_;
         to_bitField0_ |= 0x00000002;
       }
-      result.issueEvent_ = issueEvent_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.eventOrigin_ = eventOrigin_;
         to_bitField0_ |= 0x00000004;
       }
-      result.eventOrigin_ = eventOrigin_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
         result.uiCheckStartTimeMs_ = uiCheckStartTimeMs_;
         to_bitField0_ |= 0x00000008;
@@ -974,43 +968,9 @@ private static final long serialVersionUID = 0L;
         result.visiblePreviewsNumber_ = visiblePreviewsNumber_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.VisualLintEvent) {
@@ -1149,8 +1109,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType getIssueType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.valueOf(issueType_);
+      com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.forNumber(issueType_);
       return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.UNKNOWN_TYPE : result;
     }
     /**
@@ -1208,8 +1167,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.valueOf(issueEvent_);
+      com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.forNumber(issueEvent_);
       return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.UNKNOWN_EVENT : result;
     }
     /**
@@ -1267,8 +1225,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin getEventOrigin() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin result = com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.valueOf(eventOrigin_);
+      com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin result = com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.forNumber(eventOrigin_);
       return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.EventOrigin.UNKNOWN_ORIGIN : result;
     }
     /**
@@ -1339,8 +1296,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setUiCheckStartTimeMs(long value) {
-      bitField0_ |= 0x00000008;
+
       uiCheckStartTimeMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1394,8 +1352,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVisiblePreviewsNumber(int value) {
-      bitField0_ |= 0x00000010;
+
       visiblePreviewsNumber_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

@@ -47,10 +47,4 @@ interface TestVariant: GeneratesTestApk, Variant {
      */
     @get:Incubating
     val testedApks: Provider<Directory>
-
-    /**
-     * Provides access to built artifacts output(e.g. APK) produced by this Variant.
-     */
-    @get:Incubating
-    val outputProviders: ApkOutputProviders
 }

@@ -287,9 +287,6 @@ enum class BooleanOption(
     PRIVACY_SANDBOX_SDK_REQUIRE_SERVICES(
             "android.experimental.privacysandboxsdk.requireServices", true, FeatureStage.Experimental),
 
-    PRIVACY_SANDBOX_SDK_ENABLE_LINT(
-        "android.experimental.privacysandboxsdk.enableLint", false, FeatureStage.Experimental),
-
     VERIFY_AAR_CLASSES("android.experimental.verifyLibraryClasses", false, FeatureStage.Experimental),
     DISABLE_COMPILE_SDK_CHECKS("android.experimental.disableCompileSdkChecks", false, FeatureStage.Experimental),
     ADDITIONAL_ARTIFACTS_IN_MODEL("android.experimental.additionalArtifactsInModel", false, FeatureStage.Experimental),
@@ -345,14 +342,23 @@ enum class BooleanOption(
     ),
 
     /**
-     * When enabled, the R8 task will perform resource shrinking in addition to code shrinking.
-     * When disabled, resource shrinking will be performed in a separate task after the R8 task has
-     * run.
-     *
-     * Note: If resource shrinking is not enabled, this flag has no effect.
+     * Whether to disable AGP's addition of the -Xuse-inline-scopes-numbers flag for KotlinCompile
+     * tasks.
      */
-    R8_INTEGRATED_RESOURCE_SHRINKING(
-        "android.r8.integratedResourceShrinking",
+    DISABLE_INLINE_SCOPES_NUMBERS(
+        "android.kotlin.disableInlineScopesNumbers",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * When enabled, R8 will perform both code and resource shrinking in a more optimal way.
+     *
+     * Note: This flag takes effect only if resource shrinking is enabled AND
+     * [R8_INTEGRATED_RESOURCE_SHRINKING] is enabled AND [USE_NON_FINAL_RES_IDS] is enabled.
+     */
+    R8_OPTIMIZED_SHRINKING(
+        "android.r8.optimizedShrinking",
         false,
         FeatureStage.Experimental
     ),
@@ -404,6 +410,25 @@ enum class BooleanOption(
      * by a plugin by implementing ManagedDeviceTestRunner APIs.
      */
     GRADLE_MANAGED_DEVICE_CUSTOM_DEVICE("android.experimental.testOptions.managedDevices.customDevice", true, FeatureStage.SoftlyEnforced(VERSION_9_0)),
+
+    /**
+     * When enabled, the R8 task will perform resource shrinking in addition to code shrinking.
+     * When disabled, resource shrinking will be performed in a separate task after the R8 task has
+     * run.
+     *
+     * Note: If resource shrinking is not enabled, this flag has no effect.
+     */
+    R8_INTEGRATED_RESOURCE_SHRINKING(
+        "android.r8.integratedResourceShrinking",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
+    ),
+
+    PRIVACY_SANDBOX_SDK_ENABLE_LINT(
+        "android.experimental.privacysandboxsdk.enableLint",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_9_0)
+    ),
 
     /* -------------------
      * DEPRECATED FEATURES

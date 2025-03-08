@@ -438,11 +438,13 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
         }
     }
 
-    class MergeAppAssetCreationAction(creationConfig: ComponentCreationConfig) :
-        MergeAssetBaseCreationAction(
-            creationConfig,
-            true
-        ) {
+    class MergeAssetCreationAction(
+        creationConfig: ComponentCreationConfig,
+        includeDependencies: Boolean,
+    ) : MergeAssetBaseCreationAction(
+                creationConfig,
+                includeDependencies
+            ) {
 
         override val name: String
             get() = computeTaskName("merge", "Assets")
@@ -456,27 +458,6 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
                     taskProvider,
                     MergeSourceSetFolders::outputDir
             ).on(SingleArtifact.ASSETS)
-        }
-    }
-
-    class LibraryAssetCreationAction(creationConfig: ComponentCreationConfig) :
-        MergeAssetBaseCreationAction(
-            creationConfig,
-            false
-        ) {
-
-        override val name: String
-            get() = computeTaskName("package", "Assets")
-
-        override fun handleProvider(
-            taskProvider: TaskProvider<MergeSourceSetFolders>
-        ) {
-            super.handleProvider(taskProvider)
-
-            creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                MergeSourceSetFolders::outputDir
-            ).withName("out").on(InternalArtifactType.LIBRARY_ASSETS)
         }
     }
 

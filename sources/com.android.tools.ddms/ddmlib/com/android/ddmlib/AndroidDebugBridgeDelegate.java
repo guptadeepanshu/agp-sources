@@ -84,6 +84,8 @@ public interface AndroidDebugBridgeDelegate {
 
     boolean startAdb(long timeout, @NonNull TimeUnit unit);
 
+    boolean stopAdb(long timeout, @NonNull TimeUnit unit);
+
     boolean restart();
 
     boolean restart(long timeout, @NonNull TimeUnit unit);
@@ -136,4 +138,8 @@ public interface AndroidDebugBridgeDelegate {
             @NonNull ListeningExecutorService service, @NonNull File adb, @NonNull IDevice device);
 
     boolean isUserManagedAdbMode();
+
+    // TODO: switch away from throwing `AdbCommandRejectedException`
+    String queryFeatures(String adbFeaturesRequest)
+            throws TimeoutException, AdbCommandRejectedException, IOException;
 }

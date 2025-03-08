@@ -32,7 +32,6 @@ import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.PrivacySandboxSdkVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.file.RegularFileProperty
@@ -40,6 +39,8 @@ import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -65,6 +66,10 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val returnValueInputFile: RegularFileProperty
 
+    @get:Optional
+    @get:OutputFile
+    abstract val lintVitalOutput: RegularFileProperty
+
     @get:Input
     abstract val outputStream: Property<OutputStream>
 
@@ -81,6 +86,10 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
     abstract val hasBaseline: Property<Boolean>
 
     override fun doTaskAction() {
+        if (lintVitalOutput.isPresent && !lintVitalOutput.get().asFile.exists()) {
+            // This file must be present so that this task runs for `assemble` and `bundle` tasks
+            lintVitalOutput.get().asFile.createNewFile()
+        }
         if (outputStream.get() != OutputStream.ABBREVIATED) {
             textReportInputFile.get().asFile.let { textReportFile ->
                 val text = textReportFile.readText()
@@ -165,6 +174,7 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
             task.initializeCommonInputs(
                 variantScope.artifacts, variantScope.lintOptions, false
             )
+            task.outputs.upToDateWhen { false }
         }
     }
 
@@ -174,7 +184,11 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         override val fatalOnly = true
 
         override fun handleProvider(taskProvider: TaskProvider<AndroidLintTextOutputTask>) {
-            creationConfig.taskContainer.assembleTask.dependsOn(taskProvider)
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                AndroidLintTextOutputTask::lintVitalOutput
+            ).on(InternalArtifactType.LINT_VITAL_OUTPUT)
         }
     }
 
@@ -193,6 +207,7 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
             task.initializeCommonInputs(
                 variantScope.artifacts, variantScope.lintOptions, true
             )
+            task.outputs.upToDateWhen { false }
         }
     }
 
@@ -212,6 +227,7 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
             task.initializeCommonInputs(
                 creationConfig.artifacts, creationConfig.global.lintOptions, fatalOnly
             )
+            task.outputs.upToDateWhen { false }
         }
     }
 

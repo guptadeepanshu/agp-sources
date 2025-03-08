@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APKS_FROM_BUNDLE
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.BASE_MODULE_LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_DEX
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_NAME
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_JAVA_RES
@@ -71,6 +72,7 @@ import org.gradle.api.specs.Spec
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import java.io.File
 import java.util.concurrent.Callable
+import java.util.function.Function
 import java.util.function.Predicate
 
 interface ResolutionResultProvider {
@@ -103,6 +105,7 @@ class VariantDependencies internal constructor(
     private val projectOptions: ProjectOptions,
     val isLibraryConstraintsApplied: Boolean,
     isSelfInstrumenting: Boolean,
+    val sourceSetConfigurationsMap: Map<String, Function<String, String>>,
 ): ResolutionResultProvider {
 
     // Never exclude artifacts for self-instrumenting, test-only modules.
@@ -272,9 +275,10 @@ class VariantDependencies internal constructor(
             componentType.isDynamicFeature ->
                 artifactType != PACKAGED_DEPENDENCIES
                         && artifactType != APKS_FROM_BUNDLE
-                        && artifactType != FEATURE_DEX
                         && artifactType != FEATURE_NAME
+                        && artifactType != FEATURE_DEX
                         && artifactType != FEATURE_SHRUNK_JAVA_RES
+                        && artifactType != FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT
                         && artifactType != LINT_MODEL
                         && artifactType != BASE_MODULE_LINT_MODEL
             componentType.isSeparateTestProject ->
@@ -440,12 +444,8 @@ class VariantDependencies internal constructor(
             sourcesPublication: Configuration?,
         ): VariantDependencies {
             val incomingConfigurations = listOf(compileClasspath, runtimeClasspath)
-            val outgoingConfigurations = listOfNotNull(
-                apiElements, runtimeElements, sourcesElements, apiPublication, runtimePublication, sourcesPublication
-            )
-            val publicationConfigurations = listOfNotNull(
-                apiPublication, runtimePublication, sourcesPublication
-            )
+            val outgoingConfigurations = listOfNotNull(apiElements, runtimeElements, sourcesElements)
+            val publicationConfigurations = listOfNotNull(apiPublication, runtimePublication, sourcesPublication)
 
             // This is set to be able to consume artifacts published with the library plugin.
             // For the artifacts of the new android multiplatform plugin, kotlin plugin has a compatibility rules that
@@ -467,10 +467,7 @@ class VariantDependencies internal constructor(
                 TargetJvmEnvironment::class.java,
                 TargetJvmEnvironment.ANDROID
             ).let { androidTarget ->
-                // TODO(b/289214845): Figure out with JB which attribute to add to disambiguate
-                //  android from jvm for publication as the kotlin plugin doesn't publish with
-                //  target jvm environment attribute.
-                (incomingConfigurations + outgoingConfigurations).forEach {
+                (incomingConfigurations + outgoingConfigurations + publicationConfigurations).forEach {
                     it.attributes.attribute(
                         TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE,
                         androidTarget
@@ -483,7 +480,7 @@ class VariantDependencies internal constructor(
                 Version.ANDROID_GRADLE_PLUGIN_VERSION
             ).let { agpVersion ->
                 // Add the agp version attribute to all configurations but the publication
-                (incomingConfigurations + outgoingConfigurations - publicationConfigurations.toSet()).forEach {
+                (incomingConfigurations + outgoingConfigurations).forEach {
                     it.attributes.attribute(AgpVersionAttr.ATTRIBUTE, agpVersion)
                 }
             }
@@ -552,7 +549,8 @@ class VariantDependencies internal constructor(
                 project = project,
                 projectOptions = projectOptions,
                 isLibraryConstraintsApplied = false,
-                isSelfInstrumenting = false
+                isSelfInstrumenting = false,
+                sourceSetConfigurationsMap = emptyMap() // TODO(b/317215060) - implement for KMP
             )
         }
 
@@ -583,7 +581,7 @@ class VariantDependencies internal constructor(
                 ConsumedConfigType.PROVIDED_CLASSPATH ->
                     check(artifactType == PACKAGED_DEPENDENCIES
                             || artifactType == APK
-                            || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
+                            || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS
                             || artifactType == AndroidArtifacts.ArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT
                             || artifactType == AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS) {
                         "Provided classpath must only be used for from the PACKAGED_DEPENDENCIES, APKS, ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS and ANDROID_PRIVACY_SANDBOX_SDK_COMPAT_SPLIT_APKS"

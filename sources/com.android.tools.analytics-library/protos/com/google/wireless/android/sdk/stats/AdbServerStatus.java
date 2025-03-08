@@ -28,11 +28,6 @@ private static final long serialVersionUID = 0L;
     return new AdbServerStatus();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdbServerStatus_descriptor;
@@ -276,7 +271,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IS_MANAGED_FIELD_NUMBER = 1;
-  private boolean isManaged_;
+  private boolean isManaged_ = false;
   /**
    * <code>optional bool is_managed = 1;</code>
    * @return Whether the isManaged field is set.
@@ -295,7 +290,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 2;
-  private volatile java.lang.Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <code>optional string version = 2;</code>
    * @return Whether the version field is set.
@@ -343,7 +339,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MDNS_BACKEND_FIELD_NUMBER = 3;
-  private int mdnsBackend_;
+  private int mdnsBackend_ = 0;
   /**
    * <code>optional .android_studio.AdbServerStatus.MDNSBackend mdns_backend = 3;</code>
    * @return Whether the mdnsBackend field is set.
@@ -356,13 +352,12 @@ private static final long serialVersionUID = 0L;
    * @return The mdnsBackend.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend getMdnsBackend() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.valueOf(mdnsBackend_);
+    com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.forNumber(mdnsBackend_);
     return result == null ? com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.TYPE_MDNS_UNKNOWN : result;
   }
 
   public static final int USB_BACKEND_FIELD_NUMBER = 4;
-  private int usbBackend_;
+  private int usbBackend_ = 0;
   /**
    * <code>optional .android_studio.AdbServerStatus.USBBackend usb_backend = 4;</code>
    * @return Whether the usbBackend field is set.
@@ -375,13 +370,12 @@ private static final long serialVersionUID = 0L;
    * @return The usbBackend.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend getUsbBackend() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.valueOf(usbBackend_);
+    com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.forNumber(usbBackend_);
     return result == null ? com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.TYPE_USB_UNKNOWN : result;
   }
 
   public static final int IS_MDNS_BACKEND_FORCED_FIELD_NUMBER = 5;
-  private boolean isMdnsBackendForced_;
+  private boolean isMdnsBackendForced_ = false;
   /**
    * <code>optional bool is_mdns_backend_forced = 5;</code>
    * @return Whether the isMdnsBackendForced field is set.
@@ -400,7 +394,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_USB_BACKEND_FORCED_FIELD_NUMBER = 6;
-  private boolean isUsbBackendForced_;
+  private boolean isUsbBackendForced_ = false;
   /**
    * <code>optional bool is_usb_backend_forced = 6;</code>
    * @return Whether the isUsbBackendForced field is set.
@@ -691,18 +685,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       isManaged_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       version_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       mdnsBackend_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       usbBackend_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       isMdnsBackendForced_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       isUsbBackendForced_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -729,6 +718,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbServerStatus buildPartial() {
       com.google.wireless.android.sdk.stats.AdbServerStatus result = new com.google.wireless.android.sdk.stats.AdbServerStatus(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AdbServerStatus result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -736,17 +731,17 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.version_ = version_;
         to_bitField0_ |= 0x00000002;
       }
-      result.version_ = version_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.mdnsBackend_ = mdnsBackend_;
         to_bitField0_ |= 0x00000004;
       }
-      result.mdnsBackend_ = mdnsBackend_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.usbBackend_ = usbBackend_;
         to_bitField0_ |= 0x00000008;
       }
-      result.usbBackend_ = usbBackend_;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.isMdnsBackendForced_ = isMdnsBackendForced_;
         to_bitField0_ |= 0x00000010;
@@ -755,43 +750,9 @@ private static final long serialVersionUID = 0L;
         result.isUsbBackendForced_ = isUsbBackendForced_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AdbServerStatus) {
@@ -808,8 +769,8 @@ private static final long serialVersionUID = 0L;
         setIsManaged(other.getIsManaged());
       }
       if (other.hasVersion()) {
-        bitField0_ |= 0x00000002;
         version_ = other.version_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasMdnsBackend()) {
@@ -934,8 +895,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsManaged(boolean value) {
-      bitField0_ |= 0x00000001;
+
       isManaged_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1000,11 +962,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1013,8 +973,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1025,11 +985,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1048,8 +1006,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend getMdnsBackend() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.valueOf(mdnsBackend_);
+      com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.forNumber(mdnsBackend_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbServerStatus.MDNSBackend.TYPE_MDNS_UNKNOWN : result;
     }
     /**
@@ -1091,8 +1048,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend getUsbBackend() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.valueOf(usbBackend_);
+      com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend result = com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.forNumber(usbBackend_);
       return result == null ? com.google.wireless.android.sdk.stats.AdbServerStatus.USBBackend.TYPE_USB_UNKNOWN : result;
     }
     /**
@@ -1143,8 +1099,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsMdnsBackendForced(boolean value) {
-      bitField0_ |= 0x00000010;
+
       isMdnsBackendForced_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1182,8 +1139,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsUsbBackendForced(boolean value) {
-      bitField0_ |= 0x00000020;
+
       isUsbBackendForced_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

@@ -15,8 +15,6 @@
  */
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Model for dynamic feature components that only contains build-time properties.
  *

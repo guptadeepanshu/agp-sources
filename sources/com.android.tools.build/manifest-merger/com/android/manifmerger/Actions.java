@@ -23,6 +23,7 @@ import com.android.ide.common.blame.MessageJsonSerializer;
 import com.android.ide.common.blame.SourceFile;
 import com.android.ide.common.blame.SourceFilePosition;
 import com.android.utils.ILogger;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -36,6 +37,9 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+
+import org.xml.sax.SAXException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,8 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
  * Contains all actions taken during a merging invocation.
@@ -421,11 +425,33 @@ public class Actions {
     }
 
     @Nullable
+    public Actions.NodeRecord findNodeRecord(@NonNull XmlNode.NodeKey nodeKey) {
+        for (Actions.NodeRecord nodeRecord : getNodeRecords(nodeKey)) {
+            if (nodeRecord.getActionType() == Actions.ActionType.ADDED) {
+                return nodeRecord;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
     private static Actions.AttributeRecord findAttributeRecord(
             @NonNull DecisionTreeRecord decisionTreeRecord,
             @NonNull XmlAttribute xmlAttribute) {
         for (Actions.AttributeRecord attributeRecord : decisionTreeRecord
                 .getAttributeRecords(xmlAttribute.getName())) {
+            if (attributeRecord.getActionType() == Actions.ActionType.ADDED) {
+                return attributeRecord;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public Actions.AttributeRecord findAttributeRecord(
+            @NonNull XmlNode.NodeKey nodeKey, @NonNull XmlNode.NodeName attributeName) {
+        for (Actions.AttributeRecord attributeRecord :
+                getAttributeRecords(nodeKey, attributeName)) {
             if (attributeRecord.getActionType() == Actions.ActionType.ADDED) {
                 return attributeRecord;
             }

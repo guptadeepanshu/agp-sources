@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new FirebaseManagementEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_FirebaseManagementEvent_descriptor;
@@ -187,11 +182,6 @@ private static final long serialVersionUID = 0L;
       return new CreateFirebaseProjectDetails();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_FirebaseManagementEvent_CreateFirebaseProjectDetails_descriptor;
@@ -379,7 +369,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int STATE_FIELD_NUMBER = 1;
-    private int state_;
+    private int state_ = 0;
     /**
      * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState state = 1;</code>
      * @return Whether the state field is set.
@@ -392,8 +382,7 @@ private static final long serialVersionUID = 0L;
      * @return The state.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState getState() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.valueOf(state_);
+      com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.forNumber(state_);
       return result == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.UNKNOWN : result;
     }
 
@@ -589,8 +578,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         state_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -617,49 +606,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails buildPartial() {
         com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails result = new com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.state_ = state_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.state_ = state_;
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails) {
@@ -744,8 +705,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState getState() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.valueOf(state_);
+        com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.forNumber(state_);
         return result == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.CreateFirebaseProjectState.UNKNOWN : result;
       }
       /**
@@ -838,7 +798,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <code>optional .android_studio.FirebaseManagementEvent.FirebaseManagementEventType type = 1;</code>
    * @return Whether the type field is set.
@@ -851,13 +811,13 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.UNKNOWN_EVENT : result;
   }
 
   public static final int PROJECT_ID_FIELD_NUMBER = 2;
-  private volatile java.lang.Object projectId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object projectId_ = "";
   /**
    * <pre>
    * Client-side salted, sha256 of firebase project ID with salt rotated every
@@ -1186,16 +1146,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       projectId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (createFirebaseProjectDetailsBuilder_ == null) {
-        createFirebaseProjectDetails_ = null;
-      } else {
-        createFirebaseProjectDetailsBuilder_.clear();
+      createFirebaseProjectDetails_ = null;
+      if (createFirebaseProjectDetailsBuilder_ != null) {
+        createFirebaseProjectDetailsBuilder_.dispose();
+        createFirebaseProjectDetailsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1222,61 +1180,31 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FirebaseManagementEvent buildPartial() {
       com.google.wireless.android.sdk.stats.FirebaseManagementEvent result = new com.google.wireless.android.sdk.stats.FirebaseManagementEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.projectId_ = projectId_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (createFirebaseProjectDetailsBuilder_ == null) {
-          result.createFirebaseProjectDetails_ = createFirebaseProjectDetails_;
-        } else {
-          result.createFirebaseProjectDetails_ = createFirebaseProjectDetailsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.FirebaseManagementEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.projectId_ = projectId_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.createFirebaseProjectDetails_ = createFirebaseProjectDetailsBuilder_ == null
+            ? createFirebaseProjectDetails_
+            : createFirebaseProjectDetailsBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.FirebaseManagementEvent) {
@@ -1293,8 +1221,8 @@ private static final long serialVersionUID = 0L;
         setType(other.getType());
       }
       if (other.hasProjectId()) {
-        bitField0_ |= 0x00000002;
         projectId_ = other.projectId_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasCreateFirebaseProjectDetails()) {
@@ -1381,8 +1309,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType result = com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.FirebaseManagementEvent.FirebaseManagementEventType.UNKNOWN_EVENT : result;
     }
     /**
@@ -1480,11 +1407,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1498,8 +1423,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearProjectId() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       projectId_ = getDefaultInstance().getProjectId();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1515,11 +1440,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setProjectIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       projectId_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1566,11 +1489,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         createFirebaseProjectDetails_ = value;
-        onChanged();
       } else {
         createFirebaseProjectDetailsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1584,11 +1507,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.Builder builderForValue) {
       if (createFirebaseProjectDetailsBuilder_ == null) {
         createFirebaseProjectDetails_ = builderForValue.build();
-        onChanged();
       } else {
         createFirebaseProjectDetailsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1601,18 +1524,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeCreateFirebaseProjectDetails(com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails value) {
       if (createFirebaseProjectDetailsBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            createFirebaseProjectDetails_ != null &&
-            createFirebaseProjectDetails_ != com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.getDefaultInstance()) {
-          createFirebaseProjectDetails_ =
-            com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.newBuilder(createFirebaseProjectDetails_).mergeFrom(value).buildPartial();
+          createFirebaseProjectDetails_ != null &&
+          createFirebaseProjectDetails_ != com.google.wireless.android.sdk.stats.FirebaseManagementEvent.CreateFirebaseProjectDetails.getDefaultInstance()) {
+          getCreateFirebaseProjectDetailsBuilder().mergeFrom(value);
         } else {
           createFirebaseProjectDetails_ = value;
         }
-        onChanged();
       } else {
         createFirebaseProjectDetailsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -1623,13 +1545,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.FirebaseManagementEvent.CreateFirebaseProjectDetails create_firebase_project_details = 3 [lazy = true];</code>
      */
     public Builder clearCreateFirebaseProjectDetails() {
-      if (createFirebaseProjectDetailsBuilder_ == null) {
-        createFirebaseProjectDetails_ = null;
-        onChanged();
-      } else {
-        createFirebaseProjectDetailsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      createFirebaseProjectDetails_ = null;
+      if (createFirebaseProjectDetailsBuilder_ != null) {
+        createFirebaseProjectDetailsBuilder_.dispose();
+        createFirebaseProjectDetailsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

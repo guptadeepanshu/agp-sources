@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorHost();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorHost_descriptor;
@@ -50,7 +45,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CPU_MANUFACTURER_FIELD_NUMBER = 1;
-  private volatile java.lang.Object cpuManufacturer_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object cpuManufacturer_ = "";
   /**
    * <pre>
    * CPU manufacturer of the host, used as certain hypervisors are limited
@@ -113,7 +109,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRT_SUPPORT_FIELD_NUMBER = 2;
-  private boolean virtSupport_;
+  private boolean virtSupport_ = false;
   /**
    * <pre>
    * Does the host support virtualization technology
@@ -140,7 +136,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RUNNING_IN_VM_FIELD_NUMBER = 3;
-  private boolean runningInVm_;
+  private boolean runningInVm_ = false;
   /**
    * <pre>
    * Is the host itself running inside a virtual machine.
@@ -167,7 +163,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OS_BIT_COUNT_FIELD_NUMBER = 4;
-  private long osBitCount_;
+  private long osBitCount_ = 0L;
   /**
    * <pre>
    * May differ from os_architecture field as it is calculated differently,
@@ -196,7 +192,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_STEPPING_FIELD_NUMBER = 5;
-  private int cpuidStepping_;
+  private int cpuidStepping_ = 0;
   /**
    * <pre>
    * CPU model, family, stepping, as stored in the EAX register
@@ -229,7 +225,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_MODEL_FIELD_NUMBER = 6;
-  private int cpuidModel_;
+  private int cpuidModel_ = 0;
   /**
    * <pre>
    * m: [7:4] model (CPU model)
@@ -256,7 +252,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_FAMILY_FIELD_NUMBER = 7;
-  private int cpuidFamily_;
+  private int cpuidFamily_ = 0;
   /**
    * <pre>
    * f: [11:8] family (CPU make)
@@ -283,7 +279,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_TYPE_FIELD_NUMBER = 8;
-  private int cpuidType_;
+  private int cpuidType_ = 0;
   /**
    * <pre>
    * t: [13:12] CPU type
@@ -310,7 +306,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_EXTMODEL_FIELD_NUMBER = 9;
-  private int cpuidExtmodel_;
+  private int cpuidExtmodel_ = 0;
   /**
    * <pre>
    * x: [19:16] extended model
@@ -337,7 +333,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CPUID_EXTFAMILY_FIELD_NUMBER = 10;
-  private int cpuidExtfamily_;
+  private int cpuidExtfamily_ = 0;
   /**
    * <pre>
    * y: [27:20] extended family
@@ -706,26 +702,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       cpuManufacturer_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       virtSupport_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       runningInVm_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       osBitCount_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       cpuidStepping_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       cpuidModel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       cpuidFamily_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       cpuidType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       cpuidExtmodel_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       cpuidExtfamily_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -752,12 +739,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorHost buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorHost result = new com.google.wireless.android.sdk.stats.EmulatorHost(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorHost result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.cpuManufacturer_ = cpuManufacturer_;
         to_bitField0_ |= 0x00000001;
       }
-      result.cpuManufacturer_ = cpuManufacturer_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.virtSupport_ = virtSupport_;
         to_bitField0_ |= 0x00000002;
@@ -794,43 +787,9 @@ private static final long serialVersionUID = 0L;
         result.cpuidExtfamily_ = cpuidExtfamily_;
         to_bitField0_ |= 0x00000200;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorHost) {
@@ -844,8 +803,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.EmulatorHost other) {
       if (other == com.google.wireless.android.sdk.stats.EmulatorHost.getDefaultInstance()) return this;
       if (other.hasCpuManufacturer()) {
-        bitField0_ |= 0x00000001;
         cpuManufacturer_ = other.cpuManufacturer_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasVirtSupport()) {
@@ -1038,11 +997,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCpuManufacturer(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       cpuManufacturer_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1056,8 +1013,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearCpuManufacturer() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       cpuManufacturer_ = getDefaultInstance().getCpuManufacturer();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1073,11 +1030,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setCpuManufacturerBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       cpuManufacturer_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1117,8 +1072,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setVirtSupport(boolean value) {
-      bitField0_ |= 0x00000002;
+
       virtSupport_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1172,8 +1128,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRunningInVm(boolean value) {
-      bitField0_ |= 0x00000004;
+
       runningInVm_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1230,8 +1187,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOsBitCount(long value) {
-      bitField0_ |= 0x00000008;
+
       osBitCount_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1295,8 +1253,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidStepping(int value) {
-      bitField0_ |= 0x00000010;
+
       cpuidStepping_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1353,8 +1312,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidModel(int value) {
-      bitField0_ |= 0x00000020;
+
       cpuidModel_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1408,8 +1368,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidFamily(int value) {
-      bitField0_ |= 0x00000040;
+
       cpuidFamily_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1463,8 +1424,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidType(int value) {
-      bitField0_ |= 0x00000080;
+
       cpuidType_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1518,8 +1480,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidExtmodel(int value) {
-      bitField0_ |= 0x00000100;
+
       cpuidExtmodel_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1573,8 +1536,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCpuidExtfamily(int value) {
-      bitField0_ |= 0x00000200;
+
       cpuidExtfamily_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }

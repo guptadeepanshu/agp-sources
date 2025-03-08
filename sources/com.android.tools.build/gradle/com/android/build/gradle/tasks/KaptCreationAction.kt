@@ -20,10 +20,13 @@ import com.android.build.api.component.impl.AnnotationProcessorImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.KotlinBaseApiVersion
 import com.android.build.gradle.internal.services.KotlinServices
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
+import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import org.jetbrains.kotlin.gradle.tasks.Kapt
 
 internal const val KOTLIN_GROUP = "org.jetbrains.kotlin"
@@ -34,7 +37,8 @@ private const val KAPT_WORKERS_CONFIGURATION = "kotlinKaptWorkerDependencies"
 class KaptCreationAction(
     creationConfig: ComponentCreationConfig,
     project: Project,
-    kotlinServices: KotlinServices
+    private val kotlinServices: KotlinServices,
+    private val kaptExtension: KaptExtensionConfig?
 ) : KotlinTaskCreationAction<Kapt>(creationConfig) {
 
     private val kotlinJvmFactory = kotlinServices.factory
@@ -52,6 +56,21 @@ class KaptCreationAction(
     override val taskName: String = creationConfig.computeTaskNameInternal("kapt", "Kotlin")
 
     override fun getTaskProvider(): TaskProvider<out Kapt> {
+        if (kotlinServices.kotlinBaseApiVersion > KotlinBaseApiVersion.VERSION_1) {
+            if (kaptExtension == null) {
+                // This should never happen.
+                creationConfig.services
+                    .issueReporter
+                    .reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException("Unable to access kapt extension.")
+                    )
+            }
+            return kotlinJvmFactory.registerKaptTask(
+                taskName,
+                kaptExtension ?: kotlinJvmFactory.kaptExtension
+            )
+        }
         return kotlinJvmFactory.registerKaptTask(taskName)
     }
 
@@ -83,12 +102,12 @@ class KaptCreationAction(
         // Never add jdk classes to classpath with Android as android.jar should be used
         task.addJdkClassesToClasspath.set(false)
         task.classpath.setFrom(
+            creationConfig.global.bootClasspath,
             creationConfig.getJavaClasspath(
                 AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                 AndroidArtifacts.ArtifactType.CLASSES_JAR,
                 null
             ),
-            creationConfig.global.bootClasspath
         )
         val externalKaptDeps = creationConfig.variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR,

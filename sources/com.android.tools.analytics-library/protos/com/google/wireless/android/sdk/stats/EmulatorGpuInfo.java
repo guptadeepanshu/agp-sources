@@ -35,11 +35,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorGpuInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorGpuInfo_descriptor;
@@ -55,7 +50,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int MAKE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object make_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object make_ = "";
   /**
    * <pre>
    * Make of the Graphics card.
@@ -115,7 +111,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int MODEL_FIELD_NUMBER = 2;
-  private volatile java.lang.Object model_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object model_ = "";
   /**
    * <pre>
    * Model of the Graphics card.
@@ -175,7 +172,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_ID_FIELD_NUMBER = 3;
-  private volatile java.lang.Object deviceId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object deviceId_ = "";
   /**
    * <pre>
    * Device id of the Graphics card.
@@ -235,7 +233,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REVISION_ID_FIELD_NUMBER = 4;
-  private volatile java.lang.Object revisionId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object revisionId_ = "";
   /**
    * <pre>
    * Revision of the graphics card.
@@ -295,7 +294,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VERSION_FIELD_NUMBER = 5;
-  private volatile java.lang.Object version_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object version_ = "";
   /**
    * <pre>
    * Version of the graphics card driver.
@@ -355,7 +355,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RENDERER_FIELD_NUMBER = 6;
-  private volatile java.lang.Object renderer_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object renderer_ = "";
   /**
    * <pre>
    * Name of the graphics card driver.
@@ -685,18 +686,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       make_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       model_ = "";
-      bitField0_ = (bitField0_ & ~0x00000002);
       deviceId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000004);
       revisionId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000008);
       version_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       renderer_ = "";
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -723,69 +719,41 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGpuInfo buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorGpuInfo result = new com.google.wireless.android.sdk.stats.EmulatorGpuInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.make_ = make_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.model_ = model_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.deviceId_ = deviceId_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
-      }
-      result.revisionId_ = revisionId_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.version_ = version_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        to_bitField0_ |= 0x00000020;
-      }
-      result.renderer_ = renderer_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorGpuInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.make_ = make_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.model_ = model_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.deviceId_ = deviceId_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.revisionId_ = revisionId_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.version_ = version_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.renderer_ = renderer_;
+        to_bitField0_ |= 0x00000020;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorGpuInfo) {
@@ -799,33 +767,33 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.EmulatorGpuInfo other) {
       if (other == com.google.wireless.android.sdk.stats.EmulatorGpuInfo.getDefaultInstance()) return this;
       if (other.hasMake()) {
-        bitField0_ |= 0x00000001;
         make_ = other.make_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasModel()) {
-        bitField0_ |= 0x00000002;
         model_ = other.model_;
+        bitField0_ |= 0x00000002;
         onChanged();
       }
       if (other.hasDeviceId()) {
-        bitField0_ |= 0x00000004;
         deviceId_ = other.deviceId_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
       if (other.hasRevisionId()) {
-        bitField0_ |= 0x00000008;
         revisionId_ = other.revisionId_;
+        bitField0_ |= 0x00000008;
         onChanged();
       }
       if (other.hasVersion()) {
-        bitField0_ |= 0x00000010;
         version_ = other.version_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasRenderer()) {
-        bitField0_ |= 0x00000020;
         renderer_ = other.renderer_;
+        bitField0_ |= 0x00000020;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -967,11 +935,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMake(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       make_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -984,8 +950,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMake() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       make_ = getDefaultInstance().getMake();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -1000,11 +966,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setMakeBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       make_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1075,11 +1039,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModel(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       model_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1092,8 +1054,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearModel() {
-      bitField0_ = (bitField0_ & ~0x00000002);
       model_ = getDefaultInstance().getModel();
+      bitField0_ = (bitField0_ & ~0x00000002);
       onChanged();
       return this;
     }
@@ -1108,11 +1070,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setModelBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+      if (value == null) { throw new NullPointerException(); }
       model_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1183,11 +1143,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       deviceId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1200,8 +1158,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDeviceId() {
-      bitField0_ = (bitField0_ & ~0x00000004);
       deviceId_ = getDefaultInstance().getDeviceId();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -1216,11 +1174,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDeviceIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+      if (value == null) { throw new NullPointerException(); }
       deviceId_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1291,11 +1247,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRevisionId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       revisionId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1308,8 +1262,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRevisionId() {
-      bitField0_ = (bitField0_ & ~0x00000008);
       revisionId_ = getDefaultInstance().getRevisionId();
+      bitField0_ = (bitField0_ & ~0x00000008);
       onChanged();
       return this;
     }
@@ -1324,11 +1278,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRevisionIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+      if (value == null) { throw new NullPointerException(); }
       revisionId_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1399,11 +1351,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersion(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1416,8 +1366,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVersion() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       version_ = getDefaultInstance().getVersion();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -1432,11 +1382,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVersionBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       version_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1507,11 +1455,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRenderer(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       renderer_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1524,8 +1470,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRenderer() {
-      bitField0_ = (bitField0_ & ~0x00000020);
       renderer_ = getDefaultInstance().getRenderer();
+      bitField0_ = (bitField0_ & ~0x00000020);
       onChanged();
       return this;
     }
@@ -1540,11 +1486,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setRendererBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+      if (value == null) { throw new NullPointerException(); }
       renderer_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

@@ -24,6 +24,7 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
+import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
@@ -76,6 +77,10 @@ class DslServicesImpl constructor(
 
     override val logger: Logger
         get() = projectServices.logger
+
+    override val configurations: ConfigurationContainer
+        get() = projectServices.configurationContainer
+
 
     override fun <T: Any> newDecoratedInstance(dslClass: Class<T>, vararg args: Any) : T {
         return newInstance(androidPluginDslDecorator.decorate(dslClass), *args)

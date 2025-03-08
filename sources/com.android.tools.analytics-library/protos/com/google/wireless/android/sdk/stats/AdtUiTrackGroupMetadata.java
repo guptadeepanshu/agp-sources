@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AdtUiTrackGroupMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AdtUiTrackGroupMetadata_descriptor;
@@ -183,7 +178,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TITLE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object title_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object title_ = "";
   /**
    * <pre>
    * Pre-defined track group title in Android Studio, e.g. Display, Threads.
@@ -246,7 +242,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ACTION_TYPE_FIELD_NUMBER = 2;
-  private int actionType_;
+  private int actionType_ = 0;
   /**
    * <pre>
    * Track group action type, e.g. collapsing a track group.
@@ -267,8 +263,7 @@ private static final long serialVersionUID = 0L;
    * @return The actionType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType getActionType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.valueOf(actionType_);
+    com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.forNumber(actionType_);
     return result == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.UNKNOWN : result;
   }
 
@@ -483,10 +478,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       title_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       actionType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -513,53 +507,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata result = new com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.title_ = title_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.actionType_ = actionType_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.title_ = title_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.actionType_ = actionType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata) {
@@ -573,8 +539,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata other) {
       if (other == com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.getDefaultInstance()) return this;
       if (other.hasTitle()) {
-        bitField0_ |= 0x00000001;
         title_ = other.title_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasActionType()) {
@@ -710,11 +676,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTitle(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       title_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -728,8 +692,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTitle() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       title_ = getDefaultInstance().getTitle();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -745,11 +709,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setTitleBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       title_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -776,8 +738,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType getActionType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.valueOf(actionType_);
+      com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.forNumber(actionType_);
       return result == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.UNKNOWN : result;
     }
     /**

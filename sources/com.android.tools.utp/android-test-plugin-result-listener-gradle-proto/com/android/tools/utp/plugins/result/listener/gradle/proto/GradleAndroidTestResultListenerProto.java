@@ -146,7 +146,7 @@ public final class GradleAndroidTestResultListenerProto {
     com.google.protobuf.ByteString
         getDeviceIdBytes();
 
-    public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.StateCase getStateCase();
+    com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.StateCase getStateCase();
   }
   /**
    * <pre>
@@ -175,11 +175,6 @@ public final class GradleAndroidTestResultListenerProto {
       return new TestResultEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_TestResultEvent_descriptor;
@@ -250,11 +245,6 @@ public final class GradleAndroidTestResultListenerProto {
         return new TestSuiteStarted();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_TestResultEvent_TestSuiteStarted_descriptor;
@@ -268,6 +258,7 @@ public final class GradleAndroidTestResultListenerProto {
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted.class, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted.Builder.class);
       }
 
+      private int bitField0_;
       public static final int TEST_SUITE_METADATA_FIELD_NUMBER = 1;
       private com.google.protobuf.Any testSuiteMetadata_;
       /**
@@ -280,7 +271,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public boolean hasTestSuiteMetadata() {
-        return testSuiteMetadata_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -303,7 +294,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public com.google.protobuf.AnyOrBuilder getTestSuiteMetadataOrBuilder() {
-        return getTestSuiteMetadata();
+        return testSuiteMetadata_ == null ? com.google.protobuf.Any.getDefaultInstance() : testSuiteMetadata_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -320,7 +311,7 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (testSuiteMetadata_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           output.writeMessage(1, getTestSuiteMetadata());
         }
         getUnknownFields().writeTo(output);
@@ -332,7 +323,7 @@ public final class GradleAndroidTestResultListenerProto {
         if (size != -1) return size;
 
         size = 0;
-        if (testSuiteMetadata_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, getTestSuiteMetadata());
         }
@@ -420,11 +411,13 @@ public final class GradleAndroidTestResultListenerProto {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -492,21 +485,27 @@ public final class GradleAndroidTestResultListenerProto {
 
         // Construct using com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted.newBuilder()
         private Builder() {
-
+          maybeForceBuilderInitialization();
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+            getTestSuiteMetadataFieldBuilder();
+          }
         }
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          if (testSuiteMetadataBuilder_ == null) {
-            testSuiteMetadata_ = null;
-          } else {
-            testSuiteMetadata_ = null;
+          bitField0_ = 0;
+          testSuiteMetadata_ = null;
+          if (testSuiteMetadataBuilder_ != null) {
+            testSuiteMetadataBuilder_.dispose();
             testSuiteMetadataBuilder_ = null;
           }
           return this;
@@ -535,13 +534,21 @@ public final class GradleAndroidTestResultListenerProto {
         @java.lang.Override
         public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted buildPartial() {
           com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted(this);
-          if (testSuiteMetadataBuilder_ == null) {
-            result.testSuiteMetadata_ = testSuiteMetadata_;
-          } else {
-            result.testSuiteMetadata_ = testSuiteMetadataBuilder_.build();
-          }
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
+        }
+
+        private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.testSuiteMetadata_ = testSuiteMetadataBuilder_ == null
+                ? testSuiteMetadata_
+                : testSuiteMetadataBuilder_.build();
+            to_bitField0_ |= 0x00000001;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
 
         @java.lang.Override
@@ -621,7 +628,7 @@ public final class GradleAndroidTestResultListenerProto {
                   input.readMessage(
                       getTestSuiteMetadataFieldBuilder().getBuilder(),
                       extensionRegistry);
-
+                  bitField0_ |= 0x00000001;
                   break;
                 } // case 10
                 default: {
@@ -639,6 +646,7 @@ public final class GradleAndroidTestResultListenerProto {
           } // finally
           return this;
         }
+        private int bitField0_;
 
         private com.google.protobuf.Any testSuiteMetadata_;
         private com.google.protobuf.SingleFieldBuilderV3<
@@ -652,7 +660,7 @@ public final class GradleAndroidTestResultListenerProto {
          * @return Whether the testSuiteMetadata field is set.
          */
         public boolean hasTestSuiteMetadata() {
-          return testSuiteMetadataBuilder_ != null || testSuiteMetadata_ != null;
+          return ((bitField0_ & 0x00000001) != 0);
         }
         /**
          * <pre>
@@ -682,11 +690,11 @@ public final class GradleAndroidTestResultListenerProto {
               throw new NullPointerException();
             }
             testSuiteMetadata_ = value;
-            onChanged();
           } else {
             testSuiteMetadataBuilder_.setMessage(value);
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -700,11 +708,11 @@ public final class GradleAndroidTestResultListenerProto {
             com.google.protobuf.Any.Builder builderForValue) {
           if (testSuiteMetadataBuilder_ == null) {
             testSuiteMetadata_ = builderForValue.build();
-            onChanged();
           } else {
             testSuiteMetadataBuilder_.setMessage(builderForValue.build());
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -716,17 +724,20 @@ public final class GradleAndroidTestResultListenerProto {
          */
         public Builder mergeTestSuiteMetadata(com.google.protobuf.Any value) {
           if (testSuiteMetadataBuilder_ == null) {
-            if (testSuiteMetadata_ != null) {
-              testSuiteMetadata_ =
-                com.google.protobuf.Any.newBuilder(testSuiteMetadata_).mergeFrom(value).buildPartial();
+            if (((bitField0_ & 0x00000001) != 0) &&
+              testSuiteMetadata_ != null &&
+              testSuiteMetadata_ != com.google.protobuf.Any.getDefaultInstance()) {
+              getTestSuiteMetadataBuilder().mergeFrom(value);
             } else {
               testSuiteMetadata_ = value;
             }
-            onChanged();
           } else {
             testSuiteMetadataBuilder_.mergeFrom(value);
           }
-
+          if (testSuiteMetadata_ != null) {
+            bitField0_ |= 0x00000001;
+            onChanged();
+          }
           return this;
         }
         /**
@@ -737,14 +748,13 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_suite_metadata = 1;</code>
          */
         public Builder clearTestSuiteMetadata() {
-          if (testSuiteMetadataBuilder_ == null) {
-            testSuiteMetadata_ = null;
-            onChanged();
-          } else {
-            testSuiteMetadata_ = null;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          testSuiteMetadata_ = null;
+          if (testSuiteMetadataBuilder_ != null) {
+            testSuiteMetadataBuilder_.dispose();
             testSuiteMetadataBuilder_ = null;
           }
-
+          onChanged();
           return this;
         }
         /**
@@ -755,7 +765,7 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_suite_metadata = 1;</code>
          */
         public com.google.protobuf.Any.Builder getTestSuiteMetadataBuilder() {
-          
+          bitField0_ |= 0x00000001;
           onChanged();
           return getTestSuiteMetadataFieldBuilder().getBuilder();
         }
@@ -915,11 +925,6 @@ public final class GradleAndroidTestResultListenerProto {
         return new TestCaseStarted();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_TestResultEvent_TestCaseStarted_descriptor;
@@ -933,6 +938,7 @@ public final class GradleAndroidTestResultListenerProto {
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted.class, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted.Builder.class);
       }
 
+      private int bitField0_;
       public static final int TEST_CASE_FIELD_NUMBER = 1;
       private com.google.protobuf.Any testCase_;
       /**
@@ -945,7 +951,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public boolean hasTestCase() {
-        return testCase_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -968,7 +974,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public com.google.protobuf.AnyOrBuilder getTestCaseOrBuilder() {
-        return getTestCase();
+        return testCase_ == null ? com.google.protobuf.Any.getDefaultInstance() : testCase_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -985,7 +991,7 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (testCase_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           output.writeMessage(1, getTestCase());
         }
         getUnknownFields().writeTo(output);
@@ -997,7 +1003,7 @@ public final class GradleAndroidTestResultListenerProto {
         if (size != -1) return size;
 
         size = 0;
-        if (testCase_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, getTestCase());
         }
@@ -1085,11 +1091,13 @@ public final class GradleAndroidTestResultListenerProto {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1157,21 +1165,27 @@ public final class GradleAndroidTestResultListenerProto {
 
         // Construct using com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted.newBuilder()
         private Builder() {
-
+          maybeForceBuilderInitialization();
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+            getTestCaseFieldBuilder();
+          }
         }
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          if (testCaseBuilder_ == null) {
-            testCase_ = null;
-          } else {
-            testCase_ = null;
+          bitField0_ = 0;
+          testCase_ = null;
+          if (testCaseBuilder_ != null) {
+            testCaseBuilder_.dispose();
             testCaseBuilder_ = null;
           }
           return this;
@@ -1200,13 +1214,21 @@ public final class GradleAndroidTestResultListenerProto {
         @java.lang.Override
         public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted buildPartial() {
           com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted(this);
-          if (testCaseBuilder_ == null) {
-            result.testCase_ = testCase_;
-          } else {
-            result.testCase_ = testCaseBuilder_.build();
-          }
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
+        }
+
+        private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseStarted result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.testCase_ = testCaseBuilder_ == null
+                ? testCase_
+                : testCaseBuilder_.build();
+            to_bitField0_ |= 0x00000001;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
 
         @java.lang.Override
@@ -1286,7 +1308,7 @@ public final class GradleAndroidTestResultListenerProto {
                   input.readMessage(
                       getTestCaseFieldBuilder().getBuilder(),
                       extensionRegistry);
-
+                  bitField0_ |= 0x00000001;
                   break;
                 } // case 10
                 default: {
@@ -1304,6 +1326,7 @@ public final class GradleAndroidTestResultListenerProto {
           } // finally
           return this;
         }
+        private int bitField0_;
 
         private com.google.protobuf.Any testCase_;
         private com.google.protobuf.SingleFieldBuilderV3<
@@ -1317,7 +1340,7 @@ public final class GradleAndroidTestResultListenerProto {
          * @return Whether the testCase field is set.
          */
         public boolean hasTestCase() {
-          return testCaseBuilder_ != null || testCase_ != null;
+          return ((bitField0_ & 0x00000001) != 0);
         }
         /**
          * <pre>
@@ -1347,11 +1370,11 @@ public final class GradleAndroidTestResultListenerProto {
               throw new NullPointerException();
             }
             testCase_ = value;
-            onChanged();
           } else {
             testCaseBuilder_.setMessage(value);
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -1365,11 +1388,11 @@ public final class GradleAndroidTestResultListenerProto {
             com.google.protobuf.Any.Builder builderForValue) {
           if (testCaseBuilder_ == null) {
             testCase_ = builderForValue.build();
-            onChanged();
           } else {
             testCaseBuilder_.setMessage(builderForValue.build());
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -1381,17 +1404,20 @@ public final class GradleAndroidTestResultListenerProto {
          */
         public Builder mergeTestCase(com.google.protobuf.Any value) {
           if (testCaseBuilder_ == null) {
-            if (testCase_ != null) {
-              testCase_ =
-                com.google.protobuf.Any.newBuilder(testCase_).mergeFrom(value).buildPartial();
+            if (((bitField0_ & 0x00000001) != 0) &&
+              testCase_ != null &&
+              testCase_ != com.google.protobuf.Any.getDefaultInstance()) {
+              getTestCaseBuilder().mergeFrom(value);
             } else {
               testCase_ = value;
             }
-            onChanged();
           } else {
             testCaseBuilder_.mergeFrom(value);
           }
-
+          if (testCase_ != null) {
+            bitField0_ |= 0x00000001;
+            onChanged();
+          }
           return this;
         }
         /**
@@ -1402,14 +1428,13 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_case = 1;</code>
          */
         public Builder clearTestCase() {
-          if (testCaseBuilder_ == null) {
-            testCase_ = null;
-            onChanged();
-          } else {
-            testCase_ = null;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          testCase_ = null;
+          if (testCaseBuilder_ != null) {
+            testCaseBuilder_.dispose();
             testCaseBuilder_ = null;
           }
-
+          onChanged();
           return this;
         }
         /**
@@ -1420,7 +1445,7 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_case = 1;</code>
          */
         public com.google.protobuf.Any.Builder getTestCaseBuilder() {
-          
+          bitField0_ |= 0x00000001;
           onChanged();
           return getTestCaseFieldBuilder().getBuilder();
         }
@@ -1580,11 +1605,6 @@ public final class GradleAndroidTestResultListenerProto {
         return new TestCaseFinished();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_TestResultEvent_TestCaseFinished_descriptor;
@@ -1598,6 +1618,7 @@ public final class GradleAndroidTestResultListenerProto {
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished.class, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished.Builder.class);
       }
 
+      private int bitField0_;
       public static final int TEST_CASE_RESULT_FIELD_NUMBER = 1;
       private com.google.protobuf.Any testCaseResult_;
       /**
@@ -1610,7 +1631,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public boolean hasTestCaseResult() {
-        return testCaseResult_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -1633,7 +1654,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public com.google.protobuf.AnyOrBuilder getTestCaseResultOrBuilder() {
-        return getTestCaseResult();
+        return testCaseResult_ == null ? com.google.protobuf.Any.getDefaultInstance() : testCaseResult_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -1650,7 +1671,7 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (testCaseResult_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           output.writeMessage(1, getTestCaseResult());
         }
         getUnknownFields().writeTo(output);
@@ -1662,7 +1683,7 @@ public final class GradleAndroidTestResultListenerProto {
         if (size != -1) return size;
 
         size = 0;
-        if (testCaseResult_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, getTestCaseResult());
         }
@@ -1750,11 +1771,13 @@ public final class GradleAndroidTestResultListenerProto {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1822,21 +1845,27 @@ public final class GradleAndroidTestResultListenerProto {
 
         // Construct using com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished.newBuilder()
         private Builder() {
-
+          maybeForceBuilderInitialization();
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+            getTestCaseResultFieldBuilder();
+          }
         }
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          if (testCaseResultBuilder_ == null) {
-            testCaseResult_ = null;
-          } else {
-            testCaseResult_ = null;
+          bitField0_ = 0;
+          testCaseResult_ = null;
+          if (testCaseResultBuilder_ != null) {
+            testCaseResultBuilder_.dispose();
             testCaseResultBuilder_ = null;
           }
           return this;
@@ -1865,13 +1894,21 @@ public final class GradleAndroidTestResultListenerProto {
         @java.lang.Override
         public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished buildPartial() {
           com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished(this);
-          if (testCaseResultBuilder_ == null) {
-            result.testCaseResult_ = testCaseResult_;
-          } else {
-            result.testCaseResult_ = testCaseResultBuilder_.build();
-          }
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
+        }
+
+        private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestCaseFinished result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.testCaseResult_ = testCaseResultBuilder_ == null
+                ? testCaseResult_
+                : testCaseResultBuilder_.build();
+            to_bitField0_ |= 0x00000001;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
 
         @java.lang.Override
@@ -1951,7 +1988,7 @@ public final class GradleAndroidTestResultListenerProto {
                   input.readMessage(
                       getTestCaseResultFieldBuilder().getBuilder(),
                       extensionRegistry);
-
+                  bitField0_ |= 0x00000001;
                   break;
                 } // case 10
                 default: {
@@ -1969,6 +2006,7 @@ public final class GradleAndroidTestResultListenerProto {
           } // finally
           return this;
         }
+        private int bitField0_;
 
         private com.google.protobuf.Any testCaseResult_;
         private com.google.protobuf.SingleFieldBuilderV3<
@@ -1982,7 +2020,7 @@ public final class GradleAndroidTestResultListenerProto {
          * @return Whether the testCaseResult field is set.
          */
         public boolean hasTestCaseResult() {
-          return testCaseResultBuilder_ != null || testCaseResult_ != null;
+          return ((bitField0_ & 0x00000001) != 0);
         }
         /**
          * <pre>
@@ -2012,11 +2050,11 @@ public final class GradleAndroidTestResultListenerProto {
               throw new NullPointerException();
             }
             testCaseResult_ = value;
-            onChanged();
           } else {
             testCaseResultBuilder_.setMessage(value);
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -2030,11 +2068,11 @@ public final class GradleAndroidTestResultListenerProto {
             com.google.protobuf.Any.Builder builderForValue) {
           if (testCaseResultBuilder_ == null) {
             testCaseResult_ = builderForValue.build();
-            onChanged();
           } else {
             testCaseResultBuilder_.setMessage(builderForValue.build());
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -2046,17 +2084,20 @@ public final class GradleAndroidTestResultListenerProto {
          */
         public Builder mergeTestCaseResult(com.google.protobuf.Any value) {
           if (testCaseResultBuilder_ == null) {
-            if (testCaseResult_ != null) {
-              testCaseResult_ =
-                com.google.protobuf.Any.newBuilder(testCaseResult_).mergeFrom(value).buildPartial();
+            if (((bitField0_ & 0x00000001) != 0) &&
+              testCaseResult_ != null &&
+              testCaseResult_ != com.google.protobuf.Any.getDefaultInstance()) {
+              getTestCaseResultBuilder().mergeFrom(value);
             } else {
               testCaseResult_ = value;
             }
-            onChanged();
           } else {
             testCaseResultBuilder_.mergeFrom(value);
           }
-
+          if (testCaseResult_ != null) {
+            bitField0_ |= 0x00000001;
+            onChanged();
+          }
           return this;
         }
         /**
@@ -2067,14 +2108,13 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_case_result = 1;</code>
          */
         public Builder clearTestCaseResult() {
-          if (testCaseResultBuilder_ == null) {
-            testCaseResult_ = null;
-            onChanged();
-          } else {
-            testCaseResult_ = null;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          testCaseResult_ = null;
+          if (testCaseResultBuilder_ != null) {
+            testCaseResultBuilder_.dispose();
             testCaseResultBuilder_ = null;
           }
-
+          onChanged();
           return this;
         }
         /**
@@ -2085,7 +2125,7 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_case_result = 1;</code>
          */
         public com.google.protobuf.Any.Builder getTestCaseResultBuilder() {
-          
+          bitField0_ |= 0x00000001;
           onChanged();
           return getTestCaseResultFieldBuilder().getBuilder();
         }
@@ -2245,11 +2285,6 @@ public final class GradleAndroidTestResultListenerProto {
         return new TestSuiteFinished();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_TestResultEvent_TestSuiteFinished_descriptor;
@@ -2263,6 +2298,7 @@ public final class GradleAndroidTestResultListenerProto {
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished.class, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished.Builder.class);
       }
 
+      private int bitField0_;
       public static final int TEST_SUITE_RESULT_FIELD_NUMBER = 1;
       private com.google.protobuf.Any testSuiteResult_;
       /**
@@ -2275,7 +2311,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public boolean hasTestSuiteResult() {
-        return testSuiteResult_ != null;
+        return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <pre>
@@ -2298,7 +2334,7 @@ public final class GradleAndroidTestResultListenerProto {
        */
       @java.lang.Override
       public com.google.protobuf.AnyOrBuilder getTestSuiteResultOrBuilder() {
-        return getTestSuiteResult();
+        return testSuiteResult_ == null ? com.google.protobuf.Any.getDefaultInstance() : testSuiteResult_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -2315,7 +2351,7 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (testSuiteResult_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           output.writeMessage(1, getTestSuiteResult());
         }
         getUnknownFields().writeTo(output);
@@ -2327,7 +2363,7 @@ public final class GradleAndroidTestResultListenerProto {
         if (size != -1) return size;
 
         size = 0;
-        if (testSuiteResult_ != null) {
+        if (((bitField0_ & 0x00000001) != 0)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, getTestSuiteResult());
         }
@@ -2415,11 +2451,13 @@ public final class GradleAndroidTestResultListenerProto {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
+
       public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2487,21 +2525,27 @@ public final class GradleAndroidTestResultListenerProto {
 
         // Construct using com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished.newBuilder()
         private Builder() {
-
+          maybeForceBuilderInitialization();
         }
 
         private Builder(
             com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
           super(parent);
-
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+            getTestSuiteResultFieldBuilder();
+          }
         }
         @java.lang.Override
         public Builder clear() {
           super.clear();
-          if (testSuiteResultBuilder_ == null) {
-            testSuiteResult_ = null;
-          } else {
-            testSuiteResult_ = null;
+          bitField0_ = 0;
+          testSuiteResult_ = null;
+          if (testSuiteResultBuilder_ != null) {
+            testSuiteResultBuilder_.dispose();
             testSuiteResultBuilder_ = null;
           }
           return this;
@@ -2530,13 +2574,21 @@ public final class GradleAndroidTestResultListenerProto {
         @java.lang.Override
         public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished buildPartial() {
           com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished(this);
-          if (testSuiteResultBuilder_ == null) {
-            result.testSuiteResult_ = testSuiteResult_;
-          } else {
-            result.testSuiteResult_ = testSuiteResultBuilder_.build();
-          }
+          if (bitField0_ != 0) { buildPartial0(result); }
           onBuilt();
           return result;
+        }
+
+        private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteFinished result) {
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.testSuiteResult_ = testSuiteResultBuilder_ == null
+                ? testSuiteResult_
+                : testSuiteResultBuilder_.build();
+            to_bitField0_ |= 0x00000001;
+          }
+          result.bitField0_ |= to_bitField0_;
         }
 
         @java.lang.Override
@@ -2616,7 +2668,7 @@ public final class GradleAndroidTestResultListenerProto {
                   input.readMessage(
                       getTestSuiteResultFieldBuilder().getBuilder(),
                       extensionRegistry);
-
+                  bitField0_ |= 0x00000001;
                   break;
                 } // case 10
                 default: {
@@ -2634,6 +2686,7 @@ public final class GradleAndroidTestResultListenerProto {
           } // finally
           return this;
         }
+        private int bitField0_;
 
         private com.google.protobuf.Any testSuiteResult_;
         private com.google.protobuf.SingleFieldBuilderV3<
@@ -2647,7 +2700,7 @@ public final class GradleAndroidTestResultListenerProto {
          * @return Whether the testSuiteResult field is set.
          */
         public boolean hasTestSuiteResult() {
-          return testSuiteResultBuilder_ != null || testSuiteResult_ != null;
+          return ((bitField0_ & 0x00000001) != 0);
         }
         /**
          * <pre>
@@ -2677,11 +2730,11 @@ public final class GradleAndroidTestResultListenerProto {
               throw new NullPointerException();
             }
             testSuiteResult_ = value;
-            onChanged();
           } else {
             testSuiteResultBuilder_.setMessage(value);
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -2695,11 +2748,11 @@ public final class GradleAndroidTestResultListenerProto {
             com.google.protobuf.Any.Builder builderForValue) {
           if (testSuiteResultBuilder_ == null) {
             testSuiteResult_ = builderForValue.build();
-            onChanged();
           } else {
             testSuiteResultBuilder_.setMessage(builderForValue.build());
           }
-
+          bitField0_ |= 0x00000001;
+          onChanged();
           return this;
         }
         /**
@@ -2711,17 +2764,20 @@ public final class GradleAndroidTestResultListenerProto {
          */
         public Builder mergeTestSuiteResult(com.google.protobuf.Any value) {
           if (testSuiteResultBuilder_ == null) {
-            if (testSuiteResult_ != null) {
-              testSuiteResult_ =
-                com.google.protobuf.Any.newBuilder(testSuiteResult_).mergeFrom(value).buildPartial();
+            if (((bitField0_ & 0x00000001) != 0) &&
+              testSuiteResult_ != null &&
+              testSuiteResult_ != com.google.protobuf.Any.getDefaultInstance()) {
+              getTestSuiteResultBuilder().mergeFrom(value);
             } else {
               testSuiteResult_ = value;
             }
-            onChanged();
           } else {
             testSuiteResultBuilder_.mergeFrom(value);
           }
-
+          if (testSuiteResult_ != null) {
+            bitField0_ |= 0x00000001;
+            onChanged();
+          }
           return this;
         }
         /**
@@ -2732,14 +2788,13 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_suite_result = 1;</code>
          */
         public Builder clearTestSuiteResult() {
-          if (testSuiteResultBuilder_ == null) {
-            testSuiteResult_ = null;
-            onChanged();
-          } else {
-            testSuiteResult_ = null;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          testSuiteResult_ = null;
+          if (testSuiteResultBuilder_ != null) {
+            testSuiteResultBuilder_.dispose();
             testSuiteResultBuilder_ = null;
           }
-
+          onChanged();
           return this;
         }
         /**
@@ -2750,7 +2805,7 @@ public final class GradleAndroidTestResultListenerProto {
          * <code>.google.protobuf.Any test_suite_result = 1;</code>
          */
         public com.google.protobuf.Any.Builder getTestSuiteResultBuilder() {
-          
+          bitField0_ |= 0x00000001;
           onChanged();
           return getTestSuiteResultFieldBuilder().getBuilder();
         }
@@ -2854,6 +2909,7 @@ public final class GradleAndroidTestResultListenerProto {
     }
 
     private int stateCase_ = 0;
+    @SuppressWarnings("serial")
     private java.lang.Object state_;
     public enum StateCase
         implements com.google.protobuf.Internal.EnumLite,
@@ -3071,7 +3127,8 @@ public final class GradleAndroidTestResultListenerProto {
     }
 
     public static final int DEVICEID_FIELD_NUMBER = 5;
-    private volatile java.lang.Object deviceId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object deviceId_ = "";
     /**
      * <pre>
      * A device ID of which the test has executed on.
@@ -3293,11 +3350,13 @@ public final class GradleAndroidTestResultListenerProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3376,6 +3435,7 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         if (testSuiteStartedBuilder_ != null) {
           testSuiteStartedBuilder_.clear();
         }
@@ -3389,7 +3449,6 @@ public final class GradleAndroidTestResultListenerProto {
           testSuiteFinishedBuilder_.clear();
         }
         deviceId_ = "";
-
         stateCase_ = 0;
         state_ = null;
         return this;
@@ -3418,38 +3477,38 @@ public final class GradleAndroidTestResultListenerProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent buildPartial() {
         com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent result = new com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent(this);
-        if (stateCase_ == 1) {
-          if (testSuiteStartedBuilder_ == null) {
-            result.state_ = state_;
-          } else {
-            result.state_ = testSuiteStartedBuilder_.build();
-          }
-        }
-        if (stateCase_ == 2) {
-          if (testCaseStartedBuilder_ == null) {
-            result.state_ = state_;
-          } else {
-            result.state_ = testCaseStartedBuilder_.build();
-          }
-        }
-        if (stateCase_ == 3) {
-          if (testCaseFinishedBuilder_ == null) {
-            result.state_ = state_;
-          } else {
-            result.state_ = testCaseFinishedBuilder_.build();
-          }
-        }
-        if (stateCase_ == 4) {
-          if (testSuiteFinishedBuilder_ == null) {
-            result.state_ = state_;
-          } else {
-            result.state_ = testSuiteFinishedBuilder_.build();
-          }
-        }
-        result.deviceId_ = deviceId_;
-        result.stateCase_ = stateCase_;
+        if (bitField0_ != 0) { buildPartial0(result); }
+        buildPartialOneofs(result);
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.deviceId_ = deviceId_;
+        }
+      }
+
+      private void buildPartialOneofs(com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent result) {
+        result.stateCase_ = stateCase_;
+        result.state_ = this.state_;
+        if (stateCase_ == 1 &&
+            testSuiteStartedBuilder_ != null) {
+          result.state_ = testSuiteStartedBuilder_.build();
+        }
+        if (stateCase_ == 2 &&
+            testCaseStartedBuilder_ != null) {
+          result.state_ = testCaseStartedBuilder_.build();
+        }
+        if (stateCase_ == 3 &&
+            testCaseFinishedBuilder_ != null) {
+          result.state_ = testCaseFinishedBuilder_.build();
+        }
+        if (stateCase_ == 4 &&
+            testSuiteFinishedBuilder_ != null) {
+          result.state_ = testSuiteFinishedBuilder_.build();
+        }
       }
 
       @java.lang.Override
@@ -3498,6 +3557,7 @@ public final class GradleAndroidTestResultListenerProto {
         if (other == com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.getDefaultInstance()) return this;
         if (!other.getDeviceId().isEmpty()) {
           deviceId_ = other.deviceId_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         switch (other.getStateCase()) {
@@ -3577,7 +3637,7 @@ public final class GradleAndroidTestResultListenerProto {
               } // case 34
               case 42: {
                 deviceId_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               default: {
@@ -3610,6 +3670,7 @@ public final class GradleAndroidTestResultListenerProto {
         return this;
       }
 
+      private int bitField0_;
 
       private com.google.protobuf.SingleFieldBuilderV3<
           com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStarted.Builder, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.TestSuiteStartedOrBuilder> testSuiteStartedBuilder_;
@@ -3705,8 +3766,9 @@ public final class GradleAndroidTestResultListenerProto {
         } else {
           if (stateCase_ == 1) {
             testSuiteStartedBuilder_.mergeFrom(value);
+          } else {
+            testSuiteStartedBuilder_.setMessage(value);
           }
-          testSuiteStartedBuilder_.setMessage(value);
         }
         stateCase_ = 1;
         return this;
@@ -3784,7 +3846,7 @@ public final class GradleAndroidTestResultListenerProto {
           state_ = null;
         }
         stateCase_ = 1;
-        onChanged();;
+        onChanged();
         return testSuiteStartedBuilder_;
       }
 
@@ -3882,8 +3944,9 @@ public final class GradleAndroidTestResultListenerProto {
         } else {
           if (stateCase_ == 2) {
             testCaseStartedBuilder_.mergeFrom(value);
+          } else {
+            testCaseStartedBuilder_.setMessage(value);
           }
-          testCaseStartedBuilder_.setMessage(value);
         }
         stateCase_ = 2;
         return this;
@@ -3961,7 +4024,7 @@ public final class GradleAndroidTestResultListenerProto {
           state_ = null;
         }
         stateCase_ = 2;
-        onChanged();;
+        onChanged();
         return testCaseStartedBuilder_;
       }
 
@@ -4059,8 +4122,9 @@ public final class GradleAndroidTestResultListenerProto {
         } else {
           if (stateCase_ == 3) {
             testCaseFinishedBuilder_.mergeFrom(value);
+          } else {
+            testCaseFinishedBuilder_.setMessage(value);
           }
-          testCaseFinishedBuilder_.setMessage(value);
         }
         stateCase_ = 3;
         return this;
@@ -4138,7 +4202,7 @@ public final class GradleAndroidTestResultListenerProto {
           state_ = null;
         }
         stateCase_ = 3;
-        onChanged();;
+        onChanged();
         return testCaseFinishedBuilder_;
       }
 
@@ -4236,8 +4300,9 @@ public final class GradleAndroidTestResultListenerProto {
         } else {
           if (stateCase_ == 4) {
             testSuiteFinishedBuilder_.mergeFrom(value);
+          } else {
+            testSuiteFinishedBuilder_.setMessage(value);
           }
-          testSuiteFinishedBuilder_.setMessage(value);
         }
         stateCase_ = 4;
         return this;
@@ -4315,7 +4380,7 @@ public final class GradleAndroidTestResultListenerProto {
           state_ = null;
         }
         stateCase_ = 4;
-        onChanged();;
+        onChanged();
         return testSuiteFinishedBuilder_;
       }
 
@@ -4372,11 +4437,9 @@ public final class GradleAndroidTestResultListenerProto {
        */
       public Builder setDeviceId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         deviceId_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -4389,8 +4452,8 @@ public final class GradleAndroidTestResultListenerProto {
        * @return This builder for chaining.
        */
       public Builder clearDeviceId() {
-        
         deviceId_ = getDefaultInstance().getDeviceId();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -4405,12 +4468,10 @@ public final class GradleAndroidTestResultListenerProto {
        */
       public Builder setDeviceIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         deviceId_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -4508,11 +4569,6 @@ public final class GradleAndroidTestResultListenerProto {
       return new RecordTestResultEventResponse();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.internal_static_com_android_tools_utp_plugins_result_listener_gradle_proto_RecordTestResultEventResponse_descriptor;
@@ -4624,11 +4680,13 @@ public final class GradleAndroidTestResultListenerProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)

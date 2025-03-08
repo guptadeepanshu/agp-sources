@@ -216,7 +216,8 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+   *     See studio_stats.proto;l=4420
    * @return Whether the gcCount field is set.
    */
   @java.lang.Deprecated boolean hasGcCount();
@@ -227,7 +228,8 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
+   *     See studio_stats.proto;l=4420
    * @return The gcCount.
    */
   @java.lang.Deprecated long getGcCount();
@@ -239,7 +241,8 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+   *     See studio_stats.proto;l=4424
    * @return Whether the gcTime field is set.
    */
   @java.lang.Deprecated boolean hasGcTime();
@@ -250,7 +253,8 @@ public interface GradleBuildProfileOrBuilder extends
    * </pre>
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
+   *     See studio_stats.proto;l=4424
    * @return The gcTime.
    */
   @java.lang.Deprecated long getGcTime();
@@ -419,6 +423,7 @@ public interface GradleBuildProfileOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -433,6 +438,7 @@ public interface GradleBuildProfileOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.
@@ -447,6 +453,7 @@ public interface GradleBuildProfileOrBuilder extends
    * Client-side salted, sha256 of the root project path.
    * This exists to allow multiple instant run builds in one project by one
    * user to be correlated.
+   *
    * The salt is rotated every 28 days, so it is not a permanent pseudonymous
    * identifier. It is anonymized and is unique per user, but has a 1-N
    * relation.

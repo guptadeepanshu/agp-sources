@@ -42,7 +42,7 @@ interface AndroidTest : GeneratesTestApk, HasAndroidResources, DeviceTest {
     /**
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
-    override val buildConfigFields: MapProperty<String, out BuildConfigField<out Serializable>>
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
 
     /**
      * Variant's signingConfig, initialized by the corresponding DSL element.

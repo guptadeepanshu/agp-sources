@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new SplittingTabsUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SplittingTabsUsageEvent_descriptor;
@@ -436,11 +431,6 @@ private static final long serialVersionUID = 0L;
       return new SplitType();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SplittingTabsUsageEvent_SplitType_descriptor;
@@ -722,7 +712,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int ORIENTATION_FIELD_NUMBER = 1;
-    private int orientation_;
+    private int orientation_ = 0;
     /**
      * <pre>
      * The orientation of the split
@@ -743,13 +733,12 @@ private static final long serialVersionUID = 0L;
      * @return The orientation.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation getOrientation() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.valueOf(orientation_);
+      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.forNumber(orientation_);
       return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.UNKNOWN_ORIENTATION : result;
     }
 
     public static final int SOURCE_FIELD_NUMBER = 2;
-    private int source_;
+    private int source_ = 0;
     /**
      * <pre>
      * The UI component the Split event was initiated from
@@ -770,8 +759,7 @@ private static final long serialVersionUID = 0L;
      * @return The source.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source getSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.valueOf(source_);
+      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.forNumber(source_);
       return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.UNKNOWN_SOURCE : result;
     }
 
@@ -986,10 +974,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         orientation_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         source_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -1016,53 +1003,25 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType buildPartial() {
         com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType result = new com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.orientation_ = orientation_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.source_ = source_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.orientation_ = orientation_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.source_ = source_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType) {
@@ -1170,8 +1129,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation getOrientation() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.valueOf(orientation_);
+        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.forNumber(orientation_);
         return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Orientation.UNKNOWN_ORIENTATION : result;
       }
       /**
@@ -1229,8 +1187,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source getSource() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.valueOf(source_);
+        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.forNumber(source_);
         return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Source.UNKNOWN_SOURCE : result;
       }
       /**
@@ -1331,7 +1288,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TOOL_WINDOW_TYPE_FIELD_NUMBER = 1;
-  private int toolWindowType_;
+  private int toolWindowType_ = 0;
   /**
    * <pre>
    * The type of Splitting Tabs tool window
@@ -1352,13 +1309,12 @@ private static final long serialVersionUID = 0L;
    * @return The toolWindowType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType getToolWindowType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.valueOf(toolWindowType_);
+    com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.forNumber(toolWindowType_);
     return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
   }
 
   public static final int EVENT_TYPE_FIELD_NUMBER = 2;
-  private int eventType_;
+  private int eventType_ = 0;
   /**
    * <pre>
    * The event type
@@ -1379,8 +1335,7 @@ private static final long serialVersionUID = 0L;
    * @return The eventType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType getEventType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.valueOf(eventType_);
+    com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.forNumber(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.UNKNOWN_EVENT_TYPE : result;
   }
 
@@ -1655,16 +1610,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       toolWindowType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       eventType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (splitTypeBuilder_ == null) {
-        splitType_ = null;
-      } else {
-        splitTypeBuilder_.clear();
+      splitType_ = null;
+      if (splitTypeBuilder_ != null) {
+        splitTypeBuilder_.dispose();
+        splitTypeBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -1691,61 +1644,31 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent result = new com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.toolWindowType_ = toolWindowType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.eventType_ = eventType_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (splitTypeBuilder_ == null) {
-          result.splitType_ = splitType_;
-        } else {
-          result.splitType_ = splitTypeBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.toolWindowType_ = toolWindowType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.eventType_ = eventType_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.splitType_ = splitTypeBuilder_ == null
+            ? splitType_
+            : splitTypeBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent) {
@@ -1863,8 +1786,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType getToolWindowType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.valueOf(toolWindowType_);
+      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.forNumber(toolWindowType_);
       return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
     }
     /**
@@ -1922,8 +1844,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType getEventType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.valueOf(eventType_);
+      com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType result = com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.forNumber(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.EventType.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -2001,11 +1922,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         splitType_ = value;
-        onChanged();
       } else {
         splitTypeBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -2019,11 +1940,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.Builder builderForValue) {
       if (splitTypeBuilder_ == null) {
         splitType_ = builderForValue.build();
-        onChanged();
       } else {
         splitTypeBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -2036,18 +1957,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSplitType(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType value) {
       if (splitTypeBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            splitType_ != null &&
-            splitType_ != com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.getDefaultInstance()) {
-          splitType_ =
-            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.newBuilder(splitType_).mergeFrom(value).buildPartial();
+          splitType_ != null &&
+          splitType_ != com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.SplitType.getDefaultInstance()) {
+          getSplitTypeBuilder().mergeFrom(value);
         } else {
           splitType_ = value;
         }
-        onChanged();
       } else {
         splitTypeBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -2058,13 +1978,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SplittingTabsUsageEvent.SplitType split_type = 3 [lazy = true];</code>
      */
     public Builder clearSplitType() {
-      if (splitTypeBuilder_ == null) {
-        splitType_ = null;
-        onChanged();
-      } else {
-        splitTypeBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      splitType_ = null;
+      if (splitTypeBuilder_ != null) {
+        splitTypeBuilder_.dispose();
+        splitTypeBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

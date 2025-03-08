@@ -15,7 +15,7 @@
  */
 package com.android.build.gradle.internal.tasks;
 
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS;
 import static com.android.build.gradle.internal.utils.InstallApkUtilsKt.getDeviceSpec;
 
 import com.android.annotations.NonNull;
@@ -161,7 +161,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                             logger,
                             device,
                             projectPath,
-                            sdkApkInstallGroup.getSdkFile().getAsFile(),
+                            sdkApkInstallGroup.getSourceSdk(),
                             apkFiles,
                             extraArgs,
                             iLogger,
@@ -219,7 +219,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             @NonNull Logger logger,
             @NonNull DeviceConnector device,
             @NonNull String projectPath,
-            @NonNull File file,
+            @NonNull String sourceSdkPakageName,
             @NonNull List<File> sdkApkFiles,
             @NonNull Collection<String> extraArgs,
             @NonNull ILogger iLogger,
@@ -236,7 +236,8 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         } catch (DeviceException e) {
             logger.error(
                     String.format(
-                            "Failed to install privacy sandbox SDK APKs from %s", file.toPath()),
+                            "Failed to install privacy sandbox SDK APKs from %s",
+                            sourceSdkPakageName),
                     e);
             }
     }
@@ -337,7 +338,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                                                 AndroidArtifacts.ConsumedConfigType
                                                         .RUNTIME_CLASSPATH,
                                                 AndroidArtifacts.ArtifactScope.ALL,
-                                                ANDROID_PRIVACY_SANDBOX_SDK_APKS));
+                                                ANDROID_PRIVACY_SANDBOX_EXTRACTED_SDK_APKS));
                 task.getPrivacySandboxSupportedSdkAdditionalSplitApks().set(
                                 creationConfig.getArtifacts().get(
                                         InternalArtifactType.USES_SDK_LIBRARY_SPLIT_FOR_LOCAL_DEPLOYMENT.INSTANCE

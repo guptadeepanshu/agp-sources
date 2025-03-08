@@ -130,7 +130,7 @@ open class TestFixturesImpl @Inject constructor(
         variantServices.newPropertyBackingDeprecatedApi(
             String::class.java,
             services.projectInfo.getProjectBaseName().map {
-                "it-$baseName-testFixtures.${BuilderConstants.EXT_LIB_ARCHIVE}"
+                "$it-$baseName.${BuilderConstants.EXT_LIB_ARCHIVE}"
             }
         )
 

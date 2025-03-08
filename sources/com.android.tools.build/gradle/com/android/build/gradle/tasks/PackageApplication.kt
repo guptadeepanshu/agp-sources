@@ -23,6 +23,7 @@ import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
+import com.android.build.gradle.internal.lint.LintTaskManager.Companion.shouldRegisterLintVitalTasks
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_IDE_MODEL
@@ -35,6 +36,7 @@ import com.android.utils.FileUtils
 import com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
@@ -72,6 +74,11 @@ abstract class PackageApplication : PackageAndroidArtifact() {
      */
     @get:Input
     abstract val minSdkVersionForDexing: Property<Int>
+
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:InputFiles
+    abstract val lintVital: RegularFileProperty
 
     // ----- CreationAction -----
     /**
@@ -157,6 +164,11 @@ abstract class PackageApplication : PackageAndroidArtifact() {
             task.minSdkVersionForDexing.setDisallowChanges(
                 creationConfig.dexing.minSdkVersionForDexing
             )
+            if (shouldRegisterLintVitalTasks(creationConfig)) {
+                task.lintVital.setDisallowChanges(
+                    creationConfig.artifacts.get(InternalArtifactType.LINT_VITAL_OUTPUT)
+                )
+            }
         }
 
         override fun finalConfigure(task: PackageApplication) {

@@ -81,12 +81,11 @@ abstract class AbstractTestDataImpl(
                     deviceConfigProvider: DeviceConfigProvider
                 ): List<List<Path>> {
                     privacySandboxApks ?: return emptyList()
-                    val privacySandboxInstallBundles = ImmutableList.builder<List<Path>>()
-                    privacySandboxApks.forEach {  apk ->
-                        privacySandboxInstallBundles.add(
-                            extractApkFilesBypassingBundleTool(apk.toPath()))
+                    val privacySandboxInstallBundles = privacySandboxApks
+                        .mapNotNull {  BuiltArtifactsLoaderImpl().load { it } }
+                        .map { artifacts -> artifacts.elements.map { Path.of(it.outputFile) }
                     }
-                    return privacySandboxInstallBundles.build()
+                    return privacySandboxInstallBundles
                 }
             }.also { _privacyInstallBundlesFinder = it }
 

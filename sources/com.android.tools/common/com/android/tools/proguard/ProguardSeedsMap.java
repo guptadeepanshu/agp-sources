@@ -16,14 +16,16 @@
 package com.android.tools.proguard;
 
 import com.android.annotations.NonNull;
-import com.google.common.base.Charsets;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -61,7 +63,7 @@ public class ProguardSeedsMap {
 
     @NonNull
     public static ProguardSeedsMap parse(@NonNull Path seedsMap) throws IOException {
-        return parse(Files.newBufferedReader(seedsMap, Charsets.UTF_8));
+        return parse(Files.newBufferedReader(seedsMap, StandardCharsets.UTF_8));
     }
 
     @NonNull

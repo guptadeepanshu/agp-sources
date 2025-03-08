@@ -118,7 +118,7 @@ sealed class SingleArtifact<T : FileSystemLocation>(
 
 
     /**
-     * Assets that will be packaged in the resulting APK or Bundle.
+     * Assets that will be packaged in the resulting AAR, APK or Bundle.
      *
      * When used as an input, the content will be the merged assets.
      * For the APK, the assets will be compressed before packaging.

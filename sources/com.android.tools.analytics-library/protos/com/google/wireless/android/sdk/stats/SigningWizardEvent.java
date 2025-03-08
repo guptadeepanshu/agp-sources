@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new SigningWizardEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SigningWizardEvent_descriptor;
@@ -324,7 +319,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int FAILURE_CAUSE_FIELD_NUMBER = 1;
-  private int failureCause_;
+  private int failureCause_ = 0;
   /**
    * <pre>
    * Specify cause when signing fails
@@ -345,13 +340,12 @@ private static final long serialVersionUID = 0L;
    * @return The failureCause.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause getFailureCause() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.valueOf(failureCause_);
+    com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.forNumber(failureCause_);
     return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.FAILURE_CAUSE_UNKNOWN : result;
   }
 
   public static final int TARGET_TYPE_FIELD_NUMBER = 2;
-  private int targetType_;
+  private int targetType_ = 0;
   /**
    * <pre>
    * Details when building and signing a Gradle project
@@ -372,13 +366,12 @@ private static final long serialVersionUID = 0L;
    * @return The targetType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType getTargetType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.valueOf(targetType_);
+    com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.forNumber(targetType_);
     return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.TARGET_TYPE_UNKNOWN : result;
   }
 
   public static final int NUMBER_OF_MODULES_FIELD_NUMBER = 3;
-  private int numberOfModules_;
+  private int numberOfModules_ = 0;
   /**
    * <pre>
    * Number of modules in project
@@ -405,7 +398,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NUMBER_OF_VARIANTS_FIELD_NUMBER = 4;
-  private int numberOfVariants_;
+  private int numberOfVariants_ = 0;
   /**
    * <pre>
    * Number of variants selected for signing
@@ -432,7 +425,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_PRIVATE_KEY_EXPORTED_FIELD_NUMBER = 5;
-  private boolean isPrivateKeyExported_;
+  private boolean isPrivateKeyExported_ = false;
   /**
    * <pre>
    * Private key is stored?
@@ -718,16 +711,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       failureCause_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       targetType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       numberOfModules_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       numberOfVariants_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       isPrivateKeyExported_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -754,16 +743,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SigningWizardEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SigningWizardEvent result = new com.google.wireless.android.sdk.stats.SigningWizardEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SigningWizardEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.failureCause_ = failureCause_;
         to_bitField0_ |= 0x00000001;
       }
-      result.failureCause_ = failureCause_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.targetType_ = targetType_;
         to_bitField0_ |= 0x00000002;
       }
-      result.targetType_ = targetType_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.numberOfModules_ = numberOfModules_;
         to_bitField0_ |= 0x00000004;
@@ -776,43 +771,9 @@ private static final long serialVersionUID = 0L;
         result.isPrivateKeyExported_ = isPrivateKeyExported_;
         to_bitField0_ |= 0x00000010;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SigningWizardEvent) {
@@ -944,8 +905,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause getFailureCause() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.valueOf(failureCause_);
+      com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.forNumber(failureCause_);
       return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.FAILURE_CAUSE_UNKNOWN : result;
     }
     /**
@@ -1003,8 +963,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType getTargetType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.valueOf(targetType_);
+      com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.forNumber(targetType_);
       return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.TARGET_TYPE_UNKNOWN : result;
     }
     /**
@@ -1075,8 +1034,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumberOfModules(int value) {
-      bitField0_ |= 0x00000004;
+
       numberOfModules_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1130,8 +1090,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNumberOfVariants(int value) {
-      bitField0_ |= 0x00000008;
+
       numberOfVariants_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1185,8 +1146,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsPrivateKeyExported(boolean value) {
-      bitField0_ |= 0x00000010;
+
       isPrivateKeyExported_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }

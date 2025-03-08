@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.utils
 
 import com.android.build.api.variant.ApkInstallGroup
 import com.android.build.api.variant.DeviceSpec
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.utils.DefaultDeviceApkOutput.DefaultSdkApkInstallGroup
 import com.android.builder.internal.InstallUtils
@@ -27,9 +28,10 @@ import com.google.common.collect.Lists
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.ClasspathNormalizer
+import org.gradle.api.tasks.TaskInputs
 import java.io.File
 import java.nio.file.Path
-import java.util.stream.Collectors
 
 class ViaBundleDeviceApkOutput(
     private val apkBundle: Provider<RegularFile>,
@@ -49,13 +51,11 @@ class ViaBundleDeviceApkOutput(
             val privacySandboxSdksPresent =
                 !privacySandboxSdkApks.isEmpty
             if (privacySandboxSdksPresent && deviceSpec.supportsPrivacySandbox) {
-                privacySandboxSdkApks.files.forEach { file: File ->
-                    val sdkApkFiles = apkFetcher.getPrivacySandboxSdkApkFiles(
-                        file.toPath()).stream()
-                        .map { RegularFile { it } }
-                        .collect(Collectors.toUnmodifiableList())
-                    apkInstallGroups.add(DefaultSdkApkInstallGroup({ file }, sdkApkFiles))
-                }
+                privacySandboxSdkApks.files
+                    .mapNotNull { BuiltArtifactsLoaderImpl().load { it } }
+                    .map { artifacts -> artifacts.applicationId to artifacts.elements.map { RegularFile { File(it.outputFile) }  } }
+                    .forEach { (applicationId, sdkApkFiles) -> apkInstallGroups.add(DefaultSdkApkInstallGroup(applicationId, sdkApkFiles)) }
+
             }
             val apkBuiltArtifacts: List<Path> = buildList {
                 add(apkBundle.get().asFile.toPath())
@@ -73,5 +73,12 @@ class ViaBundleDeviceApkOutput(
             apkInstallGroups.add(DefaultDeviceApkOutput.DefaultApkInstallGroup(apkFiles, "Apks from Main Bundle"))
         }
         return apkInstallGroups
+    }
+
+    override fun setInputs(inputs: TaskInputs, deviceSpec: DeviceSpec) {
+        inputs.files(
+            apkBundle,
+            privacySandboxSdkApks,
+        ).withNormalizer(ClasspathNormalizer::class.java)
     }
 }

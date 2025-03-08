@@ -28,11 +28,6 @@ private static final long serialVersionUID = 0L;
     return new UniversalProblemsPanelEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UniversalProblemsPanelEvent_descriptor;
@@ -460,7 +455,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int PROBLEMS_PANEL_VISIBILITY_FIELD_NUMBER = 1;
-  private boolean problemsPanelVisibility_;
+  private boolean problemsPanelVisibility_ = false;
   /**
    * <pre>
    * True if IJ's problems pane is visible, false otherwise.
@@ -487,7 +482,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INTERACTION_EVENT_FIELD_NUMBER = 2;
-  private int interactionEvent_;
+  private int interactionEvent_ = 0;
   /**
    * <pre>
    * User interactions event of universal problems panel.
@@ -508,13 +503,12 @@ private static final long serialVersionUID = 0L;
    * @return The interactionEvent.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent getInteractionEvent() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.valueOf(interactionEvent_);
+    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.forNumber(interactionEvent_);
     return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.UNKNOWN_INTERACTION : result;
   }
 
   public static final int ACTIVATED_TAB_FIELD_NUMBER = 3;
-  private int activatedTab_;
+  private int activatedTab_ = 0;
   /**
    * <pre>
    * The type of the activated tab affected by this event
@@ -535,13 +529,12 @@ private static final long serialVersionUID = 0L;
    * @return The activatedTab.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab getActivatedTab() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.valueOf(activatedTab_);
+    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.forNumber(activatedTab_);
     return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.UNKNOWN_TAB : result;
   }
 
   public static final int ISSUE_NAVIGATED_FIELD_NUMBER = 4;
-  private int issueNavigated_;
+  private int issueNavigated_ = 0;
   /**
    * <pre>
    * The Navigation event of the issues.
@@ -562,8 +555,7 @@ private static final long serialVersionUID = 0L;
    * @return The issueNavigated.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated getIssueNavigated() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.valueOf(issueNavigated_);
+    com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.forNumber(issueNavigated_);
     return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.UNKNOWN_NAVIGATION : result;
   }
 
@@ -806,14 +798,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       problemsPanelVisibility_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       interactionEvent_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       activatedTab_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       issueNavigated_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -840,6 +829,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent buildPartial() {
       com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent result = new com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -847,54 +842,20 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.interactionEvent_ = interactionEvent_;
         to_bitField0_ |= 0x00000002;
       }
-      result.interactionEvent_ = interactionEvent_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.activatedTab_ = activatedTab_;
         to_bitField0_ |= 0x00000004;
       }
-      result.activatedTab_ = activatedTab_;
       if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.issueNavigated_ = issueNavigated_;
         to_bitField0_ |= 0x00000008;
       }
-      result.issueNavigated_ = issueNavigated_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent) {
@@ -1038,8 +999,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setProblemsPanelVisibility(boolean value) {
-      bitField0_ |= 0x00000001;
+
       problemsPanelVisibility_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1080,8 +1042,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent getInteractionEvent() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.valueOf(interactionEvent_);
+      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.forNumber(interactionEvent_);
       return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.InteractionEvent.UNKNOWN_INTERACTION : result;
     }
     /**
@@ -1139,8 +1100,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab getActivatedTab() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.valueOf(activatedTab_);
+      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.forNumber(activatedTab_);
       return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.ActivatedTab.UNKNOWN_TAB : result;
     }
     /**
@@ -1198,8 +1158,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated getIssueNavigated() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.valueOf(issueNavigated_);
+      com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated result = com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.forNumber(issueNavigated_);
       return result == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.IssueNavigated.UNKNOWN_NAVIGATION : result;
     }
     /**

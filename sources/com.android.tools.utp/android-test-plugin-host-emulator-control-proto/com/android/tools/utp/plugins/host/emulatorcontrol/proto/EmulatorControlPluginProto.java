@@ -232,7 +232,8 @@ public final class EmulatorControlPluginProto {
       trustedCollectionRootPath_ = "";
       tlsCfgPrefix_ = "";
       jwkFile_ = "";
-      allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      allowedEndpoints_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
     }
 
     @java.lang.Override
@@ -242,11 +243,6 @@ public final class EmulatorControlPluginProto {
       return new EmulatorControlPlugin();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.internal_static_com_android_tools_utp_plugins_host_emulatorcontrol_proto_EmulatorControlPlugin_descriptor;
@@ -261,7 +257,7 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int EMULATOR_GRPC_PORT_FIELD_NUMBER = 1;
-    private int emulatorGrpcPort_;
+    private int emulatorGrpcPort_ = 0;
     /**
      * <pre>
      * The emulator gRPC port
@@ -276,7 +272,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int TOKEN_FIELD_NUMBER = 2;
-    private volatile java.lang.Object token_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object token_ = "";
     /**
      * <pre>
      * The token that should be used when running the test. This should be a
@@ -324,7 +321,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int EMULATOR_CLIENT_PRIVATE_KEY_FILE_PATH_FIELD_NUMBER = 3;
-    private volatile java.lang.Object emulatorClientPrivateKeyFilePath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object emulatorClientPrivateKeyFilePath_ = "";
     /**
      * <pre>
      * An unencrypted PKCS#8 key (file headers have "BEGIN CERTIFICATE"
@@ -372,7 +370,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int EMULATOR_CLIENT_CA_FILE_PATH_FIELD_NUMBER = 4;
-    private volatile java.lang.Object emulatorClientCaFilePath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object emulatorClientCaFilePath_ = "";
     /**
      * <pre>
      * A PEM-encoded certificate chain used to configure client side tls.
@@ -418,7 +417,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int TRUSTED_COLLECTION_ROOT_PATH_FIELD_NUMBER = 5;
-    private volatile java.lang.Object trustedCollectionRootPath_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object trustedCollectionRootPath_ = "";
     /**
      * <pre>
      *  When present Use the provided root certificates to verify the
@@ -470,7 +470,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int TLS_CFG_PREFIX_FIELD_NUMBER = 6;
-    private volatile java.lang.Object tlsCfgPrefix_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object tlsCfgPrefix_ = "";
     /**
      * <pre>
      * Unique file prefix used for writing the tls configuration file.
@@ -520,7 +521,8 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int JWK_FILE_FIELD_NUMBER = 7;
-    private volatile java.lang.Object jwkFile_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object jwkFile_ = "";
     /**
      * <pre>
      * Location where the generated jwk was written.
@@ -566,7 +568,7 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int SECONDS_VALID_FIELD_NUMBER = 8;
-    private int secondsValid_;
+    private int secondsValid_ = 0;
     /**
      * <pre>
      * How long a token should be valid
@@ -581,7 +583,9 @@ public final class EmulatorControlPluginProto {
     }
 
     public static final int ALLOWED_ENDPOINTS_FIELD_NUMBER = 9;
-    private com.google.protobuf.LazyStringList allowedEndpoints_;
+    @SuppressWarnings("serial")
+    private com.google.protobuf.LazyStringArrayList allowedEndpoints_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     /**
      * <pre>
      * Set of endpoints that are valid
@@ -828,11 +832,13 @@ public final class EmulatorControlPluginProto {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
+
     public static com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
+
     public static com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -907,24 +913,17 @@ public final class EmulatorControlPluginProto {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         emulatorGrpcPort_ = 0;
-
         token_ = "";
-
         emulatorClientPrivateKeyFilePath_ = "";
-
         emulatorClientCaFilePath_ = "";
-
         trustedCollectionRootPath_ = "";
-
         tlsCfgPrefix_ = "";
-
         jwkFile_ = "";
-
         secondsValid_ = 0;
-
-        allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        allowedEndpoints_ =
+            com.google.protobuf.LazyStringArrayList.emptyList();
         return this;
       }
 
@@ -951,22 +950,41 @@ public final class EmulatorControlPluginProto {
       @java.lang.Override
       public com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin buildPartial() {
         com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin result = new com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin(this);
-        int from_bitField0_ = bitField0_;
-        result.emulatorGrpcPort_ = emulatorGrpcPort_;
-        result.token_ = token_;
-        result.emulatorClientPrivateKeyFilePath_ = emulatorClientPrivateKeyFilePath_;
-        result.emulatorClientCaFilePath_ = emulatorClientCaFilePath_;
-        result.trustedCollectionRootPath_ = trustedCollectionRootPath_;
-        result.tlsCfgPrefix_ = tlsCfgPrefix_;
-        result.jwkFile_ = jwkFile_;
-        result.secondsValid_ = secondsValid_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          allowedEndpoints_ = allowedEndpoints_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.allowedEndpoints_ = allowedEndpoints_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartial0(com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin result) {
+        int from_bitField0_ = bitField0_;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.emulatorGrpcPort_ = emulatorGrpcPort_;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.token_ = token_;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.emulatorClientPrivateKeyFilePath_ = emulatorClientPrivateKeyFilePath_;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.emulatorClientCaFilePath_ = emulatorClientCaFilePath_;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.trustedCollectionRootPath_ = trustedCollectionRootPath_;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.tlsCfgPrefix_ = tlsCfgPrefix_;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.jwkFile_ = jwkFile_;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.secondsValid_ = secondsValid_;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          allowedEndpoints_.makeImmutable();
+          result.allowedEndpoints_ = allowedEndpoints_;
+        }
       }
 
       @java.lang.Override
@@ -1018,26 +1036,32 @@ public final class EmulatorControlPluginProto {
         }
         if (!other.getToken().isEmpty()) {
           token_ = other.token_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (!other.getEmulatorClientPrivateKeyFilePath().isEmpty()) {
           emulatorClientPrivateKeyFilePath_ = other.emulatorClientPrivateKeyFilePath_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (!other.getEmulatorClientCaFilePath().isEmpty()) {
           emulatorClientCaFilePath_ = other.emulatorClientCaFilePath_;
+          bitField0_ |= 0x00000008;
           onChanged();
         }
         if (!other.getTrustedCollectionRootPath().isEmpty()) {
           trustedCollectionRootPath_ = other.trustedCollectionRootPath_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         if (!other.getTlsCfgPrefix().isEmpty()) {
           tlsCfgPrefix_ = other.tlsCfgPrefix_;
+          bitField0_ |= 0x00000020;
           onChanged();
         }
         if (!other.getJwkFile().isEmpty()) {
           jwkFile_ = other.jwkFile_;
+          bitField0_ |= 0x00000040;
           onChanged();
         }
         if (other.getSecondsValid() != 0) {
@@ -1046,7 +1070,7 @@ public final class EmulatorControlPluginProto {
         if (!other.allowedEndpoints_.isEmpty()) {
           if (allowedEndpoints_.isEmpty()) {
             allowedEndpoints_ = other.allowedEndpoints_;
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ |= 0x00000100;
           } else {
             ensureAllowedEndpointsIsMutable();
             allowedEndpoints_.addAll(other.allowedEndpoints_);
@@ -1081,42 +1105,42 @@ public final class EmulatorControlPluginProto {
                 break;
               case 8: {
                 emulatorGrpcPort_ = input.readInt32();
-
+                bitField0_ |= 0x00000001;
                 break;
               } // case 8
               case 18: {
                 token_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000002;
                 break;
               } // case 18
               case 26: {
                 emulatorClientPrivateKeyFilePath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000004;
                 break;
               } // case 26
               case 34: {
                 emulatorClientCaFilePath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000008;
                 break;
               } // case 34
               case 42: {
                 trustedCollectionRootPath_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000010;
                 break;
               } // case 42
               case 50: {
                 tlsCfgPrefix_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000020;
                 break;
               } // case 50
               case 58: {
                 jwkFile_ = input.readStringRequireUtf8();
-
+                bitField0_ |= 0x00000040;
                 break;
               } // case 58
               case 64: {
                 secondsValid_ = input.readInt32();
-
+                bitField0_ |= 0x00000080;
                 break;
               } // case 64
               case 74: {
@@ -1165,8 +1189,9 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder setEmulatorGrpcPort(int value) {
-        
+
         emulatorGrpcPort_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1179,7 +1204,7 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorGrpcPort() {
-        
+        bitField0_ = (bitField0_ & ~0x00000001);
         emulatorGrpcPort_ = 0;
         onChanged();
         return this;
@@ -1241,11 +1266,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setToken(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         token_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1259,8 +1282,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearToken() {
-        
         token_ = getDefaultInstance().getToken();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1276,12 +1299,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setTokenBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         token_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1342,11 +1363,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setEmulatorClientPrivateKeyFilePath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         emulatorClientPrivateKeyFilePath_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1360,8 +1379,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorClientPrivateKeyFilePath() {
-        
         emulatorClientPrivateKeyFilePath_ = getDefaultInstance().getEmulatorClientPrivateKeyFilePath();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -1377,12 +1396,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setEmulatorClientPrivateKeyFilePathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         emulatorClientPrivateKeyFilePath_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1440,11 +1457,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setEmulatorClientCaFilePath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         emulatorClientCaFilePath_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1457,8 +1472,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearEmulatorClientCaFilePath() {
-        
         emulatorClientCaFilePath_ = getDefaultInstance().getEmulatorClientCaFilePath();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -1473,12 +1488,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setEmulatorClientCaFilePathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         emulatorClientCaFilePath_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1545,11 +1558,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setTrustedCollectionRootPath(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         trustedCollectionRootPath_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1565,8 +1576,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearTrustedCollectionRootPath() {
-        
         trustedCollectionRootPath_ = getDefaultInstance().getTrustedCollectionRootPath();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -1584,12 +1595,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setTrustedCollectionRootPathBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         trustedCollectionRootPath_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1653,11 +1662,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setTlsCfgPrefix(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         tlsCfgPrefix_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1672,8 +1679,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearTlsCfgPrefix() {
-        
         tlsCfgPrefix_ = getDefaultInstance().getTlsCfgPrefix();
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
@@ -1690,12 +1697,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setTlsCfgPrefixBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         tlsCfgPrefix_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1753,11 +1758,9 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setJwkFile(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        if (value == null) { throw new NullPointerException(); }
         jwkFile_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1770,8 +1773,8 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearJwkFile() {
-        
         jwkFile_ = getDefaultInstance().getJwkFile();
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
@@ -1786,12 +1789,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setJwkFileBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         jwkFile_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1819,8 +1820,9 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder setSecondsValid(int value) {
-        
+
         secondsValid_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1833,18 +1835,19 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearSecondsValid() {
-        
+        bitField0_ = (bitField0_ & ~0x00000080);
         secondsValid_ = 0;
         onChanged();
         return this;
       }
 
-      private com.google.protobuf.LazyStringList allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private com.google.protobuf.LazyStringArrayList allowedEndpoints_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       private void ensureAllowedEndpointsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!allowedEndpoints_.isModifiable()) {
           allowedEndpoints_ = new com.google.protobuf.LazyStringArrayList(allowedEndpoints_);
-          bitField0_ |= 0x00000001;
-         }
+        }
+        bitField0_ |= 0x00000100;
       }
       /**
        * <pre>
@@ -1856,7 +1859,8 @@ public final class EmulatorControlPluginProto {
        */
       public com.google.protobuf.ProtocolStringList
           getAllowedEndpointsList() {
-        return allowedEndpoints_.getUnmodifiableView();
+        allowedEndpoints_.makeImmutable();
+        return allowedEndpoints_;
       }
       /**
        * <pre>
@@ -1906,11 +1910,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder setAllowedEndpoints(
           int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAllowedEndpointsIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureAllowedEndpointsIsMutable();
         allowedEndpoints_.set(index, value);
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1925,11 +1928,10 @@ public final class EmulatorControlPluginProto {
        */
       public Builder addAllowedEndpoints(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureAllowedEndpointsIsMutable();
+        if (value == null) { throw new NullPointerException(); }
+        ensureAllowedEndpointsIsMutable();
         allowedEndpoints_.add(value);
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1947,6 +1949,7 @@ public final class EmulatorControlPluginProto {
         ensureAllowedEndpointsIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
             values, allowedEndpoints_);
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1959,8 +1962,9 @@ public final class EmulatorControlPluginProto {
        * @return This builder for chaining.
        */
       public Builder clearAllowedEndpoints() {
-        allowedEndpoints_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
+        allowedEndpoints_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000100);;
         onChanged();
         return this;
       }
@@ -1975,12 +1979,11 @@ public final class EmulatorControlPluginProto {
        */
       public Builder addAllowedEndpointsBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+        if (value == null) { throw new NullPointerException(); }
+        checkByteStringIsUtf8(value);
         ensureAllowedEndpointsIsMutable();
         allowedEndpoints_.add(value);
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }

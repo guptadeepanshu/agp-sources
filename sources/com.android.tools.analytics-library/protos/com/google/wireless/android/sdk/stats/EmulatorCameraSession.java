@@ -33,11 +33,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorCameraSession();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorCameraSession_descriptor;
@@ -539,7 +534,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The camera source used for the camera session.
@@ -560,13 +555,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.EMULATOR_CAMERA_TYPE_UNSPECIFIED : result;
   }
 
   public static final int DIRECTION_FIELD_NUMBER = 2;
-  private int direction_;
+  private int direction_ = 0;
   /**
    * <pre>
    * The camera direction.
@@ -587,13 +581,12 @@ private static final long serialVersionUID = 0L;
    * @return The direction.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection getDirection() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.valueOf(direction_);
+    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.forNumber(direction_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.EMULATOR_CAMERA_DIRECTION_UNSPECIFIED : result;
   }
 
   public static final int WIDTH_FIELD_NUMBER = 3;
-  private int width_;
+  private int width_ = 0;
   /**
    * <pre>
    * Width of the camera frame in pixels.
@@ -620,7 +613,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int HEIGHT_FIELD_NUMBER = 4;
-  private int height_;
+  private int height_ = 0;
   /**
    * <pre>
    * Height of the camera frame in pixels.
@@ -647,7 +640,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PIXEL_FORMAT_FIELD_NUMBER = 5;
-  private int pixelFormat_;
+  private int pixelFormat_ = 0;
   /**
    * <pre>
    * FOURCC pixel format requested.
@@ -674,7 +667,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int START_RESULT_FIELD_NUMBER = 6;
-  private int startResult_;
+  private int startResult_ = 0;
   /**
    * <pre>
    * Camera start result.
@@ -695,13 +688,12 @@ private static final long serialVersionUID = 0L;
    * @return The startResult.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult getStartResult() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.valueOf(startResult_);
+    com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.forNumber(startResult_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.EMULATOR_CAMERA_START_SUCCESS : result;
   }
 
   public static final int STARTUP_TIME_MS_FIELD_NUMBER = 7;
-  private long startupTimeMs_;
+  private long startupTimeMs_ = 0L;
   /**
    * <pre>
    * How long the camera session took to initialize.
@@ -728,7 +720,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DURATION_MS_FIELD_NUMBER = 8;
-  private long durationMs_;
+  private long durationMs_ = 0L;
   /**
    * <pre>
    * How long the session was running, in milliseconds.
@@ -755,7 +747,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int AVERAGE_FRAMERATE_FIELD_NUMBER = 9;
-  private double averageFramerate_;
+  private double averageFramerate_ = 0D;
   /**
    * <pre>
    * Average framerate of the camera.
@@ -782,7 +774,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int VIRTUAL_SCENE_NAME_FIELD_NUMBER = 10;
-  private volatile java.lang.Object virtualSceneName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object virtualSceneName_ = "";
   /**
    * <pre>
    * set when type = EMULATOR_CAMERA_TYPE_VIRTUAL_SCENE
@@ -1185,26 +1178,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       direction_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       width_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       height_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       pixelFormat_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       startResult_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       startupTimeMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000040);
       durationMs_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000080);
       averageFramerate_ = 0D;
-      bitField0_ = (bitField0_ & ~0x00000100);
       virtualSceneName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1231,16 +1215,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorCameraSession result = new com.google.wireless.android.sdk.stats.EmulatorCameraSession(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorCameraSession result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.direction_ = direction_;
         to_bitField0_ |= 0x00000002;
       }
-      result.direction_ = direction_;
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.width_ = width_;
         to_bitField0_ |= 0x00000004;
@@ -1254,9 +1244,9 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.startResult_ = startResult_;
         to_bitField0_ |= 0x00000020;
       }
-      result.startResult_ = startResult_;
       if (((from_bitField0_ & 0x00000040) != 0)) {
         result.startupTimeMs_ = startupTimeMs_;
         to_bitField0_ |= 0x00000040;
@@ -1270,46 +1260,12 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000100;
       }
       if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.virtualSceneName_ = virtualSceneName_;
         to_bitField0_ |= 0x00000200;
       }
-      result.virtualSceneName_ = virtualSceneName_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorCameraSession) {
@@ -1350,8 +1306,8 @@ private static final long serialVersionUID = 0L;
         setAverageFramerate(other.getAverageFramerate());
       }
       if (other.hasVirtualSceneName()) {
-        bitField0_ |= 0x00000200;
         virtualSceneName_ = other.virtualSceneName_;
+        bitField0_ |= 0x00000200;
         onChanged();
       }
       this.mergeUnknownFields(other.getUnknownFields());
@@ -1490,8 +1446,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.EMULATOR_CAMERA_TYPE_UNSPECIFIED : result;
     }
     /**
@@ -1549,8 +1504,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection getDirection() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.valueOf(direction_);
+      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.forNumber(direction_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.EMULATOR_CAMERA_DIRECTION_UNSPECIFIED : result;
     }
     /**
@@ -1621,8 +1575,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setWidth(int value) {
-      bitField0_ |= 0x00000004;
+
       width_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1676,8 +1631,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setHeight(int value) {
-      bitField0_ |= 0x00000008;
+
       height_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1731,8 +1687,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPixelFormat(int value) {
-      bitField0_ |= 0x00000010;
+
       pixelFormat_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1773,8 +1730,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult getStartResult() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.valueOf(startResult_);
+      com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.forNumber(startResult_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.EMULATOR_CAMERA_START_SUCCESS : result;
     }
     /**
@@ -1845,8 +1801,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setStartupTimeMs(long value) {
-      bitField0_ |= 0x00000040;
+
       startupTimeMs_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1900,8 +1857,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDurationMs(long value) {
-      bitField0_ |= 0x00000080;
+
       durationMs_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1955,8 +1913,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAverageFramerate(double value) {
-      bitField0_ |= 0x00000100;
+
       averageFramerate_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -2045,11 +2004,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVirtualSceneName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
+      if (value == null) { throw new NullPointerException(); }
       virtualSceneName_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -2063,8 +2020,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearVirtualSceneName() {
-      bitField0_ = (bitField0_ & ~0x00000200);
       virtualSceneName_ = getDefaultInstance().getVirtualSceneName();
+      bitField0_ = (bitField0_ & ~0x00000200);
       onChanged();
       return this;
     }
@@ -2080,11 +2037,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setVirtualSceneNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000200;
+      if (value == null) { throw new NullPointerException(); }
       virtualSceneName_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }

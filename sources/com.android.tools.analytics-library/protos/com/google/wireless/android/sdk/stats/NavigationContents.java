@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new NavigationContents();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_NavigationContents_descriptor;
@@ -45,7 +40,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int FRAGMENTS_FIELD_NUMBER = 1;
-  private int fragments_;
+  private int fragments_ = 0;
   /**
    * <pre>
    * The number of fragments in the current file
@@ -72,7 +67,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ACTIVITIES_FIELD_NUMBER = 2;
-  private int activities_;
+  private int activities_ = 0;
   /**
    * <pre>
    * The number of activities in the current file
@@ -99,7 +94,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int CUSTOM_DESTINATIONS_FIELD_NUMBER = 3;
-  private int customDestinations_;
+  private int customDestinations_ = 0;
   /**
    * <pre>
    * The number of custom destinations in the current file
@@ -126,7 +121,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REGULAR_ACTIONS_FIELD_NUMBER = 4;
-  private int regularActions_;
+  private int regularActions_ = 0;
   /**
    * <pre>
    * The number of regular actions in the current file
@@ -153,7 +148,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int EXIT_ACTIONS_FIELD_NUMBER = 5;
-  private int exitActions_;
+  private int exitActions_ = 0;
   /**
    * <pre>
    * The number of exit actions in the current file
@@ -180,7 +175,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int GLOBAL_ACTIONS_FIELD_NUMBER = 6;
-  private int globalActions_;
+  private int globalActions_ = 0;
   /**
    * <pre>
    * The number of global actions in the current file
@@ -207,7 +202,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int SELF_ACTIONS_FIELD_NUMBER = 10;
-  private int selfActions_;
+  private int selfActions_ = 0;
   /**
    * <pre>
    * The number of self actions in the current file
@@ -234,7 +229,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int INCLUDES_FIELD_NUMBER = 7;
-  private int includes_;
+  private int includes_ = 0;
   /**
    * <pre>
    * The number of includes in the current file
@@ -261,7 +256,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NESTED_GRAPHS_FIELD_NUMBER = 8;
-  private int nestedGraphs_;
+  private int nestedGraphs_ = 0;
   /**
    * <pre>
    * The number of nested graphs in the current file
@@ -288,7 +283,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PLACEHOLDERS_FIELD_NUMBER = 9;
-  private int placeholders_;
+  private int placeholders_ = 0;
   /**
    * <pre>
    * The number of placeholders (destinations with android:name not set) in the
@@ -653,26 +648,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       fragments_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       activities_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       customDestinations_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       regularActions_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       exitActions_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       globalActions_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       selfActions_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       includes_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000080);
       nestedGraphs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       placeholders_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -699,6 +685,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavigationContents buildPartial() {
       com.google.wireless.android.sdk.stats.NavigationContents result = new com.google.wireless.android.sdk.stats.NavigationContents(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.NavigationContents result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -741,43 +733,9 @@ private static final long serialVersionUID = 0L;
         result.placeholders_ = placeholders_;
         to_bitField0_ |= 0x00000200;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.NavigationContents) {
@@ -948,8 +906,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFragments(int value) {
-      bitField0_ |= 0x00000001;
+
       fragments_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1003,8 +962,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setActivities(int value) {
-      bitField0_ |= 0x00000002;
+
       activities_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1058,8 +1018,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCustomDestinations(int value) {
-      bitField0_ |= 0x00000004;
+
       customDestinations_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1113,8 +1074,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRegularActions(int value) {
-      bitField0_ |= 0x00000008;
+
       regularActions_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -1168,8 +1130,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setExitActions(int value) {
-      bitField0_ |= 0x00000010;
+
       exitActions_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1223,8 +1186,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setGlobalActions(int value) {
-      bitField0_ |= 0x00000020;
+
       globalActions_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1278,8 +1242,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setSelfActions(int value) {
-      bitField0_ |= 0x00000040;
+
       selfActions_ = value;
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1333,8 +1298,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIncludes(int value) {
-      bitField0_ |= 0x00000080;
+
       includes_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -1388,8 +1354,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setNestedGraphs(int value) {
-      bitField0_ |= 0x00000100;
+
       nestedGraphs_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -1446,8 +1413,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPlaceholders(int value) {
-      bitField0_ |= 0x00000200;
+
       placeholders_ = value;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }

@@ -16,15 +16,16 @@
 
 package com.android.build.gradle.api
 
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * Common plugin applied by all plugins.
+ * Common plugin applied by all plugins that have a [CommonExtension]
  *
  *
  * The purpose of this no-op plugin is to allow other plugin authors to determine if an Android
- * plugin was applied.
+ * plugin with a [CommonExtension] was applied.
  *
  *
  * This is tied to the `com.android.base` plugin ID.

@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new DataBindingEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_descriptor;
@@ -620,11 +615,6 @@ private static final long serialVersionUID = 0L;
       return new DataBindingPollMetadata();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_DataBindingPollMetadata_descriptor;
@@ -721,11 +711,6 @@ private static final long serialVersionUID = 0L;
         return new ObservableMetrics();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_DataBindingPollMetadata_ObservableMetrics_descriptor;
@@ -741,7 +726,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int PRIMITIVE_COUNT_FIELD_NUMBER = 1;
-      private int primitiveCount_;
+      private int primitiveCount_ = 0;
       /**
        * <pre>
        * # of observable primitives used
@@ -768,7 +753,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int COLLECTION_COUNT_FIELD_NUMBER = 2;
-      private int collectionCount_;
+      private int collectionCount_ = 0;
       /**
        * <pre>
        * # of observable collections
@@ -795,7 +780,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int OBSERVABLE_OBJECT_COUNT_FIELD_NUMBER = 3;
-      private int observableObjectCount_;
+      private int observableObjectCount_ = 0;
       /**
        * <pre>
        * # of user defined observable objects
@@ -1046,12 +1031,10 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           primitiveCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           collectionCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           observableObjectCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000004);
           return this;
         }
 
@@ -1078,6 +1061,12 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics buildPartial() {
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics result = new com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics(this);
+          if (bitField0_ != 0) { buildPartial0(result); }
+          onBuilt();
+          return result;
+        }
+
+        private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics result) {
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1092,43 +1081,9 @@ private static final long serialVersionUID = 0L;
             result.observableObjectCount_ = observableObjectCount_;
             to_bitField0_ |= 0x00000004;
           }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
+          result.bitField0_ |= to_bitField0_;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics) {
@@ -1243,8 +1198,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setPrimitiveCount(int value) {
-          bitField0_ |= 0x00000001;
+
           primitiveCount_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -1298,8 +1254,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCollectionCount(int value) {
-          bitField0_ |= 0x00000002;
+
           collectionCount_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -1353,8 +1310,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setObservableObjectCount(int value) {
-          bitField0_ |= 0x00000004;
+
           observableObjectCount_ = value;
+          bitField0_ |= 0x00000004;
           onChanged();
           return this;
         }
@@ -1500,11 +1458,6 @@ private static final long serialVersionUID = 0L;
         return new BindingAdapterMetrics();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_DataBindingPollMetadata_BindingAdapterMetrics_descriptor;
@@ -1520,7 +1473,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int ADAPTER_COUNT_FIELD_NUMBER = 1;
-      private int adapterCount_;
+      private int adapterCount_ = 0;
       /**
        * <pre>
        * # of user defined adapters
@@ -1547,7 +1500,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int ADAPTER_REFERENCE_COUNT_FIELD_NUMBER = 2;
-      private int adapterReferenceCount_;
+      private int adapterReferenceCount_ = 0;
       /**
        * <pre>
        * # of references to user defined adapters in layout xml
@@ -1782,10 +1735,9 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           adapterCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           adapterReferenceCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           return this;
         }
 
@@ -1812,6 +1764,12 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics buildPartial() {
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics result = new com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics(this);
+          if (bitField0_ != 0) { buildPartial0(result); }
+          onBuilt();
+          return result;
+        }
+
+        private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics result) {
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -1822,43 +1780,9 @@ private static final long serialVersionUID = 0L;
             result.adapterReferenceCount_ = adapterReferenceCount_;
             to_bitField0_ |= 0x00000002;
           }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
+          result.bitField0_ |= to_bitField0_;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics) {
@@ -1965,8 +1889,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setAdapterCount(int value) {
-          bitField0_ |= 0x00000001;
+
           adapterCount_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -2020,8 +1945,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setAdapterReferenceCount(int value) {
-          bitField0_ |= 0x00000002;
+
           adapterReferenceCount_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -2148,11 +2074,6 @@ private static final long serialVersionUID = 0L;
         return new LiveDataMetrics();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_DataBindingPollMetadata_LiveDataMetrics_descriptor;
@@ -2168,7 +2089,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int LIVE_DATA_OBJECT_COUNT_FIELD_NUMBER = 1;
-      private int liveDataObjectCount_;
+      private int liveDataObjectCount_ = 0;
       /**
        * <pre>
        * # of live data objects
@@ -2387,8 +2308,8 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           liveDataObjectCount_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           return this;
         }
 
@@ -2415,49 +2336,21 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics buildPartial() {
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics result = new com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics(this);
+          if (bitField0_ != 0) { buildPartial0(result); }
+          onBuilt();
+          return result;
+        }
+
+        private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics result) {
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) != 0)) {
             result.liveDataObjectCount_ = liveDataObjectCount_;
             to_bitField0_ |= 0x00000001;
           }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
+          result.bitField0_ |= to_bitField0_;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics) {
@@ -2556,8 +2449,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setLiveDataObjectCount(int value) {
-          bitField0_ |= 0x00000001;
+
           liveDataObjectCount_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -2641,7 +2535,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int DATA_BINDING_ENABLED_FIELD_NUMBER = 1;
-    private boolean dataBindingEnabled_;
+    private boolean dataBindingEnabled_ = false;
     /**
      * <pre>
      *&#47; These are set when the message is a |DATA_BINDING_SYNC_EVENT|
@@ -2670,7 +2564,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LAYOUT_XML_COUNT_FIELD_NUMBER = 2;
-    private int layoutXmlCount_;
+    private int layoutXmlCount_ = 0;
     /**
      * <pre>
      * # of data binding layout xmls
@@ -2697,7 +2591,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IMPORT_COUNT_FIELD_NUMBER = 3;
-    private int importCount_;
+    private int importCount_ = 0;
     /**
      * <pre>
      * # of data binding imports
@@ -2724,7 +2618,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int VARIABLE_COUNT_FIELD_NUMBER = 4;
-    private int variableCount_;
+    private int variableCount_ = 0;
     /**
      * <pre>
      * # of data binding variables
@@ -2751,7 +2645,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int EXPRESSION_COUNT_FIELD_NUMBER = 5;
-    private int expressionCount_;
+    private int expressionCount_ = 0;
     /**
      * <pre>
      * # of data binding expressions in the xml
@@ -2778,7 +2672,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ERROR_COUNT_FIELD_NUMBER = 6;
-    private int errorCount_;
+    private int errorCount_ = 0;
     /**
      * <pre>
      * # of data binding related errors generated by compiler
@@ -2805,7 +2699,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MODULE_COUNT_FIELD_NUMBER = 7;
-    private int moduleCount_;
+    private int moduleCount_ = 0;
     /**
      * <pre>
      * # of modules in this project
@@ -2832,7 +2726,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DATA_BINDING_ENABLED_MODULE_COUNT_FIELD_NUMBER = 8;
-    private int dataBindingEnabledModuleCount_;
+    private int dataBindingEnabledModuleCount_ = 0;
     /**
      * <pre>
      * # of modules with data binding enabled
@@ -3338,40 +3232,30 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         dataBindingEnabled_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         layoutXmlCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         importCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         variableCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         expressionCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         errorCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         moduleCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         dataBindingEnabledModuleCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
-        if (observableMetricsBuilder_ == null) {
-          observableMetrics_ = null;
-        } else {
-          observableMetricsBuilder_.clear();
+        observableMetrics_ = null;
+        if (observableMetricsBuilder_ != null) {
+          observableMetricsBuilder_.dispose();
+          observableMetricsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
-        if (bindingAdapterMetricsBuilder_ == null) {
-          bindingAdapterMetrics_ = null;
-        } else {
-          bindingAdapterMetricsBuilder_.clear();
+        bindingAdapterMetrics_ = null;
+        if (bindingAdapterMetricsBuilder_ != null) {
+          bindingAdapterMetricsBuilder_.dispose();
+          bindingAdapterMetricsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
-        if (liveDataMetricsBuilder_ == null) {
-          liveDataMetrics_ = null;
-        } else {
-          liveDataMetricsBuilder_.clear();
+        liveDataMetrics_ = null;
+        if (liveDataMetricsBuilder_ != null) {
+          liveDataMetricsBuilder_.dispose();
+          liveDataMetricsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -3398,6 +3282,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata buildPartial() {
         com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata result = new com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -3433,66 +3323,26 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000080;
         }
         if (((from_bitField0_ & 0x00000100) != 0)) {
-          if (observableMetricsBuilder_ == null) {
-            result.observableMetrics_ = observableMetrics_;
-          } else {
-            result.observableMetrics_ = observableMetricsBuilder_.build();
-          }
+          result.observableMetrics_ = observableMetricsBuilder_ == null
+              ? observableMetrics_
+              : observableMetricsBuilder_.build();
           to_bitField0_ |= 0x00000100;
         }
         if (((from_bitField0_ & 0x00000200) != 0)) {
-          if (bindingAdapterMetricsBuilder_ == null) {
-            result.bindingAdapterMetrics_ = bindingAdapterMetrics_;
-          } else {
-            result.bindingAdapterMetrics_ = bindingAdapterMetricsBuilder_.build();
-          }
+          result.bindingAdapterMetrics_ = bindingAdapterMetricsBuilder_ == null
+              ? bindingAdapterMetrics_
+              : bindingAdapterMetricsBuilder_.build();
           to_bitField0_ |= 0x00000200;
         }
         if (((from_bitField0_ & 0x00000400) != 0)) {
-          if (liveDataMetricsBuilder_ == null) {
-            result.liveDataMetrics_ = liveDataMetrics_;
-          } else {
-            result.liveDataMetrics_ = liveDataMetricsBuilder_.build();
-          }
+          result.liveDataMetrics_ = liveDataMetricsBuilder_ == null
+              ? liveDataMetrics_
+              : liveDataMetricsBuilder_.build();
           to_bitField0_ |= 0x00000400;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata) {
@@ -3680,8 +3530,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDataBindingEnabled(boolean value) {
-        bitField0_ |= 0x00000001;
+
         dataBindingEnabled_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3736,8 +3587,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLayoutXmlCount(int value) {
-        bitField0_ |= 0x00000002;
+
         layoutXmlCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -3791,8 +3643,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setImportCount(int value) {
-        bitField0_ |= 0x00000004;
+
         importCount_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -3846,8 +3699,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setVariableCount(int value) {
-        bitField0_ |= 0x00000008;
+
         variableCount_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -3901,8 +3755,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setExpressionCount(int value) {
-        bitField0_ |= 0x00000010;
+
         expressionCount_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -3956,8 +3811,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setErrorCount(int value) {
-        bitField0_ |= 0x00000020;
+
         errorCount_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -4011,8 +3867,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setModuleCount(int value) {
-        bitField0_ |= 0x00000040;
+
         moduleCount_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -4066,8 +3923,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDataBindingEnabledModuleCount(int value) {
-        bitField0_ |= 0x00000080;
+
         dataBindingEnabledModuleCount_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -4128,11 +3986,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           observableMetrics_ = value;
-          onChanged();
         } else {
           observableMetricsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000100;
+        onChanged();
         return this;
       }
       /**
@@ -4146,11 +4004,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.Builder builderForValue) {
         if (observableMetricsBuilder_ == null) {
           observableMetrics_ = builderForValue.build();
-          onChanged();
         } else {
           observableMetricsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000100;
+        onChanged();
         return this;
       }
       /**
@@ -4163,18 +4021,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeObservableMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics value) {
         if (observableMetricsBuilder_ == null) {
           if (((bitField0_ & 0x00000100) != 0) &&
-              observableMetrics_ != null &&
-              observableMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.getDefaultInstance()) {
-            observableMetrics_ =
-              com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.newBuilder(observableMetrics_).mergeFrom(value).buildPartial();
+            observableMetrics_ != null &&
+            observableMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.getDefaultInstance()) {
+            getObservableMetricsBuilder().mergeFrom(value);
           } else {
             observableMetrics_ = value;
           }
-          onChanged();
         } else {
           observableMetricsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000100;
+        onChanged();
         return this;
       }
       /**
@@ -4185,13 +4042,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101 [lazy = true];</code>
        */
       public Builder clearObservableMetrics() {
-        if (observableMetricsBuilder_ == null) {
-          observableMetrics_ = null;
-          onChanged();
-        } else {
-          observableMetricsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000100);
+        observableMetrics_ = null;
+        if (observableMetricsBuilder_ != null) {
+          observableMetricsBuilder_.dispose();
+          observableMetricsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4284,11 +4141,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           bindingAdapterMetrics_ = value;
-          onChanged();
         } else {
           bindingAdapterMetricsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000200;
+        onChanged();
         return this;
       }
       /**
@@ -4302,11 +4159,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.Builder builderForValue) {
         if (bindingAdapterMetricsBuilder_ == null) {
           bindingAdapterMetrics_ = builderForValue.build();
-          onChanged();
         } else {
           bindingAdapterMetricsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000200;
+        onChanged();
         return this;
       }
       /**
@@ -4319,18 +4176,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeBindingAdapterMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics value) {
         if (bindingAdapterMetricsBuilder_ == null) {
           if (((bitField0_ & 0x00000200) != 0) &&
-              bindingAdapterMetrics_ != null &&
-              bindingAdapterMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.getDefaultInstance()) {
-            bindingAdapterMetrics_ =
-              com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.newBuilder(bindingAdapterMetrics_).mergeFrom(value).buildPartial();
+            bindingAdapterMetrics_ != null &&
+            bindingAdapterMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.getDefaultInstance()) {
+            getBindingAdapterMetricsBuilder().mergeFrom(value);
           } else {
             bindingAdapterMetrics_ = value;
           }
-          onChanged();
         } else {
           bindingAdapterMetricsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000200;
+        onChanged();
         return this;
       }
       /**
@@ -4341,13 +4197,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102 [lazy = true];</code>
        */
       public Builder clearBindingAdapterMetrics() {
-        if (bindingAdapterMetricsBuilder_ == null) {
-          bindingAdapterMetrics_ = null;
-          onChanged();
-        } else {
-          bindingAdapterMetricsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000200);
+        bindingAdapterMetrics_ = null;
+        if (bindingAdapterMetricsBuilder_ != null) {
+          bindingAdapterMetricsBuilder_.dispose();
+          bindingAdapterMetricsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4440,11 +4296,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           liveDataMetrics_ = value;
-          onChanged();
         } else {
           liveDataMetricsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000400;
+        onChanged();
         return this;
       }
       /**
@@ -4458,11 +4314,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.Builder builderForValue) {
         if (liveDataMetricsBuilder_ == null) {
           liveDataMetrics_ = builderForValue.build();
-          onChanged();
         } else {
           liveDataMetricsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000400;
+        onChanged();
         return this;
       }
       /**
@@ -4475,18 +4331,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeLiveDataMetrics(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics value) {
         if (liveDataMetricsBuilder_ == null) {
           if (((bitField0_ & 0x00000400) != 0) &&
-              liveDataMetrics_ != null &&
-              liveDataMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.getDefaultInstance()) {
-            liveDataMetrics_ =
-              com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.newBuilder(liveDataMetrics_).mergeFrom(value).buildPartial();
+            liveDataMetrics_ != null &&
+            liveDataMetrics_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.getDefaultInstance()) {
+            getLiveDataMetricsBuilder().mergeFrom(value);
           } else {
             liveDataMetrics_ = value;
           }
-          onChanged();
         } else {
           liveDataMetricsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000400;
+        onChanged();
         return this;
       }
       /**
@@ -4497,13 +4352,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103 [lazy = true];</code>
        */
       public Builder clearLiveDataMetrics() {
-        if (liveDataMetricsBuilder_ == null) {
-          liveDataMetrics_ = null;
-          onChanged();
-        } else {
-          liveDataMetricsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000400);
+        liveDataMetrics_ = null;
+        if (liveDataMetricsBuilder_ != null) {
+          liveDataMetricsBuilder_.dispose();
+          liveDataMetricsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4685,11 +4540,6 @@ private static final long serialVersionUID = 0L;
       return new ViewBindingPollMetadata();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DataBindingEvent_ViewBindingPollMetadata_descriptor;
@@ -4705,7 +4555,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int VIEW_BINDING_ENABLED_FIELD_NUMBER = 1;
-    private boolean viewBindingEnabled_;
+    private boolean viewBindingEnabled_ = false;
     /**
      * <pre>
      * Whether user enabled view binding in gradle dsl.
@@ -4732,7 +4582,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LAYOUT_XML_COUNT_FIELD_NUMBER = 2;
-    private int layoutXmlCount_;
+    private int layoutXmlCount_ = 0;
     /**
      * <pre>
      * Number of view binding layout xmls.
@@ -4972,10 +4822,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         viewBindingEnabled_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         layoutXmlCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -5002,6 +4851,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata buildPartial() {
         com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata result = new com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -5012,43 +4867,9 @@ private static final long serialVersionUID = 0L;
           result.layoutXmlCount_ = layoutXmlCount_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata) {
@@ -5155,8 +4976,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setViewBindingEnabled(boolean value) {
-        bitField0_ |= 0x00000001;
+
         viewBindingEnabled_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -5210,8 +5032,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLayoutXmlCount(int value) {
-        bitField0_ |= 0x00000002;
+
         layoutXmlCount_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -5295,7 +5118,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The detailed type of this event.
@@ -5316,13 +5139,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DataBindingEvent.EventType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.UNKNOWN_TYPE : result;
   }
 
   public static final int CONTEXT_FIELD_NUMBER = 2;
-  private int context_;
+  private int context_ = 0;
   /**
    * <pre>
    * The context in which this event was triggered.
@@ -5343,8 +5165,7 @@ private static final long serialVersionUID = 0L;
    * @return The context.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext getContext() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.valueOf(context_);
+    com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.forNumber(context_);
     return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.UNKNOWN_CONTEXT : result;
   }
 
@@ -5674,22 +5495,19 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       context_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (pollMetadataBuilder_ == null) {
-        pollMetadata_ = null;
-      } else {
-        pollMetadataBuilder_.clear();
+      pollMetadata_ = null;
+      if (pollMetadataBuilder_ != null) {
+        pollMetadataBuilder_.dispose();
+        pollMetadataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (viewBindingMetadataBuilder_ == null) {
-        viewBindingMetadata_ = null;
-      } else {
-        viewBindingMetadataBuilder_.clear();
+      viewBindingMetadata_ = null;
+      if (viewBindingMetadataBuilder_ != null) {
+        viewBindingMetadataBuilder_.dispose();
+        viewBindingMetadataBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -5716,69 +5534,37 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent buildPartial() {
       com.google.wireless.android.sdk.stats.DataBindingEvent result = new com.google.wireless.android.sdk.stats.DataBindingEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.context_ = context_;
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (pollMetadataBuilder_ == null) {
-          result.pollMetadata_ = pollMetadata_;
-        } else {
-          result.pollMetadata_ = pollMetadataBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (viewBindingMetadataBuilder_ == null) {
-          result.viewBindingMetadata_ = viewBindingMetadata_;
-        } else {
-          result.viewBindingMetadata_ = viewBindingMetadataBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.DataBindingEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.context_ = context_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.pollMetadata_ = pollMetadataBuilder_ == null
+            ? pollMetadata_
+            : pollMetadataBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.viewBindingMetadata_ = viewBindingMetadataBuilder_ == null
+            ? viewBindingMetadata_
+            : viewBindingMetadataBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.DataBindingEvent) {
@@ -5906,8 +5692,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.EventType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.UNKNOWN_TYPE : result;
     }
     /**
@@ -5965,8 +5750,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext getContext() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.valueOf(context_);
+      com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.forNumber(context_);
       return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.UNKNOWN_CONTEXT : result;
     }
     /**
@@ -6044,11 +5828,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         pollMetadata_ = value;
-        onChanged();
       } else {
         pollMetadataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -6062,11 +5846,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.Builder builderForValue) {
       if (pollMetadataBuilder_ == null) {
         pollMetadata_ = builderForValue.build();
-        onChanged();
       } else {
         pollMetadataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -6079,18 +5863,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePollMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata value) {
       if (pollMetadataBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            pollMetadata_ != null &&
-            pollMetadata_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.getDefaultInstance()) {
-          pollMetadata_ =
-            com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.newBuilder(pollMetadata_).mergeFrom(value).buildPartial();
+          pollMetadata_ != null &&
+          pollMetadata_ != com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.getDefaultInstance()) {
+          getPollMetadataBuilder().mergeFrom(value);
         } else {
           pollMetadata_ = value;
         }
-        onChanged();
       } else {
         pollMetadataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -6101,13 +5884,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3 [lazy = true];</code>
      */
     public Builder clearPollMetadata() {
-      if (pollMetadataBuilder_ == null) {
-        pollMetadata_ = null;
-        onChanged();
-      } else {
-        pollMetadataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      pollMetadata_ = null;
+      if (pollMetadataBuilder_ != null) {
+        pollMetadataBuilder_.dispose();
+        pollMetadataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -6200,11 +5983,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         viewBindingMetadata_ = value;
-        onChanged();
       } else {
         viewBindingMetadataBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -6218,11 +6001,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.Builder builderForValue) {
       if (viewBindingMetadataBuilder_ == null) {
         viewBindingMetadata_ = builderForValue.build();
-        onChanged();
       } else {
         viewBindingMetadataBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -6235,18 +6018,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeViewBindingMetadata(com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata value) {
       if (viewBindingMetadataBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            viewBindingMetadata_ != null &&
-            viewBindingMetadata_ != com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.getDefaultInstance()) {
-          viewBindingMetadata_ =
-            com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.newBuilder(viewBindingMetadata_).mergeFrom(value).buildPartial();
+          viewBindingMetadata_ != null &&
+          viewBindingMetadata_ != com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.getDefaultInstance()) {
+          getViewBindingMetadataBuilder().mergeFrom(value);
         } else {
           viewBindingMetadata_ = value;
         }
-        onChanged();
       } else {
         viewBindingMetadataBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -6257,13 +6039,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4 [lazy = true];</code>
      */
     public Builder clearViewBindingMetadata() {
-      if (viewBindingMetadataBuilder_ == null) {
-        viewBindingMetadata_ = null;
-        onChanged();
-      } else {
-        viewBindingMetadataBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      viewBindingMetadata_ = null;
+      if (viewBindingMetadataBuilder_ != null) {
+        viewBindingMetadataBuilder_.dispose();
+        viewBindingMetadataBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -27,7 +27,6 @@ import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.tasks.Workers.withThreads
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.bundle.RuntimeEnabledSdkConfigProto
 import com.android.bundle.RuntimeEnabledSdkConfigProto.SdkSplitPropertiesInheritedFromApp
@@ -110,7 +109,7 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
         val runtimeConfigs = if (runtimeConfigFile.isPresent)
             getRuntimeEnabledConfigMap(runtimeConfigFile.get().asFile) else emptyMap()
 
-        BuildPrivacySandboxSdkApks.forEachInputFile(
+        forEachInputFile(
                 inputFiles = sdkArchives.files.map { it.toPath() },
                 outputDirectory = sdkSplits.get().asFile.toPath(),
         ) { archive, subDirectory ->
@@ -165,6 +164,27 @@ abstract class AsarsToCompatSplitsTask : NonIncrementalTask() {
         ZipFile(archive.toFile()).use { zip ->
             zip.getInputStream(zip.getEntry("SdkMetadata.pb")).use { protoBytes ->
                 return SdkMetadata.parseFrom(protoBytes)
+            }
+        }
+    }
+
+    companion object {
+
+        fun forEachInputFile(
+            inputFiles: Iterable<Path>,
+            outputDirectory: Path,
+            action: (input: Path, outputSubDirectory: Path) -> Unit,
+        ) {
+            val usedOutputNames = mutableSetOf<String>()
+            for (inputFile in inputFiles) {
+                val key = inputFile.fileName.toString().substringBeforeLast('.')
+                var index = 0
+                var candidateSubDirectoryName = key
+                while (!usedOutputNames.add(candidateSubDirectoryName)) {
+                    index++
+                    candidateSubDirectoryName = key + "_" + index
+                }
+                action(inputFile, outputDirectory.resolve(candidateSubDirectoryName))
             }
         }
     }

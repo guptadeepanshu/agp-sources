@@ -63,11 +63,6 @@ public final class ClientAnalytics {
       return new LogEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.play.playlog.proto.ClientAnalytics.internal_static_wireless_android_play_playlog_LogEvent_descriptor;
@@ -83,7 +78,7 @@ public final class ClientAnalytics {
 
     private int bitField0_;
     public static final int EVENT_TIME_MS_FIELD_NUMBER = 1;
-    private long eventTimeMs_;
+    private long eventTimeMs_ = 0L;
     /**
      * <code>optional int64 event_time_ms = 1;</code>
      * @return Whether the eventTimeMs field is set.
@@ -102,7 +97,7 @@ public final class ClientAnalytics {
     }
 
     public static final int SOURCE_EXTENSION_FIELD_NUMBER = 6;
-    private com.google.protobuf.ByteString sourceExtension_;
+    private com.google.protobuf.ByteString sourceExtension_ = com.google.protobuf.ByteString.EMPTY;
     /**
      * <code>optional bytes source_extension = 6;</code>
      * @return Whether the sourceExtension field is set.
@@ -330,10 +325,9 @@ public final class ClientAnalytics {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         eventTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
         sourceExtension_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -360,6 +354,12 @@ public final class ClientAnalytics {
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent buildPartial() {
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent result = new com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -367,46 +367,12 @@ public final class ClientAnalytics {
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.sourceExtension_ = sourceExtension_;
           to_bitField0_ |= 0x00000002;
         }
-        result.sourceExtension_ = sourceExtension_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent) {
@@ -501,8 +467,9 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder setEventTimeMs(long value) {
-        bitField0_ |= 0x00000001;
+
         eventTimeMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -540,11 +507,9 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder setSourceExtension(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         sourceExtension_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -774,11 +739,6 @@ public final class ClientAnalytics {
       return new DesktopClientInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.play.playlog.proto.ClientAnalytics.internal_static_wireless_android_play_playlog_DesktopClientInfo_descriptor;
@@ -794,7 +754,8 @@ public final class ClientAnalytics {
 
     private int bitField0_;
     public static final int CLIENT_ID_FIELD_NUMBER = 1;
-    private volatile java.lang.Object clientId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object clientId_ = "";
     /**
      * <code>optional string client_id = 1;</code>
      * @return Whether the clientId field is set.
@@ -842,7 +803,8 @@ public final class ClientAnalytics {
     }
 
     public static final int LOGGING_ID_FIELD_NUMBER = 2;
-    private volatile java.lang.Object loggingId_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object loggingId_ = "";
     /**
      * <code>optional string logging_id = 2;</code>
      * @return Whether the loggingId field is set.
@@ -890,7 +852,8 @@ public final class ClientAnalytics {
     }
 
     public static final int OS_FIELD_NUMBER = 3;
-    private volatile java.lang.Object os_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object os_ = "";
     /**
      * <code>optional string os = 3;</code>
      * @return Whether the os field is set.
@@ -938,7 +901,8 @@ public final class ClientAnalytics {
     }
 
     public static final int OS_MAJOR_VERSION_FIELD_NUMBER = 4;
-    private volatile java.lang.Object osMajorVersion_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object osMajorVersion_ = "";
     /**
      * <code>optional string os_major_version = 4;</code>
      * @return Whether the osMajorVersion field is set.
@@ -986,7 +950,8 @@ public final class ClientAnalytics {
     }
 
     public static final int OS_FULL_VERSION_FIELD_NUMBER = 5;
-    private volatile java.lang.Object osFullVersion_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object osFullVersion_ = "";
     /**
      * <code>optional string os_full_version = 5;</code>
      * @return Whether the osFullVersion field is set.
@@ -1034,7 +999,8 @@ public final class ClientAnalytics {
     }
 
     public static final int APPLICATION_BUILD_FIELD_NUMBER = 6;
-    private volatile java.lang.Object applicationBuild_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object applicationBuild_ = "";
     /**
      * <code>optional string application_build = 6;</code>
      * @return Whether the applicationBuild field is set.
@@ -1082,7 +1048,8 @@ public final class ClientAnalytics {
     }
 
     public static final int COUNTRY_FIELD_NUMBER = 7;
-    private volatile java.lang.Object country_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object country_ = "";
     /**
      * <code>optional string country = 7;</code>
      * @return Whether the country field is set.
@@ -1411,20 +1378,14 @@ public final class ClientAnalytics {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         clientId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         loggingId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         os_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
         osMajorVersion_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
         osFullVersion_ = "";
-        bitField0_ = (bitField0_ & ~0x00000010);
         applicationBuild_ = "";
-        bitField0_ = (bitField0_ & ~0x00000020);
         country_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -1451,73 +1412,45 @@ public final class ClientAnalytics {
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo buildPartial() {
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo result = new com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.clientId_ = clientId_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.loggingId_ = loggingId_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.os_ = os_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.osMajorVersion_ = osMajorVersion_;
-        if (((from_bitField0_ & 0x00000010) != 0)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.osFullVersion_ = osFullVersion_;
-        if (((from_bitField0_ & 0x00000020) != 0)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.applicationBuild_ = applicationBuild_;
-        if (((from_bitField0_ & 0x00000040) != 0)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        result.country_ = country_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.clientId_ = clientId_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.loggingId_ = loggingId_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.os_ = os_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.osMajorVersion_ = osMajorVersion_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.osFullVersion_ = osFullVersion_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.applicationBuild_ = applicationBuild_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.country_ = country_;
+          to_bitField0_ |= 0x00000040;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo) {
@@ -1531,38 +1464,38 @@ public final class ClientAnalytics {
       public Builder mergeFrom(com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo other) {
         if (other == com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.getDefaultInstance()) return this;
         if (other.hasClientId()) {
-          bitField0_ |= 0x00000001;
           clientId_ = other.clientId_;
+          bitField0_ |= 0x00000001;
           onChanged();
         }
         if (other.hasLoggingId()) {
-          bitField0_ |= 0x00000002;
           loggingId_ = other.loggingId_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         if (other.hasOs()) {
-          bitField0_ |= 0x00000004;
           os_ = other.os_;
+          bitField0_ |= 0x00000004;
           onChanged();
         }
         if (other.hasOsMajorVersion()) {
-          bitField0_ |= 0x00000008;
           osMajorVersion_ = other.osMajorVersion_;
+          bitField0_ |= 0x00000008;
           onChanged();
         }
         if (other.hasOsFullVersion()) {
-          bitField0_ |= 0x00000010;
           osFullVersion_ = other.osFullVersion_;
+          bitField0_ |= 0x00000010;
           onChanged();
         }
         if (other.hasApplicationBuild()) {
-          bitField0_ |= 0x00000020;
           applicationBuild_ = other.applicationBuild_;
+          bitField0_ |= 0x00000020;
           onChanged();
         }
         if (other.hasCountry()) {
-          bitField0_ |= 0x00000040;
           country_ = other.country_;
+          bitField0_ |= 0x00000040;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -1693,11 +1626,9 @@ public final class ClientAnalytics {
        */
       public Builder setClientId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         clientId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1706,8 +1637,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearClientId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
         clientId_ = getDefaultInstance().getClientId();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -1718,11 +1649,9 @@ public final class ClientAnalytics {
        */
       public Builder setClientIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+        if (value == null) { throw new NullPointerException(); }
         clientId_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -1777,11 +1706,9 @@ public final class ClientAnalytics {
        */
       public Builder setLoggingId(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         loggingId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1790,8 +1717,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearLoggingId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         loggingId_ = getDefaultInstance().getLoggingId();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -1802,11 +1729,9 @@ public final class ClientAnalytics {
        */
       public Builder setLoggingIdBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         loggingId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1861,11 +1786,9 @@ public final class ClientAnalytics {
        */
       public Builder setOs(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         os_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1874,8 +1797,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearOs() {
-        bitField0_ = (bitField0_ & ~0x00000004);
         os_ = getDefaultInstance().getOs();
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
@@ -1886,11 +1809,9 @@ public final class ClientAnalytics {
        */
       public Builder setOsBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
+        if (value == null) { throw new NullPointerException(); }
         os_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1945,11 +1866,9 @@ public final class ClientAnalytics {
        */
       public Builder setOsMajorVersion(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+        if (value == null) { throw new NullPointerException(); }
         osMajorVersion_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1958,8 +1877,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearOsMajorVersion() {
-        bitField0_ = (bitField0_ & ~0x00000008);
         osMajorVersion_ = getDefaultInstance().getOsMajorVersion();
+        bitField0_ = (bitField0_ & ~0x00000008);
         onChanged();
         return this;
       }
@@ -1970,11 +1889,9 @@ public final class ClientAnalytics {
        */
       public Builder setOsMajorVersionBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
+        if (value == null) { throw new NullPointerException(); }
         osMajorVersion_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -2029,11 +1946,9 @@ public final class ClientAnalytics {
        */
       public Builder setOsFullVersion(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         osFullVersion_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -2042,8 +1957,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearOsFullVersion() {
-        bitField0_ = (bitField0_ & ~0x00000010);
         osFullVersion_ = getDefaultInstance().getOsFullVersion();
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
@@ -2054,11 +1969,9 @@ public final class ClientAnalytics {
        */
       public Builder setOsFullVersionBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+        if (value == null) { throw new NullPointerException(); }
         osFullVersion_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -2113,11 +2026,9 @@ public final class ClientAnalytics {
        */
       public Builder setApplicationBuild(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+        if (value == null) { throw new NullPointerException(); }
         applicationBuild_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -2126,8 +2037,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearApplicationBuild() {
-        bitField0_ = (bitField0_ & ~0x00000020);
         applicationBuild_ = getDefaultInstance().getApplicationBuild();
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
@@ -2138,11 +2049,9 @@ public final class ClientAnalytics {
        */
       public Builder setApplicationBuildBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000020;
+        if (value == null) { throw new NullPointerException(); }
         applicationBuild_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -2197,11 +2106,9 @@ public final class ClientAnalytics {
        */
       public Builder setCountry(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+        if (value == null) { throw new NullPointerException(); }
         country_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -2210,8 +2117,8 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder clearCountry() {
-        bitField0_ = (bitField0_ & ~0x00000040);
         country_ = getDefaultInstance().getCountry();
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
@@ -2222,11 +2129,9 @@ public final class ClientAnalytics {
        */
       public Builder setCountryBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000040;
+        if (value == null) { throw new NullPointerException(); }
         country_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -2347,11 +2252,6 @@ public final class ClientAnalytics {
       return new ClientInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.play.playlog.proto.ClientAnalytics.internal_static_wireless_android_play_playlog_ClientInfo_descriptor;
@@ -2454,7 +2354,7 @@ public final class ClientAnalytics {
 
     private int bitField0_;
     public static final int CLIENT_TYPE_FIELD_NUMBER = 1;
-    private int clientType_;
+    private int clientType_ = 2;
     /**
      * <code>optional .wireless_android_play_playlog.ClientInfo.ClientType client_type = 1;</code>
      * @return Whether the clientType field is set.
@@ -2467,8 +2367,7 @@ public final class ClientAnalytics {
      * @return The clientType.
      */
     @java.lang.Override public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType getClientType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.valueOf(clientType_);
+      com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.forNumber(clientType_);
       return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.DESKTOP : result;
     }
 
@@ -2712,14 +2611,13 @@ public final class ClientAnalytics {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         clientType_ = 2;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (desktopClientInfoBuilder_ == null) {
-          desktopClientInfo_ = null;
-        } else {
-          desktopClientInfoBuilder_.clear();
+        desktopClientInfo_ = null;
+        if (desktopClientInfoBuilder_ != null) {
+          desktopClientInfoBuilder_.dispose();
+          desktopClientInfoBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -2746,57 +2644,27 @@ public final class ClientAnalytics {
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo buildPartial() {
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo result = new com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.clientType_ = clientType_;
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (desktopClientInfoBuilder_ == null) {
-            result.desktopClientInfo_ = desktopClientInfo_;
-          } else {
-            result.desktopClientInfo_ = desktopClientInfoBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.clientType_ = clientType_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.desktopClientInfo_ = desktopClientInfoBuilder_ == null
+              ? desktopClientInfo_
+              : desktopClientInfoBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo) {
@@ -2891,8 +2759,7 @@ public final class ClientAnalytics {
        */
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType getClientType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.valueOf(clientType_);
+        com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.forNumber(clientType_);
         return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.DESKTOP : result;
       }
       /**
@@ -2950,11 +2817,11 @@ public final class ClientAnalytics {
             throw new NullPointerException();
           }
           desktopClientInfo_ = value;
-          onChanged();
         } else {
           desktopClientInfoBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -2964,11 +2831,11 @@ public final class ClientAnalytics {
           com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.Builder builderForValue) {
         if (desktopClientInfoBuilder_ == null) {
           desktopClientInfo_ = builderForValue.build();
-          onChanged();
         } else {
           desktopClientInfoBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -2977,31 +2844,30 @@ public final class ClientAnalytics {
       public Builder mergeDesktopClientInfo(com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo value) {
         if (desktopClientInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              desktopClientInfo_ != null &&
-              desktopClientInfo_ != com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.getDefaultInstance()) {
-            desktopClientInfo_ =
-              com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.newBuilder(desktopClientInfo_).mergeFrom(value).buildPartial();
+            desktopClientInfo_ != null &&
+            desktopClientInfo_ != com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.getDefaultInstance()) {
+            getDesktopClientInfoBuilder().mergeFrom(value);
           } else {
             desktopClientInfo_ = value;
           }
-          onChanged();
         } else {
           desktopClientInfoBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .wireless_android_play_playlog.DesktopClientInfo desktop_client_info = 3;</code>
        */
       public Builder clearDesktopClientInfo() {
-        if (desktopClientInfoBuilder_ == null) {
-          desktopClientInfo_ = null;
-          onChanged();
-        } else {
-          desktopClientInfoBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        desktopClientInfo_ = null;
+        if (desktopClientInfoBuilder_ != null) {
+          desktopClientInfoBuilder_.dispose();
+          desktopClientInfoBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -3192,11 +3058,6 @@ public final class ClientAnalytics {
       return new LogRequest();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.play.playlog.proto.ClientAnalytics.internal_static_wireless_android_play_playlog_LogRequest_descriptor;
@@ -3308,7 +3169,7 @@ public final class ClientAnalytics {
 
     private int bitField0_;
     public static final int REQUEST_TIME_MS_FIELD_NUMBER = 4;
-    private long requestTimeMs_;
+    private long requestTimeMs_ = 0L;
     /**
      * <code>optional int64 request_time_ms = 4;</code>
      * @return Whether the requestTimeMs field is set.
@@ -3353,7 +3214,7 @@ public final class ClientAnalytics {
     }
 
     public static final int LOG_SOURCE_FIELD_NUMBER = 2;
-    private int logSource_;
+    private int logSource_ = -1;
     /**
      * <code>optional .wireless_android_play_playlog.LogRequest.LogSource log_source = 2 [default = UNKNOWN];</code>
      * @return Whether the logSource field is set.
@@ -3366,12 +3227,12 @@ public final class ClientAnalytics {
      * @return The logSource.
      */
     @java.lang.Override public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource getLogSource() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.valueOf(logSource_);
+      com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.forNumber(logSource_);
       return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.UNKNOWN : result;
     }
 
     public static final int LOG_EVENT_FIELD_NUMBER = 3;
+    @SuppressWarnings("serial")
     private java.util.List<com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent> logEvent_;
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
@@ -3656,16 +3517,14 @@ public final class ClientAnalytics {
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         requestTimeMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (clientInfoBuilder_ == null) {
-          clientInfo_ = null;
-        } else {
-          clientInfoBuilder_.clear();
+        clientInfo_ = null;
+        if (clientInfoBuilder_ != null) {
+          clientInfoBuilder_.dispose();
+          clientInfoBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
         logSource_ = -1;
-        bitField0_ = (bitField0_ & ~0x00000004);
         if (logEventBuilder_ == null) {
           logEvent_ = java.util.Collections.emptyList();
         } else {
@@ -3699,24 +3558,13 @@ public final class ClientAnalytics {
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest buildPartial() {
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest result = new com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          result.requestTimeMs_ = requestTimeMs_;
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (clientInfoBuilder_ == null) {
-            result.clientInfo_ = clientInfo_;
-          } else {
-            result.clientInfo_ = clientInfoBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000002;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.logSource_ = logSource_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest result) {
         if (logEventBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0)) {
             logEvent_ = java.util.Collections.unmodifiableList(logEvent_);
@@ -3726,43 +3574,28 @@ public final class ClientAnalytics {
         } else {
           result.logEvent_ = logEventBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.requestTimeMs_ = requestTimeMs_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.clientInfo_ = clientInfoBuilder_ == null
+              ? clientInfo_
+              : clientInfoBuilder_.build();
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.logSource_ = logSource_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest) {
@@ -3913,8 +3746,9 @@ public final class ClientAnalytics {
        * @return This builder for chaining.
        */
       public Builder setRequestTimeMs(long value) {
-        bitField0_ |= 0x00000001;
+
         requestTimeMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -3959,11 +3793,11 @@ public final class ClientAnalytics {
             throw new NullPointerException();
           }
           clientInfo_ = value;
-          onChanged();
         } else {
           clientInfoBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3973,11 +3807,11 @@ public final class ClientAnalytics {
           com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.Builder builderForValue) {
         if (clientInfoBuilder_ == null) {
           clientInfo_ = builderForValue.build();
-          onChanged();
         } else {
           clientInfoBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -3986,31 +3820,30 @@ public final class ClientAnalytics {
       public Builder mergeClientInfo(com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo value) {
         if (clientInfoBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              clientInfo_ != null &&
-              clientInfo_ != com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.getDefaultInstance()) {
-            clientInfo_ =
-              com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.newBuilder(clientInfo_).mergeFrom(value).buildPartial();
+            clientInfo_ != null &&
+            clientInfo_ != com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.getDefaultInstance()) {
+            getClientInfoBuilder().mergeFrom(value);
           } else {
             clientInfo_ = value;
           }
-          onChanged();
         } else {
           clientInfoBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .wireless_android_play_playlog.ClientInfo client_info = 1;</code>
        */
       public Builder clearClientInfo() {
-        if (clientInfoBuilder_ == null) {
-          clientInfo_ = null;
-          onChanged();
-        } else {
-          clientInfoBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        clientInfo_ = null;
+        if (clientInfoBuilder_ != null) {
+          clientInfoBuilder_.dispose();
+          clientInfoBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4063,8 +3896,7 @@ public final class ClientAnalytics {
        */
       @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource getLogSource() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.valueOf(logSource_);
+        com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.forNumber(logSource_);
         return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.UNKNOWN : result;
       }
       /**

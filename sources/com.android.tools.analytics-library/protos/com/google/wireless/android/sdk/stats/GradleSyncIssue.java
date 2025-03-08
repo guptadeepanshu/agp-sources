@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new GradleSyncIssue();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleSyncIssue_descriptor;
@@ -51,7 +46,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The type of the sync issue.
@@ -72,20 +67,19 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.UNKNOWN_GRADLE_SYNC_ISSUE_TYPE : result;
   }
 
   public static final int OFFERED_QUICK_FIXES_FIELD_NUMBER = 2;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> offeredQuickFixes_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix> offeredQuickFixes_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix>() {
             public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.valueOf(from);
+              com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix.UNKNOWN_GRADLE_SYNC_QUICK_FIX : result;
             }
           };
@@ -341,8 +335,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       offeredQuickFixes_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000002);
       return this;
@@ -371,54 +365,30 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncIssue buildPartial() {
       com.google.wireless.android.sdk.stats.GradleSyncIssue result = new com.google.wireless.android.sdk.stats.GradleSyncIssue(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleSyncIssue result) {
       if (((bitField0_ & 0x00000002) != 0)) {
         offeredQuickFixes_ = java.util.Collections.unmodifiableList(offeredQuickFixes_);
         bitField0_ = (bitField0_ & ~0x00000002);
       }
       result.offeredQuickFixes_ = offeredQuickFixes_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleSyncIssue result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleSyncIssue) {
@@ -550,8 +520,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.UNKNOWN_GRADLE_SYNC_ISSUE_TYPE : result;
     }
     /**

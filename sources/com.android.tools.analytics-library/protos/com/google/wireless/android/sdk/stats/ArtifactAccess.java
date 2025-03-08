@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new ArtifactAccess();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ArtifactAccess_descriptor;
@@ -191,7 +186,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Identification of the type of artifact access.
@@ -212,13 +207,12 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.valueOf(type_);
+    com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.UNKNOWN_ACCESS_TYPE : result;
   }
 
   public static final int INPUT_ARTIFACT_TYPE_FIELD_NUMBER = 2;
-  private int inputArtifactType_;
+  private int inputArtifactType_ = 0;
   /**
    * <pre>
    * The artifact type used as an input (read).
@@ -251,7 +245,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int OUTPUT_ARTIFACT_TYPE_FIELD_NUMBER = 3;
-  private int outputArtifactType_;
+  private int outputArtifactType_ = 0;
   /**
    * <pre>
    * The artifact type used as an output.
@@ -509,12 +503,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       inputArtifactType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       outputArtifactType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -541,12 +533,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ArtifactAccess buildPartial() {
       com.google.wireless.android.sdk.stats.ArtifactAccess result = new com.google.wireless.android.sdk.stats.ArtifactAccess(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ArtifactAccess result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000001;
       }
-      result.type_ = type_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.inputArtifactType_ = inputArtifactType_;
         to_bitField0_ |= 0x00000002;
@@ -555,43 +553,9 @@ private static final long serialVersionUID = 0L;
         result.outputArtifactType_ = outputArtifactType_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ArtifactAccess) {
@@ -700,8 +664,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.valueOf(type_);
+      com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.UNKNOWN_ACCESS_TYPE : result;
     }
     /**
@@ -781,8 +744,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInputArtifactType(int value) {
-      bitField0_ |= 0x00000002;
+
       inputArtifactType_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -845,8 +809,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutputArtifactType(int value) {
-      bitField0_ |= 0x00000004;
+
       outputArtifactType_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

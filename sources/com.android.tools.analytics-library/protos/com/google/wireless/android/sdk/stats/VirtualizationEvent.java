@@ -27,11 +27,6 @@ private static final long serialVersionUID = 0L;
     return new VirtualizationEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_VirtualizationEvent_descriptor;
@@ -383,7 +378,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int VM_FIELD_NUMBER = 1;
-  private int vm_;
+  private int vm_ = -1;
   /**
    * <code>optional .android_studio.VirtualizationEvent.VmType vm = 1;</code>
    * @return Whether the vm field is set.
@@ -396,13 +391,12 @@ private static final long serialVersionUID = 0L;
    * @return The vm.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType getVm() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.valueOf(vm_);
+    com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.forNumber(vm_);
     return result == null ? com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.VM_ERROR_TIMEOUT : result;
   }
 
   public static final int CONTAINER_FIELD_NUMBER = 2;
-  private int container_;
+  private int container_ = -1;
   /**
    * <code>optional .android_studio.VirtualizationEvent.ContainerType container = 2;</code>
    * @return Whether the container field is set.
@@ -415,8 +409,7 @@ private static final long serialVersionUID = 0L;
    * @return The container.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType getContainer() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.valueOf(container_);
+    com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.forNumber(container_);
     return result == null ? com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.CONTAINER_ERROR_TIMEOUT : result;
   }
 
@@ -627,10 +620,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       vm_ = -1;
-      bitField0_ = (bitField0_ & ~0x00000001);
       container_ = -1;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -657,53 +649,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VirtualizationEvent buildPartial() {
       com.google.wireless.android.sdk.stats.VirtualizationEvent result = new com.google.wireless.android.sdk.stats.VirtualizationEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.vm_ = vm_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.container_ = container_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.VirtualizationEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.vm_ = vm_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.container_ = container_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.VirtualizationEvent) {
@@ -803,8 +767,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType getVm() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.valueOf(vm_);
+      com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.forNumber(vm_);
       return result == null ? com.google.wireless.android.sdk.stats.VirtualizationEvent.VmType.VM_ERROR_TIMEOUT : result;
     }
     /**
@@ -846,8 +809,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType getContainer() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.valueOf(container_);
+      com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType result = com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.forNumber(container_);
       return result == null ? com.google.wireless.android.sdk.stats.VirtualizationEvent.ContainerType.CONTAINER_ERROR_TIMEOUT : result;
     }
     /**

@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new ComposeMultiPreviewEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ComposeMultiPreviewEvent_descriptor;
@@ -239,11 +234,6 @@ private static final long serialVersionUID = 0L;
       return new ComposeMultiPreviewNodeInfo();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ComposeMultiPreviewEvent_ComposeMultiPreviewNodeInfo_descriptor;
@@ -373,7 +363,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int NODE_TYPE_FIELD_NUMBER = 1;
-    private int nodeType_;
+    private int nodeType_ = 0;
     /**
      * <pre>
      * Type of node in the MultiPreview graph.
@@ -394,13 +384,12 @@ private static final long serialVersionUID = 0L;
      * @return The nodeType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType getNodeType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType result = com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.valueOf(nodeType_);
+      com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType result = com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.forNumber(nodeType_);
       return result == null ? com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.UNKNOWN_NODE_TYPE : result;
     }
 
     public static final int ANONYMIZED_COMPOSABLE_ID_FIELD_NUMBER = 2;
-    private long anonymizedComposableId_;
+    private long anonymizedComposableId_ = 0L;
     /**
      * <pre>
      * Anonymized id for the Composable node that is the root of this graph.
@@ -427,7 +416,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PREVIEW_CHILDS_COUNT_FIELD_NUMBER = 3;
-    private int previewChildsCount_;
+    private int previewChildsCount_ = 0;
     /**
      * <pre>
      * Number of direct childs which are Preview annotations.
@@ -454,7 +443,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int MULTI_PREVIEW_CHILDS_COUNT_FIELD_NUMBER = 4;
-    private int multiPreviewChildsCount_;
+    private int multiPreviewChildsCount_ = 0;
     /**
      * <pre>
      * Number of direct childs which are MultiPreview annotations.
@@ -481,7 +470,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUBTREE_PREVIEWS_COUNT_FIELD_NUMBER = 5;
-    private int subtreePreviewsCount_;
+    private int subtreePreviewsCount_ = 0;
     /**
      * <pre>
      * Number of nodes in the subtree rooted at this node and defined by the
@@ -510,7 +499,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUBTREE_MULTI_PREVIEWS_COUNT_FIELD_NUMBER = 6;
-    private int subtreeMultiPreviewsCount_;
+    private int subtreeMultiPreviewsCount_ = 0;
     /**
      * <pre>
      * Number of nodes in the subtree rooted at this node and defined by the
@@ -539,7 +528,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SUBTREE_USELESS_NODES_COUNT_FIELD_NUMBER = 7;
-    private int subtreeUselessNodesCount_;
+    private int subtreeUselessNodesCount_ = 0;
     /**
      * <pre>
      * Number of nodes in the subtree rooted at this node and defined by the
@@ -568,7 +557,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DEPTH_LEVEL_FIELD_NUMBER = 8;
-    private int depthLevel_;
+    private int depthLevel_ = 0;
     /**
      * <pre>
      * Length of the path traversed from the root Composable to this node.
@@ -905,22 +894,15 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         nodeType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         anonymizedComposableId_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         previewChildsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         multiPreviewChildsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         subtreePreviewsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         subtreeMultiPreviewsCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         subtreeUselessNodesCount_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         depthLevel_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -947,12 +929,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo buildPartial() {
         com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo result = new com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.nodeType_ = nodeType_;
           to_bitField0_ |= 0x00000001;
         }
-        result.nodeType_ = nodeType_;
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.anonymizedComposableId_ = anonymizedComposableId_;
           to_bitField0_ |= 0x00000002;
@@ -981,43 +969,9 @@ private static final long serialVersionUID = 0L;
           result.depthLevel_ = depthLevel_;
           to_bitField0_ |= 0x00000080;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo) {
@@ -1166,8 +1120,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType getNodeType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType result = com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.valueOf(nodeType_);
+        com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType result = com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.forNumber(nodeType_);
         return result == null ? com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo.NodeType.UNKNOWN_NODE_TYPE : result;
       }
       /**
@@ -1238,8 +1191,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setAnonymizedComposableId(long value) {
-        bitField0_ |= 0x00000002;
+
         anonymizedComposableId_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1293,8 +1247,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPreviewChildsCount(int value) {
-        bitField0_ |= 0x00000004;
+
         previewChildsCount_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1348,8 +1303,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setMultiPreviewChildsCount(int value) {
-        bitField0_ |= 0x00000008;
+
         multiPreviewChildsCount_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -1406,8 +1362,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSubtreePreviewsCount(int value) {
-        bitField0_ |= 0x00000010;
+
         subtreePreviewsCount_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -1465,8 +1422,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSubtreeMultiPreviewsCount(int value) {
-        bitField0_ |= 0x00000020;
+
         subtreeMultiPreviewsCount_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -1524,8 +1482,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSubtreeUselessNodesCount(int value) {
-        bitField0_ |= 0x00000040;
+
         subtreeUselessNodesCount_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -1580,8 +1539,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDepthLevel(int value) {
-        bitField0_ |= 0x00000080;
+
         depthLevel_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1665,6 +1625,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int MULTI_PREVIEW_NODES_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.ComposeMultiPreviewNodeInfo> multiPreviewNodes_;
   /**
    * <pre>
@@ -1735,7 +1696,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IS_COMPOSE_PREVIEW_LITE_MODE_FIELD_NUMBER = 2;
-  private boolean isComposePreviewLiteMode_;
+  private boolean isComposePreviewLiteMode_ = false;
   /**
    * <pre>
    * True if Compose Preview Lite Mode is enabled when logging the event.
@@ -1972,6 +1933,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (multiPreviewNodesBuilder_ == null) {
         multiPreviewNodes_ = java.util.Collections.emptyList();
       } else {
@@ -1980,7 +1942,6 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000001);
       isComposePreviewLiteMode_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -2007,8 +1968,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent buildPartial() {
       com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent result = new com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent result) {
       if (multiPreviewNodesBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           multiPreviewNodes_ = java.util.Collections.unmodifiableList(multiPreviewNodes_);
@@ -2018,47 +1984,18 @@ private static final long serialVersionUID = 0L;
       } else {
         result.multiPreviewNodes_ = multiPreviewNodesBuilder_.build();
       }
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.isComposePreviewLiteMode_ = isComposePreviewLiteMode_;
         to_bitField0_ |= 0x00000001;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent) {
@@ -2544,8 +2481,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsComposePreviewLiteMode(boolean value) {
-      bitField0_ |= 0x00000002;
+
       isComposePreviewLiteMode_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }

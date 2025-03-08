@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new AnnotationProcessorsAnalyzerData();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AnnotationProcessorsAnalyzerData_descriptor;
@@ -129,11 +124,6 @@ private static final long serialVersionUID = 0L;
       return new NonIncrementalAnnotationProcessor();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AnnotationProcessorsAnalyzerData_NonIncrementalAnnotationProcessor_descriptor;
@@ -149,7 +139,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int COMPILATION_DURATION_MS_FIELD_NUMBER = 1;
-    private long compilationDurationMs_;
+    private long compilationDurationMs_ = 0L;
     /**
      * <pre>
      * The duration of applying the annotation processor
@@ -176,7 +166,8 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ANNOTATION_PROCESSOR_CLASS_NAME_FIELD_NUMBER = 2;
-    private volatile java.lang.Object annotationProcessorClassName_;
+    @SuppressWarnings("serial")
+    private volatile java.lang.Object annotationProcessorClassName_ = "";
     /**
      * <pre>
      * The class name of the annotation processor.
@@ -450,10 +441,9 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         compilationDurationMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000001);
         annotationProcessorClassName_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -480,6 +470,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor buildPartial() {
         com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor result = new com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -487,46 +483,12 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.annotationProcessorClassName_ = annotationProcessorClassName_;
           to_bitField0_ |= 0x00000002;
         }
-        result.annotationProcessorClassName_ = annotationProcessorClassName_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor) {
@@ -543,8 +505,8 @@ private static final long serialVersionUID = 0L;
           setCompilationDurationMs(other.getCompilationDurationMs());
         }
         if (other.hasAnnotationProcessorClassName()) {
-          bitField0_ |= 0x00000002;
           annotationProcessorClassName_ = other.annotationProcessorClassName_;
+          bitField0_ |= 0x00000002;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -635,8 +597,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCompilationDurationMs(long value) {
-        bitField0_ |= 0x00000001;
+
         compilationDurationMs_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -729,11 +692,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setAnnotationProcessorClassName(
           java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         annotationProcessorClassName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -748,8 +709,8 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearAnnotationProcessorClassName() {
-        bitField0_ = (bitField0_ & ~0x00000002);
         annotationProcessorClassName_ = getDefaultInstance().getAnnotationProcessorClassName();
+        bitField0_ = (bitField0_ & ~0x00000002);
         onChanged();
         return this;
       }
@@ -766,11 +727,9 @@ private static final long serialVersionUID = 0L;
        */
       public Builder setAnnotationProcessorClassNameBytes(
           com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
+        if (value == null) { throw new NullPointerException(); }
         annotationProcessorClassName_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -839,6 +798,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int NON_INCREMENTAL_ANNOTATION_PROCESSORS_FIELD_NUMBER = 1;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor> nonIncrementalAnnotationProcessors_;
   /**
    * <pre>
@@ -1092,6 +1052,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (nonIncrementalAnnotationProcessorsBuilder_ == null) {
         nonIncrementalAnnotationProcessors_ = java.util.Collections.emptyList();
       } else {
@@ -1125,7 +1086,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData buildPartial() {
       com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData result = new com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData(this);
-      int from_bitField0_ = bitField0_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData result) {
       if (nonIncrementalAnnotationProcessorsBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
           nonIncrementalAnnotationProcessors_ = java.util.Collections.unmodifiableList(nonIncrementalAnnotationProcessors_);
@@ -1135,42 +1102,12 @@ private static final long serialVersionUID = 0L;
       } else {
         result.nonIncrementalAnnotationProcessors_ = nonIncrementalAnnotationProcessorsBuilder_.build();
       }
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData) {

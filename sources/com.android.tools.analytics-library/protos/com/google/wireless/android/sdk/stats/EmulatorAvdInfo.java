@@ -36,11 +36,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorAvdInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorAvdInfo_descriptor;
@@ -941,14 +936,16 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object name_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object name_ = "";
   /**
    * <pre>
    * Name of the AVD. Deprecated as it could potentially contain PII.
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+   *     See studio_stats.proto;l=2794
    * @return Whether the name field is set.
    */
   @java.lang.Override
@@ -961,7 +958,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+   *     See studio_stats.proto;l=2794
    * @return The name.
    */
   @java.lang.Override
@@ -985,7 +983,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional string name = 1 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+   *     See studio_stats.proto;l=2794
    * @return The bytes for name.
    */
   @java.lang.Override
@@ -1004,7 +1003,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int API_LEVEL_FIELD_NUMBER = 2;
-  private long apiLevel_;
+  private long apiLevel_ = 0L;
   /**
    * <pre>
    * Api level (23 = M, 24 = N, ...)
@@ -1031,7 +1030,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ARCH_FIELD_NUMBER = 3;
-  private int arch_;
+  private int arch_ = 0;
   /**
    * <pre>
    * CPU architecture.
@@ -1052,13 +1051,12 @@ private static final long serialVersionUID = 0L;
    * @return The arch.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getArch() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(arch_);
+    com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.forNumber(arch_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.UNKNOWN_GUEST_CPU_ARCHITECTURE : result;
   }
 
   public static final int CREATION_TIMESTAMP_FIELD_NUMBER = 4;
-  private long creationTimestamp_;
+  private long creationTimestamp_ = 0L;
   /**
    * <pre>
    * When was this AVD created, UTC Unix timestamp.
@@ -1085,7 +1083,8 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_ID_FIELD_NUMBER = 5;
-  private volatile java.lang.Object buildId_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object buildId_ = "";
   /**
    * <pre>
    * A build-id string from build.prop, something like 'sdk_google_phone 1231231
@@ -1148,7 +1147,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int BUILD_TIMESTAMP_FIELD_NUMBER = 6;
-  private long buildTimestamp_;
+  private long buildTimestamp_ = 0L;
   /**
    * <pre>
    * Unix build UTC timestamp.
@@ -1175,7 +1174,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int IMAGE_KIND_FIELD_NUMBER = 7;
-  private int imageKind_;
+  private int imageKind_ = 0;
   /**
    * <pre>
    * Kind of the image (e.g. pure AOSP, with Google APIs, etc.).
@@ -1196,12 +1195,12 @@ private static final long serialVersionUID = 0L;
    * @return The imageKind.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind getImageKind() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.valueOf(imageKind_);
+    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.forNumber(imageKind_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.UNKNOWN_EMULATOR_AVD_IMAGE_KIND : result;
   }
 
   public static final int FILES_FIELD_NUMBER = 8;
+  @SuppressWarnings("serial")
   private java.util.List<com.google.wireless.android.sdk.stats.EmulatorAvdFile> files_;
   /**
    * <pre>
@@ -1267,14 +1266,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROPERTIES_FIELD_NUMBER = 9;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> properties_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty> properties_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty>() {
             public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.valueOf(from);
+              com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty.UNKNOWN_EMULATOR_AVD_FLAG : result;
             }
           };
@@ -1321,7 +1320,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DEVICE_NAME_FIELD_NUMBER = 10;
-  private int deviceName_;
+  private int deviceName_ = 0;
   /**
    * <pre>
    * Device name of the AVD (for example, PIXEL_2)
@@ -1342,8 +1341,7 @@ private static final long serialVersionUID = 0L;
    * @return The deviceName.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName getDeviceName() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(deviceName_);
+    com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.forNumber(deviceName_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.UNKNOWN_EMULATOR_DEVICE_NAME : result;
   }
 
@@ -1684,20 +1682,14 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       name_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       apiLevel_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000002);
       arch_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       creationTimestamp_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000008);
       buildId_ = "";
-      bitField0_ = (bitField0_ & ~0x00000010);
       buildTimestamp_ = 0L;
-      bitField0_ = (bitField0_ & ~0x00000020);
       imageKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000040);
       if (filesBuilder_ == null) {
         files_ = java.util.Collections.emptyList();
       } else {
@@ -1708,7 +1700,6 @@ private static final long serialVersionUID = 0L;
       properties_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000100);
       deviceName_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000200);
       return this;
     }
 
@@ -1735,36 +1726,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorAvdInfo result = new com.google.wireless.android.sdk.stats.EmulatorAvdInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.name_ = name_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.apiLevel_ = apiLevel_;
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        to_bitField0_ |= 0x00000004;
-      }
-      result.arch_ = arch_;
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        result.creationTimestamp_ = creationTimestamp_;
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        to_bitField0_ |= 0x00000010;
-      }
-      result.buildId_ = buildId_;
-      if (((from_bitField0_ & 0x00000020) != 0)) {
-        result.buildTimestamp_ = buildTimestamp_;
-        to_bitField0_ |= 0x00000020;
-      }
-      if (((from_bitField0_ & 0x00000040) != 0)) {
-        to_bitField0_ |= 0x00000040;
-      }
-      result.imageKind_ = imageKind_;
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.EmulatorAvdInfo result) {
       if (filesBuilder_ == null) {
         if (((bitField0_ & 0x00000080) != 0)) {
           files_ = java.util.Collections.unmodifiableList(files_);
@@ -1779,47 +1747,46 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000100);
       }
       result.properties_ = properties_;
-      if (((from_bitField0_ & 0x00000200) != 0)) {
-        to_bitField0_ |= 0x00000080;
-      }
-      result.deviceName_ = deviceName_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorAvdInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.name_ = name_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.apiLevel_ = apiLevel_;
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.arch_ = arch_;
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.creationTimestamp_ = creationTimestamp_;
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.buildId_ = buildId_;
+        to_bitField0_ |= 0x00000010;
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.buildTimestamp_ = buildTimestamp_;
+        to_bitField0_ |= 0x00000020;
+      }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.imageKind_ = imageKind_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.deviceName_ = deviceName_;
+        to_bitField0_ |= 0x00000080;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorAvdInfo) {
@@ -1833,8 +1800,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.EmulatorAvdInfo other) {
       if (other == com.google.wireless.android.sdk.stats.EmulatorAvdInfo.getDefaultInstance()) return this;
       if (other.hasName()) {
-        bitField0_ |= 0x00000001;
         name_ = other.name_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasApiLevel()) {
@@ -1847,8 +1814,8 @@ private static final long serialVersionUID = 0L;
         setCreationTimestamp(other.getCreationTimestamp());
       }
       if (other.hasBuildId()) {
-        bitField0_ |= 0x00000010;
         buildId_ = other.buildId_;
+        bitField0_ |= 0x00000010;
         onChanged();
       }
       if (other.hasBuildTimestamp()) {
@@ -2049,7 +2016,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @return Whether the name field is set.
      */
     @java.lang.Deprecated public boolean hasName() {
@@ -2061,7 +2029,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @return The name.
      */
     @java.lang.Deprecated public java.lang.String getName() {
@@ -2084,7 +2053,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @return The bytes for name.
      */
     @java.lang.Deprecated public com.google.protobuf.ByteString
@@ -2106,17 +2076,16 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @param value The name to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2126,12 +2095,13 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       name_ = getDefaultInstance().getName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -2141,17 +2111,16 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional string name = 1 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.EmulatorAvdInfo.name is deprecated.
+     *     See studio_stats.proto;l=2794
      * @param value The bytes for name to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       name_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -2191,8 +2160,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setApiLevel(long value) {
-      bitField0_ |= 0x00000002;
+
       apiLevel_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -2233,8 +2203,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getArch() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(arch_);
+      com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.forNumber(arch_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.UNKNOWN_GUEST_CPU_ARCHITECTURE : result;
     }
     /**
@@ -2305,8 +2274,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCreationTimestamp(long value) {
-      bitField0_ |= 0x00000008;
+
       creationTimestamp_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -2395,11 +2365,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setBuildId(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       buildId_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2413,8 +2381,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearBuildId() {
-      bitField0_ = (bitField0_ & ~0x00000010);
       buildId_ = getDefaultInstance().getBuildId();
+      bitField0_ = (bitField0_ & ~0x00000010);
       onChanged();
       return this;
     }
@@ -2430,11 +2398,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setBuildIdBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000010;
+      if (value == null) { throw new NullPointerException(); }
       buildId_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -2474,8 +2440,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setBuildTimestamp(long value) {
-      bitField0_ |= 0x00000020;
+
       buildTimestamp_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -2516,8 +2483,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind getImageKind() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.valueOf(imageKind_);
+      com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.forNumber(imageKind_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.UNKNOWN_EMULATOR_AVD_IMAGE_KIND : result;
     }
     /**
@@ -3026,8 +2992,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName getDeviceName() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.valueOf(deviceName_);
+      com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.forNumber(deviceName_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorDeviceName.UNKNOWN_EMULATOR_DEVICE_NAME : result;
     }
     /**

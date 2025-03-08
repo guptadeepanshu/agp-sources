@@ -25,11 +25,6 @@ private static final long serialVersionUID = 0L;
     return new SmlChatBotEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_descriptor;
@@ -1040,11 +1035,6 @@ private static final long serialVersionUID = 0L;
       return new BotResponse();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_BotResponse_descriptor;
@@ -1086,7 +1076,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LATENCY_MS_FIELD_NUMBER = 2;
-    private long latencyMs_;
+    private long latencyMs_ = 0L;
     /**
      * <code>optional uint64 latency_ms = 2;</code>
      * @return Whether the latencyMs field is set.
@@ -1105,7 +1095,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int RETRIEVAL_LATENCY_MS_FIELD_NUMBER = 3;
-    private long retrievalLatencyMs_;
+    private long retrievalLatencyMs_ = 0L;
     /**
      * <pre>
      * Currently, fact retrieval is a different API from the chat API. But
@@ -1374,16 +1364,14 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         latencyMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000002);
         retrievalLatencyMs_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1410,14 +1398,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
@@ -1428,43 +1420,9 @@ private static final long serialVersionUID = 0L;
           result.retrievalLatencyMs_ = retrievalLatencyMs_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotResponse) {
@@ -1576,11 +1534,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1590,11 +1548,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -1603,31 +1561,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1689,8 +1646,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLatencyMs(long value) {
-        bitField0_ |= 0x00000002;
+
         latencyMs_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1755,8 +1713,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setRetrievalLatencyMs(long value) {
-        bitField0_ |= 0x00000004;
+
         retrievalLatencyMs_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1896,11 +1855,6 @@ private static final long serialVersionUID = 0L;
       return new UserFeedback();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_UserFeedback_descriptor;
@@ -2047,7 +2001,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int SENTIMENT_FIELD_NUMBER = 2;
-    private int sentiment_;
+    private int sentiment_ = 0;
     /**
      * <code>optional .android_studio.SmlChatBotEvent.UserFeedback.Sentiment sentiment = 2;</code>
      * @return Whether the sentiment field is set.
@@ -2060,8 +2014,7 @@ private static final long serialVersionUID = 0L;
      * @return The sentiment.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment getSentiment() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.valueOf(sentiment_);
+      com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.forNumber(sentiment_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.UNKNOWN : result;
     }
 
@@ -2279,14 +2232,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         sentiment_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -2313,57 +2265,27 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.sentiment_ = sentiment_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.sentiment_ = sentiment_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback) {
@@ -2474,11 +2396,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -2488,11 +2410,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -2501,31 +2423,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -2578,8 +2499,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment getSentiment() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.valueOf(sentiment_);
+        com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.forNumber(sentiment_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.UserFeedback.Sentiment.UNKNOWN : result;
       }
       /**
@@ -2723,11 +2643,6 @@ private static final long serialVersionUID = 0L;
       return new BotInvoked();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_BotInvoked_descriptor;
@@ -2769,7 +2684,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ENTRY_POINT_FIELD_NUMBER = 2;
-    private int entryPoint_;
+    private int entryPoint_ = 0;
     /**
      * <code>optional .android_studio.SmlChatBotEvent.EntryPoint entry_point = 2;</code>
      * @return Whether the entryPoint field is set.
@@ -2782,8 +2697,7 @@ private static final long serialVersionUID = 0L;
      * @return The entryPoint.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint getEntryPoint() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.valueOf(entryPoint_);
+      com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.forNumber(entryPoint_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.UNKNOWN : result;
     }
 
@@ -3001,14 +2915,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         entryPoint_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -3035,57 +2948,27 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.entryPoint_ = entryPoint_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.entryPoint_ = entryPoint_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.BotInvoked) {
@@ -3196,11 +3079,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3210,11 +3093,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3223,31 +3106,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -3300,8 +3182,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint getEntryPoint() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.valueOf(entryPoint_);
+        com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.forNumber(entryPoint_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.EntryPoint.UNKNOWN : result;
       }
       /**
@@ -3457,11 +3338,6 @@ private static final long serialVersionUID = 0L;
       return new ActionInvoked();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_ActionInvoked_descriptor;
@@ -3503,7 +3379,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ACTION_FIELD_NUMBER = 2;
-    private int action_;
+    private int action_ = 0;
     /**
      * <code>optional .android_studio.SmlChatBotEvent.Action action = 2;</code>
      * @return Whether the action field is set.
@@ -3516,13 +3392,12 @@ private static final long serialVersionUID = 0L;
      * @return The action.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action getAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.valueOf(action_);
+      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.forNumber(action_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.INVALID : result;
     }
 
     public static final int FILE_TYPE_FIELD_NUMBER = 3;
-    private int fileType_;
+    private int fileType_ = 0;
     /**
      * <code>optional .android_studio.EditorFileType file_type = 3;</code>
      * @return Whether the fileType field is set.
@@ -3535,8 +3410,7 @@ private static final long serialVersionUID = 0L;
      * @return The fileType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
@@ -3769,16 +3643,14 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         action_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         fileType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -3805,61 +3677,31 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.action_ = action_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.fileType_ = fileType_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.action_ = action_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000004;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionInvoked) {
@@ -3985,11 +3827,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -3999,11 +3841,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -4012,31 +3854,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4089,8 +3930,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action getAction() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.valueOf(action_);
+        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.forNumber(action_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.INVALID : result;
       }
       /**
@@ -4132,8 +3972,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -4300,11 +4139,6 @@ private static final long serialVersionUID = 0L;
       return new ActionResult();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_ActionResult_descriptor;
@@ -4346,7 +4180,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ACTION_FIELD_NUMBER = 2;
-    private int action_;
+    private int action_ = 0;
     /**
      * <code>optional .android_studio.SmlChatBotEvent.Action action = 2;</code>
      * @return Whether the action field is set.
@@ -4359,13 +4193,12 @@ private static final long serialVersionUID = 0L;
      * @return The action.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action getAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.valueOf(action_);
+      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.forNumber(action_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.INVALID : result;
     }
 
     public static final int FILE_TYPE_FIELD_NUMBER = 3;
-    private int fileType_;
+    private int fileType_ = 0;
     /**
      * <code>optional .android_studio.EditorFileType file_type = 3;</code>
      * @return Whether the fileType field is set.
@@ -4378,13 +4211,12 @@ private static final long serialVersionUID = 0L;
      * @return The fileType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
     public static final int SUCCESS_FIELD_NUMBER = 4;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <code>optional bool success = 4;</code>
      * @return Whether the success field is set.
@@ -4648,18 +4480,15 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         action_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         fileType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -4686,65 +4515,35 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.action_ = action_;
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.fileType_ = fileType_;
-        if (((from_bitField0_ & 0x00000008) != 0)) {
-          result.success_ = success_;
-          to_bitField0_ |= 0x00000008;
-        }
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.action_ = action_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.success_ = success_;
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.ActionResult) {
@@ -4878,11 +4677,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -4892,11 +4691,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -4905,31 +4704,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -4982,8 +4780,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action getAction() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.valueOf(action_);
+        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.forNumber(action_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Action.INVALID : result;
       }
       /**
@@ -5025,8 +4822,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -5077,8 +4873,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000008;
+
         success_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -5208,11 +5005,6 @@ private static final long serialVersionUID = 0L;
       return new DependencySuggestion();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_DependencySuggestion_descriptor;
@@ -5254,7 +5046,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int ACCEPTED_FIELD_NUMBER = 2;
-    private boolean accepted_;
+    private boolean accepted_ = false;
     /**
      * <code>optional bool accepted = 2;</code>
      * @return Whether the accepted field is set.
@@ -5488,14 +5280,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         accepted_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -5522,57 +5313,27 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
           result.accepted_ = accepted_;
           to_bitField0_ |= 0x00000002;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.DependencySuggestion) {
@@ -5676,11 +5437,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -5690,11 +5451,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -5703,31 +5464,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -5789,8 +5549,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setAccepted(boolean value) {
-        bitField0_ |= 0x00000002;
+
         accepted_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -5906,11 +5667,6 @@ private static final long serialVersionUID = 0L;
       return new SlashAction();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_SlashAction_descriptor;
@@ -5926,7 +5682,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int COMMAND_FIELD_NUMBER = 1;
-    private int command_;
+    private int command_ = 0;
     /**
      * <code>optional .android_studio.SmlChatBotEvent.Command command = 1;</code>
      * @return Whether the command field is set.
@@ -5939,8 +5695,7 @@ private static final long serialVersionUID = 0L;
      * @return The command.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command getCommand() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.valueOf(command_);
+      com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.forNumber(command_);
       return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.CMD_OTHER : result;
     }
 
@@ -6136,8 +5891,8 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         command_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -6164,49 +5919,21 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.command_ = command_;
-        result.bitField0_ = to_bitField0_;
+        if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.command_ = command_;
+          to_bitField0_ |= 0x00000001;
+        }
+        result.bitField0_ |= to_bitField0_;
       }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
+
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.SlashAction) {
@@ -6291,8 +6018,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command getCommand() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.valueOf(command_);
+        com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.forNumber(command_);
         return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.Command.CMD_OTHER : result;
       }
       /**
@@ -6420,7 +6146,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool success = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+     *     See studio_stats.proto;l=15391
      * @return Whether the success field is set.
      */
     @java.lang.Deprecated boolean hasSuccess();
@@ -6431,7 +6158,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool success = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+     *     See studio_stats.proto;l=15391
      * @return The success.
      */
     @java.lang.Deprecated boolean getSuccess();
@@ -6491,11 +6219,6 @@ private static final long serialVersionUID = 0L;
       return new ParseResult();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_ParseResult_descriptor;
@@ -6537,7 +6260,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FILE_TYPE_FIELD_NUMBER = 2;
-    private int fileType_;
+    private int fileType_ = 0;
     /**
      * <code>optional .android_studio.EditorFileType file_type = 2;</code>
      * @return Whether the fileType field is set.
@@ -6550,13 +6273,12 @@ private static final long serialVersionUID = 0L;
      * @return The fileType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
     public static final int SUCCESS_FIELD_NUMBER = 3;
-    private boolean success_;
+    private boolean success_ = false;
     /**
      * <pre>
      * success indicates that the code snippet was able to be parsed
@@ -6564,7 +6286,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool success = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+     *     See studio_stats.proto;l=15391
      * @return Whether the success field is set.
      */
     @java.lang.Override
@@ -6578,7 +6301,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool success = 3 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+     *     See studio_stats.proto;l=15391
      * @return The success.
      */
     @java.lang.Override
@@ -6587,7 +6311,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int HAS_ERROR_FIELD_NUMBER = 4;
-    private boolean hasError_;
+    private boolean hasError_ = false;
     /**
      * <pre>
      * has_error indicates that the code snippet was parsed successfully,
@@ -6616,7 +6340,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int DID_TIMEOUT_FIELD_NUMBER = 5;
-    private boolean didTimeout_;
+    private boolean didTimeout_ = false;
     /**
      * <code>optional bool did_timeout = 5;</code>
      * @return Whether the didTimeout field is set.
@@ -6899,20 +6623,16 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         fileType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000002);
         success_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         hasError_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
         didTimeout_ = false;
-        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -6939,20 +6659,24 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.fileType_ = fileType_;
           to_bitField0_ |= 0x00000002;
         }
-        result.fileType_ = fileType_;
         if (((from_bitField0_ & 0x00000004) != 0)) {
           result.success_ = success_;
           to_bitField0_ |= 0x00000004;
@@ -6965,43 +6689,9 @@ private static final long serialVersionUID = 0L;
           result.didTimeout_ = didTimeout_;
           to_bitField0_ |= 0x00000010;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.ParseResult) {
@@ -7136,11 +6826,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -7150,11 +6840,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -7163,31 +6853,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -7240,8 +6929,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -7277,7 +6965,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool success = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+       *     See studio_stats.proto;l=15391
        * @return Whether the success field is set.
        */
       @java.lang.Override
@@ -7291,7 +6980,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool success = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+       *     See studio_stats.proto;l=15391
        * @return The success.
        */
       @java.lang.Override
@@ -7305,13 +6995,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool success = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+       *     See studio_stats.proto;l=15391
        * @param value The success to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setSuccess(boolean value) {
-        bitField0_ |= 0x00000004;
+
         success_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -7322,7 +7014,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool success = 3 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.SmlChatBotEvent.ParseResult.success is deprecated.
+       *     See studio_stats.proto;l=15391
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearSuccess() {
@@ -7370,8 +7063,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setHasError(boolean value) {
-        bitField0_ |= 0x00000008;
+
         hasError_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -7414,8 +7108,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDidTimeout(boolean value) {
-        bitField0_ |= 0x00000010;
+
         didTimeout_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -7628,11 +7323,6 @@ private static final long serialVersionUID = 0L;
       return new HallucinationDetectorResult();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlChatBotEvent_HallucinationDetectorResult_descriptor;
@@ -7674,7 +7364,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int HAS_HALLUCINATION_FIELD_NUMBER = 2;
-    private boolean hasHallucination_;
+    private boolean hasHallucination_ = false;
     /**
      * <code>optional bool has_hallucination = 2;</code>
      * @return Whether the hasHallucination field is set.
@@ -7693,7 +7383,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int FILE_TYPE_FIELD_NUMBER = 3;
-    private int fileType_;
+    private int fileType_ = 0;
     /**
      * <code>optional .android_studio.EditorFileType file_type = 3;</code>
      * @return Whether the fileType field is set.
@@ -7706,20 +7396,19 @@ private static final long serialVersionUID = 0L;
      * @return The fileType.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
     }
 
     public static final int CODE_DOMAINS_FIELD_NUMBER = 4;
+    @SuppressWarnings("serial")
     private java.util.List<java.lang.Integer> codeDomains_;
     private static final com.google.protobuf.Internal.ListAdapter.Converter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain> codeDomains_converter_ =
             new com.google.protobuf.Internal.ListAdapter.Converter<
                 java.lang.Integer, com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain>() {
               public com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain convert(java.lang.Integer from) {
-                @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain.valueOf(from);
+                com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain.forNumber(from);
                 return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.CodeDomain.UNDEFINED : result;
               }
             };
@@ -7764,14 +7453,14 @@ private static final long serialVersionUID = 0L;
     private int codeDomainsMemoizedSerializedSize;
 
     public static final int HALLUCINATION_TYPES_FIELD_NUMBER = 5;
+    @SuppressWarnings("serial")
     private java.util.List<java.lang.Integer> hallucinationTypes_;
     private static final com.google.protobuf.Internal.ListAdapter.Converter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType> hallucinationTypes_converter_ =
             new com.google.protobuf.Internal.ListAdapter.Converter<
                 java.lang.Integer, com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType>() {
               public com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType convert(java.lang.Integer from) {
-                @SuppressWarnings("deprecation")
-                com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType.valueOf(from);
+                com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType result = com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType.forNumber(from);
                 return result == null ? com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationType.OTHER : result;
               }
             };
@@ -7816,7 +7505,7 @@ private static final long serialVersionUID = 0L;
     private int hallucinationTypesMemoizedSerializedSize;
 
     public static final int DID_TIMEOUT_FIELD_NUMBER = 6;
-    private boolean didTimeout_;
+    private boolean didTimeout_ = false;
     /**
      * <code>optional bool did_timeout = 6;</code>
      * @return Whether the didTimeout field is set.
@@ -8131,22 +7820,19 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-        } else {
-          metadataBuilder_.clear();
+        bitField0_ = 0;
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         hasHallucination_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         fileType_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
         codeDomains_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000008);
         hallucinationTypes_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000010);
         didTimeout_ = false;
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -8173,24 +7859,13 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult buildPartial() {
         com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (metadataBuilder_ == null) {
-            result.metadata_ = metadata_;
-          } else {
-            result.metadata_ = metadataBuilder_.build();
-          }
-          to_bitField0_ |= 0x00000001;
-        }
-        if (((from_bitField0_ & 0x00000002) != 0)) {
-          result.hasHallucination_ = hasHallucination_;
-          to_bitField0_ |= 0x00000002;
-        }
-        if (((from_bitField0_ & 0x00000004) != 0)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.fileType_ = fileType_;
+        buildPartialRepeatedFields(result);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult result) {
         if (((bitField0_ & 0x00000008) != 0)) {
           codeDomains_ = java.util.Collections.unmodifiableList(codeDomains_);
           bitField0_ = (bitField0_ & ~0x00000008);
@@ -8201,47 +7876,32 @@ private static final long serialVersionUID = 0L;
           bitField0_ = (bitField0_ & ~0x00000010);
         }
         result.hallucinationTypes_ = hallucinationTypes_;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.metadata_ = metadataBuilder_ == null
+              ? metadata_
+              : metadataBuilder_.build();
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.hasHallucination_ = hasHallucination_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000004;
+        }
         if (((from_bitField0_ & 0x00000020) != 0)) {
           result.didTimeout_ = didTimeout_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent.HallucinationDetectorResult) {
@@ -8446,11 +8106,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           metadata_ = value;
-          onChanged();
         } else {
           metadataBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -8460,11 +8120,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.SmlResponseMetadata.Builder builderForValue) {
         if (metadataBuilder_ == null) {
           metadata_ = builderForValue.build();
-          onChanged();
         } else {
           metadataBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -8473,31 +8133,30 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMetadata(com.google.wireless.android.sdk.stats.SmlResponseMetadata value) {
         if (metadataBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              metadata_ != null &&
-              metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
-            metadata_ =
-              com.google.wireless.android.sdk.stats.SmlResponseMetadata.newBuilder(metadata_).mergeFrom(value).buildPartial();
+            metadata_ != null &&
+            metadata_ != com.google.wireless.android.sdk.stats.SmlResponseMetadata.getDefaultInstance()) {
+            getMetadataBuilder().mergeFrom(value);
           } else {
             metadata_ = value;
           }
-          onChanged();
         } else {
           metadataBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
        * <code>optional .android_studio.SmlResponseMetadata metadata = 1 [lazy = true];</code>
        */
       public Builder clearMetadata() {
-        if (metadataBuilder_ == null) {
-          metadata_ = null;
-          onChanged();
-        } else {
-          metadataBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        metadata_ = null;
+        if (metadataBuilder_ != null) {
+          metadataBuilder_.dispose();
+          metadataBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -8559,8 +8218,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setHasHallucination(boolean value) {
-        bitField0_ |= 0x00000002;
+
         hasHallucination_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -8589,8 +8249,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
         return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
       }
       /**
@@ -8869,8 +8528,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setDidTimeout(boolean value) {
-        bitField0_ |= 0x00000020;
+
         didTimeout_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -8950,6 +8610,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   private int contentCase_ = 0;
+  @SuppressWarnings("serial")
   private java.lang.Object content_;
   public enum ContentCase
       implements com.google.protobuf.Internal.EnumLite,
@@ -9604,6 +9265,7 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       if (responseBuilder_ != null) {
         responseBuilder_.clear();
       }
@@ -9659,109 +9321,57 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.SmlChatBotEvent buildPartial() {
       com.google.wireless.android.sdk.stats.SmlChatBotEvent result = new com.google.wireless.android.sdk.stats.SmlChatBotEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (contentCase_ == 1) {
-        if (responseBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = responseBuilder_.build();
-        }
-      }
-      if (contentCase_ == 2) {
-        if (userFeedbackBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = userFeedbackBuilder_.build();
-        }
-      }
-      if (contentCase_ == 3) {
-        if (actionInvokedBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = actionInvokedBuilder_.build();
-        }
-      }
-      if (contentCase_ == 4) {
-        if (actionResultBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = actionResultBuilder_.build();
-        }
-      }
-      if (contentCase_ == 5) {
-        if (parseResultBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = parseResultBuilder_.build();
-        }
-      }
-      if (contentCase_ == 6) {
-        if (botInvokedBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = botInvokedBuilder_.build();
-        }
-      }
-      if (contentCase_ == 7) {
-        if (slashActionBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = slashActionBuilder_.build();
-        }
-      }
-      if (contentCase_ == 8) {
-        if (dependencySuggestionBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = dependencySuggestionBuilder_.build();
-        }
-      }
-      if (contentCase_ == 9) {
-        if (hallucinationDetectorResultBuilder_ == null) {
-          result.content_ = content_;
-        } else {
-          result.content_ = hallucinationDetectorResultBuilder_.build();
-        }
-      }
-      result.bitField0_ = to_bitField0_;
-      result.contentCase_ = contentCase_;
+      if (bitField0_ != 0) { buildPartial0(result); }
+      buildPartialOneofs(result);
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.SmlChatBotEvent result) {
+      int from_bitField0_ = bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
+
+    private void buildPartialOneofs(com.google.wireless.android.sdk.stats.SmlChatBotEvent result) {
+      result.contentCase_ = contentCase_;
+      result.content_ = this.content_;
+      if (contentCase_ == 1 &&
+          responseBuilder_ != null) {
+        result.content_ = responseBuilder_.build();
+      }
+      if (contentCase_ == 2 &&
+          userFeedbackBuilder_ != null) {
+        result.content_ = userFeedbackBuilder_.build();
+      }
+      if (contentCase_ == 3 &&
+          actionInvokedBuilder_ != null) {
+        result.content_ = actionInvokedBuilder_.build();
+      }
+      if (contentCase_ == 4 &&
+          actionResultBuilder_ != null) {
+        result.content_ = actionResultBuilder_.build();
+      }
+      if (contentCase_ == 5 &&
+          parseResultBuilder_ != null) {
+        result.content_ = parseResultBuilder_.build();
+      }
+      if (contentCase_ == 6 &&
+          botInvokedBuilder_ != null) {
+        result.content_ = botInvokedBuilder_.build();
+      }
+      if (contentCase_ == 7 &&
+          slashActionBuilder_ != null) {
+        result.content_ = slashActionBuilder_.build();
+      }
+      if (contentCase_ == 8 &&
+          dependencySuggestionBuilder_ != null) {
+        result.content_ = dependencySuggestionBuilder_.build();
+      }
+      if (contentCase_ == 9 &&
+          hallucinationDetectorResultBuilder_ != null) {
+        result.content_ = hallucinationDetectorResultBuilder_.build();
+      }
     }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.SmlChatBotEvent) {
@@ -10010,8 +9620,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 1) {
           responseBuilder_.mergeFrom(value);
+        } else {
+          responseBuilder_.setMessage(value);
         }
-        responseBuilder_.setMessage(value);
       }
       contentCase_ = 1;
       return this;
@@ -10073,7 +9684,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 1;
-      onChanged();;
+      onChanged();
       return responseBuilder_;
     }
 
@@ -10151,8 +9762,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 2) {
           userFeedbackBuilder_.mergeFrom(value);
+        } else {
+          userFeedbackBuilder_.setMessage(value);
         }
-        userFeedbackBuilder_.setMessage(value);
       }
       contentCase_ = 2;
       return this;
@@ -10214,7 +9826,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 2;
-      onChanged();;
+      onChanged();
       return userFeedbackBuilder_;
     }
 
@@ -10292,8 +9904,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 3) {
           actionInvokedBuilder_.mergeFrom(value);
+        } else {
+          actionInvokedBuilder_.setMessage(value);
         }
-        actionInvokedBuilder_.setMessage(value);
       }
       contentCase_ = 3;
       return this;
@@ -10355,7 +9968,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 3;
-      onChanged();;
+      onChanged();
       return actionInvokedBuilder_;
     }
 
@@ -10433,8 +10046,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 4) {
           actionResultBuilder_.mergeFrom(value);
+        } else {
+          actionResultBuilder_.setMessage(value);
         }
-        actionResultBuilder_.setMessage(value);
       }
       contentCase_ = 4;
       return this;
@@ -10496,7 +10110,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 4;
-      onChanged();;
+      onChanged();
       return actionResultBuilder_;
     }
 
@@ -10574,8 +10188,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 5) {
           parseResultBuilder_.mergeFrom(value);
+        } else {
+          parseResultBuilder_.setMessage(value);
         }
-        parseResultBuilder_.setMessage(value);
       }
       contentCase_ = 5;
       return this;
@@ -10637,7 +10252,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 5;
-      onChanged();;
+      onChanged();
       return parseResultBuilder_;
     }
 
@@ -10715,8 +10330,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 6) {
           botInvokedBuilder_.mergeFrom(value);
+        } else {
+          botInvokedBuilder_.setMessage(value);
         }
-        botInvokedBuilder_.setMessage(value);
       }
       contentCase_ = 6;
       return this;
@@ -10778,7 +10394,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 6;
-      onChanged();;
+      onChanged();
       return botInvokedBuilder_;
     }
 
@@ -10856,8 +10472,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 7) {
           slashActionBuilder_.mergeFrom(value);
+        } else {
+          slashActionBuilder_.setMessage(value);
         }
-        slashActionBuilder_.setMessage(value);
       }
       contentCase_ = 7;
       return this;
@@ -10919,7 +10536,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 7;
-      onChanged();;
+      onChanged();
       return slashActionBuilder_;
     }
 
@@ -10997,8 +10614,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 8) {
           dependencySuggestionBuilder_.mergeFrom(value);
+        } else {
+          dependencySuggestionBuilder_.setMessage(value);
         }
-        dependencySuggestionBuilder_.setMessage(value);
       }
       contentCase_ = 8;
       return this;
@@ -11060,7 +10678,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 8;
-      onChanged();;
+      onChanged();
       return dependencySuggestionBuilder_;
     }
 
@@ -11138,8 +10756,9 @@ private static final long serialVersionUID = 0L;
       } else {
         if (contentCase_ == 9) {
           hallucinationDetectorResultBuilder_.mergeFrom(value);
+        } else {
+          hallucinationDetectorResultBuilder_.setMessage(value);
         }
-        hallucinationDetectorResultBuilder_.setMessage(value);
       }
       contentCase_ = 9;
       return this;
@@ -11201,7 +10820,7 @@ private static final long serialVersionUID = 0L;
         content_ = null;
       }
       contentCase_ = 9;
-      onChanged();;
+      onChanged();
       return hallucinationDetectorResultBuilder_;
     }
     @java.lang.Override

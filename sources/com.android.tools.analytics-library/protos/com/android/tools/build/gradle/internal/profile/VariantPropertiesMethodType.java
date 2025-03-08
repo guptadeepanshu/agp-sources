@@ -709,6 +709,10 @@ public enum VariantPropertiesMethodType
    * <code>MIN_SDK = 162;</code>
    */
   MIN_SDK(162),
+  /**
+   * <code>GET_RESOLVABLE_CONFIGURATION = 163;</code>
+   */
+  GET_RESOLVABLE_CONFIGURATION(163),
   UNRECOGNIZED(-1),
   ;
 
@@ -1412,6 +1416,10 @@ public enum VariantPropertiesMethodType
    * <code>MIN_SDK = 162;</code>
    */
   public static final int MIN_SDK_VALUE = 162;
+  /**
+   * <code>GET_RESOLVABLE_CONFIGURATION = 163;</code>
+   */
+  public static final int GET_RESOLVABLE_CONFIGURATION_VALUE = 163;
 
 
   public final int getNumber() {
@@ -1601,6 +1609,7 @@ public enum VariantPropertiesMethodType
       case 160: return DEVICE_TEST_CODE_COVERAGE_ENABLED;
       case 161: return PROVIDE_APK_OUTPUT_TO_TASK;
       case 162: return MIN_SDK;
+      case 163: return GET_RESOLVABLE_CONFIGURATION;
       default: return null;
     }
   }

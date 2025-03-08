@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new LogcatUsageEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_descriptor;
@@ -295,11 +290,6 @@ private static final long serialVersionUID = 0L;
       return new LogcatFormatDialog();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_LogcatFormatDialog_descriptor;
@@ -353,7 +343,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_DEFAULT_PRESET_FIELD_NUMBER = 2;
-    private boolean isDefaultPreset_;
+    private boolean isDefaultPreset_ = false;
     /**
      * <pre>
      * The state of the "set as default" checkbox
@@ -380,7 +370,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_APPLY_BUTTON_USED_FIELD_NUMBER = 3;
-    private boolean isApplyButtonUsed_;
+    private boolean isApplyButtonUsed_ = false;
     /**
      * <pre>
      * True if the "Apply" button was used as opposed to "OK"
@@ -643,16 +633,14 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (configurationBuilder_ == null) {
-          configuration_ = null;
-        } else {
-          configurationBuilder_.clear();
+        bitField0_ = 0;
+        configuration_ = null;
+        if (configurationBuilder_ != null) {
+          configurationBuilder_.dispose();
+          configurationBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         isDefaultPreset_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         isApplyButtonUsed_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -679,14 +667,18 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog buildPartial() {
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (configurationBuilder_ == null) {
-            result.configuration_ = configuration_;
-          } else {
-            result.configuration_ = configurationBuilder_.build();
-          }
+          result.configuration_ = configurationBuilder_ == null
+              ? configuration_
+              : configurationBuilder_.build();
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
@@ -697,43 +689,9 @@ private static final long serialVersionUID = 0L;
           result.isApplyButtonUsed_ = isApplyButtonUsed_;
           to_bitField0_ |= 0x00000004;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog) {
@@ -857,11 +815,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           configuration_ = value;
-          onChanged();
         } else {
           configurationBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -875,11 +833,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
         if (configurationBuilder_ == null) {
           configuration_ = builderForValue.build();
-          onChanged();
         } else {
           configurationBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -892,18 +850,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (configurationBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              configuration_ != null &&
-              configuration_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
-            configuration_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.newBuilder(configuration_).mergeFrom(value).buildPartial();
+            configuration_ != null &&
+            configuration_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
+            getConfigurationBuilder().mergeFrom(value);
           } else {
             configuration_ = value;
           }
-          onChanged();
         } else {
           configurationBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -914,13 +871,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration configuration = 1 [lazy = true];</code>
        */
       public Builder clearConfiguration() {
-        if (configurationBuilder_ == null) {
-          configuration_ = null;
-          onChanged();
-        } else {
-          configurationBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        configuration_ = null;
+        if (configurationBuilder_ != null) {
+          configurationBuilder_.dispose();
+          configurationBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -1006,8 +963,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsDefaultPreset(boolean value) {
-        bitField0_ |= 0x00000002;
+
         isDefaultPreset_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -1061,8 +1019,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsApplyButtonUsed(boolean value) {
-        bitField0_ |= 0x00000004;
+
         isApplyButtonUsed_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -1363,7 +1322,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+     *     See studio_stats.proto;l=13595
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Deprecated boolean hasIsDefaultPreset();
@@ -1373,7 +1333,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+     *     See studio_stats.proto;l=13595
      * @return The isDefaultPreset.
      */
     @java.lang.Deprecated boolean getIsDefaultPreset();
@@ -1384,7 +1345,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+     *     See studio_stats.proto;l=13598
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Deprecated boolean hasIsApplyButtonUsed();
@@ -1394,7 +1356,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+     *     See studio_stats.proto;l=13598
      * @return The isApplyButtonUsed.
      */
     @java.lang.Deprecated boolean getIsApplyButtonUsed();
@@ -1426,11 +1389,6 @@ private static final long serialVersionUID = 0L;
       return new LogcatFormatConfiguration();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_LogcatFormatConfiguration_descriptor;
@@ -1579,7 +1537,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int IS_SHOW_TIMESTAMP_FIELD_NUMBER = 1;
-    private boolean isShowTimestamp_;
+    private boolean isShowTimestamp_ = false;
     /**
      * <pre>
      * Show timestamp field
@@ -1606,7 +1564,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_DATE_FIELD_NUMBER = 2;
-    private boolean isShowDate_;
+    private boolean isShowDate_ = false;
     /**
      * <pre>
      * Timestamp format includes the date
@@ -1633,7 +1591,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_PROCESS_ID_FIELD_NUMBER = 3;
-    private boolean isShowProcessId_;
+    private boolean isShowProcessId_ = false;
     /**
      * <pre>
      * Show the process id field
@@ -1660,7 +1618,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_THREAD_ID_FIELD_NUMBER = 4;
-    private boolean isShowThreadId_;
+    private boolean isShowThreadId_ = false;
     /**
      * <pre>
      * Show the thread id field
@@ -1687,7 +1645,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_TAGS_FIELD_NUMBER = 5;
-    private boolean isShowTags_;
+    private boolean isShowTags_ = false;
     /**
      * <pre>
      * Show the tag field
@@ -1714,7 +1672,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_REPEATED_TAGS_FIELD_NUMBER = 6;
-    private boolean isShowRepeatedTags_;
+    private boolean isShowRepeatedTags_ = false;
     /**
      * <pre>
      * Show repeated tags
@@ -1741,7 +1699,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int TAG_WIDTH_FIELD_NUMBER = 7;
-    private int tagWidth_;
+    private int tagWidth_ = 0;
     /**
      * <pre>
      * The width of the tag field
@@ -1768,7 +1726,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_PACKAGES_FIELD_NUMBER = 8;
-    private boolean isShowPackages_;
+    private boolean isShowPackages_ = false;
     /**
      * <pre>
      * Show the package field
@@ -1795,7 +1753,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_SHOW_REPEATED_PACKAGES_FIELD_NUMBER = 9;
-    private boolean isShowRepeatedPackages_;
+    private boolean isShowRepeatedPackages_ = false;
     /**
      * <pre>
      * Show repeated packages
@@ -1822,7 +1780,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PACKAGE_WIDTH_FIELD_NUMBER = 10;
-    private int packageWidth_;
+    private int packageWidth_ = 0;
     /**
      * <pre>
      * The width of the package field
@@ -1849,7 +1807,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PRESET_FIELD_NUMBER = 11;
-    private int preset_;
+    private int preset_ = 0;
     /**
      * <pre>
      * The preset configuration if applicable
@@ -1870,20 +1828,20 @@ private static final long serialVersionUID = 0L;
      * @return The preset.
      */
     @java.lang.Override public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset getPreset() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.valueOf(preset_);
+      com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.forNumber(preset_);
       return result == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.UNKNOWN_PRESET : result;
     }
 
     public static final int IS_DEFAULT_PRESET_FIELD_NUMBER = 12;
-    private boolean isDefaultPreset_;
+    private boolean isDefaultPreset_ = false;
     /**
      * <pre>
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+     *     See studio_stats.proto;l=13595
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Override
@@ -1896,7 +1854,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+     *     See studio_stats.proto;l=13595
      * @return The isDefaultPreset.
      */
     @java.lang.Override
@@ -1905,14 +1864,15 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_APPLY_BUTTON_USED_FIELD_NUMBER = 13;
-    private boolean isApplyButtonUsed_;
+    private boolean isApplyButtonUsed_ = false;
     /**
      * <pre>
      * Historical, no longer used for writing as of 02/2022
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+     *     See studio_stats.proto;l=13598
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Override
@@ -1925,7 +1885,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+     *     See studio_stats.proto;l=13598
      * @return The isApplyButtonUsed.
      */
     @java.lang.Override
@@ -2331,32 +2292,20 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         isShowTimestamp_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
         isShowDate_ = false;
-        bitField0_ = (bitField0_ & ~0x00000002);
         isShowProcessId_ = false;
-        bitField0_ = (bitField0_ & ~0x00000004);
         isShowThreadId_ = false;
-        bitField0_ = (bitField0_ & ~0x00000008);
         isShowTags_ = false;
-        bitField0_ = (bitField0_ & ~0x00000010);
         isShowRepeatedTags_ = false;
-        bitField0_ = (bitField0_ & ~0x00000020);
         tagWidth_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         isShowPackages_ = false;
-        bitField0_ = (bitField0_ & ~0x00000080);
         isShowRepeatedPackages_ = false;
-        bitField0_ = (bitField0_ & ~0x00000100);
         packageWidth_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
         preset_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000400);
         isDefaultPreset_ = false;
-        bitField0_ = (bitField0_ & ~0x00000800);
         isApplyButtonUsed_ = false;
-        bitField0_ = (bitField0_ & ~0x00001000);
         return this;
       }
 
@@ -2383,6 +2332,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration buildPartial() {
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -2426,9 +2381,9 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000200;
         }
         if (((from_bitField0_ & 0x00000400) != 0)) {
+          result.preset_ = preset_;
           to_bitField0_ |= 0x00000400;
         }
-        result.preset_ = preset_;
         if (((from_bitField0_ & 0x00000800) != 0)) {
           result.isDefaultPreset_ = isDefaultPreset_;
           to_bitField0_ |= 0x00000800;
@@ -2437,43 +2392,9 @@ private static final long serialVersionUID = 0L;
           result.isApplyButtonUsed_ = isApplyButtonUsed_;
           to_bitField0_ |= 0x00001000;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration) {
@@ -2675,8 +2596,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowTimestamp(boolean value) {
-        bitField0_ |= 0x00000001;
+
         isShowTimestamp_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -2730,8 +2652,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowDate(boolean value) {
-        bitField0_ |= 0x00000002;
+
         isShowDate_ = value;
+        bitField0_ |= 0x00000002;
         onChanged();
         return this;
       }
@@ -2785,8 +2708,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowProcessId(boolean value) {
-        bitField0_ |= 0x00000004;
+
         isShowProcessId_ = value;
+        bitField0_ |= 0x00000004;
         onChanged();
         return this;
       }
@@ -2840,8 +2764,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowThreadId(boolean value) {
-        bitField0_ |= 0x00000008;
+
         isShowThreadId_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -2895,8 +2820,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowTags(boolean value) {
-        bitField0_ |= 0x00000010;
+
         isShowTags_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -2950,8 +2876,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowRepeatedTags(boolean value) {
-        bitField0_ |= 0x00000020;
+
         isShowRepeatedTags_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -3005,8 +2932,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setTagWidth(int value) {
-        bitField0_ |= 0x00000040;
+
         tagWidth_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -3060,8 +2988,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowPackages(boolean value) {
-        bitField0_ |= 0x00000080;
+
         isShowPackages_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -3115,8 +3044,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsShowRepeatedPackages(boolean value) {
-        bitField0_ |= 0x00000100;
+
         isShowRepeatedPackages_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -3170,8 +3100,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPackageWidth(int value) {
-        bitField0_ |= 0x00000200;
+
         packageWidth_ = value;
+        bitField0_ |= 0x00000200;
         onChanged();
         return this;
       }
@@ -3212,8 +3143,7 @@ private static final long serialVersionUID = 0L;
        */
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset getPreset() {
-        @SuppressWarnings("deprecation")
-        com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.valueOf(preset_);
+        com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.forNumber(preset_);
         return result == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Preset.UNKNOWN_PRESET : result;
       }
       /**
@@ -3256,7 +3186,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+       *     See studio_stats.proto;l=13595
        * @return Whether the isDefaultPreset field is set.
        */
       @java.lang.Override
@@ -3269,7 +3200,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+       *     See studio_stats.proto;l=13595
        * @return The isDefaultPreset.
        */
       @java.lang.Override
@@ -3282,13 +3214,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+       *     See studio_stats.proto;l=13595
        * @param value The isDefaultPreset to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setIsDefaultPreset(boolean value) {
-        bitField0_ |= 0x00000800;
+
         isDefaultPreset_ = value;
+        bitField0_ |= 0x00000800;
         onChanged();
         return this;
       }
@@ -3298,7 +3232,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
+       *     See studio_stats.proto;l=13595
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsDefaultPreset() {
@@ -3315,7 +3250,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+       *     See studio_stats.proto;l=13598
        * @return Whether the isApplyButtonUsed field is set.
        */
       @java.lang.Override
@@ -3328,7 +3264,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+       *     See studio_stats.proto;l=13598
        * @return The isApplyButtonUsed.
        */
       @java.lang.Override
@@ -3341,13 +3278,15 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+       *     See studio_stats.proto;l=13598
        * @param value The isApplyButtonUsed to set.
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder setIsApplyButtonUsed(boolean value) {
-        bitField0_ |= 0x00001000;
+
         isApplyButtonUsed_ = value;
+        bitField0_ |= 0x00001000;
         onChanged();
         return this;
       }
@@ -3357,7 +3296,8 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
-       * @deprecated
+       * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
+       *     See studio_stats.proto;l=13598
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsApplyButtonUsed() {
@@ -3810,11 +3750,6 @@ private static final long serialVersionUID = 0L;
       return new LogcatFilterEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_LogcatFilterEvent_descriptor;
@@ -3934,11 +3869,6 @@ private static final long serialVersionUID = 0L;
         return new TermVariants();
       }
 
-      @java.lang.Override
-      public final com.google.protobuf.UnknownFieldSet
-      getUnknownFields() {
-        return this.unknownFields;
-      }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
         return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_LogcatFilterEvent_TermVariants_descriptor;
@@ -3954,7 +3884,7 @@ private static final long serialVersionUID = 0L;
 
       private int bitField0_;
       public static final int COUNT_FIELD_NUMBER = 1;
-      private int count_;
+      private int count_ = 0;
       /**
        * <pre>
        * Number of normal terms (for example 'tag:foo')
@@ -3981,7 +3911,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int COUNT_NEGATED_FIELD_NUMBER = 2;
-      private int countNegated_;
+      private int countNegated_ = 0;
       /**
        * <pre>
        * Number of negated terms (for example '-tag:foo')
@@ -4008,7 +3938,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int COUNT_REGEX_FIELD_NUMBER = 3;
-      private int countRegex_;
+      private int countRegex_ = 0;
       /**
        * <pre>
        * Number of regex terms (for example 'tag~:foo')
@@ -4035,7 +3965,7 @@ private static final long serialVersionUID = 0L;
       }
 
       public static final int COUNT_NEGATED_REGEX_FIELD_NUMBER = 4;
-      private int countNegatedRegex_;
+      private int countNegatedRegex_ = 0;
       /**
        * <pre>
        * Number of negated regex terms (for example '-tag~:foo')
@@ -4306,14 +4236,11 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public Builder clear() {
           super.clear();
+          bitField0_ = 0;
           count_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000001);
           countNegated_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000002);
           countRegex_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000004);
           countNegatedRegex_ = 0;
-          bitField0_ = (bitField0_ & ~0x00000008);
           return this;
         }
 
@@ -4340,6 +4267,12 @@ private static final long serialVersionUID = 0L;
         @java.lang.Override
         public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants buildPartial() {
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants(this);
+          if (bitField0_ != 0) { buildPartial0(result); }
+          onBuilt();
+          return result;
+        }
+
+        private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants result) {
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -4358,43 +4291,9 @@ private static final long serialVersionUID = 0L;
             result.countNegatedRegex_ = countNegatedRegex_;
             to_bitField0_ |= 0x00000008;
           }
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
+          result.bitField0_ |= to_bitField0_;
         }
 
-        @java.lang.Override
-        public Builder clone() {
-          return super.clone();
-        }
-        @java.lang.Override
-        public Builder setField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.setField(field, value);
-        }
-        @java.lang.Override
-        public Builder clearField(
-            com.google.protobuf.Descriptors.FieldDescriptor field) {
-          return super.clearField(field);
-        }
-        @java.lang.Override
-        public Builder clearOneof(
-            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-          return super.clearOneof(oneof);
-        }
-        @java.lang.Override
-        public Builder setRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            int index, java.lang.Object value) {
-          return super.setRepeatedField(field, index, value);
-        }
-        @java.lang.Override
-        public Builder addRepeatedField(
-            com.google.protobuf.Descriptors.FieldDescriptor field,
-            java.lang.Object value) {
-          return super.addRepeatedField(field, value);
-        }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
           if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants) {
@@ -4517,8 +4416,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCount(int value) {
-          bitField0_ |= 0x00000001;
+
           count_ = value;
+          bitField0_ |= 0x00000001;
           onChanged();
           return this;
         }
@@ -4572,8 +4472,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCountNegated(int value) {
-          bitField0_ |= 0x00000002;
+
           countNegated_ = value;
+          bitField0_ |= 0x00000002;
           onChanged();
           return this;
         }
@@ -4627,8 +4528,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCountRegex(int value) {
-          bitField0_ |= 0x00000004;
+
           countRegex_ = value;
+          bitField0_ |= 0x00000004;
           onChanged();
           return this;
         }
@@ -4682,8 +4584,9 @@ private static final long serialVersionUID = 0L;
          * @return This builder for chaining.
          */
         public Builder setCountNegatedRegex(int value) {
-          bitField0_ |= 0x00000008;
+
           countNegatedRegex_ = value;
+          bitField0_ |= 0x00000008;
           onChanged();
           return this;
         }
@@ -4919,7 +4822,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IMPLICIT_LINE_TERMS_FIELD_NUMBER = 5;
-    private int implicitLineTerms_;
+    private int implicitLineTerms_ = 0;
     /**
      * <pre>
      * Number of search terms pertaining to entire log entry. Differs from the
@@ -4948,7 +4851,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int LEVEL_TERMS_FIELD_NUMBER = 6;
-    private int levelTerms_;
+    private int levelTerms_ = 0;
     /**
      * <pre>
      * Number of search terms pertaining to the 'level' field.
@@ -4975,7 +4878,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int AGE_TERMS_FIELD_NUMBER = 7;
-    private int ageTerms_;
+    private int ageTerms_ = 0;
     /**
      * <pre>
      * Number of search terms pertaining to the 'timestamp' field. As in
@@ -5004,7 +4907,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PACKAGE_PROJECT_TERMS_FIELD_NUMBER = 8;
-    private int packageProjectTerms_;
+    private int packageProjectTerms_ = 0;
     /**
      * <pre>
      * Number of the search terms of the form 'package:mine'.
@@ -5031,7 +4934,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int OR_OPERATORS_FIELD_NUMBER = 9;
-    private int orOperators_;
+    private int orOperators_ = 0;
     /**
      * <pre>
      * Number of or operators in the expression
@@ -5058,7 +4961,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int AND_OPERATORS_FIELD_NUMBER = 10;
-    private int andOperators_;
+    private int andOperators_ = 0;
     /**
      * <pre>
      * Number of and operators in the expression
@@ -5085,7 +4988,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int PARENTHESES_FIELD_NUMBER = 11;
-    private int parentheses_;
+    private int parentheses_ = 0;
     /**
      * <pre>
      * Number of parentheses pairs in the expressions
@@ -5112,7 +5015,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CONTAINS_ERRORS_FIELD_NUMBER = 12;
-    private boolean containsErrors_;
+    private boolean containsErrors_ = false;
     /**
      * <pre>
      * Does the filter contain an error
@@ -5139,7 +5042,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int IS_FAVORITE_FIELD_NUMBER = 13;
-    private boolean isFavorite_;
+    private boolean isFavorite_ = false;
     /**
      * <pre>
      * Is this filter saved as a favorite
@@ -5166,7 +5069,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int CRASH_TERMS_FIELD_NUMBER = 14;
-    private int crashTerms_;
+    private int crashTerms_ = 0;
     /**
      * <pre>
      * Number of 'is:crash' search terms.
@@ -5193,7 +5096,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int STACKTRACE_TERMS_FIELD_NUMBER = 15;
-    private int stacktraceTerms_;
+    private int stacktraceTerms_ = 0;
     /**
      * <pre>
      * Number of 'is:stacktrace' search terms.
@@ -5708,58 +5611,43 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (tagTermsBuilder_ == null) {
-          tagTerms_ = null;
-        } else {
-          tagTermsBuilder_.clear();
+        bitField0_ = 0;
+        tagTerms_ = null;
+        if (tagTermsBuilder_ != null) {
+          tagTermsBuilder_.dispose();
+          tagTermsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (packageTermsBuilder_ == null) {
-          packageTerms_ = null;
-        } else {
-          packageTermsBuilder_.clear();
+        packageTerms_ = null;
+        if (packageTermsBuilder_ != null) {
+          packageTermsBuilder_.dispose();
+          packageTermsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (messageTermsBuilder_ == null) {
-          messageTerms_ = null;
-        } else {
-          messageTermsBuilder_.clear();
+        messageTerms_ = null;
+        if (messageTermsBuilder_ != null) {
+          messageTermsBuilder_.dispose();
+          messageTermsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        if (lineTermsBuilder_ == null) {
-          lineTerms_ = null;
-        } else {
-          lineTermsBuilder_.clear();
+        lineTerms_ = null;
+        if (lineTermsBuilder_ != null) {
+          lineTermsBuilder_.dispose();
+          lineTermsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000008);
         implicitLineTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000010);
         levelTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000020);
         ageTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000040);
         packageProjectTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000080);
         orOperators_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000100);
         andOperators_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000200);
         parentheses_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000400);
         containsErrors_ = false;
-        bitField0_ = (bitField0_ & ~0x00000800);
         isFavorite_ = false;
-        bitField0_ = (bitField0_ & ~0x00001000);
         crashTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00002000);
         stacktraceTerms_ = 0;
-        bitField0_ = (bitField0_ & ~0x00004000);
-        if (processTermsBuilder_ == null) {
-          processTerms_ = null;
-        } else {
-          processTermsBuilder_.clear();
+        processTerms_ = null;
+        if (processTermsBuilder_ != null) {
+          processTermsBuilder_.dispose();
+          processTermsBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -5786,38 +5674,36 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent buildPartial() {
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          if (tagTermsBuilder_ == null) {
-            result.tagTerms_ = tagTerms_;
-          } else {
-            result.tagTerms_ = tagTermsBuilder_.build();
-          }
+          result.tagTerms_ = tagTermsBuilder_ == null
+              ? tagTerms_
+              : tagTermsBuilder_.build();
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (packageTermsBuilder_ == null) {
-            result.packageTerms_ = packageTerms_;
-          } else {
-            result.packageTerms_ = packageTermsBuilder_.build();
-          }
+          result.packageTerms_ = packageTermsBuilder_ == null
+              ? packageTerms_
+              : packageTermsBuilder_.build();
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
-          if (messageTermsBuilder_ == null) {
-            result.messageTerms_ = messageTerms_;
-          } else {
-            result.messageTerms_ = messageTermsBuilder_.build();
-          }
+          result.messageTerms_ = messageTermsBuilder_ == null
+              ? messageTerms_
+              : messageTermsBuilder_.build();
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
-          if (lineTermsBuilder_ == null) {
-            result.lineTerms_ = lineTerms_;
-          } else {
-            result.lineTerms_ = lineTermsBuilder_.build();
-          }
+          result.lineTerms_ = lineTermsBuilder_ == null
+              ? lineTerms_
+              : lineTermsBuilder_.build();
           to_bitField0_ |= 0x00000008;
         }
         if (((from_bitField0_ & 0x00000010) != 0)) {
@@ -5865,50 +5751,14 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00004000;
         }
         if (((from_bitField0_ & 0x00008000) != 0)) {
-          if (processTermsBuilder_ == null) {
-            result.processTerms_ = processTerms_;
-          } else {
-            result.processTerms_ = processTermsBuilder_.build();
-          }
+          result.processTerms_ = processTermsBuilder_ == null
+              ? processTerms_
+              : processTermsBuilder_.build();
           to_bitField0_ |= 0x00008000;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent) {
@@ -6144,11 +5994,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           tagTerms_ = value;
-          onChanged();
         } else {
           tagTermsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -6162,11 +6012,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
         if (tagTermsBuilder_ == null) {
           tagTerms_ = builderForValue.build();
-          onChanged();
         } else {
           tagTermsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -6179,18 +6029,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeTagTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (tagTermsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0) &&
-              tagTerms_ != null &&
-              tagTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
-            tagTerms_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(tagTerms_).mergeFrom(value).buildPartial();
+            tagTerms_ != null &&
+            tagTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            getTagTermsBuilder().mergeFrom(value);
           } else {
             tagTerms_ = value;
           }
-          onChanged();
         } else {
           tagTermsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000001;
+        onChanged();
         return this;
       }
       /**
@@ -6201,13 +6050,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants tag_terms = 1 [lazy = true];</code>
        */
       public Builder clearTagTerms() {
-        if (tagTermsBuilder_ == null) {
-          tagTerms_ = null;
-          onChanged();
-        } else {
-          tagTermsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000001);
+        tagTerms_ = null;
+        if (tagTermsBuilder_ != null) {
+          tagTermsBuilder_.dispose();
+          tagTermsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6300,11 +6149,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           packageTerms_ = value;
-          onChanged();
         } else {
           packageTermsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -6318,11 +6167,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
         if (packageTermsBuilder_ == null) {
           packageTerms_ = builderForValue.build();
-          onChanged();
         } else {
           packageTermsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -6335,18 +6184,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergePackageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (packageTermsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              packageTerms_ != null &&
-              packageTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
-            packageTerms_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(packageTerms_).mergeFrom(value).buildPartial();
+            packageTerms_ != null &&
+            packageTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            getPackageTermsBuilder().mergeFrom(value);
           } else {
             packageTerms_ = value;
           }
-          onChanged();
         } else {
           packageTermsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -6357,13 +6205,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants package_terms = 2 [lazy = true];</code>
        */
       public Builder clearPackageTerms() {
-        if (packageTermsBuilder_ == null) {
-          packageTerms_ = null;
-          onChanged();
-        } else {
-          packageTermsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        packageTerms_ = null;
+        if (packageTermsBuilder_ != null) {
+          packageTermsBuilder_.dispose();
+          packageTermsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6456,11 +6304,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           messageTerms_ = value;
-          onChanged();
         } else {
           messageTermsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -6474,11 +6322,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
         if (messageTermsBuilder_ == null) {
           messageTerms_ = builderForValue.build();
-          onChanged();
         } else {
           messageTermsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -6491,18 +6339,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeMessageTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (messageTermsBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
-              messageTerms_ != null &&
-              messageTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
-            messageTerms_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(messageTerms_).mergeFrom(value).buildPartial();
+            messageTerms_ != null &&
+            messageTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            getMessageTermsBuilder().mergeFrom(value);
           } else {
             messageTerms_ = value;
           }
-          onChanged();
         } else {
           messageTermsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -6513,13 +6360,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants message_terms = 3 [lazy = true];</code>
        */
       public Builder clearMessageTerms() {
-        if (messageTermsBuilder_ == null) {
-          messageTerms_ = null;
-          onChanged();
-        } else {
-          messageTermsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        messageTerms_ = null;
+        if (messageTermsBuilder_ != null) {
+          messageTermsBuilder_.dispose();
+          messageTermsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6612,11 +6459,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           lineTerms_ = value;
-          onChanged();
         } else {
           lineTermsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -6630,11 +6477,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
         if (lineTermsBuilder_ == null) {
           lineTerms_ = builderForValue.build();
-          onChanged();
         } else {
           lineTermsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -6647,18 +6494,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeLineTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (lineTermsBuilder_ == null) {
           if (((bitField0_ & 0x00000008) != 0) &&
-              lineTerms_ != null &&
-              lineTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
-            lineTerms_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(lineTerms_).mergeFrom(value).buildPartial();
+            lineTerms_ != null &&
+            lineTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            getLineTermsBuilder().mergeFrom(value);
           } else {
             lineTerms_ = value;
           }
-          onChanged();
         } else {
           lineTermsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000008;
+        onChanged();
         return this;
       }
       /**
@@ -6669,13 +6515,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants line_terms = 4 [lazy = true];</code>
        */
       public Builder clearLineTerms() {
-        if (lineTermsBuilder_ == null) {
-          lineTerms_ = null;
-          onChanged();
-        } else {
-          lineTermsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000008);
+        lineTerms_ = null;
+        if (lineTermsBuilder_ != null) {
+          lineTermsBuilder_.dispose();
+          lineTermsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -6764,8 +6610,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setImplicitLineTerms(int value) {
-        bitField0_ |= 0x00000010;
+
         implicitLineTerms_ = value;
+        bitField0_ |= 0x00000010;
         onChanged();
         return this;
       }
@@ -6820,8 +6667,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setLevelTerms(int value) {
-        bitField0_ |= 0x00000020;
+
         levelTerms_ = value;
+        bitField0_ |= 0x00000020;
         onChanged();
         return this;
       }
@@ -6878,8 +6726,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setAgeTerms(int value) {
-        bitField0_ |= 0x00000040;
+
         ageTerms_ = value;
+        bitField0_ |= 0x00000040;
         onChanged();
         return this;
       }
@@ -6934,8 +6783,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setPackageProjectTerms(int value) {
-        bitField0_ |= 0x00000080;
+
         packageProjectTerms_ = value;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -6989,8 +6839,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setOrOperators(int value) {
-        bitField0_ |= 0x00000100;
+
         orOperators_ = value;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -7044,8 +6895,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setAndOperators(int value) {
-        bitField0_ |= 0x00000200;
+
         andOperators_ = value;
+        bitField0_ |= 0x00000200;
         onChanged();
         return this;
       }
@@ -7099,8 +6951,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setParentheses(int value) {
-        bitField0_ |= 0x00000400;
+
         parentheses_ = value;
+        bitField0_ |= 0x00000400;
         onChanged();
         return this;
       }
@@ -7154,8 +7007,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setContainsErrors(boolean value) {
-        bitField0_ |= 0x00000800;
+
         containsErrors_ = value;
+        bitField0_ |= 0x00000800;
         onChanged();
         return this;
       }
@@ -7209,8 +7063,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsFavorite(boolean value) {
-        bitField0_ |= 0x00001000;
+
         isFavorite_ = value;
+        bitField0_ |= 0x00001000;
         onChanged();
         return this;
       }
@@ -7264,8 +7119,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setCrashTerms(int value) {
-        bitField0_ |= 0x00002000;
+
         crashTerms_ = value;
+        bitField0_ |= 0x00002000;
         onChanged();
         return this;
       }
@@ -7319,8 +7175,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setStacktraceTerms(int value) {
-        bitField0_ |= 0x00004000;
+
         stacktraceTerms_ = value;
+        bitField0_ |= 0x00004000;
         onChanged();
         return this;
       }
@@ -7381,11 +7238,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           processTerms_ = value;
-          onChanged();
         } else {
           processTermsBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00008000;
+        onChanged();
         return this;
       }
       /**
@@ -7399,11 +7256,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
         if (processTermsBuilder_ == null) {
           processTerms_ = builderForValue.build();
-          onChanged();
         } else {
           processTermsBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00008000;
+        onChanged();
         return this;
       }
       /**
@@ -7416,18 +7273,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeProcessTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
         if (processTermsBuilder_ == null) {
           if (((bitField0_ & 0x00008000) != 0) &&
-              processTerms_ != null &&
-              processTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
-            processTerms_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(processTerms_).mergeFrom(value).buildPartial();
+            processTerms_ != null &&
+            processTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            getProcessTermsBuilder().mergeFrom(value);
           } else {
             processTerms_ = value;
           }
-          onChanged();
         } else {
           processTermsBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00008000;
+        onChanged();
         return this;
       }
       /**
@@ -7438,13 +7294,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16 [lazy = true];</code>
        */
       public Builder clearProcessTerms() {
-        if (processTermsBuilder_ == null) {
-          processTerms_ = null;
-          onChanged();
-        } else {
-          processTermsBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00008000);
+        processTerms_ = null;
+        if (processTermsBuilder_ != null) {
+          processTermsBuilder_.dispose();
+          processTermsBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -7680,11 +7536,6 @@ private static final long serialVersionUID = 0L;
       return new LogcatPanelEvent();
     }
 
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_LogcatUsageEvent_LogcatPanelEvent_descriptor;
@@ -7700,7 +7551,7 @@ private static final long serialVersionUID = 0L;
 
     private int bitField0_;
     public static final int IS_RESTORED_FIELD_NUMBER = 1;
-    private boolean isRestored_;
+    private boolean isRestored_ = false;
     /**
      * <pre>
      * True if the panel is created from a restore-state.
@@ -7803,7 +7654,7 @@ private static final long serialVersionUID = 0L;
     }
 
     public static final int BUFFER_SIZE_FIELD_NUMBER = 4;
-    private int bufferSize_;
+    private int bufferSize_ = 0;
     /**
      * <pre>
      * The buffer size.
@@ -8082,22 +7933,19 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        bitField0_ = 0;
         isRestored_ = false;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        if (formatConfigurationBuilder_ == null) {
-          formatConfiguration_ = null;
-        } else {
-          formatConfigurationBuilder_.clear();
+        formatConfiguration_ = null;
+        if (formatConfigurationBuilder_ != null) {
+          formatConfigurationBuilder_.dispose();
+          formatConfigurationBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000002);
-        if (filterBuilder_ == null) {
-          filter_ = null;
-        } else {
-          filterBuilder_.clear();
+        filter_ = null;
+        if (filterBuilder_ != null) {
+          filterBuilder_.dispose();
+          filterBuilder_ = null;
         }
-        bitField0_ = (bitField0_ & ~0x00000004);
         bufferSize_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -8124,6 +7972,12 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent buildPartial() {
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent result) {
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -8131,62 +7985,24 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000002) != 0)) {
-          if (formatConfigurationBuilder_ == null) {
-            result.formatConfiguration_ = formatConfiguration_;
-          } else {
-            result.formatConfiguration_ = formatConfigurationBuilder_.build();
-          }
+          result.formatConfiguration_ = formatConfigurationBuilder_ == null
+              ? formatConfiguration_
+              : formatConfigurationBuilder_.build();
           to_bitField0_ |= 0x00000002;
         }
         if (((from_bitField0_ & 0x00000004) != 0)) {
-          if (filterBuilder_ == null) {
-            result.filter_ = filter_;
-          } else {
-            result.filter_ = filterBuilder_.build();
-          }
+          result.filter_ = filterBuilder_ == null
+              ? filter_
+              : filterBuilder_.build();
           to_bitField0_ |= 0x00000004;
         }
         if (((from_bitField0_ & 0x00000008) != 0)) {
           result.bufferSize_ = bufferSize_;
           to_bitField0_ |= 0x00000008;
         }
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
+        result.bitField0_ |= to_bitField0_;
       }
 
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent) {
@@ -8313,8 +8129,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setIsRestored(boolean value) {
-        bitField0_ |= 0x00000001;
+
         isRestored_ = value;
+        bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
@@ -8375,11 +8192,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           formatConfiguration_ = value;
-          onChanged();
         } else {
           formatConfigurationBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -8393,11 +8210,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
         if (formatConfigurationBuilder_ == null) {
           formatConfiguration_ = builderForValue.build();
-          onChanged();
         } else {
           formatConfigurationBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -8410,18 +8227,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFormatConfiguration(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
         if (formatConfigurationBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0) &&
-              formatConfiguration_ != null &&
-              formatConfiguration_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
-            formatConfiguration_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.newBuilder(formatConfiguration_).mergeFrom(value).buildPartial();
+            formatConfiguration_ != null &&
+            formatConfiguration_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
+            getFormatConfigurationBuilder().mergeFrom(value);
           } else {
             formatConfiguration_ = value;
           }
-          onChanged();
         } else {
           formatConfigurationBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000002;
+        onChanged();
         return this;
       }
       /**
@@ -8432,13 +8248,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_configuration = 2 [lazy = true];</code>
        */
       public Builder clearFormatConfiguration() {
-        if (formatConfigurationBuilder_ == null) {
-          formatConfiguration_ = null;
-          onChanged();
-        } else {
-          formatConfigurationBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000002);
+        formatConfiguration_ = null;
+        if (formatConfigurationBuilder_ != null) {
+          formatConfigurationBuilder_.dispose();
+          formatConfigurationBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -8531,11 +8347,11 @@ private static final long serialVersionUID = 0L;
             throw new NullPointerException();
           }
           filter_ = value;
-          onChanged();
         } else {
           filterBuilder_.setMessage(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -8549,11 +8365,11 @@ private static final long serialVersionUID = 0L;
           com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder builderForValue) {
         if (filterBuilder_ == null) {
           filter_ = builderForValue.build();
-          onChanged();
         } else {
           filterBuilder_.setMessage(builderForValue.build());
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -8566,18 +8382,17 @@ private static final long serialVersionUID = 0L;
       public Builder mergeFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
         if (filterBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0) &&
-              filter_ != null &&
-              filter_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.getDefaultInstance()) {
-            filter_ =
-              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.newBuilder(filter_).mergeFrom(value).buildPartial();
+            filter_ != null &&
+            filter_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.getDefaultInstance()) {
+            getFilterBuilder().mergeFrom(value);
           } else {
             filter_ = value;
           }
-          onChanged();
         } else {
           filterBuilder_.mergeFrom(value);
         }
         bitField0_ |= 0x00000004;
+        onChanged();
         return this;
       }
       /**
@@ -8588,13 +8403,13 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent filter = 3 [lazy = true];</code>
        */
       public Builder clearFilter() {
-        if (filterBuilder_ == null) {
-          filter_ = null;
-          onChanged();
-        } else {
-          filterBuilder_.clear();
-        }
         bitField0_ = (bitField0_ & ~0x00000004);
+        filter_ = null;
+        if (filterBuilder_ != null) {
+          filterBuilder_.dispose();
+          filterBuilder_ = null;
+        }
+        onChanged();
         return this;
       }
       /**
@@ -8680,8 +8495,9 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder setBufferSize(int value) {
-        bitField0_ |= 0x00000008;
+
         bufferSize_ = value;
+        bitField0_ |= 0x00000008;
         onChanged();
         return this;
       }
@@ -8765,7 +8581,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * The event type
@@ -8786,8 +8602,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.valueOf(type_);
+    com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.UNKNOWN_EVENT_TYPE : result;
   }
 
@@ -8799,7 +8614,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+   *     See studio_stats.proto;l=13519
    * @return Whether the formatDialog field is set.
    */
   @java.lang.Override
@@ -8812,7 +8628,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-   * @deprecated
+   * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+   *     See studio_stats.proto;l=13519
    * @return The formatDialog.
    */
   @java.lang.Override
@@ -9214,32 +9031,28 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (formatDialogBuilder_ == null) {
-        formatDialog_ = null;
-      } else {
-        formatDialogBuilder_.clear();
+      formatDialog_ = null;
+      if (formatDialogBuilder_ != null) {
+        formatDialogBuilder_.dispose();
+        formatDialogBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
-      if (logcatFilterBuilder_ == null) {
-        logcatFilter_ = null;
-      } else {
-        logcatFilterBuilder_.clear();
+      logcatFilter_ = null;
+      if (logcatFilterBuilder_ != null) {
+        logcatFilterBuilder_.dispose();
+        logcatFilterBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (formatDialogAppliedBuilder_ == null) {
-        formatDialogApplied_ = null;
-      } else {
-        formatDialogAppliedBuilder_.clear();
+      formatDialogApplied_ = null;
+      if (formatDialogAppliedBuilder_ != null) {
+        formatDialogAppliedBuilder_.dispose();
+        formatDialogAppliedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (panelAddedBuilder_ == null) {
-        panelAdded_ = null;
-      } else {
-        panelAddedBuilder_.clear();
+      panelAdded_ = null;
+      if (panelAddedBuilder_ != null) {
+        panelAddedBuilder_.dispose();
+        panelAddedBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -9266,81 +9079,45 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent buildPartial() {
       com.google.wireless.android.sdk.stats.LogcatUsageEvent result = new com.google.wireless.android.sdk.stats.LogcatUsageEvent(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.type_ = type_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (formatDialogBuilder_ == null) {
-          result.formatDialog_ = formatDialog_;
-        } else {
-          result.formatDialog_ = formatDialogBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      if (((from_bitField0_ & 0x00000004) != 0)) {
-        if (logcatFilterBuilder_ == null) {
-          result.logcatFilter_ = logcatFilter_;
-        } else {
-          result.logcatFilter_ = logcatFilterBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000004;
-      }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (formatDialogAppliedBuilder_ == null) {
-          result.formatDialogApplied_ = formatDialogApplied_;
-        } else {
-          result.formatDialogApplied_ = formatDialogAppliedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000008;
-      }
-      if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (panelAddedBuilder_ == null) {
-          result.panelAdded_ = panelAdded_;
-        } else {
-          result.panelAdded_ = panelAddedBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000010;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.LogcatUsageEvent result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.type_ = type_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.formatDialog_ = formatDialogBuilder_ == null
+            ? formatDialog_
+            : formatDialogBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.logcatFilter_ = logcatFilterBuilder_ == null
+            ? logcatFilter_
+            : logcatFilterBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.formatDialogApplied_ = formatDialogAppliedBuilder_ == null
+            ? formatDialogApplied_
+            : formatDialogAppliedBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.panelAdded_ = panelAddedBuilder_ == null
+            ? panelAdded_
+            : panelAddedBuilder_.build();
+        to_bitField0_ |= 0x00000010;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.LogcatUsageEvent) {
@@ -9473,8 +9250,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.valueOf(type_);
+      com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type result = com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.Type.UNKNOWN_EVENT_TYPE : result;
     }
     /**
@@ -9519,7 +9295,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+     *     See studio_stats.proto;l=13519
      * @return Whether the formatDialog field is set.
      */
     @java.lang.Deprecated public boolean hasFormatDialog() {
@@ -9531,7 +9308,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
-     * @deprecated
+     * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
+     *     See studio_stats.proto;l=13519
      * @return The formatDialog.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatDialog() {
@@ -9554,11 +9332,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         formatDialog_ = value;
-        onChanged();
       } else {
         formatDialogBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -9572,11 +9350,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.Builder builderForValue) {
       if (formatDialogBuilder_ == null) {
         formatDialog_ = builderForValue.build();
-        onChanged();
       } else {
         formatDialogBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -9589,18 +9367,17 @@ private static final long serialVersionUID = 0L;
     @java.lang.Deprecated public Builder mergeFormatDialog(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration value) {
       if (formatDialogBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            formatDialog_ != null &&
-            formatDialog_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
-          formatDialog_ =
-            com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.newBuilder(formatDialog_).mergeFrom(value).buildPartial();
+          formatDialog_ != null &&
+          formatDialog_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration.getDefaultInstance()) {
+          getFormatDialogBuilder().mergeFrom(value);
         } else {
           formatDialog_ = value;
         }
-        onChanged();
       } else {
         formatDialogBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -9611,13 +9388,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      */
     @java.lang.Deprecated public Builder clearFormatDialog() {
-      if (formatDialogBuilder_ == null) {
-        formatDialog_ = null;
-        onChanged();
-      } else {
-        formatDialogBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      formatDialog_ = null;
+      if (formatDialogBuilder_ != null) {
+        formatDialogBuilder_.dispose();
+        formatDialogBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -9710,11 +9487,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         logcatFilter_ = value;
-        onChanged();
       } else {
         logcatFilterBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -9728,11 +9505,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.Builder builderForValue) {
       if (logcatFilterBuilder_ == null) {
         logcatFilter_ = builderForValue.build();
-        onChanged();
       } else {
         logcatFilterBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -9745,18 +9522,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeLogcatFilter(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent value) {
       if (logcatFilterBuilder_ == null) {
         if (((bitField0_ & 0x00000004) != 0) &&
-            logcatFilter_ != null &&
-            logcatFilter_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.getDefaultInstance()) {
-          logcatFilter_ =
-            com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.newBuilder(logcatFilter_).mergeFrom(value).buildPartial();
+          logcatFilter_ != null &&
+          logcatFilter_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.getDefaultInstance()) {
+          getLogcatFilterBuilder().mergeFrom(value);
         } else {
           logcatFilter_ = value;
         }
-        onChanged();
       } else {
         logcatFilterBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000004;
+      onChanged();
       return this;
     }
     /**
@@ -9767,13 +9543,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent logcat_filter = 3 [lazy = true];</code>
      */
     public Builder clearLogcatFilter() {
-      if (logcatFilterBuilder_ == null) {
-        logcatFilter_ = null;
-        onChanged();
-      } else {
-        logcatFilterBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000004);
+      logcatFilter_ = null;
+      if (logcatFilterBuilder_ != null) {
+        logcatFilterBuilder_.dispose();
+        logcatFilterBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -9866,11 +9642,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         formatDialogApplied_ = value;
-        onChanged();
       } else {
         formatDialogAppliedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9884,11 +9660,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.Builder builderForValue) {
       if (formatDialogAppliedBuilder_ == null) {
         formatDialogApplied_ = builderForValue.build();
-        onChanged();
       } else {
         formatDialogAppliedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9901,18 +9677,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFormatDialogApplied(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog value) {
       if (formatDialogAppliedBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            formatDialogApplied_ != null &&
-            formatDialogApplied_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.getDefaultInstance()) {
-          formatDialogApplied_ =
-            com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.newBuilder(formatDialogApplied_).mergeFrom(value).buildPartial();
+          formatDialogApplied_ != null &&
+          formatDialogApplied_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatDialog.getDefaultInstance()) {
+          getFormatDialogAppliedBuilder().mergeFrom(value);
         } else {
           formatDialogApplied_ = value;
         }
-        onChanged();
       } else {
         formatDialogAppliedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -9923,13 +9698,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatDialog format_dialog_applied = 4 [lazy = true];</code>
      */
     public Builder clearFormatDialogApplied() {
-      if (formatDialogAppliedBuilder_ == null) {
-        formatDialogApplied_ = null;
-        onChanged();
-      } else {
-        formatDialogAppliedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      formatDialogApplied_ = null;
+      if (formatDialogAppliedBuilder_ != null) {
+        formatDialogAppliedBuilder_.dispose();
+        formatDialogAppliedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -10022,11 +9797,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         panelAdded_ = value;
-        onChanged();
       } else {
         panelAddedBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -10040,11 +9815,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.Builder builderForValue) {
       if (panelAddedBuilder_ == null) {
         panelAdded_ = builderForValue.build();
-        onChanged();
       } else {
         panelAddedBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -10057,18 +9832,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePanelAdded(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent value) {
       if (panelAddedBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            panelAdded_ != null &&
-            panelAdded_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.getDefaultInstance()) {
-          panelAdded_ =
-            com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.newBuilder(panelAdded_).mergeFrom(value).buildPartial();
+          panelAdded_ != null &&
+          panelAdded_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatPanelEvent.getDefaultInstance()) {
+          getPanelAddedBuilder().mergeFrom(value);
         } else {
           panelAdded_ = value;
         }
-        onChanged();
       } else {
         panelAddedBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -10079,13 +9853,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LogcatUsageEvent.LogcatPanelEvent panel_added = 5 [lazy = true];</code>
      */
     public Builder clearPanelAdded() {
-      if (panelAddedBuilder_ == null) {
-        panelAdded_ = null;
-        onChanged();
-      } else {
-        panelAddedBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      panelAdded_ = null;
+      if (panelAddedBuilder_ != null) {
+        panelAddedBuilder_.dispose();
+        panelAddedBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

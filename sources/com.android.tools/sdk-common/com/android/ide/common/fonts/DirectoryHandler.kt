@@ -15,11 +15,9 @@
  */
 package com.android.ide.common.fonts
 
-import com.android.ide.common.util.parseIntOrDefault
 import org.xml.sax.Attributes
 import org.xml.sax.SAXException
 import org.xml.sax.helpers.DefaultHandler
-import java.util.ArrayList
 
 private const val FAMILY = "family"
 private const val FONT = "font"
@@ -27,6 +25,7 @@ private const val ATTR_FONT_NAME = "name"
 private const val ATTR_STYLE_NAME = "styleName"
 private const val ATTR_MENU = "menu"
 private const val ATTR_MENU_NAME = "menuName"
+private const val ATTR_IS_VF = "isVf"
 private const val ATTR_WEIGHT = "weight"
 private const val ATTR_WIDTH = "width"
 private const val ATTR_ITALIC = "italic"
@@ -50,9 +49,10 @@ internal class DirectoryHandler(private val provider: FontProvider) : DefaultHan
             }
             FONT -> {
                 val font = MutableFontDetail()
+                font.type = attributes.getValue(ATTR_IS_VF).parseType()
                 font.weight = attributes.getValue(ATTR_WEIGHT).parseIntOrDefault(DEFAULT_WEIGHT)
-                font.width = attributes.getValue(ATTR_WIDTH).parseIntOrDefault(DEFAULT_WIDTH)
-                font.italics = parseItalics(attributes.getValue(ATTR_ITALIC))
+                font.width = attributes.getValue(ATTR_WIDTH).parseFloatOrDefault(DEFAULT_WIDTH)
+                font.italics = attributes.getValue(ATTR_ITALIC).parseFloatOrDefault(NORMAL)
                 font.fontUrl = addProtocol(attributes.getValue(ATTR_FONT_URL))
                 font.styleName = attributes.getValue(ATTR_STYLE_NAME) ?: ""
                 if (font.weight > 0 && font.width > 0 && font.fontUrl.isNotEmpty()) {
@@ -71,8 +71,33 @@ internal class DirectoryHandler(private val provider: FontProvider) : DefaultHan
         }
     }
 
-    fun parseItalics(italics: String?): Boolean {
-        return italics != null && italics.startsWith("1")
+    private fun String?.parseType(): FontType {
+        if (this == null) {
+            return FontType.SINGLE
+        }
+        return if (this.equals("true", ignoreCase = true)) FontType.VARIABLE else FontType.SINGLE
+    }
+
+    private fun String?.parseIntOrDefault(defaultValue: Int): Int {
+        if (this == null) {
+            return defaultValue
+        }
+        return try {
+            Integer.parseInt(this)
+        } catch (_: NumberFormatException) {
+            defaultValue
+        }
+    }
+
+    private fun String?.parseFloatOrDefault(defaultValue: Float): Float {
+        if (this == null) {
+            return defaultValue
+        }
+        return try {
+            java.lang.Float.parseFloat(this)
+        } catch (_: NumberFormatException) {
+            defaultValue
+        }
     }
 
     private fun addProtocol(url: String?): String {

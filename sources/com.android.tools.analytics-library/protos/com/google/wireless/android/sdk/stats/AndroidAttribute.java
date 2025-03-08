@@ -31,11 +31,6 @@ private static final long serialVersionUID = 0L;
     return new AndroidAttribute();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidAttribute_descriptor;
@@ -199,7 +194,8 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ATTRIBUTE_NAME_FIELD_NUMBER = 1;
-  private volatile java.lang.Object attributeName_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object attributeName_ = "";
   /**
    * <pre>
    * Specifies an attribute name of an Android View class or Navigation element.
@@ -271,7 +267,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ATTRIBUTE_NAMESPACE_FIELD_NUMBER = 2;
-  private int attributeNamespace_;
+  private int attributeNamespace_ = 0;
   /**
    * <pre>
    * The namespace of this attribute
@@ -292,8 +288,7 @@ private static final long serialVersionUID = 0L;
    * @return The attributeNamespace.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace getAttributeNamespace() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.valueOf(attributeNamespace_);
+    com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.forNumber(attributeNamespace_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.UNKNOWN_NAMESPACE : result;
   }
 
@@ -508,10 +503,9 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       attributeName_ = "";
-      bitField0_ = (bitField0_ & ~0x00000001);
       attributeNamespace_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -538,53 +532,25 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidAttribute buildPartial() {
       com.google.wireless.android.sdk.stats.AndroidAttribute result = new com.google.wireless.android.sdk.stats.AndroidAttribute(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.attributeName_ = attributeName_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        to_bitField0_ |= 0x00000002;
-      }
-      result.attributeNamespace_ = attributeNamespace_;
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.AndroidAttribute result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.attributeName_ = attributeName_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.attributeNamespace_ = attributeNamespace_;
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.AndroidAttribute) {
@@ -598,8 +564,8 @@ private static final long serialVersionUID = 0L;
     public Builder mergeFrom(com.google.wireless.android.sdk.stats.AndroidAttribute other) {
       if (other == com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance()) return this;
       if (other.hasAttributeName()) {
-        bitField0_ |= 0x00000001;
         attributeName_ = other.attributeName_;
+        bitField0_ |= 0x00000001;
         onChanged();
       }
       if (other.hasAttributeNamespace()) {
@@ -747,11 +713,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAttributeName(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       attributeName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -768,8 +732,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearAttributeName() {
-      bitField0_ = (bitField0_ & ~0x00000001);
       attributeName_ = getDefaultInstance().getAttributeName();
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -788,11 +752,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setAttributeNameBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
+      if (value == null) { throw new NullPointerException(); }
       attributeName_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -819,8 +781,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace getAttributeNamespace() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.valueOf(attributeNamespace_);
+      com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.forNumber(attributeNamespace_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.UNKNOWN_NAMESPACE : result;
     }
     /**

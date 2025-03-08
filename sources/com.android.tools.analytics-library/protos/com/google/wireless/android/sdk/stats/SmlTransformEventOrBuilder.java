@@ -154,5 +154,5 @@ public interface SmlTransformEventOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformPhase getTransformPhase();
 
-  public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformCase getTransformCase();
+  com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformCase getTransformCase();
 }

@@ -52,6 +52,7 @@ import com.android.build.gradle.internal.utils.configureKotlinCompileTasks
 import com.android.build.gradle.internal.utils.getProjectKotlinPluginKotlinVersion
 import com.android.build.gradle.internal.utils.isComposeCompilerPluginApplied
 import com.android.build.gradle.internal.utils.isKotlinPluginAppliedInTheSameClassloader
+import com.android.build.gradle.internal.utils.maybeUseInlineScopesNumbers
 import com.android.build.gradle.internal.utils.recordKgpPropertiesForAnalytics
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -341,6 +342,14 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
             && !project.pluginManager.hasPlugin(ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID)) {
             return
         }
+
+        configureKotlinCompileTasks(project, allPropertiesList) { kotlinCompile, creationConfig ->
+            if (globalConfig.services.projectOptions[BooleanOption.DISABLE_INLINE_SCOPES_NUMBERS]) {
+                return@configureKotlinCompileTasks
+            }
+            maybeUseInlineScopesNumbers(kotlinCompile, creationConfig, logger)
+        }
+
         val composeIsEnabled = allPropertiesList
             .any { componentProperties: ComponentCreationConfig ->
                 componentProperties.buildFeatures.compose }
@@ -370,10 +379,6 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
                     )
         }
 
-        // any override coming from the DSL.
-        val kotlinCompilerExtensionVersionInDsl =
-            globalConfig.composeOptions.kotlinCompilerExtensionVersion
-
         val useLiveLiterals = globalConfig.composeOptions.useLiveLiterals
 
         // record in our metrics that compose is enabled.
@@ -382,16 +387,7 @@ abstract class VariantTaskManager<VariantBuilderT : VariantBuilder, VariantT : V
             .get()
             .getProjectBuilder(project.path)?.composeEnabled = true
 
-        // Create a project configuration that holds the androidx compose kotlin
-        // compiler extension
-        val kotlinExtension = project.configurations.create("kotlin-extension")
-        project.dependencies
-            .add(
-                kotlinExtension.name, "androidx.compose.compiler:compiler:"
-                        + (kotlinCompilerExtensionVersionInDsl
-                    ?: COMPOSE_KOTLIN_COMPILER_EXTENSION_VERSION))
-        kotlinExtension.isTransitive = false
-        kotlinExtension.description = "Configuration for Compose related kotlin compiler extension"
+        val kotlinExtension = maybeCreateKotlinExtensionConfiguration()
 
         // add compose args to all kotlin compile tasks
         configureKotlinCompileTasks(project, allPropertiesList) { kotlinCompile, creationConfig ->

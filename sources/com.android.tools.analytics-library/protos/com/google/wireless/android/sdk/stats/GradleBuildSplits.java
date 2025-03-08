@@ -18,7 +18,8 @@ private static final long serialVersionUID = 0L;
   private GradleBuildSplits() {
     densityCompatibleScreens_ = java.util.Collections.emptyList();
     densityValues_ = emptyIntList();
-    languageIncludes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    languageIncludes_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     abiFilters_ = java.util.Collections.emptyList();
   }
 
@@ -29,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new GradleBuildSplits();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GradleBuildSplits_descriptor;
@@ -172,7 +168,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int DENSITY_ENABLED_FIELD_NUMBER = 1;
-  private boolean densityEnabled_;
+  private boolean densityEnabled_ = false;
   /**
    * <pre>
    * Are density splits enabled?
@@ -199,7 +195,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DENSITY_AUTO_FIELD_NUMBER = 2;
-  private boolean densityAuto_;
+  private boolean densityAuto_ = false;
   /**
    * <pre>
    * Is automatic discovery based on the merged resources enabled?
@@ -208,7 +204,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+   *     See studio_stats.proto;l=4749
    * @return Whether the densityAuto field is set.
    */
   @java.lang.Override
@@ -223,7 +220,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+   *     See studio_stats.proto;l=4749
    * @return The densityAuto.
    */
   @java.lang.Override
@@ -232,14 +230,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DENSITY_COMPATIBLE_SCREENS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> densityCompatibleScreens_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize> densityCompatibleScreens_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize>() {
             public com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize result = com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize.valueOf(from);
+              com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize result = com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize.UNKNOWN_SCREEN_SIZE : result;
             }
           };
@@ -289,6 +287,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int DENSITY_VALUES_FIELD_NUMBER = 4;
+  @SuppressWarnings("serial")
   private com.google.protobuf.Internal.IntList densityValues_;
   /**
    * <pre>
@@ -343,7 +342,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LANGUAGE_ENABLED_FIELD_NUMBER = 5;
-  private boolean languageEnabled_;
+  private boolean languageEnabled_ = false;
   /**
    * <pre>
    * Are language splits enabled?
@@ -370,7 +369,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LANGUAGE_AUTO_FIELD_NUMBER = 6;
-  private boolean languageAuto_;
+  private boolean languageAuto_ = false;
   /**
    * <pre>
    * Is automatic discovery based on the merged resources enabled?
@@ -379,7 +378,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+   *     See studio_stats.proto;l=4767
    * @return Whether the languageAuto field is set.
    */
   @java.lang.Override
@@ -394,7 +394,8 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
-   * @deprecated
+   * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+   *     See studio_stats.proto;l=4767
    * @return The languageAuto.
    */
   @java.lang.Override
@@ -403,7 +404,9 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LANGUAGE_INCLUDES_FIELD_NUMBER = 7;
-  private com.google.protobuf.LazyStringList languageIncludes_;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.LazyStringArrayList languageIncludes_ =
+      com.google.protobuf.LazyStringArrayList.emptyList();
   /**
    * <pre>
    * Language and region codes that the application will be split on.
@@ -462,7 +465,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ABI_ENABLED_FIELD_NUMBER = 8;
-  private boolean abiEnabled_;
+  private boolean abiEnabled_ = false;
   /**
    * <pre>
    * Are ABI splits enabled?
@@ -489,7 +492,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ABI_ENABLE_UNIVERSAL_APK_FIELD_NUMBER = 9;
-  private boolean abiEnableUniversalApk_;
+  private boolean abiEnableUniversalApk_ = false;
   /**
    * <pre>
    * Will a universal APK be generated?
@@ -518,14 +521,14 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int ABI_FILTERS_FIELD_NUMBER = 10;
+  @SuppressWarnings("serial")
   private java.util.List<java.lang.Integer> abiFilters_;
   private static final com.google.protobuf.Internal.ListAdapter.Converter<
       java.lang.Integer, com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface> abiFilters_converter_ =
           new com.google.protobuf.Internal.ListAdapter.Converter<
               java.lang.Integer, com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface>() {
             public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface convert(java.lang.Integer from) {
-              @SuppressWarnings("deprecation")
-              com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(from);
+              com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.forNumber(from);
               return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.UNKNOWN_ABI : result;
             }
           };
@@ -922,24 +925,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       densityEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       densityAuto_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       densityCompatibleScreens_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000004);
       densityValues_ = emptyIntList();
-      bitField0_ = (bitField0_ & ~0x00000008);
       languageEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000010);
       languageAuto_ = false;
-      bitField0_ = (bitField0_ & ~0x00000020);
-      languageIncludes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      languageIncludes_ =
+          com.google.protobuf.LazyStringArrayList.emptyList();
       abiEnabled_ = false;
-      bitField0_ = (bitField0_ & ~0x00000080);
       abiEnableUniversalApk_ = false;
-      bitField0_ = (bitField0_ & ~0x00000100);
       abiFilters_ = java.util.Collections.emptyList();
       bitField0_ = (bitField0_ & ~0x00000200);
       return this;
@@ -968,16 +965,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildSplits buildPartial() {
       com.google.wireless.android.sdk.stats.GradleBuildSplits result = new com.google.wireless.android.sdk.stats.GradleBuildSplits(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.densityEnabled_ = densityEnabled_;
-        to_bitField0_ |= 0x00000001;
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.densityAuto_ = densityAuto_;
-        to_bitField0_ |= 0x00000002;
-      }
+      buildPartialRepeatedFields(result);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.GradleBuildSplits result) {
       if (((bitField0_ & 0x00000004) != 0)) {
         densityCompatibleScreens_ = java.util.Collections.unmodifiableList(densityCompatibleScreens_);
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -988,6 +982,24 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
       }
       result.densityValues_ = densityValues_;
+      if (((bitField0_ & 0x00000200) != 0)) {
+        abiFilters_ = java.util.Collections.unmodifiableList(abiFilters_);
+        bitField0_ = (bitField0_ & ~0x00000200);
+      }
+      result.abiFilters_ = abiFilters_;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GradleBuildSplits result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.densityEnabled_ = densityEnabled_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.densityAuto_ = densityAuto_;
+        to_bitField0_ |= 0x00000002;
+      }
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.languageEnabled_ = languageEnabled_;
         to_bitField0_ |= 0x00000004;
@@ -996,11 +1008,10 @@ private static final long serialVersionUID = 0L;
         result.languageAuto_ = languageAuto_;
         to_bitField0_ |= 0x00000008;
       }
-      if (((bitField0_ & 0x00000040) != 0)) {
-        languageIncludes_ = languageIncludes_.getUnmodifiableView();
-        bitField0_ = (bitField0_ & ~0x00000040);
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        languageIncludes_.makeImmutable();
+        result.languageIncludes_ = languageIncludes_;
       }
-      result.languageIncludes_ = languageIncludes_;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.abiEnabled_ = abiEnabled_;
         to_bitField0_ |= 0x00000010;
@@ -1009,48 +1020,9 @@ private static final long serialVersionUID = 0L;
         result.abiEnableUniversalApk_ = abiEnableUniversalApk_;
         to_bitField0_ |= 0x00000020;
       }
-      if (((bitField0_ & 0x00000200) != 0)) {
-        abiFilters_ = java.util.Collections.unmodifiableList(abiFilters_);
-        bitField0_ = (bitField0_ & ~0x00000200);
-      }
-      result.abiFilters_ = abiFilters_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GradleBuildSplits) {
@@ -1098,7 +1070,7 @@ private static final long serialVersionUID = 0L;
       if (!other.languageIncludes_.isEmpty()) {
         if (languageIncludes_.isEmpty()) {
           languageIncludes_ = other.languageIncludes_;
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ |= 0x00000040;
         } else {
           ensureLanguageIncludesIsMutable();
           languageIncludes_.addAll(other.languageIncludes_);
@@ -1309,8 +1281,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setDensityEnabled(boolean value) {
-      bitField0_ |= 0x00000001;
+
       densityEnabled_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1338,7 +1311,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+     *     See studio_stats.proto;l=4749
      * @return Whether the densityAuto field is set.
      */
     @java.lang.Override
@@ -1353,7 +1327,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+     *     See studio_stats.proto;l=4749
      * @return The densityAuto.
      */
     @java.lang.Override
@@ -1368,13 +1343,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+     *     See studio_stats.proto;l=4749
      * @param value The densityAuto to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setDensityAuto(boolean value) {
-      bitField0_ |= 0x00000002;
+
       densityAuto_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1386,7 +1363,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.density_auto is deprecated.
+     *     See studio_stats.proto;l=4749
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearDensityAuto() {
@@ -1529,7 +1507,7 @@ private static final long serialVersionUID = 0L;
       if (!((bitField0_ & 0x00000008) != 0)) {
         densityValues_ = mutableCopy(densityValues_);
         bitField0_ |= 0x00000008;
-       }
+      }
     }
     /**
      * <pre>
@@ -1599,6 +1577,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDensityValues(
         int index, int value) {
+
       ensureDensityValuesIsMutable();
       densityValues_.setInt(index, value);
       onChanged();
@@ -1619,6 +1598,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder addDensityValues(int value) {
+
       ensureDensityValuesIsMutable();
       densityValues_.addInt(value);
       onChanged();
@@ -1701,8 +1681,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLanguageEnabled(boolean value) {
-      bitField0_ |= 0x00000010;
+
       languageEnabled_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -1730,7 +1711,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+     *     See studio_stats.proto;l=4767
      * @return Whether the languageAuto field is set.
      */
     @java.lang.Override
@@ -1745,7 +1727,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+     *     See studio_stats.proto;l=4767
      * @return The languageAuto.
      */
     @java.lang.Override
@@ -1760,13 +1743,15 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+     *     See studio_stats.proto;l=4767
      * @param value The languageAuto to set.
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder setLanguageAuto(boolean value) {
-      bitField0_ |= 0x00000020;
+
       languageAuto_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }
@@ -1778,7 +1763,8 @@ private static final long serialVersionUID = 0L;
      * </pre>
      *
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
-     * @deprecated
+     * @deprecated android_studio.GradleBuildSplits.language_auto is deprecated.
+     *     See studio_stats.proto;l=4767
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearLanguageAuto() {
@@ -1788,12 +1774,13 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private com.google.protobuf.LazyStringList languageIncludes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private com.google.protobuf.LazyStringArrayList languageIncludes_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
     private void ensureLanguageIncludesIsMutable() {
-      if (!((bitField0_ & 0x00000040) != 0)) {
+      if (!languageIncludes_.isModifiable()) {
         languageIncludes_ = new com.google.protobuf.LazyStringArrayList(languageIncludes_);
-        bitField0_ |= 0x00000040;
-       }
+      }
+      bitField0_ |= 0x00000040;
     }
     /**
      * <pre>
@@ -1807,7 +1794,8 @@ private static final long serialVersionUID = 0L;
      */
     public com.google.protobuf.ProtocolStringList
         getLanguageIncludesList() {
-      return languageIncludes_.getUnmodifiableView();
+      languageIncludes_.makeImmutable();
+      return languageIncludes_;
     }
     /**
      * <pre>
@@ -1865,11 +1853,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setLanguageIncludes(
         int index, java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureLanguageIncludesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureLanguageIncludesIsMutable();
       languageIncludes_.set(index, value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1886,11 +1873,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addLanguageIncludes(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureLanguageIncludesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureLanguageIncludesIsMutable();
       languageIncludes_.add(value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1910,6 +1896,7 @@ private static final long serialVersionUID = 0L;
       ensureLanguageIncludesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
           values, languageIncludes_);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1924,8 +1911,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearLanguageIncludes() {
-      languageIncludes_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      bitField0_ = (bitField0_ & ~0x00000040);
+      languageIncludes_ =
+        com.google.protobuf.LazyStringArrayList.emptyList();
+      bitField0_ = (bitField0_ & ~0x00000040);;
       onChanged();
       return this;
     }
@@ -1942,11 +1930,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder addLanguageIncludesBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureLanguageIncludesIsMutable();
+      if (value == null) { throw new NullPointerException(); }
+      ensureLanguageIncludesIsMutable();
       languageIncludes_.add(value);
+      bitField0_ |= 0x00000040;
       onChanged();
       return this;
     }
@@ -1986,8 +1973,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAbiEnabled(boolean value) {
-      bitField0_ |= 0x00000080;
+
       abiEnabled_ = value;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -2044,8 +2032,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setAbiEnableUniversalApk(boolean value) {
-      bitField0_ |= 0x00000100;
+
       abiEnableUniversalApk_ = value;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }

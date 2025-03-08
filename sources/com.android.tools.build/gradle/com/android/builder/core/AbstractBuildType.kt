@@ -46,7 +46,6 @@ abstract class AbstractBuildType : BaseConfigImpl(), BuildType {
         isDebuggable = that.isDebuggable
         isTestCoverageEnabled = that.isTestCoverageEnabled
         isJniDebuggable = that.isJniDebuggable
-        isRenderscriptDebuggable = that.isRenderscriptDebuggable
         renderscriptOptimLevel = that.renderscriptOptimLevel
         versionNameSuffix = that.versionNameSuffix
         isMinifyEnabled = that.isMinifyEnabled

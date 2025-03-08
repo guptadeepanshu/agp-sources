@@ -344,19 +344,21 @@ abstract class SymbolTable protected constructor() {
             if (tables.size == 1) return tables.first()  // Trivial merge.
 
             val builder = ImmutableTable.builder<ResourceType, String, Symbol>()
-            // We only want to keep the first one we see.
-            val seenNames = mutableSetOf<String>()
+
+            // For removing duplicate names per resource type.
+            val seenNamesInResourceType = mutableSetOf<String>()
 
             // Use nested loops instead of a functional approach to minimize intermediate
             // allocations as this is a hotspot.
             for (resourceType in ResourceType.values()) {
                 for (table in tables) {
                     for (symbol in table.symbols.row(resourceType).values) {
-                        if (seenNames.add(symbol.canonicalName)) {
+                        if (seenNamesInResourceType.add(symbol.canonicalName)) {
                             builder.put(resourceType, symbol.canonicalName, symbol)
                         }
                     }
                 }
+                seenNamesInResourceType.clear()
             }
 
             return SymbolTableImpl(tables.firstOrNull()?.tablePackage ?: "", builder.build())

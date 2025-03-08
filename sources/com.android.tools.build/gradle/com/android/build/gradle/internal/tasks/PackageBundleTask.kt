@@ -23,6 +23,7 @@ import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.variant.impl.MetadataRecord
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.dsl.ModulePropertyKey
+import com.android.build.gradle.internal.lint.LintTaskManager.Companion.shouldRegisterLintVitalTasks
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -184,6 +185,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
     abstract val deviceGroupConfig: RegularFileProperty
+
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:InputFiles
+    abstract val lintVital: RegularFileProperty
 
     companion object {
         const val MIN_SDK_FOR_SPLITS = 21
@@ -777,6 +783,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             task.deviceGroupConfig.set(
                 ModulePropertyKey.OptionalFile.DTTV2_DEVICE_GROUP_CONFIG.getValue(
                             extraProperties))
+
+            if (shouldRegisterLintVitalTasks(creationConfig)) {
+                task.lintVital.setDisallowChanges(
+                    creationConfig.artifacts.get(InternalArtifactType.LINT_VITAL_OUTPUT)
+                )
+            }
         }
     }
 }

@@ -26,11 +26,6 @@ private static final long serialVersionUID = 0L;
     return new StudioCoreGeminiActionsEvent();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_StudioCoreGeminiActionsEvent_descriptor;
@@ -160,7 +155,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int ACTION_FIELD_NUMBER = 1;
-  private int action_;
+  private int action_ = 0;
   /**
    * <code>optional .android_studio.StudioCoreGeminiActionsEvent.Action action = 1;</code>
    * @return Whether the action field is set.
@@ -173,13 +168,12 @@ private static final long serialVersionUID = 0L;
    * @return The action.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action getAction() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action result = com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.valueOf(action_);
+    com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action result = com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.forNumber(action_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.UNKNOWN : result;
   }
 
   public static final int PROMPT_HASH_FIELD_NUMBER = 2;
-  private int promptHash_;
+  private int promptHash_ = 0;
   /**
    * <code>optional uint32 prompt_hash = 2;</code>
    * @return Whether the promptHash field is set.
@@ -198,7 +192,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int PROMPT_SIZE_FIELD_NUMBER = 3;
-  private int promptSize_;
+  private int promptSize_ = 0;
   /**
    * <code>optional uint32 prompt_size = 3;</code>
    * @return Whether the promptSize field is set.
@@ -217,7 +211,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LATENCY_MS_FIELD_NUMBER = 4;
-  private int latencyMs_;
+  private int latencyMs_ = 0;
   /**
    * <code>optional uint32 latency_ms = 4;</code>
    * @return Whether the latencyMs field is set.
@@ -236,7 +230,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESULTS_COUNT_FIELD_NUMBER = 5;
-  private int resultsCount_;
+  private int resultsCount_ = 0;
   /**
    * <code>optional uint32 results_count = 5;</code>
    * @return Whether the resultsCount field is set.
@@ -255,7 +249,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int RESULTS_TAKEN_FIELD_NUMBER = 6;
-  private int resultsTaken_;
+  private int resultsTaken_ = 0;
   /**
    * <code>optional uint32 results_taken = 6;</code>
    * @return Whether the resultsTaken field is set.
@@ -545,18 +539,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       action_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       promptHash_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       promptSize_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
       latencyMs_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
       resultsCount_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000010);
       resultsTaken_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -583,12 +572,18 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent buildPartial() {
       com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent result = new com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.action_ = action_;
         to_bitField0_ |= 0x00000001;
       }
-      result.action_ = action_;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.promptHash_ = promptHash_;
         to_bitField0_ |= 0x00000002;
@@ -609,43 +604,9 @@ private static final long serialVersionUID = 0L;
         result.resultsTaken_ = resultsTaken_;
         to_bitField0_ |= 0x00000020;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent) {
@@ -770,8 +731,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action getAction() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action result = com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.valueOf(action_);
+      com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action result = com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.forNumber(action_);
       return result == null ? com.google.wireless.android.sdk.stats.StudioCoreGeminiActionsEvent.Action.UNKNOWN : result;
     }
     /**
@@ -822,8 +782,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPromptHash(int value) {
-      bitField0_ |= 0x00000002;
+
       promptHash_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -861,8 +822,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setPromptSize(int value) {
-      bitField0_ |= 0x00000004;
+
       promptSize_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -900,8 +862,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLatencyMs(int value) {
-      bitField0_ |= 0x00000008;
+
       latencyMs_ = value;
+      bitField0_ |= 0x00000008;
       onChanged();
       return this;
     }
@@ -939,8 +902,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResultsCount(int value) {
-      bitField0_ |= 0x00000010;
+
       resultsCount_ = value;
+      bitField0_ |= 0x00000010;
       onChanged();
       return this;
     }
@@ -978,8 +942,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setResultsTaken(int value) {
-      bitField0_ |= 0x00000020;
+
       resultsTaken_ = value;
+      bitField0_ |= 0x00000020;
       onChanged();
       return this;
     }

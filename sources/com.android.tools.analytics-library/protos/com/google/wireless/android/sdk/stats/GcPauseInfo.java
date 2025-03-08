@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new GcPauseInfo();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_GcPauseInfo_descriptor;
@@ -218,7 +213,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int COLLECTOR_TYPE_FIELD_NUMBER = 1;
-  private int collectorType_;
+  private int collectorType_ = 0;
   /**
    * <pre>
    * The type of the garbage collector
@@ -239,8 +234,7 @@ private static final long serialVersionUID = 0L;
    * @return The collectorType.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.GcPauseInfo.GcType getCollectorType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.valueOf(collectorType_);
+    com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.forNumber(collectorType_);
     return result == null ? com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.UNKNOWN : result;
   }
 
@@ -500,14 +494,13 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       collectorType_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
-      if (pauseTimesMsBuilder_ == null) {
-        pauseTimesMs_ = null;
-      } else {
-        pauseTimesMsBuilder_.clear();
+      pauseTimesMs_ = null;
+      if (pauseTimesMsBuilder_ != null) {
+        pauseTimesMsBuilder_.dispose();
+        pauseTimesMsBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -534,57 +527,27 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GcPauseInfo buildPartial() {
       com.google.wireless.android.sdk.stats.GcPauseInfo result = new com.google.wireless.android.sdk.stats.GcPauseInfo(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        to_bitField0_ |= 0x00000001;
-      }
-      result.collectorType_ = collectorType_;
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        if (pauseTimesMsBuilder_ == null) {
-          result.pauseTimesMs_ = pauseTimesMs_;
-        } else {
-          result.pauseTimesMs_ = pauseTimesMsBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000002;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.GcPauseInfo result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.collectorType_ = collectorType_;
+        to_bitField0_ |= 0x00000001;
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.pauseTimesMs_ = pauseTimesMsBuilder_ == null
+            ? pauseTimesMs_
+            : pauseTimesMsBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.GcPauseInfo) {
@@ -687,8 +650,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.GcPauseInfo.GcType getCollectorType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.valueOf(collectorType_);
+      com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.forNumber(collectorType_);
       return result == null ? com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.UNKNOWN : result;
     }
     /**
@@ -766,11 +728,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         pauseTimesMs_ = value;
-        onChanged();
       } else {
         pauseTimesMsBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -784,11 +746,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.Histogram.Builder builderForValue) {
       if (pauseTimesMsBuilder_ == null) {
         pauseTimesMs_ = builderForValue.build();
-        onChanged();
       } else {
         pauseTimesMsBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -801,18 +763,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergePauseTimesMs(com.google.wireless.android.sdk.stats.Histogram value) {
       if (pauseTimesMsBuilder_ == null) {
         if (((bitField0_ & 0x00000002) != 0) &&
-            pauseTimesMs_ != null &&
-            pauseTimesMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
-          pauseTimesMs_ =
-            com.google.wireless.android.sdk.stats.Histogram.newBuilder(pauseTimesMs_).mergeFrom(value).buildPartial();
+          pauseTimesMs_ != null &&
+          pauseTimesMs_ != com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance()) {
+          getPauseTimesMsBuilder().mergeFrom(value);
         } else {
           pauseTimesMs_ = value;
         }
-        onChanged();
       } else {
         pauseTimesMsBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -823,13 +784,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram pause_times_ms = 2 [lazy = true];</code>
      */
     public Builder clearPauseTimesMs() {
-      if (pauseTimesMsBuilder_ == null) {
-        pauseTimesMs_ = null;
-        onChanged();
-      } else {
-        pauseTimesMsBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000002);
+      pauseTimesMs_ = null;
+      if (pauseTimesMsBuilder_ != null) {
+        pauseTimesMsBuilder_.dispose();
+        pauseTimesMsBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

@@ -689,21 +689,7 @@ public final class AdbHelper {
     static String queryFeatures(@NonNull String adbFeaturesRequest)
             throws TimeoutException, AdbCommandRejectedException, IOException {
 
-        try (SocketChannel adbChan = AndroidDebugBridge.openConnection()) {
-            adbChan.configureBlocking(false);
-
-            byte[] request = formAdbRequest(adbFeaturesRequest);
-
-            write(adbChan, request);
-
-            AdbResponse resp = readAdbResponse(adbChan, true /* readDiagString */);
-            if (!resp.okay) {
-                Log.w("features", "Error querying features: " + resp.message);
-                throw new AdbCommandRejectedException(resp.message);
-            }
-
-            return resp.message;
-        }
+        return AndroidDebugBridge.queryFeatures(adbFeaturesRequest);
     }
 
     /**

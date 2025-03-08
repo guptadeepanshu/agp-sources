@@ -49,7 +49,7 @@ private const val WAIT_AFTER_BOOT_MS = 5000L
  * negative value is passed, it waits infinitely.
  */
 class AvdSnapshotHandler(
-    private val showEmulatorKernelLogging: Boolean,
+    private val showFullEmulatorKernelLogging: Boolean,
     private val deviceBootAndSnapshotCheckTimeoutSec: Long?,
     private val adbHelper: AdbHelper,
     private val emulatorDir: Provider<Directory>,
@@ -92,8 +92,8 @@ class AvdSnapshotHandler(
             "-no-boot-anim",
             "-no-audio",
             "-delay-adb",
-            "-verbose".takeIf { showEmulatorKernelLogging },
-            "-show-kernel".takeIf { showEmulatorKernelLogging },
+            "-verbose".takeIf { showFullEmulatorKernelLogging },
+            "-show-kernel",
             "-gpu", emulatorGpuFlag,
             *additionalParams.toTypedArray(),
         )
@@ -322,6 +322,9 @@ class AvdSnapshotHandler(
                 ).toString()
         val emulatorProcess = processBuilder.start()
         val bootCompleted = AtomicBoolean(false)
+        // need to process both stderr and stdout
+        val outputProcessed = CountDownLatch(2)
+        val emulatorErrorList = mutableListOf<String>()
         try {
             executor.execute {
                 var emulatorSerial: String? = null
@@ -381,17 +384,25 @@ class AvdSnapshotHandler(
                 emulatorProcess,
                 GrabProcessOutput.Wait.ASYNC,
                 object : GrabProcessOutput.IProcessOutput {
-                    override fun out(line: String?) {
-                        line ?: return
-                        logger.verbose(line)
-                    }
 
-                    override fun err(line: String?) {
-                        line ?: return
+                    override fun out(line: String?) = processLine(line)
+
+                    override fun err(line: String?) = processLine(line)
+
+                    fun processLine(line: String?) {
+                        if (line == null) {
+                            outputProcessed.countDown()
+                            return
+                        }
+
+                        if (line.contains("ERROR")) {
+                            emulatorErrorList.add(line)
+                        }
                         logger.verbose(line)
                     }
                 }
             )
+
             emulatorProcess.waitUntilTimeout(logger) {
                 logger.warning("Snapshot creation timed out. Closing emulator.")
                 throw EmulatorSnapshotCannotCreatedException("""
@@ -401,16 +412,27 @@ class AvdSnapshotHandler(
                     fewer shards.
                 """.trimIndent())
             }
-            if (!bootCompleted.get()) {
-                throw EmulatorSnapshotCannotCreatedException("""
-                    Gradle was not able to complete device setup for: $avdName
-                    The emulator failed to open the managed device to generate the snapshot.
-                    This is because the emulator closed unexpectedly (${emulatorProcess.exitValue()}),
-                    try updating the emulator and ensure a device can be run from Android Studio.
-                """.trimIndent())
-            }
         } finally {
             emulatorProcess.destroy()
+        }
+
+
+
+        if (!bootCompleted.get()) {
+            // wait for processing to complete for output of process
+
+            val timeoutSec =
+                deviceBootAndSnapshotCheckTimeoutSec ?:
+                DEFAULT_DEVICE_BOOT_AND_SNAPSHOT_CHECK_TIMEOUT_SEC
+            outputProcessed.await(timeoutSec, TimeUnit.SECONDS)
+
+            throw EmulatorSnapshotCannotCreatedException(
+                """
+                        Gradle was not able to complete device setup for: $avdName
+                        The emulator failed to open the managed device to generate the snapshot.
+                        This is because the emulator closed unexpectedly (exit value = ${emulatorProcess.exitValue()}).
+                        The errors recorded from emulator:
+                    """.trimIndent() + emulatorErrorList.joinToString(separator = "\n"))
         }
     }
 }

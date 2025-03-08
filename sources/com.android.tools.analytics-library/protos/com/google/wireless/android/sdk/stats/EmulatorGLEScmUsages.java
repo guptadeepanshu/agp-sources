@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorGLEScmUsages();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorGLEScmUsages_descriptor;
@@ -49,7 +44,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int IS_USED_FIELD_NUMBER = 1;
-  private boolean isUsed_;
+  private boolean isUsed_ = false;
   /**
    * <pre>
    * Has the client create any GLES1 contexts
@@ -76,7 +71,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int LIGHT_FIELD_NUMBER = 2;
-  private boolean light_;
+  private boolean light_ = false;
   /**
    * <pre>
    * Track glLight{f,fv,x,xv} command calls
@@ -103,7 +98,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TEX_GEN_FIELD_NUMBER = 3;
-  private boolean texGen_;
+  private boolean texGen_ = false;
   /**
    * <pre>
    * Track glTexGen{f,fv,x,xv,i,iv}OES command calls
@@ -361,12 +356,10 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       isUsed_ = false;
-      bitField0_ = (bitField0_ & ~0x00000001);
       light_ = false;
-      bitField0_ = (bitField0_ & ~0x00000002);
       texGen_ = false;
-      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -393,6 +386,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages result = new com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -407,43 +406,9 @@ private static final long serialVersionUID = 0L;
         result.texGen_ = texGen_;
         to_bitField0_ |= 0x00000004;
       }
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages) {
@@ -558,8 +523,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setIsUsed(boolean value) {
-      bitField0_ |= 0x00000001;
+
       isUsed_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -613,8 +579,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLight(boolean value) {
-      bitField0_ |= 0x00000002;
+
       light_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -668,8 +635,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setTexGen(boolean value) {
-      bitField0_ |= 0x00000004;
+
       texGen_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }

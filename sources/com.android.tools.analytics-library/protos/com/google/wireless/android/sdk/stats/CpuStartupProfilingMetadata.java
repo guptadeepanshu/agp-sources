@@ -29,11 +29,6 @@ private static final long serialVersionUID = 0L;
     return new CpuStartupProfilingMetadata();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_CpuStartupProfilingMetadata_descriptor;
@@ -277,12 +272,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (profilingConfigBuilder_ == null) {
-        profilingConfig_ = null;
-      } else {
-        profilingConfigBuilder_.clear();
+      bitField0_ = 0;
+      profilingConfig_ = null;
+      if (profilingConfigBuilder_ != null) {
+        profilingConfigBuilder_.dispose();
+        profilingConfigBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000001);
       return this;
     }
 
@@ -309,53 +304,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata buildPartial() {
       com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata result = new com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata(this);
-      int from_bitField0_ = bitField0_;
-      int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        if (profilingConfigBuilder_ == null) {
-          result.profilingConfig_ = profilingConfig_;
-        } else {
-          result.profilingConfig_ = profilingConfigBuilder_.build();
-        }
-        to_bitField0_ |= 0x00000001;
-      }
-      result.bitField0_ = to_bitField0_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata result) {
+      int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.profilingConfig_ = profilingConfigBuilder_ == null
+            ? profilingConfig_
+            : profilingConfigBuilder_.build();
+        to_bitField0_ |= 0x00000001;
+      }
+      result.bitField0_ |= to_bitField0_;
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata) {
@@ -451,11 +416,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         profilingConfig_ = value;
-        onChanged();
       } else {
         profilingConfigBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -465,11 +430,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.CpuProfilingConfig.Builder builderForValue) {
       if (profilingConfigBuilder_ == null) {
         profilingConfig_ = builderForValue.build();
-        onChanged();
       } else {
         profilingConfigBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -478,31 +443,30 @@ private static final long serialVersionUID = 0L;
     public Builder mergeProfilingConfig(com.google.wireless.android.sdk.stats.CpuProfilingConfig value) {
       if (profilingConfigBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0) &&
-            profilingConfig_ != null &&
-            profilingConfig_ != com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance()) {
-          profilingConfig_ =
-            com.google.wireless.android.sdk.stats.CpuProfilingConfig.newBuilder(profilingConfig_).mergeFrom(value).buildPartial();
+          profilingConfig_ != null &&
+          profilingConfig_ != com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance()) {
+          getProfilingConfigBuilder().mergeFrom(value);
         } else {
           profilingConfig_ = value;
         }
-        onChanged();
       } else {
         profilingConfigBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1 [lazy = true];</code>
      */
     public Builder clearProfilingConfig() {
-      if (profilingConfigBuilder_ == null) {
-        profilingConfig_ = null;
-        onChanged();
-      } else {
-        profilingConfigBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000001);
+      profilingConfig_ = null;
+      if (profilingConfigBuilder_ != null) {
+        profilingConfigBuilder_.dispose();
+        profilingConfigBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**

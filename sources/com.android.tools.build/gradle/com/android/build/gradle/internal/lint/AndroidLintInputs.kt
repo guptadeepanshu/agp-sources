@@ -1997,6 +1997,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
+            sourceSetConfigurationsMap = emptyMap()
         )
         artifactCollectionsInputs.setDisallowChanges(
             ArtifactCollectionsInputsImpl(
@@ -2050,6 +2051,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
+            sourceSetConfigurationsMap = emptyMap()
         )
         artifactCollectionsInputs.setDisallowChanges(
             ArtifactCollectionsInputsImpl(
@@ -2102,6 +2104,7 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
+            sourceSetConfigurationsMap = emptyMap()
         )
         artifactCollectionsInputs.setDisallowChanges(
             ArtifactCollectionsInputsImpl(
@@ -2309,6 +2312,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
+            sourceSetConfigurationsMap = emptyMap()
         )
         artifactCollectionsInputs.setDisallowChanges(
             ArtifactCollectionsInputsImpl(
@@ -2395,6 +2399,7 @@ abstract class JavaArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isLibraryConstraintsApplied = false,
             isSelfInstrumenting = false,
+            sourceSetConfigurationsMap = emptyMap()
         )
         artifactCollectionsInputs.setDisallowChanges(
             ArtifactCollectionsInputsImpl(
@@ -2757,7 +2762,11 @@ abstract class UastInputs  {
             } else {
                 "compile".appendCapitalized(variant.name, "Kotlin")
             }
-        initializeFromKotlinCompileTask(kotlinCompileTaskName, project)
+        initializeFromKotlinCompileTask(
+            kotlinCompileTaskName,
+            project,
+            variant.useBuiltInKotlinSupport
+        )
     }
 
     fun initialize(variantScope: PrivacySandboxSdkVariantScope) {
@@ -2780,14 +2789,15 @@ abstract class UastInputs  {
     /**
      * This function makes an effort to set the kotlin language version inputs based on the task
      * named [kotlinCompileTaskName], but it's not always possible (e.g., if KGP is not applied in
-     * the same class loader). This function catches any exceptions that might be thrown because of
-     * unexpected behavior from KGP.
+     * the same class loader and [useBuiltInKotlinSupport] is false). This function catches any
+     * exceptions that might be thrown because of unexpected behavior from KGP.
      */
     private fun initializeFromKotlinCompileTask(
         kotlinCompileTaskName: String,
-        project: Project
+        project: Project,
+        useBuiltInKotlinSupport: Boolean = false
     ) {
-        if (!isKotlinPluginAppliedInTheSameClassloader(project)) {
+        if (!isKotlinPluginAppliedInTheSameClassloader(project) && !useBuiltInKotlinSupport) {
             return
         }
         val kotlinCompileTaskProvider: TaskProvider<KotlinCompile> =

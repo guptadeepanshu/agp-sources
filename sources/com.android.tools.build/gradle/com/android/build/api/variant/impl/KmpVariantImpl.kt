@@ -138,7 +138,8 @@ open class KmpVariantImpl @Inject constructor(
         internalServices.mapPropertyOf(
             String::class.java,
             Any::class.java,
-            dslInfo.experimentalProperties
+            dslInfo.experimentalProperties,
+            disallowUnsafeRead = false
         )
 
     override val maxSdk: Int?

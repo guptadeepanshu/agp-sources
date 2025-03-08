@@ -30,11 +30,6 @@ private static final long serialVersionUID = 0L;
     return new EmulatorGrpc();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EmulatorGrpc_descriptor;
@@ -179,7 +174,7 @@ private static final long serialVersionUID = 0L;
 
   private int bitField0_;
   public static final int CALL_ID_FIELD_NUMBER = 1;
-  private int callId_;
+  private int callId_ = 0;
   /**
    * <pre>
    * CRC32 digest of the fully-specified method name.
@@ -206,7 +201,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int REQUESTS_FIELD_NUMBER = 2;
-  private int requests_;
+  private int requests_ = 0;
   /**
    * <pre>
    * Number of requests
@@ -233,7 +228,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int FAILURES_FIELD_NUMBER = 3;
-  private int failures_;
+  private int failures_ = 0;
   /**
    * <pre>
    * Number of requests for which the response was not Status::OK
@@ -450,7 +445,7 @@ private static final long serialVersionUID = 0L;
   }
 
   public static final int TYPE_FIELD_NUMBER = 9;
-  private int type_;
+  private int type_ = 0;
   /**
    * <pre>
    * Type of connection
@@ -471,8 +466,7 @@ private static final long serialVersionUID = 0L;
    * @return The type.
    */
   @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection getType() {
-    @SuppressWarnings("deprecation")
-    com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection result = com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.valueOf(type_);
+    com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection result = com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.forNumber(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.UNKNOWN_GRPC_CONNECTION : result;
   }
 
@@ -810,44 +804,36 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
+      bitField0_ = 0;
       callId_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000001);
       requests_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000002);
       failures_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000004);
-      if (rcvBytesEstimateBuilder_ == null) {
-        rcvBytesEstimate_ = null;
-      } else {
-        rcvBytesEstimateBuilder_.clear();
+      rcvBytesEstimate_ = null;
+      if (rcvBytesEstimateBuilder_ != null) {
+        rcvBytesEstimateBuilder_.dispose();
+        rcvBytesEstimateBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000008);
-      if (sndBytesEstimateBuilder_ == null) {
-        sndBytesEstimate_ = null;
-      } else {
-        sndBytesEstimateBuilder_.clear();
+      sndBytesEstimate_ = null;
+      if (sndBytesEstimateBuilder_ != null) {
+        sndBytesEstimateBuilder_.dispose();
+        sndBytesEstimateBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
-      if (durationBuilder_ == null) {
-        duration_ = null;
-      } else {
-        durationBuilder_.clear();
+      duration_ = null;
+      if (durationBuilder_ != null) {
+        durationBuilder_.dispose();
+        durationBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000020);
-      if (rcvBuilder_ == null) {
-        rcv_ = null;
-      } else {
-        rcvBuilder_.clear();
+      rcv_ = null;
+      if (rcvBuilder_ != null) {
+        rcvBuilder_.dispose();
+        rcvBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000040);
-      if (sndBuilder_ == null) {
-        snd_ = null;
-      } else {
-        sndBuilder_.clear();
+      snd_ = null;
+      if (sndBuilder_ != null) {
+        sndBuilder_.dispose();
+        sndBuilder_ = null;
       }
-      bitField0_ = (bitField0_ & ~0x00000080);
       type_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -874,6 +860,12 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGrpc buildPartial() {
       com.google.wireless.android.sdk.stats.EmulatorGrpc result = new com.google.wireless.android.sdk.stats.EmulatorGrpc(this);
+      if (bitField0_ != 0) { buildPartial0(result); }
+      onBuilt();
+      return result;
+    }
+
+    private void buildPartial0(com.google.wireless.android.sdk.stats.EmulatorGrpc result) {
       int from_bitField0_ = bitField0_;
       int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
@@ -889,86 +881,42 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000004;
       }
       if (((from_bitField0_ & 0x00000008) != 0)) {
-        if (rcvBytesEstimateBuilder_ == null) {
-          result.rcvBytesEstimate_ = rcvBytesEstimate_;
-        } else {
-          result.rcvBytesEstimate_ = rcvBytesEstimateBuilder_.build();
-        }
+        result.rcvBytesEstimate_ = rcvBytesEstimateBuilder_ == null
+            ? rcvBytesEstimate_
+            : rcvBytesEstimateBuilder_.build();
         to_bitField0_ |= 0x00000008;
       }
       if (((from_bitField0_ & 0x00000010) != 0)) {
-        if (sndBytesEstimateBuilder_ == null) {
-          result.sndBytesEstimate_ = sndBytesEstimate_;
-        } else {
-          result.sndBytesEstimate_ = sndBytesEstimateBuilder_.build();
-        }
+        result.sndBytesEstimate_ = sndBytesEstimateBuilder_ == null
+            ? sndBytesEstimate_
+            : sndBytesEstimateBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
       if (((from_bitField0_ & 0x00000020) != 0)) {
-        if (durationBuilder_ == null) {
-          result.duration_ = duration_;
-        } else {
-          result.duration_ = durationBuilder_.build();
-        }
+        result.duration_ = durationBuilder_ == null
+            ? duration_
+            : durationBuilder_.build();
         to_bitField0_ |= 0x00000020;
       }
       if (((from_bitField0_ & 0x00000040) != 0)) {
-        if (rcvBuilder_ == null) {
-          result.rcv_ = rcv_;
-        } else {
-          result.rcv_ = rcvBuilder_.build();
-        }
+        result.rcv_ = rcvBuilder_ == null
+            ? rcv_
+            : rcvBuilder_.build();
         to_bitField0_ |= 0x00000040;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
-        if (sndBuilder_ == null) {
-          result.snd_ = snd_;
-        } else {
-          result.snd_ = sndBuilder_.build();
-        }
+        result.snd_ = sndBuilder_ == null
+            ? snd_
+            : sndBuilder_.build();
         to_bitField0_ |= 0x00000080;
       }
       if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.type_ = type_;
         to_bitField0_ |= 0x00000100;
       }
-      result.type_ = type_;
-      result.bitField0_ = to_bitField0_;
-      onBuilt();
-      return result;
+      result.bitField0_ |= to_bitField0_;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
-    }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof com.google.wireless.android.sdk.stats.EmulatorGrpc) {
@@ -1148,8 +1096,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setCallId(int value) {
-      bitField0_ |= 0x00000001;
+
       callId_ = value;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -1203,8 +1152,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setRequests(int value) {
-      bitField0_ |= 0x00000002;
+
       requests_ = value;
+      bitField0_ |= 0x00000002;
       onChanged();
       return this;
     }
@@ -1258,8 +1208,9 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setFailures(int value) {
-      bitField0_ |= 0x00000004;
+
       failures_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -1320,11 +1271,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         rcvBytesEstimate_ = value;
-        onChanged();
       } else {
         rcvBytesEstimateBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1338,11 +1289,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (rcvBytesEstimateBuilder_ == null) {
         rcvBytesEstimate_ = builderForValue.build();
-        onChanged();
       } else {
         rcvBytesEstimateBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1355,18 +1306,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRcvBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBytesEstimateBuilder_ == null) {
         if (((bitField0_ & 0x00000008) != 0) &&
-            rcvBytesEstimate_ != null &&
-            rcvBytesEstimate_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          rcvBytesEstimate_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(rcvBytesEstimate_).mergeFrom(value).buildPartial();
+          rcvBytesEstimate_ != null &&
+          rcvBytesEstimate_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getRcvBytesEstimateBuilder().mergeFrom(value);
         } else {
           rcvBytesEstimate_ = value;
         }
-        onChanged();
       } else {
         rcvBytesEstimateBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000008;
+      onChanged();
       return this;
     }
     /**
@@ -1377,13 +1327,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4 [lazy = true];</code>
      */
     public Builder clearRcvBytesEstimate() {
-      if (rcvBytesEstimateBuilder_ == null) {
-        rcvBytesEstimate_ = null;
-        onChanged();
-      } else {
-        rcvBytesEstimateBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000008);
+      rcvBytesEstimate_ = null;
+      if (rcvBytesEstimateBuilder_ != null) {
+        rcvBytesEstimateBuilder_.dispose();
+        rcvBytesEstimateBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1476,11 +1426,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         sndBytesEstimate_ = value;
-        onChanged();
       } else {
         sndBytesEstimateBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1494,11 +1444,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (sndBytesEstimateBuilder_ == null) {
         sndBytesEstimate_ = builderForValue.build();
-        onChanged();
       } else {
         sndBytesEstimateBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1511,18 +1461,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSndBytesEstimate(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBytesEstimateBuilder_ == null) {
         if (((bitField0_ & 0x00000010) != 0) &&
-            sndBytesEstimate_ != null &&
-            sndBytesEstimate_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          sndBytesEstimate_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(sndBytesEstimate_).mergeFrom(value).buildPartial();
+          sndBytesEstimate_ != null &&
+          sndBytesEstimate_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getSndBytesEstimateBuilder().mergeFrom(value);
         } else {
           sndBytesEstimate_ = value;
         }
-        onChanged();
       } else {
         sndBytesEstimateBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000010;
+      onChanged();
       return this;
     }
     /**
@@ -1533,13 +1482,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5 [lazy = true];</code>
      */
     public Builder clearSndBytesEstimate() {
-      if (sndBytesEstimateBuilder_ == null) {
-        sndBytesEstimate_ = null;
-        onChanged();
-      } else {
-        sndBytesEstimateBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000010);
+      sndBytesEstimate_ = null;
+      if (sndBytesEstimateBuilder_ != null) {
+        sndBytesEstimateBuilder_.dispose();
+        sndBytesEstimateBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1632,11 +1581,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         duration_ = value;
-        onChanged();
       } else {
         durationBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1650,11 +1599,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (durationBuilder_ == null) {
         duration_ = builderForValue.build();
-        onChanged();
       } else {
         durationBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1667,18 +1616,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeDuration(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (durationBuilder_ == null) {
         if (((bitField0_ & 0x00000020) != 0) &&
-            duration_ != null &&
-            duration_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          duration_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(duration_).mergeFrom(value).buildPartial();
+          duration_ != null &&
+          duration_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getDurationBuilder().mergeFrom(value);
         } else {
           duration_ = value;
         }
-        onChanged();
       } else {
         durationBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000020;
+      onChanged();
       return this;
     }
     /**
@@ -1689,13 +1637,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator duration = 6 [lazy = true];</code>
      */
     public Builder clearDuration() {
-      if (durationBuilder_ == null) {
-        duration_ = null;
-        onChanged();
-      } else {
-        durationBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000020);
+      duration_ = null;
+      if (durationBuilder_ != null) {
+        durationBuilder_.dispose();
+        durationBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1788,11 +1736,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         rcv_ = value;
-        onChanged();
       } else {
         rcvBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1806,11 +1754,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (rcvBuilder_ == null) {
         rcv_ = builderForValue.build();
-        onChanged();
       } else {
         rcvBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1823,18 +1771,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeRcv(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (rcvBuilder_ == null) {
         if (((bitField0_ & 0x00000040) != 0) &&
-            rcv_ != null &&
-            rcv_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          rcv_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(rcv_).mergeFrom(value).buildPartial();
+          rcv_ != null &&
+          rcv_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getRcvBuilder().mergeFrom(value);
         } else {
           rcv_ = value;
         }
-        onChanged();
       } else {
         rcvBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000040;
+      onChanged();
       return this;
     }
     /**
@@ -1845,13 +1792,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator rcv = 7 [lazy = true];</code>
      */
     public Builder clearRcv() {
-      if (rcvBuilder_ == null) {
-        rcv_ = null;
-        onChanged();
-      } else {
-        rcvBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000040);
+      rcv_ = null;
+      if (rcvBuilder_ != null) {
+        rcvBuilder_.dispose();
+        rcvBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -1944,11 +1891,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         snd_ = value;
-        onChanged();
       } else {
         sndBuilder_.setMessage(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
@@ -1962,11 +1909,11 @@ private static final long serialVersionUID = 0L;
         com.google.wireless.android.sdk.stats.PercentileEstimator.Builder builderForValue) {
       if (sndBuilder_ == null) {
         snd_ = builderForValue.build();
-        onChanged();
       } else {
         sndBuilder_.setMessage(builderForValue.build());
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
@@ -1979,18 +1926,17 @@ private static final long serialVersionUID = 0L;
     public Builder mergeSnd(com.google.wireless.android.sdk.stats.PercentileEstimator value) {
       if (sndBuilder_ == null) {
         if (((bitField0_ & 0x00000080) != 0) &&
-            snd_ != null &&
-            snd_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
-          snd_ =
-            com.google.wireless.android.sdk.stats.PercentileEstimator.newBuilder(snd_).mergeFrom(value).buildPartial();
+          snd_ != null &&
+          snd_ != com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance()) {
+          getSndBuilder().mergeFrom(value);
         } else {
           snd_ = value;
         }
-        onChanged();
       } else {
         sndBuilder_.mergeFrom(value);
       }
       bitField0_ |= 0x00000080;
+      onChanged();
       return this;
     }
     /**
@@ -2001,13 +1947,13 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator snd = 8 [lazy = true];</code>
      */
     public Builder clearSnd() {
-      if (sndBuilder_ == null) {
-        snd_ = null;
-        onChanged();
-      } else {
-        sndBuilder_.clear();
-      }
       bitField0_ = (bitField0_ & ~0x00000080);
+      snd_ = null;
+      if (sndBuilder_ != null) {
+        sndBuilder_.dispose();
+        sndBuilder_ = null;
+      }
+      onChanged();
       return this;
     }
     /**
@@ -2080,8 +2026,7 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection getType() {
-      @SuppressWarnings("deprecation")
-      com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection result = com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.valueOf(type_);
+      com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection result = com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.forNumber(type_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorGrpc.GrpcConnection.UNKNOWN_GRPC_CONNECTION : result;
     }
     /**

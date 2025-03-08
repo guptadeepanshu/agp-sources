@@ -160,11 +160,7 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
 
         init {
             resourceApk = creationConfig.artifacts.get(APK_FOR_LOCAL_TEST)
-            mergedAssets = if (creationConfig !is KmpComponentCreationConfig){
-                creationConfig.mainVariant.artifacts.get(SingleArtifact.ASSETS)
-            } else {
-                creationConfig.artifacts.get(SingleArtifact.ASSETS)
-            }
+            mergedAssets = creationConfig.artifacts.get(SingleArtifact.ASSETS)
             targetConfiguration = creationConfig.paths.targetFilterConfigurations
 
             mergedManifest = if (creationConfig.mainVariant.componentType.isApk) {
