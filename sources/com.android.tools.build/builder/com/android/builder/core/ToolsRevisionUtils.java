@@ -50,6 +50,6 @@ public class ToolsRevisionUtils {
      * <p>The build system will warn if the compile SDK version is greater than this value to
      * encourage build authors to upgrade the Android Gradle Plugin.
      */
-    public static final AndroidVersion MAX_RECOMMENDED_COMPILE_SDK_VERSION =
-            SdkConstants.MAX_SUPPORTED_ANDROID_PLATFORM_VERSION;
+    // TODO(b/398999714): revert to SdkConstants.MAX_SUPPORTED_ANDROID_PLATFORM_VERSION;
+    public static final AndroidVersion MAX_RECOMMENDED_COMPILE_SDK_VERSION = new AndroidVersion(36);
 }

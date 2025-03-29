@@ -141,8 +141,7 @@ public class SdkVersionInfo {
     /**
      * Returns the Android release name corresponding to the given API level.
      *
-     * <p>DO NOTE USE TO CONSTRUCTION YOUR OWN ANDROID VERSION STRING. See {@link
-     * AndroidVersionUtils} instead.
+     * <p>Do <b>not</b> use to construct an Android version string. See {@link AndroidVersionUtils} instead.
      *
      * <p>If the corresponding Android version has not yet been released, returns null.
      *
@@ -191,6 +190,8 @@ public class SdkVersionInfo {
                 return "14.0";
             case 35:
                 return "15.0";
+            case 36:
+                return "16.0";
                 // If you add more versions here, also update #HIGHEST_KNOWN_STABLE_API
             default:
                 return null;
@@ -200,8 +201,7 @@ public class SdkVersionInfo {
     /**
      * Returns the Android release name corresponding to the given API level.
      *
-     * <p>DO NOTE USE TO CONSTRUCTION YOUR OWN ANDROID VERSION STRING. See {@link
-     * AndroidVersionUtils} instead.
+     * <p>Do <b>not</b> use to construct an Android version string. See {@link AndroidVersionUtils} instead.
      *
      * <p>If the corresponding Android version has not yet been released, returns the codename. This
      * matches how the SDK describes itself, e.g. S (stable) is
@@ -288,9 +288,10 @@ public class SdkVersionInfo {
                 return "UpsideDownCake";
             case 35:
                 return "VanillaIceCream";
+            case 36:
+                return "Baklava";
                 // If you add more versions here, also update #getBuildCode and
                 // #HIGHEST_KNOWN_API
-
             default:
                 return null;
         }
@@ -347,6 +348,8 @@ public class SdkVersionInfo {
                 return "UPSIDE_DOWN_CAKE";
             case 35:
                 return "VANILLA_ICE_CREAM";
+            case 36:
+                return "BAKLAVA";
                 // If you add more versions here, also update #getCodeName and
                 // #HIGHEST_KNOWN_API
         }
