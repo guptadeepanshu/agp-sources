@@ -97,7 +97,7 @@ open class DeviceTestBuilderImpl(
             target.api = null
         }
 
-    override var enable = !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
+    override var enable = true
 
     internal var _enableMultiDex: Boolean? = enableMultiDex
     override var enableMultiDex: Boolean?
