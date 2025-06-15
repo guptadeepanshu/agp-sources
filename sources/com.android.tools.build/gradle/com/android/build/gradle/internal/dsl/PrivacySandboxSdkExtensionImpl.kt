@@ -17,14 +17,9 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
-import com.android.build.gradle.internal.services.DslServices
 import com.android.builder.core.ToolsRevisionUtils
-import javax.inject.Inject
 
-abstract class PrivacySandboxSdkExtensionImpl
-@Inject @WithLazyInitialization("lazyInit") constructor(
-    private val dslServices: DslServices
-) : InternalPrivacySandboxSdkExtension {
+abstract class PrivacySandboxSdkExtensionImpl: InternalPrivacySandboxSdkExtension {
 
     override var namespace: String?
         get() = bundle.applicationId
@@ -32,6 +27,8 @@ abstract class PrivacySandboxSdkExtensionImpl
             bundle.applicationId = value
         }
 
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         buildToolsVersion = ToolsRevisionUtils.DEFAULT_BUILD_TOOLS_REVISION.toString()
     }

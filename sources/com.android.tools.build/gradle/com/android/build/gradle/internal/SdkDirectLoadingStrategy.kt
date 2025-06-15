@@ -149,7 +149,11 @@ class SdkDirectLoadingStrategy(
             return null
         }
 
-        warnIfCompileSdkTooNew(platform.targetPlatformVersion, issueReporter, suppressWarningIfTooNewForVersions)
+        warnIfCompileSdkTooNew(
+            platform.targetPlatformVersion,
+            issueReporter,
+            suppressWarningIfTooNewForVersions
+        )
 
         return DirectLoadComponents(
             sdkDirectory,
@@ -355,7 +359,7 @@ private class PlatformComponents(
             }
             val platformVersionFromPlatformXml = parseAndroidVersion(platformPackage)
             // Use platformVersionFromPlatformXml if it has a non-null extensionLevel because
-            // platformVersionFromHash might have a null extensonLevel
+            // platformVersionFromHash might have a null extensionLevel
             val platformVersion = if (platformVersionFromPlatformXml?.extensionLevel == null) {
                 platformVersionFromHash
             } else {

@@ -204,7 +204,7 @@ private fun getSdkCmakePackages(
     sdkFolder: File?
 ): List<LocalPackage> {
     val androidSdkHandler = AndroidSdkHandler.getInstance(androidLocationsProvider, sdkFolder?.toPath())
-    val sdkManager = androidSdkHandler.getSdkManager(
+    val sdkManager = androidSdkHandler.getRepoManagerAndLoadSynchronously(
         LoggerProgressIndicatorWrapper(
             ThreadLoggingEnvironment.getILogger(CMAKE_PACKAGES_SDK, CMAKE_PACKAGES_SDK)
         )

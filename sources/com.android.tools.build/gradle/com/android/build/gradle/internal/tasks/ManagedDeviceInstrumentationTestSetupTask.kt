@@ -35,6 +35,7 @@ import com.android.repository.Revision
 import com.android.testing.utils.computeSystemImageHashFromDsl
 import com.android.testing.utils.isTvOrAutoDevice
 import com.android.testing.utils.isTvOrAutoSource
+import com.android.testing.utils.getPageAlignmentSuffix
 import com.android.utils.osArchitecture
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.provider.Property
@@ -100,6 +101,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
     abstract val require64Bit: Property<Boolean>
 
     override fun doTaskAction() {
+        assertSourceDoesNotIncludePageAlignment()
         assertNoTvOrAuto()
 
         workerExecutor.noIsolation().submit(ManagedDeviceSetupRunnable::class.java) {
@@ -146,6 +148,22 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
                 """
                     ${managedDeviceName.get()} has a device profile of ${hardwareProfile.get()}.
                     TV and Auto devices are presently not supported with Gradle Managed Devices.
+                """.trimIndent()
+            )
+        }
+    }
+
+    private fun assertSourceDoesNotIncludePageAlignment() {
+        // Developers should not explicitly specify page alignment in the system image source.
+        // This can cause problems with determining the system image, as well as image
+        // recommendations
+        val sourcePageAlignment = getPageAlignmentSuffix(systemImageVendor.get())
+        if (sourcePageAlignment != null) {
+            error(
+                """
+                    ${managedDeviceName.get()} has a systemImageSource = ${systemImageVendor.get()},
+                    The system image source should not include page alignment information
+                    ($sourcePageAlignment). Use the ManagedVirtualDevice.pageAlignment instead.
                 """.trimIndent()
             )
         }

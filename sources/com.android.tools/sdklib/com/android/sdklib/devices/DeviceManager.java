@@ -66,6 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +84,9 @@ public class DeviceManager {
     @Nullable private final Path mAndroidFolder;
     private final ILogger mLog;
     private final VendorDevices mVendorDevices;
+
+    private final Predicate<Device> mIsSupportedDevice;
+
     // These are keyed by (device ID, manufacturer)
     private Table<String, String, Device> mSdkVendorDevices;
     private Table<String, String, Device> mSysImgDevices;
@@ -93,7 +97,7 @@ public class DeviceManager {
     private final Path mOsSdkPath;
     private final AndroidSdkHandler mSdkHandler;
 
-    public enum DeviceFilter {
+    public enum DeviceCategory {
         /** getDevices() flag to list default devices from the bundled devices.xml definitions. */
         DEFAULT,
         /** getDevices() flag to list user devices saved in the .android home folder. */
@@ -106,7 +110,7 @@ public class DeviceManager {
     }
 
     /** getDevices() flag to list all devices. */
-    public static final EnumSet<DeviceFilter> ALL_DEVICES  = EnumSet.allOf(DeviceFilter.class);
+    public static final EnumSet<DeviceCategory> ALL_DEVICES = EnumSet.allOf(DeviceCategory.class);
 
     public enum DeviceStatus {
         /**
@@ -126,20 +130,29 @@ public class DeviceManager {
     /**
      * Creates a new instance of {@link DeviceManager}, using the user's android folder.
      *
-     * @see #createInstance(AndroidSdkHandler, ILogger)
+     * @see #createInstance(AndroidSdkHandler, ILogger, Predicate)
      */
     public static DeviceManager createInstance(
             @NonNull AndroidLocationsProvider androidLocationsProvider,
             @Nullable Path sdkLocation,
             @NonNull ILogger log) {
         return createInstance(
-                AndroidSdkHandler.getInstance(androidLocationsProvider, sdkLocation), log);
+                AndroidSdkHandler.getInstance(androidLocationsProvider, sdkLocation),
+                log,
+                (device) -> true);
+    }
+
+    public static DeviceManager createInstance(
+            @NonNull AndroidSdkHandler sdkHandler,
+            @NonNull ILogger log,
+            @NonNull Predicate<Device> isSupportedDevice) {
+        return new DeviceManager(sdkHandler, log, isSupportedDevice);
     }
 
     public static DeviceManager createInstance(
             @NonNull AndroidSdkHandler sdkHandler,
             @NonNull ILogger log) {
-        return new DeviceManager(sdkHandler, log);
+        return new DeviceManager(sdkHandler, log, (device) -> true);
     }
 
     /**
@@ -147,10 +160,12 @@ public class DeviceManager {
      *
      * @param sdkHandler The AndroidSdkHandler to use.
      * @param log SDK logger instance. Should be non-null.
+     * @param isSupportedDevice function that allows filtering certain devices.
      */
     private DeviceManager(
             @NonNull AndroidSdkHandler sdkHandler,
-            @NonNull ILogger log) {
+            @NonNull ILogger log,
+            @NonNull Predicate<Device> isSupportedDevice) {
         mSdkHandler = sdkHandler;
         mOsSdkPath = sdkHandler.getLocation() == null ? null : sdkHandler.getLocation();
         mAndroidFolder =
@@ -160,6 +175,7 @@ public class DeviceManager {
         mLog = log;
         mDefaultDevices = new DefaultDevices(mLog);
         mVendorDevices = new VendorDevices(mLog);
+        mIsSupportedDevice = isSupportedDevice;
     }
 
     /**
@@ -239,38 +255,40 @@ public class DeviceManager {
     /**
      * Returns the known {@link Device} list.
      *
-     * @param deviceFilter One of the {@link DeviceFilter} constants.
+     * @param deviceCategory One of the {@link DeviceCategory} constants.
      * @return A copy of the list of {@link Device}s. Can be empty but not null.
      */
     @NonNull
-    public Collection<Device> getDevices(@NonNull DeviceFilter deviceFilter) {
-        return getDevices(EnumSet.of(deviceFilter));
+    public Collection<Device> getDevices(@NonNull DeviceCategory deviceCategory) {
+        return getDevices(EnumSet.of(deviceCategory));
     }
 
     /**
      * Returns the known {@link Device} list.
      *
-     * @param deviceFilter A combination of the {@link DeviceFilter} constants
-     *                     or the constant {@link DeviceManager#ALL_DEVICES}.
+     * @param deviceCategory A combination of the {@link DeviceCategory} constants or the constant
+     *     {@link DeviceManager#ALL_DEVICES}.
      * @return A copy of the list of {@link Device}s. Can be empty but not null.
      */
     @NonNull
-    public Collection<Device> getDevices(@NonNull Collection<DeviceFilter> deviceFilter) {
+    public Collection<Device> getDevices(@NonNull Collection<DeviceCategory> deviceCategory) {
         initDevicesLists();
         Table<String, String, Device> devices = HashBasedTable.create();
-        if (mUserDevices != null && (deviceFilter.contains(DeviceFilter.USER))) {
+        if (mUserDevices != null && (deviceCategory.contains(DeviceCategory.USER))) {
             devices.putAll(mUserDevices);
         }
-        if (mDefaultDevices.getDevices() != null && (deviceFilter.contains(DeviceFilter.DEFAULT))) {
+        if (mDefaultDevices.getDevices() != null
+                && (deviceCategory.contains(DeviceCategory.DEFAULT))) {
             devices.putAll(mDefaultDevices.getDevices());
         }
-        if (mVendorDevices.getDevices() != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
+        if (mVendorDevices.getDevices() != null
+                && (deviceCategory.contains(DeviceCategory.VENDOR))) {
             devices.putAll(mVendorDevices.getDevices());
         }
-        if (mSdkVendorDevices != null && (deviceFilter.contains(DeviceFilter.VENDOR))) {
+        if (mSdkVendorDevices != null && (deviceCategory.contains(DeviceCategory.VENDOR))) {
             devices.putAll(mSdkVendorDevices);
         }
-        if (mSysImgDevices != null && (deviceFilter.contains(DeviceFilter.SYSTEM_IMAGES))) {
+        if (mSysImgDevices != null && (deviceCategory.contains(DeviceCategory.SYSTEM_IMAGES))) {
             devices.putAll(mSysImgDevices);
         }
 
@@ -279,7 +297,7 @@ public class DeviceManager {
 
     private void initDevicesLists() {
         boolean changed = mDefaultDevices.init();
-        changed |= mVendorDevices.init();
+        changed |= mVendorDevices.init(mIsSupportedDevice);
         changed |= initSdkVendorDevices();
         changed |= initSysImgDevices();
         changed |= initUserDevices();
@@ -308,7 +326,20 @@ public class DeviceManager {
                 for (Path deviceDir : deviceDirs) {
                     Path deviceXml = deviceDir.resolve(SdkConstants.FN_DEVICES_XML);
                     if (Files.isRegularFile(deviceXml)) {
-                        mSdkVendorDevices.putAll(loadDevices(deviceXml));
+                        loadDevices(deviceXml)
+                                .cellSet()
+                                .forEach(
+                                        (cell) -> {
+                                            if (mIsSupportedDevice.test(cell.getValue())) {
+                                                mSdkVendorDevices.put(
+                                                        cell.getRowKey(),
+                                                        cell.getColumnKey(),
+                                                        cell.getValue());
+                                            } else {
+                                                mLog.warning(
+                                                        "Unsupported device %s", cell.getRowKey());
+                                            }
+                                        });
                     }
                 }
                 return true;
@@ -339,7 +370,7 @@ public class DeviceManager {
             // API directory is probably newer and more accurate.
             LoggerProgressIndicatorWrapper progress = new LoggerProgressIndicatorWrapper(mLog);
 
-            RepoManager mgr = mSdkHandler.getSdkManager(progress);
+            RepoManager mgr = mSdkHandler.getRepoManager(progress);
             mgr.loadSynchronously(RepoManager.DEFAULT_EXPIRATION_PERIOD_MS, progress, null, null);
             mgr.getPackages().getLocalPackages().values().stream()
                     .filter(pkg -> pkg.getTypeDetails() instanceof DetailsTypes.SysImgDetailsType)
@@ -354,6 +385,7 @@ public class DeviceManager {
                                         pkg.getLocation().resolve(SdkConstants.FN_DEVICES_XML);
                                 if (CancellableFileIo.isRegularFile(deviceXml)) {
                                     for (Device device : loadDevices(deviceXml).values()) {
+                                        if (!mIsSupportedDevice.test(device)) continue;
                                         if (isDeprecatedWearSkin(device)) {
                                             Device.Builder builder = new Device.Builder(device);
                                             builder.setDeprecated(true);
@@ -374,6 +406,7 @@ public class DeviceManager {
 
     /**
      * Initializes all user-created {@link Device}s
+     *
      * @return True if the list has changed.
      */
     private boolean initUserDevices() {
@@ -389,7 +422,20 @@ public class DeviceManager {
                 try {
                     userDevicesFile = mAndroidFolder.resolve(SdkConstants.FN_DEVICES_XML);
                     if (userDevicesFile != null && Files.exists(userDevicesFile)) {
-                        mUserDevices.putAll(DeviceParser.parse(userDevicesFile));
+                        DeviceParser.parse(userDevicesFile)
+                                .cellSet()
+                                .forEach(
+                                        (cell) -> {
+                                            if (mIsSupportedDevice.test(cell.getValue())) {
+                                                mUserDevices.put(
+                                                        cell.getRowKey(),
+                                                        cell.getColumnKey(),
+                                                        cell.getValue());
+                                            } else {
+                                                mLog.warning(
+                                                        "Unsupported device %s", cell.getRowKey());
+                                            }
+                                        });
                         return true;
                     }
                 } catch (SAXException e) {
@@ -421,6 +467,7 @@ public class DeviceManager {
     }
 
     public void addUserDevice(@NonNull Device d) {
+        if (!mIsSupportedDevice.test(d)) return;
         boolean changed = false;
         synchronized (mLock) {
             if (mUserDevices == null) {

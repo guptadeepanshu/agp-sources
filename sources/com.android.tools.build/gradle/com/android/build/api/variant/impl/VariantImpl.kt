@@ -121,7 +121,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     override val maxSdkVersion: Int?
         get() = variantBuilder.maxSdk
 
-    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>> by lazy {
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>? by lazy {
         buildConfigCreationConfig?.buildConfigFields
             ?: warnAboutAccessingVariantApiValueForDisabledFeature(
                 featureName = FeatureNames.BUILD_CONFIG,

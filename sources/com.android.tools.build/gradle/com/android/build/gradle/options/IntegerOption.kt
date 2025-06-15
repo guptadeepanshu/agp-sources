@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.options
 
+import com.android.build.gradle.internal.services.R8ParallelBuildService
 import com.android.build.gradle.options.Version.VERSION_8_2
 import com.android.builder.model.AndroidProject
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
@@ -23,7 +24,8 @@ import com.android.builder.model.PROPERTY_BUILD_API
 
 enum class IntegerOption(
     override val propertyName: String,
-    stage: ApiStage
+    stage: ApiStage,
+    override val defaultValue: Int? = null
 ) : Option<Int> {
     ANDROID_TEST_SHARD_COUNT("android.androidTest.numShards", ApiStage.Removed(VERSION_8_2, "Cross device sharding is no longer supported.")),
     ANDROID_SDK_CHANNEL("android.sdk.channel", ApiStage.Experimental),
@@ -71,9 +73,28 @@ enum class IntegerOption(
     AAPT2_THREAD_POOL_SIZE("android.aapt2ThreadPoolSize", ApiStage.Experimental),
 
     /**
-     * Max number of R8 workers to run at once
+     * Maximum number of R8 tasks that can run in parallel
+     * (see [org.gradle.api.services.BuildServiceSpec.getMaxParallelUsages]).
+     *
+     * The [defaultValue] is 1, meaning that if the user doesn't specify a different value, only 1
+     * R8 task can run at a time.
+     *
+     * Note:
+     *   - The property was named "maxWorkers" because each R8 task launches 1 Gradle worker action.
+     *     "maxParallelTasks" might be a better name, but it is a bit late to change the name at
+     *     this point.
+     *   - The task/worker action runs R8 in a thread pool. The thread pool's size is controlled by
+     *     another property ([R8_THREAD_POOL_SIZE]).
+     *
+     * See b/213907850 for more context.
      */
-    R8_MAX_WORKERS("android.r8.maxWorkers", ApiStage.Experimental),
+    R8_MAX_WORKERS("android.r8.maxWorkers", ApiStage.Experimental, defaultValue = 1),
+
+    /**
+     * The size of the thread pool ([java.util.concurrent.ExecutorService]) that runs R8 tasks.
+     * If no value is given, a default heuristics-based value will be used.
+     */
+    R8_THREAD_POOL_SIZE("android.r8.threadPoolSize", ApiStage.Experimental, R8ParallelBuildService.defaultR8ThreadPoolSize()),
 
     /**
      * Flags for Android Test Retention

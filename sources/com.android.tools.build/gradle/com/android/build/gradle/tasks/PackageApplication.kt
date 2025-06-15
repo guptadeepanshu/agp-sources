@@ -88,12 +88,8 @@ abstract class PackageApplication : PackageAndroidArtifact() {
     class CreationAction(
         creationConfig: ApkCreationConfig,
         private val outputDirectory: File,
-        manifests: Provider<Directory>,
-        manifestType: Artifact<Directory>
     ) : PackageAndroidArtifact.CreationAction<PackageApplication>(
         creationConfig,
-        manifests,
-        manifestType
     ) {
 
         private var transformationRequest: ArtifactTransformationRequest<PackageApplication>? = null
@@ -220,7 +216,7 @@ abstract class PackageApplication : PackageAndroidArtifact() {
             val baselineProfileData = mutableListOf<BaselineProfileDetails>()
             baselineProfilesMapping.forEach { entry ->
                 val supportedApis = entry.value.map { it.toInt() }
-                val baselineProfiles = mutableSetOf<File>()
+                val baselineProfileFiles = mutableSetOf<File>()
                 val dmFile = dexMetadataPropertiesFile.parentFile.resolve(entry.key)
                 val fileIndex = dmFile.parentFile.name
                 apkNames.forEach {
@@ -228,10 +224,10 @@ abstract class PackageApplication : PackageAndroidArtifact() {
                         apkDirectory, SdkConstants.FN_OUTPUT_BASELINE_PROFILES, fileIndex, "$it.dm")
                     renamedDmFile.parentFile.mkdirs()
                     FileUtils.copyFile(dmFile, renamedDmFile)
-                    baselineProfiles.add(renamedDmFile)
+                    baselineProfileFiles.add(renamedDmFile)
                 }
                 baselineProfileData.add(BaselineProfileDetails(
-                        supportedApis.min(), supportedApis.max(), baselineProfiles)
+                        supportedApis.min(), supportedApis.max(), baselineProfileFiles)
                 )
             }
             baselineProfileData.sortBy { it.minApi }

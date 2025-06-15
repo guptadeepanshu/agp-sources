@@ -2681,6 +2681,33 @@ private static final long serialVersionUID = 0L;
     return sdkInstallationMetrics_ == null ? com.google.wireless.android.sdk.stats.SetupWizardEvent.SdkInstallationMetrics.getDefaultInstance() : sdkInstallationMetrics_;
   }
 
+  public static final int IS_DEPRECATED_WIZARD_FIELD_NUMBER = 7;
+  private boolean isDeprecatedWizard_ = false;
+  /**
+   * <pre>
+   * Whether the deprecated wizard was used.
+   * </pre>
+   *
+   * <code>optional bool is_deprecated_wizard = 7;</code>
+   * @return Whether the isDeprecatedWizard field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsDeprecatedWizard() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the deprecated wizard was used.
+   * </pre>
+   *
+   * <code>optional bool is_deprecated_wizard = 7;</code>
+   * @return The isDeprecatedWizard.
+   */
+  @java.lang.Override
+  public boolean getIsDeprecatedWizard() {
+    return isDeprecatedWizard_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2712,6 +2739,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000010) != 0)) {
       output.writeMessage(6, getSdkInstallationMetrics());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeBool(7, isDeprecatedWizard_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -2745,6 +2775,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(6, getSdkInstallationMetrics());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(7, isDeprecatedWizard_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2785,6 +2819,11 @@ private static final long serialVersionUID = 0L;
       if (!getSdkInstallationMetrics()
           .equals(other.getSdkInstallationMetrics())) return false;
     }
+    if (hasIsDeprecatedWizard() != other.hasIsDeprecatedWizard()) return false;
+    if (hasIsDeprecatedWizard()) {
+      if (getIsDeprecatedWizard()
+          != other.getIsDeprecatedWizard()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -2820,6 +2859,11 @@ private static final long serialVersionUID = 0L;
     if (hasSdkInstallationMetrics()) {
       hash = (37 * hash) + SDK_INSTALLATION_METRICS_FIELD_NUMBER;
       hash = (53 * hash) + getSdkInstallationMetrics().hashCode();
+    }
+    if (hasIsDeprecatedWizard()) {
+      hash = (37 * hash) + IS_DEPRECATED_WIZARD_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsDeprecatedWizard());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -2978,6 +3022,7 @@ private static final long serialVersionUID = 0L;
         sdkInstallationMetricsBuilder_.dispose();
         sdkInstallationMetricsBuilder_ = null;
       }
+      isDeprecatedWizard_ = false;
       return this;
     }
 
@@ -3047,6 +3092,10 @@ private static final long serialVersionUID = 0L;
             : sdkInstallationMetricsBuilder_.build();
         to_bitField0_ |= 0x00000010;
       }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.isDeprecatedWizard_ = isDeprecatedWizard_;
+        to_bitField0_ |= 0x00000020;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -3102,6 +3151,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasSdkInstallationMetrics()) {
         mergeSdkInstallationMetrics(other.getSdkInstallationMetrics());
+      }
+      if (other.hasIsDeprecatedWizard()) {
+        setIsDeprecatedWizard(other.getIsDeprecatedWizard());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -3190,6 +3242,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000020;
               break;
             } // case 50
+            case 56: {
+              isDeprecatedWizard_ = input.readBool();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -3902,6 +3959,62 @@ private static final long serialVersionUID = 0L;
         sdkInstallationMetrics_ = null;
       }
       return sdkInstallationMetricsBuilder_;
+    }
+
+    private boolean isDeprecatedWizard_ ;
+    /**
+     * <pre>
+     * Whether the deprecated wizard was used.
+     * </pre>
+     *
+     * <code>optional bool is_deprecated_wizard = 7;</code>
+     * @return Whether the isDeprecatedWizard field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsDeprecatedWizard() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the deprecated wizard was used.
+     * </pre>
+     *
+     * <code>optional bool is_deprecated_wizard = 7;</code>
+     * @return The isDeprecatedWizard.
+     */
+    @java.lang.Override
+    public boolean getIsDeprecatedWizard() {
+      return isDeprecatedWizard_;
+    }
+    /**
+     * <pre>
+     * Whether the deprecated wizard was used.
+     * </pre>
+     *
+     * <code>optional bool is_deprecated_wizard = 7;</code>
+     * @param value The isDeprecatedWizard to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsDeprecatedWizard(boolean value) {
+
+      isDeprecatedWizard_ = value;
+      bitField0_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the deprecated wizard was used.
+     * </pre>
+     *
+     * <code>optional bool is_deprecated_wizard = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsDeprecatedWizard() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      isDeprecatedWizard_ = false;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

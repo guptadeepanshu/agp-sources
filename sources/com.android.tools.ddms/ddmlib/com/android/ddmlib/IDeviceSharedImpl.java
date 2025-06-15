@@ -166,11 +166,11 @@ public class IDeviceSharedImpl {
         switch (feature) {
             case SCREEN_RECORD:
                 if (supportsFeature(IDevice.HardwareFeature.WATCH)
-                        && !getVersion().isGreaterOrEqualThan(30)) {
+                        && !getVersion().isAtLeast(30)) {
                     // physical watches before API 30, do not support screen recording.
                     return false;
                 }
-                if (!getVersion().isGreaterOrEqualThan(19)) {
+                if (!getVersion().isAtLeast(19)) {
                     return false;
                 }
                 if (mHasScreenRecorder == null) {
@@ -178,15 +178,15 @@ public class IDeviceSharedImpl {
                 }
                 return mHasScreenRecorder;
             case PROCSTATS:
-                return getVersion().isGreaterOrEqualThan(19);
+                return getVersion().isAtLeast(19);
             case ABB_EXEC:
                 return adbFeatures.contains("abb_exec");
             case REAL_PKG_NAME:
-                return getVersion().compareTo(AndroidVersion.VersionCodes.Q, "R") >= 0;
+                return getVersion().isAtLeast(AndroidVersion.VersionCodes.Q, "R");
             case SKIP_VERIFICATION:
-                if (getVersion().compareTo(AndroidVersion.VersionCodes.R, null) >= 0) {
+                if (getVersion().isAtLeast(AndroidVersion.VersionCodes.R)) {
                     return true;
-                } else if (getVersion().compareTo(AndroidVersion.VersionCodes.Q, "R") >= 0) {
+                } else if (getVersion().isAtLeast(AndroidVersion.VersionCodes.Q, "R")) {
                     String sdkVersionString = iDevice.getProperty("ro.build.version.preview_sdk");
                     if (sdkVersionString != null) {
                         try {

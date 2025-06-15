@@ -524,12 +524,8 @@ public class SdkVersionInfo {
 
         if (Character.isDigit(apiOrPreviewName.charAt(0))) {
             try {
-                int api = Integer.parseInt(apiOrPreviewName);
-                if (api >= 1) {
-                    return new AndroidVersion(api, null);
-                }
-                return null;
-            } catch (NumberFormatException e) {
+                return AndroidVersion.fromString(apiOrPreviewName);
+            } catch (IllegalArgumentException e) {
                 // Invalid version string
                 return null;
             }

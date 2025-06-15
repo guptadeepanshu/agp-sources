@@ -29,7 +29,6 @@ import org.gradle.api.tasks.testing.Test
  * The presence of this component in a variant is controlled by [HostTestBuilder.enable]
  * which is accessible on subtypes of [VariantBuilder] that implement [HasHostTestsBuilder]
  */
-@Incubating
 interface HostTest: TestComponent {
 
     /**
@@ -53,7 +52,6 @@ interface HostTest: TestComponent {
      * ```
      * @param action to configure the [Test] task.
      */
-    @Incubating
     fun configureTestTask(action: (Test)-> Unit)
 
     /**

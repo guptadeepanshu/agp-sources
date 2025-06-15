@@ -42,6 +42,9 @@ object ConfigKey {
   /** The name of the AVD */
   const val AVD_ID = "AvdId"
 
+  /** The [IAndroidTarget.hashString] of the AVD. */
+  const val TARGET = "target"
+
   /** Flag indicating if the AVD supports the Play Store */
   const val PLAYSTORE_ENABLED = "PlayStore.enabled"
 
@@ -250,21 +253,4 @@ object ConfigKey {
   const val ROLL_RESIZE_3_AT_POSTURE = "hw.sensor.roll.resize_to_displayRegion.0.3_at_posture"
 
   const val ROLL_PERCENTAGES_POSTURE_DEFINITIONS = "hw.sensor.roll_percentages_posture_definitions"
-
-  // The following properties beginning with "image.androidVersion" are derived from
-  // [MetadataKey.TARGET] and stored in AvdInfo during parsing; they are not present in config.ini.
-
-  /** The API level of this AVD. Derived from the target hash. */
-  const val ANDROID_API = "image.androidVersion.api"
-
-  /** The Sdk Extension level of this AVD. Derived from the target hash. */
-  const val ANDROID_EXTENSION = "image.androidVersion.extension"
-
-  /** Flag indicating if the AVD's target SDK Extension is the base extension */
-  const val ANDROID_IS_BASE_EXTENSION = "image.androidVersion.isBaseExtension"
-
-  /** The API codename of this AVD. Derived from the target hash. */
-  const val ANDROID_CODENAME = "image.androidVersion.codename"
-
-  const val ANDROID_EXTENSION_LEVEL = "image.androidVersion.ext"
 }

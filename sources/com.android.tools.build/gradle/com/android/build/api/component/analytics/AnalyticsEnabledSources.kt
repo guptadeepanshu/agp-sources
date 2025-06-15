@@ -29,37 +29,40 @@ open class AnalyticsEnabledSources @Inject constructor(
     val objectFactory: ObjectFactory
 ): Sources by delegate {
 
-    override val java: SourceDirectories.Flat
-        get() {
+    override val java: SourceDirectories.Flat?
+        get() = delegate.java?.let {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SOURCES_JAVA_ACCESS_VALUE
-            return objectFactory.newInstance(
+            objectFactory.newInstance(
                 AnalyticsEnabledFlat::class.java,
-                delegate.java,
+                it,
                 stats,
-                objectFactory)
+                objectFactory
+            )
         }
 
-    override val kotlin: SourceDirectories.Flat
-        get() {
+    override val kotlin: SourceDirectories.Flat?
+        get() = delegate.kotlin?.let {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SOURCES_KOTLIN_ACCESS_VALUE
-            return objectFactory.newInstance(
+            objectFactory.newInstance(
                 AnalyticsEnabledFlat::class.java,
-                delegate.kotlin,
+                it,
                 stats,
-                objectFactory)
+                objectFactory
+            )
         }
 
     override val baselineProfiles: SourceDirectories.Flat?
-        get()  = delegate.baselineProfiles?.let {
+        get() = delegate.baselineProfiles?.let {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SOURCES_BASELINE_PROFILES_ACCESS_VALUE
             return objectFactory.newInstance(
                 AnalyticsEnabledFlat::class.java,
                 it,
                 stats,
-                objectFactory)
+                objectFactory
+            )
         }
 
     override val res: SourceDirectories.Layered?
@@ -113,7 +116,8 @@ open class AnalyticsEnabledSources @Inject constructor(
                     AnalyticsEnabledLayered::class.java,
                     it,
                     stats,
-                    objectFactory)
+                    objectFactory
+                )
             }
 
     override val mlModels: SourceDirectories.Layered?
@@ -131,16 +135,16 @@ open class AnalyticsEnabledSources @Inject constructor(
         }
 
     override val aidl: SourceDirectories.Flat?
-        get() = delegate.aidl?.let{
-                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                    VariantPropertiesMethodType.SOURCES_AIDL_ACCESS_VALUE
-                objectFactory.newInstance(
-                    AnalyticsEnabledFlat::class.java,
-                    it,
-                    stats,
-                    objectFactory
-                )
-            }
+        get() = delegate.aidl?.let {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.SOURCES_AIDL_ACCESS_VALUE
+            objectFactory.newInstance(
+                AnalyticsEnabledFlat::class.java,
+                it,
+                stats,
+                objectFactory
+            )
+        }
 
     override val renderscript: SourceDirectories.Flat?
         get() = delegate.renderscript?.let {
@@ -150,18 +154,20 @@ open class AnalyticsEnabledSources @Inject constructor(
                 AnalyticsEnabledFlat::class.java,
                 it,
                 stats,
-                objectFactory)
+                objectFactory
+            )
         }
 
-    override val resources: SourceDirectories.Flat
-        get() {
+    override val resources: SourceDirectories.Flat?
+        get() = delegate.resources?.let {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SOURCES_RESOURCES_ACCESS_VALUE
-            return objectFactory.newInstance(
+            objectFactory.newInstance(
                 AnalyticsEnabledFlat::class.java,
-                delegate.resources,
+                it,
                 stats,
-                objectFactory)
+                objectFactory
+            )
         }
 
     override fun getByName(name: String): SourceDirectories.Flat {

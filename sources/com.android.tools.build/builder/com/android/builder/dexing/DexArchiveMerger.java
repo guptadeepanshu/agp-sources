@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutorService;
 
 /**
  * A dex archive merger that can merge dex files from multiple dex archives into one or more dex
@@ -24,13 +24,13 @@ public interface DexArchiveMerger {
             @NonNull DexingType dexingType,
             int minSdkVersion,
             boolean isDebuggable,
-            @Nullable ForkJoinPool forkJoinPool) {
+            @NonNull ExecutorService d8ExecutorService) {
         return new D8DexArchiveMerger(
                 messageReceiver,
                 dexingType,
                 minSdkVersion,
                 isDebuggable ? CompilationMode.DEBUG : CompilationMode.RELEASE,
-                forkJoinPool);
+                d8ExecutorService);
     }
 
     /**

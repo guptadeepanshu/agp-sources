@@ -37,7 +37,6 @@ import com.android.repository.Revision;
 import com.android.repository.api.RepoManager;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
-import com.android.sdklib.AndroidVersion.AndroidVersionException;
 import com.android.sdklib.BuildToolInfo;
 import com.android.sdklib.IAndroidTarget;
 import com.android.sdklib.repository.AndroidSdkHandler;
@@ -799,20 +798,18 @@ public class LocalSdk {
             return null;
         }
 
-        try {
-            AndroidVersion vers = AndroidVersionHelper.create(props);
-            LocalDocPkgInfo info = new LocalDocPkgInfo(this, docFolder, props, vers, rev);
-
-            // To start with, a doc folder should have an "index.html" to be acceptable.
-            // We don't actually check the content of the file.
-            if (!mFileOp.isFile(new File(docFolder, "index.html"))) {
-                info.appendLoadError("Missing index.html");
-            }
-            return info;
-
-        } catch (AndroidVersionException e) {
-            return null; // skip invalid or missing android version.
+        AndroidVersion vers = AndroidVersionHelper.create(props);
+        if (vers == null) {
+            return null;
         }
+        LocalDocPkgInfo info = new LocalDocPkgInfo(this, docFolder, props, vers, rev);
+
+        // To start with, a doc folder should have an "index.html" to be acceptable.
+        // We don't actually check the content of the file.
+        if (!mFileOp.isFile(new File(docFolder, "index.html"))) {
+            info.appendLoadError("Missing index.html");
+        }
+        return info;
     }
 
     /**
@@ -914,16 +911,14 @@ public class LocalSdk {
                 minToolsRev = Revision.NOT_SPECIFIED;
             }
 
-            try {
-                AndroidVersion vers = AndroidVersionHelper.create(props);
-
-                LocalPlatformPkgInfo pkgInfo =
-                        new LocalPlatformPkgInfo(this, platformDir, props, vers, rev, minToolsRev);
-                outCollection.add(pkgInfo);
-
-            } catch (AndroidVersionException e) {
+            AndroidVersion vers = AndroidVersionHelper.create(props);
+            if (vers == null) {
                 continue; // skip invalid or missing android version.
             }
+
+            LocalPlatformPkgInfo pkgInfo =
+                    new LocalPlatformPkgInfo(this, platformDir, props, vers, rev, minToolsRev);
+            outCollection.add(pkgInfo);
         }
     }
 
@@ -941,57 +936,55 @@ public class LocalSdk {
             // Since we used to require a complete revision
             rev = fullySpecifyRevision(rev);
 
-            try {
-                AndroidVersion vers = AndroidVersionHelper.create(props);
-
-                // Starting with addon-4.xsd, we have vendor-id and name-id available
-                // in the add-on source properties so we'll use that directly. Otherwise, try manifest.ini
-                Properties allProps = new Properties();
-                Properties manifestProps = parseProperties(new File(addonDir, SdkConstants.FN_MANIFEST_INI));
-                if (manifestProps != null) {
-                    allProps.putAll(manifestProps);
-                }
-                allProps.putAll(props);
-
-                String nameId     = findProperty(allProps, ADDON_NAME_ID, NODE_NAME_ID);
-                String nameDisp   = findProperty(allProps, ADDON_NAME_DISPLAY, NODE_NAME_DISPLAY, ADDON_NAME, NODE_NAME);
-                String vendorId   = findProperty(allProps, ADDON_VENDOR_ID, NODE_VENDOR_ID);
-                String vendorDisp = findProperty(allProps, ADDON_VENDOR_DISPLAY, NODE_VENDOR_DISPLAY, ADDON_VENDOR, NODE_VENDOR);
-
-                if (nameId == null) {
-                    // Support earlier add-ons that only had a name display attribute
-                    if (nameDisp == null) {
-                        nameDisp = "Unknown";
-                    }
-                    nameId = LocalAddonPkgInfo.sanitizeDisplayToNameId(nameDisp);
-                }
-
-                if (nameId != null && nameDisp == null) {
-                    nameDisp = LocalExtraPkgInfo.getPrettyName(null, nameId);
-                }
-
-                if (vendorId != null && vendorDisp == null) {
-                    vendorDisp = LocalExtraPkgInfo.getPrettyName(null, nameId);
-                }
-
-                if (vendorId == null) {
-                    // Support earlier add-ons that only had a vendor display attribute
-                    if (vendorDisp == null) {
-                        vendorDisp = "Unknown";
-                    }
-                    vendorId = LocalAddonPkgInfo.sanitizeDisplayToNameId(vendorDisp);
-                }
-
-                LocalAddonPkgInfo pkgInfo = new LocalAddonPkgInfo(
-                        this, addonDir, props, vers, rev,
-                        IdDisplay.create(vendorId, vendorDisp),
-                        IdDisplay.create(nameId, nameDisp));
-                outCollection.add(pkgInfo);
-
-            } catch (AndroidVersionException e) {
+            AndroidVersion vers = AndroidVersionHelper.create(props);
+            if (vers == null) {
                 continue; // skip invalid or missing android version.
             }
-        }
+
+            // Starting with addon-4.xsd, we have vendor-id and name-id available
+            // in the add-on source properties so we'll use that directly. Otherwise, try manifest.ini
+            Properties allProps = new Properties();
+            Properties manifestProps = parseProperties(new File(addonDir, SdkConstants.FN_MANIFEST_INI));
+            if (manifestProps != null) {
+                allProps.putAll(manifestProps);
+            }
+            allProps.putAll(props);
+
+            String nameId     = findProperty(allProps, ADDON_NAME_ID, NODE_NAME_ID);
+            String nameDisp   = findProperty(allProps, ADDON_NAME_DISPLAY, NODE_NAME_DISPLAY, ADDON_NAME, NODE_NAME);
+            String vendorId   = findProperty(allProps, ADDON_VENDOR_ID, NODE_VENDOR_ID);
+            String vendorDisp = findProperty(allProps, ADDON_VENDOR_DISPLAY, NODE_VENDOR_DISPLAY, ADDON_VENDOR, NODE_VENDOR);
+
+            if (nameId == null) {
+                // Support earlier add-ons that only had a name display attribute
+                if (nameDisp == null) {
+                    nameDisp = "Unknown";
+                }
+                nameId = LocalAddonPkgInfo.sanitizeDisplayToNameId(nameDisp);
+            }
+
+            if (nameId != null && nameDisp == null) {
+                nameDisp = LocalExtraPkgInfo.getPrettyName(null, nameId);
+            }
+
+            if (vendorId != null && vendorDisp == null) {
+                vendorDisp = LocalExtraPkgInfo.getPrettyName(null, nameId);
+            }
+
+            if (vendorId == null) {
+                // Support earlier add-ons that only had a vendor display attribute
+                if (vendorDisp == null) {
+                    vendorDisp = "Unknown";
+                }
+                vendorId = LocalAddonPkgInfo.sanitizeDisplayToNameId(vendorDisp);
+            }
+
+            LocalAddonPkgInfo pkgInfo = new LocalAddonPkgInfo(
+                    this, addonDir, props, vers, rev,
+                    IdDisplay.create(vendorId, vendorDisp),
+                    IdDisplay.create(nameId, nameDisp));
+            outCollection.add(pkgInfo);
+    }
     }
 
     private void scanSysImages(
@@ -1049,30 +1042,28 @@ public class LocalSdk {
                 continue; // skip, no revision
             }
 
-            try {
-                AndroidVersion vers = AndroidVersionHelper.create(props);
-
-                IdDisplay tag = LocalSysImgPkgInfo.extractTagFromProps(props);
-                String vendorId = props.getProperty(PkgProps.ADDON_VENDOR_ID, null);
-                File abiDir = propFile.getParentFile();
-
-                if (vendorId == null && !scanAddons) {
-                    LocalSysImgPkgInfo pkgInfo =
-                            new LocalSysImgPkgInfo(this, abiDir, props, vers, tag, abiDir.getName(), rev);
-                    outCollection.add(pkgInfo);
-
-                } else if (vendorId != null && scanAddons) {
-                    String vendorDisp = props.getProperty(PkgProps.ADDON_VENDOR_DISPLAY, vendorId);
-                    IdDisplay vendor = IdDisplay.create(vendorId, vendorDisp);
-
-                    LocalAddonSysImgPkgInfo pkgInfo =
-                            new LocalAddonSysImgPkgInfo(
-                                    this, abiDir, props, vers, vendor, tag, abiDir.getName(), rev);
-                    outCollection.add(pkgInfo);
-                }
-
-            } catch (AndroidVersionException e) {
+            AndroidVersion vers = AndroidVersionHelper.create(props);
+            if (vers == null) {
                 continue; // skip invalid or missing android version.
+            }
+
+            IdDisplay tag = LocalSysImgPkgInfo.extractTagFromProps(props);
+            String vendorId = props.getProperty(PkgProps.ADDON_VENDOR_ID, null);
+            File abiDir = propFile.getParentFile();
+
+            if (vendorId == null && !scanAddons) {
+                LocalSysImgPkgInfo pkgInfo =
+                        new LocalSysImgPkgInfo(this, abiDir, props, vers, tag, abiDir.getName(), rev);
+                outCollection.add(pkgInfo);
+
+            } else if (vendorId != null && scanAddons) {
+                String vendorDisp = props.getProperty(PkgProps.ADDON_VENDOR_DISPLAY, vendorId);
+                IdDisplay vendor = IdDisplay.create(vendorId, vendorDisp);
+
+                LocalAddonSysImgPkgInfo pkgInfo =
+                        new LocalAddonSysImgPkgInfo(
+                                this, abiDir, props, vers, vendor, tag, abiDir.getName(), rev);
+                outCollection.add(pkgInfo);
             }
         }
     }
@@ -1095,15 +1086,15 @@ public class LocalSdk {
                 minToolsRev = Revision.NOT_SPECIFIED;
             }
 
-            try {
-                AndroidVersion vers = AndroidVersionHelper.create(props);
 
-                LocalSamplePkgInfo pkgInfo =
-                        new LocalSamplePkgInfo(this, platformDir, props, vers, rev, minToolsRev);
-                outCollection.add(pkgInfo);
-            } catch (AndroidVersionException e) {
+            AndroidVersion vers = AndroidVersionHelper.create(props);
+            if (vers == null) {
                 continue; // skip invalid or missing android version.
             }
+
+            LocalSamplePkgInfo pkgInfo =
+                    new LocalSamplePkgInfo(this, platformDir, props, vers, rev, minToolsRev);
+            outCollection.add(pkgInfo);
         }
     }
 
@@ -1120,15 +1111,13 @@ public class LocalSdk {
                 continue; // skip, no revision
             }
 
-            try {
-                AndroidVersion vers = AndroidVersionHelper.create(props);
-
-                LocalSourcePkgInfo pkgInfo =
-                        new LocalSourcePkgInfo(this, platformDir, props, vers, rev);
-                outCollection.add(pkgInfo);
-            } catch (AndroidVersionException e) {
+            AndroidVersion vers = AndroidVersionHelper.create(props);
+            if (vers == null) {
                 continue; // skip invalid or missing android version.
             }
+            LocalSourcePkgInfo pkgInfo =
+                    new LocalSourcePkgInfo(this, platformDir, props, vers, rev);
+            outCollection.add(pkgInfo);
         }
     }
 

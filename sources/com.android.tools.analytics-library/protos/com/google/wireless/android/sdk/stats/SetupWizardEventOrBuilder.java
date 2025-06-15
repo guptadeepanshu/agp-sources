@@ -153,4 +153,23 @@ public interface SetupWizardEventOrBuilder extends
    * <code>optional .android_studio.SetupWizardEvent.SdkInstallationMetrics sdk_installation_metrics = 6;</code>
    */
   com.google.wireless.android.sdk.stats.SetupWizardEvent.SdkInstallationMetricsOrBuilder getSdkInstallationMetricsOrBuilder();
+
+  /**
+   * <pre>
+   * Whether the deprecated wizard was used.
+   * </pre>
+   *
+   * <code>optional bool is_deprecated_wizard = 7;</code>
+   * @return Whether the isDeprecatedWizard field is set.
+   */
+  boolean hasIsDeprecatedWizard();
+  /**
+   * <pre>
+   * Whether the deprecated wizard was used.
+   * </pre>
+   *
+   * <code>optional bool is_deprecated_wizard = 7;</code>
+   * @return The isDeprecatedWizard.
+   */
+  boolean getIsDeprecatedWizard();
 }

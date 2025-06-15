@@ -245,6 +245,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                 )
             }
             task.privacySandboxSdkApksFiles.disallowChanges()
+            creationConfig.lifecycleTasks.invokeApkInstallationActions(task)
         }
 
         override fun handleProvider(

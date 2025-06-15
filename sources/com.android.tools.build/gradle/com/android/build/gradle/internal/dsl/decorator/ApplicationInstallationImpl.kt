@@ -22,8 +22,12 @@ import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitia
 import com.android.build.gradle.internal.services.DslServices
 import javax.inject.Inject
 
-abstract class ApplicationInstallationImpl @Inject @WithLazyInitialization(methodName="lazyInit")
-constructor(dslServices: DslServices): ApplicationInstallation, AdbOptions(dslServices) {
+abstract class ApplicationInstallationImpl @Inject constructor(
+    dslServices: DslServices
+): ApplicationInstallation, AdbOptions(dslServices) {
+
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         enableBaselineProfile = true
     }

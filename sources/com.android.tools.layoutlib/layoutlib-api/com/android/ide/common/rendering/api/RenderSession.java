@@ -20,6 +20,7 @@ import static com.android.ide.common.rendering.api.Result.Status.NOT_IMPLEMENTED
 
 import com.android.annotations.Nullable;
 import com.android.ide.common.rendering.api.Result.Status;
+
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -288,4 +289,11 @@ public class RenderSession {
      * @param r {@link Runnable} to execute
      */
     public void execute(Runnable r) {}
+
+    /**
+     * Updates the hardware configuration of the session.
+     *
+     * @param hardwareConfig the new hardware configuration.
+     */
+    public void updateHardwareConfiguration(HardwareConfig hardwareConfig) {}
 }

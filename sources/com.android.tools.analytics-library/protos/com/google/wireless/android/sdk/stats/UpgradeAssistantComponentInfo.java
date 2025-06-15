@@ -192,6 +192,30 @@ private static final long serialVersionUID = 0L;
      * <code>BLOCK_RENDER_SCRIPT_PROPERTY_PRESENT = 36;</code>
      */
     BLOCK_RENDER_SCRIPT_PROPERTY_PRESENT(36),
+    /**
+     * <code>BLOCK_RESOURCE_OPTIMIZATIONS_PRESENT = 37;</code>
+     */
+    BLOCK_RESOURCE_OPTIMIZATIONS_PRESENT(37),
+    /**
+     * <code>BLOCK_EMULATOR_CONTROL_PRESENT = 38;</code>
+     */
+    BLOCK_EMULATOR_CONTROL_PRESENT(38),
+    /**
+     * <code>BLOCK_UNIFIED_TEST_PLATFORM_PRESENT = 39;</code>
+     */
+    BLOCK_UNIFIED_TEST_PLATFORM_PRESENT(39),
+    /**
+     * <code>BLOCK_PRECISE_SHRINKING_PRESENT = 40;</code>
+     */
+    BLOCK_PRECISE_SHRINKING_PRESENT(40),
+    /**
+     * <code>BLOCK_MINIFY_LOCAL_DEPENDENCIES_LIBRARY_PRESENT = 41;</code>
+     */
+    BLOCK_MINIFY_LOCAL_DEPENDENCIES_LIBRARY_PRESENT(41),
+    /**
+     * <code>BLOCK_LINT_ANALYSIS_PER_COMPONENT_PRESENT = 42;</code>
+     */
+    BLOCK_LINT_ANALYSIS_PER_COMPONENT_PRESENT(42),
     ;
 
     /**
@@ -342,6 +366,30 @@ private static final long serialVersionUID = 0L;
      * <code>BLOCK_RENDER_SCRIPT_PROPERTY_PRESENT = 36;</code>
      */
     public static final int BLOCK_RENDER_SCRIPT_PROPERTY_PRESENT_VALUE = 36;
+    /**
+     * <code>BLOCK_RESOURCE_OPTIMIZATIONS_PRESENT = 37;</code>
+     */
+    public static final int BLOCK_RESOURCE_OPTIMIZATIONS_PRESENT_VALUE = 37;
+    /**
+     * <code>BLOCK_EMULATOR_CONTROL_PRESENT = 38;</code>
+     */
+    public static final int BLOCK_EMULATOR_CONTROL_PRESENT_VALUE = 38;
+    /**
+     * <code>BLOCK_UNIFIED_TEST_PLATFORM_PRESENT = 39;</code>
+     */
+    public static final int BLOCK_UNIFIED_TEST_PLATFORM_PRESENT_VALUE = 39;
+    /**
+     * <code>BLOCK_PRECISE_SHRINKING_PRESENT = 40;</code>
+     */
+    public static final int BLOCK_PRECISE_SHRINKING_PRESENT_VALUE = 40;
+    /**
+     * <code>BLOCK_MINIFY_LOCAL_DEPENDENCIES_LIBRARY_PRESENT = 41;</code>
+     */
+    public static final int BLOCK_MINIFY_LOCAL_DEPENDENCIES_LIBRARY_PRESENT_VALUE = 41;
+    /**
+     * <code>BLOCK_LINT_ANALYSIS_PER_COMPONENT_PRESENT = 42;</code>
+     */
+    public static final int BLOCK_LINT_ANALYSIS_PER_COMPONENT_PRESENT_VALUE = 42;
 
 
     public final int getNumber() {
@@ -401,6 +449,12 @@ private static final long serialVersionUID = 0L;
         case 34: return RES_VALUES_DEFAULT;
         case 35: return BLOCK_AIDL_PROPERTY_PRESENT;
         case 36: return BLOCK_RENDER_SCRIPT_PROPERTY_PRESENT;
+        case 37: return BLOCK_RESOURCE_OPTIMIZATIONS_PRESENT;
+        case 38: return BLOCK_EMULATOR_CONTROL_PRESENT;
+        case 39: return BLOCK_UNIFIED_TEST_PLATFORM_PRESENT;
+        case 40: return BLOCK_PRECISE_SHRINKING_PRESENT;
+        case 41: return BLOCK_MINIFY_LOCAL_DEPENDENCIES_LIBRARY_PRESENT;
+        case 42: return BLOCK_LINT_ANALYSIS_PER_COMPONENT_PRESENT;
         default: return null;
       }
     }

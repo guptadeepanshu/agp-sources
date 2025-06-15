@@ -20,6 +20,7 @@ import com.android.build.api.variant.AnnotationProcessor
 import com.android.build.api.variant.JavaCompilation
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
@@ -40,4 +41,10 @@ open class AnalyticsEnabledJavaCompilation @Inject constructor(
         )
     }
 
+    override val annotationProcessorConfiguration: Configuration
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.ANNOTATION_PROCESSOR_CONFIGURATION_VALUE
+            return delegate.annotationProcessorConfiguration
+        }
 }

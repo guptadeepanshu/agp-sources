@@ -37,14 +37,14 @@ import org.gradle.api.Action
 import org.gradle.api.plugins.ExtensionAware
 
 abstract class AndroidComponentsExtensionImpl<
-        DslExtensionT: CommonExtension<*, *, *, *, *, *>,
+        DslExtensionT,
         VariantBuilderT: VariantBuilder,
         VariantT: Variant>(
         private val dslServices: DslServices,
         override val sdkComponents: SdkComponents,
         override val managedDeviceRegistry: ManagedDeviceRegistry,
         private val variantApiOperations: VariantApiOperationsRegistrar<DslExtensionT, VariantBuilderT, VariantT>,
-        private val commonExtension: DslExtensionT
+        private val extension: DslExtensionT
 ): AndroidComponentsExtension<DslExtensionT, VariantBuilderT, VariantT> {
 
     override fun finalizeDsl(callback: (DslExtensionT) -> Unit) {
@@ -57,6 +57,7 @@ abstract class AndroidComponentsExtensionImpl<
         variantApiOperations.add(callback)
     }
 
+    @Deprecated("Replaced by finalizeDsl", replaceWith = ReplaceWith("finalizeDsl(callback)"))
     @Suppress("OverridingDeprecatedMember")
     override fun finalizeDSl(callback: Action<DslExtensionT>) {
         variantApiOperations.add(callback)
@@ -103,26 +104,28 @@ abstract class AndroidComponentsExtensionImpl<
         ))
 
         dslExtension.projectExtensionType?.let {
-            (commonExtension as ExtensionAware).extensions.add(
+            (extension as ExtensionAware).extensions.add(
                 dslExtension.dslName,
                 it
             )
         }
 
-        dslExtension.buildTypeExtensionType?.let {
-            commonExtension.buildTypes.configureEach { buildType ->
-                buildType.extensions.add(
-                    dslExtension.dslName,
-                    it
-                )
+        if (extension is CommonExtension<*, *, *, *, *, *>) {
+            dslExtension.buildTypeExtensionType?.let {
+                extension.buildTypes.configureEach { buildType ->
+                    buildType.extensions.add(
+                        dslExtension.dslName,
+                        it
+                    )
+                }
             }
-        }
-        dslExtension.productFlavorExtensionType?.let {
-            commonExtension.productFlavors.configureEach {
-                productFlavor -> productFlavor.extensions.add(
-                    dslExtension.dslName,
-                    it
-                )
+            dslExtension.productFlavorExtensionType?.let {
+                extension.productFlavors.configureEach { productFlavor ->
+                    productFlavor.extensions.add(
+                        dslExtension.dslName,
+                        it
+                    )
+                }
             }
         }
     }
@@ -231,18 +234,20 @@ abstract class AndroidComponentsExtensionImpl<
             return sourceSetName.appendCapitalized(thisLowercaseAffix)
         }
 
-        commonExtension.sourceSets
-            .configureEach { sourceSet ->
-                val configurationName =
-                    getConfigurationName(lowercaseAffix, useLegacyPrefix, sourceSet.name)
-                dslServices.configurations
-                    .maybeCreate(configurationName)
-                    .apply {
-                        isCanBeResolved = false
-                        isCanBeConsumed = false
-                        isVisible = false
-                    }
-            }
+        if (extension is CommonExtension<*, *, *, *, *, *>) {
+            extension.sourceSets
+                .configureEach { sourceSet ->
+                    val configurationName =
+                        getConfigurationName(lowercaseAffix, useLegacyPrefix, sourceSet.name)
+                    dslServices.configurations
+                        .maybeCreate(configurationName)
+                        .apply {
+                            isCanBeResolved = false
+                            isCanBeConsumed = false
+                            isVisible = false
+                        }
+                }
+        }
 
         val globalConfiguration = if (useGlobalConfiguration) {
             dslServices.configurations

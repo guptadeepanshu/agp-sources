@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private ApkAnalyzerStats() {
+    align16Type_ = 0;
   }
 
   @java.lang.Override
@@ -40,6 +41,133 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_ApkAnalyzerStats_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.google.wireless.android.sdk.stats.ApkAnalyzerStats.class, com.google.wireless.android.sdk.stats.ApkAnalyzerStats.Builder.class);
+  }
+
+  /**
+   * <pre>
+   * 16 KB Alignment
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType}
+   */
+  public enum ApkAnalyzerAlignNative16kbEventType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_TYPE = 0;</code>
+     */
+    UNKNOWN_TYPE(0),
+    /**
+     * <pre>
+     * Below here, the event is only sent if the app has native
+     * libraries---------------------
+     * </pre>
+     *
+     * <code>ALIGN_NATIVE_COMPLIANT_APK_ANALYZED = 1;</code>
+     */
+    ALIGN_NATIVE_COMPLIANT_APK_ANALYZED(1),
+    /**
+     * <pre>
+     * When a non-16 KB compliant app is analyzed by APK Analyzer
+     * </pre>
+     *
+     * <code>ALIGN_NATIVE_NON_COMPLIANT_APK_ANALYZED = 2;</code>
+     */
+    ALIGN_NATIVE_NON_COMPLIANT_APK_ANALYZED(2),
+    ;
+
+    /**
+     * <code>UNKNOWN_TYPE = 0;</code>
+     */
+    public static final int UNKNOWN_TYPE_VALUE = 0;
+    /**
+     * <pre>
+     * Below here, the event is only sent if the app has native
+     * libraries---------------------
+     * </pre>
+     *
+     * <code>ALIGN_NATIVE_COMPLIANT_APK_ANALYZED = 1;</code>
+     */
+    public static final int ALIGN_NATIVE_COMPLIANT_APK_ANALYZED_VALUE = 1;
+    /**
+     * <pre>
+     * When a non-16 KB compliant app is analyzed by APK Analyzer
+     * </pre>
+     *
+     * <code>ALIGN_NATIVE_NON_COMPLIANT_APK_ANALYZED = 2;</code>
+     */
+    public static final int ALIGN_NATIVE_NON_COMPLIANT_APK_ANALYZED_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ApkAnalyzerAlignNative16kbEventType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ApkAnalyzerAlignNative16kbEventType forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_TYPE;
+        case 1: return ALIGN_NATIVE_COMPLIANT_APK_ANALYZED;
+        case 2: return ALIGN_NATIVE_NON_COMPLIANT_APK_ANALYZED;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ApkAnalyzerAlignNative16kbEventType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ApkAnalyzerAlignNative16kbEventType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ApkAnalyzerAlignNative16kbEventType>() {
+            public ApkAnalyzerAlignNative16kbEventType findValueByNumber(int number) {
+              return ApkAnalyzerAlignNative16kbEventType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.ApkAnalyzerStats.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final ApkAnalyzerAlignNative16kbEventType[] VALUES = values();
+
+    public static ApkAnalyzerAlignNative16kbEventType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ApkAnalyzerAlignNative16kbEventType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType)
   }
 
   private int bitField0_;
@@ -97,6 +225,24 @@ private static final long serialVersionUID = 0L;
     return compressedSize_;
   }
 
+  public static final int ALIGN16_TYPE_FIELD_NUMBER = 3;
+  private int align16Type_ = 0;
+  /**
+   * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+   * @return Whether the align16Type field is set.
+   */
+  @java.lang.Override public boolean hasAlign16Type() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+   * @return The align16Type.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType getAlign16Type() {
+    com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType result = com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType.forNumber(align16Type_);
+    return result == null ? com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType.UNKNOWN_TYPE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -117,6 +263,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeUInt64(2, compressedSize_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeEnum(3, align16Type_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -133,6 +282,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt64Size(2, compressedSize_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(3, align16Type_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -159,6 +312,10 @@ private static final long serialVersionUID = 0L;
       if (getCompressedSize()
           != other.getCompressedSize()) return false;
     }
+    if (hasAlign16Type() != other.hasAlign16Type()) return false;
+    if (hasAlign16Type()) {
+      if (align16Type_ != other.align16Type_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -179,6 +336,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + COMPRESSED_SIZE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getCompressedSize());
+    }
+    if (hasAlign16Type()) {
+      hash = (37 * hash) + ALIGN16_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + align16Type_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -315,6 +476,7 @@ private static final long serialVersionUID = 0L;
       bitField0_ = 0;
       uncompressedSize_ = 0L;
       compressedSize_ = 0L;
+      align16Type_ = 0;
       return this;
     }
 
@@ -357,6 +519,10 @@ private static final long serialVersionUID = 0L;
         result.compressedSize_ = compressedSize_;
         to_bitField0_ |= 0x00000002;
       }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.align16Type_ = align16Type_;
+        to_bitField0_ |= 0x00000004;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -377,6 +543,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasCompressedSize()) {
         setCompressedSize(other.getCompressedSize());
+      }
+      if (other.hasAlign16Type()) {
+        setAlign16Type(other.getAlign16Type());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -414,6 +583,18 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000002;
               break;
             } // case 16
+            case 24: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType tmpValue =
+                  com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(3, tmpRaw);
+              } else {
+                align16Type_ = tmpRaw;
+                bitField0_ |= 0x00000004;
+              }
+              break;
+            } // case 24
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -539,6 +720,48 @@ private static final long serialVersionUID = 0L;
     public Builder clearCompressedSize() {
       bitField0_ = (bitField0_ & ~0x00000002);
       compressedSize_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private int align16Type_ = 0;
+    /**
+     * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+     * @return Whether the align16Type field is set.
+     */
+    @java.lang.Override public boolean hasAlign16Type() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+     * @return The align16Type.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType getAlign16Type() {
+      com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType result = com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType.forNumber(align16Type_);
+      return result == null ? com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType.UNKNOWN_TYPE : result;
+    }
+    /**
+     * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+     * @param value The align16Type to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAlign16Type(com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000004;
+      align16Type_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAlign16Type() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      align16Type_ = 0;
       onChanged();
       return this;
     }

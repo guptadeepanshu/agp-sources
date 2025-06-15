@@ -42,7 +42,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool did_work = 2 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
-   *     See studio_stats.proto;l=5357
+   *     See studio_stats.proto;l=5412
    * @return Whether the didWork field is set.
    */
   @java.lang.Deprecated boolean hasDidWork();
@@ -56,7 +56,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool did_work = 2 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.did_work is deprecated.
-   *     See studio_stats.proto;l=5357
+   *     See studio_stats.proto;l=5412
    * @return The didWork.
    */
   @java.lang.Deprecated boolean getDidWork();
@@ -69,7 +69,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool skipped = 3 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
-   *     See studio_stats.proto;l=5361
+   *     See studio_stats.proto;l=5416
    * @return Whether the skipped field is set.
    */
   @java.lang.Deprecated boolean hasSkipped();
@@ -81,7 +81,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool skipped = 3 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.skipped is deprecated.
-   *     See studio_stats.proto;l=5361
+   *     See studio_stats.proto;l=5416
    * @return The skipped.
    */
   @java.lang.Deprecated boolean getSkipped();
@@ -94,7 +94,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool up_to_date = 4 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
-   *     See studio_stats.proto;l=5365
+   *     See studio_stats.proto;l=5420
    * @return Whether the upToDate field is set.
    */
   @java.lang.Deprecated boolean hasUpToDate();
@@ -106,7 +106,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool up_to_date = 4 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.up_to_date is deprecated.
-   *     See studio_stats.proto;l=5365
+   *     See studio_stats.proto;l=5420
    * @return The upToDate.
    */
   @java.lang.Deprecated boolean getUpToDate();
@@ -119,7 +119,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool failed = 5 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
-   *     See studio_stats.proto;l=5369
+   *     See studio_stats.proto;l=5424
    * @return Whether the failed field is set.
    */
   @java.lang.Deprecated boolean hasFailed();
@@ -131,7 +131,7 @@ public interface GradleTaskExecutionOrBuilder extends
    *
    * <code>optional bool failed = 5 [deprecated = true];</code>
    * @deprecated android_studio.GradleTaskExecution.failed is deprecated.
-   *     See studio_stats.proto;l=5369
+   *     See studio_stats.proto;l=5424
    * @return The failed.
    */
   @java.lang.Deprecated boolean getFailed();

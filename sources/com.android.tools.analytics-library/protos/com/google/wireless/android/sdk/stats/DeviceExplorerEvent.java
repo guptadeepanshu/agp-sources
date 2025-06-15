@@ -204,6 +204,22 @@ private static final long serialVersionUID = 0L;
      * <code>APPLICATION_ID_FILTER_TOGGLED_OFF = 19;</code>
      */
     APPLICATION_ID_FILTER_TOGGLED_OFF(19),
+    /**
+     * <pre>
+     * The user clicked on the "Backup App Data" button
+     * </pre>
+     *
+     * <code>BACKUP_APP_DATA_CLICKED = 20;</code>
+     */
+    BACKUP_APP_DATA_CLICKED(20),
+    /**
+     * <pre>
+     * The user clicked on the "Restore App Data" button
+     * </pre>
+     *
+     * <code>RESTORE_APP_DATA_CLICKED = 21;</code>
+     */
+    RESTORE_APP_DATA_CLICKED(21),
     ;
 
     /**
@@ -366,6 +382,22 @@ private static final long serialVersionUID = 0L;
      * <code>APPLICATION_ID_FILTER_TOGGLED_OFF = 19;</code>
      */
     public static final int APPLICATION_ID_FILTER_TOGGLED_OFF_VALUE = 19;
+    /**
+     * <pre>
+     * The user clicked on the "Backup App Data" button
+     * </pre>
+     *
+     * <code>BACKUP_APP_DATA_CLICKED = 20;</code>
+     */
+    public static final int BACKUP_APP_DATA_CLICKED_VALUE = 20;
+    /**
+     * <pre>
+     * The user clicked on the "Restore App Data" button
+     * </pre>
+     *
+     * <code>RESTORE_APP_DATA_CLICKED = 21;</code>
+     */
+    public static final int RESTORE_APP_DATA_CLICKED_VALUE = 21;
 
 
     public final int getNumber() {
@@ -408,6 +440,8 @@ private static final long serialVersionUID = 0L;
         case 17: return PROCESS_TAB_CLICKED;
         case 18: return APPLICATION_ID_FILTER_TOGGLED_ON;
         case 19: return APPLICATION_ID_FILTER_TOGGLED_OFF;
+        case 20: return BACKUP_APP_DATA_CLICKED;
+        case 21: return RESTORE_APP_DATA_CLICKED;
         default: return null;
       }
     }

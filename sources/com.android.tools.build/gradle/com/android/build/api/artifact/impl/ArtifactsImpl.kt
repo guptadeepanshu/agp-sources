@@ -157,7 +157,7 @@ class ArtifactsImpl(
     }
 
     override fun <TaskT : Task> use(taskProvider: TaskProvider<TaskT>): TaskBasedOperationImpl<TaskT> {
-        return TaskBasedOperationImpl(objects, this, taskProvider).also {
+        return TaskBasedOperationImpl(this, taskProvider).also {
             outstandingRequests.add(it)
         }
     }

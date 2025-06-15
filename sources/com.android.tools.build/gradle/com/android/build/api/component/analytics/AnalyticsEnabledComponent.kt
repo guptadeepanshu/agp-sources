@@ -122,6 +122,7 @@ abstract class AnalyticsEnabledComponent(
             return delegate.annotationProcessorConfiguration
         }
 
+    @Deprecated("Will be removed in v9.0, use the instrumentation block.")
     override fun <ParamT : InstrumentationParameters> transformClassesWith(
         classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
         scope: InstrumentationScope,
@@ -145,6 +146,7 @@ abstract class AnalyticsEnabledComponent(
         )
     }
 
+    @Deprecated("Will be removed in v9.0, use the instrumentation block.")
     override fun setAsmFramesComputationMode(mode: FramesComputationMode) {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
             VariantPropertiesMethodType.ASM_FRAMES_COMPUTATION_NODE_VALUE

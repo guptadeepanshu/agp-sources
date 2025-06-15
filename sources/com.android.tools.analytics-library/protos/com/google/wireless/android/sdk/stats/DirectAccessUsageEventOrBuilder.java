@@ -241,4 +241,31 @@ public interface DirectAccessUsageEventOrBuilder extends
    * <code>optional .android_studio.DirectAccessUsageEvent.DisconnectDeviceDetails disconnect_device_details = 9 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetailsOrBuilder getDisconnectDeviceDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   * @return Whether the devServiceDeprecationInfo field is set.
+   */
+  boolean hasDevServiceDeprecationInfo();
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   * @return The devServiceDeprecationInfo.
+   */
+  com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo getDevServiceDeprecationInfo();
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder getDevServiceDeprecationInfoOrBuilder();
 }

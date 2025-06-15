@@ -217,7 +217,7 @@ public interface GradleBuildProfileOrBuilder extends
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
-   *     See studio_stats.proto;l=4420
+   *     See studio_stats.proto;l=4475
    * @return Whether the gcCount field is set.
    */
   @java.lang.Deprecated boolean hasGcCount();
@@ -229,7 +229,7 @@ public interface GradleBuildProfileOrBuilder extends
    *
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProfile.gc_count is deprecated.
-   *     See studio_stats.proto;l=4420
+   *     See studio_stats.proto;l=4475
    * @return The gcCount.
    */
   @java.lang.Deprecated long getGcCount();
@@ -242,7 +242,7 @@ public interface GradleBuildProfileOrBuilder extends
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
-   *     See studio_stats.proto;l=4424
+   *     See studio_stats.proto;l=4479
    * @return Whether the gcTime field is set.
    */
   @java.lang.Deprecated boolean hasGcTime();
@@ -254,7 +254,7 @@ public interface GradleBuildProfileOrBuilder extends
    *
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProfile.gc_time is deprecated.
-   *     See studio_stats.proto;l=4424
+   *     See studio_stats.proto;l=4479
    * @return The gcTime.
    */
   @java.lang.Deprecated long getGcTime();

@@ -217,4 +217,62 @@ public interface EmulatorHostOrBuilder extends
    * @return The cpuidExtfamily.
    */
   int getCpuidExtfamily();
+
+  /**
+   * <pre>
+   * CPU brand name, such as "Intel Core i9 14900K" and "Apple M1 Pro"
+   * </pre>
+   *
+   * <code>optional string cpu_brandname = 11;</code>
+   * @return Whether the cpuBrandname field is set.
+   */
+  boolean hasCpuBrandname();
+  /**
+   * <pre>
+   * CPU brand name, such as "Intel Core i9 14900K" and "Apple M1 Pro"
+   * </pre>
+   *
+   * <code>optional string cpu_brandname = 11;</code>
+   * @return The cpuBrandname.
+   */
+  java.lang.String getCpuBrandname();
+  /**
+   * <pre>
+   * CPU brand name, such as "Intel Core i9 14900K" and "Apple M1 Pro"
+   * </pre>
+   *
+   * <code>optional string cpu_brandname = 11;</code>
+   * @return The bytes for cpuBrandname.
+   */
+  com.google.protobuf.ByteString
+      getCpuBrandnameBytes();
+
+  /**
+   * <pre>
+   * CPU Architecture, such as x86_64 and arm64.
+   * </pre>
+   *
+   * <code>optional string cpu_architecture = 12;</code>
+   * @return Whether the cpuArchitecture field is set.
+   */
+  boolean hasCpuArchitecture();
+  /**
+   * <pre>
+   * CPU Architecture, such as x86_64 and arm64.
+   * </pre>
+   *
+   * <code>optional string cpu_architecture = 12;</code>
+   * @return The cpuArchitecture.
+   */
+  java.lang.String getCpuArchitecture();
+  /**
+   * <pre>
+   * CPU Architecture, such as x86_64 and arm64.
+   * </pre>
+   *
+   * <code>optional string cpu_architecture = 12;</code>
+   * @return The bytes for cpuArchitecture.
+   */
+  com.google.protobuf.ByteString
+      getCpuArchitectureBytes();
 }

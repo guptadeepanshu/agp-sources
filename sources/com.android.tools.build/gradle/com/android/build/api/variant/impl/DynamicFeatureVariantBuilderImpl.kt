@@ -56,6 +56,7 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
         }
 
     override var enableTestFixtures: Boolean = dslInfo.testFixtures?.enable ?: false
+    override var debuggable: Boolean = dslInfo.isDebuggable
 
     override fun <T : VariantBuilder> createUserVisibleVariantObject(
             projectServices: ProjectServices,
@@ -86,7 +87,7 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
             globalVariantBuilderConfig,
             { targetSdkVersion },
             _enableMultiDex,
-            dslInfo.isDebuggable,
+            debuggable,
         )
 
     override val androidTest: AndroidTestBuilder by lazy(LazyThreadSafetyMode.NONE) {

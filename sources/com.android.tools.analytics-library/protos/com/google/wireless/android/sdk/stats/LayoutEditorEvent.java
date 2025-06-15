@@ -265,6 +265,10 @@ private static final long serialVersionUID = 0L;
      * <code>UNIVERSAL_PROBLEMS_PANEL = 53;</code>
      */
     UNIVERSAL_PROBLEMS_PANEL(53),
+    /**
+     * <code>COMPOSE_FILE_OPEN = 54;</code>
+     */
+    COMPOSE_FILE_OPEN(54),
     ;
 
     /**
@@ -483,6 +487,10 @@ private static final long serialVersionUID = 0L;
      * <code>UNIVERSAL_PROBLEMS_PANEL = 53;</code>
      */
     public static final int UNIVERSAL_PROBLEMS_PANEL_VALUE = 53;
+    /**
+     * <code>COMPOSE_FILE_OPEN = 54;</code>
+     */
+    public static final int COMPOSE_FILE_OPEN_VALUE = 54;
 
 
     public final int getNumber() {
@@ -559,6 +567,7 @@ private static final long serialVersionUID = 0L;
         case 51: return ANIMATION_PREVIEW;
         case 52: return VISUAL_LINT;
         case 53: return UNIVERSAL_PROBLEMS_PANEL;
+        case 54: return COMPOSE_FILE_OPEN;
         default: return null;
       }
     }

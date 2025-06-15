@@ -48,7 +48,6 @@ import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.restrictRenderScriptOnRiscv
-import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
 import com.android.builder.core.ComponentTypeImpl
@@ -178,14 +177,12 @@ class LibraryVariantFactory(
     override fun createVariantData(
         componentIdentity: ComponentIdentity,
         artifacts: ArtifactsImpl,
-        services: VariantServices,
-        taskContainer: MutableTaskContainer
+        services: VariantServices
     ): BaseVariantData {
         return LibraryVariantData(
             componentIdentity,
             artifacts,
-            services,
-            taskContainer
+            services
         )
     }
 

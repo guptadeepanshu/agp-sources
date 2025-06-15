@@ -366,6 +366,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                                     .getArtifacts()
                                     .get(InternalArtifactType.DEX_METADATA_DIRECTORY.INSTANCE));
             task.getDexMetadataDirectory().disallowChanges();
+            creationConfig.getLifecycleTasks().invokeApkInstallationActions$gradle_core(task);
         }
 
         @Override

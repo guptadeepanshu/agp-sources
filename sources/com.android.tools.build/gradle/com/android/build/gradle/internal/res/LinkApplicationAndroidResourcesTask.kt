@@ -78,7 +78,6 @@ import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
@@ -183,7 +182,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     @get:Input
     abstract val resOffset: Property<Int>
 
-    private lateinit var type: ComponentType
+    @get:Internal
+    abstract val componentType: Property<ComponentType>
 
     @get:Input
     abstract val resourceConfigs: SetProperty<String>
@@ -212,12 +212,10 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     abstract val namespace: Property<String>
 
     @get:Input
-    var useConditionalKeepRules: Boolean = false
-        private set
+    abstract val useConditionalKeepRules: Property<Boolean>
 
     @get:Input
-    var useMinimalKeepRules: Boolean = false
-        private set
+    abstract val useMinimalKeepRules: Property<Boolean>
 
     @get:OutputDirectory
     abstract val linkedResourcesOutputDir: DirectoryProperty
@@ -229,12 +227,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     abstract val projectBaseName: Property<String>
 
     @get:Input
-    lateinit var taskInputType: InternalArtifactType<Directory>
-        private set
-
-    @get:Input
-    var isNamespaced = false
-        private set
+    abstract val namespaced: Property<Boolean>
 
     @get:Input
     abstract val applicationId: Property<String>
@@ -245,19 +238,16 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     abstract val inputResourcesDir: DirectoryProperty
 
     @get:Input
-    var isLibrary: Boolean = false
-        private set
+    abstract val library: Property<Boolean>
 
     @get:Nested
     abstract val androidJarInput: AndroidJarInput
 
     @get:Input
-    var useFinalIds: Boolean = true
-        private set
+    abstract val useFinalIds: Property<Boolean>
 
     @get:Input
-    var useStableIds: Boolean = false
-        internal set
+    abstract val useStableIds: Property<Boolean>
 
     @get:Input
     abstract val dynamicFeature: Property<Boolean>
@@ -278,7 +268,8 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     abstract val symbolTableBuildService: Property<SymbolTableBuildService>
 
     // Not an input as it is only used to rewrite exception and doesn't affect task output
-    private lateinit var manifestMergeBlameFile: Provider<RegularFile>
+    @get:Internal
+    abstract val manifestMergeBlameFile: RegularFileProperty
 
     @get:Classpath
     @get:Optional
@@ -321,7 +312,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
     override fun doTaskAction(inputChanges: InputChanges) {
         val stableIdsFile = stableIdsOutputFileProperty.orNull?.asFile
-        if (useStableIds && inputChanges.isIncremental) {
+        if (useStableIds.get() && inputChanges.isIncremental) {
             // For now, we don't care about what changed - we only want to preserve the res IDs from the
             // previous run if stable IDs support is enabled.
             doFullTaskAction(stableIdsFile)
@@ -359,13 +350,13 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.inputResourcesDirectory.set(inputResourcesDir)
             parameters.inputStableIdsFile.set(inputStableIdsFile)
             parameters.dynamicFeature.set(dynamicFeature)
-            parameters.library.set(isLibrary)
+            parameters.library.set(library)
             parameters.localResourcesFile.set(localResourcesFile)
             parameters.manifestFiles.set(if (aaptFriendlyManifestFiles.isPresent) aaptFriendlyManifestFiles else manifestFiles)
             parameters.manifestMergeBlameFile.set(manifestMergeBlameFile)
             parameters.mergeBlameDirectory.set(mergeBlameLogFolder)
             parameters.namespace.set(namespace)
-            parameters.namespaced.set(isNamespaced)
+            parameters.namespaced.set(namespaced)
             parameters.packageId.set(resOffset)
             parameters.resourceConfigs.set(resourceConfigs)
             parameters.sharedLibraryDependencies.from(sharedLibraryDependencies)
@@ -376,7 +367,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             parameters.useStableIds.set(useStableIds)
             parameters.variantName.set(variantName)
             parameters.outputsHandler.set(outputsHandler.get().toSerializable())
-            parameters.componentType.set(type)
+            parameters.componentType.set(componentType)
             parameters.localeFilters.set(localeFilters)
             parameters.pseudoLocalesEnabled.set(pseudoLocalesEnabled)
         }
@@ -572,7 +563,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 creationConfig.artifacts.setInitialProvider(
                     taskProvider,
                     LinkApplicationAndroidResourcesTask::mainDexListProguardOutputFile
-                ).withName("manifest_keep.txt").on(InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES)
+                )
+                    .withName("manifest_keep.txt")
+                    .on(InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES)
             }
 
             creationConfig.artifacts.setInitialProvider(
@@ -609,18 +602,21 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             }
             task.namespace.setDisallowChanges(creationConfig.namespace)
 
-            task.taskInputType = creationConfig.global.manifestArtifactType
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.PACKAGED_MANIFESTS,
+                task.manifestFiles
+            )
+
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.AAPT_FRIENDLY_MERGED_MANIFESTS, task.aaptFriendlyManifestFiles
             )
-            creationConfig.artifacts.setTaskInputToFinalProduct(task.taskInputType,
-                task.manifestFiles)
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_MANIFESTS,
                 task.mergedManifestFiles
             )
 
-            task.setType(creationConfig.componentType)
+            task.componentType.setDisallowChanges(creationConfig.componentType)
+
             if (creationConfig is ApkCreationConfig) {
                 task.noCompress.set(creationConfig.androidResources.noCompress)
                 task.aaptAdditionalParameters.set(
@@ -630,8 +626,12 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             task.noCompress.disallowChanges()
             task.aaptAdditionalParameters.disallowChanges()
 
-            task.useConditionalKeepRules = projectOptions.get(BooleanOption.CONDITIONAL_KEEP_RULES)
-            task.useMinimalKeepRules = projectOptions.get(BooleanOption.MINIMAL_KEEP_RULES)
+            task.useConditionalKeepRules.setDisallowChanges(
+                projectOptions.getProvider(BooleanOption.CONDITIONAL_KEEP_RULES)
+            )
+            task.useMinimalKeepRules.setDisallowChanges(
+                projectOptions.getProvider(BooleanOption.MINIMAL_KEEP_RULES)
+            )
 
             task.mergeBlameLogFolder.setDisallowChanges(
                 creationConfig.artifacts.get(
@@ -641,9 +641,10 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             val componentType = creationConfig.componentType
 
             val sourceSetMap =
-                    creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
+                creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
             task.sourceSetMaps.fromDisallowChanges(
-                    creationConfig.services.fileCollection(sourceSetMap))
+                creationConfig.services.fileCollection(sourceSetMap)
+            )
             task.dependsOn(sourceSetMap)
 
             // Tests should not have feature dependencies, however because they include the
@@ -666,13 +667,16 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
 
             task.dynamicFeature.setDisallowChanges(componentType.isDynamicFeature)
             task.projectBaseName.setDisallowChanges(baseName)
-            task.isLibrary = isLibrary
+            task.library.setDisallowChanges(isLibrary)
 
-            task.useFinalIds = !projectOptions.get(BooleanOption.USE_NON_FINAL_RES_IDS)
-
-            task.manifestMergeBlameFile = creationConfig.artifacts.get(
-                InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
+            task.useFinalIds.setDisallowChanges(
+                projectOptions.getProvider(BooleanOption.USE_NON_FINAL_RES_IDS)
+                    .map { !it }
             )
+
+            task.manifestMergeBlameFile.setDisallowChanges(creationConfig.artifacts.get(
+                InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
+            ))
             creationConfig.services.initializeAapt2Input(task.aapt2, task)
             getBuildService<SymbolTableBuildService, BuildServiceParameters.None>(creationConfig.services.buildServiceRegistry).let {
                 task.symbolTableBuildService.setDisallowChanges(it)
@@ -680,7 +684,9 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             }
             task.androidJarInput.initialize(task, creationConfig)
 
-            task.useStableIds = projectOptions[BooleanOption.ENABLE_STABLE_IDS]
+            task.useStableIds.setDisallowChanges(
+                projectOptions.getProvider(BooleanOption.ENABLE_STABLE_IDS)
+            )
 
             task.aarMetadataCheck.from(
                 creationConfig.artifacts.get(InternalArtifactType.AAR_METADATA_CHECK)
@@ -692,9 +698,11 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 is ApplicationCreationConfig -> {
                     task.localeFilters.setDisallowChanges(creationConfig.androidResources.localeFilters)
                 }
+
                 is DynamicFeatureCreationConfig -> {
                     task.localeFilters.setDisallowChanges(creationConfig.baseModuleLocaleFilters)
                 }
+
                 else -> {
                     task.localeFilters.setDisallowChanges(ImmutableSet.of())
                 }
@@ -800,6 +808,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
             } else {
                 task.compiledDependenciesResources.disallowChanges()
             }
+            task.namespaced.setDisallowChanges(false)
         }
     }
 
@@ -858,7 +867,7 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
                 )
             )
 
-            task.isNamespaced = true
+            task.namespaced.setDisallowChanges(true)
         }
     }
 
@@ -1087,12 +1096,4 @@ abstract class LinkApplicationAndroidResourcesTask: ProcessAndroidResources() {
     @Internal
     fun getTextSymbolOutputFile(): File? = textSymbolOutputFileProperty.orNull?.asFile
 
-    @Input
-    fun getTypeAsString(): String {
-        return type.name
-    }
-
-    fun setType(type: ComponentType) {
-        this.type = type
-    }
 }

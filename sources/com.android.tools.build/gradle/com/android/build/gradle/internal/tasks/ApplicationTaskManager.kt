@@ -141,7 +141,7 @@ class ApplicationTaskManager(
         handleMicroApp(variant)
 
         // This should match the implementation in [PackageAndroidArtifact] configure: vcsTaskRan
-        if ((variant.includeVcsInfo == null && !variantInfo.variantBuilder.debuggable) ||
+        if ((variant.includeVcsInfo == null && !variantInfo.variant.debuggable) ||
             variant.includeVcsInfo == true) {
             taskFactory.register(ExtractVersionControlInfoTask.CreationAction(variant))
         }
@@ -291,7 +291,7 @@ class ApplicationTaskManager(
 
         taskFactory.register(PerModuleBundleTask.CreationAction(variant))
 
-        val debuggable = variantInfo.variantBuilder.debuggable
+        val debuggable = variantInfo.variant.debuggable
         val includeSdkInfoInApk = variantInfo.variantBuilder.dependenciesInfo.includeInApk
         val includeSdkInfoInBundle = variantInfo.variantBuilder.dependenciesInfo.includeInBundle
         if (!debuggable) {
@@ -299,6 +299,10 @@ class ApplicationTaskManager(
         }
         if (variant.componentType.isBaseModule) {
             taskFactory.register(ParseIntegrityConfigTask.CreationAction(variant))
+            if (variant.global.bundleOptions.deviceTargetingConfig.isPresent && variant.services
+                    .projectOptions[BooleanOption.ENABLE_DEVICE_TARGETING_CONFIG_API]) {
+                taskFactory.register(ParseDeviceTargetingConfigTask.CreationAction(variant))
+            }
             taskFactory.register(PackageBundleTask.CreationAction(variant))
             if (!debuggable) {
                 if (includeSdkInfoInBundle) {

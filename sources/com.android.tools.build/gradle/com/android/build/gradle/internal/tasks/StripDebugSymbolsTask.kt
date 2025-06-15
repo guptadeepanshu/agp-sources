@@ -210,7 +210,7 @@ abstract class StripDebugSymbolsDelegate : ProfileAwareWorkAction<StripDebugSymb
             val logger = LoggerWrapper(Logging.getLogger(StripDebugSymbolsTask::class.java))
             logger.warning(
                 "Unable to strip the following libraries, packaging them as they are: "
-                        + "${UnstrippedLibs.getJoinedString()}."
+                        + "${UnstrippedLibs.getJoinedString()}. Run with --info option to learn more."
             )
         }
     }

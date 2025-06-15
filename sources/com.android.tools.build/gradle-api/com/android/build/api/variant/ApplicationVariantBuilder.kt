@@ -34,11 +34,6 @@ interface ApplicationVariantBuilder : VariantBuilder,
     CanMinifyCodeBuilder,
     CanMinifyAndroidResourcesBuilder {
 
-    /**
-     * Whether the variant is debuggable.
-     */
-    val debuggable: Boolean
-
     /** Specify whether to include SDK dependency information in APKs and Bundles. */
     val dependenciesInfo: DependenciesInfoBuilder
 

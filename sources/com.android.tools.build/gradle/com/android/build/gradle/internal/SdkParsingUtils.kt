@@ -120,13 +120,17 @@ fun parseOptionalLibraries(localPackage: LocalPackage): List<OptionalLibrary> {
 fun parseAndroidVersion(localPackage: LocalPackage): AndroidVersion? =
     (localPackage.typeDetails as? DetailsTypes.ApiDetailsType)?.androidVersion
 
-fun warnIfCompileSdkTooNew(version: AndroidVersion, issueReporter: IssueReporter, suppressWarningIfTooNewForVersions: String?) {
+fun warnIfCompileSdkTooNew(
+    version: AndroidVersion,
+    issueReporter: IssueReporter,
+    suppressWarningIfTooNewForVersions: String?
+) {
     warnIfCompileSdkTooNew(
         version = version,
         issueReporter = issueReporter,
         maxVersion = ToolsRevisionUtils.MAX_RECOMMENDED_COMPILE_SDK_VERSION,
         androidGradlePluginVersion = AgpVersion.parse(Version.ANDROID_GRADLE_PLUGIN_VERSION),
-        suppressWarningIfTooNewForVersions = suppressWarningIfTooNewForVersions,
+        suppressWarningIfTooNewForVersions = suppressWarningIfTooNewForVersions
     )
 }
 
@@ -136,9 +140,9 @@ internal fun warnIfCompileSdkTooNew(
     issueReporter: IssueReporter,
     maxVersion: AndroidVersion,
     androidGradlePluginVersion: AgpVersion,
-    suppressWarningIfTooNewForVersions: String? = null,
-    ) {
-    if (version.compareTo(maxVersion.apiLevel, maxVersion.codename) <= 0) return
+    suppressWarningIfTooNewForVersions: String? = null
+) {
+    if (AndroidVersion.API_LEVEL_ORDERING.compare(version, maxVersion) <= 0) return
     // Don't warn about the next preview version when AGP is in dev/alpha
     if (version.isPreview && version.apiLevel == maxVersion.apiLevel && !maxVersion.isPreview &&
         (androidGradlePluginVersion.previewKind == AgpVersion.PreviewKind.ALPHA || androidGradlePluginVersion.previewKind == AgpVersion.PreviewKind.DEV)) return
@@ -150,8 +154,11 @@ internal fun warnIfCompileSdkTooNew(
         ?.toSet() ?: setOf()
     if (suppressSet.contains(suppressName)) return
 
-    val currentCompileSdk = version.asDsl()
-    val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).asDsl() + (if (maxVersion.isPreview && version.isPreview) " (and ${maxVersion.asDsl()})" else "")
+    val currentCompileSdk = version.toStringDescription()
+    val maxCompileSdk = AndroidVersion(maxVersion.apiLevel).toStringDescription() +
+        if (maxVersion.isPreview && version.isPreview) {
+            " (and ${maxVersion.toStringDescription()})"
+        } else ""
     val preview = (if (version.isPreview) "preview " else "")
     val headline = if (version.isPreview) {
         "$currentCompileSdk has not been tested with this version of the Android Gradle plugin."
@@ -192,6 +199,10 @@ internal fun warnIfCompileSdkTooNew(
     )
 }
 
-private fun AndroidVersion.asDsl(): String {
-    return if (isPreview) """compileSdkPreview = "$codename"""" else "compileSdk = $apiLevel"
+private fun AndroidVersion.toStringDescription(): String {
+    return if (isPreview) {
+        """compile SDK preview version "$codename""""
+    } else {
+        "compile SDK version $apiStringWithoutExtension"
+    }
 }

@@ -17,7 +17,6 @@
 package com.android.build.api.variant
 
 import org.gradle.api.Action
-import org.gradle.api.Incubating
 
 interface DslLifecycle<T> {
 

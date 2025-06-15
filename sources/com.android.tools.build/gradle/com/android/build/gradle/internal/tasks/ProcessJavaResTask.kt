@@ -29,6 +29,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.DuplicatesStrategy
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.Sync
@@ -48,12 +49,6 @@ abstract class ProcessJavaResTask @Inject constructor(
 
     @get:OutputDirectory
     abstract val outDirectory: DirectoryProperty
-
-    // override to remove the @OutputDirectory annotation
-    @Internal
-    override fun getDestinationDir(): File {
-        return outDirectory.get().asFile
-    }
 
     @get:Internal
     override lateinit var variantName: String
@@ -96,9 +91,8 @@ abstract class ProcessJavaResTask @Inject constructor(
 
             task.from(getProjectJavaRes(creationConfig, task, listOf(projectClasses)))
             task.duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            task.into(task.outDirectory)
         }
-
-
     }
 
     /**
@@ -133,11 +127,16 @@ abstract class ProcessJavaResTask @Inject constructor(
         ) {
             super.configure(task)
 
-            task.from(getProjectJavaRes(creationConfig, task, listOfNotNull(
-                creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
-                creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode
-            )))
+            task.from(
+                getProjectJavaRes(
+                    creationConfig, task, listOfNotNull(
+                        creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
+                        creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode
+                    )
+                )
+            )
             task.duplicatesStrategy = DuplicatesStrategy.INCLUDE
+            task.into(task.outDirectory)
         }
     }
 }

@@ -19,12 +19,15 @@ package com.android.build.api.component.impl
 import com.android.build.api.variant.AnnotationProcessor
 import com.android.build.api.variant.JavaCompilation
 import com.android.build.gradle.api.JavaCompileOptions
+import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.services.VariantServices
+import org.gradle.api.artifacts.Configuration
 
 class JavaCompilationImpl(
     javaCompileOptionsSetInDSL: JavaCompileOptions,
     dataBindingEnabled: Boolean,
     internalServices: VariantServices,
+    variantDependencies: VariantDependencies,
 ): JavaCompilation {
 
     override val annotationProcessor: AnnotationProcessor =
@@ -33,4 +36,7 @@ class JavaCompilationImpl(
             dataBindingEnabled,
             internalServices
         )
+
+    override val annotationProcessorConfiguration: Configuration =
+        variantDependencies.annotationProcessorConfiguration!!
 }

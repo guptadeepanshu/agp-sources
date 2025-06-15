@@ -342,7 +342,6 @@ InternalArtifactType<T : FileSystemLocation>(
     // Same as above: InternalArtifactType<RegularFile>(FILE), Replaceable but the resource references have stripped namespaces.
     object NON_NAMESPACED_LIBRARY_MANIFEST: InternalArtifactType<RegularFile>(FILE), Replaceable
     object AAPT_FRIENDLY_MERGED_MANIFESTS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    object INSTANT_APP_MANIFEST: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     object MANIFEST_METADATA: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     object MANIFEST_MERGE_REPORT: InternalArtifactType<RegularFile>(FILE), Replaceable
     object MANIFEST_MERGE_BLAME_FILE: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -539,6 +538,9 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // Config file specifying how to protect app's integrity
     object APP_INTEGRITY_CONFIG: InternalArtifactType<RegularFile>(FILE), Replaceable
+
+    // Config file specifying device groups for conditional delivery and asset targeting
+    object DEVICE_TARGETING_CONFIG: InternalArtifactType<RegularFile>(FILE), Replaceable
 
     // A dummy output (folder) result of CheckDuplicateClassesTask execution
     object DUPLICATE_CLASSES_CHECK: InternalArtifactType<Directory>(DIRECTORY), Replaceable

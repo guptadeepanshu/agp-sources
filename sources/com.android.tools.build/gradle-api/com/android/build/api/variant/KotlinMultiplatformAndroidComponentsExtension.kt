@@ -22,10 +22,15 @@ import org.gradle.api.Incubating
 
 /**
  * Components extension for KMP Android Gradle Plugin related components.
+ *
+ * This is the `androidComponents` block when the `com.android.kotlin.multiplatform.library` plugin is applied.
+ *
  */
 @Incubating
-interface KotlinMultiplatformAndroidComponentsExtension:
-    DslLifecycle<KotlinMultiplatformAndroidLibraryExtension>, AndroidComponents {
+interface KotlinMultiplatformAndroidComponentsExtension : AndroidComponentsExtension<
+    KotlinMultiplatformAndroidLibraryExtension,
+    KotlinMultiplatformAndroidVariantBuilder,
+    KotlinMultiplatformAndroidVariant> {
 
     /**
      * Allow for registration of a [callback] to be called with variant instances of type [KotlinMultiplatformAndroidLibraryExtension]

@@ -72,7 +72,7 @@ public class RepoManagerImpl extends RepoManager {
     private FallbackLocalRepoLoader mFallbackLocalRepoLoader;
 
     /** The path under which to look for installed packages. */
-    @Nullable private Path mLocalPath;
+    @Nullable private final Path mLocalPath;
 
     /**
      * The {@link FallbackRemoteRepoLoader} to use if the normal {@link RemoteRepoLoaderImpl} can't
@@ -151,21 +151,23 @@ public class RepoManagerImpl extends RepoManager {
      * Create a new {@code RepoManagerImpl}. Before anything can be loaded, at least a local path
      * and/or at least one {@link RepositorySourceProvider} must be set.
      */
-    public RepoManagerImpl() {
-        this(null, null);
+    public RepoManagerImpl(@Nullable Path localPath) {
+        this(localPath, null, null);
     }
 
     /**
+     * @param localPath The base directory of the SDK.
      * @param localFactory If {@code null}, {@link LocalRepoLoaderFactoryImpl} will be used. Can be
      *     non-null for testing.
      * @param remoteFactory If {@code null}, {@link RemoteRepoLoaderFactoryImpl} will be used. Can
      *     be non-null for testing.
-     * @see #RepoManagerImpl()
      */
     @VisibleForTesting
     public RepoManagerImpl(
+            @Nullable Path localPath,
             @Nullable LocalRepoLoaderFactory localFactory,
             @Nullable RemoteRepoLoaderFactory remoteFactory) {
+        mLocalPath = localPath;
         registerSchemaModule(getCommonModule());
         registerSchemaModule(getGenericModule());
         mLocalRepoLoaderFactory = localFactory == null ? new LocalRepoLoaderFactoryImpl()
@@ -199,17 +201,6 @@ public class RepoManagerImpl extends RepoManager {
     @Override
     public void setFallbackRemoteRepoLoader(@Nullable FallbackRemoteRepoLoader remote) {
         mFallbackRemoteRepoLoader = remote;
-        markInvalid();
-    }
-
-    /**
-     * {@inheritDoc} This calls {@link #markInvalid()}, so a complete load will occur the next time
-     * {@link #load(long, List, List, List, ProgressRunner, Downloader, SettingsController)} is
-     * called.
-     */
-    @Override
-    public void setLocalPath(@Nullable Path path) {
-        mLocalPath = path;
         markInvalid();
     }
 

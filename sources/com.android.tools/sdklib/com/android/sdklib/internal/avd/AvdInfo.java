@@ -24,6 +24,7 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.io.CancellableFileIo;
+import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.PathFileWrapper;
@@ -197,37 +198,14 @@ public final class AvdInfo {
 
     @NonNull
     public AndroidVersion getAndroidVersion() {
-        Map<String, String> properties = getProperties();
-
-        String apiStr = properties.get(ConfigKey.ANDROID_API);
-        String codename = properties.get(ConfigKey.ANDROID_CODENAME);
-        int api = 1;
-        if (!Strings.isNullOrEmpty(apiStr)) {
-            try {
-                api = Integer.parseInt(apiStr);
-            }
-            catch (NumberFormatException e) {
-                // continue with the default
+        String target = getProperty(ConfigKey.TARGET);
+        if (target != null) {
+            AndroidVersion version = AndroidTargetHash.getPlatformVersion(target);
+            if (version != null) {
+                return version;
             }
         }
-
-        String extStr = properties.get(ConfigKey.ANDROID_EXTENSION);
-        int extension = 1;
-        if (!Strings.isNullOrEmpty(extStr)) {
-            try {
-                extension = Integer.parseInt(extStr);
-            } catch (NumberFormatException e) {
-                // continue with the default
-            }
-        }
-
-        String isBaseStr = properties.get(ConfigKey.ANDROID_IS_BASE_EXTENSION);
-        boolean isBase = true;
-        if (!Strings.isNullOrEmpty(isBaseStr)) {
-            isBase = Boolean.parseBoolean(isBaseStr);
-        }
-
-        return new AndroidVersion(api, codename, extension, isBase);
+        return AndroidVersion.DEFAULT;
     }
 
     @NonNull

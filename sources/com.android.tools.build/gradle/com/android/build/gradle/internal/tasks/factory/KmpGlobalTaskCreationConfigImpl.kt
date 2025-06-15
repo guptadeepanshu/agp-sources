@@ -140,12 +140,6 @@ internal class KmpGlobalTaskCreationConfigImpl(
         extension
     )
 
-    override val manifestArtifactType: InternalArtifactType<Directory>
-        get() = if (services.projectOptions[BooleanOption.IDE_DEPLOY_AS_INSTANT_APP])
-            InternalArtifactType.INSTANT_APP_MANIFEST
-        else
-            InternalArtifactType.PACKAGED_MANIFESTS
-
     override val publishConsumerProguardRules: Boolean
         get() = extension.optimization.consumerKeepRules.publish
 

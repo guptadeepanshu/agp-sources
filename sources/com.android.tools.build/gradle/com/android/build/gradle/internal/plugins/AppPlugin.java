@@ -35,7 +35,6 @@ import com.android.build.api.variant.ApplicationVariant;
 import com.android.build.api.variant.ApplicationVariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
-import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
@@ -135,7 +134,6 @@ public class AppPlugin
                                             DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                                     dslContainers,
                     @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-                    @NonNull ExtraModelInfo extraModelInfo,
                     @NonNull VersionedSdkLoaderService versionedSdkLoaderService) {
         ApplicationExtensionImpl applicationExtension =
                 dslServices.newDecoratedInstance(ApplicationExtensionImpl.class, dslServices, dslContainers);
@@ -174,7 +172,6 @@ public class AppPlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             applicationExtension,
                                             stats);
 
@@ -198,7 +195,6 @@ public class AppPlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             applicationExtension,
                                             stats);
             project.getExtensions()
@@ -220,7 +216,6 @@ public class AppPlugin
                                 bootClasspathConfig,
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
-                                extraModelInfo,
                                 applicationExtension,
                                 stats);
         initExtensionFromSettings(android);

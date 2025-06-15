@@ -74,7 +74,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-     *     See studio_stats.proto;l=11398
+     *     See studio_stats.proto;l=11476
      * @return Whether the pluginIdentifier field is set.
      */
     @java.lang.Deprecated boolean hasPluginIdentifier();
@@ -86,7 +86,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-     *     See studio_stats.proto;l=11398
+     *     See studio_stats.proto;l=11476
      * @return The pluginIdentifier.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier();
@@ -314,7 +314,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-     *     See studio_stats.proto;l=11398
+     *     See studio_stats.proto;l=11476
      * @return Whether the pluginIdentifier field is set.
      */
     @java.lang.Override
@@ -329,7 +329,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-     *     See studio_stats.proto;l=11398
+     *     See studio_stats.proto;l=11476
      * @return The pluginIdentifier.
      */
     @java.lang.Override
@@ -842,7 +842,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-       *     See studio_stats.proto;l=11398
+       *     See studio_stats.proto;l=11476
        * @return Whether the pluginIdentifier field is set.
        */
       @java.lang.Deprecated public boolean hasPluginIdentifier() {
@@ -856,7 +856,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.plugin_identifier is deprecated.
-       *     See studio_stats.proto;l=11398
+       *     See studio_stats.proto;l=11476
        * @return The pluginIdentifier.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {

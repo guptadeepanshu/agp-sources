@@ -18,6 +18,7 @@ package com.android.sdklib
 import com.android.SdkConstants.CODENAME_RELEASE
 
 private const val RO_BUILD_VERSION_SDK = "ro.build.version.sdk"
+private const val RO_BUILD_VERSION_SDK_MINOR = "ro.build.version.sdk_minor"
 private const val RO_BUILD_VERSION_CODENAME = "ro.build.version.codename"
 private const val BUILD_EXTENSION_PREFIX = "build.version.extensions."
 
@@ -27,6 +28,7 @@ object AndroidVersionUtil {
     @JvmStatic
     fun androidVersionFromDeviceProperties(properties: Map<String, String>): AndroidVersion? {
         val apiLevel = properties[RO_BUILD_VERSION_SDK]?.toIntOrNull() ?: return null
+        val apiMinorLevel = properties[RO_BUILD_VERSION_SDK_MINOR]?.toIntOrNull() ?: 0
         val extensions = properties.filter { it.key.startsWith(BUILD_EXTENSION_PREFIX) }
         // We want to use the extension level of the release that is running on the device.
         // However, for prereleases, we don't have a "build.version.extensions." property
@@ -38,7 +40,6 @@ object AndroidVersionUtil {
         // We consider preview releases to be base, since we don't necessarily know their base
         // extension level, and when they are released it should be at least the level we see now.
         val isBase = codename != null || extensionLevel <= baseExtensionLevel
-        return AndroidVersion(apiLevel, codename, extensionLevel.takeIf { it > 0 }, isBase)
-
+        return AndroidVersion(apiLevel, apiMinorLevel, codename, extensionLevel.takeIf { it > 0 }, isBase)
     }
 }

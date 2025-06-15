@@ -24,7 +24,6 @@ import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.DeviceTestBuilderImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.HostTestBuilderImpl
-import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.BaseVariantImpl
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.component.DeviceTestCreationConfig
@@ -154,8 +153,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: Vari
     fun createVariantData(
         componentIdentity: ComponentIdentity,
         artifacts: ArtifactsImpl,
-        services: VariantServices,
-        taskContainer: MutableTaskContainer
+        services: VariantServices
     ): BaseVariantData
 
     fun createBuildFeatureValues(

@@ -38,12 +38,14 @@ import com.android.builder.signing.DefaultSigningConfig
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
-internal abstract class KotlinMultiplatformAndroidLibraryExtensionImpl @Inject @WithLazyInitialization("lazyInit") constructor(
+internal abstract class KotlinMultiplatformAndroidLibraryExtensionImpl @Inject constructor(
     private val dslServices: DslServices,
     objectFactory: ObjectFactory,
     private val compilationEnabledCallback: (KotlinMultiplatformAndroidCompilationBuilder) -> Unit,
 ): KotlinMultiplatformAndroidLibraryExtension, Lockable {
 
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     fun lazyInit() {
         buildToolsVersion = ToolsRevisionUtils.DEFAULT_BUILD_TOOLS_REVISION.toString()
         DefaultSigningConfig.DebugSigningConfig(

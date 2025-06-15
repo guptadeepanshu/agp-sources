@@ -106,6 +106,14 @@ private static final long serialVersionUID = 0L;
      * <code>JDK_TABLE_ENTRY = 6;</code>
      */
     JDK_TABLE_ENTRY(6),
+    /**
+     * <pre>
+     * Use criteria defined in gradle/gradle-daemon-jvm.properties project file
+     * </pre>
+     *
+     * <code>GRADLE_DAEMON_JVM_CRITERIA = 7;</code>
+     */
+    GRADLE_DAEMON_JVM_CRITERIA(7),
     ;
 
     /**
@@ -166,6 +174,14 @@ private static final long serialVersionUID = 0L;
      * <code>JDK_TABLE_ENTRY = 6;</code>
      */
     public static final int JDK_TABLE_ENTRY_VALUE = 6;
+    /**
+     * <pre>
+     * Use criteria defined in gradle/gradle-daemon-jvm.properties project file
+     * </pre>
+     *
+     * <code>GRADLE_DAEMON_JVM_CRITERIA = 7;</code>
+     */
+    public static final int GRADLE_DAEMON_JVM_CRITERIA_VALUE = 7;
 
 
     public final int getNumber() {
@@ -195,6 +211,7 @@ private static final long serialVersionUID = 0L;
         case 4: return GRADLE_LOCAL_JAVA_HOME;
         case 5: return STUDIO_GRADLE_JDK;
         case 6: return JDK_TABLE_ENTRY;
+        case 7: return GRADLE_DAEMON_JVM_CRITERIA;
         default: return null;
       }
     }

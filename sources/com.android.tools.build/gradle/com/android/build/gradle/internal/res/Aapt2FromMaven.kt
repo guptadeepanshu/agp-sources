@@ -57,9 +57,10 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
         private const val PLATFORM_OSX = "osx"
         private val ACCEPTED_PLATFORMS = listOf(PLATFORM_WINDOWS, PLATFORM_OSX, PLATFORM_LINUX)
 
-        private object Aapt2Version {
-            val BUILD_NUMBER: String by lazy(LazyThreadSafetyMode.PUBLICATION) {
-                Aapt2Version::class.java
+        object DefaultAapt2Version {
+
+            private val BUILD_NUMBER: String by lazy(LazyThreadSafetyMode.PUBLICATION) {
+                DefaultAapt2Version::class.java
                     .getResourceAsStream("aapt2_version.properties")
                     .buffered()
                     .use { stream ->
@@ -69,6 +70,9 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
                         }
                     }
             }
+
+            val VERSION: String
+                get() = "${Version.ANDROID_GRADLE_PLUGIN_VERSION}-$BUILD_NUMBER"
         }
 
         /**
@@ -86,15 +90,14 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
             val customAapt2: String = stringOption(StringOption.AAPT2_FROM_MAVEN_OVERRIDE) ?: ""
             // Use custom maven coordinates if specified.
             val overriddenVersion: String =
-                    stringOption(StringOption.AAPT2_FROM_MAVEN_VERSION_OVERRIDE) ?: ""
-            val defaultVersion = "${Version.ANDROID_GRADLE_PLUGIN_VERSION}-${Aapt2Version.BUILD_NUMBER}"
+                stringOption(StringOption.AAPT2_FROM_MAVEN_VERSION_OVERRIDE) ?: ""
 
             if (customAapt2.any() && overriddenVersion.any()) {
                 error("You cannot specify both local and remote custom versions of AAPT2.\n" +
                         "Please use either ${StringOption.AAPT2_FROM_MAVEN_OVERRIDE.propertyName}" +
                         " for setting a local path to the executable or " +
                         "${StringOption.AAPT2_FROM_MAVEN_VERSION_OVERRIDE} for specifying a Maven" +
-                        " version (e.g. \"$defaultVersion\").")
+                        " version (e.g. \"${DefaultAapt2Version.VERSION}\").")
             }
 
             if (customAapt2.any()) {
@@ -108,7 +111,7 @@ class Aapt2FromMaven(val aapt2Directory: FileCollection, val version: String) {
                     if (overriddenVersion.any())
                         overriddenVersion
                     else
-                        defaultVersion
+                        DefaultAapt2Version.VERSION
 
             val overriddenPlatform: String =
                     stringOption(StringOption.AAPT2_FROM_MAVEN_PLATFORM_OVERRIDE) ?: ""

@@ -6025,4 +6025,193 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.SetupWizardEvent setup_wizard_event = 215 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.SetupWizardEventOrBuilder getSetupWizardEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = BROWSER_SURVEY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.BrowserSurveyEvent browser_survey_event = 216 [lazy = true];</code>
+   * @return Whether the browserSurveyEvent field is set.
+   */
+  boolean hasBrowserSurveyEvent();
+  /**
+   * <pre>
+   * set when kind = BROWSER_SURVEY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.BrowserSurveyEvent browser_survey_event = 216 [lazy = true];</code>
+   * @return The browserSurveyEvent.
+   */
+  com.google.wireless.android.sdk.stats.BrowserSurveyEvent getBrowserSurveyEvent();
+  /**
+   * <pre>
+   * set when kind = BROWSER_SURVEY_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.BrowserSurveyEvent browser_survey_event = 216 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.BrowserSurveyEventOrBuilder getBrowserSurveyEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GRADLE_DAEMON_JVM_CRITERIA_ERROR_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleDaemonJvmCriteriaErrorEvent gradle_daemon_jvm_criteria_error_event = 217 [lazy = true];</code>
+   * @return Whether the gradleDaemonJvmCriteriaErrorEvent field is set.
+   */
+  boolean hasGradleDaemonJvmCriteriaErrorEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_DAEMON_JVM_CRITERIA_ERROR_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleDaemonJvmCriteriaErrorEvent gradle_daemon_jvm_criteria_error_event = 217 [lazy = true];</code>
+   * @return The gradleDaemonJvmCriteriaErrorEvent.
+   */
+  com.google.wireless.android.sdk.stats.GradleDaemonJvmCriteriaErrorEvent getGradleDaemonJvmCriteriaErrorEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_DAEMON_JVM_CRITERIA_ERROR_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleDaemonJvmCriteriaErrorEvent gradle_daemon_jvm_criteria_error_event = 217 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleDaemonJvmCriteriaErrorEventOrBuilder getGradleDaemonJvmCriteriaErrorEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = ALIGN16KB_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.Align16kbEvent align16kb_event = 218 [lazy = true];</code>
+   * @return Whether the align16kbEvent field is set.
+   */
+  boolean hasAlign16KbEvent();
+  /**
+   * <pre>
+   * set when kind = ALIGN16KB_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.Align16kbEvent align16kb_event = 218 [lazy = true];</code>
+   * @return The align16kbEvent.
+   */
+  com.google.wireless.android.sdk.stats.Align16kbEvent getAlign16KbEvent();
+  /**
+   * <pre>
+   * set when kind = ALIGN16KB_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.Align16kbEvent align16kb_event = 218 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.Align16kbEventOrBuilder getAlign16KbEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GC_PAUSE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GcPauseEvent gc_pause_event = 219 [lazy = true];</code>
+   * @return Whether the gcPauseEvent field is set.
+   */
+  boolean hasGcPauseEvent();
+  /**
+   * <pre>
+   * set when kind = GC_PAUSE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GcPauseEvent gc_pause_event = 219 [lazy = true];</code>
+   * @return The gcPauseEvent.
+   */
+  com.google.wireless.android.sdk.stats.GcPauseEvent getGcPauseEvent();
+  /**
+   * <pre>
+   * set when kind = GC_PAUSE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GcPauseEvent gc_pause_event = 219 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.GcPauseEventOrBuilder getGcPauseEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = AUTO_SYNC_SETTING_CHANGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AutoSyncSettingChangeEvent auto_sync_setting_change_event = 220 [lazy = true];</code>
+   * @return Whether the autoSyncSettingChangeEvent field is set.
+   */
+  boolean hasAutoSyncSettingChangeEvent();
+  /**
+   * <pre>
+   * set when kind = AUTO_SYNC_SETTING_CHANGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AutoSyncSettingChangeEvent auto_sync_setting_change_event = 220 [lazy = true];</code>
+   * @return The autoSyncSettingChangeEvent.
+   */
+  com.google.wireless.android.sdk.stats.AutoSyncSettingChangeEvent getAutoSyncSettingChangeEvent();
+  /**
+   * <pre>
+   * set when kind = AUTO_SYNC_SETTING_CHANGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AutoSyncSettingChangeEvent auto_sync_setting_change_event = 220 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.AutoSyncSettingChangeEventOrBuilder getAutoSyncSettingChangeEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SUPPRESSED_SYNC
+   * </pre>
+   *
+   * <code>optional .android_studio.SuppressedSyncEvent suppressed_sync_event = 221 [lazy = true];</code>
+   * @return Whether the suppressedSyncEvent field is set.
+   */
+  boolean hasSuppressedSyncEvent();
+  /**
+   * <pre>
+   * set when kind = SUPPRESSED_SYNC
+   * </pre>
+   *
+   * <code>optional .android_studio.SuppressedSyncEvent suppressed_sync_event = 221 [lazy = true];</code>
+   * @return The suppressedSyncEvent.
+   */
+  com.google.wireless.android.sdk.stats.SuppressedSyncEvent getSuppressedSyncEvent();
+  /**
+   * <pre>
+   * set when kind = SUPPRESSED_SYNC
+   * </pre>
+   *
+   * <code>optional .android_studio.SuppressedSyncEvent suppressed_sync_event = 221 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.SuppressedSyncEventOrBuilder getSuppressedSyncEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = RESIZE_COMPOSE_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ResizeComposePreviewEvent resize_compose_preview_event = 222 [lazy = true];</code>
+   * @return Whether the resizeComposePreviewEvent field is set.
+   */
+  boolean hasResizeComposePreviewEvent();
+  /**
+   * <pre>
+   * set when kind = RESIZE_COMPOSE_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ResizeComposePreviewEvent resize_compose_preview_event = 222 [lazy = true];</code>
+   * @return The resizeComposePreviewEvent.
+   */
+  com.google.wireless.android.sdk.stats.ResizeComposePreviewEvent getResizeComposePreviewEvent();
+  /**
+   * <pre>
+   * set when kind = RESIZE_COMPOSE_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.ResizeComposePreviewEvent resize_compose_preview_event = 222 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.ResizeComposePreviewEventOrBuilder getResizeComposePreviewEventOrBuilder();
 }

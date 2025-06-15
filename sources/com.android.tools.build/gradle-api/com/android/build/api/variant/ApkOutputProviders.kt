@@ -21,6 +21,44 @@ import org.gradle.api.Task
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.TaskProvider
 
+/**
+ * Provides APIs to obtain ordered collection of APK batches, each intended for local
+ * installation, facilitating staged installations.
+ *
+ * As an example , let's take a Gradle [org.gradle.api.Task] that needs all the Apks for
+ * local deployment:
+ *
+ * ```kotlin
+ *  abstract class FetchApkTask: DefaultTask() {
+ *    @get:Internal
+ *    abstract val apkOutput: Property<com.android.build.api.variant.ApkOutput>
+ *
+ *    @TaskAction
+ *    fun execute() {
+ *      def apkInstallGroups = apkOutput.apkInstallGroups
+ *          for(installGroup: installGroups) {
+ *              installOnDevice(installGroup.apks)
+ *         }
+ *    }
+ *  }
+ *
+ *  val taskProvider: TaskProvider<FetchApkTask> =
+ *      tasks.register("installAppApks", FetchApkTask::class.java)
+ *
+ *  androidComponents {
+ *     onVariants(selector().withName("debug")) { variant ->
+ *         val appVariant = variant as? ApplicationVariant
+ *         appVariant?.let {
+ *             it.outputProviders.provideApkOutputToTask(
+ *                  taskProvider,
+ *                  FetchApkTask::getOutput, '
+ *                  DeviceSpec("testDevice", 33, "", emptyList(), true)
+ *             )
+ *         }
+ *     }
+ *  }
+ *  ```
+ */
 @Incubating
 interface ApkOutputProviders {
 

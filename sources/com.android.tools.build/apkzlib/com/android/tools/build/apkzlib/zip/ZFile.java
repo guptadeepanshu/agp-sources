@@ -447,7 +447,7 @@ public class ZFile implements Closeable {
       dirty = true;
     }
 
-    entries = Maps.newHashMap();
+    entries = Maps.newLinkedHashMap();
     uncompressedEntries = Lists.newArrayList();
     extraDirectoryOffset = 0;
 
@@ -564,7 +564,7 @@ public class ZFile implements Closeable {
    * @return all entries in the zip
    */
   public Set<StoredEntry> entries() {
-    Map<String, StoredEntry> entries = Maps.newHashMap();
+    Map<String, StoredEntry> entries = Maps.newLinkedHashMap();
 
     for (FileUseMapEntry<StoredEntry> mapEntry : this.entries.values()) {
       StoredEntry entry = mapEntry.getStore();
@@ -580,7 +580,7 @@ public class ZFile implements Closeable {
       entries.put(uncompressed.getCentralDirectoryHeader().getName(), uncompressed);
     }
 
-    return Sets.newHashSet(entries.values());
+    return Sets.newLinkedHashSet(entries.values());
   }
 
   /**

@@ -17,7 +17,7 @@ package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
 import com.android.ddmlib.internal.ClientImpl;
-import com.android.ddmlib.internal.Debugger;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +75,10 @@ public interface Client {
      * Returns <code>true</code> if the client VM is DDM-aware.
      *
      * <p>Calling here is only allowed after the connection has been established.
+     *
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
      */
+    @Deprecated
     boolean isDdmAware();
 
     /** Returns the {@link ClientData} object containing this client information. */
@@ -100,15 +103,39 @@ public interface Client {
     boolean isDebuggerAttached();
 
     ///////////////////////// PROFILER METHODS ///////////////////////////////////////////
-    /** Forces the client to execute its garbage collector. */
+    /**
+     * Forces the client to execute its garbage collector.
+     *
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void executeGarbageCollector();
 
+    /**
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void startMethodTracer() throws IOException;
 
+    /*
+     * (non-Javadoc)
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void stopMethodTracer() throws IOException;
 
+    /*
+     * (non-Javadoc)
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void startSamplingProfiler(int samplingInterval, TimeUnit timeUnit) throws IOException;
 
+    /*
+     * (non-Javadoc)
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void stopSamplingProfiler() throws IOException;
 
     /**
@@ -120,7 +147,10 @@ public interface Client {
      * notification that the new data is available will be received through {@link
      * AndroidDebugBridge.IClientChangeListener#clientChanged(ClientImpl, int)} with a <code>
      * changeMask</code> containing the mask {@link #CHANGE_HEAP_ALLOCATIONS}.
+     *
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
      */
+    @Deprecated
     void requestAllocationDetails();
 
     /**
@@ -132,7 +162,9 @@ public interface Client {
      *
      * @param enable
      * @see #requestAllocationDetails()
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
      */
+    @Deprecated
     void enableAllocationTracker(boolean enabled);
 
     /**
@@ -142,12 +174,24 @@ public interface Client {
      */
     void notifyVmMirrorExited();
 
+    /**
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void listViewRoots(DebugViewDumpHandler replyHandler) throws IOException;
 
+    /**
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void captureView(
             @NonNull String viewRoot, @NonNull String view, @NonNull DebugViewDumpHandler handler)
             throws IOException;
 
+    /**
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void dumpViewHierarchy(
             @NonNull String viewRoot,
             boolean skipChildren,
@@ -156,7 +200,10 @@ public interface Client {
             @NonNull DebugViewDumpHandler handler)
             throws IOException;
 
+    /**
+     * @deprecated see <a href="https://source.android.com/docs/core/runtime/art-ti">ARTTI</a>
+     */
+    @Deprecated
     void dumpDisplayList(@NonNull String viewRoot, @NonNull String view) throws IOException;
-
 }
 

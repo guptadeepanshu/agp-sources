@@ -24,7 +24,6 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.internal.DependenciesExtension
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
@@ -39,7 +38,6 @@ open class BaseAppModuleExtensionInternal(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: ApplicationExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : BaseAppModuleExtension (
@@ -47,7 +45,6 @@ open class BaseAppModuleExtensionInternal(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     publicExtensionImpl,
     stats
 ) {
@@ -67,7 +64,6 @@ open class BaseAppModuleExtension(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: ApplicationExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : AppExtension(
@@ -75,7 +71,6 @@ open class BaseAppModuleExtension(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     true,
     stats
 ), InternalApplicationExtension by publicExtensionImpl {

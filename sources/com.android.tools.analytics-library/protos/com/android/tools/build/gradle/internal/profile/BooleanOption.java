@@ -804,6 +804,18 @@ public enum BooleanOption
    * <code>R8_OPTIMIZED_SHRINKING = 195;</code>
    */
   R8_OPTIMIZED_SHRINKING(195),
+  /**
+   * <code>ENABLE_DEVICE_TARGETING_CONFIG_API = 196;</code>
+   */
+  ENABLE_DEVICE_TARGETING_CONFIG_API(196),
+  /**
+   * <code>DUMP_ARTIFACTS_LOCATIONS = 197;</code>
+   */
+  DUMP_ARTIFACTS_LOCATIONS(197),
+  /**
+   * <code>R8_STRICT_FULL_MODE_FOR_KEEP_RULES = 198;</code>
+   */
+  R8_STRICT_FULL_MODE_FOR_KEEP_RULES(198),
   UNRECOGNIZED(-1),
   ;
 
@@ -1591,6 +1603,18 @@ public enum BooleanOption
    * <code>R8_OPTIMIZED_SHRINKING = 195;</code>
    */
   public static final int R8_OPTIMIZED_SHRINKING_VALUE = 195;
+  /**
+   * <code>ENABLE_DEVICE_TARGETING_CONFIG_API = 196;</code>
+   */
+  public static final int ENABLE_DEVICE_TARGETING_CONFIG_API_VALUE = 196;
+  /**
+   * <code>DUMP_ARTIFACTS_LOCATIONS = 197;</code>
+   */
+  public static final int DUMP_ARTIFACTS_LOCATIONS_VALUE = 197;
+  /**
+   * <code>R8_STRICT_FULL_MODE_FOR_KEEP_RULES = 198;</code>
+   */
+  public static final int R8_STRICT_FULL_MODE_FOR_KEEP_RULES_VALUE = 198;
 
 
   public final int getNumber() {
@@ -1813,6 +1837,9 @@ public enum BooleanOption
       case 193: return SKIP_APKS_VIA_BUNDLE_IF_POSSIBLE;
       case 194: return DISABLE_INLINE_SCOPES_NUMBERS;
       case 195: return R8_OPTIMIZED_SHRINKING;
+      case 196: return ENABLE_DEVICE_TARGETING_CONFIG_API;
+      case 197: return DUMP_ARTIFACTS_LOCATIONS;
+      case 198: return R8_STRICT_FULL_MODE_FOR_KEEP_RULES;
       default: return null;
     }
   }

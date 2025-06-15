@@ -24,11 +24,16 @@ class LifecycleTasksImpl: LifecycleTasks {
 
     private enum class LifecycleEvent {
         PRE_BUILD,
+        APK_INSTALLATION,
     }
     private val registeredDependents = mutableMapOf<LifecycleEvent, MutableList<Any>>()
 
     internal fun invokePreBuildActions(task: Task) {
         invokeActions(LifecycleEvent.PRE_BUILD, task)
+    }
+
+    internal fun invokeApkInstallationActions(task: Task) {
+        invokeActions(LifecycleEvent.APK_INSTALLATION, task)
     }
 
     @VisibleForTesting
@@ -43,6 +48,12 @@ class LifecycleTasksImpl: LifecycleTasks {
     override fun registerPreBuild(vararg objects: Any) {
         registeredDependents.getOrPut(
             LifecycleEvent.PRE_BUILD
+        ) { mutableListOf() }.addAll(objects)
+    }
+
+    override fun registerPreInstallation(vararg objects: Any) {
+        registeredDependents.getOrPut(
+            LifecycleEvent.APK_INSTALLATION
         ) { mutableListOf() }.addAll(objects)
     }
 }

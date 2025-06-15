@@ -20,6 +20,7 @@ import com.android.SdkConstants
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryGlobalScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
@@ -30,6 +31,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.symbols.processLibraryMainSymbolTable
 import com.android.ide.common.symbols.IdProvider
+import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
@@ -60,6 +62,9 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalGloba
     @get:OutputFile
     abstract val fusedSymbolFile: RegularFileProperty
 
+    @get:OutputFile
+    abstract val packageAwareRTxt: RegularFileProperty
+
     override fun doTaskAction() {
         processLibraryMainSymbolTable(
             librarySymbols = SymbolTable.EMPTY, // No sources in Fused Library
@@ -71,6 +76,12 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalGloba
             nonTransitiveRClass = false,
             generateDependencyRClasses = false,
             idProvider = IdProvider.constant()
+        )
+
+        SymbolIo.writeSymbolListWithPackageName(
+            fusedSymbolFile.get().asFile.toPath(),
+            namespace.get(),
+            packageAwareRTxt.get().asFile.toPath()
         )
     }
 
@@ -90,6 +101,12 @@ abstract class FusedLibraryMergeResourceCompileSymbolsTask : NonIncrementalGloba
                 FusedLibraryMergeResourceCompileSymbolsTask::fusedSymbolFile
             ).withName(SdkConstants.FN_RESOURCE_TEXT)
                 .on(FusedLibraryInternalArtifactType.COMPILE_SYMBOL_LIST)
+
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                FusedLibraryMergeResourceCompileSymbolsTask::packageAwareRTxt
+            ).withName("package-aware-r.txt")
+                .on(FusedLibraryInternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
         }
 
         override fun configure(task: FusedLibraryMergeResourceCompileSymbolsTask) {

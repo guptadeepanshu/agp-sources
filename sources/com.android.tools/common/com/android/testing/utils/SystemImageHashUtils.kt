@@ -16,9 +16,12 @@
 
 package com.android.testing.utils
 
+import java.util.regex.Pattern
+
 private const val SYSTEM_IMAGE_PREFIX = "system-images;"
 private const val API_PREFIX = "android-"
 private const val API_EXTENSION_PREFIX = "-ext"
+private val PAGE_ALIGNMENT_SUFFIX_FORMAT = Pattern.compile("_ps[0-9]+k$")
 private const val PAGE_16K_SOURCE_SUFFIX = "_ps16k"
 private const val API_OFFSET = 1
 private const val VENDOR_OFFSET = 2
@@ -71,6 +74,15 @@ fun isTvOrAutoSource(imageSource: String) =
 
 fun is16kPageSource(vendorString: String) =
     vendorString.contains(PAGE_16K_SOURCE_SUFFIX)
+
+fun getPageAlignmentSuffix(vendorString: String) =
+    with(PAGE_ALIGNMENT_SUFFIX_FORMAT.matcher(vendorString)) {
+        if (find()) {
+            group()
+        } else {
+            null
+        }
+    }
 
 fun isTvOrAutoDevice(deviceName: String) =
     deviceName.contains("TV") || deviceName.contains("Auto")

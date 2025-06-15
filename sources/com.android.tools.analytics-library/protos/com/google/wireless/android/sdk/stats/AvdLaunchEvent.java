@@ -174,6 +174,10 @@ private static final long serialVersionUID = 0L;
      * <code>WEARABLE = 5;</code>
      */
     WEARABLE(5),
+    /**
+     * <code>XR = 6;</code>
+     */
+    XR(6),
     ;
 
     /**
@@ -200,6 +204,10 @@ private static final long serialVersionUID = 0L;
      * <code>WEARABLE = 5;</code>
      */
     public static final int WEARABLE_VALUE = 5;
+    /**
+     * <code>XR = 6;</code>
+     */
+    public static final int XR_VALUE = 6;
 
 
     public final int getNumber() {
@@ -228,6 +236,7 @@ private static final long serialVersionUID = 0L;
         case 3: return TV;
         case 4: return AUTOMOTIVE;
         case 5: return WEARABLE;
+        case 6: return XR;
         default: return null;
       }
     }

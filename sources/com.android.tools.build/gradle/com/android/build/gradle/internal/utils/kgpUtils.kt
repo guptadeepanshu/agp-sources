@@ -231,21 +231,15 @@ fun addComposeArgsToKotlinCompile(
 
     task.addPluginClasspath(kotlinVersion, compilerExtension)
 
-    if (debuggable) {
+    task.maybeAddSourceInformationOption(kotlinVersion)
+
+    if (debuggable && useLiveLiterals) {
         task.addPluginOption(
             kotlinVersion,
             "androidx.compose.compiler.plugins.kotlin",
-            "sourceInformation",
+            "liveLiterals",
             "true"
         )
-        if (useLiveLiterals) {
-            task.addPluginOption(
-                kotlinVersion,
-                "androidx.compose.compiler.plugins.kotlin",
-                "liveLiterals",
-                "true"
-            )
-        }
     }
 
     if (kotlinVersion.isVersionAtLeast(1, 8)) {
@@ -326,6 +320,23 @@ private fun KotlinVersion?.isVersionAtLeast(major: Int, minor: Int, patch: Int? 
         patch == null -> this.isAtLeast(major, minor)
         else -> this.isAtLeast(major, minor, patch)
     }
+
+/**
+ * Add the Compose Compiler Gradle Plugin's sourceInformation flag only if the kotlin version is
+ * below 2.1.20-Beta2. Starting at that version, the Compose Compiler Gradle Plugin adds the flag
+ * itself (see https://youtrack.jetbrains.com/issue/KT-74415).
+ */
+private fun KotlinCompile.maybeAddSourceInformationOption(kotlinVersion: KotlinVersion?) {
+    if (kotlinVersion.isVersionAtLeast(2, 1, 20)) {
+        return
+    }
+    addPluginOption(
+        kotlinVersion,
+        "androidx.compose.compiler.plugins.kotlin",
+        "sourceInformation",
+        "true"
+    )
+}
 
 /**
  * Get information about Kotlin sources from KGP, until there is a KGP version that can work

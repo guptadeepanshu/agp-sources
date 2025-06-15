@@ -132,7 +132,6 @@ class InAndOutFileOperationRequestImpl<TaskT: Task>(
 }
 
 class CombiningOperationRequestImpl<TaskT: Task, FileTypeT: FileSystemLocation>(
-    val objects: ObjectFactory,
     override val artifacts: ArtifactsImpl,
     val taskProvider: TaskProvider<TaskT>,
     val from: (TaskT) -> ListProperty<FileTypeT>,
@@ -143,10 +142,8 @@ class CombiningOperationRequestImpl<TaskT: Task, FileTypeT: FileSystemLocation>(
                   ArtifactTypeT : Artifact.Transformable {
         closeRequest()
         val artifactContainer = artifacts.getArtifactContainer(type)
-        val newList = objects.listProperty(type.kind.dataType().java)
-        val currentProviders = artifactContainer.transform(taskProvider, taskProvider.flatMap { newList })
+        val currentProviders = artifactContainer.transform(taskProvider, taskProvider.flatMap { into(it) })
         taskProvider.configure {
-            newList.add(into(it))
             into(it).set(artifacts.getOutputPath(type, taskProvider.name))
             from(it).set(currentProviders)
         }
@@ -457,7 +454,7 @@ private fun <TaskT: Task, FileTypeT: FileSystemLocation, ArtifactTypeT> _toListe
     artifacts: ArtifactsImpl,
     taskProvider: TaskProvider<TaskT>,
     type: ArtifactTypeT,
-    artifactContainer: ArtifactContainer<*, *>,
+    artifactContainer: ArtifactContainer<*, *, *>,
 ) where ArtifactTypeT : Artifact<FileTypeT> {
     // Do not register the listener on the current final provider as it may change as long as
     // the variant API callbacks are running so instead register a deferred action.

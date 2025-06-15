@@ -145,7 +145,7 @@ public class DefaultSdkLoader implements SdkLoader {
 
             if (target == null || !isBuildToolInfoValid) {
                 Map<RemotePackage, InstallResultType> installResults = new HashMap<>();
-                RepoManager repoManager = mSdkHandler.getSdkManager(progress);
+                RepoManager repoManager = mSdkHandler.getRepoManager(progress);
                 checkNeedsCacheReset(repoManager, sdkLibData);
                 repoManager.loadSynchronously(
                         RepoManager.DEFAULT_EXPIRATION_PERIOD_MS, progress, downloader, settings);
@@ -397,7 +397,7 @@ public class DefaultSdkLoader implements SdkLoader {
             mSdkHandler =
                     AndroidSdkHandler.getInstance(androidLocationsProvider, mSdkLocation.toPath());
             ProgressIndicator progress = new LoggerProgressIndicatorWrapper(logger);
-            mSdkHandler.getSdkManager(progress).reloadLocalIfNeeded(progress);
+            mSdkHandler.getRepoManager(progress).reloadLocalIfNeeded(progress);
 
             File toolsFolder = new File(mSdkLocation, FD_TOOLS);
             File supportToolsFolder = new File(toolsFolder, FD_SUPPORT);
@@ -427,7 +427,7 @@ public class DefaultSdkLoader implements SdkLoader {
             throws LicenceNotAcceptedException, InstallFailedException {
         ProgressIndicator progress =
                 new LoggerProgressIndicatorWrapper(new StdLogger(StdLogger.Level.WARNING));
-        RepoManager repoManager = mSdkHandler.getSdkManager(progress);
+        RepoManager repoManager = mSdkHandler.getRepoManager(progress);
         repoManager.loadSynchronously(0, progress, null, null);
         LocalPackage localSdkToolPackage =
                 mSdkHandler.getLatestLocalPackageForPrefix(packageId, null, true, progress);
@@ -478,7 +478,7 @@ public class DefaultSdkLoader implements SdkLoader {
         }
         ProgressIndicator progress =
                 new LoggerProgressIndicatorWrapper(new StdLogger(StdLogger.Level.WARNING));
-        RepoManager repoManager = mSdkHandler.getSdkManager(progress);
+        RepoManager repoManager = mSdkHandler.getRepoManager(progress);
 
         checkNeedsCacheReset(repoManager, sdkLibData);
         repoManager.loadSynchronously(
@@ -499,7 +499,7 @@ public class DefaultSdkLoader implements SdkLoader {
         init(logger);
         ProgressIndicator progress =
                 new LoggerProgressIndicatorWrapper(new StdLogger(StdLogger.Level.WARNING));
-        RepoManager repoManager = mSdkHandler.getSdkManager(progress);
+        RepoManager repoManager = mSdkHandler.getRepoManager(progress);
         repoManager.loadSynchronously(0, progress, null, null);
         LocalPackage localEmulatorPackage =
                 mSdkHandler.getLatestLocalPackageForPrefix(

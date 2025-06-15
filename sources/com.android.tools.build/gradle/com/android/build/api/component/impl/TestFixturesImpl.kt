@@ -119,7 +119,8 @@ open class TestFixturesImpl @Inject constructor(
         JavaCompilationImpl(
             variantDslInfo.javaCompileOptionsSetInDSL,
             buildFeatures.dataBinding,
-            internalServices
+            internalServices,
+            variantDependencies
         )
 
     // ---------------------------------------------------------------------------------------------

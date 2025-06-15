@@ -20,6 +20,7 @@ import com.android.SdkConstants
 import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.files.RelativeFile
+import com.android.builder.files.SerializableChange
 import com.android.builder.files.SerializableFileChanges
 import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
@@ -35,8 +36,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.PathSensitive
-import org.gradle.api.tasks.PathSensitivity
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import java.io.BufferedOutputStream
@@ -69,7 +68,11 @@ abstract class JacocoTransform : TransformAction<JacocoTransform.Params> {
     abstract val inputChanges: InputChanges
 
     @get:InputArtifact
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    // Take care when handling input changes with @Classpath and @Incremental.
+    // Modified files may report multiple FileStatus events
+    // such as ADDED, REMOVED may lead to file deletion if not carefully handled!
+    // See https://github.com/gradle/gradle/issues/32244
+    @get:Classpath
     @get:Incremental
     abstract val inputArtifact: Provider<FileSystemLocation>
 
@@ -93,15 +96,60 @@ abstract class JacocoTransform : TransformAction<JacocoTransform.Params> {
             throw IOException("$rootDir must be a directory.")
         }
         val classOutputDir = transformOutputs.dir("instrumented_classes")
-        val fileChanges = changes.fileChanges.filter { it.file.isFile }
-        for (change in fileChanges) {
-            val relativeFileChange = RelativeFile.fileInDirectory(
-                change.normalizedPath.replace(File.separatorChar,'/'), change.file)
-            if (change.fileStatus == FileStatus.NEW || change.fileStatus == FileStatus.CHANGED) {
-                instrumentFile(relativeFileChange, classOutputDir)
-            } else {
-                cleanTransformOutputFile(relativeFileChange, classOutputDir.toPath())
-            }
+        val fileChanges: Map<String, List<SerializableChange>> =
+            changes.fileChanges.groupBy { it.file.invariantSeparatorsPath }
+        for ((_, changesForAbsoluteFilepath) in fileChanges.entries) {
+            processIncrementalClasspathFileChange(
+                changesForAbsoluteFilepath.first().file,
+                changesForAbsoluteFilepath.first().normalizedPath,
+                changesForAbsoluteFilepath.map { it.fileStatus },
+                classOutputDir
+            )
+        }
+    }
+
+    /**
+     * This function processes file changes from input artifact annotated with
+     * @Classpath and @Incremental. Gradle's file status reporting when using these annotations
+     * can ambiguous.
+     *
+     * When changing file order e.g. adding or deleting, files on the same normalized path that are
+     * ordered after the added or deleted file will report as both ADDED and REMOVED. This happens
+     * regardless if these files are modified or not. This means we do not know if a MODIFIED
+     * event has occurred. So the file must be instrumented in this case.
+     *
+     * This is an open Gradle issue to address this https://github.com/gradle/gradle/issues/32244.
+     *
+     * @param file The input file
+     * @param normalizedPath Classpath of the input file reported by Gradle
+     * @param fileStatuses are file changes of input file. There should only be a single change,
+     * however as explained above there may be multiple.
+     * @param classOutputDir is the directory where the instrumented class should be written or
+     * deleted
+     */
+    private fun processIncrementalClasspathFileChange(
+        file: File,
+        normalizedPath: String,
+        fileStatuses: List<FileStatus>,
+        classOutputDir: File,
+    ) {
+        val relativeFile = RelativeFile.fileInDirectory(
+            normalizedPath.replace(File.separatorChar, '/'),
+            file
+        )
+        when {
+            fileStatuses.size == 1 && fileStatuses.first() == FileStatus.REMOVED
+                -> cleanTransformOutputFile(relativeFile, classOutputDir.toPath())
+
+            fileStatuses.contains(FileStatus.NEW) || fileStatuses.contains(FileStatus.CHANGED)
+                -> instrumentFile(relativeFile, classOutputDir)
+
+            else ->
+                // We should never hit this case.
+                error(
+                "Incremental Jacoco instrumentation failure: " +
+                        "Invalid FileStatus '${fileStatuses.joinToString()}' for normalised path '${file.absolutePath}'."
+            )
         }
     }
 

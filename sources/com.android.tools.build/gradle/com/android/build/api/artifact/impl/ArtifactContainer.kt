@@ -32,10 +32,17 @@ import java.util.concurrent.atomic.AtomicBoolean
  * always either a [org.gradle.api.file.RegularFile] or a [org.gradle.api.file.Directory].
  * An artifact cardinality is either single or multiple elements of the above type.
  *
- * @param T the artifact type as [FileSystemLocation] subtype for single element artifact
- * or a [List] of the same [FileSystemLocation] subtype for multiple elements artifact.
+ * @param FileTypeT the artifact type as [FileSystemLocation] sybclass
+ * @param StoredT is [FileTypeT] for single element artifact or a [List] of [FileTypeT] for multiple
+ * elements artifact.
+ * @param AdapterT is a [PropertyAdapter] to abstract access to the underlying Property object holding
+ * a single element or multiple elements.
  */
-internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) where U: PropertyAdapter<T> {
+internal abstract class ArtifactContainer<FileTypeT, StoredT, AdapterT>(
+    private val allocator: () -> AdapterT
+) where
+    FileTypeT : FileSystemLocation,
+    AdapterT: PropertyAdapter<FileTypeT, StoredT> {
 
     // this represents the current provider(s) for the artifact.
     protected var current = allocator()
@@ -68,7 +75,7 @@ internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) 
     /**
      * @return the final version of the artifact with associated providers to build it.
      */
-    fun get(): Provider<T> = final.get()
+    fun get(): Provider<StoredT> = final.get()
 
     fun getTaskProviders(): List<TaskProvider<*>> =
         (initialTaskProviders + transformationTaskProviders).toList()
@@ -84,7 +91,7 @@ internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) 
      * current version as its input while producing the final version.
      */
     @VisibleForTesting
-    internal fun getCurrent(): Provider<T>  {
+    internal fun getCurrent(): Provider<StoredT>  {
         val property = allocator()
         property.from(current)
         property.disallowChanges()
@@ -100,12 +107,12 @@ internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) 
      * @return the current provider for the artifact (which will be transformed)
      */
     @Synchronized
-    open fun transform(taskProvider: TaskProvider<*>, with: Provider<T>): Provider<T> {
+    open fun transform(taskProvider: TaskProvider<*>, with: Provider<FileTypeT>): Provider<StoredT> {
         transformationTaskProviders.add(taskProvider)
         return updateProvider(with)
     }
 
-    private fun updateProvider(with: Provider<T>): Provider<T>{
+    private fun updateProvider(with: Provider<FileTypeT>): Provider<StoredT>{
         val oldCurrent = current
         current = allocator()
         current.set(with)
@@ -122,7 +129,7 @@ internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) 
      * @param with the provider that will be the transformed artifact.
      */
     @Synchronized
-    open fun replace(taskProvider: TaskProvider<*>, with: Provider<T>) {
+    open fun replace(taskProvider: TaskProvider<*>, with: Provider<FileTypeT>) {
         needInitialProducer.set(false)
         initialTaskProviders.clear()
         initialTaskProviders.add(taskProvider)
@@ -141,12 +148,12 @@ internal abstract class ArtifactContainer<T, U>(private val allocator: () -> U) 
 /**
  * Specialization of [ArtifactContainer] for single elements of [FileSystemLocation]
  *
- * @param T the single element type, either [org.gradle.api.file.RegularFile] or
+ * @param FileTypeT the single element type, either [org.gradle.api.file.RegularFile] or
  * [org.gradle.api.file.Directory]
  */
-internal class SingleArtifactContainer<T: FileSystemLocation>(
-    val allocator: () -> SinglePropertyAdapter<T>
-) : ArtifactContainer<T, SinglePropertyAdapter<T>>(allocator) {
+internal class SingleArtifactContainer<FileTypeT: FileSystemLocation>(
+    val allocator: () -> SinglePropertyAdapter<FileTypeT>
+) : ArtifactContainer<FileTypeT, FileTypeT, SinglePropertyAdapter<FileTypeT>>(allocator) {
 
     private val agpProducer = allocator()
 
@@ -173,7 +180,7 @@ internal class SingleArtifactContainer<T: FileSystemLocation>(
      * @param initialNamingContext location file naming data
      */
     fun initArtifactContainer(taskProvider: TaskProvider<*>,
-        with: Provider<T>,
+        with: Provider<FileTypeT>,
         initialNamingContext: ArtifactNamingContext) {
         namingContext = initialNamingContext
 
@@ -186,7 +193,7 @@ internal class SingleArtifactContainer<T: FileSystemLocation>(
     /**
      * Copies initial and transformation providers from another [ArtifactContainer]
      */
-    fun transferFrom(from: SingleArtifactContainer<T>) {
+    fun transferFrom(from: SingleArtifactContainer<FileTypeT>) {
         runForNonInitializedProvider {
             agpProducer.set(from.final.get())
             initialTaskProviders.addAll(from.initialTaskProviders)
@@ -198,6 +205,10 @@ internal class SingleArtifactContainer<T: FileSystemLocation>(
         super.disallowChanges()
         agpProducer.disallowChanges()
     }
+
+    fun locationOnly(): Provider<FileTypeT> {
+        return final.locationOnly()
+    }
 }
 /**
  * Specialization of [ArtifactContainer] for multiple elements of [FileSystemLocation]
@@ -208,7 +219,7 @@ internal class SingleArtifactContainer<T: FileSystemLocation>(
 internal class MultipleArtifactContainer<T: FileSystemLocation>(
     val allocator: () -> MultiplePropertyAdapter<T>
 ):
-    ArtifactContainer<List<T>, MultiplePropertyAdapter<T>>(allocator) {
+    ArtifactContainer<T, List<T>, MultiplePropertyAdapter<T>>(allocator) {
 
     // this represents the providers from the AGP.
     private val agpProducers = allocator()
@@ -261,4 +272,6 @@ internal class MultipleArtifactContainer<T: FileSystemLocation>(
         super.disallowChanges()
         agpProducers.disallowChanges()
     }
+
+    fun locationOnly() = final.locationOnly()
 }

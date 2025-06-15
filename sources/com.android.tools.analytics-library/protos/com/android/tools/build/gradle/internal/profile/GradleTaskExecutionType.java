@@ -1400,6 +1400,14 @@ public enum GradleTaskExecutionType
    * <code>CONVERT_LINKED_RESOURCES_TO_BINARY = 345;</code>
    */
   CONVERT_LINKED_RESOURCES_TO_BINARY(345),
+  /**
+   * <code>PARSE_DEVICE_TARGETING_CONFIG = 346;</code>
+   */
+  PARSE_DEVICE_TARGETING_CONFIG(346),
+  /**
+   * <code>ARTIFACTS_LOCATIONS_REPORT = 347;</code>
+   */
+  ARTIFACTS_LOCATIONS_REPORT(347),
   UNRECOGNIZED(-1),
   ;
 
@@ -2787,6 +2795,14 @@ public enum GradleTaskExecutionType
    * <code>CONVERT_LINKED_RESOURCES_TO_BINARY = 345;</code>
    */
   public static final int CONVERT_LINKED_RESOURCES_TO_BINARY_VALUE = 345;
+  /**
+   * <code>PARSE_DEVICE_TARGETING_CONFIG = 346;</code>
+   */
+  public static final int PARSE_DEVICE_TARGETING_CONFIG_VALUE = 346;
+  /**
+   * <code>ARTIFACTS_LOCATIONS_REPORT = 347;</code>
+   */
+  public static final int ARTIFACTS_LOCATIONS_REPORT_VALUE = 347;
 
 
   public final int getNumber() {
@@ -3159,6 +3175,8 @@ public enum GradleTaskExecutionType
       case 343: return FUSED_LIBRARY_REPORT;
       case 344: return FUSED_LIBRARY_DEPENDENCY_VALIDATION;
       case 345: return CONVERT_LINKED_RESOURCES_TO_BINARY;
+      case 346: return PARSE_DEVICE_TARGETING_CONFIG;
+      case 347: return ARTIFACTS_LOCATIONS_REPORT;
       default: return null;
     }
   }

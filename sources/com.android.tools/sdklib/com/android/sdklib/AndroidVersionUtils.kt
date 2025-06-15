@@ -17,12 +17,45 @@
 package com.android.sdklib
 
 /**
- * A formatted name for the Android version
+ * This is deliberately different from AndroidVersion.MIN_API_FOR_EXPLICIT_MINOR as we want
+ * 36 to have different treatment for internal use and user display
  *
- * - [name] is the main name as returned by the various methods. This can be release focused
- *   (e.g. "Android 12.0"), or API focused ("API 33").
- * - [details] is an optional string that shows the other side of the name. Release focused
- *   name can have the API level in the details, and API focused name can have the release name
+ * For example, for 36.0-ext18
+ *  - AndroidVersion.getApiStringWithExtension → 36-ext18
+ *  - AndroidTargetHash.getPlatformHashString → android-36-ext18
+ *  - AndroidVersionUtils displayApiString → 36.0-ext18
+ *  - AndroidVersionUtils getFullApiName → API 36.0 ext. 18
+ *  - AndroidVersionUtils getFullApiName(true, true)
+ *        → API 36.0 ext. 18 ("Baklava", Android 16.0)
+ */
+private const val MIN_API_FOR_DISPLAY_MINOR_VERSION = 36
+
+private fun StringBuilder.appendDisplayApiLevelString(androidVersion: AndroidVersion, includeExtension: Boolean = true) {
+    androidVersion.codename?.let { codename -> append(codename); return }
+    append(androidVersion.apiLevel)
+    if (androidVersion.apiLevel >= MIN_API_FOR_DISPLAY_MINOR_VERSION || androidVersion.apiMinorLevel > 0) {
+        append(".").append(androidVersion.apiMinorLevel)
+    }
+    if (includeExtension && !androidVersion.isBaseExtension) {
+        append("-ext").append(androidVersion.extensionLevel)
+    }
+}
+
+/**
+ * A short summary string of the API level of the given android version.
+ *
+ * Generally the same as [AndroidVersion.getApiStringWithExtension] but with explicit minor for 36.
+ */
+val AndroidVersion.displayApiString: String get() = buildString { appendDisplayApiLevelString(this@displayApiString, includeExtension = true) }
+
+
+/**
+ * A pair of strings describing an Android version.
+ *
+ * - [name] is the main name as returned by the various methods. This can be release-focused
+ *   (e.g. "Android 12.0"), or API-focused ("API 33").
+ * - [details] is an optional string that shows the other side of the name. A release-focused
+ *   name can have the API level in the details, and an API-focused name can have the release name
  *   in the details.
  */
 data class NameDetails(
@@ -31,19 +64,22 @@ data class NameDetails(
 )
 
 /**
- * Returns the API name + extension + marketing version and codename
+ * Returns the API name, and optionally includes the marketing version and codename.
  *
- * This will support platform preview by returning the codename only (since
- * no API level or release name has been set at that time).
- * The string will look like:
+ * For preview versions, returns the codename only (since no API level or release name has been
+ * set at that time). The string will look like:
  * - API Tiramisu Preview
  *
- * See [computeFullApiName] for non-preview string rendering
+ * For non-preview versions, the rendering will look like:
+ * - API 33                            (includeReleaseName == false, includeCodeName == false)
+ * - API 33 ext. 4                     (includeReleaseName == false, includeCodeName == false)
+ * - API 33 (Android 13.0)             (includeReleaseName == true, includeCodeName == false)
+ * - API 33 ("Tiramisu")               (includeReleaseName == false, includeCodeName == true)
+ * - API 33 ("Tiramisu"; Android 13.0) (includeReleaseName == true, includeCodeName == true)
  *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
+ * The highest number (inclusive) that is supported is [SdkVersionInfo.HIGHEST_KNOWN_API].
  *
- * For a Release name focused string, see [getFullReleaseName]
+ * For a release-name-focused string, see [getFullReleaseName].
  *
  * @param includeReleaseName whether to include the release name in the string
  * @param includeCodeName whether to include the codename in the string
@@ -54,34 +90,36 @@ fun AndroidVersion.getFullApiName(
     includeReleaseName: Boolean = false,
     includeCodeName: Boolean = false,
 ): String {
-    // See http://source.android.com/source/build-numbers.html
+    val nameDetails = getApiNameAndDetails(includeReleaseName, includeCodeName)
 
-    if (codename != null) {
-        return "API $codename Preview"
+    if (nameDetails.details != null) {
+        return "${nameDetails.name} (${nameDetails.details})"
     }
 
-    return computeFullApiName(
-        apiLevel,
-        if (isBaseExtension) null else extensionLevel,
-        includeReleaseName,
-        includeCodeName)
+    return nameDetails.name
 }
 
-
 /**
- * Returns the API name with extension and the marketing version + codename detail as two strings
+ * Returns a NameDetails containing the API level and extension as "name", and the marketing version
+ * and/or the codename as "details".
  *
- * This will support platform previews by returning the codename only (since
- * no API level or release name has been set at that time).
- * The string will look like:
+ * For preview versions, returns the codename only (since no API level or release name has been
+ * set at that time). The string will look like:
  * - API Tiramisu Preview
  *
- * See [computeApiNameAndDetails] for non-preview string rendering
+ * For non-preview versions, the rendering will look like this:
+ * - API 33        / null                     (includeReleaseName == false, includeCodeName == false)
+ * - API 33 ext. 4 / null                     (includeReleaseName == false, includeCodeName == false)
+ * - API 33        / Android 13.0             (includeReleaseName == true, includeCodeName == false)
+ * - API 33        / "Tiramisu"               (includeReleaseName == false, includeCodeName == true)
+ * - API 33        / "Tiramisu"; Android 13.0 (includeReleaseName == true, includeCodeName == true)
+ * - API 36.0      / "Baklava"; Android 16.0  (includeReleaseName == true, includeCodeName == true)
  *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
+ * If the release name or codename are unknown, they will be omitted.
  *
- * For a release name focused string, see [getApiNameAndDetails]
+ * For a release-name-focused string, see [getFullReleaseName].
+ *
+ * The highest number (inclusive) that is supported is [SdkVersionInfo.HIGHEST_KNOWN_API].
  *
  * @param includeReleaseName whether to include the release name in the string
  * @param includeCodeName whether to include the codename in the string
@@ -97,157 +135,10 @@ fun AndroidVersion.getApiNameAndDetails(
         return NameDetails("API $codename Preview", null)
     }
 
-    return computeApiNameAndDetails(
-        apiLevel,
-        if (isBaseExtension) null else extensionLevel,
-        includeReleaseName,
-        includeCodeName)
-}
-
-/**
- * Returns the Android release name + API level/extension + codename
- *
- * This will support platform preview by returning the codename only (since
- * no API level or release name has been set at that time).
- * The string will look like:
- * - Android Tiramisu Preview
- *
- * See [computeFullReleaseName] for non-preview string rendering
- *
- * For a API level focused string, see [getFullApiName]
- *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
- *
- * @param includeApiLevel whether to include the API Level in the string
- * @param includeCodeName whether to include the codename in the string
- * @return a suitable version display name
- */
-fun AndroidVersion.getFullReleaseName(
-    includeApiLevel: Boolean = false,
-    includeCodeName: Boolean = false,
-): String {
-    // See http://source.android.com/source/build-numbers.html
-
-    if (codename != null) {
-        return "Android $codename Preview"
-    }
-
-    return computeFullReleaseName(
-        apiLevel,
-        if (isBaseExtension) null else extensionLevel,
-        includeApiLevel,
-        includeCodeName
-    )
-}
-
-/**
- * Returns the Android release name and the API level/extension + codename as 2 strings
- *
- * This will support platform previews by returning the codename only (since
- * no API level or release name has been set at that time).
- * The string will look like:
- * - Android Tiramisu Preview
- *
- * See [computeReleaseNameAndDetails] for non-preview string rendering
- *
- * For an API level focused string, see [getApiNameAndDetails]
- *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
- *
- * @param includeApiLevel whether to include the API Level in the string
- * @param includeCodeName whether to include the codename in the string
- * @return a suitable version display name
- */
-fun AndroidVersion.getReleaseNameAndDetails(
-    includeApiLevel: Boolean = false,
-    includeCodeName: Boolean = false,
-): NameDetails {
-    // See http://source.android.com/source/build-numbers.html
-
-    if (codename != null) {
-        return NameDetails("Android $codename Preview", null)
-    }
-
-    return computeReleaseNameAndDetails(
-        apiLevel,
-        if (isBaseExtension) null else extensionLevel,
-        includeApiLevel,
-        includeCodeName
-    )
-}
-
-
-/**
- * Computes and returns the API name + extension + marketing version and codename as a single string
- *
- * See format options in [computeApiNameAndDetails].
- *
- *
- * For a Release name focused string, see [computeFullReleaseName]
- *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
- *
- * @param apiLevel the API level
- * @param extensionLevel the extension level or null to represent the base extension of the given API (or unknown)
- * @param includeReleaseName whether to include the release name in the string
- * @param includeCodeName whether to include the codename in the string
- * @return a suitable version display name
- */
-fun computeFullApiName(
-    apiLevel: Int,
-    extensionLevel: Int?,
-    includeReleaseName: Boolean = false,
-    includeCodeName: Boolean = false,
-): String {
-    val nameDetails = computeApiNameAndDetails(apiLevel, extensionLevel, includeReleaseName, includeCodeName)
-
-    if (nameDetails.details != null) {
-        return "${nameDetails.name} (${nameDetails.details})"
-    }
-
-    return nameDetails.name
-}
-
-/**
- * Computes and returns the API name + extension, as well as the marketing version and codename
- * as 2 separate strings.
- *
- * This does not support platform previews since it requires an integer API Level
- *
- * The rendering will look like this:
- * - API 33        / null
- * - API 33 ext. 4 / null
- * - API 33        / Android 13.0
- * - API 33        / "Tiramisu"
- * - API 33        / "Tiramisu"; Android 13.0
- *
- * If the release name or codename are unknown, they will be omitted.
- *
- * For a release name focused string, see [computeFullReleaseName]
- *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
- *
- * @param apiLevel the API level
- * @param extensionLevel the extension level or null to represent the base extension of the given API (or unknown)
- * @param includeReleaseName whether to include the release name in the string
- * @param includeCodeName whether to include the codename in the string
- * @return a suitable version display name
- */
-fun computeApiNameAndDetails(
-    apiLevel: Int,
-    extensionLevel: Int?,
-    includeReleaseName: Boolean = false,
-    includeCodeName: Boolean = false,
-): NameDetails {
-    // See http://source.android.com/source/build-numbers.html
-
-    val name = StringBuilder("API $apiLevel")
-    if (extensionLevel != null) {
-        name.append(" ext. $extensionLevel")
+    val name = StringBuilder("API ")
+    name.appendDisplayApiLevelString(this, includeExtension = false)
+    if (!isBaseExtension) {
+        name.append(" ext. ").append(extensionLevel)
     }
 
     var useCodeName = includeCodeName
@@ -285,25 +176,27 @@ fun computeApiNameAndDetails(
     val details = StringBuilder()
 
     if (codeName != null) {
-        details.append("\"$codeName\"")
+        details.append("\"").append(codeName).append("\"")
         if (releaseName != null) {
             details.append("; ")
         }
     }
 
     if (releaseName != null) {
-        details.append("Android $releaseName")
+        details.append("Android ").append(releaseName)
     }
 
     return NameDetails(name.toString(), details.toString())
 }
 
 /**
- * Computes and returns the Android release name + API level/extension + codename
+ * Returns the Android release name, and optionally the API level and/or codename.
  *
- * This does not support platform previews since it requires an integer API Level
+ * For preview versions, returns the codename only (since no API level or release name has been set
+ * at that time). The string will look like:
+ * - Android Tiramisu Preview
  *
- * The rendering will look like this:
+ * For non-previews, the rendering will look like:
  * - Android 12.0
  * - Android 12.0 (API 33)
  * - Android 12.0 (API 33 ext. 4)
@@ -311,27 +204,22 @@ fun computeApiNameAndDetails(
  * - Android 12.0 ("Tiramisu"; API 33 ext. 4)
  *
  * If a release name is unknown, the API level will be used instead:
- * - Android API 314
- * - Android API 314, extension 34
+ * - Android API 314.0
+ * - Android API 314.0, extension 34
  *
- * For an API level focused string, see [computeFullApiName]
+ * For an API-level-focused string, see [getFullApiName].
  *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
+ * The highest number (inclusive) that is supported is [SdkVersionInfo.HIGHEST_KNOWN_API].
  *
- * @param apiLevel the API level
- * @param extensionLevel the extension level or null to represent the base extension of the given API (or unknown)
  * @param includeApiLevel whether to include the API Level in the string
  * @param includeCodeName whether to include the codename in the string
  * @return a suitable version display name
  */
-fun computeFullReleaseName(
-    apiLevel: Int,
-    extensionLevel: Int?,
+fun AndroidVersion.getFullReleaseName(
     includeApiLevel: Boolean = false,
     includeCodeName: Boolean = false,
 ): String {
-    val nameDetails = computeReleaseNameAndDetails(apiLevel, extensionLevel, includeApiLevel, includeCodeName)
+    val nameDetails = getReleaseNameAndDetails(includeApiLevel, includeCodeName)
 
     if (nameDetails.details != null) {
         return "${nameDetails.name} (${nameDetails.details})"
@@ -341,12 +229,14 @@ fun computeFullReleaseName(
 }
 
 /**
- * Computes and returns the Android release name, as well as the API level/extension & codename
- * as two separate strings
+ * Returns a NameDetails containing the Android release as "name", and the API level and/or codename
+ * as "details".
  *
- * This does not support platform previews since it requires an integer API Level
+ * For preview versions, returns the codename only (since no API level or release name has been set
+ * at that time). The returned NameDetails will look like:
+ * - Android Tiramisu Preview / null
  *
- * The rendering will look like this:
+ * For non-preview versions, the returned NameDetails will look like:
  * - Android 12.0 / null
  * - Android 12.0 / API 33
  * - Android 12.0 / API 33 ext. 4
@@ -354,26 +244,27 @@ fun computeFullReleaseName(
  * - Android 12.0 / "Tiramisu"; API 33 ext. 4
  *
  * If a release name is unknown, the API level will be used instead:
- * - Android API 314
- * - Android API 314, extension 34
+ * - Android API 314.0
+ * - Android API 314.0, extension 34
  *
- * For an API level focused string, see [computeFullApiName]
+ * For an API-level-focused string, see [getApiNameAndDetails].
  *
- * The highest number (inclusive) that is supported
- * is [SdkVersionInfo.HIGHEST_KNOWN_API].
+ * The highest number (inclusive) that is supported is [SdkVersionInfo.HIGHEST_KNOWN_API].
  *
- * @param apiLevel the API level
- * @param extensionLevel the extension level or null to represent the base extension of the given API (or unknown)
  * @param includeApiLevel whether to include the API Level in the string
  * @param includeCodeName whether to include the codename in the string
  * @return a suitable version display name
  */
-fun computeReleaseNameAndDetails(
-    apiLevel: Int,
-    extensionLevel: Int?,
+fun AndroidVersion.getReleaseNameAndDetails(
     includeApiLevel: Boolean = false,
     includeCodeName: Boolean = false,
 ): NameDetails {
+    // See http://source.android.com/source/build-numbers.html
+
+    if (codename != null) {
+        return NameDetails("Android $codename Preview", null)
+    }
+
     val name = StringBuilder()
 
     val releaseName = SdkVersionInfo.getReleaseVersionString(apiLevel)
@@ -394,16 +285,16 @@ fun computeReleaseNameAndDetails(
             // TODO(267390396): add testing for this. It's currently untestable because it relies on static data that cannot be injected.
             name.append("Android $knownCodeName")
             if (includeApiLevel) {
-                name.append(" (API \"$apiLevel\"")
-                if (extensionLevel != null) {
+                name.append(" (API \"$apiStringWithoutExtension\"")
+                if (!isBaseExtension) {
                     name.append(" ext. $extensionLevel")
                 }
                 name.append(")")
             }
         } else {
             // only use the API level
-            name.append("Android API $apiLevel")
-            if (includeApiLevel && extensionLevel != null) {
+            name.append("Android API $apiStringWithoutExtension")
+            if (includeApiLevel && !isBaseExtension) {
                 name.append(" ext. $extensionLevel")
             }
         }
@@ -432,8 +323,8 @@ fun computeReleaseNameAndDetails(
     }
 
     if (includeApiLevel) {
-        details.append("API $apiLevel")
-        if (extensionLevel != null) {
+        details.append("API $apiStringWithoutExtension")
+        if (!isBaseExtension) {
             details.append(" ext. $extensionLevel")
         }
     }

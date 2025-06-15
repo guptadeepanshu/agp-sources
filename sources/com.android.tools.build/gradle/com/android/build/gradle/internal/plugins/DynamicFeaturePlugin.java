@@ -28,7 +28,6 @@ import com.android.build.api.variant.DynamicFeatureVariant;
 import com.android.build.api.variant.DynamicFeatureVariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
-import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
@@ -129,7 +128,6 @@ public class DynamicFeaturePlugin
                                             DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                                     dslContainers,
                     @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-                    @NonNull ExtraModelInfo extraModelInfo,
                     VersionedSdkLoaderService versionedSdkLoaderService) {
         DynamicFeatureExtensionImpl dynamicFeatureExtension =
                 dslServices.newDecoratedInstance(
@@ -167,7 +165,6 @@ public class DynamicFeaturePlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             dynamicFeatureExtension,
                                             stats);
             project.getExtensions()
@@ -189,7 +186,6 @@ public class DynamicFeaturePlugin
                                 bootClasspathConfig,
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
-                                extraModelInfo,
                                 dynamicFeatureExtension,
                                 stats);
 

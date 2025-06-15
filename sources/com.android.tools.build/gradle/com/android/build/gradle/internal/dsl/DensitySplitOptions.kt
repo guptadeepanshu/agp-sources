@@ -22,13 +22,14 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.resources.Density
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Sets
-import java.util.*
 import javax.inject.Inject
 
-abstract class DensitySplitOptions @Inject @WithLazyInitialization(methodName = "lazyInit") constructor(
+abstract class DensitySplitOptions @Inject constructor(
     val dslServices: DslServices
 ) : SplitOptions(), DensitySplit {
 
+    @WithLazyInitialization
+    @Suppress("unused") // call injected in the constructor by the dsl decorator
     protected fun lazyInit() {
         isStrict = true
         init()

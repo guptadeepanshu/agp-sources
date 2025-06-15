@@ -18,19 +18,15 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
-import com.android.build.gradle.internal.services.DslServices
 import java.io.File
 import java.security.KeyStore
-import javax.inject.Inject
 
-abstract class SigningConfigImpl
-@Inject
-@WithLazyInitialization(methodName = "lazyInit")
-constructor(dslServices: DslServices): SigningConfig {
+abstract class SigningConfigImpl: SigningConfig {
 
     protected abstract var _storeFile: String?
 
-    @Suppress("unused") // used by @WithLazyInitialization
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         storeType = KeyStore.getDefaultType()
     }

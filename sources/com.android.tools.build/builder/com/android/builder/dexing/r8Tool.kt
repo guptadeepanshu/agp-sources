@@ -69,6 +69,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.Locale
+import java.util.concurrent.ExecutorService
 import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.zip.ZipEntry
@@ -117,7 +118,6 @@ fun runR8(
     mainDexListConfig: MainDexListConfig,
     resourceShrinkingConfig: ResourceShrinkingConfig?,
     messageReceiver: MessageReceiver,
-    useFullR8: Boolean = false,
     featureClassJars: Collection<Path>,
     featureJavaResourceJars: Collection<Path>,
     featureDexDir: Path?,
@@ -128,6 +128,7 @@ fun runR8(
     inputProfileForDexStartupOptimization: Path? = null,
     r8Metadata: Path? = null,
     partialShrinkingConfig: PartialShrinkingConfig? = null,
+    r8ExecutorService: ExecutorService? = null // null only if called by tests
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -157,10 +158,6 @@ fun runR8(
         )
     }
 
-    if (!useFullR8) {
-        r8CommandBuilder.setProguardCompatibility(true);
-    }
-
     if (r8Metadata != null) {
         r8CommandBuilder.setBuildMetadataConsumer { metadata ->
             r8Metadata.writeText(metadata.toJson())
@@ -185,7 +182,7 @@ fun runR8(
         if (libConfiguration != null) {
             r8CommandBuilder.addSpecialLibraryConfiguration(libConfiguration)
         }
-        if (toolConfig.isDebuggable) {
+        if (toolConfig.debuggable) {
             r8CommandBuilder.addAssertionsConfiguration(
                 AssertionsConfiguration.Builder::compileTimeEnableAllAssertions
             )
@@ -228,9 +225,6 @@ fun runR8(
         )
     )
 
-    val compilationMode =
-        if (toolConfig.isDebuggable) CompilationMode.DEBUG else CompilationMode.RELEASE
-
     val dataResourceConsumer = JavaResourcesConsumer(javaResourcesJar)
     val programConsumer =
         if (toolConfig.r8OutputType == R8OutputType.CLASSES) {
@@ -256,14 +250,16 @@ fun runR8(
                 }
             }
         }
+    r8CommandBuilder.setProgramConsumer(programConsumer)
 
-    @Suppress("UsePropertyAccessSyntax")
     r8CommandBuilder
-        .setDisableMinification(toolConfig.disableMinification)
+        .setMode(if (toolConfig.debuggable) CompilationMode.DEBUG else CompilationMode.RELEASE)
         .setDisableTreeShaking(toolConfig.disableTreeShaking)
+        .setDisableMinification(toolConfig.disableMinification)
         .setDisableDesugaring(toolConfig.disableDesugaring)
-        .setMode(compilationMode)
-        .setProgramConsumer(programConsumer)
+        .setProguardCompatibility(!toolConfig.fullMode)
+        .enableLegacyFullModeForKeepRules(!toolConfig.strictFullModeForKeepRules)
+        .apply { toolConfig.isolatedSplits?.let { setEnableIsolatedSplits(it) } }
 
     // Use this to control all resources provided to R8
     val r8ProgramResourceProvider = R8ProgramResourceProvider()
@@ -321,7 +317,12 @@ fun runR8(
         ClassFileProviderFactory(classpath).use { classpathClasses ->
             r8CommandBuilder.addLibraryResourceProvider(libraryClasses.orderedProvider)
             r8CommandBuilder.addClasspathResourceProvider(classpathClasses.orderedProvider)
-            R8.run(r8CommandBuilder.build())
+            val r8Command = r8CommandBuilder.build()
+            r8ExecutorService?.let {
+                R8.run(r8Command, it)
+            } ?: run {
+                R8.run(r8Command)
+            }
         }
     }
 
@@ -562,15 +563,24 @@ data class ProguardOutputFiles(
     val missingKeepRules: Path
 )
 
-/** Configuration parameters for the R8 tool. */
+/** Basic parameters required for running R8. */
 data class ToolConfig(
     val minSdkVersion: Int,
-    val isDebuggable: Boolean,
+    val debuggable: Boolean,
     val disableTreeShaking: Boolean,
-    val disableDesugaring: Boolean,
     val disableMinification: Boolean,
+    val disableDesugaring: Boolean,
+    val fullMode: Boolean,
+    val strictFullModeForKeepRules: Boolean,
+    val isolatedSplits: Boolean?,
     val r8OutputType: R8OutputType,
-)
+) : java.io.Serializable { // Serializable so it can be used in Gradle workers
+
+    companion object {
+        @Suppress("ConstPropertyName")
+        private const val serialVersionUID = 0L
+    }
+}
 
 /** Parameters required for running resource shrinking. */
 data class ResourceShrinkingConfig(

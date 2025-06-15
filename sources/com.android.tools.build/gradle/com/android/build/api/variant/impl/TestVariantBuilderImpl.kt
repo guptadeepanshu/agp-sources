@@ -58,6 +58,8 @@ open class TestVariantBuilderImpl @Inject constructor(
         set(value) = setMinificationIfPossible("minifyEnabled", value){ field = it }
 
     internal var _enableMultiDex = dslInfo.dexingDslInfo.isMultiDexEnabled
+    override var debuggable: Boolean = dslInfo.isDebuggable
     override var enableMultiDex: Boolean? = _enableMultiDex
     override val hostTests: Map<String, HostTestBuilder> = mapOf()
+
 }

@@ -19,8 +19,7 @@ package com.android.build.gradle.internal.dsl.decorator.annotation
 /**
  * Allows to set defaults or manipulate fields that are implemented by the [DslDecorator].
  *
- * The class should have a protected method [methodName] which will be invoked last in the decorated
- * constructor.
+ * Annotate the methods that should be called at the end of the DSL extension construction.
  */
-@Target(AnnotationTarget.CONSTRUCTOR)
-annotation class WithLazyInitialization(val methodName: String)
+@Target(AnnotationTarget.FUNCTION)
+annotation class WithLazyInitialization

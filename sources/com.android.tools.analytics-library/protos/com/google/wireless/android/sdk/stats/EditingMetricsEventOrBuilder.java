@@ -21,4 +21,34 @@ public interface EditingMetricsEventOrBuilder extends
    * <code>optional .android_studio.EditingMetricsEvent.CharacterMetrics character_metrics = 1;</code>
    */
   com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetricsOrBuilder getCharacterMetricsOrBuilder();
+
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   * @return Whether the quickDocEvent field is set.
+   */
+  boolean hasQuickDocEvent();
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   * @return The quickDocEvent.
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getQuickDocEvent();
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder getQuickDocEventOrBuilder();
+
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   * @return Whether the externalQuickDocEvent field is set.
+   */
+  boolean hasExternalQuickDocEvent();
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   * @return The externalQuickDocEvent.
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getExternalQuickDocEvent();
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   */
+  com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder getExternalQuickDocEventOrBuilder();
 }

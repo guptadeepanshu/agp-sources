@@ -18,6 +18,7 @@ package com.android.sdklib.repository;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.annotations.concurrency.GuardedBy;
 import com.android.annotations.concurrency.Slow;
 import com.android.prefs.AbstractAndroidLocations;
 import com.android.prefs.AndroidLocationsProvider;
@@ -48,23 +49,23 @@ import com.android.sdklib.repository.sources.RemoteSiteType;
 import com.android.sdklib.repository.targets.AndroidTargetManager;
 import com.android.sdklib.repository.targets.SystemImage;
 import com.android.sdklib.repository.targets.SystemImageManager;
+
+import com.android.sdklib.util.CacheByCanonicalPath;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -136,42 +137,42 @@ public final class AndroidSdkHandler {
     private static final String DEFAULT_SITE_LIST_FILENAME_PATTERN = "addons_list-%d.xml";
 
     /**
-     * Lock for synchronizing changes to the our {@link RepoManager}.
-     */
-    private static final Object MANAGER_LOCK = new Object();
-
-    /**
      * Pattern for the URL pointing to the repository xml (as defined by sdk-repository-01.xsd in
      * repository).
      */
     private static final String REPO_URL_PATTERN = "%srepository2-%d.xml";
 
+    /** Lock for synchronizing changes to our {@link RepoManager}. */
+    private final Object lock = new Object();
+
     /**
      * The {@link RepoManager} initialized with our {@link SchemaModule}s, {@link
      * RepositorySource}s, and local SDK path.
      */
+    @GuardedBy("lock")
     private RepoManager mRepoManager;
 
     /**
      * Finds all {@link SystemImage}s in packages known to {@link #mRepoManager};
      */
+    @GuardedBy("lock")
     private SystemImageManager mSystemImageManager;
 
     /**
      * Creates {@link IAndroidTarget}s based on the platforms and addons known to
      * {@link #mRepoManager}.
      */
+    @GuardedBy("lock")
     private AndroidTargetManager mAndroidTargetManager;
 
     /**
      * Reference to our latest build tool package.
      */
+    @GuardedBy("lock")
     private BuildToolInfo mLatestBuildTool = null;
 
     /** Singleton instance of this class. */
-    private static final Map<Path, AndroidSdkHandler> sInstances = Maps.newConcurrentMap();
-
-    private static final Path NULL_PATH = Paths.get("");
+    private static final CacheByCanonicalPath<AndroidSdkHandler> sInstances = new CacheByCanonicalPath<>();
 
     /** Location of the local SDK. */
     @Nullable private final Path mLocation;
@@ -200,20 +201,15 @@ public final class AndroidSdkHandler {
     @NonNull
     public static AndroidSdkHandler getInstance(
             @NonNull AndroidLocationsProvider locationProvider, @Nullable Path localPath) {
-        Path key = localPath == null ? NULL_PATH : localPath;
-        synchronized (sInstances) {
-            return sInstances.computeIfAbsent(
-                    key,
-                    k -> {
-                        Path androidFolder;
-                        try {
-                            androidFolder = locationProvider.getPrefsLocation();
-                        } catch (Throwable e) {
-                            androidFolder = null;
-                        }
-                        return new AndroidSdkHandler(localPath, androidFolder);
-                    });
-        }
+        return sInstances.computeIfAbsent(localPath, canonicalKey -> {
+            Path androidFolder;
+            try {
+                androidFolder = locationProvider.getPrefsLocation();
+            } catch (Throwable e) {
+                androidFolder = null;
+            }
+            return new AndroidSdkHandler(canonicalKey, androidFolder);
+        });
     }
 
     /**
@@ -223,9 +219,7 @@ public final class AndroidSdkHandler {
      * @param localPath The path to the local SDK.
      */
     public static void resetInstance(@NonNull Path localPath) {
-        synchronized (sInstances) {
-            sInstances.remove(localPath);
-        }
+        sInstances.remove(localPath);
     }
 
     /**
@@ -254,14 +248,38 @@ public final class AndroidSdkHandler {
     }
 
     /**
-     * Fetches {@link RepoManager} set up to interact with android SDK repositories. It should not
-     * cached by callers of this method, since any changes to the fundamental properties of the
-     * manager (fallback loaders, local path) will cause a new instance to be created.
+     * Fetches a {@link RepoManager}, creating it if necessary, then loads local packages
+     * synchronously. This involves scanning the disk, and may be slow.
+     *
+     * Its lifetime is the same as that of this AndroidSdkHandler; thus, it should not be cached
+     * for longer than this AndroidSdkHandler remains valid. For example, if the local SDK path in
+     * Studio is changed, a new AndroidSdkHandler and a new RepoManager will be needed.
+     */
+    @Slow
+    @NonNull
+    public RepoManager getRepoManagerAndLoadSynchronously(@NonNull ProgressIndicator progress) {
+        RepoManager result = getRepoManager(progress);
+
+        if (mLocation != null) {
+            result.loadSynchronously(
+                    RepoManager.DEFAULT_EXPIRATION_PERIOD_MS, progress, null, null);
+        }
+
+        return result;
+    }
+
+    /**
+     * Fetches a {@link RepoManager}, creating it if necessary.
+     *
+     * Its lifetime is the same as that of this AndroidSdkHandler; thus, it should not be cached
+     * for longer than this AndroidSdkHandler remains valid. For example, if the local SDK path in
+     * Studio is changed, a new AndroidSdkHandler and a new RepoManager will be needed.
      */
     @NonNull
-    public RepoManager getSdkManager(@NonNull ProgressIndicator progress) {
-        RepoManager result = mRepoManager;
-        synchronized (MANAGER_LOCK) {
+    public RepoManager getRepoManager(@NonNull ProgressIndicator progress) {
+        RepoManager result;
+        synchronized (lock) {
+            result = mRepoManager;
             if (result == null) {
                 mSystemImageManager = null;
                 mAndroidTargetManager = null;
@@ -269,19 +287,21 @@ public final class AndroidSdkHandler {
 
                 result =
                         getRepoConfig(progress)
-                                .createRepoManager(
-                                        progress, mLocation, getUserSourceProvider(progress));
+                                .createRepoManager(mLocation, getUserSourceProvider(progress));
+
                 // Invalidate system images, targets, the latest build tool, and the legacy local
                 // package manager when local packages change
                 result.addLocalChangeListener(packages -> {
-                    mSystemImageManager = null;
-                    mAndroidTargetManager = null;
-                    mLatestBuildTool = null;
+                    synchronized (lock) {
+                        mSystemImageManager = null;
+                        mAndroidTargetManager = null;
+                        mLatestBuildTool = null;
+                    }
                 });
                 mRepoManager = result;
             }
         }
-        return mRepoManager;
+        return result;
     }
 
     /**
@@ -289,18 +309,30 @@ public final class AndroidSdkHandler {
      */
     @NonNull
     public SystemImageManager getSystemImageManager(@NonNull ProgressIndicator progress) {
-        if (mSystemImageManager == null) {
-            getSdkManager(progress);
-            mSystemImageManager =
-                    new SystemImageManager(mRepoManager, getSysImgModule().createLatestFactory());
+        synchronized (lock) {
+            if (mSystemImageManager != null) {
+                return mSystemImageManager;
+            }
         }
-        return mSystemImageManager;
+
+        // Initialize the repoManager outside of the lock, since it can be slow.
+        getRepoManagerAndLoadSynchronously(progress);
+
+        synchronized (lock) {
+            if (mSystemImageManager == null) {
+                mSystemImageManager =
+                        new SystemImageManager(mRepoManager, getSysImgModule().createLatestFactory());
+            }
+            return mSystemImageManager;
+        }
     }
 
     /** Clears cache of the {@link SystemImageManager}. */
     public void clearSystemImageManagerCache() {
-        if (mSystemImageManager != null) {
-            mSystemImageManager.clearCache();
+        synchronized (lock) {
+            if (mSystemImageManager != null) {
+                mSystemImageManager.clearCache();
+            }
         }
     }
 
@@ -310,11 +342,12 @@ public final class AndroidSdkHandler {
      */
     @NonNull
     public AndroidTargetManager getAndroidTargetManager(@NonNull ProgressIndicator progress) {
-        if (mAndroidTargetManager == null) {
-            getSdkManager(progress);
-            mAndroidTargetManager = new AndroidTargetManager(this);
+        synchronized (lock) {
+            if (mAndroidTargetManager == null) {
+                mAndroidTargetManager = new AndroidTargetManager(this);
+            }
+            return mAndroidTargetManager;
         }
-        return mAndroidTargetManager;
     }
 
     /** Gets the path of the local SDK, if set. */
@@ -333,7 +366,7 @@ public final class AndroidSdkHandler {
      */
     @Nullable
     public LocalPackage getLocalPackage(@NonNull String path, @NonNull ProgressIndicator progress) {
-        return getSdkManager(progress).getPackages().getLocalPackages().get(path);
+        return getRepoManagerAndLoadSynchronously(progress).getPackages().getLocalPackages().get(path);
     }
 
     /**
@@ -401,10 +434,10 @@ public final class AndroidSdkHandler {
             @NonNull Function<String, T> mapper,
             @NonNull ProgressIndicator progress) {
         return getLatestPackageFromPrefixCollection(
-                getSdkManager(progress).getPackages().getLocalPackagesForPrefix(prefix),
-                filter,
-                allowPreview,
-                mapper);
+          getRepoManagerAndLoadSynchronously(progress).getPackages().getLocalPackagesForPrefix(prefix),
+          filter,
+          allowPreview,
+          mapper);
     }
 
     /**
@@ -431,19 +464,10 @@ public final class AndroidSdkHandler {
             @NonNull Function<String, T> mapper,
             @NonNull ProgressIndicator progress) {
         return getLatestPackageFromPrefixCollection(
-                getSdkManager(progress).getPackages().getRemotePackagesForPrefix(prefix),
-                filter,
-                allowPreview,
-                mapper);
-    }
-
-    /**
-     * Resets the {@link RepoManager}s of all cached {@link AndroidSdkHandler}s.
-     */
-    private static void invalidateAll() {
-        for (AndroidSdkHandler handler : sInstances.values()) {
-            handler.mRepoManager = null;
-        }
+          getRepoManager(progress).getPackages().getRemotePackagesForPrefix(prefix),
+          filter,
+          allowPreview,
+          mapper);
     }
 
     /**
@@ -507,33 +531,28 @@ public final class AndroidSdkHandler {
      */
     @Nullable
     public LocalSourceProvider getUserSourceProvider(@NonNull ProgressIndicator progress) {
-        if (mUserSourceProvider == null && mAndroidFolder != null) {
-            mUserSourceProvider = RepoConfig.createUserSourceProvider(mAndroidFolder);
-            synchronized (MANAGER_LOCK) {
+        synchronized (lock) {
+            if (mUserSourceProvider == null && mAndroidFolder != null) {
+                mUserSourceProvider = RepoConfig.createUserSourceProvider(mAndroidFolder);
                 if (mRepoManager != null) {
-                    // If the repo already exists cause it to be reloaded, so the userSourceProvider
-                    // can be added to the config.
-                    mRepoManager = null;
-                    getSdkManager(progress);
+                    // If the RepoManager was already created by getSdkManager, this is already set.
+                    // If this method is called before getSdkManager, it will be set when
+                    // getSdkManager is called (and until then, LcoalSourceProvider shouldn't be
+                    // used). If the RepoManager was provided in the constructor (for unit tests),
+                    // set it here.
+                    mUserSourceProvider.setRepoManager(mRepoManager);
                 }
             }
+            return mUserSourceProvider;
         }
-        return mUserSourceProvider;
     }
 
     /**
-     * Add another {@link RepositorySourceProvider}. All existing {@link AndroidSdkHandler}s and
-     * {@link RepoManager}s are invalidated, and all future instances will include the new
-     * provider.
+     * Gets or creates the single static RepoConfig instance. Synchronized to ensure that only one
+     * is created.
      */
-    public static void addCustomSourceProvider(@NonNull RepositorySourceProvider provider,
-            @NonNull ProgressIndicator progress) {
-        getRepoConfig(progress).addCustomSourceProvider(provider);
-        invalidateAll();
-    }
-
     @NonNull
-    private static RepoConfig getRepoConfig(@NonNull ProgressIndicator progress) {
+    private static synchronized RepoConfig getRepoConfig(@NonNull ProgressIndicator progress) {
         if (sRepoConfig == null) {
             sRepoConfig = new RepoConfig(progress);
         }
@@ -547,7 +566,6 @@ public final class AndroidSdkHandler {
      * Instances of this class may be shared between {@link AndroidSdkHandler} instances.
      */
     private static class RepoConfig {
-
         /**
          * Provider for a list of {@link RepositorySource}s fetched from the google.
          */
@@ -561,9 +579,6 @@ public final class AndroidSdkHandler {
          * during transition to the new version.
          */
         private ConstantSourceProvider mPrevRepositorySourceProvider;
-
-        /** Extra source providers that were added externally. */
-        private final Set<RepositorySourceProvider> mCustomSourceProviders = new HashSet<>();
 
         /**
          * Sets up our {@link SchemaModule}s and {@link RepositorySourceProvider}s if they haven't
@@ -662,22 +677,12 @@ public final class AndroidSdkHandler {
             return mAddonsListSourceProvider;
         }
 
-        /**
-         * Add a {@link RepositorySourceProvider} to this config. It will be added to any {@link
-         * RepoManager} created by {@link #createRepoManager(ProgressIndicator, Path,
-         * LocalSourceProvider)}
-         */
-        public void addCustomSourceProvider(@NonNull RepositorySourceProvider provider) {
-            mCustomSourceProviders.add(provider);
-        }
-
         @Slow
         @NonNull
         public RepoManager createRepoManager(
-                @NonNull ProgressIndicator progress,
                 @Nullable Path localLocation,
                 @Nullable LocalSourceProvider userProvider) {
-            RepoManager result = RepoManager.create();
+            RepoManager result = RepoManager.create(localLocation);
 
             // Create the schema modules etc. if they haven't been already.
             result.registerSchemaModule(ADDON_MODULE);
@@ -689,7 +694,6 @@ public final class AndroidSdkHandler {
             if (mPrevRepositorySourceProvider != null) {
                 result.registerSourceProvider(mPrevRepositorySourceProvider);
             }
-            mCustomSourceProviders.forEach(result::registerSourceProvider);
             String customSourceUrl = System.getProperty(CUSTOM_SOURCE_PROPERTY);
             if (customSourceUrl != null && !customSourceUrl.isEmpty()) {
                 result.registerSourceProvider(
@@ -705,16 +709,10 @@ public final class AndroidSdkHandler {
             }
             result.setFallbackRemoteRepoLoader(new LegacyRemoteRepoLoader());
 
-            result.setLocalPath(localLocation);
-
             if (localLocation != null) {
                 // If we have a local sdk path set, set up the old-style loader so we can parse
                 // any legacy packages.
                 result.setFallbackLocalRepoLoader(new LegacyLocalRepoLoader(localLocation));
-
-                // If a location is set we'll always want at least the local packages loaded, so
-                // load them now.
-                result.loadSynchronously(0, progress, null, null);
             }
 
             return result;
@@ -749,8 +747,10 @@ public final class AndroidSdkHandler {
             @NonNull ProgressIndicator progress,
             @Nullable Predicate<Revision> filter,
             boolean allowPreview) {
-        if (!allowPreview && mLatestBuildTool != null) {
-            return mLatestBuildTool;
+        synchronized (lock) {
+            if (!allowPreview && mLatestBuildTool != null) {
+                return mLatestBuildTool;
+            }
         }
 
         LocalPackage latestBuildToolPackage = getLatestLocalPackageForPrefix(
@@ -764,7 +764,9 @@ public final class AndroidSdkHandler {
 
         // Don't cache if preview.
         if (!latestBuildToolPackage.getVersion().isPreview()) {
-            mLatestBuildTool = latestBuildTool;
+            synchronized (lock) {
+                mLatestBuildTool = latestBuildTool;
+            }
         }
 
         return latestBuildTool;
@@ -781,7 +783,7 @@ public final class AndroidSdkHandler {
     @Nullable
     public BuildToolInfo getBuildToolInfo(
             @NonNull Revision revision, @NonNull ProgressIndicator progress) {
-        RepositoryPackages packages = getSdkManager(progress).getPackages();
+        RepositoryPackages packages = getRepoManagerAndLoadSynchronously(progress).getPackages();
         LocalPackage p = packages.getLocalPackages()
                 .get(DetailsTypes.getBuildToolsPath(revision));
 
@@ -794,9 +796,8 @@ public final class AndroidSdkHandler {
     /** Converts a {@code File} into a {@code Path} on the {@code FileSystem} used by this SDK. */
     @NonNull
     public Path toCompatiblePath(@NonNull File file) {
-        Path localPath = mRepoManager == null ? mLocation : mRepoManager.getLocalPath();
-        if (localPath != null) {
-            return localPath.getFileSystem().getPath(file.getPath());
+        if (mLocation != null) {
+            return mLocation.getFileSystem().getPath(file.getPath());
         }
         return file.toPath();
     }
@@ -804,9 +805,8 @@ public final class AndroidSdkHandler {
     /** Converts a {@code String} into a {@code Path} on the {@code FileSystem} used by this SDK. */
     @NonNull
     public Path toCompatiblePath(@NonNull String file) {
-        Path localPath = mRepoManager == null ? mLocation : mRepoManager.getLocalPath();
-        if (localPath != null) {
-            return localPath.getFileSystem().getPath(file);
+        if (mLocation != null) {
+            return mLocation.getFileSystem().getPath(file);
         }
         return Paths.get(file);
     }

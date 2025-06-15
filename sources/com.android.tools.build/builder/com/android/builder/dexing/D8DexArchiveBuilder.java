@@ -124,6 +124,8 @@ final class D8DexArchiveBuilder extends DexArchiveBuilder {
                 builder.setDisableDesugaring(true);
             }
 
+            // Multi-threading is managed at the Gradle task level, so here we run D8 directly in
+            // the current thread
             D8.run(builder.build(), MoreExecutors.newDirectExecutorService());
         } catch (Throwable e) {
             throw getExceptionToRethrow(e, diagnosticsHandler, dexParams.getWithDesugaring());

@@ -24,6 +24,7 @@ import com.android.resources.ScreenOrientation;
 import com.android.sdklib.devices.ButtonType;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.Screen;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -162,6 +163,11 @@ public class HardwareConfigHelper {
                 mScreenOrientation,
                 mDevice.getDefaultHardware().getScreen().getScreenRound(),
                 mDevice.getDefaultHardware().getButtonType() == ButtonType.SOFT);
+    }
+
+    /** Returns true if the render size has been overridden. */
+    public boolean isRenderSizeOverridden() {
+        return mOverrideRenderWidth != -1 || mOverrideRenderHeight != -1;
     }
 
     /**

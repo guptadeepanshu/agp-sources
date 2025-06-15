@@ -121,7 +121,9 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         JavaCompilationImpl(
             dslInfo.javaCompileOptionsSetInDSL,
             buildFeatures.dataBinding,
-            internalServices)
+            internalServices,
+            variantDependencies
+        )
 
     override val sources by lazy {
         SourcesImpl(
@@ -305,8 +307,6 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
             (dslInfo as? PublishableComponentDslInfo)?.publishInfo
         )
     }
-
-    override val modelV1LegacySupport = ModelV1LegacySupportImpl(dslInfo, variantSources)
 
     override val oldVariantApiLegacySupport: OldVariantApiLegacySupport? by lazy {
         OldVariantApiLegacySupportImpl(

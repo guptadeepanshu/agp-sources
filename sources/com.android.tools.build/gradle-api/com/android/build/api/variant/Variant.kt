@@ -82,7 +82,7 @@ interface Variant : Component, HasAndroidResources {
     /**
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
-    val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
+    val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>?
 
     /**
      * [MapProperty] of the variant's manifest placeholders.

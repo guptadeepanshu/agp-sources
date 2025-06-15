@@ -959,6 +959,30 @@ private static final long serialVersionUID = 0L;
      * @return The numTransformations.
      */
     int getNumTransformations();
+
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo> 
+        getCitationsList();
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    com.google.wireless.android.sdk.stats.SmlCitationInfo getCitations(int index);
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    int getCitationsCount();
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    java.util.List<? extends com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder> 
+        getCitationsOrBuilderList();
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder getCitationsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code android_studio.SmlTransformEvent.TransformResult}
@@ -973,6 +997,7 @@ private static final long serialVersionUID = 0L;
       super(builder);
     }
     private TransformResult() {
+      citations_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -1060,6 +1085,47 @@ private static final long serialVersionUID = 0L;
       return numTransformations_;
     }
 
+    public static final int CITATIONS_FIELD_NUMBER = 4;
+    @SuppressWarnings("serial")
+    private java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo> citations_;
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    @java.lang.Override
+    public java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo> getCitationsList() {
+      return citations_;
+    }
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder> 
+        getCitationsOrBuilderList() {
+      return citations_;
+    }
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    @java.lang.Override
+    public int getCitationsCount() {
+      return citations_.size();
+    }
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlCitationInfo getCitations(int index) {
+      return citations_.get(index);
+    }
+    /**
+     * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder getCitationsOrBuilder(
+        int index) {
+      return citations_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1083,6 +1149,9 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         output.writeInt32(3, numTransformations_);
       }
+      for (int i = 0; i < citations_.size(); i++) {
+        output.writeMessage(4, citations_.get(i));
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -1103,6 +1172,10 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000004) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, numTransformations_);
+      }
+      for (int i = 0; i < citations_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, citations_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -1134,6 +1207,8 @@ private static final long serialVersionUID = 0L;
         if (getNumTransformations()
             != other.getNumTransformations()) return false;
       }
+      if (!getCitationsList()
+          .equals(other.getCitationsList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -1157,6 +1232,10 @@ private static final long serialVersionUID = 0L;
       if (hasNumTransformations()) {
         hash = (37 * hash) + NUM_TRANSFORMATIONS_FIELD_NUMBER;
         hash = (53 * hash) + getNumTransformations();
+      }
+      if (getCitationsCount() > 0) {
+        hash = (37 * hash) + CITATIONS_FIELD_NUMBER;
+        hash = (53 * hash) + getCitationsList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -1287,6 +1366,7 @@ private static final long serialVersionUID = 0L;
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getMetadataFieldBuilder();
+          getCitationsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -1300,6 +1380,13 @@ private static final long serialVersionUID = 0L;
         }
         latencyMs_ = 0L;
         numTransformations_ = 0;
+        if (citationsBuilder_ == null) {
+          citations_ = java.util.Collections.emptyList();
+        } else {
+          citations_ = null;
+          citationsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1326,9 +1413,22 @@ private static final long serialVersionUID = 0L;
       @java.lang.Override
       public com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformResult buildPartial() {
         com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformResult result = new com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformResult(this);
+        buildPartialRepeatedFields(result);
         if (bitField0_ != 0) { buildPartial0(result); }
         onBuilt();
         return result;
+      }
+
+      private void buildPartialRepeatedFields(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformResult result) {
+        if (citationsBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) != 0)) {
+            citations_ = java.util.Collections.unmodifiableList(citations_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.citations_ = citations_;
+        } else {
+          result.citations_ = citationsBuilder_.build();
+        }
       }
 
       private void buildPartial0(com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformResult result) {
@@ -1371,6 +1471,32 @@ private static final long serialVersionUID = 0L;
         }
         if (other.hasNumTransformations()) {
           setNumTransformations(other.getNumTransformations());
+        }
+        if (citationsBuilder_ == null) {
+          if (!other.citations_.isEmpty()) {
+            if (citations_.isEmpty()) {
+              citations_ = other.citations_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensureCitationsIsMutable();
+              citations_.addAll(other.citations_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.citations_.isEmpty()) {
+            if (citationsBuilder_.isEmpty()) {
+              citationsBuilder_.dispose();
+              citationsBuilder_ = null;
+              citations_ = other.citations_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              citationsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getCitationsFieldBuilder() : null;
+            } else {
+              citationsBuilder_.addAllMessages(other.citations_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -1415,6 +1541,19 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000004;
                 break;
               } // case 24
+              case 34: {
+                com.google.wireless.android.sdk.stats.SmlCitationInfo m =
+                    input.readMessage(
+                        com.google.wireless.android.sdk.stats.SmlCitationInfo.PARSER,
+                        extensionRegistry);
+                if (citationsBuilder_ == null) {
+                  ensureCitationsIsMutable();
+                  citations_.add(m);
+                } else {
+                  citationsBuilder_.addMessage(m);
+                }
+                break;
+              } // case 34
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1629,6 +1768,246 @@ private static final long serialVersionUID = 0L;
         numTransformations_ = 0;
         onChanged();
         return this;
+      }
+
+      private java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo> citations_ =
+        java.util.Collections.emptyList();
+      private void ensureCitationsIsMutable() {
+        if (!((bitField0_ & 0x00000008) != 0)) {
+          citations_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.SmlCitationInfo>(citations_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.SmlCitationInfo, com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder, com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder> citationsBuilder_;
+
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo> getCitationsList() {
+        if (citationsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(citations_);
+        } else {
+          return citationsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public int getCitationsCount() {
+        if (citationsBuilder_ == null) {
+          return citations_.size();
+        } else {
+          return citationsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlCitationInfo getCitations(int index) {
+        if (citationsBuilder_ == null) {
+          return citations_.get(index);
+        } else {
+          return citationsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder setCitations(
+          int index, com.google.wireless.android.sdk.stats.SmlCitationInfo value) {
+        if (citationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCitationsIsMutable();
+          citations_.set(index, value);
+          onChanged();
+        } else {
+          citationsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder setCitations(
+          int index, com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder builderForValue) {
+        if (citationsBuilder_ == null) {
+          ensureCitationsIsMutable();
+          citations_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          citationsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder addCitations(com.google.wireless.android.sdk.stats.SmlCitationInfo value) {
+        if (citationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCitationsIsMutable();
+          citations_.add(value);
+          onChanged();
+        } else {
+          citationsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder addCitations(
+          int index, com.google.wireless.android.sdk.stats.SmlCitationInfo value) {
+        if (citationsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCitationsIsMutable();
+          citations_.add(index, value);
+          onChanged();
+        } else {
+          citationsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder addCitations(
+          com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder builderForValue) {
+        if (citationsBuilder_ == null) {
+          ensureCitationsIsMutable();
+          citations_.add(builderForValue.build());
+          onChanged();
+        } else {
+          citationsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder addCitations(
+          int index, com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder builderForValue) {
+        if (citationsBuilder_ == null) {
+          ensureCitationsIsMutable();
+          citations_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          citationsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder addAllCitations(
+          java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.SmlCitationInfo> values) {
+        if (citationsBuilder_ == null) {
+          ensureCitationsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, citations_);
+          onChanged();
+        } else {
+          citationsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder clearCitations() {
+        if (citationsBuilder_ == null) {
+          citations_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          citationsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public Builder removeCitations(int index) {
+        if (citationsBuilder_ == null) {
+          ensureCitationsIsMutable();
+          citations_.remove(index);
+          onChanged();
+        } else {
+          citationsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder getCitationsBuilder(
+          int index) {
+        return getCitationsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder getCitationsOrBuilder(
+          int index) {
+        if (citationsBuilder_ == null) {
+          return citations_.get(index);  } else {
+          return citationsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public java.util.List<? extends com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder> 
+           getCitationsOrBuilderList() {
+        if (citationsBuilder_ != null) {
+          return citationsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(citations_);
+        }
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder addCitationsBuilder() {
+        return getCitationsFieldBuilder().addBuilder(
+            com.google.wireless.android.sdk.stats.SmlCitationInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder addCitationsBuilder(
+          int index) {
+        return getCitationsFieldBuilder().addBuilder(
+            index, com.google.wireless.android.sdk.stats.SmlCitationInfo.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .android_studio.SmlCitationInfo citations = 4;</code>
+       */
+      public java.util.List<com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder> 
+           getCitationsBuilderList() {
+        return getCitationsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.SmlCitationInfo, com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder, com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder> 
+          getCitationsFieldBuilder() {
+        if (citationsBuilder_ == null) {
+          citationsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.SmlCitationInfo, com.google.wireless.android.sdk.stats.SmlCitationInfo.Builder, com.google.wireless.android.sdk.stats.SmlCitationInfoOrBuilder>(
+                  citations_,
+                  ((bitField0_ & 0x00000008) != 0),
+                  getParentForChildren(),
+                  isClean());
+          citations_ = null;
+        }
+        return citationsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -1845,6 +2224,14 @@ private static final long serialVersionUID = 0L;
        * <code>INVALID_FORMAT = 4;</code>
        */
       INVALID_FORMAT(4),
+      /**
+       * <pre>
+       * The response is blocked because it contains citations.
+       * </pre>
+       *
+       * <code>CITATIONS_BLOCKED = 5;</code>
+       */
+      CITATIONS_BLOCKED(5),
       ;
 
       /**
@@ -1883,6 +2270,14 @@ private static final long serialVersionUID = 0L;
        * <code>INVALID_FORMAT = 4;</code>
        */
       public static final int INVALID_FORMAT_VALUE = 4;
+      /**
+       * <pre>
+       * The response is blocked because it contains citations.
+       * </pre>
+       *
+       * <code>CITATIONS_BLOCKED = 5;</code>
+       */
+      public static final int CITATIONS_BLOCKED_VALUE = 5;
 
 
       public final int getNumber() {
@@ -1910,6 +2305,7 @@ private static final long serialVersionUID = 0L;
           case 2: return BACKEND_ERROR;
           case 3: return EMPTY_RESPONSE;
           case 4: return INVALID_FORMAT;
+          case 5: return CITATIONS_BLOCKED;
           default: return null;
         }
       }
@@ -2894,7 +3290,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-     *     See studio_stats.proto;l=15223
+     *     See studio_stats.proto;l=15380
      * @return Whether the backendError field is set.
      */
     @java.lang.Deprecated boolean hasBackendError();
@@ -2905,7 +3301,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-     *     See studio_stats.proto;l=15223
+     *     See studio_stats.proto;l=15380
      * @return The backendError.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.SmlTransformEvent.TransformError getBackendError();
@@ -3054,7 +3450,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-     *     See studio_stats.proto;l=15223
+     *     See studio_stats.proto;l=15380
      * @return Whether the backendError field is set.
      */
     @java.lang.Override
@@ -3068,7 +3464,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-     *     See studio_stats.proto;l=15223
+     *     See studio_stats.proto;l=15380
      * @return The backendError.
      */
     @java.lang.Override
@@ -3679,7 +4075,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-       *     See studio_stats.proto;l=15223
+       *     See studio_stats.proto;l=15380
        * @return Whether the backendError field is set.
        */
       @java.lang.Override
@@ -3693,7 +4089,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>.android_studio.SmlTransformEvent.TransformError backend_error = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.SmlTransformEvent.TransformResponse.backend_error is deprecated.
-       *     See studio_stats.proto;l=15223
+       *     See studio_stats.proto;l=15380
        * @return The backendError.
        */
       @java.lang.Override

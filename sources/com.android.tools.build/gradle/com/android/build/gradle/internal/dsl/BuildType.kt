@@ -47,7 +47,7 @@ import java.io.Serializable
 import javax.inject.Inject
 
 /** DSL object to configure build types.  */
-abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") constructor(
+abstract class BuildType @Inject constructor(
     private val name: String,
     private val dslServices: DslServices,
     private val componentType: ComponentType
@@ -60,6 +60,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     TestBuildType,
     InternalBuildType {
 
+    @WithLazyInitialization
     fun lazyInit() {
         renderscriptOptimLevel = 3
         isEmbedMicroApp = true

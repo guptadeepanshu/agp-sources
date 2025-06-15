@@ -34,6 +34,7 @@ import com.android.build.gradle.internal.services.VariantServicesImpl
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.sdklib.AndroidVersion
+import com.android.sdklib.SdkVersionInfo
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ProjectLayout
@@ -65,11 +66,11 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
 
     override val compileSdkVersion: String by lazy {
-        "android-${getCompileSdkApiVersion(extension).getApiStringWithOptionalExtension()}"
+        "android-${getCompileSdkApiVersion(extension).apiStringWithExtension}"
     }
 
     override val minSdkVersion: AndroidVersion by lazy {
-        extension.minSdkPreview?.let { AndroidVersion(it) }
+        extension.minSdkPreview?.let { SdkVersionInfo.getVersion(it, null) }
             ?: AndroidVersion(extension.minSdk ?: 34)
     }
 
@@ -108,21 +109,17 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
 
     private fun maybeGetCompileSdk(extension: PrivacySandboxSdkExtension): AndroidVersion? {
-        return extension.compileSdk?.let {
-            AndroidVersion(
-                it,
-                null,
-                extension.compileSdkExtension,
-                false
-            )
+        return extension.compileSdk?.let { apiLevel ->
+            val androidVersion = AndroidVersion(apiLevel)
+            when (val extensionLevel = extension.compileSdkExtension) {
+                null -> androidVersion
+                else -> androidVersion.withExtensionLevel(extensionLevel)
+            }
         }
     }
 
     private fun maybeGetCompileSdkPreview(extension: PrivacySandboxSdkExtension): AndroidVersion? {
         return extension.compileSdkPreview?.let { validatePreviewTargetValue(it) }
-            ?.let { AndroidVersion(it) }
+            ?.let { SdkVersionInfo.getVersion(it, null) }
     }
 }
-
-private fun AndroidVersion.getApiStringWithOptionalExtension(): String =
-    if (extensionLevel == null) apiStringWithoutExtension else apiStringWithExtension

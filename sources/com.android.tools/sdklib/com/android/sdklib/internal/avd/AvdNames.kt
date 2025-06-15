@@ -17,6 +17,7 @@ package com.android.sdklib.internal.avd
 
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.devices.Device
+import com.android.sdklib.displayApiString
 import com.google.common.base.CharMatcher.anyOf
 import com.google.common.base.CharMatcher.inRange
 import com.google.common.base.CharMatcher.`is`
@@ -60,7 +61,7 @@ object AvdNames {
   fun getDefaultDeviceDisplayName(device: Device, version: AndroidVersion): String {
     // A device name might include the device's screen size as, e.g., 7". The " is not allowed in
     // a display name. Ensure that the display name does not include any forbidden characters.
-    return cleanDisplayName(device.displayName) + " API " + version.apiStringWithExtension
+    return cleanDisplayName(device.displayName) + " API " + version.displayApiString
   }
 
   fun uniquify(name: String, separator: String, isPresent: (String) -> Boolean): String {

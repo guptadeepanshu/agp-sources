@@ -21,11 +21,14 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.SettingsExtension
+import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.LintLifecycleExtension
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.LintLifecycleExtensionImpl
 import com.android.build.gradle.api.AndroidBasePlugin
 import com.android.build.gradle.internal.ApiObjectFactory
 import com.android.build.gradle.internal.AvdComponentsBuildService
@@ -33,7 +36,6 @@ import com.android.build.gradle.internal.BadPluginException
 import com.android.build.gradle.internal.ClasspathVerifier.checkClasspathSanity
 import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.DependencyConfigurator
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.SdkLocator.sdkTestDirectory
 import com.android.build.gradle.internal.TaskManager
@@ -188,7 +190,6 @@ abstract class BasePlugin<
             dslServices,
             variantInputModel,
             buildOutputs,
-            extraModelInfo,
             versionedSdkLoaderService
         )
     }
@@ -201,6 +202,12 @@ abstract class BasePlugin<
     private val variantApiOperations by lazy {
         VariantApiOperationsRegistrar<AndroidT, VariantBuilderT, VariantT>(
             extensionData.newExtension
+        )
+    }
+
+    val lintDslLifecycleRegistrar by lazy {
+        DslLifecycleComponentsOperationsRegistrar(
+            extensionData.newExtension.lint,
         )
     }
 
@@ -239,6 +246,7 @@ abstract class BasePlugin<
                 extension,
                 newExtension,
                 variantApiOperations as VariantApiOperationsRegistrar<AndroidT, VariantBuilder, Variant>,
+                lintDslLifecycleRegistrar,
                 variantFactory,
                 variantInputModel,
                 globalConfig,
@@ -309,8 +317,6 @@ abstract class BasePlugin<
         createVariantFactory()
     }
 
-    protected val extraModelInfo: ExtraModelInfo = ExtraModelInfo()
-
     private val hasCreatedTasks = AtomicBoolean(false)
 
     protected abstract fun createExtension(
@@ -318,7 +324,6 @@ abstract class BasePlugin<
         dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
         @Suppress("DEPRECATION")
         buildOutputs: NamedDomainObjectContainer<com.android.build.gradle.api.BaseVariantOutput>,
-        extraModelInfo: ExtraModelInfo,
         versionedSdkLoaderService: VersionedSdkLoaderService
     ): ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT, AndroidT>
 
@@ -510,13 +515,25 @@ abstract class BasePlugin<
             variantApiOperations,
             bootClasspathConfig
         )
+
+        // Registers lintLifecycle extension so plugins do not have to branch per plugin types
+        project.extensions
+            .create(
+                LintLifecycleExtension::class.java,
+                "lintLifecycle",
+                LintLifecycleExtensionImpl::class.java,
+                lintDslLifecycleRegistrar,
+            )
+
+
+        // register under the new interface for kotlin, groovy will find both the old and new
+        // interfaces through the implementation class.
         project.extensions.add("buildOutputs", buildOutputs)
         registerModels(
             project,
             registry,
             variantInputModel,
             extensionData,
-            extraModelInfo,
             globalConfig)
 
         // create default Objects, signingConfig first as it's used by the BuildTypes.
@@ -529,7 +546,6 @@ abstract class BasePlugin<
         registry: ToolingModelBuilderRegistry,
         variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
         extensionData: ExtensionData<BuildFeaturesT, BuildTypeT, DefaultConfigT, ProductFlavorT, AndroidResourcesT, InstallationT, AndroidT>,
-        extraModelInfo: ExtraModelInfo,
         globalConfig: GlobalTaskCreationConfig
     ) {
         // Register a builder for the custom tooling model
@@ -607,6 +623,7 @@ abstract class BasePlugin<
         hasCreatedTasks.set(true)
 
         variantManager.variantApiOperationsRegistrar.executeDslFinalizationBlocks()
+        variantManager.lintDslLifecycleRegistrar.executeDslFinalizationBlocks()
 
         (globalConfig.compileOptions as CompileOptions)
             .finalizeSourceAndTargetCompatibility(project, globalConfig)

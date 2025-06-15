@@ -1323,7 +1323,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-     *     See studio_stats.proto;l=13595
+     *     See studio_stats.proto;l=13709
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Deprecated boolean hasIsDefaultPreset();
@@ -1334,7 +1334,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-     *     See studio_stats.proto;l=13595
+     *     See studio_stats.proto;l=13709
      * @return The isDefaultPreset.
      */
     @java.lang.Deprecated boolean getIsDefaultPreset();
@@ -1346,7 +1346,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-     *     See studio_stats.proto;l=13598
+     *     See studio_stats.proto;l=13712
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Deprecated boolean hasIsApplyButtonUsed();
@@ -1357,7 +1357,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-     *     See studio_stats.proto;l=13598
+     *     See studio_stats.proto;l=13712
      * @return The isApplyButtonUsed.
      */
     @java.lang.Deprecated boolean getIsApplyButtonUsed();
@@ -1841,7 +1841,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-     *     See studio_stats.proto;l=13595
+     *     See studio_stats.proto;l=13709
      * @return Whether the isDefaultPreset field is set.
      */
     @java.lang.Override
@@ -1855,7 +1855,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-     *     See studio_stats.proto;l=13595
+     *     See studio_stats.proto;l=13709
      * @return The isDefaultPreset.
      */
     @java.lang.Override
@@ -1872,7 +1872,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-     *     See studio_stats.proto;l=13598
+     *     See studio_stats.proto;l=13712
      * @return Whether the isApplyButtonUsed field is set.
      */
     @java.lang.Override
@@ -1886,7 +1886,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-     *     See studio_stats.proto;l=13598
+     *     See studio_stats.proto;l=13712
      * @return The isApplyButtonUsed.
      */
     @java.lang.Override
@@ -3187,7 +3187,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-       *     See studio_stats.proto;l=13595
+       *     See studio_stats.proto;l=13709
        * @return Whether the isDefaultPreset field is set.
        */
       @java.lang.Override
@@ -3201,7 +3201,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-       *     See studio_stats.proto;l=13595
+       *     See studio_stats.proto;l=13709
        * @return The isDefaultPreset.
        */
       @java.lang.Override
@@ -3215,7 +3215,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-       *     See studio_stats.proto;l=13595
+       *     See studio_stats.proto;l=13709
        * @param value The isDefaultPreset to set.
        * @return This builder for chaining.
        */
@@ -3233,7 +3233,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_default_preset = 12 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_default_preset is deprecated.
-       *     See studio_stats.proto;l=13595
+       *     See studio_stats.proto;l=13709
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsDefaultPreset() {
@@ -3251,7 +3251,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-       *     See studio_stats.proto;l=13598
+       *     See studio_stats.proto;l=13712
        * @return Whether the isApplyButtonUsed field is set.
        */
       @java.lang.Override
@@ -3265,7 +3265,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-       *     See studio_stats.proto;l=13598
+       *     See studio_stats.proto;l=13712
        * @return The isApplyButtonUsed.
        */
       @java.lang.Override
@@ -3279,7 +3279,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-       *     See studio_stats.proto;l=13598
+       *     See studio_stats.proto;l=13712
        * @param value The isApplyButtonUsed to set.
        * @return This builder for chaining.
        */
@@ -3297,7 +3297,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_apply_button_used = 13 [deprecated = true];</code>
        * @deprecated android_studio.LogcatUsageEvent.LogcatFormatConfiguration.is_apply_button_used is deprecated.
-       *     See studio_stats.proto;l=13598
+       *     See studio_stats.proto;l=13712
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsApplyButtonUsed() {
@@ -8615,7 +8615,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
-   *     See studio_stats.proto;l=13519
+   *     See studio_stats.proto;l=13633
    * @return Whether the formatDialog field is set.
    */
   @java.lang.Override
@@ -8629,7 +8629,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
-   *     See studio_stats.proto;l=13519
+   *     See studio_stats.proto;l=13633
    * @return The formatDialog.
    */
   @java.lang.Override
@@ -9296,7 +9296,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
-     *     See studio_stats.proto;l=13519
+     *     See studio_stats.proto;l=13633
      * @return Whether the formatDialog field is set.
      */
     @java.lang.Deprecated public boolean hasFormatDialog() {
@@ -9309,7 +9309,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.LogcatUsageEvent.LogcatFormatConfiguration format_dialog = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.LogcatUsageEvent.format_dialog is deprecated.
-     *     See studio_stats.proto;l=13519
+     *     See studio_stats.proto;l=13633
      * @return The formatDialog.
      */
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFormatConfiguration getFormatDialog() {

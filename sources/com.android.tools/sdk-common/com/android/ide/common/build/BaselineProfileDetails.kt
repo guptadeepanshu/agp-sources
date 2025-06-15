@@ -23,15 +23,15 @@ import java.io.Serializable
  *
  * @param minApi the lower bound of the API range that this baseline profile targets
  * @param maxApi the upper bound that this baseline profile targets; no bound if null
- * @param baselineProfiles the baseline profile files that should be installed
+ * @param baselineProfileFiles the baseline profile files that should be installed
  */
 data class BaselineProfileDetails(
     val minApi: Int,
     val maxApi: Int,
-    val baselineProfiles: Set<File>
+    val baselineProfileFiles: Set<File>
 ): Serializable {
     fun getBaselineProfileFile(apkName: String) =
-        baselineProfiles.singleOrNull {
+        baselineProfileFiles.singleOrNull {
             it.nameWithoutExtension == apkName
-        } ?: error("Cannot find apkName $apkName in baselineProfiles $baselineProfiles")
+        } ?: error("Cannot find apkName $apkName in baselineProfileFiles $baselineProfileFiles")
 }

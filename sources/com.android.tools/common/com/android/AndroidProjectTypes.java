@@ -39,4 +39,7 @@ public class AndroidProjectTypes {
 
     /** com.android.dynamic-feature module. */
     public static final int PROJECT_TYPE_DYNAMIC_FEATURE = 6;
+
+    /** com.android.internal.fused-library module. */
+    public static final int PROJECT_TYPE_FUSED_LIBRARY = 7;
 }

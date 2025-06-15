@@ -39,9 +39,9 @@ import org.w3c.dom.ls.LSResourceResolver;
  * <p>To set up an {@code RepoManager}:
  *
  * <ul>
+ *   <li>Pass the path where the repo is installed locally to the constructor.
  *   <li>Register the {@link SchemaModule}s used to parse the package.xml files and remote
  *       repositories used by this repo using {@link #registerSchemaModule(SchemaModule)}
- *   <li>Set the path where the repo is installed locally using {@link #setLocalPath(Path)}.
  *   <li>If your local repo might contain packages created by a previous system, set a {@link
  *       FallbackLocalRepoLoader} that can recognize and convert those packages using {@link
  *       #setFallbackLocalRepoLoader(FallbackLocalRepoLoader)}.
@@ -119,8 +119,8 @@ public abstract class RepoManager {
 
     /** @return A new {@code RepoManager}. */
     @NonNull
-    public static RepoManager create() {
-        return new RepoManagerImpl();
+    public static RepoManager create(@Nullable Path localPath) {
+        return new RepoManagerImpl(localPath);
     }
 
     /** Register an {@link SchemaModule} that can be used when parsing XML for this repo. */
@@ -150,9 +150,6 @@ public abstract class RepoManager {
     public static SchemaModule<GenericFactory> getGenericModule() {
         return sGenericModule;
     }
-
-    /** Sets the path to the local repository root. */
-    public abstract void setLocalPath(@Nullable Path path);
 
     /**
      * Gets the path to the local repository root. This probably shouldn't be needed except by the

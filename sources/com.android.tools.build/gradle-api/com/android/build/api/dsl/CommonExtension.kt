@@ -827,6 +827,12 @@ interface CommonExtension<
     var compileSdkPreview: String?
 
     /**
+     * Specify a minor API version for the compile SDK. This should be used with the compileSdk
+     * property to specify a full SDK version.
+     */
+    var compileSdkMinor: Int?
+
+    /**
      * Specify an SDK add-on to compile your project against.
      *
      * This can be set on all Gradle projects with [com.android.build.api.dsl.SettingsExtension.compileSdkAddon]

@@ -713,6 +713,10 @@ public enum VariantPropertiesMethodType
    * <code>GET_RESOLVABLE_CONFIGURATION = 163;</code>
    */
   GET_RESOLVABLE_CONFIGURATION(163),
+  /**
+   * <code>REGISTER_APK_INSTALLATION = 164;</code>
+   */
+  REGISTER_APK_INSTALLATION(164),
   UNRECOGNIZED(-1),
   ;
 
@@ -1420,6 +1424,10 @@ public enum VariantPropertiesMethodType
    * <code>GET_RESOLVABLE_CONFIGURATION = 163;</code>
    */
   public static final int GET_RESOLVABLE_CONFIGURATION_VALUE = 163;
+  /**
+   * <code>REGISTER_APK_INSTALLATION = 164;</code>
+   */
+  public static final int REGISTER_APK_INSTALLATION_VALUE = 164;
 
 
   public final int getNumber() {
@@ -1610,6 +1618,7 @@ public enum VariantPropertiesMethodType
       case 161: return PROVIDE_APK_OUTPUT_TO_TASK;
       case 162: return MIN_SDK;
       case 163: return GET_RESOLVABLE_CONFIGURATION;
+      case 164: return REGISTER_APK_INSTALLATION;
       default: return null;
     }
   }

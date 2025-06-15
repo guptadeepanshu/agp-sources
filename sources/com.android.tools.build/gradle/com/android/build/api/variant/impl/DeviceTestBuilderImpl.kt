@@ -32,7 +32,7 @@ open class DeviceTestBuilderImpl(
     val componentType: ComponentType,
     enableMultiDex: Boolean?,
     enableCodeCoverage: Boolean,
-    override var debuggable: Boolean,
+    @Suppress("OVERRIDE_DEPRECATION") override var debuggable: Boolean,
 ): DeviceTestBuilder {
 
     companion object {
@@ -97,7 +97,7 @@ open class DeviceTestBuilderImpl(
             target.api = null
         }
 
-    override var enable = true
+    override var enable = !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
 
     internal var _enableMultiDex: Boolean? = enableMultiDex
     override var enableMultiDex: Boolean?

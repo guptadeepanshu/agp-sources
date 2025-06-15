@@ -16,13 +16,19 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.SdkConstants.FN_AAPT2
 import com.android.build.api.dsl.SdkComponents
+import com.android.build.api.variant.Aapt2
 import com.android.build.api.variant.Aidl
+import com.android.build.gradle.internal.res.Aapt2FromMaven
 import com.android.build.gradle.internal.services.DslServices
 import com.android.repository.Revision
+import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
+import java.io.File
 import javax.inject.Inject
 
 open class SdkComponentsImpl @Inject constructor(
@@ -31,7 +37,9 @@ open class SdkComponentsImpl @Inject constructor(
     buildToolsRevision: Provider<Revision>,
     val ndkVersion: Provider<String>,
     val ndkPath: Provider<String>,
-    val bootclasspathProvider: Provider<Provider<List<RegularFile>>>
+    val bootclasspathProvider: Provider<Provider<List<RegularFile>>>,
+    providerFactory: ProviderFactory,
+    project: Project
 ) : SdkComponents {
 
     override val sdkDirectory: Provider<Directory> =
@@ -71,5 +79,22 @@ open class SdkComponentsImpl @Inject constructor(
                 buildToolsRevision.map { it.toString() }
             )
         )
+    }
+
+    override val aapt2: Provider<Aapt2> by lazy(LazyThreadSafetyMode.NONE) {
+        providerFactory.provider {
+            Aapt2FromMaven.create(project) { System.getenv(it.propertyName) }
+        }.map { aapt2FromMaven ->
+            DefaultAapt(
+                executable = project.objects.fileProperty().fileProvider(
+                    providerFactory.provider {
+                        File(aapt2FromMaven.aapt2Directory.singleFile, FN_AAPT2)
+                    }
+                ),
+                version = providerFactory.provider {
+                    aapt2FromMaven.version
+                }
+            )
+        }
     }
 }

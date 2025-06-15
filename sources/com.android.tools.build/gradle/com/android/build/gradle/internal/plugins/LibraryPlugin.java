@@ -31,7 +31,6 @@ import com.android.build.api.variant.LibraryVariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryExtensionInternal;
 import com.android.build.gradle.api.BaseVariantOutput;
-import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.LibraryTaskManager;
 import com.android.build.gradle.internal.component.LibraryCreationConfig;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
@@ -128,7 +127,6 @@ public class LibraryPlugin
                                             DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                                     dslContainers,
                     @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-                    @NonNull ExtraModelInfo extraModelInfo,
                     VersionedSdkLoaderService versionedSdkLoaderService) {
         LibraryExtensionImpl libraryExtension =
                 dslServices.newDecoratedInstance(
@@ -169,7 +167,6 @@ public class LibraryPlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             libraryExtension,
                                             stats);
 
@@ -193,7 +190,6 @@ public class LibraryPlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             libraryExtension,
                                             stats);
             project.getExtensions()
@@ -216,7 +212,6 @@ public class LibraryPlugin
                                 bootClasspathConfig,
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
-                                extraModelInfo,
                                 libraryExtension,
                                 stats);
         initExtensionFromSettings(android);

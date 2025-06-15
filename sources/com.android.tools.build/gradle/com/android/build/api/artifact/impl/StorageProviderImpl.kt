@@ -20,11 +20,10 @@ import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
-import org.gradle.api.tasks.TaskProvider
-import java.lang.RuntimeException
+import kotlin.RuntimeException
 
 class StorageProviderImpl {
 
@@ -50,7 +49,7 @@ class StorageProviderImpl {
     }
 }
 
-class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator: (ObjectFactory) -> Property<T>) {
+class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator: (ObjectFactory) -> FileSystemLocationProperty<T>) {
     private val singleStorage= mutableMapOf<Artifact.Single<*>,  SingleArtifactContainer<T>>()
     private val multipleStorage=  mutableMapOf<Artifact.Multiple<*>,  MultipleArtifactContainer<T>>()
 
@@ -72,7 +71,15 @@ class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator:
         return multipleStorage.getOrPut(artifactType) {
             MultipleArtifactContainer<T> {
                 MultiplePropertyAdapter(
-                    objects.listProperty(artifactType.kind.dataType().java))
+                    objects.listProperty(artifactType.kind.dataType().java),
+                    {
+                        when(artifactType.kind) {
+                            ArtifactKind.FILE -> objects.fileProperty() as FileSystemLocationProperty<T>
+                            ArtifactKind.DIRECTORY -> objects.directoryProperty() as FileSystemLocationProperty<T>
+                            else -> throw RuntimeException("Cannot handle $this")
+                        }
+                    }
+                )
             }
         }
     }

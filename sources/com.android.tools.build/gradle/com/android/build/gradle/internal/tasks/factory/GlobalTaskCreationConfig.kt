@@ -109,8 +109,6 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val hasNoBuildTypeMinified: Boolean
 
-    val manifestArtifactType: InternalArtifactType<Directory>
-
     val publishConsumerProguardRules: Boolean
 
     // Internal Objects

@@ -209,7 +209,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     }
 
     override val debuggable: Boolean
-        get() = dslInfo.isDebuggable
+        get() = variantBuilder.debuggable
 
     override val shouldPackageProfilerDependencies: Boolean = false
 

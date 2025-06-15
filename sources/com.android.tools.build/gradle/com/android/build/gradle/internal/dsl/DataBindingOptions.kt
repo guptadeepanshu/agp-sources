@@ -27,7 +27,7 @@ import java.util.function.Supplier
 import javax.inject.Inject
 
 /** DSL object for configuring databinding options. */
-abstract class DataBindingOptions @Inject @WithLazyInitialization("lateInit") constructor(
+abstract class DataBindingOptions @Inject constructor(
     private val featuresProvider: Supplier<BuildFeatures>,
     private val dslServices: DslServices
 ) : com.android.builder.model.DataBindingOptions, com.android.build.api.dsl.DataBinding {
@@ -62,6 +62,7 @@ abstract class DataBindingOptions @Inject @WithLazyInitialization("lateInit") co
             enableForTests = value
         }
 
+    @WithLazyInitialization
     @Suppress("unused") // call injected in the constructor by the dsl decorator
     protected fun lateInit() {
         addDefaultAdapters = true

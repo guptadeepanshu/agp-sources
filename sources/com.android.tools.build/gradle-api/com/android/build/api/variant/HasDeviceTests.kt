@@ -21,7 +21,6 @@ import org.gradle.api.Incubating
 /**
  * [Variant] that optionally have [DeviceTest] components like [AndroidTest].
  */
-@Incubating
 interface HasDeviceTests {
 
     /**
@@ -32,6 +31,5 @@ interface HasDeviceTests {
      * [DeviceTestBuilder.ANDROID_TEST_TYPE] and the values are [DeviceTest] for that host
      * test suite.
      */
-    @get:Incubating
     val deviceTests: Map<String, DeviceTest>
 }

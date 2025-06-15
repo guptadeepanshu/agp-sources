@@ -32,6 +32,7 @@ import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.utils.CompileData
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.build.gradle.internal.utils.validateNamespaceValue
 import com.android.build.gradle.internal.utils.validatePreviewTargetValue
@@ -172,6 +173,7 @@ abstract class CommonExtensionImpl<
                 _compileSdkAddon = "${compileData.vendorName}:${compileData.addonName}:${compileData.apiLevel}"
             } else {
                 _compileSdk = compileData.apiLevel
+                _compileSdkMinor = compileData.minorApiLevel
                 _compileSdkExtension = compileData.sdkExtension
                 _compileSdkPreview = compileData.codeName
             }
@@ -184,13 +186,12 @@ abstract class CommonExtensionImpl<
         set(value) {
             _compileSdk = value
 
-            _compileSdkVersion = _compileSdk?.let { api ->
-                if (_compileSdkExtension != null) {
-                    "android-$api-ext$_compileSdkExtension"
-                } else {
-                    "android-$api"
-                }
-            }
+            val compileDataVersion = CompileData(
+                apiLevel = _compileSdk,
+                sdkExtension = _compileSdkExtension,
+                minorApiLevel = _compileSdkMinor
+            )
+            _compileSdkVersion = compileDataVersion.toHash()
 
             _compileSdkPreview = null
             _compileSdkAddon = null
@@ -203,13 +204,12 @@ abstract class CommonExtensionImpl<
         set(value) {
             _compileSdkExtension = value
 
-            _compileSdkVersion = _compileSdk?.let { api ->
-                if (value != null) {
-                    "android-$api-ext$value"
-                } else {
-                    "android-$api"
-                }
-            }
+            val compileDataVersion = CompileData(
+                apiLevel = _compileSdk,
+                sdkExtension = _compileSdkExtension,
+                minorApiLevel = _compileSdkMinor
+            )
+            _compileSdkVersion = compileDataVersion.toHash()
 
             _compileSdkPreview = null
             _compileSdkAddon = null
@@ -234,6 +234,7 @@ abstract class CommonExtensionImpl<
             _compileSdkPreview = null
             _compileSdkAddon = null
             _compileSdkVersion = null
+            _compileSdkMinor = null
 
             val previewValue = validatePreviewTargetValue(value)
             if (previewValue != null) {
@@ -255,6 +256,33 @@ abstract class CommonExtensionImpl<
             }
         }
 
+    protected abstract var _compileSdkMinor: Int?
+
+    override var compileSdkMinor: Int?
+        get() = _compileSdkMinor
+        set(value) {
+            _compileSdkMinor = value
+
+            _compileSdk?.let { version ->
+                if (version < 36 && _compileSdkMinor != null) {
+                    dslServices.issueReporter.reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException("Minor versions are only supported for API 36 and above.")
+                    )
+                    _compileSdkMinor = null
+                }
+            }
+            val compileDataVersion = CompileData(
+                apiLevel = _compileSdk,
+                sdkExtension = _compileSdkExtension,
+                minorApiLevel = _compileSdkMinor
+            )
+            _compileSdkVersion = compileDataVersion.toHash()
+
+            _compileSdkPreview = null
+            _compileSdkAddon = null
+        }
+
     private var _compileSdkAddon: String? = null
 
     override fun compileSdkAddon(vendor: String, name: String, version: Int) {
@@ -264,6 +292,7 @@ abstract class CommonExtensionImpl<
         _compileSdk = null
         _compileSdkExtension = null
         _compileSdkPreview = null
+        _compileSdkMinor = null
     }
 
     override fun compileSdkVersion(apiLevel: Int) {

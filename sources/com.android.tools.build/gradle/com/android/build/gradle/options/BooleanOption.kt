@@ -63,9 +63,6 @@ enum class BooleanOption(
     // tell bundletool to only extract instant APKs.
     IDE_EXTRACT_INSTANT(PROPERTY_EXTRACT_INSTANT_APK, false, ApiStage.Stable),
 
-    // Flag used to indicate a "deploy as instant" run configuration.
-    IDE_DEPLOY_AS_INSTANT_APP(PROPERTY_DEPLOY_AS_INSTANT_APP, false, ApiStage.Stable),
-
     ENABLE_STUDIO_VERSION_CHECK("android.injected.studio.version.check", true, ApiStage.Stable),
     ENABLE_STABLE_IDS(PROPERTY_BUILD_WITH_STABLE_IDS, false, ApiStage.Stable),
 
@@ -154,7 +151,37 @@ enum class BooleanOption(
 
     // FIXME switch to false once we know we don't use these getters internally.
     ENABLE_LEGACY_API("android.compatibility.enableLegacyApi", true, FeatureStage.Supported),
-    FULL_R8("android.enableR8.fullMode", true, FeatureStage.Supported),
+
+    /**
+     * Enables R8 full mode
+     * (https://r8.googlesource.com/r8/+/refs/heads/8.8/compatibility-faq.md#r8-full-mode).
+     *
+     * Note that to help users migrate to R8 full mode, we provide 2 types of R8 full mode:
+     *   - Legacy full mode for keep rules ([R8_STRICT_FULL_MODE_FOR_KEEP_RULES] = false): In this
+     *   mode, the default constructor is implicitly kept when a class is kept
+     *   (i.e., "-keep class A" is the same as "-keep class A { void <init>(); }")
+     *   - Strict full mode for keep rules ([R8_STRICT_FULL_MODE_FOR_KEEP_RULES] = true): In this
+     *   mode, the default constructor is not implicitly kept when a class is kept
+     *   (i.e., "-keep class A" is different from "-keep class A { void <init>(); }").
+     *
+     * When migrating from legacy full mode to strict full mode, if the user's app or a library that
+     * the app uses contains a keep rule such as "-keep class A", then the app/library's author will
+     * need to manually update the rule to "-keep class A { void <init>(); }" if they want to keep
+     * the default constructor. If they don't want to keep the default constructor, then they can
+     * keep the rule as-is.
+     */
+    FULL_R8(
+        "android.enableR8.fullMode",
+        defaultValue = true,
+        FeatureStage.Supported
+    ),
+
+    /** Enables R8 strict full mode for keep rules (see [FULL_R8] for more context). */
+    R8_STRICT_FULL_MODE_FOR_KEEP_RULES(
+        "android.r8.strictFullModeForKeepRules",
+        defaultValue = false,
+        FeatureStage.Supported
+    ),
 
     /* -----------------
      * EXPERIMENTAL APIs
@@ -363,6 +390,24 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
+    /**
+     * Whether to enable the deviceTargetingConfig option in app bundles.
+     */
+    ENABLE_DEVICE_TARGETING_CONFIG_API(
+        "android.experimental.enableDeviceTargetingConfigApi",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    /**
+     * Dump all artifacts locations in a json file in the variant build output folder.
+     */
+    DUMP_ARTIFACTS_LOCATIONS(
+        "android.debug.dumpArtifactsLocations",
+        defaultValue = false,
+        FeatureStage.Experimental
+    ),
+
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
@@ -454,6 +499,10 @@ enum class BooleanOption(
         false,
         ApiStage.Deprecated(BUILD_CONFIG_GLOBAL_PROPERTY))
     ,
+
+    // Flag used to indicate a "deploy as instant" run configuration.
+    @Suppress("unused")
+    IDE_DEPLOY_AS_INSTANT_APP(PROPERTY_DEPLOY_AS_INSTANT_APP, false, ApiStage.Deprecated(VERSION_9_0)),
 
     /* -----------------
      * ENFORCED FEATURES
@@ -899,7 +948,8 @@ enum class BooleanOption(
     ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Removed(Version.VERSION_8_2, "Cross device sharding is no longer supported.")),
 
     @Suppress("unused")
-    ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Removed(Version.VERSION_8_3, "This feature is now enabled in the DSL per build type with \"vcsInfo.include = true\"."))
+    ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Removed(Version.VERSION_8_3, "This feature is now enabled in the DSL per build type with \"vcsInfo.include = true\".")),
+
     ; // end of enums
 
     override val status = stage.status

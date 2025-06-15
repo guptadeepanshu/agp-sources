@@ -119,6 +119,7 @@ import com.android.build.gradle.internal.tasks.UninstallTask
 import com.android.build.gradle.internal.tasks.ValidateResourcesTask
 import com.android.build.gradle.internal.tasks.ValidateSigningTask
 import com.android.build.gradle.internal.tasks.VerifyLibraryClassesTask
+import com.android.build.api.artifact.impl.ArtifactsLocationsReportTask
 import com.android.build.gradle.internal.tasks.checkIfR8VersionMatches
 import com.android.build.gradle.internal.tasks.databinding.DataBindingCompilerArguments.Companion.createArguments
 import com.android.build.gradle.internal.tasks.databinding.DataBindingGenBaseClassesTask
@@ -168,7 +169,6 @@ import com.android.build.gradle.tasks.MergeSourceSetFolders.MergeShaderSourceFol
 import com.android.build.gradle.tasks.PackageApplication
 import com.android.build.gradle.tasks.ProcessApplicationManifest
 import com.android.build.gradle.tasks.ProcessManifestForBundleTask
-import com.android.build.gradle.tasks.ProcessManifestForInstantAppTask
 import com.android.build.gradle.tasks.ProcessManifestForMetadataFeatureTask
 import com.android.build.gradle.tasks.ProcessMultiApkApplicationManifest
 import com.android.build.gradle.tasks.ProcessPackagedManifestTask
@@ -434,7 +434,6 @@ abstract class TaskManager(
         taskFactory.register(ProcessManifestForBundleTask.CreationAction(creationConfig))
         taskFactory.register(
                 ProcessManifestForMetadataFeatureTask.CreationAction(creationConfig))
-        taskFactory.register(ProcessManifestForInstantAppTask.CreationAction(creationConfig))
         taskFactory.register(ProcessPackagedManifestTask.CreationAction(creationConfig))
         taskFactory.register(GenerateManifestJarTask.CreationAction(creationConfig))
         taskFactory.register(ProcessApplicationManifest.CreationAction(creationConfig))
@@ -1786,9 +1785,6 @@ abstract class TaskManager(
          * forcing a cold swap is triggered, the main FULL_APK must be rebuilt (even if the
          * resources were changed in a previous build).
          */
-        val manifestType: InternalArtifactType<Directory> =
-            creationConfig.global.manifestArtifactType
-        val manifests = creationConfig.artifacts.get(manifestType)
 
         // Common code for both packaging tasks.
         val configureResourcesAndAssetsDependencies = Action { task: Task ->
@@ -1800,9 +1796,7 @@ abstract class TaskManager(
         taskFactory.register(
                 PackageApplication.CreationAction(
                         creationConfig,
-                        creationConfig.paths.apkLocation,
-                        manifests,
-                        manifestType),
+                        creationConfig.paths.apkLocation),
                 null,
                 object : TaskConfigAction<PackageApplication> {
                     override fun configure(task: PackageApplication) {
@@ -1962,7 +1956,9 @@ abstract class TaskManager(
 
         R8ParallelBuildService.RegistrationAction(
             project,
-            creationConfig.services.projectOptions.get(IntegerOption.R8_MAX_WORKERS)
+            // These `IntegerOption`s have default values so get() should return not-null
+            creationConfig.services.projectOptions.get(IntegerOption.R8_MAX_WORKERS)!!,
+            creationConfig.services.projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
         ).execute()
         return taskFactory.register(
                 R8Task.CreationAction(creationConfig, isTestApplication, addCompileRClass))
@@ -2104,6 +2100,22 @@ abstract class TaskManager(
 
         // and compile task
         createCompileAnchorTask(creationConfig)
+
+        // and finally debug related tasks.
+        createDebugTasks(creationConfig)
+    }
+
+    protected open fun createDebugTasks(creationConfig: ComponentCreationConfig) {
+        if (creationConfig.services.projectOptions[BooleanOption.DUMP_ARTIFACTS_LOCATIONS]) {
+            val artifactsLocationsReportTask = taskFactory.register(
+                ArtifactsLocationsReportTask.CreationAction(
+                    creationConfig,
+                )
+            )
+            creationConfig.taskContainer.preBuildTask.configure { preBuild ->
+                preBuild.finalizedBy(artifactsLocationsReportTask)
+            }
+        }
     }
 
     protected open fun createVariantPreBuildTask(creationConfig: ComponentCreationConfig) {

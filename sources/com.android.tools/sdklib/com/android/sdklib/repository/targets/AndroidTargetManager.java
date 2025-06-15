@@ -80,7 +80,7 @@ public class AndroidTargetManager {
     private Map<LocalPackage, IAndroidTarget> getTargetMap(@NonNull ProgressIndicator progress) {
         if (mTargets == null) {
             Map<String, String> newErrors = Maps.newHashMap();
-            RepoManager manager = mSdkHandler.getSdkManager(progress);
+            RepoManager manager = mSdkHandler.getRepoManagerAndLoadSynchronously(progress);
             Map<AndroidVersion, PlatformTarget> platformTargets = Maps.newHashMap();
             BiMap<IAndroidTarget, LocalPackage> tempTargetToPackage = HashBiMap.create();
             for (LocalPackage p : manager.getPackages().getLocalPackages().values()) {

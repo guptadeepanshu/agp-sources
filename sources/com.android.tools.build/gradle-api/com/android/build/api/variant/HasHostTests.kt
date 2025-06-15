@@ -21,13 +21,11 @@ import org.gradle.api.Incubating
 /**
  * [Variant] that optionally have [HostTest] components like [UnitTest].
  */
-@Incubating
 interface HasHostTests {
     /**
      * [Map] of Variant's [HostTest], or empty if all host tests (like unit test) for this variant
      * are disabled. Map keys are the [HostTest] name, like [HasHostTestsBuilder.UNIT_TEST_TYPE] or
      * [HasHostTestsBuilder.SCREENSHOT_TEST_TYPE] for default host tests.
      */
-    @get:Incubating
     val hostTests: Map<String, HostTest>
 }

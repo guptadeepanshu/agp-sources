@@ -17,6 +17,7 @@
 package com.android.sdklib.repository.legacy;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.repository.PkgProps;
 import java.util.Properties;
@@ -25,26 +26,21 @@ import java.util.Properties;
 public class AndroidVersionHelper {
 
     /**
-     * Creates an {@link AndroidVersion} from {@link Properties}. The properties must contain
-     * android version information, or an exception will be thrown.
+     * Creates an {@link AndroidVersion} from {@link Properties}.
      *
-     * @throws AndroidVersion.AndroidVersionException if no Android version information have been
-     *     found
+     * @return null if no Android version information has been found
      */
-    @NonNull
-    public static AndroidVersion create(@NonNull Properties properties)
-            throws AndroidVersion.AndroidVersionException {
+    @Nullable
+    public static AndroidVersion create(@NonNull Properties properties) {
         String apiLevelProperty = properties.getProperty(PkgProps.VERSION_API_LEVEL);
         if (apiLevelProperty == null) {
-            throw new AndroidVersion.AndroidVersionException(
-                    PkgProps.VERSION_API_LEVEL + " not found!", null);
+            return null;
         }
         int apiLevel;
         try {
             apiLevel = Integer.parseInt(apiLevelProperty);
         } catch (NumberFormatException e) {
-            throw new AndroidVersion.AndroidVersionException(
-                    PkgProps.VERSION_API_LEVEL + " does not contain a parsable integer!", null);
+            return null;
         }
         String codeNameProperty = properties.getProperty(PkgProps.VERSION_CODENAME, null);
         String extensionLevelProperty = properties.getProperty(PkgProps.VERSION_EXTENSION_LEVEL);

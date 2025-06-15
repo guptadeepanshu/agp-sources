@@ -31,9 +31,11 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.SettingsExtension
 import com.android.build.api.extension.impl.KotlinMultiplatformAndroidComponentsExtensionImpl
-import com.android.build.api.extension.impl.MultiplatformVariantApiOperationsRegistrar
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension
+import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
+import com.android.build.api.variant.KotlinMultiplatformAndroidVariantBuilder
 import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.KmpVariantImpl
 import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilationImpl
@@ -122,8 +124,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
     private lateinit var global: GlobalTaskCreationConfig
     private lateinit var androidExtension: KotlinMultiplatformAndroidLibraryExtensionImpl
     private lateinit var kotlinMultiplatformAndroidComponentsExtension: KotlinMultiplatformAndroidComponentsExtension
-    private lateinit var kmpVariantApiOperationsRegistrar: MultiplatformVariantApiOperationsRegistrar
-
+    private lateinit var kmpVariantApiOperationsRegistrar: VariantApiOperationsRegistrar<KotlinMultiplatformAndroidLibraryExtension, KotlinMultiplatformAndroidVariantBuilder, KotlinMultiplatformAndroidVariant>
     private lateinit var mainVariant: KmpVariantImpl
 
     private val dslServices by lazy {
@@ -207,7 +208,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
     override fun configureExtension(project: Project) {
         androidExtension = kotlinMultiplatformHandler.createAndroidExtension()
 
-        kmpVariantApiOperationsRegistrar = MultiplatformVariantApiOperationsRegistrar(
+        kmpVariantApiOperationsRegistrar = VariantApiOperationsRegistrar(
             androidExtension
         )
 
@@ -714,7 +715,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
     private fun createComponentExtension(
         project: Project,
         dslServices: DslServices,
-        variantApiOperationsRegistrar: MultiplatformVariantApiOperationsRegistrar,
+        variantApiOperationsRegistrar: VariantApiOperationsRegistrar<KotlinMultiplatformAndroidLibraryExtension, KotlinMultiplatformAndroidVariantBuilder, KotlinMultiplatformAndroidVariant>,
         bootClasspathConfig: BootClasspathConfig
     ): KotlinMultiplatformAndroidComponentsExtension {
         val sdkComponents: SdkComponents = dslServices.newInstance(
@@ -733,9 +734,11 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             KotlinMultiplatformAndroidComponentsExtension::class.java,
             "androidComponents",
             KotlinMultiplatformAndroidComponentsExtensionImpl::class.java,
+            dslServices,
             sdkComponents,
             managedDeviceRegistry,
-            variantApiOperationsRegistrar
+            variantApiOperationsRegistrar,
+            androidExtension
         )
     }
 

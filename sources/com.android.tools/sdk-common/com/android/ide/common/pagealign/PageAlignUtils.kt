@@ -122,6 +122,16 @@ enum class AlignmentProblems {
 }
 
 /**
+ * Page alignment information for the entire APK.
+ */
+data class PageAlignmentInfo(
+    val hasElfFiles : Boolean,
+    // Key is the path to the ELF file relative to the root of the APK (ex, lib/arm64-v8a/lib.so
+    // Value is the set of alignment problems found.
+    val alignmentProblems : Map<String, Set<AlignmentProblems>>
+)
+
+/**
  * [input] is an [InputStream] that points to an APK zip input stream.
  * This function detects issues that would cause this file to fail Play Store 16k alignment checks.
  *
@@ -133,10 +143,15 @@ enum class AlignmentProblems {
  * This function doesn't assume [input] is a well-formed Elf file. If it isn't, then no problem will be reported.
  */
 fun findElfFile16kAlignmentProblems(input: ZipArchiveInputStream) : Map<String, Set<AlignmentProblems>> {
-    val problems = mutableMapOf<String, MutableSet<AlignmentProblems>>()
+    return findElfFile16kAlignmentInfo(input).alignmentProblems
+}
+
+fun findElfFile16kAlignmentInfo(input: ZipArchiveInputStream) : PageAlignmentInfo {
+    val alignmentProblems = mutableMapOf<String, MutableSet<AlignmentProblems>>()
     var entry = input.getNextZipEntry()
+    var hasElfFiles = false
     fun addProblem(name : String, problem: AlignmentProblems) {
-        problems.computeIfAbsent(name) { mutableSetOf() } .add(problem)
+        alignmentProblems.computeIfAbsent(name) { mutableSetOf() } .add(problem)
     }
     while (entry != null) {
         try {
@@ -145,6 +160,7 @@ fun findElfFile16kAlignmentProblems(input: ZipArchiveInputStream) : Map<String, 
             if (hasElfMagicNumber(input)) {
                 val minimumLoadSectionAlignment = readElfMinimumLoadSectionAlignment(input)
                 if (minimumLoadSectionAlignment == -1L) continue // Not a well-formed Elf or not 64-bit
+                hasElfFiles = true
                 if (!is16kAligned(minimumLoadSectionAlignment)) {
                     addProblem(entry.name, ElfLoadSectionsNot16kAligned)
                 }
@@ -158,18 +174,21 @@ fun findElfFile16kAlignmentProblems(input: ZipArchiveInputStream) : Map<String, 
             entry = input.getNextZipEntry()
         }
     }
-    return problems
+    return PageAlignmentInfo(
+        hasElfFiles = hasElfFiles,
+        alignmentProblems = alignmentProblems
+    )
 }
 
 /**
- * Same as [findElfFile16kAlignmentProblems] except that it accepts a [File] rather than a [ZipArchiveInputStream].
+ * Same as [findElfFile16kAlignmentInfo] except that it accepts a [File] rather than a [ZipArchiveInputStream].
  */
-fun findElfFile16kAlignmentProblems(file: File) : Map<String, Set<AlignmentProblems>> {
+fun findElfFile16kAlignmentInfo(file: File) : PageAlignmentInfo {
     FileInputStream(file).use { input ->
         ZipArchiveInputStream(input).use { zipInput ->
-            return findElfFile16kAlignmentProblems(zipInput)
+            return findElfFile16kAlignmentInfo(zipInput)
         }
     }
 }
 
-private fun is16kAligned(value : Long) = (value % PAGE_ALIGNMENT_16K) == 0L
+fun is16kAligned(value : Long) = (value % PAGE_ALIGNMENT_16K) == 0L

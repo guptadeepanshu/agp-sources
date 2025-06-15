@@ -177,7 +177,7 @@ class CentralDirectory {
    * @param file the file
    */
   CentralDirectory(ZFile file) {
-    entries = Maps.newHashMap();
+    entries = Maps.newLinkedHashMap();
     this.file = file;
     bytesSupplier = new CachedSupplier<>(this::computeByteRepresentation);
     verifyLog = file.getVerifyLog();

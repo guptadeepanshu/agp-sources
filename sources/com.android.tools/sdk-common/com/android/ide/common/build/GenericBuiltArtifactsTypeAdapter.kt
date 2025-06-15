@@ -67,8 +67,10 @@ abstract class CommonBuiltArtifactsTypeAdapter<
                 out.beginObject()
                 out.name("minApi").value(entry.minApi)
                 out.name("maxApi").value(entry.maxApi)
+                // This name should be "baselineProfileFiles", but to maintain backwards
+                // compatibility, it cannot be changed
                 out.name("baselineProfiles").beginArray()
-                entry.baselineProfiles.forEach {
+                entry.baselineProfileFiles.forEach {
                     val relativePath = projectPath.relativize(it.toPath())
                     out.value(PathUtils.toSystemIndependentPath(relativePath))
                 }
@@ -130,13 +132,15 @@ abstract class CommonBuiltArtifactsTypeAdapter<
                             when (val attributeName = reader.nextName()) {
                                 "minApi" -> minApi = reader.nextInt()
                                 "maxApi" -> maxApi = reader.nextInt()
+                                // This name should be "baselineProfileFiles", but to maintain
+                                // backwards compatibility, it cannot be changed
                                 "baselineProfiles" -> {
                                     reader.beginArray()
                                     while (reader.hasNext()) {
-                                        val baselineProfile =
+                                        val baselineProfileFile =
                                             projectPath.resolve(reader.nextString())
                                                 .normalize().toFile()
-                                        baselineProfileFiles.add(baselineProfile)
+                                        baselineProfileFiles.add(baselineProfileFile)
                                     }
                                     reader.endArray()
                                 }

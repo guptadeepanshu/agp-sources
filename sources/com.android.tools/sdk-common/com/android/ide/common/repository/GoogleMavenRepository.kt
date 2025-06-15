@@ -29,12 +29,12 @@ import java.io.IOException
 import java.io.InputStream
 import java.nio.file.Path
 import java.util.HashMap
-import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.function.Predicate
 
 const val GMAVEN_TEST_BASE_URL_ENV_VAR = "GMAVEN_TEST_BASE_URL"
 const val DEFAULT_GMAVEN_URL = "https://maven.google.com/"
+
 @JvmField
 val GMAVEN_BASE_URL = System.getenv(GMAVEN_TEST_BASE_URL_ENV_VAR) ?: DEFAULT_GMAVEN_URL
 
@@ -61,19 +61,11 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
     cacheExpiryHours, useNetwork
 ) {
 
-    companion object {
-        /** Key used in cache directories to locate the maven.google.com network cache */
-        const val MAVEN_GOOGLE_CACHE_DIR_KEY = "maven.google"
-    }
-
     private var packageMap: MutableMap<String, PackageInfo>? = null
 
     fun hasGroupId(groupId: String): Boolean {
         return getPackageMap()[groupId] != null
     }
-
-    fun findVersion(dependency: Dependency, filter: Predicate<Version>? = null): Version? =
-        findVersion(dependency, filter, dependency.explicitlyIncludesPreview)
 
     fun findVersion(
         dependency: Dependency,
@@ -86,6 +78,7 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
             dependency.hasExplicitDistinctUpperBound -> {
                 { v: Version -> predicate(v) && dependency.version?.contains(v) ?: true }
             }
+
             else -> {
                 { v: Version -> predicate(v) && dependency.version?.accepts(v) ?: true }
             }
@@ -157,9 +150,22 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         artifactId: String,
         version: Version
     ): List<Dependency> {
+        return findDependencies(groupId, artifactId, version, "compile")
+    }
+
+    /**
+     * Like [findCompileDependencies], but you can specify a specific POM scope
+     * to match, such as "runtime"
+     */
+    fun findDependencies(
+        groupId: String,
+        artifactId: String,
+        version: Version,
+        requiredScope: String
+    ): List<Dependency> {
         val packageInfo = getPackageMap()[groupId] ?: return emptyList()
         val artifactInfo = packageInfo.findArtifact(artifactId)
-        return artifactInfo?.findCompileDependencies(version, packageInfo) ?: emptyList()
+        return artifactInfo?.findDependencies(version, packageInfo, requiredScope) ?: emptyList()
     }
 
     private fun findArtifact(groupId: String, artifactId: String): ArtifactInfo? {
@@ -177,6 +183,36 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
         }
 
         return packageMap!!
+    }
+
+    protected fun <T : PackageInfo> readMasterIndex(
+        stream: InputStream,
+        map: MutableMap<String, T>,
+        factory: (String) -> T
+    ) = try {
+        stream.use {
+            val parser = KXmlParser()
+            parser.setInput(it, SdkConstants.UTF_8)
+            while (parser.next() != XmlPullParser.END_DOCUMENT) {
+                val eventType = parser.eventType
+                if (eventType == XmlPullParser.END_TAG && parser.depth > 1) {
+                    val tag = parser.name
+                    val packageInfo = factory(tag)
+                    map[tag] = packageInfo
+                } else if (eventType != XmlPullParser.START_TAG) {
+                    continue
+                }
+            }
+        }
+    } catch (e: XmlPullParserException) {
+        // Malformed XML. Most likely the file we received was not the XML file
+        // but some sort of network portal redirect HTML page. Gracefully degrade.
+    } catch (e: IOException) {
+        error(e, null)
+    }
+
+    override fun readDefaultData(relative: String): InputStream? {
+        return GoogleMavenRepository::class.java.getResourceAsStream("/versions-offline/$relative")
     }
 
     protected data class ArtifactInfo(val id: String, val versions: String) {
@@ -198,77 +234,36 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                 .filter { allowPreview || !it.isPreview }
                 .maxOrNull()
 
-        fun findCompileDependencies(
+        fun findDependencies(
             version: Version,
-            packageInfo: PackageInfo
+            packageInfo: PackageInfo,
+            requiredScope: String = "compile"
         ): List<Dependency> {
-            return dependencyInfo[version] ?: loadCompileDependencies(version, packageInfo)
+            return dependencyInfo[version] ?: loadDependencies(version, packageInfo, requiredScope)
         }
 
-        private fun loadCompileDependencies(
+        private fun loadDependencies(
             version: Version,
-            packageInfo: PackageInfo
+            packageInfo: PackageInfo,
+            requiredScope: String,
         ): List<Dependency> {
             if (findVersion({ it == version }, true) == null) {
                 // Do not attempt to load a pom file that is known not to exist
                 return emptyList()
             }
-            val dependencies = packageInfo.loadCompileDependencies(id, version)
+            val dependencies = packageInfo.loadDependencies(id, version, requiredScope)
             dependencyInfo[version] = dependencies
             return dependencies
         }
     }
 
-    override fun readDefaultData(relative: String): InputStream? {
-        return GoogleMavenRepository::class.java.getResourceAsStream("/versions-offline/$relative")
-    }
-
-    protected fun <T : PackageInfo> readMasterIndex(
-        stream: InputStream,
-        map: MutableMap<String, T>,
-        factory: (String) -> T
-    ) = try {
-            stream.use {
-                val parser = KXmlParser()
-                parser.setInput(it, SdkConstants.UTF_8)
-                while (parser.next() != XmlPullParser.END_DOCUMENT) {
-                    val eventType = parser.eventType
-                    if (eventType == XmlPullParser.END_TAG && parser.depth > 1) {
-                        val tag = parser.name
-                        val packageInfo = factory(tag)
-                        map[tag] = packageInfo
-                    } else if (eventType != XmlPullParser.START_TAG) {
-                        continue
-                    }
-                }
-            }
-        } catch (e: XmlPullParserException) {
-            // Malformed XML. Most likely the file we received was not the XML file
-            // but some sort of network portal redirect HTML page. Gracefully degrade.
-        } catch (e: IOException) {
-            error(e, null)
-        }
-
     protected open inner class PackageInfo(private val pkg: String) {
-         private val artifacts: Map<String, ArtifactInfo> by lazy {
-            initializeIndex()
-         }
 
-        open fun artifacts(): Set<String> = artifacts.values.map { it.id }.toSet()
-
-        open fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
-
-        fun loadCompileDependencies(id: String, version: Version): List<Dependency> {
-            val file = "${pkg.replace('.', '/')}/$id/$version/$id-$version.pom"
-            val stream = findData(file)
-            return stream?.use { readCompileDependenciesFromPomFile(stream, file) } ?: emptyList()
-        }
-
-        private fun initializeIndex(): Map<String, ArtifactInfo> {
+        private val artifacts: Map<String, ArtifactInfo> by lazy {
             val map = mutableMapOf<String, ArtifactInfo>()
             val stream = findData("${pkg.replace('.', '/')}/group-index.xml")
             stream?.use { readGroupData(stream, map) }
-            return map
+            return@lazy map
         }
 
         protected fun readGroupData(stream: InputStream, map: MutableMap<String, ArtifactInfo>) =
@@ -293,21 +288,41 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                 error(e, null)
             }
 
-        private fun readCompileDependenciesFromPomFile(
+        open fun artifacts(): Set<String> = artifacts.values.map { it.id }.toSet()
+
+        open fun findArtifact(id: String): ArtifactInfo? = artifacts[id]
+
+        fun loadDependencies(
+            id: String,
+            version: Version,
+            requiredScope: String
+        ): List<Dependency> {
+            val file = "${pkg.replace('.', '/')}/$id/$version/$id-$version.pom"
+            val stream = findData(file)
+            return stream?.use { readDependenciesFromPomFile(stream, file, requiredScope) }
+                ?: emptyList()
+        }
+
+        private fun readDependenciesFromPomFile(
             stream: InputStream,
-            file: String
+            file: String,
+            requiredScope: String
         ): List<Dependency> {
 
             return try {
+                val boms = mutableListOf<Dependency>()
                 val dependencies = mutableListOf<Dependency>()
                 val parser = KXmlParser()
                 parser.setInput(stream, SdkConstants.UTF_8)
                 while (parser.next() != XmlPullParser.END_DOCUMENT) {
                     val eventType = parser.eventType
-                    if (eventType == XmlPullParser.START_TAG && parser.name == "dependency") {
-                        val dependency = readCompileDependency(parser)
-                        if (dependency != null) {
-                            dependencies.add(dependency)
+                    if (eventType == XmlPullParser.START_TAG) {
+                        val name = parser.name
+                        if (name == "dependency") {
+                            val dependency = readDependency(parser, requiredScope, boms)
+                            if (dependency != null) {
+                                dependencies.add(dependency)
+                            }
                         }
                     }
                 }
@@ -322,7 +337,11 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
             }
         }
 
-        private fun readCompileDependency(parser: KXmlParser): Dependency? {
+        private fun readDependency(
+            parser: KXmlParser,
+            requiredScope: String,
+            boms: MutableList<Dependency>
+        ): Dependency? {
             var groupId = ""
             var artifactId = ""
             var version = ""
@@ -336,15 +355,35 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                             "version" -> version = parser.nextText()
                             "scope" -> scope = parser.nextText()
                         }
+
                     XmlPullParser.END_TAG ->
                         if (parser.name == "dependency") {
-                            check(groupId, "groupId")
-                            check(artifactId, "artifactId")
-                            check(version, "version")
-                            return if (scope == "compile")
+                            return if (scope == requiredScope) {
+                                check(groupId, "groupId")
+                                check(artifactId, "artifactId")
+                                if (version.isEmpty()) {
+                                    val bom =
+                                        boms.firstOrNull {
+                                            it.group == groupId && it.name == artifactId
+                                        }
+                                    version = bom?.version?.lowerBound?.toString() ?: ""
+                                }
+                                check(version, "version")
                                 Dependency(groupId, artifactId, RichVersion.parse(version))
-                            else
+                            } else if (parser.depth == 4 && groupId.isNotEmpty() &&
+                                artifactId.isNotEmpty() && version.isNotEmpty()
+                            ) {
+                                boms.add(
+                                    Dependency(
+                                        groupId,
+                                        artifactId,
+                                        RichVersion.parse(version)
+                                    )
+                                )
                                 null
+                            } else {
+                                null
+                            }
                         }
                 }
             }
@@ -356,6 +395,12 @@ abstract class GoogleMavenRepository @JvmOverloads constructor(
                 throw RuntimeException("Missing $name field")
             }
         }
+    }
+
+    companion object {
+
+        /** Key used in cache directories to locate the maven.google.com network cache */
+        const val MAVEN_GOOGLE_CACHE_DIR_KEY = "maven.google"
     }
 }
 

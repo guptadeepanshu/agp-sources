@@ -1344,6 +1344,7 @@ public final class SdkConstants {
     public static final String ATTR_TARGET_PACKAGE = "targetPackage";
     public static final String ATTR_EXTRACT_NATIVE_LIBS = "extractNativeLibs";
     public static final String ATTR_USE_EMBEDDED_DEX = "useEmbeddedDex";
+    public static final String ATTR_ISOLATED_SPLITS = "isolatedSplits";
     public static final String ATTR_SPLIT_NAME = "splitName";
     public static final String ATTR_FEATURE_SPLIT = "featureSplit";
     public static final String ATTR_TARGET_SANDBOX_VERSION = "targetSandboxVersion";
@@ -2240,6 +2241,9 @@ public final class SdkConstants {
     /** Extension of native debug symbol table files, i.e. "sym" */
     public static final String EXT_SYM = "sym";
 
+    /** Extension of journey test files, i.e. "journey.xml" */
+    public static final String EXT_JOURNEY = "journey" + DOT_XML;
+
     private static final String DOT = ".";
 
     /** Dot-Extension of the Application package Files, i.e. ".apk". */
@@ -3061,5 +3065,8 @@ public final class SdkConstants {
     public static final String SDK_DL_FONTS_FOLDER = "fonts";
 
     /** Current version for ASM dependencies. */
-    public static final String CURRENT_ASM_VERSION = "9.7";
+    public static final String CURRENT_ASM_VERSION = "9.7.1";
+
+    /** Logical ID of the primary display of an Android device. */
+    public static int PRIMARY_DISPLAY_ID = 0;
 }

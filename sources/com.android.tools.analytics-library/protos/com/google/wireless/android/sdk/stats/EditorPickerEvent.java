@@ -799,6 +799,22 @@ private static final long serialVersionUID = 0L;
          * <code>CUSTOM = 7;</code>
          */
         CUSTOM(7),
+        /**
+         * <code>AUTOMOTIVE = 8;</code>
+         */
+        AUTOMOTIVE(8),
+        /**
+         * <code>ADDITIONAL_DEVICE = 9;</code>
+         */
+        ADDITIONAL_DEVICE(9),
+        /**
+         * <code>CANONICAL_DEVICE = 10;</code>
+         */
+        CANONICAL_DEVICE(10),
+        /**
+         * <code>XR = 11;</code>
+         */
+        XR(11),
         ;
 
         /**
@@ -833,6 +849,22 @@ private static final long serialVersionUID = 0L;
          * <code>CUSTOM = 7;</code>
          */
         public static final int CUSTOM_VALUE = 7;
+        /**
+         * <code>AUTOMOTIVE = 8;</code>
+         */
+        public static final int AUTOMOTIVE_VALUE = 8;
+        /**
+         * <code>ADDITIONAL_DEVICE = 9;</code>
+         */
+        public static final int ADDITIONAL_DEVICE_VALUE = 9;
+        /**
+         * <code>CANONICAL_DEVICE = 10;</code>
+         */
+        public static final int CANONICAL_DEVICE_VALUE = 10;
+        /**
+         * <code>XR = 11;</code>
+         */
+        public static final int XR_VALUE = 11;
 
 
         public final int getNumber() {
@@ -863,6 +895,10 @@ private static final long serialVersionUID = 0L;
             case 5: return TV;
             case 6: return GENERIC;
             case 7: return CUSTOM;
+            case 8: return AUTOMOTIVE;
+            case 9: return ADDITIONAL_DEVICE;
+            case 10: return CANONICAL_DEVICE;
+            case 11: return XR;
             default: return null;
           }
         }

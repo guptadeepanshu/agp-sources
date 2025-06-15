@@ -31,7 +31,7 @@ internal fun writeMergedMetadata(
     overrideMinCompileSdk: Int?,
     overrideMinCompileExt: Int?
 ) {
-    val parsedAarsMetadata = metadataFiles.map { AarMetadataReader(it) }
+    val parsedAarsMetadata = metadataFiles.map { AarMetadataReader.load(it) }
 
     val mergedMetadata = object : AarMetadata {
         override var minCompileSdk: Int? = 0 // No minimum restriction.

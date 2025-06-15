@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.dsl
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
@@ -33,13 +32,12 @@ abstract class DynamicFeatureExtension(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: DynamicFeatureExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : AppExtension(
     dslServices,
     bootClasspathConfig,
-    buildOutputs, sourceSetManager, extraModelInfo, false, stats
+    buildOutputs, sourceSetManager, false, stats
 ), InternalDynamicFeatureExtension by publicExtensionImpl {
 
     // Overrides to make the parameterized types match, due to BaseExtension being part of

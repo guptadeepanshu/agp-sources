@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.plugins
 
 import com.android.SdkConstants
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.attributes.BuildTypeAttr
@@ -33,6 +34,8 @@ import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.fusedlibrary.getFusedLibraryDependencyModuleVersionIdentifiers
 import com.android.build.gradle.internal.fusedlibrary.toDependenciesProvider
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.publishing.getAttributes
+import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
@@ -55,7 +58,6 @@ import com.google.wireless.android.sdk.stats.GradleBuildProject
 import groovy.namespace.QName
 import groovy.util.Node
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
@@ -66,11 +68,11 @@ import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.component.SoftwareComponentFactory
 import org.gradle.api.configuration.BuildFeatures
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.specs.Spec
 import org.gradle.build.event.BuildEventsListenerRegistry
 import javax.inject.Inject
 
@@ -143,8 +145,7 @@ class FusedLibraryPlugin @Inject constructor(
         val bundleTaskProvider = variantScope
                 .artifacts
                 .getArtifactContainer(FusedLibraryInternalArtifactType.BUNDLED_LIBRARY)
-                .getTaskProviders()
-                .last()
+                .getFinalProvider()
 
         val runtimePublication = project.configurations.create("runtimePublication").also {
             it.isCanBeConsumed = false
@@ -259,7 +260,7 @@ class FusedLibraryPlugin @Inject constructor(
     }
 
     override fun getAnalyticsPluginType(): GradleBuildProject.PluginType =
-            GradleBuildProject.PluginType.FUSED_LIBRARIES
+            GradleBuildProject.PluginType.FUSED_LIBRARY
 
     override fun apply(project: Project) {
         super.basePluginApply(project, buildFeatures)
@@ -293,11 +294,6 @@ class FusedLibraryPlugin @Inject constructor(
                 buildType,
             )
         }
-        val includeNonTransitive = project.configurations.create("includeNonTransitive").also {
-            it.isTransitive = false
-            it.extendsFrom(include)
-        }
-
         // This is the internal configuration that will be used to feed tasks that require access
         // to the resolved 'include' dependency. It is for JAVA_API usage which mean all transitive
         // dependencies that are implementation() scoped will not be included.
@@ -347,17 +343,17 @@ class FusedLibraryPlugin @Inject constructor(
         // This is the configuration that will contain all the JAVA_RUNTIME dependencies that are
         // not fused in the resulting aar library.
         project.configurations.create("runtimeElements") { runtimeElements ->
+
             configureElements(
                 project,
                 runtimeElements,
                 Usage.JAVA_RUNTIME,
                 variantScope.artifacts,
                 mapOf(
-                    FusedLibraryInternalArtifactType.BUNDLED_LIBRARY to
-                            AndroidArtifacts.ArtifactType.AAR
-                )
+                FusedLibraryInternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME to
+                        AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
             )
-            runtimeElements.extendsFrom(includeNonTransitive)
+            runtimeElements.extendsFrom(include)
         }
 
         val configurationsToAdd = listOf(fusedApi, fusedRuntime)

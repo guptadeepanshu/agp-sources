@@ -55,4 +55,19 @@ public interface DebuggerEventOrBuilder extends
    * <code>optional .android_studio.DebuggerEvent.FramesViewUpdated frames_view_updated = 3 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdatedOrBuilder getFramesViewUpdatedOrBuilder();
+
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   * @return Whether the smartStepTargetFilteringPerformed field is set.
+   */
+  boolean hasSmartStepTargetFilteringPerformed();
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   * @return The smartStepTargetFilteringPerformed.
+   */
+  com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getSmartStepTargetFilteringPerformed();
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder getSmartStepTargetFilteringPerformedOrBuilder();
 }

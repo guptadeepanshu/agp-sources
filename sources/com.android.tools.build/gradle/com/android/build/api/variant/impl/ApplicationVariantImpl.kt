@@ -210,7 +210,7 @@ open class ApplicationVariantImpl @Inject constructor(
     override val needAssetPackTasks: Boolean
         get() = global.assetPacks.isNotEmpty()
 
-    override val debuggable: Boolean = dslInfo.isDebuggable
+    override val debuggable: Boolean = variantBuilder.debuggable
     override val profileable: Boolean
         get() = variantBuilder._profileable
 

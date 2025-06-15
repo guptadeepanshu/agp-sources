@@ -123,9 +123,9 @@ private static final long serialVersionUID = 0L;
      * The 'com.android.fused-library' plugin
      * </pre>
      *
-     * <code>FUSED_LIBRARIES = 8;</code>
+     * <code>FUSED_LIBRARY = 8;</code>
      */
-    FUSED_LIBRARIES(8),
+    FUSED_LIBRARY(8),
     /**
      * <pre>
      * the 'com.android.privacy-sandbox-sdk' plugin
@@ -209,9 +209,9 @@ private static final long serialVersionUID = 0L;
      * The 'com.android.fused-library' plugin
      * </pre>
      *
-     * <code>FUSED_LIBRARIES = 8;</code>
+     * <code>FUSED_LIBRARY = 8;</code>
      */
-    public static final int FUSED_LIBRARIES_VALUE = 8;
+    public static final int FUSED_LIBRARY_VALUE = 8;
     /**
      * <pre>
      * the 'com.android.privacy-sandbox-sdk' plugin
@@ -258,7 +258,7 @@ private static final long serialVersionUID = 0L;
         case 5: return INSTANTAPP;
         case 6: return FEATURE;
         case 7: return DYNAMIC_FEATURE;
-        case 8: return FUSED_LIBRARIES;
+        case 8: return FUSED_LIBRARY;
         case 9: return PRIVACY_SANDBOX_SDK;
         case 10: return KOTLIN_MULTIPLATFORM_ANDROID_LIBRARY;
         default: return null;
@@ -2566,7 +2566,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-   *     See studio_stats.proto;l=4524
+   *     See studio_stats.proto;l=4579
    * @return A list containing the pluginNames.
    */
   @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
@@ -2582,7 +2582,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-   *     See studio_stats.proto;l=4524
+   *     See studio_stats.proto;l=4579
    * @return The count of pluginNames.
    */
   @java.lang.Deprecated public int getPluginNamesCount() {
@@ -2597,7 +2597,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-   *     See studio_stats.proto;l=4524
+   *     See studio_stats.proto;l=4579
    * @param index The index of the element to return.
    * @return The pluginNames at the given index.
    */
@@ -2613,7 +2613,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-   *     See studio_stats.proto;l=4524
+   *     See studio_stats.proto;l=4579
    * @param index The index of the value to return.
    * @return The bytes of the pluginNames at the given index.
    */
@@ -5795,7 +5795,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @return A list containing the pluginNames.
      */
     @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
@@ -5812,7 +5812,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @return The count of pluginNames.
      */
     @java.lang.Deprecated public int getPluginNamesCount() {
@@ -5827,7 +5827,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param index The index of the element to return.
      * @return The pluginNames at the given index.
      */
@@ -5843,7 +5843,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param index The index of the value to return.
      * @return The bytes of the pluginNames at the given index.
      */
@@ -5860,7 +5860,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param index The index to set the value at.
      * @param value The pluginNames to set.
      * @return This builder for chaining.
@@ -5883,7 +5883,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param value The pluginNames to add.
      * @return This builder for chaining.
      */
@@ -5905,7 +5905,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param values The pluginNames to add.
      * @return This builder for chaining.
      */
@@ -5927,7 +5927,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearPluginNames() {
@@ -5946,7 +5946,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @deprecated android_studio.GradleBuildProject.plugin_names is deprecated.
-     *     See studio_stats.proto;l=4524
+     *     See studio_stats.proto;l=4579
      * @param value The bytes of the pluginNames to add.
      * @return This builder for chaining.
      */

@@ -22,7 +22,6 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.LibraryVariant
 import com.android.build.gradle.internal.DependenciesExtension
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -34,7 +33,6 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
 import com.google.wireless.android.sdk.stats.GradleBuildProject
-import org.gradle.api.Action
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.internal.DefaultDomainObjectSet
@@ -46,7 +44,6 @@ open class LibraryExtensionInternal(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: LibraryExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : LibraryExtension(
@@ -54,7 +51,6 @@ open class LibraryExtensionInternal(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     publicExtensionImpl,
     stats,
 ) {
@@ -80,7 +76,6 @@ open class LibraryExtension(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: LibraryExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : TestedExtension(
@@ -88,7 +83,6 @@ open class LibraryExtension(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     false,
     stats
 ),

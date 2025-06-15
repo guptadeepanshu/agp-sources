@@ -138,11 +138,12 @@ import javax.inject.Inject
  * }
  * </pre>
  */
-abstract class PackagingOptions
-@Inject @WithLazyInitialization("lazyInit") constructor() :
+abstract class PackagingOptions:
     com.android.builder.model.PackagingOptions,
     com.android.build.api.dsl.Packaging {
 
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         setExcludes(defaultExcludes)
         setMerges(defaultMerges)

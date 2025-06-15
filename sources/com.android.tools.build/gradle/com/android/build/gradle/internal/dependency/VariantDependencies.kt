@@ -29,10 +29,10 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APKS_FROM_BUNDLE
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.BASE_MODULE_LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_DEX
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_NAME
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_JAVA_RES
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
@@ -499,17 +499,30 @@ class VariantDependencies internal constructor(
                 runtimeClasspath.dependencies.add(project.dependencies.create(project))
             }
 
-            project.objects.named(
+            val aarLibraryElements = project.objects.named(
                 LibraryElements::class.java,
                 AndroidArtifacts.ArtifactType.AAR.type
-            ).let { aar ->
-                apiPublication?.attributes?.attribute(
-                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
-                    aar
+            )
+
+            apiPublication?.attributes?.apply {
+                attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, Usage.JAVA_API)
                 )
-                runtimePublication?.attributes?.attribute(
+                attribute(
                     LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
-                    aar
+                    aarLibraryElements
+                )
+            }
+
+            runtimePublication?.attributes?.apply {
+                attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+                )
+                attribute(
+                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                    aarLibraryElements
                 )
             }
 
@@ -533,6 +546,18 @@ class VariantDependencies internal constructor(
                 )] = runtimePublication
             }
 
+            val annotationProcessorConfiguration = if (dslInfo.withJava) {
+                val annotationProcessorClasspath = project.configurations.maybeCreate("annotationProcessorClasspath").also {
+                    it.isCanBeConsumed = false
+                    it.isVisible = false
+                }
+
+                project.configurations.findByName("kapt")?.let {
+                    annotationProcessorClasspath.extendsFrom(it)
+                }
+                annotationProcessorClasspath
+            } else null
+
             return VariantDependencies(
                 variantName = dslInfo.componentIdentity.name,
                 componentType = ComponentTypeImpl.KMP_ANDROID,
@@ -542,7 +567,7 @@ class VariantDependencies internal constructor(
                 sourceSetImplementationConfigurations = emptySet(),
                 elements = elements,
                 providedClasspath = null,
-                annotationProcessorConfiguration = null,
+                annotationProcessorConfiguration = annotationProcessorConfiguration,
                 reverseMetadataValuesConfiguration = null,
                 wearAppConfiguration = null,
                 testedVariant = null,

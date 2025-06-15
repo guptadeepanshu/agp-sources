@@ -121,7 +121,13 @@ class ManifestData(
      * Returns value of the `useEmbeddedDex` attribute of the `application` tag, if
      * present.
      */
-    var useEmbeddedDex: Boolean? = null
+    var useEmbeddedDex: Boolean? = null,
+
+    /**
+     * The value of the `isolatedSplits` attribute of the `application` tag, or `null` if it is not
+     * specified.
+     */
+    var isolatedSplits: Boolean? = null
 ) {
 
     /**
@@ -152,6 +158,7 @@ class ManifestData(
         if (testLabel != other.testLabel) return false
         if (extractNativeLibs != other.extractNativeLibs) return false
         if (useEmbeddedDex != other.useEmbeddedDex) return false
+        if (isolatedSplits != other.isolatedSplits) return false
 
         return true
     }
@@ -169,6 +176,7 @@ class ManifestData(
         result = 31 * result + (testLabel?.hashCode() ?: 0)
         result = 31 * result + (extractNativeLibs?.hashCode() ?: 0)
         result = 31 * result + (useEmbeddedDex?.hashCode() ?: 0)
+        result = 31 * result + (isolatedSplits?.hashCode() ?: 0)
         return result
     }
 }
@@ -287,6 +295,12 @@ fun parseManifest(
                                 attributes.getValue(
                                     SdkConstants.ANDROID_URI,
                                     SdkConstants.ATTR_USE_EMBEDDED_DEX
+                                )?.toBoolean()
+
+                            data.isolatedSplits =
+                                attributes.getValue(
+                                    SdkConstants.ANDROID_URI,
+                                    SdkConstants.ATTR_ISOLATED_SPLITS
                                 )?.toBoolean()
                         }
                     }

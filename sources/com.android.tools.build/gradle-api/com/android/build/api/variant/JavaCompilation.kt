@@ -17,6 +17,7 @@
 package com.android.build.api.variant
 
 import org.gradle.api.Incubating
+import org.gradle.api.artifacts.Configuration
 
 /**
  * Build-time properties for Java compile inside a [Component]
@@ -30,4 +31,14 @@ interface JavaCompilation {
      * Returns the [AnnotationProcessor] for configuring Java annotation processor.
      */
     val annotationProcessor: AnnotationProcessor
+
+    /**
+     * Access to the variant's annotation processor [Configuration]; for example, the
+     * debugAnnotationProcessor [Configuration] for the debug variant.
+     *
+     * The returned [Configuration] should not be resolved until execution time.
+     */
+    @get:Incubating
+    val annotationProcessorConfiguration: Configuration
+
 }

@@ -34,6 +34,5 @@ class TestVariantData(
 ) : ApkVariantData(
     componentIdentity,
     artifacts,
-    services,
-    taskContainer
+    services
 )

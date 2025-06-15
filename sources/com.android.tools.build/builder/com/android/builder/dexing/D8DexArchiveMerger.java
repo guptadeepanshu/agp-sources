@@ -35,8 +35,6 @@ import com.android.tools.r8.origin.PathOrigin;
 import com.android.tools.r8.startup.StartupProfileBuilder;
 import com.android.tools.r8.startup.StartupProfileProvider;
 
-import com.google.common.util.concurrent.MoreExecutors;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -47,7 +45,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -66,19 +63,19 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
     private final int minSdkVersion;
     @NonNull private final CompilationMode compilationMode;
     @NonNull private final MessageReceiver messageReceiver;
-    @Nullable private final ForkJoinPool forkJoinPool;
+    @NonNull private final ExecutorService d8ExecutorService;
 
     public D8DexArchiveMerger(
             @Nonnull MessageReceiver messageReceiver,
             @NonNull DexingType dexingType,
             int minSdkVersion,
             @NonNull CompilationMode compilationMode,
-            @Nullable ForkJoinPool forkJoinPool) {
+            @NonNull ExecutorService d8ExecutorService) {
         this.dexingType = dexingType;
         this.minSdkVersion = minSdkVersion;
         this.compilationMode = compilationMode;
         this.messageReceiver = messageReceiver;
-        this.forkJoinPool = forkJoinPool;
+        this.d8ExecutorService = d8ExecutorService;
     }
 
     @Override
@@ -216,9 +213,7 @@ final class D8DexArchiveMerger implements DexArchiveMerger {
                     .setOutput(outputDir, OutputMode.DexIndexed)
                     .setDisableDesugaring(true)
                     .setIntermediate(false);
-            ExecutorService executorService =
-                    forkJoinPool != null ? forkJoinPool : MoreExecutors.newDirectExecutorService();
-            D8.run(builder.build(), executorService);
+            D8.run(builder.build(), d8ExecutorService);
         } catch (CompilationFailedException e) {
             throw getMergingExceptionToRethrow(e, d8DiagnosticsHandler);
         }

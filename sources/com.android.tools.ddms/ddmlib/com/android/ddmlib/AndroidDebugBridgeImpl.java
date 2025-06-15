@@ -980,29 +980,26 @@ class AndroidDebugBridgeImpl extends AndroidDebugBridgeBase {
     }
 
     private ListenableFuture<List<AdbDevice>> getRawDeviceList(@NonNull final File adb) {
-        return logCall(
-                AdbDelegateUsageTracker.Method.GET_RAW_DEVICE_LIST,
-                () ->
-                        runAdb(
-                                adb,
-                                (Process process, BufferedReader br) -> {
-                                    // The first line of output is a header, not part of the device
-                                    // list. Skip it.
-                                    br.readLine();
-                                    List<AdbDevice> result = new ArrayList<>();
-                                    String line;
-                                    while ((line = br.readLine()) != null) {
-                                        AdbDevice device = AdbDevice.parseAdbLine(line);
+        return runAdb(
+                adb,
+                (Process process, BufferedReader br) -> {
+                    // The first line of output is a header, not part of the device
+                    // list. Skip it.
+                    br.readLine();
+                    List<AdbDevice> result = new ArrayList<>();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        AdbDevice device = AdbDevice.parseAdbLine(line);
 
-                                        if (device != null) {
-                                            result.add(device);
-                                        }
-                                    }
+                        if (device != null) {
+                            result.add(device);
+                        }
+                    }
 
-                                    return result;
-                                },
-                                "devices",
-                                "-l"));
+                    return result;
+                },
+                "devices",
+                "-l");
     }
 
     @NonNull

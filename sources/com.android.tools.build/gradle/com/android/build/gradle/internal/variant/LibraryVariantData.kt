@@ -17,7 +17,6 @@ package com.android.build.gradle.internal.variant
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.ComponentType
 
@@ -25,13 +24,11 @@ import com.android.builder.core.ComponentType
 class LibraryVariantData(
     componentIdentity: ComponentIdentity,
     artifacts: ArtifactsImpl,
-    services: VariantServices,
-    taskContainer: MutableTaskContainer
+    services: VariantServices
 ) : BaseVariantData(
     componentIdentity,
     artifacts,
-    services,
-    taskContainer
+    services
 ), TestedVariantData {
     private val testVariants: MutableMap<ComponentType, TestVariantData> = mutableMapOf()
 

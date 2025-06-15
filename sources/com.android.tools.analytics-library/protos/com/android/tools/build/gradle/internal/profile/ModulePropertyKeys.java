@@ -124,6 +124,10 @@ public enum ModulePropertyKeys
    * <code>MODULE_FUSED_LIBRARY_VALIDATE_DEPENDENCIES = 28;</code>
    */
   MODULE_FUSED_LIBRARY_VALIDATE_DEPENDENCIES(28),
+  /**
+   * <code>MODULE_BUILD_ALL_ABIS_IGNORING_IDE_OPTIMIZATIONS = 29;</code>
+   */
+  MODULE_BUILD_ALL_ABIS_IGNORING_IDE_OPTIMIZATIONS(29),
   UNRECOGNIZED(-1),
   ;
 
@@ -243,6 +247,10 @@ public enum ModulePropertyKeys
    * <code>MODULE_FUSED_LIBRARY_VALIDATE_DEPENDENCIES = 28;</code>
    */
   public static final int MODULE_FUSED_LIBRARY_VALIDATE_DEPENDENCIES_VALUE = 28;
+  /**
+   * <code>MODULE_BUILD_ALL_ABIS_IGNORING_IDE_OPTIMIZATIONS = 29;</code>
+   */
+  public static final int MODULE_BUILD_ALL_ABIS_IGNORING_IDE_OPTIMIZATIONS_VALUE = 29;
 
 
   public final int getNumber() {
@@ -298,6 +306,7 @@ public enum ModulePropertyKeys
       case 26: return MODULE_R8_EXPERIMENTAL_PARTIAL_SHRINKING_INCLUDE_PATTERNS;
       case 27: return MODULE_R8_EXPERIMENTAL_PARTIAL_SHRINKING_EXCLUDE_PATTERNS;
       case 28: return MODULE_FUSED_LIBRARY_VALIDATE_DEPENDENCIES;
+      case 29: return MODULE_BUILD_ALL_ABIS_IGNORING_IDE_OPTIMIZATIONS;
       default: return null;
     }
   }

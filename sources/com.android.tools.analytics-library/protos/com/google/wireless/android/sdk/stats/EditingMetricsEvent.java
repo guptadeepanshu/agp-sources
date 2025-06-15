@@ -2110,6 +2110,2130 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface QuickDocEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.EditingMetricsEvent.QuickDocEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return Whether the fileType field is set.
+     */
+    boolean hasFileType();
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return The fileType.
+     */
+    com.google.wireless.android.sdk.stats.EditorFileType getFileType();
+
+    /**
+     * <pre>
+     * The amount oftime the quick doc was shown to the user.
+     * </pre>
+     *
+     * <code>optional uint64 shown_duration_ms = 2;</code>
+     * @return Whether the shownDurationMs field is set.
+     */
+    boolean hasShownDurationMs();
+    /**
+     * <pre>
+     * The amount oftime the quick doc was shown to the user.
+     * </pre>
+     *
+     * <code>optional uint64 shown_duration_ms = 2;</code>
+     * @return The shownDurationMs.
+     */
+    long getShownDurationMs();
+  }
+  /**
+   * <pre>
+   * Event containing metrics about quick documentation shown for all
+   * DocumentationTargets.
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.EditingMetricsEvent.QuickDocEvent}
+   */
+  public static final class QuickDocEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.EditingMetricsEvent.QuickDocEvent)
+      QuickDocEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use QuickDocEvent.newBuilder() to construct.
+    private QuickDocEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private QuickDocEvent() {
+      fileType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new QuickDocEvent();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_QuickDocEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_QuickDocEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.class, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int FILE_TYPE_FIELD_NUMBER = 1;
+    private int fileType_ = 0;
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return Whether the fileType field is set.
+     */
+    @java.lang.Override public boolean hasFileType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return The fileType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
+      return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+    }
+
+    public static final int SHOWN_DURATION_MS_FIELD_NUMBER = 2;
+    private long shownDurationMs_ = 0L;
+    /**
+     * <pre>
+     * The amount oftime the quick doc was shown to the user.
+     * </pre>
+     *
+     * <code>optional uint64 shown_duration_ms = 2;</code>
+     * @return Whether the shownDurationMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasShownDurationMs() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * The amount oftime the quick doc was shown to the user.
+     * </pre>
+     *
+     * <code>optional uint64 shown_duration_ms = 2;</code>
+     * @return The shownDurationMs.
+     */
+    @java.lang.Override
+    public long getShownDurationMs() {
+      return shownDurationMs_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, fileType_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeUInt64(2, shownDurationMs_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, fileType_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, shownDurationMs_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent other = (com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent) obj;
+
+      if (hasFileType() != other.hasFileType()) return false;
+      if (hasFileType()) {
+        if (fileType_ != other.fileType_) return false;
+      }
+      if (hasShownDurationMs() != other.hasShownDurationMs()) return false;
+      if (hasShownDurationMs()) {
+        if (getShownDurationMs()
+            != other.getShownDurationMs()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasFileType()) {
+        hash = (37 * hash) + FILE_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + fileType_;
+      }
+      if (hasShownDurationMs()) {
+        hash = (37 * hash) + SHOWN_DURATION_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getShownDurationMs());
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Event containing metrics about quick documentation shown for all
+     * DocumentationTargets.
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.EditingMetricsEvent.QuickDocEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.EditingMetricsEvent.QuickDocEvent)
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_QuickDocEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_QuickDocEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.class, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        fileType_ = 0;
+        shownDurationMs_ = 0L;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_QuickDocEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent build() {
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent result = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.shownDurationMs_ = shownDurationMs_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance()) return this;
+        if (other.hasFileType()) {
+          setFileType(other.getFileType());
+        }
+        if (other.hasShownDurationMs()) {
+          setShownDurationMs(other.getShownDurationMs());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.EditorFileType tmpValue =
+                    com.google.wireless.android.sdk.stats.EditorFileType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  fileType_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 16: {
+                shownDurationMs_ = input.readUInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int fileType_ = 0;
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return Whether the fileType field is set.
+       */
+      @java.lang.Override public boolean hasFileType() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return The fileType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
+        return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @param value The fileType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        fileType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fileType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long shownDurationMs_ ;
+      /**
+       * <pre>
+       * The amount oftime the quick doc was shown to the user.
+       * </pre>
+       *
+       * <code>optional uint64 shown_duration_ms = 2;</code>
+       * @return Whether the shownDurationMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasShownDurationMs() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * The amount oftime the quick doc was shown to the user.
+       * </pre>
+       *
+       * <code>optional uint64 shown_duration_ms = 2;</code>
+       * @return The shownDurationMs.
+       */
+      @java.lang.Override
+      public long getShownDurationMs() {
+        return shownDurationMs_;
+      }
+      /**
+       * <pre>
+       * The amount oftime the quick doc was shown to the user.
+       * </pre>
+       *
+       * <code>optional uint64 shown_duration_ms = 2;</code>
+       * @param value The shownDurationMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setShownDurationMs(long value) {
+
+        shownDurationMs_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The amount oftime the quick doc was shown to the user.
+       * </pre>
+       *
+       * <code>optional uint64 shown_duration_ms = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearShownDurationMs() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        shownDurationMs_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.EditingMetricsEvent.QuickDocEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.EditingMetricsEvent.QuickDocEvent)
+    private static final com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<QuickDocEvent>
+        PARSER = new com.google.protobuf.AbstractParser<QuickDocEvent>() {
+      @java.lang.Override
+      public QuickDocEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<QuickDocEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<QuickDocEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ExternalQuickDocEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.EditingMetricsEvent.ExternalQuickDocEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return Whether the fileType field is set.
+     */
+    boolean hasFileType();
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return The fileType.
+     */
+    com.google.wireless.android.sdk.stats.EditorFileType getFileType();
+
+    /**
+     * <pre>
+     * The time it took to fetch the documentation from the server.
+     * </pre>
+     *
+     * <code>optional uint64 fetch_duration_ms = 2;</code>
+     * @return Whether the fetchDurationMs field is set.
+     */
+    boolean hasFetchDurationMs();
+    /**
+     * <pre>
+     * The time it took to fetch the documentation from the server.
+     * </pre>
+     *
+     * <code>optional uint64 fetch_duration_ms = 2;</code>
+     * @return The fetchDurationMs.
+     */
+    long getFetchDurationMs();
+
+    /**
+     * <pre>
+     * The fetch was successful.
+     * </pre>
+     *
+     * <code>optional bool success = 3;</code>
+     * @return Whether the success field is set.
+     */
+    boolean hasSuccess();
+    /**
+     * <pre>
+     * The fetch was successful.
+     * </pre>
+     *
+     * <code>optional bool success = 3;</code>
+     * @return The success.
+     */
+    boolean getSuccess();
+
+    /**
+     * <pre>
+     * Our local cache had a fresh copy of the documentation.
+     * </pre>
+     *
+     * <code>optional bool cache_hit = 4;</code>
+     * @return Whether the cacheHit field is set.
+     */
+    boolean hasCacheHit();
+    /**
+     * <pre>
+     * Our local cache had a fresh copy of the documentation.
+     * </pre>
+     *
+     * <code>optional bool cache_hit = 4;</code>
+     * @return The cacheHit.
+     */
+    boolean getCacheHit();
+
+    /**
+     * <pre>
+     * The server returned a 304 ("Not Modified") response, so we used the
+     * cached copy, even if it was otherwise stale. (If this is true, but
+     * success is false, it means the server returned a 304, but we did not have
+     * a cached copy.)
+     * </pre>
+     *
+     * <code>optional bool server_not_modified = 5;</code>
+     * @return Whether the serverNotModified field is set.
+     */
+    boolean hasServerNotModified();
+    /**
+     * <pre>
+     * The server returned a 304 ("Not Modified") response, so we used the
+     * cached copy, even if it was otherwise stale. (If this is true, but
+     * success is false, it means the server returned a 304, but we did not have
+     * a cached copy.)
+     * </pre>
+     *
+     * <code>optional bool server_not_modified = 5;</code>
+     * @return The serverNotModified.
+     */
+    boolean getServerNotModified();
+
+    /**
+     * <pre>
+     * How many bytes were fetched from the server.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_fetched = 6;</code>
+     * @return Whether the numBytesFetched field is set.
+     */
+    boolean hasNumBytesFetched();
+    /**
+     * <pre>
+     * How many bytes were fetched from the server.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_fetched = 6;</code>
+     * @return The numBytesFetched.
+     */
+    long getNumBytesFetched();
+
+    /**
+     * <pre>
+     * How many bytes were cached in the local cache as a result of this fetch.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_cached = 7;</code>
+     * @return Whether the numBytesCached field is set.
+     */
+    boolean hasNumBytesCached();
+    /**
+     * <pre>
+     * How many bytes were cached in the local cache as a result of this fetch.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_cached = 7;</code>
+     * @return The numBytesCached.
+     */
+    long getNumBytesCached();
+
+    /**
+     * <pre>
+     * How many bytes were actually displayed to the user.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_displayed = 8;</code>
+     * @return Whether the numBytesDisplayed field is set.
+     */
+    boolean hasNumBytesDisplayed();
+    /**
+     * <pre>
+     * How many bytes were actually displayed to the user.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_displayed = 8;</code>
+     * @return The numBytesDisplayed.
+     */
+    long getNumBytesDisplayed();
+  }
+  /**
+   * <pre>
+   * Event containing metrics about quick documentation requiring communication
+   * with an external server.
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.EditingMetricsEvent.ExternalQuickDocEvent}
+   */
+  public static final class ExternalQuickDocEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.EditingMetricsEvent.ExternalQuickDocEvent)
+      ExternalQuickDocEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ExternalQuickDocEvent.newBuilder() to construct.
+    private ExternalQuickDocEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ExternalQuickDocEvent() {
+      fileType_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ExternalQuickDocEvent();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_ExternalQuickDocEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_ExternalQuickDocEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.class, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int FILE_TYPE_FIELD_NUMBER = 1;
+    private int fileType_ = 0;
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return Whether the fileType field is set.
+     */
+    @java.lang.Override public boolean hasFileType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The type of file that the quick doc was shown for.
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+     * @return The fileType.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+      com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
+      return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+    }
+
+    public static final int FETCH_DURATION_MS_FIELD_NUMBER = 2;
+    private long fetchDurationMs_ = 0L;
+    /**
+     * <pre>
+     * The time it took to fetch the documentation from the server.
+     * </pre>
+     *
+     * <code>optional uint64 fetch_duration_ms = 2;</code>
+     * @return Whether the fetchDurationMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasFetchDurationMs() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * The time it took to fetch the documentation from the server.
+     * </pre>
+     *
+     * <code>optional uint64 fetch_duration_ms = 2;</code>
+     * @return The fetchDurationMs.
+     */
+    @java.lang.Override
+    public long getFetchDurationMs() {
+      return fetchDurationMs_;
+    }
+
+    public static final int SUCCESS_FIELD_NUMBER = 3;
+    private boolean success_ = false;
+    /**
+     * <pre>
+     * The fetch was successful.
+     * </pre>
+     *
+     * <code>optional bool success = 3;</code>
+     * @return Whether the success field is set.
+     */
+    @java.lang.Override
+    public boolean hasSuccess() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * The fetch was successful.
+     * </pre>
+     *
+     * <code>optional bool success = 3;</code>
+     * @return The success.
+     */
+    @java.lang.Override
+    public boolean getSuccess() {
+      return success_;
+    }
+
+    public static final int CACHE_HIT_FIELD_NUMBER = 4;
+    private boolean cacheHit_ = false;
+    /**
+     * <pre>
+     * Our local cache had a fresh copy of the documentation.
+     * </pre>
+     *
+     * <code>optional bool cache_hit = 4;</code>
+     * @return Whether the cacheHit field is set.
+     */
+    @java.lang.Override
+    public boolean hasCacheHit() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Our local cache had a fresh copy of the documentation.
+     * </pre>
+     *
+     * <code>optional bool cache_hit = 4;</code>
+     * @return The cacheHit.
+     */
+    @java.lang.Override
+    public boolean getCacheHit() {
+      return cacheHit_;
+    }
+
+    public static final int SERVER_NOT_MODIFIED_FIELD_NUMBER = 5;
+    private boolean serverNotModified_ = false;
+    /**
+     * <pre>
+     * The server returned a 304 ("Not Modified") response, so we used the
+     * cached copy, even if it was otherwise stale. (If this is true, but
+     * success is false, it means the server returned a 304, but we did not have
+     * a cached copy.)
+     * </pre>
+     *
+     * <code>optional bool server_not_modified = 5;</code>
+     * @return Whether the serverNotModified field is set.
+     */
+    @java.lang.Override
+    public boolean hasServerNotModified() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * The server returned a 304 ("Not Modified") response, so we used the
+     * cached copy, even if it was otherwise stale. (If this is true, but
+     * success is false, it means the server returned a 304, but we did not have
+     * a cached copy.)
+     * </pre>
+     *
+     * <code>optional bool server_not_modified = 5;</code>
+     * @return The serverNotModified.
+     */
+    @java.lang.Override
+    public boolean getServerNotModified() {
+      return serverNotModified_;
+    }
+
+    public static final int NUM_BYTES_FETCHED_FIELD_NUMBER = 6;
+    private long numBytesFetched_ = 0L;
+    /**
+     * <pre>
+     * How many bytes were fetched from the server.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_fetched = 6;</code>
+     * @return Whether the numBytesFetched field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumBytesFetched() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * How many bytes were fetched from the server.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_fetched = 6;</code>
+     * @return The numBytesFetched.
+     */
+    @java.lang.Override
+    public long getNumBytesFetched() {
+      return numBytesFetched_;
+    }
+
+    public static final int NUM_BYTES_CACHED_FIELD_NUMBER = 7;
+    private long numBytesCached_ = 0L;
+    /**
+     * <pre>
+     * How many bytes were cached in the local cache as a result of this fetch.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_cached = 7;</code>
+     * @return Whether the numBytesCached field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumBytesCached() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * How many bytes were cached in the local cache as a result of this fetch.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_cached = 7;</code>
+     * @return The numBytesCached.
+     */
+    @java.lang.Override
+    public long getNumBytesCached() {
+      return numBytesCached_;
+    }
+
+    public static final int NUM_BYTES_DISPLAYED_FIELD_NUMBER = 8;
+    private long numBytesDisplayed_ = 0L;
+    /**
+     * <pre>
+     * How many bytes were actually displayed to the user.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_displayed = 8;</code>
+     * @return Whether the numBytesDisplayed field is set.
+     */
+    @java.lang.Override
+    public boolean hasNumBytesDisplayed() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * How many bytes were actually displayed to the user.
+     * </pre>
+     *
+     * <code>optional uint64 num_bytes_displayed = 8;</code>
+     * @return The numBytesDisplayed.
+     */
+    @java.lang.Override
+    public long getNumBytesDisplayed() {
+      return numBytesDisplayed_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, fileType_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeUInt64(2, fetchDurationMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeBool(3, success_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeBool(4, cacheHit_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeBool(5, serverNotModified_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeUInt64(6, numBytesFetched_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeUInt64(7, numBytesCached_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        output.writeUInt64(8, numBytesDisplayed_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, fileType_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, fetchDurationMs_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, success_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, cacheHit_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, serverNotModified_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(6, numBytesFetched_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(7, numBytesCached_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, numBytesDisplayed_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent other = (com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent) obj;
+
+      if (hasFileType() != other.hasFileType()) return false;
+      if (hasFileType()) {
+        if (fileType_ != other.fileType_) return false;
+      }
+      if (hasFetchDurationMs() != other.hasFetchDurationMs()) return false;
+      if (hasFetchDurationMs()) {
+        if (getFetchDurationMs()
+            != other.getFetchDurationMs()) return false;
+      }
+      if (hasSuccess() != other.hasSuccess()) return false;
+      if (hasSuccess()) {
+        if (getSuccess()
+            != other.getSuccess()) return false;
+      }
+      if (hasCacheHit() != other.hasCacheHit()) return false;
+      if (hasCacheHit()) {
+        if (getCacheHit()
+            != other.getCacheHit()) return false;
+      }
+      if (hasServerNotModified() != other.hasServerNotModified()) return false;
+      if (hasServerNotModified()) {
+        if (getServerNotModified()
+            != other.getServerNotModified()) return false;
+      }
+      if (hasNumBytesFetched() != other.hasNumBytesFetched()) return false;
+      if (hasNumBytesFetched()) {
+        if (getNumBytesFetched()
+            != other.getNumBytesFetched()) return false;
+      }
+      if (hasNumBytesCached() != other.hasNumBytesCached()) return false;
+      if (hasNumBytesCached()) {
+        if (getNumBytesCached()
+            != other.getNumBytesCached()) return false;
+      }
+      if (hasNumBytesDisplayed() != other.hasNumBytesDisplayed()) return false;
+      if (hasNumBytesDisplayed()) {
+        if (getNumBytesDisplayed()
+            != other.getNumBytesDisplayed()) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasFileType()) {
+        hash = (37 * hash) + FILE_TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + fileType_;
+      }
+      if (hasFetchDurationMs()) {
+        hash = (37 * hash) + FETCH_DURATION_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getFetchDurationMs());
+      }
+      if (hasSuccess()) {
+        hash = (37 * hash) + SUCCESS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getSuccess());
+      }
+      if (hasCacheHit()) {
+        hash = (37 * hash) + CACHE_HIT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getCacheHit());
+      }
+      if (hasServerNotModified()) {
+        hash = (37 * hash) + SERVER_NOT_MODIFIED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getServerNotModified());
+      }
+      if (hasNumBytesFetched()) {
+        hash = (37 * hash) + NUM_BYTES_FETCHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getNumBytesFetched());
+      }
+      if (hasNumBytesCached()) {
+        hash = (37 * hash) + NUM_BYTES_CACHED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getNumBytesCached());
+      }
+      if (hasNumBytesDisplayed()) {
+        hash = (37 * hash) + NUM_BYTES_DISPLAYED_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getNumBytesDisplayed());
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Event containing metrics about quick documentation requiring communication
+     * with an external server.
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.EditingMetricsEvent.ExternalQuickDocEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.EditingMetricsEvent.ExternalQuickDocEvent)
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_ExternalQuickDocEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_ExternalQuickDocEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.class, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        fileType_ = 0;
+        fetchDurationMs_ = 0L;
+        success_ = false;
+        cacheHit_ = false;
+        serverNotModified_ = false;
+        numBytesFetched_ = 0L;
+        numBytesCached_ = 0L;
+        numBytesDisplayed_ = 0L;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_EditingMetricsEvent_ExternalQuickDocEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent build() {
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent result = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.fileType_ = fileType_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.fetchDurationMs_ = fetchDurationMs_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.success_ = success_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.cacheHit_ = cacheHit_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.serverNotModified_ = serverNotModified_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.numBytesFetched_ = numBytesFetched_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.numBytesCached_ = numBytesCached_;
+          to_bitField0_ |= 0x00000040;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.numBytesDisplayed_ = numBytesDisplayed_;
+          to_bitField0_ |= 0x00000080;
+        }
+        result.bitField0_ |= to_bitField0_;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance()) return this;
+        if (other.hasFileType()) {
+          setFileType(other.getFileType());
+        }
+        if (other.hasFetchDurationMs()) {
+          setFetchDurationMs(other.getFetchDurationMs());
+        }
+        if (other.hasSuccess()) {
+          setSuccess(other.getSuccess());
+        }
+        if (other.hasCacheHit()) {
+          setCacheHit(other.getCacheHit());
+        }
+        if (other.hasServerNotModified()) {
+          setServerNotModified(other.getServerNotModified());
+        }
+        if (other.hasNumBytesFetched()) {
+          setNumBytesFetched(other.getNumBytesFetched());
+        }
+        if (other.hasNumBytesCached()) {
+          setNumBytesCached(other.getNumBytesCached());
+        }
+        if (other.hasNumBytesDisplayed()) {
+          setNumBytesDisplayed(other.getNumBytesDisplayed());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.EditorFileType tmpValue =
+                    com.google.wireless.android.sdk.stats.EditorFileType.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(1, tmpRaw);
+                } else {
+                  fileType_ = tmpRaw;
+                  bitField0_ |= 0x00000001;
+                }
+                break;
+              } // case 8
+              case 16: {
+                fetchDurationMs_ = input.readUInt64();
+                bitField0_ |= 0x00000002;
+                break;
+              } // case 16
+              case 24: {
+                success_ = input.readBool();
+                bitField0_ |= 0x00000004;
+                break;
+              } // case 24
+              case 32: {
+                cacheHit_ = input.readBool();
+                bitField0_ |= 0x00000008;
+                break;
+              } // case 32
+              case 40: {
+                serverNotModified_ = input.readBool();
+                bitField0_ |= 0x00000010;
+                break;
+              } // case 40
+              case 48: {
+                numBytesFetched_ = input.readUInt64();
+                bitField0_ |= 0x00000020;
+                break;
+              } // case 48
+              case 56: {
+                numBytesCached_ = input.readUInt64();
+                bitField0_ |= 0x00000040;
+                break;
+              } // case 56
+              case 64: {
+                numBytesDisplayed_ = input.readUInt64();
+                bitField0_ |= 0x00000080;
+                break;
+              } // case 64
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private int fileType_ = 0;
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return Whether the fileType field is set.
+       */
+      @java.lang.Override public boolean hasFileType() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return The fileType.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+        com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.forNumber(fileType_);
+        return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @param value The fileType to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFileType(com.google.wireless.android.sdk.stats.EditorFileType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        fileType_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The type of file that the quick doc was shown for.
+       * </pre>
+       *
+       * <code>optional .android_studio.EditorFileType file_type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFileType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        fileType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long fetchDurationMs_ ;
+      /**
+       * <pre>
+       * The time it took to fetch the documentation from the server.
+       * </pre>
+       *
+       * <code>optional uint64 fetch_duration_ms = 2;</code>
+       * @return Whether the fetchDurationMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasFetchDurationMs() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * The time it took to fetch the documentation from the server.
+       * </pre>
+       *
+       * <code>optional uint64 fetch_duration_ms = 2;</code>
+       * @return The fetchDurationMs.
+       */
+      @java.lang.Override
+      public long getFetchDurationMs() {
+        return fetchDurationMs_;
+      }
+      /**
+       * <pre>
+       * The time it took to fetch the documentation from the server.
+       * </pre>
+       *
+       * <code>optional uint64 fetch_duration_ms = 2;</code>
+       * @param value The fetchDurationMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFetchDurationMs(long value) {
+
+        fetchDurationMs_ = value;
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The time it took to fetch the documentation from the server.
+       * </pre>
+       *
+       * <code>optional uint64 fetch_duration_ms = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFetchDurationMs() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        fetchDurationMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private boolean success_ ;
+      /**
+       * <pre>
+       * The fetch was successful.
+       * </pre>
+       *
+       * <code>optional bool success = 3;</code>
+       * @return Whether the success field is set.
+       */
+      @java.lang.Override
+      public boolean hasSuccess() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * The fetch was successful.
+       * </pre>
+       *
+       * <code>optional bool success = 3;</code>
+       * @return The success.
+       */
+      @java.lang.Override
+      public boolean getSuccess() {
+        return success_;
+      }
+      /**
+       * <pre>
+       * The fetch was successful.
+       * </pre>
+       *
+       * <code>optional bool success = 3;</code>
+       * @param value The success to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSuccess(boolean value) {
+
+        success_ = value;
+        bitField0_ |= 0x00000004;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The fetch was successful.
+       * </pre>
+       *
+       * <code>optional bool success = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        success_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean cacheHit_ ;
+      /**
+       * <pre>
+       * Our local cache had a fresh copy of the documentation.
+       * </pre>
+       *
+       * <code>optional bool cache_hit = 4;</code>
+       * @return Whether the cacheHit field is set.
+       */
+      @java.lang.Override
+      public boolean hasCacheHit() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Our local cache had a fresh copy of the documentation.
+       * </pre>
+       *
+       * <code>optional bool cache_hit = 4;</code>
+       * @return The cacheHit.
+       */
+      @java.lang.Override
+      public boolean getCacheHit() {
+        return cacheHit_;
+      }
+      /**
+       * <pre>
+       * Our local cache had a fresh copy of the documentation.
+       * </pre>
+       *
+       * <code>optional bool cache_hit = 4;</code>
+       * @param value The cacheHit to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCacheHit(boolean value) {
+
+        cacheHit_ = value;
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Our local cache had a fresh copy of the documentation.
+       * </pre>
+       *
+       * <code>optional bool cache_hit = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCacheHit() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        cacheHit_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean serverNotModified_ ;
+      /**
+       * <pre>
+       * The server returned a 304 ("Not Modified") response, so we used the
+       * cached copy, even if it was otherwise stale. (If this is true, but
+       * success is false, it means the server returned a 304, but we did not have
+       * a cached copy.)
+       * </pre>
+       *
+       * <code>optional bool server_not_modified = 5;</code>
+       * @return Whether the serverNotModified field is set.
+       */
+      @java.lang.Override
+      public boolean hasServerNotModified() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * The server returned a 304 ("Not Modified") response, so we used the
+       * cached copy, even if it was otherwise stale. (If this is true, but
+       * success is false, it means the server returned a 304, but we did not have
+       * a cached copy.)
+       * </pre>
+       *
+       * <code>optional bool server_not_modified = 5;</code>
+       * @return The serverNotModified.
+       */
+      @java.lang.Override
+      public boolean getServerNotModified() {
+        return serverNotModified_;
+      }
+      /**
+       * <pre>
+       * The server returned a 304 ("Not Modified") response, so we used the
+       * cached copy, even if it was otherwise stale. (If this is true, but
+       * success is false, it means the server returned a 304, but we did not have
+       * a cached copy.)
+       * </pre>
+       *
+       * <code>optional bool server_not_modified = 5;</code>
+       * @param value The serverNotModified to set.
+       * @return This builder for chaining.
+       */
+      public Builder setServerNotModified(boolean value) {
+
+        serverNotModified_ = value;
+        bitField0_ |= 0x00000010;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The server returned a 304 ("Not Modified") response, so we used the
+       * cached copy, even if it was otherwise stale. (If this is true, but
+       * success is false, it means the server returned a 304, but we did not have
+       * a cached copy.)
+       * </pre>
+       *
+       * <code>optional bool server_not_modified = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearServerNotModified() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        serverNotModified_ = false;
+        onChanged();
+        return this;
+      }
+
+      private long numBytesFetched_ ;
+      /**
+       * <pre>
+       * How many bytes were fetched from the server.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_fetched = 6;</code>
+       * @return Whether the numBytesFetched field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumBytesFetched() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <pre>
+       * How many bytes were fetched from the server.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_fetched = 6;</code>
+       * @return The numBytesFetched.
+       */
+      @java.lang.Override
+      public long getNumBytesFetched() {
+        return numBytesFetched_;
+      }
+      /**
+       * <pre>
+       * How many bytes were fetched from the server.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_fetched = 6;</code>
+       * @param value The numBytesFetched to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumBytesFetched(long value) {
+
+        numBytesFetched_ = value;
+        bitField0_ |= 0x00000020;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * How many bytes were fetched from the server.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_fetched = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumBytesFetched() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        numBytesFetched_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long numBytesCached_ ;
+      /**
+       * <pre>
+       * How many bytes were cached in the local cache as a result of this fetch.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_cached = 7;</code>
+       * @return Whether the numBytesCached field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumBytesCached() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <pre>
+       * How many bytes were cached in the local cache as a result of this fetch.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_cached = 7;</code>
+       * @return The numBytesCached.
+       */
+      @java.lang.Override
+      public long getNumBytesCached() {
+        return numBytesCached_;
+      }
+      /**
+       * <pre>
+       * How many bytes were cached in the local cache as a result of this fetch.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_cached = 7;</code>
+       * @param value The numBytesCached to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumBytesCached(long value) {
+
+        numBytesCached_ = value;
+        bitField0_ |= 0x00000040;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * How many bytes were cached in the local cache as a result of this fetch.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_cached = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumBytesCached() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        numBytesCached_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long numBytesDisplayed_ ;
+      /**
+       * <pre>
+       * How many bytes were actually displayed to the user.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_displayed = 8;</code>
+       * @return Whether the numBytesDisplayed field is set.
+       */
+      @java.lang.Override
+      public boolean hasNumBytesDisplayed() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <pre>
+       * How many bytes were actually displayed to the user.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_displayed = 8;</code>
+       * @return The numBytesDisplayed.
+       */
+      @java.lang.Override
+      public long getNumBytesDisplayed() {
+        return numBytesDisplayed_;
+      }
+      /**
+       * <pre>
+       * How many bytes were actually displayed to the user.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_displayed = 8;</code>
+       * @param value The numBytesDisplayed to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNumBytesDisplayed(long value) {
+
+        numBytesDisplayed_ = value;
+        bitField0_ |= 0x00000080;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * How many bytes were actually displayed to the user.
+       * </pre>
+       *
+       * <code>optional uint64 num_bytes_displayed = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNumBytesDisplayed() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        numBytesDisplayed_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.EditingMetricsEvent.ExternalQuickDocEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.EditingMetricsEvent.ExternalQuickDocEvent)
+    private static final com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<ExternalQuickDocEvent>
+        PARSER = new com.google.protobuf.AbstractParser<ExternalQuickDocEvent>() {
+      @java.lang.Override
+      public ExternalQuickDocEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<ExternalQuickDocEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ExternalQuickDocEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int CHARACTER_METRICS_FIELD_NUMBER = 1;
   private com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics characterMetrics_;
@@ -2137,6 +4261,58 @@ private static final long serialVersionUID = 0L;
     return characterMetrics_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.CharacterMetrics.getDefaultInstance() : characterMetrics_;
   }
 
+  public static final int QUICK_DOC_EVENT_FIELD_NUMBER = 2;
+  private com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent quickDocEvent_;
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   * @return Whether the quickDocEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasQuickDocEvent() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   * @return The quickDocEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getQuickDocEvent() {
+    return quickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance() : quickDocEvent_;
+  }
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder getQuickDocEventOrBuilder() {
+    return quickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance() : quickDocEvent_;
+  }
+
+  public static final int EXTERNAL_QUICK_DOC_EVENT_FIELD_NUMBER = 3;
+  private com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent externalQuickDocEvent_;
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   * @return Whether the externalQuickDocEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasExternalQuickDocEvent() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   * @return The externalQuickDocEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getExternalQuickDocEvent() {
+    return externalQuickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance() : externalQuickDocEvent_;
+  }
+  /**
+   * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder getExternalQuickDocEventOrBuilder() {
+    return externalQuickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance() : externalQuickDocEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2154,6 +4330,12 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(1, getCharacterMetrics());
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeMessage(2, getQuickDocEvent());
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeMessage(3, getExternalQuickDocEvent());
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -2166,6 +4348,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getCharacterMetrics());
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(2, getQuickDocEvent());
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(3, getExternalQuickDocEvent());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2187,6 +4377,16 @@ private static final long serialVersionUID = 0L;
       if (!getCharacterMetrics()
           .equals(other.getCharacterMetrics())) return false;
     }
+    if (hasQuickDocEvent() != other.hasQuickDocEvent()) return false;
+    if (hasQuickDocEvent()) {
+      if (!getQuickDocEvent()
+          .equals(other.getQuickDocEvent())) return false;
+    }
+    if (hasExternalQuickDocEvent() != other.hasExternalQuickDocEvent()) return false;
+    if (hasExternalQuickDocEvent()) {
+      if (!getExternalQuickDocEvent()
+          .equals(other.getExternalQuickDocEvent())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -2201,6 +4401,14 @@ private static final long serialVersionUID = 0L;
     if (hasCharacterMetrics()) {
       hash = (37 * hash) + CHARACTER_METRICS_FIELD_NUMBER;
       hash = (53 * hash) + getCharacterMetrics().hashCode();
+    }
+    if (hasQuickDocEvent()) {
+      hash = (37 * hash) + QUICK_DOC_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getQuickDocEvent().hashCode();
+    }
+    if (hasExternalQuickDocEvent()) {
+      hash = (37 * hash) + EXTERNAL_QUICK_DOC_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getExternalQuickDocEvent().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -2335,6 +4543,8 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getCharacterMetricsFieldBuilder();
+        getQuickDocEventFieldBuilder();
+        getExternalQuickDocEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2345,6 +4555,16 @@ private static final long serialVersionUID = 0L;
       if (characterMetricsBuilder_ != null) {
         characterMetricsBuilder_.dispose();
         characterMetricsBuilder_ = null;
+      }
+      quickDocEvent_ = null;
+      if (quickDocEventBuilder_ != null) {
+        quickDocEventBuilder_.dispose();
+        quickDocEventBuilder_ = null;
+      }
+      externalQuickDocEvent_ = null;
+      if (externalQuickDocEventBuilder_ != null) {
+        externalQuickDocEventBuilder_.dispose();
+        externalQuickDocEventBuilder_ = null;
       }
       return this;
     }
@@ -2386,6 +4606,18 @@ private static final long serialVersionUID = 0L;
             : characterMetricsBuilder_.build();
         to_bitField0_ |= 0x00000001;
       }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.quickDocEvent_ = quickDocEventBuilder_ == null
+            ? quickDocEvent_
+            : quickDocEventBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.externalQuickDocEvent_ = externalQuickDocEventBuilder_ == null
+            ? externalQuickDocEvent_
+            : externalQuickDocEventBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -2403,6 +4635,12 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.wireless.android.sdk.stats.EditingMetricsEvent.getDefaultInstance()) return this;
       if (other.hasCharacterMetrics()) {
         mergeCharacterMetrics(other.getCharacterMetrics());
+      }
+      if (other.hasQuickDocEvent()) {
+        mergeQuickDocEvent(other.getQuickDocEvent());
+      }
+      if (other.hasExternalQuickDocEvent()) {
+        mergeExternalQuickDocEvent(other.getExternalQuickDocEvent());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -2437,6 +4675,20 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000001;
               break;
             } // case 10
+            case 18: {
+              input.readMessage(
+                  getQuickDocEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              input.readMessage(
+                  getExternalQuickDocEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -2571,6 +4823,244 @@ private static final long serialVersionUID = 0L;
         characterMetrics_ = null;
       }
       return characterMetricsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent quickDocEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder> quickDocEventBuilder_;
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     * @return Whether the quickDocEvent field is set.
+     */
+    public boolean hasQuickDocEvent() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     * @return The quickDocEvent.
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent getQuickDocEvent() {
+      if (quickDocEventBuilder_ == null) {
+        return quickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance() : quickDocEvent_;
+      } else {
+        return quickDocEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public Builder setQuickDocEvent(com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent value) {
+      if (quickDocEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        quickDocEvent_ = value;
+      } else {
+        quickDocEventBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public Builder setQuickDocEvent(
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder builderForValue) {
+      if (quickDocEventBuilder_ == null) {
+        quickDocEvent_ = builderForValue.build();
+      } else {
+        quickDocEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public Builder mergeQuickDocEvent(com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent value) {
+      if (quickDocEventBuilder_ == null) {
+        if (((bitField0_ & 0x00000002) != 0) &&
+          quickDocEvent_ != null &&
+          quickDocEvent_ != com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance()) {
+          getQuickDocEventBuilder().mergeFrom(value);
+        } else {
+          quickDocEvent_ = value;
+        }
+      } else {
+        quickDocEventBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public Builder clearQuickDocEvent() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      quickDocEvent_ = null;
+      if (quickDocEventBuilder_ != null) {
+        quickDocEventBuilder_.dispose();
+        quickDocEventBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder getQuickDocEventBuilder() {
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return getQuickDocEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder getQuickDocEventOrBuilder() {
+      if (quickDocEventBuilder_ != null) {
+        return quickDocEventBuilder_.getMessageOrBuilder();
+      } else {
+        return quickDocEvent_ == null ?
+            com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.getDefaultInstance() : quickDocEvent_;
+      }
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.QuickDocEvent quick_doc_event = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder> 
+        getQuickDocEventFieldBuilder() {
+      if (quickDocEventBuilder_ == null) {
+        quickDocEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.QuickDocEventOrBuilder>(
+                getQuickDocEvent(),
+                getParentForChildren(),
+                isClean());
+        quickDocEvent_ = null;
+      }
+      return quickDocEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent externalQuickDocEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder> externalQuickDocEventBuilder_;
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     * @return Whether the externalQuickDocEvent field is set.
+     */
+    public boolean hasExternalQuickDocEvent() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     * @return The externalQuickDocEvent.
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent getExternalQuickDocEvent() {
+      if (externalQuickDocEventBuilder_ == null) {
+        return externalQuickDocEvent_ == null ? com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance() : externalQuickDocEvent_;
+      } else {
+        return externalQuickDocEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public Builder setExternalQuickDocEvent(com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent value) {
+      if (externalQuickDocEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        externalQuickDocEvent_ = value;
+      } else {
+        externalQuickDocEventBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public Builder setExternalQuickDocEvent(
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder builderForValue) {
+      if (externalQuickDocEventBuilder_ == null) {
+        externalQuickDocEvent_ = builderForValue.build();
+      } else {
+        externalQuickDocEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public Builder mergeExternalQuickDocEvent(com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent value) {
+      if (externalQuickDocEventBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0) &&
+          externalQuickDocEvent_ != null &&
+          externalQuickDocEvent_ != com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance()) {
+          getExternalQuickDocEventBuilder().mergeFrom(value);
+        } else {
+          externalQuickDocEvent_ = value;
+        }
+      } else {
+        externalQuickDocEventBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public Builder clearExternalQuickDocEvent() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      externalQuickDocEvent_ = null;
+      if (externalQuickDocEventBuilder_ != null) {
+        externalQuickDocEventBuilder_.dispose();
+        externalQuickDocEventBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder getExternalQuickDocEventBuilder() {
+      bitField0_ |= 0x00000004;
+      onChanged();
+      return getExternalQuickDocEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder getExternalQuickDocEventOrBuilder() {
+      if (externalQuickDocEventBuilder_ != null) {
+        return externalQuickDocEventBuilder_.getMessageOrBuilder();
+      } else {
+        return externalQuickDocEvent_ == null ?
+            com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.getDefaultInstance() : externalQuickDocEvent_;
+      }
+    }
+    /**
+     * <code>optional .android_studio.EditingMetricsEvent.ExternalQuickDocEvent external_quick_doc_event = 3;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder> 
+        getExternalQuickDocEventFieldBuilder() {
+      if (externalQuickDocEventBuilder_ == null) {
+        externalQuickDocEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEvent.Builder, com.google.wireless.android.sdk.stats.EditingMetricsEvent.ExternalQuickDocEventOrBuilder>(
+                getExternalQuickDocEvent(),
+                getParentForChildren(),
+                isClean());
+        externalQuickDocEvent_ = null;
+      }
+      return externalQuickDocEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -33,7 +33,6 @@ import java.io.Serializable
  * [HasDeviceTestsBuilder.deviceTests] and [DeviceTestBuilder.enable] which is accessible on
  * subtypes of [VariantBuilder] that implement [HasDeviceTestsBuilder]
  */
-@Incubating
 interface DeviceTest: GeneratesTestApk, HasAndroidResources, TestComponent {
 
     /**
@@ -53,7 +52,7 @@ interface DeviceTest: GeneratesTestApk, HasAndroidResources, TestComponent {
      * Variant's [BuildConfigField] which will be generated in the BuildConfig class.
      */
     @get:Incubating
-    val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
+    val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>?
 
     /**
      * List of proguard configuration files for this variant. The list is initialized from the
@@ -73,5 +72,6 @@ interface DeviceTest: GeneratesTestApk, HasAndroidResources, TestComponent {
      * [DeviceTestBuilder.enableCodeCoverage] in the [AndroidComponentsExtension.beforeVariants]
      * callback.
      */
+    @get:Incubating
     val codeCoverageEnabled: Boolean
 }

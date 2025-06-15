@@ -24,6 +24,8 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.tools.build.libraries.metadata.AppDependencies
+import com.google.common.hash.Hashing
+import com.google.common.io.Files
 import com.google.protobuf.ByteString
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ComponentIdentifier
@@ -91,7 +93,7 @@ abstract class PerModuleReportDependenciesTask : NonIncrementalTask() {
     }
 
     private fun getFileDigest(file: File): ByteString {
-        return ByteString.copyFrom(MessageDigest.getInstance("SHA-256").digest(file.readBytes()))
+        return ByteString.copyFrom(Files.asByteSource(file).hash(Hashing.sha256()).asBytes())
     }
 
     override fun doTaskAction() {

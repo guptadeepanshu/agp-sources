@@ -243,7 +243,7 @@ abstract class BaseVariantFactory<VariantBuilderT : VariantBuilder, VariantDslIn
 
             val suggestion = """
                 To enable the feature, add the following to your module-level build.gradle:
-                `android.buildFeatures.buildConfig true`
+                `android.buildFeatures.buildConfig = true`
                 """.trimIndent()
             if (model.defaultConfigData.defaultConfig.buildConfigFields.isNotEmpty()) {
                 issueReporter.reportError(

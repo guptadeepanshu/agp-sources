@@ -52,15 +52,7 @@ public abstract class AndroidTargetHash {
      */
     @NonNull
     public static String getPlatformHashString(@NonNull AndroidVersion version) {
-        if (version.isBaseExtension()) {
-            return PLATFORM_HASH_PREFIX + version.getApiString();
-        }
-        else {
-            return PLATFORM_HASH_PREFIX
-                   + version.getApiString()
-                   + "-ext"
-                   + version.getExtensionLevel();
-        }
+        return PLATFORM_HASH_PREFIX + version.getApiStringWithExtension();
     }
 
     /**
@@ -93,37 +85,7 @@ public abstract class AndroidTargetHash {
         if (hashString.startsWith(PLATFORM_HASH_PREFIX)) {
             String suffix = hashString.substring(PLATFORM_HASH_PREFIX.length());
             if (!suffix.isEmpty()) {
-                if (Character.isDigit(suffix.charAt(0))) {
-                    String[] strings = suffix.split("-");
-                    if (strings.length == 1) {
-                        try {
-                            int api = Integer.parseInt(strings[0]);
-                            return new AndroidVersion(api, null);
-                        }
-                        catch (NumberFormatException ignore) {
-                        }
-                    }
-                    else if (strings.length == 2 && strings[1].startsWith("ext")) {
-                        try {
-                            int api = Integer.parseInt(strings[0]);
-                            int extensionLevel = Integer.parseInt(strings[1].substring(3));
-                            return new AndroidVersion(api, null, extensionLevel, false);
-                        }
-                        catch (NumberFormatException ignore) {
-                        }
-                    }
-                } else {
-                    // Note: getApiByPreviewName returns the api level for a build code,
-                    // but it doesn't know whether a build code is in preview or not.
-                    // Here, we make use of the knowledge that we are actually constructing a preview version,
-                    // so this is the feature level:
-                    int apiFeatureLevel = SdkVersionInfo.getApiByPreviewName(suffix, true);
-                    int apiLevel = apiFeatureLevel - 1;
-                    if (apiLevel < 1) {
-                        apiLevel = 1;
-                    }
-                    return new AndroidVersion(apiLevel, suffix);
-                }
+                return SdkVersionInfo.getVersion(suffix, null);
             }
         } else if (!hashString.isEmpty() && Character.isDigit(hashString.charAt(0))) {
             // For convenience, interpret a single integer as the proper "android-NN" form.
@@ -145,9 +107,8 @@ public abstract class AndroidTargetHash {
 
         String apiLevelPart = parts.get(2);
         try {
-            int apiLevel = Integer.parseInt(apiLevelPart);
-            return new AndroidVersion(apiLevel, null);
-        } catch (NumberFormatException e) {
+            return AndroidVersion.fromString(apiLevelPart);
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }

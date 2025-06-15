@@ -139,7 +139,6 @@ public interface AndroidDebugBridgeDelegate {
 
     boolean isUserManagedAdbMode();
 
-    // TODO: switch away from throwing `AdbCommandRejectedException`
     String queryFeatures(String adbFeaturesRequest)
             throws TimeoutException, AdbCommandRejectedException, IOException;
 }

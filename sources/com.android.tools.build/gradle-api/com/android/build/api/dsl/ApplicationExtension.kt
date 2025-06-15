@@ -16,6 +16,8 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.declarative.dsl.model.annotations.Configuring
+
 /**
  * Extension for the Android Gradle Plugin Application plugin.
  *
@@ -43,6 +45,7 @@ interface ApplicationExtension :
 
     val bundle: Bundle
 
+    @Configuring
     fun bundle(action: Bundle.() -> Unit)
 
     val dynamicFeatures: MutableSet<String>

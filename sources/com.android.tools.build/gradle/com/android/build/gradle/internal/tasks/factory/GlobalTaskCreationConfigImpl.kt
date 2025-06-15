@@ -215,11 +215,6 @@ class GlobalTaskCreationConfigImpl(
 
     override val legacyLanguageSplitOptions: LanguageSplitOptions
         get() = oldExtension.splits.language
-    override val manifestArtifactType: InternalArtifactType<Directory>
-        get() = if (services.projectOptions[BooleanOption.IDE_DEPLOY_AS_INSTANT_APP])
-            InternalArtifactType.INSTANT_APP_MANIFEST
-        else
-            InternalArtifactType.PACKAGED_MANIFESTS
 
     override val publishConsumerProguardRules: Boolean
         get() = true

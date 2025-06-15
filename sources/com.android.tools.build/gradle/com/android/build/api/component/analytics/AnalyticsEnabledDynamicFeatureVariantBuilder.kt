@@ -54,6 +54,11 @@ open class AnalyticsEnabledDynamicFeatureVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.TEST_FIXTURES_ENABLED_VALUE
             delegate.enableTestFixtures = value
         }
+    override var debuggable: Boolean
+        get() = throw PropertyAccessNotAllowedException("debuggable", "DynamicFeatureVariantBuilder")
+        set(value) {
+            delegate.debuggable = value
+        }
 
     override var enableMultiDex: Boolean?
         get() = throw PropertyAccessNotAllowedException("enableMultiDex", "DynamicFeatureVariantBuilder")

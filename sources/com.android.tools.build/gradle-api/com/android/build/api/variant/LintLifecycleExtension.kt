@@ -17,7 +17,5 @@
 package com.android.build.api.variant
 
 import com.android.build.api.dsl.Lint
-import org.gradle.api.Incubating
 
-@Incubating
 interface LintLifecycleExtension: DslLifecycle<Lint>

@@ -28,7 +28,6 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.plugins.DslContainerProvider
-import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.BuilderConstants
@@ -50,14 +49,12 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilder, Varia
     override fun createVariantData(
         componentIdentity: ComponentIdentity,
         artifacts: ArtifactsImpl,
-        services: VariantServices,
-        taskContainer: MutableTaskContainer
+        services: VariantServices
     ): BaseVariantData {
         return ApplicationVariantData(
             componentIdentity,
             artifacts,
             services,
-            taskContainer
         )
     }
 

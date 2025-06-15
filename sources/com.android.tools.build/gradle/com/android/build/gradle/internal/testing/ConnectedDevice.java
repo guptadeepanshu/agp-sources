@@ -392,7 +392,7 @@ public class ConnectedDevice extends DeviceConnector {
         if (currentServices.isEmpty()) {
             mLogger.lifecycle("Unexpected: No services running on device %1$s", iDevice.getName());
         }
-        return iDevice.getVersion().isGreaterOrEqualThan(34)
+        return iDevice.getVersion().isAtLeast(34)
                 && iDevice.services().containsKey("sdk_sandbox");
     }
 

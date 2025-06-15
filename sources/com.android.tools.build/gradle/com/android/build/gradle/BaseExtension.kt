@@ -29,7 +29,6 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.ViewBindingOptions
 import com.android.build.gradle.internal.CompileOptions
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.SourceSetSourceProviderWrapper
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.SourceSetManager
@@ -104,7 +103,6 @@ abstract class BaseExtension protected constructor(
     /** All build outputs for all variants, can be used by users to customize a build output. */
     override val buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     private val sourceSetManager: SourceSetManager,
-    private val extraModelInfo: ExtraModelInfo,
     private val isBaseModule: Boolean,
     private val stats: GradleBuildProject.Builder?
 ) : AndroidConfig, Lockable {
@@ -300,7 +298,6 @@ abstract class BaseExtension protected constructor(
     abstract fun addVariant(variant: BaseVariant)
 
     fun registerArtifactType(name: String, isTest: Boolean, artifactType: Int) {
-        extraModelInfo.registerArtifactType(name, isTest, artifactType)
     }
 
     fun registerBuildTypeSourceProvider(
@@ -308,7 +305,6 @@ abstract class BaseExtension protected constructor(
         buildType: BuildType,
         sourceProvider: SourceProvider
     ) {
-        extraModelInfo.registerBuildTypeSourceProvider(name, buildType, sourceProvider)
     }
 
     fun registerProductFlavorSourceProvider(
@@ -316,7 +312,6 @@ abstract class BaseExtension protected constructor(
         productFlavor: ProductFlavor,
         sourceProvider: SourceProvider
     ) {
-        extraModelInfo.registerProductFlavorSourceProvider(name, productFlavor, sourceProvider)
     }
 
     fun registerJavaArtifact(
@@ -331,11 +326,7 @@ abstract class BaseExtension protected constructor(
         javaResourceFolder: File,
         sourceProvider: SourceProvider
     ) {
-        extraModelInfo.registerJavaArtifact(
-            name, variant, assembleTaskName,
-            javaCompileTaskName, generatedSourceFolders, ideSetupTaskNames,
-            configuration, classesFolder, javaResourceFolder, sourceProvider
-        )
+
     }
 
     fun registerMultiFlavorSourceProvider(
@@ -343,7 +334,6 @@ abstract class BaseExtension protected constructor(
         flavorName: String,
         sourceProvider: SourceProvider
     ) {
-        extraModelInfo.registerMultiFlavorSourceProvider(name, flavorName, sourceProvider)
     }
 
     @NonNull

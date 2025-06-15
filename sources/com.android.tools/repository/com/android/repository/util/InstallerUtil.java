@@ -16,6 +16,7 @@
 
 package com.android.repository.util;
 
+import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.io.CancellableFileIo;
@@ -58,6 +59,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import javax.xml.bind.JAXBElement;
@@ -292,10 +294,14 @@ public class InstallerUtil {
             @NonNull CommonFactory factory,
             @NonNull ProgressIndicator progress)
             throws IOException {
+        // TODO(b/394606240): Older versions of AGP read the emulator version by parsing its
+        //  package.xml with a regex, and thus cannot handle formatted output.
+        boolean formattedOutput =
+                !Objects.equals(repo.getLocalPackage().getPath(), SdkConstants.FD_EMULATOR);
         JAXBElement<Repository> element = factory.generateRepository(repo);
         try (OutputStream fos = Files.newOutputStream(packageXml)) {
             SchemaModuleUtil.marshal(element, manager.getSchemaModules(), fos,
-                    manager.getResourceResolver(progress), progress);
+                    manager.getResourceResolver(progress), progress, formattedOutput);
         }
     }
 

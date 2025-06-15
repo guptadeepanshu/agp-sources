@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import java.nio.file.Path
 
 /**
@@ -47,6 +46,5 @@ interface BuiltArtifact: VariantOutputConfiguration {
     /**
      * [Path] to the output file
      */
-    @get:Incubating
-    val outputFilePath: Path
+    val path: Path
 }

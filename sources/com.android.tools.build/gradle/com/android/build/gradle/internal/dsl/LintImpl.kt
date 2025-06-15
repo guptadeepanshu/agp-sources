@@ -32,10 +32,11 @@ import java.util.Collections
 import javax.inject.Inject
 
 abstract class LintImpl
-@Inject @WithLazyInitialization("lazyInit") constructor(
+@Inject constructor(
     private val dslServices: DslServices
 ) : Lint {
 
+    @WithLazyInitialization
     @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         abortOnError = true

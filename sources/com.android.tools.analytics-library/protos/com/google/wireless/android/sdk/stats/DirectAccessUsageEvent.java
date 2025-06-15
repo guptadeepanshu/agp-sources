@@ -98,6 +98,14 @@ private static final long serialVersionUID = 0L;
      * <code>DISCONNECT_DEVICE = 6;</code>
      */
     DISCONNECT_DEVICE(6),
+    /**
+     * <pre>
+     * Deprecation information shown to user
+     * </pre>
+     *
+     * <code>SERVICE_DEPRECATION = 7;</code>
+     */
+    SERVICE_DEPRECATION(7),
     ;
 
     /**
@@ -152,6 +160,14 @@ private static final long serialVersionUID = 0L;
      * <code>DISCONNECT_DEVICE = 6;</code>
      */
     public static final int DISCONNECT_DEVICE_VALUE = 6;
+    /**
+     * <pre>
+     * Deprecation information shown to user
+     * </pre>
+     *
+     * <code>SERVICE_DEPRECATION = 7;</code>
+     */
+    public static final int SERVICE_DEPRECATION_VALUE = 7;
 
 
     public final int getNumber() {
@@ -181,6 +197,7 @@ private static final long serialVersionUID = 0L;
         case 4: return EXTEND_RESERVATION;
         case 5: return END_RESERVATION;
         case 6: return DISCONNECT_DEVICE;
+        case 7: return SERVICE_DEPRECATION;
         default: return null;
       }
     }
@@ -4739,7 +4756,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-     *     See studio_stats.proto;l=14876
+     *     See studio_stats.proto;l=15008
      * @return Whether the userEnded field is set.
      */
     @java.lang.Deprecated boolean hasUserEnded();
@@ -4751,7 +4768,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-     *     See studio_stats.proto;l=14876
+     *     See studio_stats.proto;l=15008
      * @return The userEnded.
      */
     @java.lang.Deprecated boolean getUserEnded();
@@ -4785,7 +4802,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-     *     See studio_stats.proto;l=14882
+     *     See studio_stats.proto;l=15014
      * @return Whether the averageConnectionLatencyMs field is set.
      */
     @java.lang.Deprecated boolean hasAverageConnectionLatencyMs();
@@ -4797,7 +4814,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-     *     See studio_stats.proto;l=14882
+     *     See studio_stats.proto;l=15014
      * @return The averageConnectionLatencyMs.
      */
     @java.lang.Deprecated int getAverageConnectionLatencyMs();
@@ -5060,7 +5077,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-     *     See studio_stats.proto;l=14876
+     *     See studio_stats.proto;l=15008
      * @return Whether the userEnded field is set.
      */
     @java.lang.Override
@@ -5075,7 +5092,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool user_ended = 2 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-     *     See studio_stats.proto;l=14876
+     *     See studio_stats.proto;l=15008
      * @return The userEnded.
      */
     @java.lang.Override
@@ -5122,7 +5139,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-     *     See studio_stats.proto;l=14882
+     *     See studio_stats.proto;l=15014
      * @return Whether the averageConnectionLatencyMs field is set.
      */
     @java.lang.Override
@@ -5137,7 +5154,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
      * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-     *     See studio_stats.proto;l=14882
+     *     See studio_stats.proto;l=15014
      * @return The averageConnectionLatencyMs.
      */
     @java.lang.Override
@@ -5740,7 +5757,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-       *     See studio_stats.proto;l=14876
+       *     See studio_stats.proto;l=15008
        * @return Whether the userEnded field is set.
        */
       @java.lang.Override
@@ -5755,7 +5772,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-       *     See studio_stats.proto;l=14876
+       *     See studio_stats.proto;l=15008
        * @return The userEnded.
        */
       @java.lang.Override
@@ -5770,7 +5787,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-       *     See studio_stats.proto;l=14876
+       *     See studio_stats.proto;l=15008
        * @param value The userEnded to set.
        * @return This builder for chaining.
        */
@@ -5789,7 +5806,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool user_ended = 2 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.user_ended is deprecated.
-       *     See studio_stats.proto;l=14876
+       *     See studio_stats.proto;l=15008
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearUserEnded() {
@@ -5868,7 +5885,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-       *     See studio_stats.proto;l=14882
+       *     See studio_stats.proto;l=15014
        * @return Whether the averageConnectionLatencyMs field is set.
        */
       @java.lang.Override
@@ -5883,7 +5900,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-       *     See studio_stats.proto;l=14882
+       *     See studio_stats.proto;l=15014
        * @return The averageConnectionLatencyMs.
        */
       @java.lang.Override
@@ -5898,7 +5915,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-       *     See studio_stats.proto;l=14882
+       *     See studio_stats.proto;l=15014
        * @param value The averageConnectionLatencyMs to set.
        * @return This builder for chaining.
        */
@@ -5917,7 +5934,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 average_connection_latency_ms = 4 [deprecated = true];</code>
        * @deprecated android_studio.DirectAccessUsageEvent.EndReservationDetails.average_connection_latency_ms is deprecated.
-       *     See studio_stats.proto;l=14882
+       *     See studio_stats.proto;l=15014
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearAverageConnectionLatencyMs() {
@@ -6551,6 +6568,44 @@ private static final long serialVersionUID = 0L;
     return disconnectDeviceDetails_ == null ? com.google.wireless.android.sdk.stats.DirectAccessUsageEvent.DisconnectDeviceDetails.getDefaultInstance() : disconnectDeviceDetails_;
   }
 
+  public static final int DEV_SERVICE_DEPRECATION_INFO_FIELD_NUMBER = 10;
+  private com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo devServiceDeprecationInfo_;
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   * @return Whether the devServiceDeprecationInfo field is set.
+   */
+  @java.lang.Override
+  public boolean hasDevServiceDeprecationInfo() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   * @return The devServiceDeprecationInfo.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo getDevServiceDeprecationInfo() {
+    return devServiceDeprecationInfo_ == null ? com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.getDefaultInstance() : devServiceDeprecationInfo_;
+  }
+  /**
+   * <pre>
+   * Set when type = SERVICE_DEPRECATION
+   * </pre>
+   *
+   * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder getDevServiceDeprecationInfoOrBuilder() {
+    return devServiceDeprecationInfo_ == null ? com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.getDefaultInstance() : devServiceDeprecationInfo_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -6591,6 +6646,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000100) != 0)) {
       output.writeMessage(9, getDisconnectDeviceDetails());
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeMessage(10, getDevServiceDeprecationInfo());
     }
     getUnknownFields().writeTo(output);
   }
@@ -6635,6 +6693,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000100) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(9, getDisconnectDeviceDetails());
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(10, getDevServiceDeprecationInfo());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -6694,6 +6756,11 @@ private static final long serialVersionUID = 0L;
       if (!getDisconnectDeviceDetails()
           .equals(other.getDisconnectDeviceDetails())) return false;
     }
+    if (hasDevServiceDeprecationInfo() != other.hasDevServiceDeprecationInfo()) return false;
+    if (hasDevServiceDeprecationInfo()) {
+      if (!getDevServiceDeprecationInfo()
+          .equals(other.getDevServiceDeprecationInfo())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -6740,6 +6807,10 @@ private static final long serialVersionUID = 0L;
     if (hasDisconnectDeviceDetails()) {
       hash = (37 * hash) + DISCONNECT_DEVICE_DETAILS_FIELD_NUMBER;
       hash = (53 * hash) + getDisconnectDeviceDetails().hashCode();
+    }
+    if (hasDevServiceDeprecationInfo()) {
+      hash = (37 * hash) + DEV_SERVICE_DEPRECATION_INFO_FIELD_NUMBER;
+      hash = (53 * hash) + getDevServiceDeprecationInfo().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -6875,6 +6946,7 @@ private static final long serialVersionUID = 0L;
         getExtendReservationDetailsFieldBuilder();
         getEndReservationDetailsFieldBuilder();
         getDisconnectDeviceDetailsFieldBuilder();
+        getDevServiceDeprecationInfoFieldBuilder();
       }
     }
     @java.lang.Override
@@ -6913,6 +6985,11 @@ private static final long serialVersionUID = 0L;
       if (disconnectDeviceDetailsBuilder_ != null) {
         disconnectDeviceDetailsBuilder_.dispose();
         disconnectDeviceDetailsBuilder_ = null;
+      }
+      devServiceDeprecationInfo_ = null;
+      if (devServiceDeprecationInfoBuilder_ != null) {
+        devServiceDeprecationInfoBuilder_.dispose();
+        devServiceDeprecationInfoBuilder_ = null;
       }
       return this;
     }
@@ -6996,6 +7073,12 @@ private static final long serialVersionUID = 0L;
             : disconnectDeviceDetailsBuilder_.build();
         to_bitField0_ |= 0x00000100;
       }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.devServiceDeprecationInfo_ = devServiceDeprecationInfoBuilder_ == null
+            ? devServiceDeprecationInfo_
+            : devServiceDeprecationInfoBuilder_.build();
+        to_bitField0_ |= 0x00000200;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -7039,6 +7122,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasDisconnectDeviceDetails()) {
         mergeDisconnectDeviceDetails(other.getDisconnectDeviceDetails());
+      }
+      if (other.hasDevServiceDeprecationInfo()) {
+        mergeDevServiceDeprecationInfo(other.getDevServiceDeprecationInfo());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -7137,6 +7223,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000100;
               break;
             } // case 74
+            case 82: {
+              input.readMessage(
+                  getDevServiceDeprecationInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000200;
+              break;
+            } // case 82
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -8314,6 +8407,161 @@ private static final long serialVersionUID = 0L;
         disconnectDeviceDetails_ = null;
       }
       return disconnectDeviceDetailsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo devServiceDeprecationInfo_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.Builder, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder> devServiceDeprecationInfoBuilder_;
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     * @return Whether the devServiceDeprecationInfo field is set.
+     */
+    public boolean hasDevServiceDeprecationInfo() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     * @return The devServiceDeprecationInfo.
+     */
+    public com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo getDevServiceDeprecationInfo() {
+      if (devServiceDeprecationInfoBuilder_ == null) {
+        return devServiceDeprecationInfo_ == null ? com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.getDefaultInstance() : devServiceDeprecationInfo_;
+      } else {
+        return devServiceDeprecationInfoBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public Builder setDevServiceDeprecationInfo(com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo value) {
+      if (devServiceDeprecationInfoBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        devServiceDeprecationInfo_ = value;
+      } else {
+        devServiceDeprecationInfoBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public Builder setDevServiceDeprecationInfo(
+        com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.Builder builderForValue) {
+      if (devServiceDeprecationInfoBuilder_ == null) {
+        devServiceDeprecationInfo_ = builderForValue.build();
+      } else {
+        devServiceDeprecationInfoBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public Builder mergeDevServiceDeprecationInfo(com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo value) {
+      if (devServiceDeprecationInfoBuilder_ == null) {
+        if (((bitField0_ & 0x00000200) != 0) &&
+          devServiceDeprecationInfo_ != null &&
+          devServiceDeprecationInfo_ != com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.getDefaultInstance()) {
+          getDevServiceDeprecationInfoBuilder().mergeFrom(value);
+        } else {
+          devServiceDeprecationInfo_ = value;
+        }
+      } else {
+        devServiceDeprecationInfoBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public Builder clearDevServiceDeprecationInfo() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      devServiceDeprecationInfo_ = null;
+      if (devServiceDeprecationInfoBuilder_ != null) {
+        devServiceDeprecationInfoBuilder_.dispose();
+        devServiceDeprecationInfoBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.Builder getDevServiceDeprecationInfoBuilder() {
+      bitField0_ |= 0x00000200;
+      onChanged();
+      return getDevServiceDeprecationInfoFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder getDevServiceDeprecationInfoOrBuilder() {
+      if (devServiceDeprecationInfoBuilder_ != null) {
+        return devServiceDeprecationInfoBuilder_.getMessageOrBuilder();
+      } else {
+        return devServiceDeprecationInfo_ == null ?
+            com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.getDefaultInstance() : devServiceDeprecationInfo_;
+      }
+    }
+    /**
+     * <pre>
+     * Set when type = SERVICE_DEPRECATION
+     * </pre>
+     *
+     * <code>optional .android_studio.DevServiceDeprecationInfo dev_service_deprecation_info = 10 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.Builder, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder> 
+        getDevServiceDeprecationInfoFieldBuilder() {
+      if (devServiceDeprecationInfoBuilder_ == null) {
+        devServiceDeprecationInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfo.Builder, com.google.wireless.android.sdk.stats.DevServiceDeprecationInfoOrBuilder>(
+                getDevServiceDeprecationInfo(),
+                getParentForChildren(),
+                isClean());
+        devServiceDeprecationInfo_ = null;
+      }
+      return devServiceDeprecationInfoBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

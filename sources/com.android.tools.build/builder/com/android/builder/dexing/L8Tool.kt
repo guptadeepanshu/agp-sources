@@ -126,6 +126,8 @@ fun runL8(
             keepRules.keepRulesConfigurations, Origin.unknown())
     }
 
+    // Multi-threading is managed at the Gradle task level, so here we run L8 directly in the
+    // current thread
     L8.run(l8CommandBuilder.build(), MoreExecutors.newDirectExecutorService())
 }
 

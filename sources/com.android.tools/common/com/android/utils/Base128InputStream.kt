@@ -21,7 +21,6 @@ import java.io.IOException
 import java.io.InputStream
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
-import kotlin.enums.enumEntries
 
 /**
  * An output stream that uses the unsigned little endian base 128
@@ -235,7 +234,7 @@ class Base128InputStream(stream: InputStream) : BufferedInputStream(stream) {
   inline fun <reified T : Enum<T>> readEnum(): T {
     val ordinal = readInt()
     return try {
-      enumEntries<T>()[ordinal]
+      enumValues<T>()[ordinal]
     } catch (_: IndexOutOfBoundsException) {
       throw StreamFormatException("Invalid ordinal value $ordinal of enum ${T::class.simpleName}")
     }

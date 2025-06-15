@@ -16,7 +16,6 @@
 
 package com.android.build.api.extension.impl
 
-import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import java.util.function.Function
@@ -24,9 +23,9 @@ import java.util.function.Function
 /**
  * Holder of various [OperationsRegistrar] for all the variant API related operations to a plugin.
  */
-class VariantApiOperationsRegistrar<CommonExtensionT: CommonExtension<*, *, *, *, *, *>, VariantBuilderT: VariantBuilder, VariantT: Variant>(
-        extension: CommonExtensionT,
-) : DslLifecycleComponentsOperationsRegistrar<CommonExtensionT>(extension) {
+class VariantApiOperationsRegistrar<DslExtensionT, VariantBuilderT: VariantBuilder, VariantT: Variant>(
+        extension: DslExtensionT,
+) : DslLifecycleComponentsOperationsRegistrar<DslExtensionT>(extension) {
 
     internal val variantBuilderOperations = OperationsRegistrar<VariantBuilderT>()
     internal val variantOperations = OperationsRegistrar<VariantT>()

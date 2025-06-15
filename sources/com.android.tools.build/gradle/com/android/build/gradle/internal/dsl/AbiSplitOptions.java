@@ -21,18 +21,19 @@ import com.android.annotations.Nullable;
 import com.android.build.OutputFile;
 import com.android.build.gradle.internal.core.Abi;
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+
+import kotlin.Suppress;
+
 import java.util.Set;
-import javax.inject.Inject;
 
 public abstract class AbiSplitOptions extends SplitOptions
         implements com.android.build.api.dsl.AbiSplit {
 
-    @Inject
-    @WithLazyInitialization(methodName = "lazyInit")
-    public AbiSplitOptions() {}
-
+    @WithLazyInitialization
+    @Suppress(names = "unused") // call injected in the constructor by the dsl decorator
     void lazyInit() {
         init();
     }

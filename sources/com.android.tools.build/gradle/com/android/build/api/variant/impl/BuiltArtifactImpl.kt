@@ -45,7 +45,7 @@ data class BuiltArtifactImpl private constructor(
     val attributes: Map<String, String> = mapOf(),
 ) : BuiltArtifact, CommonBuiltArtifact, Serializable, VariantOutputConfiguration by variantOutputConfiguration {
 
-    override val outputFilePath: Path
+    override val path: Path
         get() = File(outputFile).toPath()
 
     fun newOutput(newOutputFile: Path): BuiltArtifactImpl =

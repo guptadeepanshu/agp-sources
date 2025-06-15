@@ -31,7 +31,6 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.TaskProvider
 
 class TaskBasedOperationImpl<TaskT: Task>(
-    val objects: ObjectFactory,
     override val artifacts: ArtifactsImpl,
     val taskProvider: TaskProvider<TaskT>
 ): TaskBasedOperation<TaskT>, ArtifactOperationRequest {
@@ -71,7 +70,7 @@ class TaskBasedOperationImpl<TaskT: Task>(
         taskInput: (TaskT) -> ListProperty<FileTypeT>,
         taskOutput: (TaskT) -> FileSystemLocationProperty<FileTypeT>
     ): CombiningOperationRequest<FileTypeT> =
-        CombiningOperationRequestImpl(objects, artifacts, taskProvider, taskInput, taskOutput).also {
+        CombiningOperationRequestImpl(artifacts, taskProvider, taskInput, taskOutput).also {
             artifacts.addRequest(it)
             closeRequest()
         }

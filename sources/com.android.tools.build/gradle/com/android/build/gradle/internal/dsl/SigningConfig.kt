@@ -26,9 +26,11 @@ import java.io.Serializable
 import java.security.KeyStore
 import javax.inject.Inject
 
-abstract class SigningConfig @Inject @WithLazyInitialization("lazyInit") constructor(name: String, dslServices: DslServices) : DefaultSigningConfig(name),
+abstract class SigningConfig @Inject constructor(name: String, dslServices: DslServices) : DefaultSigningConfig(name),
     Serializable, Named, com.android.build.api.dsl.ApkSigningConfig, InternalSigningConfig {
 
+    @WithLazyInitialization
+    @Suppress("unused") // the call is injected by DslDecorator
     fun lazyInit() {
         storeType = KeyStore.getDefaultType()
     }

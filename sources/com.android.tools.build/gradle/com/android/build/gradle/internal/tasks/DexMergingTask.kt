@@ -30,6 +30,8 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
+import com.android.build.gradle.internal.services.R8ParallelBuildService
+import com.android.build.gradle.internal.services.doClose
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_ALL
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_EXTERNAL_LIBS
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_LIBRARY_PROJECTS
@@ -60,6 +62,7 @@ import com.android.builder.files.SerializableFileChanges
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Throwables
+import com.google.common.util.concurrent.MoreExecutors
 import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -89,6 +92,7 @@ import org.gradle.work.InputChanges
 import org.gradle.workers.WorkerExecutor
 import java.io.File
 import java.nio.file.Path
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -654,10 +658,11 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
                     it.initializeFromProfileAwareWorkAction(this)
                     it.initialize(
                         sharedParams = sharedParams,
-                        // If there is no bucketing, use a ForkJoinPool to merge (this is also the
-                        // behavior of this task in the past). Alternatively, we can skip using an
-                        // executor service, but we'll need to monitor the performance impact.
-                        useForkJoinPool = numberOfBuckets.get() == 1,
+                        // Use a thread pool only if there is 1 bucket. (If there are multiple
+                        // buckets, it means that multi-threading is managed at the Gradle task
+                        // level, so inside a worker action we will run D8 directly in the current
+                        // thread.)
+                        useThreadPool = numberOfBuckets.get() == 1,
                         dexEntryBucket = bucket,
                         // Global synthetics are merged in this task iff native multi dex
                         // is not supported where bucket number is always one
@@ -818,7 +823,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
     abstract class Params : Parameters() {
 
         abstract val sharedParams: Property<DexMergingTask.SharedParams>
-        abstract val useForkJoinPool: Property<Boolean>
+        abstract val useThreadPool: Property<Boolean>
         abstract val dexEntryBucket: Property<DexEntryBucket>
         abstract val globalSynthetics: ConfigurableFileCollection
         abstract val outputDirForBucket: DirectoryProperty
@@ -828,7 +833,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
 
         fun initialize(
             sharedParams: Property<DexMergingTask.SharedParams>,
-            useForkJoinPool: Boolean,
+            useThreadPool: Boolean,
             dexEntryBucket: DexEntryBucket,
             globalSynthetics: ConfigurableFileCollection,
             outputDirForBucket: File,
@@ -837,7 +842,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
             inputProfileForDexStartupOptimization: File?
         ) {
             this.sharedParams.set(sharedParams)
-            this.useForkJoinPool.set(useForkJoinPool)
+            this.useThreadPool.set(useThreadPool)
             this.dexEntryBucket.set(dexEntryBucket)
             this.globalSynthetics.from(globalSynthetics)
             this.outputDirForBucket.set(outputDirForBucket)
@@ -855,15 +860,16 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
             return
         }
 
-        val forkJoinPool = if (parameters.useForkJoinPool.get()) {
-            ForkJoinPool()
+        val d8ExecutorService = if (parameters.useThreadPool.get()) {
+            // Create a new thread pool with the same type and size as the one used for R8 tasks
+            R8ParallelBuildService.newR8ThreadPool(R8ParallelBuildService.defaultR8ThreadPoolSize())
         } else {
-            null
+            MoreExecutors.newDirectExecutorService()
         }
         try {
             merge(
                 parameters.sharedParams.get(),
-                forkJoinPool,
+                d8ExecutorService,
                 dexArchiveEntries,
                 globalSynthetics,
                 parameters.outputDirForBucket.get().asFile,
@@ -872,14 +878,13 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 parameters.inputProfileForDexStartupOptimization.asFile.orNull?.toPath()
             )
         } finally {
-            forkJoinPool?.shutdown()
-            forkJoinPool?.awaitTermination(100, TimeUnit.SECONDS)
+            d8ExecutorService.doClose()
         }
     }
 
     private fun merge(
         sharedParams: DexMergingTask.SharedParams,
-        forkJoinPool: ForkJoinPool?,
+        d8ExecutorService: ExecutorService,
         dexArchiveEntries: List<DexArchiveEntry>,
         globalSynthetics: List<Path>,
         outputDir: File,
@@ -899,7 +904,7 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 sharedParams.dexingType.get(),
                 sharedParams.minSdkVersion.get(),
                 sharedParams.debuggable.get(),
-                forkJoinPool
+                d8ExecutorService
             )
 
             val proguardRules = mutableListOf<Path>()

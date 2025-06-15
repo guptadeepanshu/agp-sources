@@ -56,6 +56,10 @@ private static final long serialVersionUID = 0L;
      * <code>FRAMES_VIEW_UPDATED = 2;</code>
      */
     FRAMES_VIEW_UPDATED(2),
+    /**
+     * <code>SMART_STEP_TARGET_FILTERING = 3;</code>
+     */
+    SMART_STEP_TARGET_FILTERING(3),
     ;
 
     /**
@@ -70,6 +74,10 @@ private static final long serialVersionUID = 0L;
      * <code>FRAMES_VIEW_UPDATED = 2;</code>
      */
     public static final int FRAMES_VIEW_UPDATED_VALUE = 2;
+    /**
+     * <code>SMART_STEP_TARGET_FILTERING = 3;</code>
+     */
+    public static final int SMART_STEP_TARGET_FILTERING_VALUE = 3;
 
 
     public final int getNumber() {
@@ -95,6 +103,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN;
         case 1: return BREAKPOINT_ADDED_EVENT;
         case 2: return FRAMES_VIEW_UPDATED;
+        case 3: return SMART_STEP_TARGET_FILTERING;
         default: return null;
       }
     }
@@ -2570,6 +2579,727 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface SmartStepTargetFilteringPerformedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+     * @return Whether the dexFetchTimeMs field is set.
+     */
+    boolean hasDexFetchTimeMs();
+    /**
+     * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+     * @return The dexFetchTimeMs.
+     */
+    long getDexFetchTimeMs();
+
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+     * @return Whether the status field is set.
+     */
+    boolean hasStatus();
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+     * @return The status.
+     */
+    com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus getStatus();
+  }
+  /**
+   * Protobuf type {@code android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed}
+   */
+  public static final class SmartStepTargetFilteringPerformed extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed)
+      SmartStepTargetFilteringPerformedOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use SmartStepTargetFilteringPerformed.newBuilder() to construct.
+    private SmartStepTargetFilteringPerformed(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private SmartStepTargetFilteringPerformed() {
+      status_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new SmartStepTargetFilteringPerformed();
+    }
+
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_SmartStepTargetFilteringPerformed_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_SmartStepTargetFilteringPerformed_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.class, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus}
+     */
+    public enum DexSearchStatus
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN = 0;</code>
+       */
+      UNKNOWN(0),
+      /**
+       * <code>APK_PROVIDER_NOT_AVAILABLE = 1;</code>
+       */
+      APK_PROVIDER_NOT_AVAILABLE(1),
+      /**
+       * <code>MODULE_NOT_FOUND = 2;</code>
+       */
+      MODULE_NOT_FOUND(2),
+      /**
+       * <code>DEVICES_NOT_RUNNING = 3;</code>
+       */
+      DEVICES_NOT_RUNNING(3),
+      /**
+       * <code>APK_NOT_FOUND = 4;</code>
+       */
+      APK_NOT_FOUND(4),
+      /**
+       * <code>DEX_NOT_FOUND = 5;</code>
+       */
+      DEX_NOT_FOUND(5),
+      /**
+       * <code>FOUND = 6;</code>
+       */
+      FOUND(6),
+      ;
+
+      /**
+       * <code>UNKNOWN = 0;</code>
+       */
+      public static final int UNKNOWN_VALUE = 0;
+      /**
+       * <code>APK_PROVIDER_NOT_AVAILABLE = 1;</code>
+       */
+      public static final int APK_PROVIDER_NOT_AVAILABLE_VALUE = 1;
+      /**
+       * <code>MODULE_NOT_FOUND = 2;</code>
+       */
+      public static final int MODULE_NOT_FOUND_VALUE = 2;
+      /**
+       * <code>DEVICES_NOT_RUNNING = 3;</code>
+       */
+      public static final int DEVICES_NOT_RUNNING_VALUE = 3;
+      /**
+       * <code>APK_NOT_FOUND = 4;</code>
+       */
+      public static final int APK_NOT_FOUND_VALUE = 4;
+      /**
+       * <code>DEX_NOT_FOUND = 5;</code>
+       */
+      public static final int DEX_NOT_FOUND_VALUE = 5;
+      /**
+       * <code>FOUND = 6;</code>
+       */
+      public static final int FOUND_VALUE = 6;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static DexSearchStatus valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static DexSearchStatus forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN;
+          case 1: return APK_PROVIDER_NOT_AVAILABLE;
+          case 2: return MODULE_NOT_FOUND;
+          case 3: return DEVICES_NOT_RUNNING;
+          case 4: return APK_NOT_FOUND;
+          case 5: return DEX_NOT_FOUND;
+          case 6: return FOUND;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<DexSearchStatus>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          DexSearchStatus> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<DexSearchStatus>() {
+              public DexSearchStatus findValueByNumber(int number) {
+                return DexSearchStatus.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final DexSearchStatus[] VALUES = values();
+
+      public static DexSearchStatus valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private DexSearchStatus(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus)
+    }
+
+    private int bitField0_;
+    public static final int DEX_FETCH_TIME_MS_FIELD_NUMBER = 1;
+    private long dexFetchTimeMs_ = 0L;
+    /**
+     * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+     * @return Whether the dexFetchTimeMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasDexFetchTimeMs() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+     * @return The dexFetchTimeMs.
+     */
+    @java.lang.Override
+    public long getDexFetchTimeMs() {
+      return dexFetchTimeMs_;
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private int status_ = 0;
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+     * @return Whether the status field is set.
+     */
+    @java.lang.Override public boolean hasStatus() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+     * @return The status.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus getStatus() {
+      com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus result = com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus.forNumber(status_);
+      return result == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus.UNKNOWN : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeUInt64(1, dexFetchTimeMs_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, status_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, dexFetchTimeMs_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, status_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed other = (com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed) obj;
+
+      if (hasDexFetchTimeMs() != other.hasDexFetchTimeMs()) return false;
+      if (hasDexFetchTimeMs()) {
+        if (getDexFetchTimeMs()
+            != other.getDexFetchTimeMs()) return false;
+      }
+      if (hasStatus() != other.hasStatus()) return false;
+      if (hasStatus()) {
+        if (status_ != other.status_) return false;
+      }
+      if (!getUnknownFields().equals(other.getUnknownFields())) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasDexFetchTimeMs()) {
+        hash = (37 * hash) + DEX_FETCH_TIME_MS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getDexFetchTimeMs());
+      }
+      if (hasStatus()) {
+        hash = (37 * hash) + STATUS_FIELD_NUMBER;
+        hash = (53 * hash) + status_;
+      }
+      hash = (29 * hash) + getUnknownFields().hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed)
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_SmartStepTargetFilteringPerformed_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_SmartStepTargetFilteringPerformed_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.class, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.newBuilder()
+      private Builder() {
+
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        bitField0_ = 0;
+        dexFetchTimeMs_ = 0L;
+        status_ = 0;
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_DebuggerEvent_SmartStepTargetFilteringPerformed_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed build() {
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed buildPartial() {
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed result = new com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed(this);
+        if (bitField0_ != 0) { buildPartial0(result); }
+        onBuilt();
+        return result;
+      }
+
+      private void buildPartial0(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed result) {
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          result.dexFetchTimeMs_ = dexFetchTimeMs_;
+          to_bitField0_ |= 0x00000001;
+        }
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.status_ = status_;
+          to_bitField0_ |= 0x00000002;
+        }
+        result.bitField0_ |= to_bitField0_;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed other) {
+        if (other == com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance()) return this;
+        if (other.hasDexFetchTimeMs()) {
+          setDexFetchTimeMs(other.getDexFetchTimeMs());
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                dexFetchTimeMs_ = input.readUInt64();
+                bitField0_ |= 0x00000001;
+                break;
+              } // case 8
+              case 16: {
+                int tmpRaw = input.readEnum();
+                com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus tmpValue =
+                    com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus.forNumber(tmpRaw);
+                if (tmpValue == null) {
+                  mergeUnknownVarintField(2, tmpRaw);
+                } else {
+                  status_ = tmpRaw;
+                  bitField0_ |= 0x00000002;
+                }
+                break;
+              } // case 16
+              default: {
+                if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                  done = true; // was an endgroup tag
+                }
+                break;
+              } // default:
+            } // switch (tag)
+          } // while (!done)
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.unwrapIOException();
+        } finally {
+          onChanged();
+        } // finally
+        return this;
+      }
+      private int bitField0_;
+
+      private long dexFetchTimeMs_ ;
+      /**
+       * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+       * @return Whether the dexFetchTimeMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasDexFetchTimeMs() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+       * @return The dexFetchTimeMs.
+       */
+      @java.lang.Override
+      public long getDexFetchTimeMs() {
+        return dexFetchTimeMs_;
+      }
+      /**
+       * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+       * @param value The dexFetchTimeMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDexFetchTimeMs(long value) {
+
+        dexFetchTimeMs_ = value;
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 dex_fetch_time_ms = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDexFetchTimeMs() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        dexFetchTimeMs_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int status_ = 0;
+      /**
+       * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+       * @return Whether the status field is set.
+       */
+      @java.lang.Override public boolean hasStatus() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+       * @return The status.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus getStatus() {
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus result = com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus.forNumber(status_);
+        return result == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus.UNKNOWN : result;
+      }
+      /**
+       * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        status_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed.DexSearchStatus status = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        status_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed)
+    private static final com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed();
+    }
+
+    public static com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<SmartStepTargetFilteringPerformed>
+        PARSER = new com.google.protobuf.AbstractParser<SmartStepTargetFilteringPerformed>() {
+      @java.lang.Override
+      public SmartStepTargetFilteringPerformed parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        Builder builder = newBuilder();
+        try {
+          builder.mergeFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(builder.buildPartial());
+        } catch (com.google.protobuf.UninitializedMessageException e) {
+          throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(e)
+              .setUnfinishedMessage(builder.buildPartial());
+        }
+        return builder.buildPartial();
+      }
+    };
+
+    public static com.google.protobuf.Parser<SmartStepTargetFilteringPerformed> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SmartStepTargetFilteringPerformed> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_ = 0;
@@ -2649,6 +3379,32 @@ private static final long serialVersionUID = 0L;
     return framesViewUpdated_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.FramesViewUpdated.getDefaultInstance() : framesViewUpdated_;
   }
 
+  public static final int SMART_STEP_TARGET_FILTERING_PERFORMED_FIELD_NUMBER = 4;
+  private com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed smartStepTargetFilteringPerformed_;
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   * @return Whether the smartStepTargetFilteringPerformed field is set.
+   */
+  @java.lang.Override
+  public boolean hasSmartStepTargetFilteringPerformed() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   * @return The smartStepTargetFilteringPerformed.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getSmartStepTargetFilteringPerformed() {
+    return smartStepTargetFilteringPerformed_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance() : smartStepTargetFilteringPerformed_;
+  }
+  /**
+   * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder getSmartStepTargetFilteringPerformedOrBuilder() {
+    return smartStepTargetFilteringPerformed_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance() : smartStepTargetFilteringPerformed_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2672,6 +3428,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeMessage(3, getFramesViewUpdated());
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeMessage(4, getSmartStepTargetFilteringPerformed());
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -2692,6 +3451,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getFramesViewUpdated());
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, getSmartStepTargetFilteringPerformed());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2722,6 +3485,11 @@ private static final long serialVersionUID = 0L;
       if (!getFramesViewUpdated()
           .equals(other.getFramesViewUpdated())) return false;
     }
+    if (hasSmartStepTargetFilteringPerformed() != other.hasSmartStepTargetFilteringPerformed()) return false;
+    if (hasSmartStepTargetFilteringPerformed()) {
+      if (!getSmartStepTargetFilteringPerformed()
+          .equals(other.getSmartStepTargetFilteringPerformed())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -2744,6 +3512,10 @@ private static final long serialVersionUID = 0L;
     if (hasFramesViewUpdated()) {
       hash = (37 * hash) + FRAMES_VIEW_UPDATED_FIELD_NUMBER;
       hash = (53 * hash) + getFramesViewUpdated().hashCode();
+    }
+    if (hasSmartStepTargetFilteringPerformed()) {
+      hash = (37 * hash) + SMART_STEP_TARGET_FILTERING_PERFORMED_FIELD_NUMBER;
+      hash = (53 * hash) + getSmartStepTargetFilteringPerformed().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -2875,6 +3647,7 @@ private static final long serialVersionUID = 0L;
               .alwaysUseFieldBuilders) {
         getBreakpointAddedFieldBuilder();
         getFramesViewUpdatedFieldBuilder();
+        getSmartStepTargetFilteringPerformedFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2891,6 +3664,11 @@ private static final long serialVersionUID = 0L;
       if (framesViewUpdatedBuilder_ != null) {
         framesViewUpdatedBuilder_.dispose();
         framesViewUpdatedBuilder_ = null;
+      }
+      smartStepTargetFilteringPerformed_ = null;
+      if (smartStepTargetFilteringPerformedBuilder_ != null) {
+        smartStepTargetFilteringPerformedBuilder_.dispose();
+        smartStepTargetFilteringPerformedBuilder_ = null;
       }
       return this;
     }
@@ -2942,6 +3720,12 @@ private static final long serialVersionUID = 0L;
             : framesViewUpdatedBuilder_.build();
         to_bitField0_ |= 0x00000004;
       }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.smartStepTargetFilteringPerformed_ = smartStepTargetFilteringPerformedBuilder_ == null
+            ? smartStepTargetFilteringPerformed_
+            : smartStepTargetFilteringPerformedBuilder_.build();
+        to_bitField0_ |= 0x00000008;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -2965,6 +3749,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasFramesViewUpdated()) {
         mergeFramesViewUpdated(other.getFramesViewUpdated());
+      }
+      if (other.hasSmartStepTargetFilteringPerformed()) {
+        mergeSmartStepTargetFilteringPerformed(other.getSmartStepTargetFilteringPerformed());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -3018,6 +3805,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000004;
               break;
             } // case 26
+            case 34: {
+              input.readMessage(
+                  getSmartStepTargetFilteringPerformedFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -3329,6 +4123,125 @@ private static final long serialVersionUID = 0L;
         framesViewUpdated_ = null;
       }
       return framesViewUpdatedBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed smartStepTargetFilteringPerformed_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder> smartStepTargetFilteringPerformedBuilder_;
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     * @return Whether the smartStepTargetFilteringPerformed field is set.
+     */
+    public boolean hasSmartStepTargetFilteringPerformed() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     * @return The smartStepTargetFilteringPerformed.
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed getSmartStepTargetFilteringPerformed() {
+      if (smartStepTargetFilteringPerformedBuilder_ == null) {
+        return smartStepTargetFilteringPerformed_ == null ? com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance() : smartStepTargetFilteringPerformed_;
+      } else {
+        return smartStepTargetFilteringPerformedBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public Builder setSmartStepTargetFilteringPerformed(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed value) {
+      if (smartStepTargetFilteringPerformedBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        smartStepTargetFilteringPerformed_ = value;
+      } else {
+        smartStepTargetFilteringPerformedBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public Builder setSmartStepTargetFilteringPerformed(
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder builderForValue) {
+      if (smartStepTargetFilteringPerformedBuilder_ == null) {
+        smartStepTargetFilteringPerformed_ = builderForValue.build();
+      } else {
+        smartStepTargetFilteringPerformedBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public Builder mergeSmartStepTargetFilteringPerformed(com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed value) {
+      if (smartStepTargetFilteringPerformedBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0) &&
+          smartStepTargetFilteringPerformed_ != null &&
+          smartStepTargetFilteringPerformed_ != com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance()) {
+          getSmartStepTargetFilteringPerformedBuilder().mergeFrom(value);
+        } else {
+          smartStepTargetFilteringPerformed_ = value;
+        }
+      } else {
+        smartStepTargetFilteringPerformedBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public Builder clearSmartStepTargetFilteringPerformed() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      smartStepTargetFilteringPerformed_ = null;
+      if (smartStepTargetFilteringPerformedBuilder_ != null) {
+        smartStepTargetFilteringPerformedBuilder_.dispose();
+        smartStepTargetFilteringPerformedBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder getSmartStepTargetFilteringPerformedBuilder() {
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return getSmartStepTargetFilteringPerformedFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder getSmartStepTargetFilteringPerformedOrBuilder() {
+      if (smartStepTargetFilteringPerformedBuilder_ != null) {
+        return smartStepTargetFilteringPerformedBuilder_.getMessageOrBuilder();
+      } else {
+        return smartStepTargetFilteringPerformed_ == null ?
+            com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.getDefaultInstance() : smartStepTargetFilteringPerformed_;
+      }
+    }
+    /**
+     * <code>optional .android_studio.DebuggerEvent.SmartStepTargetFilteringPerformed smart_step_target_filtering_performed = 4 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder> 
+        getSmartStepTargetFilteringPerformedFieldBuilder() {
+      if (smartStepTargetFilteringPerformedBuilder_ == null) {
+        smartStepTargetFilteringPerformedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformed.Builder, com.google.wireless.android.sdk.stats.DebuggerEvent.SmartStepTargetFilteringPerformedOrBuilder>(
+                getSmartStepTargetFilteringPerformed(),
+                getParentForChildren(),
+                isClean());
+        smartStepTargetFilteringPerformed_ = null;
+      }
+      return smartStepTargetFilteringPerformedBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

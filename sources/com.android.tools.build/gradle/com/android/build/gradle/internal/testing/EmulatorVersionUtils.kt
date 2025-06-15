@@ -14,55 +14,45 @@
  * limitations under the License.
  */
 
-package com.android.build.gradle.internal.testing;
-
+package com.android.build.gradle.internal.testing
 
 import com.android.ide.common.gradle.Version
+import com.android.repository.api.NullProgressIndicator
+import com.android.repository.api.Repository
+import com.android.repository.impl.meta.SchemaModuleUtil
+import com.android.sdklib.repository.AndroidSdkHandler
 import java.io.File
-import java.nio.file.Files.readAllLines
-import java.util.regex.Pattern
 
 private val SNAPSHOT_LOADABLE_VERSION = Version.parse("30.6.4")
 private val FORCE_SNAPSHOT_LOAD_VERSION = Version.parse("34.2.14")
-private val versionPattern =
-    Pattern.compile("<major>(\\d+)</major><minor>(\\d+)</minor><micro>(\\d+)</micro>")
 
-data class EmulatorVersionMetadata (
-    val canUseForceSnapshotLoad: Boolean
-)
+data class EmulatorVersionMetadata(val canUseForceSnapshotLoad: Boolean)
 
 fun getEmulatorMetadata(emulatorDir: File): EmulatorVersionMetadata {
-    var foundMajorVersion = -1
-    var foundMinorVersion = -1
-    var foundMicroVersion = -1
-
     val packageFile = emulatorDir.resolve("package.xml")
 
-    for (line in readAllLines(packageFile.toPath())) {
-        val matcher = versionPattern.matcher(line)
-        if (matcher.find()) {
-            foundMajorVersion = matcher.group(1).toInt()
-            foundMinorVersion = matcher.group(2).toInt()
-            foundMicroVersion = matcher.group(3).toInt()
-            break
-        }
+    val repository = runCatching {
+        SchemaModuleUtil.unmarshal(
+            packageFile.inputStream(),
+            AndroidSdkHandler.getAllModules(),
+            false,
+            NullProgressIndicator,
+            packageFile.toString(),
+        ) as? Repository
     }
-    if (foundMajorVersion == -1) {
-        error(
-            "Could not determine version of Emulator in ${emulatorDir.absolutePath}. Update " +
-                    "emulator in order to use Managed Devices."
-        )
-    }
-    val version = Version.parse("$foundMajorVersion.$foundMinorVersion.$foundMicroVersion")
 
+    val version =
+        repository.getOrNull()?.localPackage?.version?.let { Version.parse("${it.major}.${it.minor}.${it.micro}") }
+            ?: throw IllegalStateException(
+                "Could not determine version of Emulator in ${emulatorDir.absolutePath}. Update " +
+                        "emulator in order to use Managed Devices.", repository.exceptionOrNull()
+            )
     if (version < SNAPSHOT_LOADABLE_VERSION) {
-        error(
+        throw IllegalStateException(
             "Emulator needs to be updated in order to use managed devices. Minimum " +
                     "version required: $SNAPSHOT_LOADABLE_VERSION. Version found: $version"
         )
     }
 
-    return EmulatorVersionMetadata(
-        canUseForceSnapshotLoad = version >= FORCE_SNAPSHOT_LOAD_VERSION
-    )
+    return EmulatorVersionMetadata(canUseForceSnapshotLoad = version >= FORCE_SNAPSHOT_LOAD_VERSION)
 }

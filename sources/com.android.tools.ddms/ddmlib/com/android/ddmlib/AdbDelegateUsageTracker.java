@@ -67,5 +67,5 @@ public interface AdbDelegateUsageTracker {
         TERMINATE
     }
 
-    void logUsage(AdbDelegateUsageTracker.Method method, boolean isException);
+    void logUsage(Method method, boolean isException);
 }

@@ -256,13 +256,10 @@ public class SystemImageManager {
             DetailsTypes.SysImgDetailsType details,
             List<String> abis,
             List<String> translatedAbis) {
-        if (details instanceof com.android.sdklib.repository.generated.sysimg.v1.SysImgDetailsType
-                || details
-                        instanceof
-                        com.android.sdklib.repository.generated.sysimg.v2.SysImgDetailsType
-                || details
-                        instanceof
-                        com.android.sdklib.repository.generated.sysimg.v3.SysImgDetailsType) {
+        String detailsClassName = details.getClass().getName();
+        if (detailsClassName.endsWith("v1.SysImgDetailsType")
+                || detailsClassName.endsWith("v2.SysImgDetailsType")
+                || detailsClassName.endsWith("v3.SysImgDetailsType")) {
             // We have an old image, so we won't get more than one ABI from the XML. Read from disk.
             // We also know that there shouldn't be any unknown ABIs (they would use new XML).
             List<String> allAbis = SystemImage.readAbisFromBuildProps(location);

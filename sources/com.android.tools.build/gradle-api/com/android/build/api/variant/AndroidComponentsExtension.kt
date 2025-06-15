@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Action
 import org.gradle.api.Incubating
 
@@ -44,7 +43,7 @@ import org.gradle.api.Incubating
  * @param VariantT the [Variant] type produced by this variant.
  */
 interface AndroidComponentsExtension<
-        DslExtensionT: CommonExtension<*, *, *, *, *, *>,
+        DslExtensionT,
         VariantBuilderT: VariantBuilder,
         VariantT: Variant>
     : DslLifecycle<DslExtensionT>, AndroidComponents {

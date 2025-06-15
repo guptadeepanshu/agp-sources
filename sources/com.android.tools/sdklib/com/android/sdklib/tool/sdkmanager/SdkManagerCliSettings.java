@@ -116,7 +116,7 @@ class SdkManagerCliSettings implements SettingsController {
         } else {
             // This is just loading the local repo, so no need to show progress here.
             mRepoManager =
-                    handler.getSdkManager(new QuietProgressIndicator(getProgressIndicator()));
+                    handler.getRepoManagerAndLoadSynchronously(new QuietProgressIndicator(getProgressIndicator()));
         }
     }
 

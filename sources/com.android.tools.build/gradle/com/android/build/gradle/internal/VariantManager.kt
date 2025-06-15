@@ -21,7 +21,9 @@ import com.android.build.api.component.impl.DeviceTestImpl
 import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.TestedExtension
+import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.HasDeviceTests
@@ -125,6 +127,7 @@ class VariantManager<
     @Deprecated("Use dslExtension")  private val oldExtension: BaseExtension,
     private val dslExtension: CommonExtensionT,
     val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<CommonExtensionT, VariantBuilder, Variant>,
+    val lintDslLifecycleRegistrar: DslLifecycleComponentsOperationsRegistrar<Lint>,
     private val variantFactory: VariantFactory<VariantBuilderT, VariantDslInfoT, VariantT>,
     private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
     val globalTaskCreationConfig: GlobalTaskCreationConfig,
@@ -216,6 +219,9 @@ class VariantManager<
                 flavorDimensionList)
         val variants = computer.computeVariants()
 
+        // get some info related to testing
+        val testBuildTypeData = testBuildTypeData
+
         val globalConfig = GlobalVariantBuilderConfigImpl(dslExtension)
 
         // loop on all the new variant objects to create the public instances (both legacy and new
@@ -299,7 +305,6 @@ class VariantManager<
         val variantBuilder = variantFactory.createVariantBuilder(
             globalConfig, componentIdentity, variantDslInfo, variantBuilderServices,
         )
-        postVariantBuilderCreation(variantBuilder, buildTypeData)
 
         // now that we have the variant, create the analytics object,
         val configuratorService = getBuildService(
@@ -391,8 +396,7 @@ class VariantManager<
         val variantData = variantFactory.createVariantData(
             componentIdentity,
             artifacts,
-            variantPropertiesApiServices,
-            taskContainer
+            variantPropertiesApiServices
         )
 
         // then the new Variant which will contain the 2 old objects.
@@ -900,7 +904,7 @@ class VariantManager<
 
         if (variantFactory.componentType.hasTestComponents) {
             (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests?.values
-                ?.filter { it.enable }
+                ?.filter { it.enable && buildTypeData == testBuildTypeData }
                 ?.forEach { deviceTestBuilder ->
                     val deviceTest = createTestComponents<AndroidTestComponentDslInfo>(
                         dimensionCombination,
@@ -1073,20 +1077,6 @@ class VariantManager<
 
     private val canParseManifest = projectServices.objectFactory.property(Boolean::class.java).also {
         it.set(!dslServices.projectOptions[BooleanOption.DISABLE_EARLY_MANIFEST_PARSING])
-    }
-
-    /**
-     * Post configuration of the [VariantBuilderT] instance.
-     */
-    fun postVariantBuilderCreation(
-        variantBuilder: VariantBuilderT,
-        buildTypeData: BuildTypeData<BuildType>,
-    ) {
-        (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests?.forEach { (_, deviceTestBuilder) ->
-            deviceTestBuilder.enable =
-                !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
-                        && (testBuildTypeData == null || buildTypeData == testBuildTypeData)
-        }
     }
 
     fun setHasCreatedTasks(hasCreatedTasks: Boolean) {

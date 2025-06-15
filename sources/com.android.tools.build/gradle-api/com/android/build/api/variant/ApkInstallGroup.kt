@@ -16,25 +16,22 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.RegularFile
 
 /**
  * An interface representing a set of APKs files and that are installed as a unit on a device.
- * These Apks are installed together with one install-multiple adb command if there are more than one
- * Apks in the group.
+ * These Apks are installed together with one install-multiple adb command if there are more than
+ * one Apks in the group.
  */
-@Incubating
 interface ApkInstallGroup {
     /**
-     * A group of APK files installed as a unit on a device (e.g., via the install-multiple adb command).
+     * A group of APK files installed as a unit on a device (e.g., via the install-multiple adb
+     * command).
      */
-    @get:Incubating
     val apks: List<RegularFile>
 
     /**
      * A brief description of this install group.
      */
-    @get:Incubating
     val description: String
 }

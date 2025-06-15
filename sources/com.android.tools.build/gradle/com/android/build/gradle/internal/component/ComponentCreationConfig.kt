@@ -29,7 +29,6 @@ import com.android.build.gradle.internal.component.features.InstrumentationCreat
 import com.android.build.gradle.internal.component.features.ManifestPlaceholdersCreationConfig
 import com.android.build.gradle.internal.component.features.PrivacySandboxCreationConfig
 import com.android.build.gradle.internal.component.features.ResValuesCreationConfig
-import com.android.build.gradle.internal.component.legacy.ModelV1LegacySupport
 import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport
 import com.android.build.gradle.internal.core.ProductFlavor
 import com.android.build.gradle.internal.dependency.VariantDependencies
@@ -168,9 +167,6 @@ interface ComponentCreationConfig : ComponentIdentity {
     // ---------------------------------------------------------------------------------------------
     // LEGACY SUPPORT
     // ---------------------------------------------------------------------------------------------
-
-    @Deprecated("DO NOT USE, this is just for model v1 legacy support")
-    val modelV1LegacySupport: ModelV1LegacySupport?
 
     @Deprecated("DO NOT USE, this is just for old variant API legacy support")
     val oldVariantApiLegacySupport: OldVariantApiLegacySupport?

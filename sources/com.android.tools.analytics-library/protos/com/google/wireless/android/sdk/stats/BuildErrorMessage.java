@@ -110,6 +110,10 @@ private static final long serialVersionUID = 0L;
      * <code>JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL = 14;</code>
      */
     JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL(14),
+    /**
+     * <code>INVALID_DECLARATIVE_DEFINITION = 15;</code>
+     */
+    INVALID_DECLARATIVE_DEFINITION(15),
     ;
 
     /**
@@ -172,6 +176,10 @@ private static final long serialVersionUID = 0L;
      * <code>JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL = 14;</code>
      */
     public static final int JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL_VALUE = 14;
+    /**
+     * <code>INVALID_DECLARATIVE_DEFINITION = 15;</code>
+     */
+    public static final int INVALID_DECLARATIVE_DEFINITION_VALUE = 15;
 
 
     public final int getNumber() {
@@ -209,6 +217,7 @@ private static final long serialVersionUID = 0L;
         case 12: return INVALID_TOML_DEFINITION;
         case 13: return CONFIGURATION_CACHE;
         case 14: return JAVA_NOT_SUPPORTED_LANGUAGE_LEVEL;
+        case 15: return INVALID_DECLARATIVE_DEFINITION;
         default: return null;
       }
     }

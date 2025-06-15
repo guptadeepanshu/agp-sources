@@ -3,7 +3,6 @@ package com.android.build.gradle
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.TestVariant
 import com.android.build.gradle.api.UnitTestVariant
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
@@ -24,7 +23,6 @@ abstract class TestedExtension(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     isBaseModule: Boolean,
     stats: GradleBuildProject.Builder?
 ) : BaseExtension(
@@ -32,7 +30,6 @@ abstract class TestedExtension(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     isBaseModule,
     stats
 ), TestedAndroidConfig, com.android.build.api.dsl.TestedExtension {

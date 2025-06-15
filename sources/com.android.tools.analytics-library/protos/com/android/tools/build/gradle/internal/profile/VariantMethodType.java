@@ -120,6 +120,10 @@ public enum VariantMethodType
    * <code>DEVICE_TEST_DEBUGGABLE = 26;</code>
    */
   DEVICE_TEST_DEBUGGABLE(26),
+  /**
+   * <code>VARIANT_BUILDER_DEBUGGABLE = 27;</code>
+   */
+  VARIANT_BUILDER_DEBUGGABLE(27),
   UNRECOGNIZED(-1),
   ;
 
@@ -235,6 +239,10 @@ public enum VariantMethodType
    * <code>DEVICE_TEST_DEBUGGABLE = 26;</code>
    */
   public static final int DEVICE_TEST_DEBUGGABLE_VALUE = 26;
+  /**
+   * <code>VARIANT_BUILDER_DEBUGGABLE = 27;</code>
+   */
+  public static final int VARIANT_BUILDER_DEBUGGABLE_VALUE = 27;
 
 
   public final int getNumber() {
@@ -288,6 +296,7 @@ public enum VariantMethodType
       case 24: return HOST_TEST_ENABLE_CODE_COVERAGE;
       case 25: return DEVICE_TEST_ENABLE_CODE_COVERAGE;
       case 26: return DEVICE_TEST_DEBUGGABLE;
+      case 27: return VARIANT_BUILDER_DEBUGGABLE;
       default: return null;
     }
   }

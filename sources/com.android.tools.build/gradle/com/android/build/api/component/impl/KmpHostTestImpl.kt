@@ -77,7 +77,7 @@ open class KmpHostTestImpl @Inject constructor(
     global,
     androidKotlinCompilation,
     manifestFile
-), HostTestCreationConfig, UnitTest {
+), HostTestCreationConfig, UnitTest, com.android.build.api.component.UnitTest {
 
     override fun <T> onTestedVariant(action: (VariantCreationConfig) -> T): T {
         return action.invoke(mainVariant)

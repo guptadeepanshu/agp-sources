@@ -1150,7 +1150,7 @@ class ModelBuilder<
             classesFolders = classesFolders,
             generatedSourceFolders = getGeneratedSourceFoldersForUnitTests(component),
             runtimeResourceFolder =
-                component.oldVariantApiLegacySupport!!.variantData.javaResourcesForUnitTesting,
+                component.artifacts.get(InternalArtifactType.JAVA_RES).get().asFile,
 
             mockablePlatformJar = variantModel.mockableJarArtifact.files.singleOrNull(),
             generatedClassPaths = generatedClassPaths,

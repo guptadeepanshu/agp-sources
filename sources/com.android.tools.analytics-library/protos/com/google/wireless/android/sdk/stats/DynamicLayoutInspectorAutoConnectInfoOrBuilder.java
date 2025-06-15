@@ -33,7 +33,7 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
    * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
-   *     See studio_stats.proto;l=9083
+   *     See studio_stats.proto;l=9158
    * @return Whether the handshakeConversion field is set.
    */
   @java.lang.Deprecated boolean hasHandshakeConversion();
@@ -44,7 +44,7 @@ public interface DynamicLayoutInspectorAutoConnectInfoOrBuilder extends
    *
    * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion handshake_conversion = 2 [deprecated = true];</code>
    * @deprecated android_studio.DynamicLayoutInspectorAutoConnectInfo.handshake_conversion is deprecated.
-   *     See studio_stats.proto;l=9083
+   *     See studio_stats.proto;l=9158
    * @return The handshakeConversion.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.HandshakeUnknownConversion getHandshakeConversion();

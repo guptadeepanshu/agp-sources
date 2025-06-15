@@ -36,8 +36,14 @@ open class AnalyticsEnabledApplicationVariantBuilder @Inject constructor(
 ) : AnalyticsEnabledVariantBuilder(delegate, stats),
     ApplicationVariantBuilder {
 
-    override val debuggable: Boolean
-        get() = delegate.debuggable
+    override var debuggable: Boolean
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.VARIANT_BUILDER_DEBUGGABLE_VALUE
+            delegate.debuggable = value
+        }
+        get() = throw PropertyAccessNotAllowedException("debuggable", "ApplicationVariantBuilder")
+
     override val dependenciesInfo: DependenciesInfoBuilder
         get() {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =

@@ -22,6 +22,16 @@ import org.gradle.api.Incubating
  * Configuration-time properties [ComponentBuilder] that produce APKs.
  */
 interface GeneratesApkBuilder {
+
+    /**
+     * Sets the APK debuggable flag.
+     */
+    @get:Deprecated(
+        message="Other plugins can change this value, it is not safe to read it at this stage",
+        level = DeprecationLevel.ERROR
+    )
+    var debuggable: Boolean
+
     /**
      * Sets the target SDK Version for this variant as an integer API level.
      * Setting this will override previous calls of [targetSdk] and [targetSdkPreview] setters.

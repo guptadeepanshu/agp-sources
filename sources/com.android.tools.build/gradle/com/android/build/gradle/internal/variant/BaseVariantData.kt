@@ -19,8 +19,6 @@ import com.android.build.VariantOutput
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Splits
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
-import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.VariantServices
 import com.google.common.base.MoreObjects
 import org.gradle.api.file.ConfigurableFileCollection
@@ -34,8 +32,7 @@ abstract class BaseVariantData(
     // Variant specific Data
     protected val componentIdentity: ComponentIdentity,
     protected val artifacts: ArtifactsImpl,
-    protected val services: VariantServices,
-    protected val taskContainer: MutableTaskContainer
+    protected val services: VariantServices
 ) {
 
     // Storage for Old Public API
@@ -174,17 +171,6 @@ abstract class BaseVariantData(
         return MoreObjects.toStringHelper(this)
             .addValue(componentIdentity.name).toString()
     }
-
-    val javaResourcesForUnitTesting: File
-        get() {
-            // FIXME we need to revise this API as it force-configure the tasks
-            val processJavaResourcesTask = taskContainer.processJavaResourcesTask.get()
-            return if (processJavaResourcesTask != null) {
-                processJavaResourcesTask.outputs.files.singleFile
-            } else {
-                artifacts.get(JAVA_RES).get().asFile
-            }
-        }
 
     companion object {
         /**

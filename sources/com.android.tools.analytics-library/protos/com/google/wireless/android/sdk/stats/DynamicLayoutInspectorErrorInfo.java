@@ -637,6 +637,14 @@ private static final long serialVersionUID = 0L;
      */
     APP_INSPECTION_FORCEFULLY_DISPOSED(212),
     /**
+     * <pre>
+     * Failed to attach the transport agent.
+     * </pre>
+     *
+     * <code>APP_INSPECTION_UNATTACHABLE_AGENT = 213;</code>
+     */
+    APP_INSPECTION_UNATTACHABLE_AGENT(213),
+    /**
      * <code>TRANSPORT_UNKNOWN_ERROR = 301;</code>
      */
     TRANSPORT_UNKNOWN_ERROR(301),
@@ -787,6 +795,14 @@ private static final long serialVersionUID = 0L;
      */
     public static final int APP_INSPECTION_FORCEFULLY_DISPOSED_VALUE = 212;
     /**
+     * <pre>
+     * Failed to attach the transport agent.
+     * </pre>
+     *
+     * <code>APP_INSPECTION_UNATTACHABLE_AGENT = 213;</code>
+     */
+    public static final int APP_INSPECTION_UNATTACHABLE_AGENT_VALUE = 213;
+    /**
      * <code>TRANSPORT_UNKNOWN_ERROR = 301;</code>
      */
     public static final int TRANSPORT_UNKNOWN_ERROR_VALUE = 301;
@@ -838,6 +854,7 @@ private static final long serialVersionUID = 0L;
         case 210: return APP_INSPECTION_COMPOSE_INSPECTOR_NOT_FOUND;
         case 211: return APP_INSPECTION_FAILED_MAVEN_DOWNLOAD;
         case 212: return APP_INSPECTION_FORCEFULLY_DISPOSED;
+        case 213: return APP_INSPECTION_UNATTACHABLE_AGENT;
         case 301: return TRANSPORT_UNKNOWN_ERROR;
         case 302: return TRANSPORT_PUSH_FAILED_FILE_NOT_FOUND;
         case 401: return UNEXPECTED_ERROR;

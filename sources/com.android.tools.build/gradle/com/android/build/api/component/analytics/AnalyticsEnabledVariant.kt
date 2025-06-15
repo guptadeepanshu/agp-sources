@@ -40,7 +40,7 @@ abstract class AnalyticsEnabledVariant (
     objectFactory: ObjectFactory
 ) : AnalyticsEnabledComponent(delegate, stats, objectFactory), Variant {
 
-    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.BUILD_CONFIG_FIELDS_VALUE

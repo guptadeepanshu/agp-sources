@@ -59,7 +59,11 @@ public final class DetailsTypes {
         @NonNull
         default AndroidVersion getAndroidVersion() {
             return new AndroidVersion(
-                    getApiLevel(), getCodename(), getExtensionLevel(), isBaseExtension());
+                    getApiLevel(),
+                    getApiMinorLevel(),
+                    getCodename(),
+                    getExtensionLevel(),
+                    isBaseExtension());
         }
 
         /** Sets the api level this package corresponds to. */
@@ -79,6 +83,16 @@ public final class DetailsTypes {
         default int getApiLevel() {
             // Implementation for schema v3 and above.
             return getApiLevelInt(getApiLevelString());
+        }
+
+        /** Gets the api minor level of this package. */
+        default int getApiMinorLevel() {
+            try {
+                return getApiMinorLevelInt(getApiLevelString());
+            } catch (UnsupportedOperationException e) {
+                // If we don't have a string API level, this is an old schema version
+                return 0;
+            }
         }
 
         /**
@@ -156,16 +170,31 @@ public final class DetailsTypes {
                 return 0;
             }
             try {
-                if (apiLevel.endsWith("x")) {
+                if (apiLevel.contains(".")) {
+                    return Integer.parseInt(apiLevel.substring(0, apiLevel.indexOf('.')));
+                } else if (apiLevel.endsWith("x")) {
                     return Integer.parseInt(apiLevel.substring(0, apiLevel.length() - 1));
-                }
-                else {
+                } else {
                     return Integer.parseInt(apiLevel);
                 }
+
             }
             catch (NumberFormatException exception) {
                 return 0;
             }
+        }
+
+        static int getApiMinorLevelInt(String apiLevel) {
+            if (apiLevel == null) {
+                return 0;
+            }
+            if (apiLevel.contains(".")) {
+                try {
+                    return Integer.parseInt(apiLevel.substring(apiLevel.indexOf('.') + 1));
+                } catch (NumberFormatException ignore) {
+                }
+            }
+            return 0;
         }
 
         @NonNull
@@ -489,37 +518,19 @@ public final class DetailsTypes {
     /** Gets the path/unique id for the platform of the given {@link AndroidVersion}. */
     @NonNull
     public static String getPlatformPath(@NonNull AndroidVersion version) {
-        if (version.isBaseExtension()) {
-            return SdkConstants.FD_PLATFORMS
-                    + RepoPackage.PATH_SEPARATOR
-                    + "android-"
-                    + version.getApiString();
-        } else {
-            return SdkConstants.FD_PLATFORMS
-                    + RepoPackage.PATH_SEPARATOR
-                    + "android-"
-                    + version.getApiString()
-                    + "-ext"
-                    + version.getExtensionLevel();
-        }
+        return SdkConstants.FD_PLATFORMS
+                + RepoPackage.PATH_SEPARATOR
+                + "android-"
+                + version.getApiStringWithExtension();
     }
 
     /** Gets the path/unique id for the sources of the given {@link AndroidVersion}. */
     @NonNull
     public static String getSourcesPath(@NonNull AndroidVersion version) {
-        if (version.isBaseExtension()) {
-            return SdkConstants.FD_PKG_SOURCES
-                    + RepoPackage.PATH_SEPARATOR
-                    + "android-"
-                    + version.getApiString();
-        } else {
-            return SdkConstants.FD_PKG_SOURCES
-                    + RepoPackage.PATH_SEPARATOR
-                    + "android-"
-                    + version.getApiString()
-                    + "-ext"
-                    + version.getExtensionLevel();
-        }
+        return SdkConstants.FD_PKG_SOURCES
+                + RepoPackage.PATH_SEPARATOR
+                + "android-"
+                + version.getApiStringWithExtension();
     }
 
     /**
@@ -537,20 +548,16 @@ public final class DetailsTypes {
      * Gets the default path/unique id for the given addon
      */
     public static String getAddonPath(IdDisplay vendor, AndroidVersion version, IdDisplay name) {
-        StringBuilder pathBuilder =
-                new StringBuilder()
-                        .append(SdkConstants.FD_ADDONS)
-                        .append(RepoPackage.PATH_SEPARATOR)
-                        .append("addon-")
-                        .append(name.getId())
-                        .append("-")
-                        .append(vendor.getId())
-                        .append("-")
-                        .append(version.getApiString());
-        if (!version.isBaseExtension()) {
-            pathBuilder.append("-ext").append(version.getExtensionLevel());
-        }
-        return pathBuilder.toString();
+        // Note that while the platform package path and platform target hash are the same, addons
+        // have a completely different format for the package path and the target hash.
+        return SdkConstants.FD_ADDONS
+                + RepoPackage.PATH_SEPARATOR
+                + "addon-"
+                + name.getId()
+                + "-"
+                + vendor.getId()
+                + "-"
+                + version.getApiStringWithExtension();
     }
 
     /**
@@ -558,21 +565,14 @@ public final class DetailsTypes {
      */
     public static String getSysImgPath(IdDisplay vendor, AndroidVersion version, IdDisplay name,
             String abi) {
-        StringBuilder pathBuilder =
-                new StringBuilder()
-                        .append(SdkConstants.FD_SYSTEM_IMAGES)
-                        .append(RepoPackage.PATH_SEPARATOR)
-                        .append("android-")
-                        .append(version.getApiString());
-        if (!version.isBaseExtension()) {
-            pathBuilder.append("-ext").append(version.getExtensionLevel());
-        }
-        return pathBuilder
-                .append(RepoPackage.PATH_SEPARATOR)
-                .append(name.getId())
-                .append(RepoPackage.PATH_SEPARATOR)
-                .append(abi)
-                .toString();
+        return SdkConstants.FD_SYSTEM_IMAGES
+                + RepoPackage.PATH_SEPARATOR
+                + "android-"
+                + version.getApiStringWithExtension()
+                + RepoPackage.PATH_SEPARATOR
+                + name.getId()
+                + RepoPackage.PATH_SEPARATOR
+                + abi;
     }
 
     /**

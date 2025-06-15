@@ -309,7 +309,8 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
                     mRepoManager.getSchemaModules(),
                     fos,
                     mRepoManager.getResourceResolver(progress),
-                    progress);
+                    progress,
+                    false);
         } catch (IOException e) {
             progress.logInfo("Exception while marshalling " + packageXml
                     + ". Probably the SDK is read-only");

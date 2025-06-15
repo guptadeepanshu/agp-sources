@@ -76,7 +76,7 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             return delegate.testLabel
         }
 
-    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
+    override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.BUILD_CONFIG_FIELDS_VALUE

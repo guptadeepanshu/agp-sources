@@ -266,10 +266,11 @@ public class SchemaModuleUtil {
     public static void marshal(@NonNull JAXBElement element,
             @NonNull Collection<SchemaModule<?>> possibleModules,
             @NonNull OutputStream out, @Nullable LSResourceResolver resourceResolver,
-            @NonNull ProgressIndicator progress) {
+            @NonNull ProgressIndicator progress, boolean formattedOutput) {
         JAXBContext context = getContext(possibleModules);
         try {
             Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, formattedOutput);
             marshaller.setEventHandler(createValidationEventHandler(progress, true, "N/A"));
             Schema schema = getSchema(possibleModules, resourceResolver, progress);
             marshaller.setSchema(schema);

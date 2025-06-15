@@ -31,12 +31,10 @@ class ApplicationVariantData(
     componentIdentity: ComponentIdentity,
     artifacts: ArtifactsImpl,
     services: VariantServices,
-    taskContainer: MutableTaskContainer
 ) : ApkVariantData(
     componentIdentity,
     artifacts,
-    services,
-    taskContainer
+    services
 ), TestedVariantData {
 
     private val testVariants: MutableMap<ComponentType, TestVariantData> = mutableMapOf()

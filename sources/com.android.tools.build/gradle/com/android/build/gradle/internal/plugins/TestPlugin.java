@@ -34,7 +34,6 @@ import com.android.build.api.variant.TestVariantBuilder;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
-import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.TestApplicationTaskManager;
 import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
@@ -123,7 +122,6 @@ public class TestPlugin
                                             DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                                     dslContainers,
                     @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-                    @NonNull ExtraModelInfo extraModelInfo,
                     VersionedSdkLoaderService versionedSdkLoaderService) {
         TestExtensionImpl testExtension =
                 dslServices.newDecoratedInstance(
@@ -161,7 +159,6 @@ public class TestPlugin
                                             bootClasspathConfig,
                                             buildOutputs,
                                             dslContainers.getSourceSetManager(),
-                                            extraModelInfo,
                                             testExtension,
                                             stats);
             project.getExtensions()
@@ -180,7 +177,6 @@ public class TestPlugin
                                 bootClasspathConfig,
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
-                                extraModelInfo,
                                 testExtension,
                                 stats);
         initExtensionFromSettings(android);

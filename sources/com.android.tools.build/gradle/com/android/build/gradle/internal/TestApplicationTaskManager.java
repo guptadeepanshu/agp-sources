@@ -181,9 +181,4 @@ public class TestApplicationTaskManager
         return taskFactory.register(
                 new ProcessTestManifest.CreationAction((TestCreationConfig) creationConfig));
     }
-
-    @Override
-    protected void createVariantPreBuildTask(@NonNull ComponentCreationConfig creationConfig) {
-        createDefaultPreBuildTask(creationConfig);
-    }
 }

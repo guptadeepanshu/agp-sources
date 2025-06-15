@@ -28,7 +28,6 @@ import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_APK_INSTALLER
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_HOST_EMULATOR_CONTROL
-import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_HOST_RETENTION
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_RESULT_LISTENER_GRADLE
 import com.android.builder.testing.api.DeviceConnector
 import com.android.sdklib.BuildToolInfo
@@ -39,8 +38,6 @@ import com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstaller
 import com.android.tools.utp.plugins.host.apkinstaller.proto.AndroidApkInstallerConfigProto.InstallableApk.InstallOption.ForceCompilation
 import com.android.tools.utp.plugins.host.coverage.proto.AndroidTestCoverageConfigProto.AndroidTestCoverageConfig
 import com.android.tools.utp.plugins.host.emulatorcontrol.proto.EmulatorControlPluginProto.EmulatorControlPlugin
-import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto
-import com.android.tools.utp.plugins.host.icebox.proto.IceboxPluginProto.IceboxPlugin
 import com.android.tools.utp.plugins.host.logcat.proto.AndroidTestLogcatConfigProto.AndroidTestLogcatConfig
 import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerConfigProto.GradleAndroidTestResultListenerConfig
 import com.google.common.collect.Iterables
@@ -439,12 +436,6 @@ class UtpConfigFactory {
                     testData, utpDependencies, useOrchestrator,
                     additionalTestOutputOnDeviceDir, shardConfig, additionalTestParams
                 )
-                addHostPlugin(
-                    createIceboxPlugin(
-                        grpcInfo?.port, grpcInfo?.token, testData, utpDependencies, retentionConfig,
-                        useOrchestrator
-                    )
-                )
             } else {
                 if (retentionConfig.enabled && debug) {
                     logger.warn(
@@ -532,40 +523,6 @@ class UtpConfigFactory {
         return ANDROID_TEST_PLUGIN.toExtensionProto(
             utpDependencies, AndroidDevicePlugin::newBuilder
         ) {
-        }
-    }
-
-    private fun createIceboxPlugin(
-        grpcPort: Int?,
-        grpcToken: String?,
-        testData: StaticTestData,
-        utpDependencies: UtpDependencies,
-        retentionConfig: RetentionConfig,
-        rebootBetweenTestCases: Boolean
-    ): ExtensionProto.Extension {
-        return ANDROID_TEST_PLUGIN_HOST_RETENTION.toExtensionProto(
-            utpDependencies, IceboxPlugin::newBuilder
-        ) {
-            appPackage = testData.testedApplicationId
-            emulatorGrpcAddress = DEFAULT_EMULATOR_GRPC_ADDRESS
-            emulatorGrpcPort = grpcPort ?: 0
-            emulatorGrpcToken = grpcToken ?: ""
-            snapshotCompression = if (retentionConfig.compressSnapshots) {
-                IceboxPluginProto.Compression.TARGZ
-            } else {
-                IceboxPluginProto.Compression.NONE
-            }
-            skipSnapshot = false
-            maxSnapshotNumber = if (retentionConfig.retainAll) {
-                0
-            } else {
-                retentionConfig.maxSnapshots
-            }
-            setupStrategy = if (rebootBetweenTestCases) {
-                IceboxPluginProto.IceboxSetupStrategy.RECONNECT_BETWEEN_TEST_CASES
-            } else {
-                IceboxPluginProto.IceboxSetupStrategy.CONNECT_BEFORE_ALL_TEST
-            }
         }
     }
 

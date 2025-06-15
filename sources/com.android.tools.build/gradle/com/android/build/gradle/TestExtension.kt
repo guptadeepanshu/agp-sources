@@ -4,7 +4,6 @@ import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
-import com.android.build.gradle.internal.ExtraModelInfo
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -26,7 +25,6 @@ open class TestExtension(
     bootClasspathConfig: BootClasspathConfig,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
-    extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: TestExtensionImpl,
     stats: GradleBuildProject.Builder?
 ) : BaseExtension(
@@ -34,7 +32,6 @@ open class TestExtension(
     bootClasspathConfig,
     buildOutputs,
     sourceSetManager,
-    extraModelInfo,
     false,
     stats
 ), TestAndroidConfig,

@@ -102,12 +102,6 @@ enum class UtpDependency(
                 UtpDependencies::testEmulatorAccessPlugin,
                 ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
                 ANDROID_TOOLS_UTP_PLUGIN_VERSION),
-    ANDROID_TEST_PLUGIN_HOST_RETENTION(
-            "android-test-plugin-host-retention",
-            "com.android.tools.utp.plugins.host.icebox.IceboxPlugin",
-            UtpDependencies::testPluginHostRetention,
-            ANDROID_TOOLS_UTP_PLUGIN_MAVEN_GROUP_ID,
-            ANDROID_TOOLS_UTP_PLUGIN_VERSION),
     ANDROID_TEST_PLUGIN_RESULT_LISTENER_GRADLE(
             "android-test-plugin-result-listener-gradle",
             "com.android.tools.utp.plugins.result.listener.gradle.GradleAndroidTestResultListener",
@@ -169,10 +163,6 @@ abstract class UtpDependencies {
     @get:Optional
     @get:Classpath
     abstract val testEmulatorAccessPlugin: ConfigurableFileCollection
-
-    @get:Optional
-    @get:Classpath
-    abstract val testPluginHostRetention: ConfigurableFileCollection
 
     @get:Optional
     @get:Classpath

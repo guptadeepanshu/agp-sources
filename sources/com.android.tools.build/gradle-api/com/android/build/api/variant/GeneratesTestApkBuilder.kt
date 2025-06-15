@@ -16,23 +16,7 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Configuration-time properties [ComponentBuilder] that produce Test APKs.
  */
-@Incubating
-interface GeneratesTestApkBuilder: GeneratesApkBuilder {
-
-    /**
-     * Sets the Test APK debuggable flag.
-     */
-    @get:Incubating
-    @get:Deprecated(
-        message="Other plugins can change this value, it is not safe to read it at this stage",
-        level = DeprecationLevel.ERROR
-    )
-    @set:Incubating
-    var debuggable: Boolean
-
-}
+interface GeneratesTestApkBuilder: GeneratesApkBuilder { }

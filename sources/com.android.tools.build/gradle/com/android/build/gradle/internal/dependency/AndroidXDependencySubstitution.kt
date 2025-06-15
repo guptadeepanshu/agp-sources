@@ -21,6 +21,7 @@ import com.android.tools.build.jetifier.core.config.ConfigParser
 import com.android.tools.build.jetifier.processor.Processor
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ProjectDependency
 
 /**
  * Singleton object that maintains AndroidX mappings and configures AndroidX dependency substitution
@@ -106,7 +107,8 @@ object AndroidXDependencySubstitution {
      */
     private fun skipAndroidArchDependencySubstitution(configuration: Configuration): Boolean {
         return configuration.allDependencies.any {
-            (it.group != null && it.group!!.startsWith(ANDROID_ARCH_))
+            it !is ProjectDependency // to avoid project isolation issues (b/389951197)
+                    && (it.group != null && it.group!!.startsWith(ANDROID_ARCH_))
                     && (it.version == null || !it.version!!.startsWith("1."))
         }
     }

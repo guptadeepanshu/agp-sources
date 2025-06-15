@@ -18,12 +18,10 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.EmulatorControl
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
-import com.android.build.gradle.internal.services.DslServices
-import javax.inject.Inject
 
-abstract class EmulatorControl @Inject @WithLazyInitialization("lazyInit") constructor(private val dslServices: DslServices) :
-    EmulatorControl {
+abstract class EmulatorControl: EmulatorControl {
 
+    @WithLazyInitialization
     @Suppress("unused") // the call is injected by DslDecorator
     protected fun lazyInit() {
         secondsValid = 3600

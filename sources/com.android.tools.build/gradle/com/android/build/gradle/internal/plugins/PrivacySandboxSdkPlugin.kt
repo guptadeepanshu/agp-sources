@@ -156,7 +156,9 @@ class PrivacySandboxSdkPlugin @Inject constructor(
 
         R8ParallelBuildService.RegistrationAction(
             project,
-            projectOptions.get(IntegerOption.R8_MAX_WORKERS)
+            // These `IntegerOption`s have default values so get() should return not-null
+            projectOptions.get(IntegerOption.R8_MAX_WORKERS)!!,
+            projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
         ).execute()
     }
 

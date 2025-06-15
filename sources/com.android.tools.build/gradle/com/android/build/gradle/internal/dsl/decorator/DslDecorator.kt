@@ -115,6 +115,10 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
 
         val experimentalGuards: List<BooleanOption> = abstractProperties.mapNotNull { it.guardedBy }.toSet().toList()
 
+        // obtain the list of methods annotated with @WithLazyInitialization
+        val lazyInitializationMethods = dslClass.declaredMethods
+            .filter { it.isAnnotationPresent(WithLazyInitialization::class.java) }
+
         val constructors = (if (isInterface) Any::class.java else dslClass).declaredConstructors
         for (constructor in constructors) {
             val method = Method.getMethod(constructor)
@@ -187,17 +191,18 @@ class DslDecorator(supportedPropertyTypes: List<SupportedPropertyType>) {
                     }
                 }
 
-                withLazyInit?.let {
+                lazyInitializationMethods.forEach {
                     loadThis()
                     invokeVirtual(
                         generatedClass,
                         Method(
-                            it.methodName,
+                            it.name,
                             Type.VOID_TYPE,
                             arrayOf()
                         )
                     )
                 }
+
                 if (experimentalGuards.isNotEmpty()) {
                     populateExperimentalGuardsBooleanArray(generatedClass, dslServicesArgumentIndex, experimentalGuards)
                 }

@@ -110,7 +110,7 @@ interface PrivacySandboxSdkExtension {
     val signingConfig: SigningConfig
 
     @Incubating
-    fun signingConfig(action: SigningConfig?.() -> Unit)
+    fun signingConfig(action: SigningConfig.() -> Unit)
 
     /**
      * Specifies options for the R8/D8 optimization tool.

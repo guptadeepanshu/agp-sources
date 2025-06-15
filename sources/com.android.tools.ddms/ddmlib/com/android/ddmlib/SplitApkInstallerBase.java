@@ -81,7 +81,7 @@ public abstract class SplitApkInstallerBase {
 
     private static boolean supportsCmd(IDevice device) {
         return device.getVersion()
-                .isGreaterOrEqualThan(AndroidVersion.BINDER_CMD_AVAILABLE.getApiLevel());
+                .isAtLeast(AndroidVersion.BINDER_CMD_AVAILABLE.getApiLevel());
     }
 
     static void setAbbExecAllowed(boolean allowed) {
@@ -257,7 +257,7 @@ public abstract class SplitApkInstallerBase {
 
     protected static void validateApiLevel(@NonNull IDevice device) {
         int apiWithSplitApk = AndroidVersion.ALLOW_SPLIT_APK_INSTALLATION.getApiLevel();
-        if (!device.getVersion().isGreaterOrEqualThan(apiWithSplitApk)) {
+        if (!device.getVersion().isAtLeast(apiWithSplitApk)) {
             throw new IllegalArgumentException(
                     String.format(
                             "Device %s API level=%d. Cannot install split APKs with API level < %d",

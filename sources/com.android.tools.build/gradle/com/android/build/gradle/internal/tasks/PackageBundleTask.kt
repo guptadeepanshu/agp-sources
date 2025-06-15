@@ -41,6 +41,7 @@ import com.android.builder.packaging.PackagingUtils
 import com.android.bundle.Config
 import com.android.bundle.Config.UncompressNativeLibraries.PageAlignment
 import com.android.tools.build.bundletool.commands.BuildBundleCommand
+import com.android.tools.build.bundletool.commands.ValidateBundleCommand
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
@@ -184,7 +185,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val deviceGroupConfig: RegularFileProperty
+    abstract val deviceTargetingConfig: RegularFileProperty
 
     @get:Optional
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
@@ -224,7 +225,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             it.abiFilters.set(abiFilters)
             it.binaryArtProfiler.set(binaryArtProfile)
             it.binaryArtProfilerMetadata.set(binaryArtProfileMetadata)
-            it.deviceGroupConfig.set(deviceGroupConfig)
+            it.deviceTargetingConfig.set(deviceTargetingConfig)
             // work action parameters are not serialized like tasks are, therefore it is not possible
             // to use @Nested annotated java beans. Therefore, decompose the MetadataRecord into
             // parts that can be individually serialized by the worker machinery.
@@ -258,7 +259,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         abstract val abiFilters: SetProperty<String>
         abstract val binaryArtProfiler: RegularFileProperty
         abstract val binaryArtProfilerMetadata: RegularFileProperty
-        abstract val deviceGroupConfig: RegularFileProperty
+        abstract val deviceTargetingConfig: RegularFileProperty
         abstract val metadataFiles: ListProperty<RegularFile>
         abstract val metadataDirectories: ListProperty<String>
     }
@@ -421,6 +422,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 .setOutputPath(bundleFile.toPath())
                 .setModulesPaths(builder.build())
 
+            val validate = ValidateBundleCommand.builder()
+                .setBundlePath(bundleFile.toPath())
+                .build()
+
             if (parameters.binaryArtProfiler.isPresent
                 && parameters.binaryArtProfiler.get().asFile.exists()) {
                 command.addMetadataFile(
@@ -469,11 +474,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 }
             }
 
-            parameters.deviceGroupConfig.asFile.orNull?.let {
+            parameters.deviceTargetingConfig.asFile.orNull?.let {
                 if (it.isFile) {
                     command.addMetadataFile(
                         "com.android.tools.build.bundletool",
-                        "DeviceGroupConfig.json",
+                        "DeviceGroupConfig.pb",
                         it.toPath()
                     )
                 }
@@ -526,6 +531,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             }
 
             command.build().execute()
+
+            // validate the resulting bundle if it contains a device targeting config.
+            if (parameters.deviceTargetingConfig.isPresent()) {
+                validate.execute()
+            }
         }
 
         private fun getBundlePath(folder: File): Path {
@@ -615,14 +625,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         ) {
             super.configure(task)
 
-            val extraProperties = task.project.extensions.getByType(ExtraPropertiesExtension::class.java).properties
-
             task.bundleType.set(Config.BundleConfig.BundleType.ASSET_ONLY)
             task.featureZips = projectServices.objectFactory.fileCollection()
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.ASSET_PACK_BUNDLE, task.assetPackZips
             )
-            task.bundleOptions = assetPackBundle.convert(extraProperties)
+            task.bundleOptions = assetPackBundle.convert()
             task.compressNativeLibs.setDisallowChanges(true)
             task.pageSize.disallowChanges()
             task.assetPackOptionsForAssetPackBundle.set(
@@ -638,9 +646,6 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             )
             task.d8Metadata.disallowChanges()
             task.r8Metadata.disallowChanges()
-            task.deviceGroupConfig.set(
-                ModulePropertyKey.OptionalFile.DTTV2_DEVICE_GROUP_CONFIG.getValue(
-                    extraProperties))
         }
     }
 
@@ -673,8 +678,6 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             task: PackageBundleTask
         ) {
             super.configure(task)
-
-            val extraProperties = task.project.extensions.getByType(ExtraPropertiesExtension::class.java).properties
 
             task.bundleType.set(Config.BundleConfig.BundleType.REGULAR)
 
@@ -720,7 +723,13 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 creationConfig.androidResources.noCompress
             )
 
-            task.bundleOptions = creationConfig.global.bundleOptions.convert(extraProperties)
+            task.bundleOptions = creationConfig.global.bundleOptions.convert()
+            if (!creationConfig.services.projectOptions[BooleanOption.ENABLE_DEVICE_TARGETING_CONFIG_API]) {
+                if (task.bundleOptions.enableDeviceGroup != null
+                    || task.bundleOptions.defaultDeviceGroup != null) {
+                    throw IllegalStateException("Feature deviceGroup splits is not enabled by default.")
+                }
+            }
 
             task.compressNativeLibs.set(
                 componentProperties.packaging.jniLibs.useLegacyPackagingFromBundle
@@ -780,9 +789,16 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             // Metadata files added through the variant API.
             task.metadataFiles.setDisallowChanges(creationConfig.bundleConfig.metadataFiles)
 
-            task.deviceGroupConfig.set(
-                ModulePropertyKey.OptionalFile.DTTV2_DEVICE_GROUP_CONFIG.getValue(
-                            extraProperties))
+            if (creationConfig.global.bundleOptions.deviceTargetingConfig.isPresent) {
+                if (creationConfig.services.projectOptions[BooleanOption.ENABLE_DEVICE_TARGETING_CONFIG_API]) {
+                    creationConfig.artifacts.setTaskInputToFinalProduct(
+                        InternalArtifactType.DEVICE_TARGETING_CONFIG,
+                        task.deviceTargetingConfig
+                    )
+                } else {
+                    throw IllegalStateException("Feature deviceTargetingConfig is not enabled by default.")
+                }
+            }
 
             if (shouldRegisterLintVitalTasks(creationConfig)) {
                 task.lintVital.setDisallowChanges(
@@ -793,7 +809,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     }
 }
 
-private fun com.android.build.api.dsl.Bundle.convert(extraProperties: Map<String, Any>) =
+private fun com.android.build.api.dsl.Bundle.convert() =
     PackageBundleTask.BundleOptions(
       enableAbi = abi.enableSplit,
       enableDensity = density.enableSplit,
@@ -802,12 +818,8 @@ private fun com.android.build.api.dsl.Bundle.convert(extraProperties: Map<String
       textureDefaultFormat = texture.defaultFormat,
       enableDeviceTier = deviceTier.enableSplit,
       defaultDeviceTier = deviceTier.defaultTier,
-      enableDeviceGroup =
-            ModulePropertyKey.OptionalBoolean.DTTV2_DEVICE_GROUP_ENABLE_SPLIT.getValue(
-                extraProperties),
-      defaultDeviceGroup =
-            ModulePropertyKey.OptionalString.DTTV2_DEVICE_GROUP_DEFAULT_GROUP.getValue(
-                extraProperties),
+      enableDeviceGroup = deviceGroup.enableSplit,
+      defaultDeviceGroup = deviceGroup.defaultGroup,
       enableStoreArchive = storeArchive.enable ?: true,
       enableCountrySet = countrySet.enableSplit,
       defaultCountrySet = countrySet.defaultSet,
@@ -815,7 +827,7 @@ private fun com.android.build.api.dsl.Bundle.convert(extraProperties: Map<String
       defaultAiModelVersion = aiModelVersion.defaultVersion,
     )
 
-private fun AssetPackBundleExtension.convert(extraProperties: Map<String, Any>) =
+private fun AssetPackBundleExtension.convert() =
     PackageBundleTask.BundleOptions(
         enableAbi = null,
         enableDensity = null,
@@ -824,12 +836,8 @@ private fun AssetPackBundleExtension.convert(extraProperties: Map<String, Any>) 
         textureDefaultFormat = texture.defaultFormat,
         enableDeviceTier = deviceTier.enableSplit,
         defaultDeviceTier = deviceTier.defaultTier,
-        enableDeviceGroup =
-            ModulePropertyKey.OptionalBoolean.DTTV2_DEVICE_GROUP_ENABLE_SPLIT.getValue(
-                extraProperties),
-        defaultDeviceGroup =
-            ModulePropertyKey.OptionalString.DTTV2_DEVICE_GROUP_DEFAULT_GROUP.getValue(
-                extraProperties),
+        enableDeviceGroup = null,
+        defaultDeviceGroup = null,
         enableStoreArchive = false,
         enableCountrySet = countrySet.enableSplit,
         defaultCountrySet = countrySet.defaultSet,
@@ -841,7 +849,7 @@ private fun AssetPackBundleExtension.convert(extraProperties: Map<String, Any>) 
  * convenience function to call [Config.SplitsConfig.Builder.addSplitDimension]
  *
  * @param flag the [Config.SplitDimension.Value] on which to set the value
- * @param value if true, split is enbaled for the given flag. If null, no change is made and the
+ * @param value if true, split is enabled for the given flag. If null, no change is made and the
  *              bundle-tool will decide the value.
  */
 private fun Config.SplitsConfig.Builder.splitBy(

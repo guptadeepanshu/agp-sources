@@ -20,6 +20,7 @@ import com.android.build.api.dsl.Bundle
 import com.android.build.api.dsl.BundleCodeTransparency
 import org.gradle.api.Action
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 
 /** Features that apply to distribution by the bundle  */
 abstract class BundleOptions : Bundle {
@@ -29,17 +30,20 @@ abstract class BundleOptions : Bundle {
     abstract override val language: BundleOptionsLanguage
     abstract override val texture: BundleOptionsTexture
     abstract override val deviceTier: BundleOptionsDeviceTier
+    abstract override val deviceGroup: BundleOptionsDeviceGroup
     abstract override val codeTransparency: BundleCodeTransparency
     abstract override val storeArchive: BundleOptionsStoreArchive
     abstract override val integrityConfigDir: DirectoryProperty
     abstract override val countrySet: BundleOptionsCountrySet
     abstract override val aiModelVersion: BundleOptionsAiModelVersion
+    abstract override val deviceTargetingConfig: RegularFileProperty
 
     abstract fun abi(action: Action<BundleOptionsAbi>)
     abstract fun density(action: Action<BundleOptionsDensity>)
     abstract fun language(action: Action<BundleOptionsLanguage>)
     abstract fun texture(action: Action<BundleOptionsTexture>)
     abstract fun deviceTier(action: Action<BundleOptionsDeviceTier>)
+    abstract fun deviceGroup(action: Action<BundleOptionsDeviceGroup>)
     abstract fun storeArchive(action: Action<BundleOptionsStoreArchive>)
     abstract fun countrySet(action: Action<BundleOptionsCountrySet>)
     abstract fun aiModelVersion(action: Action<BundleOptionsAiModelVersion>)

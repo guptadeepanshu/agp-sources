@@ -36,6 +36,13 @@ open class AnalyticsEnabledTestVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.CODE_MINIFICATION_VALUE_VALUE
             delegate.isMinifyEnabled = value
         }
+    override var debuggable: Boolean
+        get() = throw PropertyAccessNotAllowedException("debuggable", "TestVariantBuilder")
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.VARIANT_BUILDER_DEBUGGABLE_VALUE
+            delegate.debuggable = value
+        }
 
     override var enableMultiDex: Boolean?
         get() = throw PropertyAccessNotAllowedException("enableMultiDex", "TestVariantBuilder")
@@ -43,4 +50,7 @@ open class AnalyticsEnabledTestVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ENABLE_MULTI_DEX_VALUE
             delegate.enableMultiDex = value
         }
+
+
+
 }

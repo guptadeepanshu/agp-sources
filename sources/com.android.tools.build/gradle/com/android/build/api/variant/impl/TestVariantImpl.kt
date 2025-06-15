@@ -210,7 +210,8 @@ open class TestVariantImpl @Inject constructor(
             dslInfo.instrumentationRunnerArguments
         )
 
-    override val debuggable: Boolean = dslInfo.isDebuggable
+    override val debuggable: Boolean
+        get() = variantBuilder.debuggable
 
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()

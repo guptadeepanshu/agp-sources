@@ -164,6 +164,7 @@ internal object GenericBuiltArtifactTypeAdapter: CommonBuiltArtifactTypeAdapter<
                     "attributes" -> readAttributes(reader, attributes)
                     // any other attribute we do not know about is AGP implementation details
                     // we do not care about. it has to be a String though.
+                    //noinspection CheckResult
                     else -> reader.nextString()
                 }
             },

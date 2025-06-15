@@ -32,6 +32,13 @@ interface LintModelArtifact {
    */
   fun findCompileDependency(mavenName: String): LintModelLibrary? =
     dependencies.compileDependencies.findLibrary(mavenName, direct = false)
+
+  /**
+   * Finds the library with the given [groupId] and [artifactId] in any transitive
+   * compile-dependency.
+   */
+  fun findCompileDependency(groupId: String, artifactId: String): LintModelLibrary? =
+    findCompileDependency("$groupId:$artifactId")
 }
 
 interface LintModelJavaArtifact : LintModelArtifact

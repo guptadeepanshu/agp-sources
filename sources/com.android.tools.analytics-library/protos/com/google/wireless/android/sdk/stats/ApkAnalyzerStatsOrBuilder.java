@@ -44,4 +44,15 @@ public interface ApkAnalyzerStatsOrBuilder extends
    * @return The compressedSize.
    */
   long getCompressedSize();
+
+  /**
+   * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+   * @return Whether the align16Type field is set.
+   */
+  boolean hasAlign16Type();
+  /**
+   * <code>optional .android_studio.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType align16_type = 3;</code>
+   * @return The align16Type.
+   */
+  com.google.wireless.android.sdk.stats.ApkAnalyzerStats.ApkAnalyzerAlignNative16kbEventType getAlign16Type();
 }

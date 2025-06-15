@@ -57,4 +57,5 @@ FusedLibraryInternalArtifactType<T : FileSystemLocation>(
     object COMPILE_SYMBOL_LIST : FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
     object DEPENDENCY_VALIDATION : FusedLibraryInternalArtifactType<Directory>(DIRECTORY), Replaceable
     object FUSED_LIBRARY_REPORT : FusedLibraryInternalArtifactType<RegularFile>(FILE, Category.REPORTS), Replaceable
+    object SYMBOL_LIST_WITH_PACKAGE_NAME : FusedLibraryInternalArtifactType<RegularFile>(FILE), Replaceable
 }

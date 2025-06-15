@@ -25,10 +25,13 @@ import com.google.common.collect.Table;
 import com.google.common.io.Closeables;
 
 import java.io.InputStream;
+import java.util.function.Predicate;
 
 /** Class providing access to a embedded java resource list of vendor devices. */
 public class VendorDevices {
-    private static final String[] DEVICE_FILES = {"nexus", "wear", "tv", "automotive", "desktop"};
+    private static final String[] DEVICE_FILES = {
+        "nexus", "wear", "tv", "automotive", "desktop", "xr"
+    };
 
     @NonNull private final ILogger mLog;
 
@@ -44,9 +47,10 @@ public class VendorDevices {
      * Initializes all vendor-provided {@link Device}s: the bundled nexus.xml devices as well as all
      * those coming from extra packages.
      *
+     * @param isSupportedDevice function that returns if a given device is supported.
      * @return True if the list has changed.
      */
-    public boolean init() {
+    public boolean init(@NonNull Predicate<Device> isSupportedDevice) {
         synchronized (mLock) {
             if (mVendorDevices != null) {
                 return false;
@@ -58,7 +62,19 @@ public class VendorDevices {
             for (String deviceFile : DEVICE_FILES) {
                 InputStream stream = VendorDevices.class.getResourceAsStream(deviceFile + ".xml");
                 try {
-                    mVendorDevices.putAll(DeviceParser.parse(stream));
+                    DeviceParser.parse(stream)
+                            .cellSet()
+                            .forEach(
+                                    (cell) -> {
+                                        if (isSupportedDevice.test(cell.getValue())) {
+                                            mVendorDevices.put(
+                                                    cell.getRowKey(),
+                                                    cell.getColumnKey(),
+                                                    cell.getValue());
+                                        } else {
+                                            mLog.warning("Unsupported device %s", cell.getRowKey());
+                                        }
+                                    });
                     hasChanged = true;
                 } catch (Exception e) {
                     mLog.error(e, "Could not load " + deviceFile + " devices");

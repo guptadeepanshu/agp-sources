@@ -16,39 +16,60 @@
 
 package com.android.build.api.extension.impl
 
-import com.android.build.api.AndroidPluginVersion
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.instrumentation.manageddevice.ManagedDeviceRegistry
 import com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
+import com.android.build.api.variant.KotlinMultiplatformAndroidVariantBuilder
+import com.android.build.api.variant.VariantSelector
+import com.android.build.gradle.internal.services.DslServices
 import org.gradle.api.Action
+import javax.inject.Inject
 
-open class KotlinMultiplatformAndroidComponentsExtensionImpl(
-    override val sdkComponents: SdkComponents,
-    override val managedDeviceRegistry: ManagedDeviceRegistry,
-    private val variantApiOperations: MultiplatformVariantApiOperationsRegistrar,
-): KotlinMultiplatformAndroidComponentsExtension {
-    override val pluginVersion: AndroidPluginVersion
-        get() = CurrentAndroidGradlePluginVersion.CURRENT_AGP_VERSION
-
-    override fun finalizeDsl(callback: (KotlinMultiplatformAndroidLibraryExtension) -> Unit) {
-        variantApiOperations.add {
-            callback.invoke(it)
-        }
-    }
-
-    override fun finalizeDsl(callback: Action<KotlinMultiplatformAndroidLibraryExtension>) {
-        variantApiOperations.add(callback)
-    }
+open class KotlinMultiplatformAndroidComponentsExtensionImpl@Inject constructor(
+    dslServices: DslServices,
+    sdkComponents: SdkComponents,
+    managedDeviceRegistry: ManagedDeviceRegistry,
+    private val variantApiOperations: VariantApiOperationsRegistrar<KotlinMultiplatformAndroidLibraryExtension, KotlinMultiplatformAndroidVariantBuilder, KotlinMultiplatformAndroidVariant>,
+    kmpExtension: KotlinMultiplatformAndroidLibraryExtension
+) : KotlinMultiplatformAndroidComponentsExtension,
+    AndroidComponentsExtensionImpl<KotlinMultiplatformAndroidLibraryExtension, KotlinMultiplatformAndroidVariantBuilder, KotlinMultiplatformAndroidVariant>(
+        dslServices,
+        sdkComponents,
+        managedDeviceRegistry,
+        variantApiOperations,
+        kmpExtension
+    ) {
 
     override fun onVariant(callback: (KotlinMultiplatformAndroidVariant) -> Unit) {
-        variantApiOperations.variantOperations.addOperation {
-            callback.invoke(it)
-        }
+        variantApiOperations.variantOperations
+            .addPublicOperation({ callback.invoke(it) }, "onVariant")
     }
 
     override fun onVariant(callback: Action<KotlinMultiplatformAndroidVariant>) {
-        variantApiOperations.variantOperations.addOperation(callback)
+        variantApiOperations.variantOperations.addPublicOperation(callback, "onVariant")
+    }
+
+    override fun beforeVariants(
+        selector: VariantSelector,
+        callback: (KotlinMultiplatformAndroidVariantBuilder) -> Unit
+    ) {
+        throw RuntimeException("not supported yet")
+    }
+
+    override fun beforeVariants(
+        selector: VariantSelector,
+        callback: Action<KotlinMultiplatformAndroidVariantBuilder>
+    ) {
+        throw RuntimeException("not supported yet")
+    }
+
+    override fun addSourceSetConfigurations(suffix: String) {
+        throw RuntimeException("Kotlin multiplatform Variant API does not support addSourceSetConfigurations() yet")
+    }
+
+    override fun addKspConfigurations(useGlobalConfiguration: Boolean) {
+        throw RuntimeException("Kotlin multiplatform Variant API does not support addKspConfigurations() yet")
     }
 }

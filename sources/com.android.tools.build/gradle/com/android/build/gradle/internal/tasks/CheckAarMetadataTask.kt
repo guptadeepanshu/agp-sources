@@ -338,7 +338,7 @@ abstract class CheckAarMetadataWorkAction: WorkAction<CheckAarMetadataWorkParame
     ) {
         val aarMetadataFile = aarMetadataArtifact.file
         val displayName = aarMetadataArtifact.displayName
-        val aarMetadataReader = AarMetadataReader(aarMetadataFile)
+        val aarMetadataReader = AarMetadataReader.load(aarMetadataFile)
 
         // check aarFormatVersion
         val aarFormatVersion = aarMetadataReader.aarFormatVersion
@@ -650,30 +650,34 @@ abstract class CheckAarMetadataWorkParameters: WorkParameters {
     abstract val checkCoreLibraryDesugaring: Property<Boolean>
 }
 
-data class AarMetadataReader(val inputStream: InputStream) {
+data class AarMetadataReader(
+    val aarFormatVersion: String?,
+    val aarMetadataVersion: String?,
+    val minCompileSdk: String?,
+    val minAgpVersion: String?,
+    val forceCompileSdkPreview: String?,
+    val minCompileSdkExtension: String?,
+    val coreLibraryDesugaringEnabled: String?,
+    val desugarJdkLibId: String?,
+) {
+    companion object {
+        fun load(inputStream: InputStream): AarMetadataReader {
+            val properties = Properties()
+            inputStream.use { properties.load(it) }
 
-    val aarFormatVersion: String?
-    val aarMetadataVersion: String?
-    val minCompileSdk: String?
-    val minAgpVersion: String?
-    val forceCompileSdkPreview: String?
-    val minCompileSdkExtension: String?
-    val coreLibraryDesugaringEnabled: String?
-    val desugarJdkLibId: String?
+            return AarMetadataReader(
+                aarFormatVersion = properties.getProperty(AAR_FORMAT_VERSION_PROPERTY),
+                aarMetadataVersion = properties.getProperty(AAR_METADATA_VERSION_PROPERTY),
+                minCompileSdk = properties.getProperty(MIN_COMPILE_SDK_PROPERTY),
+                minAgpVersion = properties.getProperty(MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY),
+                forceCompileSdkPreview = properties.getProperty(FORCE_COMPILE_SDK_PREVIEW_PROPERTY),
+                minCompileSdkExtension = properties.getProperty(MIN_COMPILE_SDK_EXTENSION_PROPERTY),
+                coreLibraryDesugaringEnabled = properties.getProperty(CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY),
+                desugarJdkLibId = properties.getProperty(DESUGAR_JDK_LIB_PROPERTY),
+            )
+        }
 
-    constructor(file: File) : this(file.inputStream())
-
-    init {
-        val properties = Properties()
-        inputStream.use { properties.load(it) }
-        aarFormatVersion = properties.getProperty(AAR_FORMAT_VERSION_PROPERTY)
-        aarMetadataVersion = properties.getProperty(AAR_METADATA_VERSION_PROPERTY)
-        minCompileSdk = properties.getProperty(MIN_COMPILE_SDK_PROPERTY)
-        minAgpVersion = properties.getProperty(MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY)
-        forceCompileSdkPreview = properties.getProperty(FORCE_COMPILE_SDK_PREVIEW_PROPERTY)
-        minCompileSdkExtension = properties.getProperty(MIN_COMPILE_SDK_EXTENSION_PROPERTY)
-        coreLibraryDesugaringEnabled = properties.getProperty(CORE_LIBRARY_DESUGARING_ENABLED_PROPERTY)
-        desugarJdkLibId = properties.getProperty(DESUGAR_JDK_LIB_PROPERTY)
+        fun load(file: File): AarMetadataReader = load(file.inputStream())
     }
 }
 
