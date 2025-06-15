@@ -6,18 +6,20 @@ def agpVersion = project.file('version.txt').text.trim()
 
 repositories {
   google()
-  jcenter()
+  mavenCentral()
 }
 
 configurations {
-  agp
+  agp {
+    attributes.attribute(Attribute.of("org.gradle.jvm.environment", String), "standard-jvm")
+  }
 }
 
 dependencies {
   agp "com.android.tools.build:gradle:${agpVersion}"
 }
 
-task dumpSources {
+tasks.register('dumpSources') {
   def outputDir = file("sources/")
   inputs.files configurations.agp
   outputs.dir outputDir
