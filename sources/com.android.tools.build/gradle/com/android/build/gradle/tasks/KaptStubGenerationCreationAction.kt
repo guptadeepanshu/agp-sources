@@ -22,7 +22,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishingSpecs
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.KotlinBaseApiVersion
-import com.android.build.gradle.internal.services.KotlinServices
+import com.android.build.gradle.internal.services.BuiltInKotlinServices
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
@@ -31,9 +31,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class KaptStubGenerationCreationAction(
     creationConfig: ComponentCreationConfig,
-    private val kotlinServices: KotlinServices,
+    private val kotlinServices: BuiltInKotlinServices,
     private val kotlinCompileTaskProvider: TaskProvider<out KotlinJvmCompile>,
-    private val kaptExtension: KaptExtensionConfig?
+    private val kaptExtension: KaptExtensionConfig
 ) : KotlinTaskCreationAction<KaptGenerateStubs>(creationConfig) {
 
     private val kotlinJvmFactory = kotlinServices.factory
@@ -51,21 +51,11 @@ class KaptStubGenerationCreationAction(
 
     override fun getTaskProvider(): TaskProvider<out KaptGenerateStubs> {
         if (kotlinServices.kotlinBaseApiVersion > KotlinBaseApiVersion.VERSION_1) {
-            if (kaptExtension == null) {
-                // This should never happen.
-                creationConfig.services
-                    .issueReporter
-                    .reportError(
-                        IssueReporter.Type.GENERIC,
-                        RuntimeException("Unable to access kapt extension.")
-                    )
-            }
             return kotlinJvmFactory.registerKaptGenerateStubsTask(
                 taskName,
                 kotlinCompileTaskProvider,
-                kaptExtension ?: kotlinJvmFactory.kaptExtension,
-                creationConfig.services
-                    .provider { creationConfig.global.kotlinAndroidProjectExtension?.explicitApi }
+                kaptExtension,
+                creationConfig.services.provider { kotlinServices.kotlinAndroidProjectExtension.explicitApi }
             )
         }
         return kotlinJvmFactory.registerKaptGenerateStubsTask(taskName)
@@ -153,10 +143,7 @@ class KaptStubGenerationCreationAction(
         }
 
         if (kotlinServices.kotlinBaseApiVersion < KotlinBaseApiVersion.VERSION_2) {
-            creationConfig.global
-                .kotlinAndroidProjectExtension
-                ?.compilerOptions
-                ?.let { task.applyCompilerOptions(it) }
+            task.applyCompilerOptions(kotlinServices.kotlinAndroidProjectExtension.compilerOptions)
         }
     }
 }

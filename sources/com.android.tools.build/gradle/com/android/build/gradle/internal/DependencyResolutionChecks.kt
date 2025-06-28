@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:JvmName("DependencyResolutionChecks")
 
 package com.android.build.gradle.internal
 
@@ -21,7 +20,6 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.google.common.base.Throwables
 import org.gradle.api.Project
-import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.logging.LogLevel
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -32,28 +30,23 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 fun registerDependencyCheck(
     project: Project,
-    projectOptions: ProjectOptions,
-    buildFeatures: BuildFeatures
+    projectOptions: ProjectOptions
 ) {
-    val fail = projectOptions[BooleanOption.DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION]
-
     if (skipDependencyCheck(projectOptions)) {
         return
     }
 
     val isResolutionAllowed = AtomicBoolean(false)
     when {
-        // There are 3 phases of interest:
-        //    1. Evaluation of the current project
-        //    2. Evaluation of all projects (which contains #1)
-        //    3. Task graph creation (which happens after #2)
+        // There are 3 main sub-phases of interest in the configuration phase:
+        //    1. Evaluation of all projects, which includes evaluation of the current project
+        //    2. Task graph creation
+        //    3. Configuration cache store time
 
-        // If project isolation is enabled (https://github.com/gradle/gradle/issues/31483)
-        // OR if configuration-on-demand is enabled and there are included builds (b/154948828),
+        // If configuration-on-demand is enabled and there are included builds (b/154948828),
         // configurations may be resolved before all projects are evaluated but should not be
         // resolved during the current project's evaluation.
-        buildFeatures.projectIsolationActive() ||
-                (project.gradle.startParameter.isConfigureOnDemand && project.gradle.includedBuilds.isNotEmpty()) -> {
+        project.gradle.startParameter.isConfigureOnDemand && project.gradle.includedBuilds.isNotEmpty() -> {
             project.afterEvaluate { isResolutionAllowed.set(true) }
         }
 
@@ -63,10 +56,13 @@ fun registerDependencyCheck(
             project.gradle.projectsEvaluated { isResolutionAllowed.set(true) }
         }
 
-        // In all other cases, configurations should not be resolved during all projects' evaluation
-        // and task graph creation
+        // In all other cases, configurations may be resolved during configuration cache store time
+        // or execution time but should not be resolved during all projects' evaluation and task
+        // graph creation
         else -> project.gradle.taskGraph.whenReady { isResolutionAllowed.set(true) }
     }
+
+    val failIfResolvedEarly = projectOptions[BooleanOption.DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION]
 
     project.configurations.configureEach { configuration ->
         configuration.incoming.beforeResolve {
@@ -78,8 +74,8 @@ fun registerDependencyCheck(
             }
 
             val errorMessage = errorMessage(configurationName = configuration.name)
-            if (fail) {
-                throw RuntimeException(errorMessage)
+            if (failIfResolvedEarly) {
+                error(errorMessage)
             } else {
                 project.logger.warn("$errorMessage\nRun with --info for a stacktrace.")
                 // TODO b/80230357: Heuristically sanitized stacktrace to show what triggered the resolution.
@@ -99,7 +95,9 @@ private fun skipDependencyCheck(projectOptions: ProjectOptions): Boolean {
 }
 
 private fun errorMessage(configurationName: String): String {
-    return """Configuration '$configurationName' was resolved during configuration time.
-This is a build performance and scalability issue.
-See https://github.com/gradle/gradle/issues/2298"""
+    return """
+    Configuration '$configurationName' was resolved during configuration time.
+    This is a build performance and scalability issue.
+    See https://github.com/gradle/gradle/issues/2298
+    """.trimIndent()
 }

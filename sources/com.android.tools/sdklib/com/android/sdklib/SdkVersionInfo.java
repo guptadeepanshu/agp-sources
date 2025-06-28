@@ -30,14 +30,14 @@ public class SdkVersionInfo {
      * updated for a new release. This number is used as a baseline and any more recent platforms
      * found can be used to increase the highest known number.
      */
-    public static final int HIGHEST_KNOWN_API = 35;
+    public static final int HIGHEST_KNOWN_API = 36;
 
     /**
      * Like {@link #HIGHEST_KNOWN_API} but does not include preview platforms.
      *
      * <p>Make sure to keep this in sync with the value in TestUtils.
      */
-    public static final int HIGHEST_KNOWN_STABLE_API = 35;
+    public static final int HIGHEST_KNOWN_STABLE_API = 36;
 
     /**
      * The highest supported version of the Android platform (as an API level) that this version of
@@ -56,7 +56,7 @@ public class SdkVersionInfo {
      * <p>Generally we shouldn't <i>prevent</i> the user from proceeding; the intent is to make the
      * user <b>aware</b> that the SDK may not work correctly without a newer version of the tools.
      */
-    public static final int HIGHEST_SUPPORTED_API = 35; // b/230535497; this is not yet enforced
+    public static final int HIGHEST_SUPPORTED_API = 36; // b/230535497; this is not yet enforced
 
     /**
      * The lowest active API level in the ecosystem. This number will change over time as the
@@ -76,7 +76,7 @@ public class SdkVersionInfo {
      * The highest known API level for Wearables. Note the tools at the downloadable system images
      * for wearables to see if there are more recent versions.
      */
-    public static final int HIGHEST_KNOWN_API_WEAR = 35;
+    public static final int HIGHEST_KNOWN_API_WEAR = 36;
 
     /**
      * The lowest active api for wearables. This number will change over time as the distribution of

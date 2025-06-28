@@ -84,7 +84,7 @@ interface AndroidArtifact : AbstractArtifact, AndroidModel {
      *
      * @return the name of the code generating task.
      */
-    val sourceGenTaskName: String
+    val sourceGenTaskName: String?
 
     /**
      * The name of the task used to generate the resources. The actual value might

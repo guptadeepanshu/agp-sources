@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.core.dsl.impl.features
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.EmulatorControl
-import com.android.build.api.dsl.EmulatorSnapshots
 import com.android.build.api.dsl.ManagedDevices
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo
@@ -41,8 +40,6 @@ internal class DeviceTestOptionsDslInfoImpl(
         get() = extension.testOptions.managedDevices
     override val emulatorControl: EmulatorControl
         get() = extension.testOptions.emulatorControl
-    override val emulatorSnapshots: EmulatorSnapshots
-        get() = extension.testOptions.emulatorSnapshots
     override val targetSdkVersion: AndroidVersion?
         get() = extension.testOptions.run { createTargetSdkVersion(targetSdk, targetSdkPreview)}
     override val codeCoverageEnabled: Boolean = false

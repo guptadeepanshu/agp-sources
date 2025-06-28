@@ -274,7 +274,7 @@ class AgpVersion private constructor(
         @JvmStatic
         fun parse(value: String): AgpVersion {
             return tryParse(value)
-                ?: throw IllegalArgumentException("$value is not a valid AGP version string.")
+                ?: throw IllegalArgumentException("'$value' is not a valid AGP version string.")
         }
 
         private val STABLE_VERSION_REGEX: Regex
@@ -323,7 +323,7 @@ class AgpVersion private constructor(
         fun parseStable(value: String): AgpVersion {
             return tryParseStable(value)
                 ?: throw IllegalArgumentException(
-                    "$value is not a valid stable AGP version string.")
+                    "'$value' is not a valid stable AGP version string.")
         }
     }
 }

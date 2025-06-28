@@ -63,12 +63,15 @@ import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.getDirectories
+import com.android.build.gradle.internal.services.BuiltInKaptSupportMode
+import com.android.build.gradle.internal.services.BuiltInKotlinSupportMode
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.builder.core.ComponentType
 import com.android.utils.appendCapitalized
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
@@ -137,8 +140,8 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
     override val minSdk: AndroidVersion
         get() = dslInfo.minSdkVersion
 
-    final override val useBuiltInKotlinSupport = false
-    final override val useBuiltInKaptSupport = false
+    final override val builtInKotlinSupportMode = BuiltInKotlinSupportMode.NotSupported.KmpPluginApplied
+    final override val builtInKaptSupportMode = BuiltInKaptSupportMode.NotSupported.KmpPluginApplied
 
     override val sources = KmpSourcesImpl(
         dslInfo,
@@ -316,6 +319,13 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
             )
         } else null
 
+        override val baselineProfiles = KotlinMultiplatformFlatSourceDirectoriesImpl(
+            name = SourceType.BASELINE_PROFILES.folder,
+            variantServices = variantServices,
+            variantDslFilters = PatternSet(),
+            compilation = compilation
+        )
+
         override fun resources(action: (FlatSourceDirectoriesImpl) -> Unit) {
             action(resources)
         }
@@ -336,9 +346,13 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
             assets?.let(action)
         }
 
+        override fun baselineProfiles(action: (FlatSourceDirectoriesImpl) -> Unit) {
+            baselineProfiles.let(action)
+        }
+
         override val manifestFile = manifestFile
 
-        private val extras by lazy(LazyThreadSafetyMode.NONE) {
+        internal val extras: NamedDomainObjectContainer<FlatSourceDirectoriesImpl> by lazy(LazyThreadSafetyMode.NONE) {
             variantServices.domainObjectContainer(
                 FlatSourceDirectoriesImpl::class.java,
                 SourcesImpl.SourceProviderFactory(
@@ -355,7 +369,7 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         override val mlModels = null
         override val aidl = null
         override val renderscript = null
-        override val baselineProfiles = null
+
         override val manifestOverlayFiles = variantServices.provider { emptyList<File>() }
 
         override fun aidl(action: (FlatSourceDirectoriesImpl) -> Unit) {}
@@ -363,18 +377,14 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
         override fun jniLibs(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
         override fun shaders(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
         override fun mlModels(action: (LayeredSourceDirectoriesImpl) -> Unit) {}
-        override fun baselineProfiles(action: (FlatSourceDirectoriesImpl) -> Unit) {}
 
         override val artProfile: File? = null
         override val sourceProviderNames: List<String> = emptyList()
         override val multiFlavorSourceProvider: DefaultAndroidSourceSet? = null
         override val variantSourceProvider: DefaultAndroidSourceSet? = null
-        override val manifests: ManifestFiles =
-                ManifestFilesImpl(
-                        variantServices
-                ).also { sourceFilesImpl ->
-                    sourceFilesImpl.addSourceFile(manifestFile)
-                }
+        override val manifests: ManifestFiles = ManifestFilesImpl(variantServices).also { sourceFilesImpl ->
+            sourceFilesImpl.addSourceFile(manifestFile)
+        }
     }
 
     open fun syncAndroidAndKmpClasspathAndSources() {
@@ -434,6 +444,19 @@ abstract class KmpComponentImpl<DslInfoT: KmpComponentDslInfo>(
                         elements = sourceSet.resources.sourceDirectories.getDirectories(projectDir),
                         filter = PatternSet().exclude("**/*.java", "**/*.kt"),
                     )
+                }
+            }
+        )
+
+        sources.baselineProfiles.addStaticSources(
+            services.provider {
+                androidKotlinCompilation.allKotlinSourceSets.flatMap { sourceSet ->
+                    sourceSet.kotlin.srcDirs.map { srcDir ->
+                        FileBasedDirectoryEntryImpl(
+                            name = sourceSet.name,
+                            directory = File(srcDir.parentFile, SourceType.BASELINE_PROFILES.folder)
+                        )
+                    }
                 }
             }
         )

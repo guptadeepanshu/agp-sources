@@ -51,31 +51,39 @@ public interface ResizeComposePreviewEventOrBuilder extends
    * events).
    * </pre>
    *
-   * <code>optional int32 stopped_device_width = 3;</code>
+   * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+   *     See studio_stats.proto;l=17050
    * @return Whether the stoppedDeviceWidth field is set.
    */
-  boolean hasStoppedDeviceWidth();
+  @java.lang.Deprecated boolean hasStoppedDeviceWidth();
   /**
    * <pre>
    * Width and height when user stops resizing (relevant for RESIZE_STOPPED
    * events).
    * </pre>
    *
-   * <code>optional int32 stopped_device_width = 3;</code>
+   * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+   *     See studio_stats.proto;l=17050
    * @return The stoppedDeviceWidth.
    */
-  int getStoppedDeviceWidth();
+  @java.lang.Deprecated int getStoppedDeviceWidth();
 
   /**
-   * <code>optional int32 stopped_device_height = 4;</code>
+   * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+   *     See studio_stats.proto;l=17051
    * @return Whether the stoppedDeviceHeight field is set.
    */
-  boolean hasStoppedDeviceHeight();
+  @java.lang.Deprecated boolean hasStoppedDeviceHeight();
   /**
-   * <code>optional int32 stopped_device_height = 4;</code>
+   * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+   *     See studio_stats.proto;l=17051
    * @return The stoppedDeviceHeight.
    */
-  int getStoppedDeviceHeight();
+  @java.lang.Deprecated int getStoppedDeviceHeight();
 
   /**
    * <pre>
@@ -83,29 +91,98 @@ public interface ResizeComposePreviewEventOrBuilder extends
    * RESIZE_SAVED events).
    * </pre>
    *
-   * <code>optional int32 saved_device_width = 5;</code>
+   * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+   *     See studio_stats.proto;l=17055
    * @return Whether the savedDeviceWidth field is set.
    */
-  boolean hasSavedDeviceWidth();
+  @java.lang.Deprecated boolean hasSavedDeviceWidth();
   /**
    * <pre>
    * Width and height when user saves the resized state (relevant for
    * RESIZE_SAVED events).
    * </pre>
    *
-   * <code>optional int32 saved_device_width = 5;</code>
+   * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+   *     See studio_stats.proto;l=17055
    * @return The savedDeviceWidth.
    */
-  int getSavedDeviceWidth();
+  @java.lang.Deprecated int getSavedDeviceWidth();
 
   /**
-   * <code>optional int32 saved_device_height = 6;</code>
+   * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+   *     See studio_stats.proto;l=17056
    * @return Whether the savedDeviceHeight field is set.
    */
-  boolean hasSavedDeviceHeight();
+  @java.lang.Deprecated boolean hasSavedDeviceHeight();
   /**
-   * <code>optional int32 saved_device_height = 6;</code>
+   * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+   *     See studio_stats.proto;l=17056
    * @return The savedDeviceHeight.
    */
-  int getSavedDeviceHeight();
+  @java.lang.Deprecated int getSavedDeviceHeight();
+
+  /**
+   * <pre>
+   * Width when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_width_dp = 7;</code>
+   * @return Whether the deviceWidthDp field is set.
+   */
+  boolean hasDeviceWidthDp();
+  /**
+   * <pre>
+   * Width when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_width_dp = 7;</code>
+   * @return The deviceWidthDp.
+   */
+  int getDeviceWidthDp();
+
+  /**
+   * <pre>
+   * Height when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_height_dp = 8;</code>
+   * @return Whether the deviceHeightDp field is set.
+   */
+  boolean hasDeviceHeightDp();
+  /**
+   * <pre>
+   * Height when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_height_dp = 8;</code>
+   * @return The deviceHeightDp.
+   */
+  int getDeviceHeightDp();
+
+  /**
+   * <pre>
+   * The DPI of the device.
+   * </pre>
+   *
+   * <code>optional int32 dpi = 9;</code>
+   * @return Whether the dpi field is set.
+   */
+  boolean hasDpi();
+  /**
+   * <pre>
+   * The DPI of the device.
+   * </pre>
+   *
+   * <code>optional int32 dpi = 9;</code>
+   * @return The dpi.
+   */
+  int getDpi();
 }

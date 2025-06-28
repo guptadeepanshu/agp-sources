@@ -29,7 +29,7 @@ internal class KmpUnitTestOptionsDslInfoImpl(
 
     private val testOnJvmConfig
         get() = extension.androidTestOnJvmOptions ?: throw RuntimeException(
-            "Android tests on jvm are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withHostTest {}` to enable)"
+            "Android host tests are not enabled. (use `kotlin.${KotlinMultiplatformAndroidPlugin.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME}.withHostTest {}` to enable)"
         )
 
     override val isIncludeAndroidResources: Boolean

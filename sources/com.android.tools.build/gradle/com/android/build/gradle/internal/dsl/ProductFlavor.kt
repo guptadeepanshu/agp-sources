@@ -25,7 +25,22 @@ import com.android.builder.model.BaseConfig
 import com.google.common.collect.ImmutableList
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
+import org.gradle.declarative.dsl.model.annotations.Configuring
+import org.gradle.declarative.dsl.model.annotations.ElementFactoryName
+import org.gradle.declarative.dsl.model.annotations.Restricted
 import javax.inject.Inject
+
+@ElementFactoryName("productFlavor")
+abstract class DeclarativeProductFlavor @Inject constructor(name: String, dslServices: DslServices) : ProductFlavor(name, dslServices) {
+    val dependencies: ProductFlavorDependenciesExtension by lazy {
+        dslServices.newInstance(ProductFlavorDependenciesExtension::class.java)
+    }
+
+    @Configuring
+    fun dependencies(configure: ProductFlavorDependenciesExtension.() -> Unit) {
+        configure.invoke(dependencies)
+    }
+}
 
 abstract class ProductFlavor @Inject constructor(name: String, dslServices: DslServices) :
     BaseFlavor(name, dslServices),
@@ -93,6 +108,7 @@ abstract class ProductFlavor @Inject constructor(name: String, dslServices: DslS
             field = value
         }
 
+    @get:Restricted
     override var dimension: String?
         get() = _dimension ?: internalDimensionDefault
         set(value) { _dimension = value }

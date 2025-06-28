@@ -17,39 +17,6 @@
 package com.android.sdklib
 
 /**
- * This is deliberately different from AndroidVersion.MIN_API_FOR_EXPLICIT_MINOR as we want
- * 36 to have different treatment for internal use and user display
- *
- * For example, for 36.0-ext18
- *  - AndroidVersion.getApiStringWithExtension → 36-ext18
- *  - AndroidTargetHash.getPlatformHashString → android-36-ext18
- *  - AndroidVersionUtils displayApiString → 36.0-ext18
- *  - AndroidVersionUtils getFullApiName → API 36.0 ext. 18
- *  - AndroidVersionUtils getFullApiName(true, true)
- *        → API 36.0 ext. 18 ("Baklava", Android 16.0)
- */
-private const val MIN_API_FOR_DISPLAY_MINOR_VERSION = 36
-
-private fun StringBuilder.appendDisplayApiLevelString(androidVersion: AndroidVersion, includeExtension: Boolean = true) {
-    androidVersion.codename?.let { codename -> append(codename); return }
-    append(androidVersion.apiLevel)
-    if (androidVersion.apiLevel >= MIN_API_FOR_DISPLAY_MINOR_VERSION || androidVersion.apiMinorLevel > 0) {
-        append(".").append(androidVersion.apiMinorLevel)
-    }
-    if (includeExtension && !androidVersion.isBaseExtension) {
-        append("-ext").append(androidVersion.extensionLevel)
-    }
-}
-
-/**
- * A short summary string of the API level of the given android version.
- *
- * Generally the same as [AndroidVersion.getApiStringWithExtension] but with explicit minor for 36.
- */
-val AndroidVersion.displayApiString: String get() = buildString { appendDisplayApiLevelString(this@displayApiString, includeExtension = true) }
-
-
-/**
  * A pair of strings describing an Android version.
  *
  * - [name] is the main name as returned by the various methods. This can be release-focused
@@ -89,8 +56,9 @@ data class NameDetails(
 fun AndroidVersion.getFullApiName(
     includeReleaseName: Boolean = false,
     includeCodeName: Boolean = false,
+    includeMinorVersion: Boolean = true,
 ): String {
-    val nameDetails = getApiNameAndDetails(includeReleaseName, includeCodeName)
+    val nameDetails = getApiNameAndDetails(includeReleaseName, includeCodeName, includeMinorVersion)
 
     if (nameDetails.details != null) {
         return "${nameDetails.name} (${nameDetails.details})"
@@ -128,6 +96,7 @@ fun AndroidVersion.getFullApiName(
 fun AndroidVersion.getApiNameAndDetails(
     includeReleaseName: Boolean = false,
     includeCodeName: Boolean = false,
+    includeMinorVersion: Boolean = true,
 ): NameDetails {
     // See http://source.android.com/source/build-numbers.html
 
@@ -136,7 +105,11 @@ fun AndroidVersion.getApiNameAndDetails(
     }
 
     val name = StringBuilder("API ")
-    name.appendDisplayApiLevelString(this, includeExtension = false)
+    if (includeMinorVersion) {
+        name.append(getApiStringWithoutExtension())
+    } else {
+        name.append(androidApiLevel.majorVersion)
+    }
     if (!isBaseExtension) {
         name.append(" ext. ").append(extensionLevel)
     }

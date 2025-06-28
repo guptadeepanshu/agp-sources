@@ -942,4 +942,31 @@ public interface EmulatorDetailsOrBuilder extends
    * @return The vulkanIcd.
    */
   com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd getVulkanIcd();
+
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   * @return Whether the emuCompatInfo field is set.
+   */
+  boolean hasEmuCompatInfo();
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   * @return The emuCompatInfo.
+   */
+  com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo getEmuCompatInfo();
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   */
+  com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder getEmuCompatInfoOrBuilder();
 }

@@ -236,7 +236,7 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
     @Deprecated("Replaced with property matchingFallbacks")
     fun setMatchingFallbacks(fallbacks: List<String>)
 
-    @Deprecated("Changing the value of isZipAlignEnabled no longer has any effect")
+    @Deprecated("Changing the value of isZipAlignEnabled no longer has any effect (AGP produced artifacts are already aligned).")
     var isZipAlignEnabled: Boolean
 
     @get:Incubating

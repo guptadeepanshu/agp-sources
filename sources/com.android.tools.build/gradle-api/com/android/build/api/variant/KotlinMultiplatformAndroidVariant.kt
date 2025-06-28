@@ -16,12 +16,9 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Properties for the main Variant of a kotlin multiplatform android library
  */
-@Incubating
 interface KotlinMultiplatformAndroidVariant: LibraryVariant
 
 /**
@@ -30,5 +27,4 @@ interface KotlinMultiplatformAndroidVariant: LibraryVariant
  *
  * See [ComponentBuilder] and [VariantBuilder] for more information.
  */
-@Incubating
 interface KotlinMultiplatformAndroidVariantBuilder: LibraryVariantBuilder

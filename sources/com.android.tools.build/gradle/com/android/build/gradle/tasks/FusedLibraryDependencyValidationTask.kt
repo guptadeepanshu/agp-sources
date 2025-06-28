@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
+import org.gradle.api.artifacts.component.ModuleComponentSelector
 import org.gradle.api.artifacts.result.DependencyResult
 import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
@@ -38,7 +39,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.api.tasks.VerificationTask
 
 /**
  * Intended to prevent building a fused library in an invalid state due to misconfiguration
@@ -110,17 +110,29 @@ abstract class FusedLibraryDependencyValidationTask : NonIncrementalGlobalTask()
                 }
             },
             "Databinding is not supported by Fused Library modules" to {
+                val databindingGroups = setOf("androidx.databinding", "com.android.databinding")
                 when (it.dependency) {
                     is ResolvedDependencyResult -> {
                         val id = it.dependency.selected.id
                         if (id is ModuleComponentIdentifier &&
-                            id.group in setOf("androidx.databinding", "com.android.databinding")
+                            id.group in databindingGroups
                         ) {
                             ValidationCheck.Result.Invalid(
                                 "${id.moduleIdentifier} is not a permitted dependency."
                             )
                         } else {
                             ValidationCheck.Result.Valid
+                        }
+                    }
+                    is UnresolvedDependencyResult -> {
+                        if (it.dependency.requested is ModuleComponentSelector &&
+                            (it.dependency.requested as ModuleComponentSelector).group in databindingGroups) {
+                            ValidationCheck.Result.Invalid(
+                                "${it.dependency.requested.displayName} is not a permitted dependency."
+                            )
+                        } else {
+                            ValidationCheck.Result.DidNotComplete(
+                                "${it.dependency.javaClass} is not supported by this check.")
                         }
                     }
                     else -> {

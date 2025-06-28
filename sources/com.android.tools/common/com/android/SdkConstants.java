@@ -76,7 +76,7 @@ public final class SdkConstants {
      * safely recommend during its development cycle.
      */
     public static final AndroidVersion MAX_SUPPORTED_ANDROID_PLATFORM_VERSION =
-            new AndroidVersion(35);
+            new AndroidVersion(36, 0);
 
     /** Property in local.properties file that specifies the path of the Android NDK. */
     public static final String NDK_DIR_PROPERTY = "ndk.dir";
@@ -411,6 +411,9 @@ public final class SdkConstants {
     public static final String FN_RESOURCE_SYMBOLS = "resources_symbols.txt";
     /** File holding relative class entries */
     public static final String FN_CLASS_LIST = "classes.txt";
+
+    /** File holding package names for use in R8Task */
+    public static final String FN_PACKAGE_LIST = "packages.txt";
 
     /** File holding data extracted from the navigation xml files */
     public static final String FN_NAVIGATION_JSON = "navigation.json";
@@ -1188,6 +1191,13 @@ public final class SdkConstants {
     public static final String TAG_FRAGMENT = "fragment";
     public static final String TAG_ARGUMENT = "argument";
     public static final String ATTR_MODULE_NAME = "moduleName";
+
+    // Tags: Watch Face
+    public static final String TAG_WATCH_FACE = "WatchFace";
+    public static final String TAG_WATCH_FACES = "WatchFaces";
+    public static final String TAG_WATCH_FACE_INFO = "WatchFaceInfo";
+    public static final String TAG_COMPLICATION = "Complication";
+    public static final String TAG_IMAGE = "Image";
 
     public static final String VIEW = "View";
     public static final String VIEW_GROUP = "ViewGroup";
@@ -2164,6 +2174,7 @@ public final class SdkConstants {
     public static final String DOT_SRCJAR = ".srcjar";
     public static final String DOT_KLIB = ".klib";
     public static final String DOT_GRADLE = ".gradle";
+    public static final String DOT_GRADLE_KTS = ".gradle.kts";
     public static final String DOT_DECLARATIVE = ".dcl";
     public static final String DOT_PROPERTIES = ".properties";
     public static final String DOT_JSON = ".json";
@@ -2192,6 +2203,10 @@ public final class SdkConstants {
     public static final String EXT_ATOM = "atom";
     /** Extension of java files, i.e. "java" */
     public static final String EXT_JAVA = "java";
+
+    /** Extension of kotlin files, i.e. "kt" */
+    public static final String EXT_KT = "kt";
+
     /** Extension of compiled java files, i.e. "class" */
     public static final String EXT_CLASS = "class";
     /** Extension of xml files, i.e. "xml" */
@@ -2240,9 +2255,6 @@ public final class SdkConstants {
     public static final String EXT_DBG = "dbg";
     /** Extension of native debug symbol table files, i.e. "sym" */
     public static final String EXT_SYM = "sym";
-
-    /** Extension of journey test files, i.e. "journey.xml" */
-    public static final String EXT_JOURNEY = "journey" + DOT_XML;
 
     private static final String DOT = ".";
 
@@ -2898,7 +2910,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "8.11.1";
+    public static final String GRADLE_LATEST_VERSION = "8.13";
 
     /**
      * The minimum released version of the Android Gradle Plugin that this version of Studio will
@@ -3069,4 +3081,17 @@ public final class SdkConstants {
 
     /** Logical ID of the primary display of an Android device. */
     public static int PRIMARY_DISPLAY_ID = 0;
+
+    /**
+     * The name of the property used to declare which Watch Face Format is used.
+     *
+     * @see <a
+     *     href="https://developer.android.com/training/wearables/wff/setup#declare-wff-use">Watch
+     *     Face Format</a>
+     */
+    public static final String WATCH_FACE_FORMAT_VERSION_PROPERTY =
+            "com.google.wear.watchface.format.version";
+
+    /** The default Watch Face Format to use if the user hasn't specified it yet. */
+    public static final String WATCH_FACE_FORMAT_DEFAULT_VERSION = "1";
 }

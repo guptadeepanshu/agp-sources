@@ -26,7 +26,7 @@ interface SourceSetContainer: AndroidModel {
     /**
      * The production source set
      */
-    val sourceProvider: SourceProvider
+    val sourceProvider: SourceProvider?
 
     /**
      * The source set for each device test component, e.g., androidTest

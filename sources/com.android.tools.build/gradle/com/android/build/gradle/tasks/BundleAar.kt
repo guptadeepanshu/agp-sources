@@ -449,6 +449,7 @@ abstract class BundleAar : Zip(), VariantTask {
                     prependToCopyPath(SdkConstants.FD_ASSETS)
                 )
             }
+            task.from(creationConfig.artifacts.get(InternalArtifactType.LIBRARY_ART_PROFILE))
         }
     }
 

@@ -43,14 +43,12 @@ import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.FakeDependencyJarBuildService
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfigImpl.Companion.toExecutionEnum
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.core.LibraryRequest
@@ -61,11 +59,8 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
-import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
-import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 internal class KmpGlobalTaskCreationConfigImpl(
     project: Project,
@@ -248,9 +243,5 @@ internal class KmpGlobalTaskCreationConfigImpl(
     override val composeOptions: ComposeOptions
         get() = throw IllegalAccessException("Not supported for kmp")
     override val dataBinding: DataBinding
-        get() = throw IllegalAccessException("Not supported for kmp")
-    override val kotlinAndroidProjectExtension: KotlinAndroidProjectExtension
-        get() = throw IllegalAccessException("Not supported for kmp")
-    override val kaptExtension: KaptExtensionConfig
         get() = throw IllegalAccessException("Not supported for kmp")
 }

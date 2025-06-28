@@ -29,7 +29,7 @@ public interface TestScenarioEventOrBuilder extends
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-   *     See studio_stats.proto;l=15713
+   *     See studio_stats.proto;l=15834
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Deprecated boolean hasInconsistentCount();
@@ -40,7 +40,7 @@ public interface TestScenarioEventOrBuilder extends
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-   *     See studio_stats.proto;l=15713
+   *     See studio_stats.proto;l=15834
    * @return The inconsistentCount.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.TestScenarioEvent.InconsistentCount getInconsistentCount();

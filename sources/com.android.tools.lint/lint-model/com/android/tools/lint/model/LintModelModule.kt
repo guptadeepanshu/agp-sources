@@ -77,7 +77,7 @@ interface LintModelModule {
    * other optional libraries.
    */
   val bootClassPath: List<File>
-  val javaSourceLevel: String
+  val javaSourceLevel: String?
   val compileTarget: String
 
   /**
@@ -153,7 +153,7 @@ class DefaultLintModelModule(
   override val resourcePrefix: String?,
   override val dynamicFeatures: Collection<String>,
   override val bootClassPath: List<File>,
-  override val javaSourceLevel: String,
+  override val javaSourceLevel: String?,
   override val compileTarget: String,
   override val variants: List<LintModelVariant>,
   private val neverShrinking: Boolean,

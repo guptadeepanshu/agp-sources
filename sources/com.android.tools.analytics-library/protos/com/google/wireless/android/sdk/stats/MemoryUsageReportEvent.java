@@ -727,7 +727,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-     *     See studio_stats.proto;l=14705
+     *     See studio_stats.proto;l=14802
      * @return Whether the newGenerationStats field is set.
      */
     @java.lang.Deprecated boolean hasNewGenerationStats();
@@ -738,7 +738,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-     *     See studio_stats.proto;l=14705
+     *     See studio_stats.proto;l=14802
      * @return The newGenerationStats.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getNewGenerationStats();
@@ -947,7 +947,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-     *     See studio_stats.proto;l=14705
+     *     See studio_stats.proto;l=14802
      * @return Whether the newGenerationStats field is set.
      */
     @java.lang.Override
@@ -961,7 +961,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-     *     See studio_stats.proto;l=14705
+     *     See studio_stats.proto;l=14802
      * @return The newGenerationStats.
      */
     @java.lang.Override
@@ -1796,7 +1796,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-       *     See studio_stats.proto;l=14705
+       *     See studio_stats.proto;l=14802
        * @return Whether the newGenerationStats field is set.
        */
       @java.lang.Deprecated public boolean hasNewGenerationStats() {
@@ -1809,7 +1809,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.MemoryUsageReportEvent.ObjectsStatistics new_generation_stats = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.MemoryUsageReportEvent.MemoryTrafficStatistics.new_generation_stats is deprecated.
-       *     See studio_stats.proto;l=14705
+       *     See studio_stats.proto;l=14802
        * @return The newGenerationStats.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.MemoryUsageReportEvent.ObjectsStatistics getNewGenerationStats() {

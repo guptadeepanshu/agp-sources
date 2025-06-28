@@ -151,7 +151,6 @@ class VariantDependencies internal constructor(
         val docsType = when(type) {
             AdditionalArtifactType.SOURCE -> DocsType.SOURCES
             AdditionalArtifactType.JAVADOC -> DocsType.JAVADOC
-            AdditionalArtifactType.SAMPLE -> SAMPLE_SOURCE_TYPE
         }
 
         val buildType = configuration.attributes.getAttribute(BuildTypeAttr.ATTRIBUTE)
@@ -375,7 +374,6 @@ class VariantDependencies internal constructor(
         const val CONFIG_NAME_LINTPUBLISH = "lintPublish"
         const val CONFIG_NAME_TESTED_APKS = "testedApks"
         const val CONFIG_NAME_CORE_LIBRARY_DESUGARING = "coreLibraryDesugaring"
-        const val SAMPLE_SOURCE_TYPE = "samplessources"
 
         @Deprecated("")
         const val CONFIG_NAME_FEATURE = "feature"
@@ -645,5 +643,4 @@ class VariantDependencies internal constructor(
 enum class AdditionalArtifactType {
     JAVADOC,
     SOURCE,
-    SAMPLE,
 }

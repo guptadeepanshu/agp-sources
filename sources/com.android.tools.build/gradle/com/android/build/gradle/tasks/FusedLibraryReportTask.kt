@@ -31,6 +31,8 @@ import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import org.gradle.api.artifacts.ModuleVersionIdentifier
 import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.artifacts.result.UnresolvedDependencyResult
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -50,7 +52,7 @@ import java.io.File
 abstract class FusedLibraryReportTask : NonIncrementalGlobalTask() {
 
     @get:Input
-    abstract val includeConfiguration: Property<ResolvedComponentResult>
+    abstract val resolvedRuntimeConfiguration: Property<ResolvedComponentResult>
 
     @get:Input
     abstract val dependencies: SetProperty<ModuleVersionIdentifier>
@@ -60,7 +62,15 @@ abstract class FusedLibraryReportTask : NonIncrementalGlobalTask() {
 
     override fun doTaskAction() {
         val includedDependenciesDisplayNames =
-            includeConfiguration.get().dependencies.map { it.requested.displayName }
+            resolvedRuntimeConfiguration.get().dependencies
+                .filterNot { it.isConstraint }
+                .map {
+                when (it) {
+                    is ResolvedDependencyResult -> it.selected.id.displayName
+                    is UnresolvedDependencyResult -> it.requested.displayName
+                    else -> error("Unknown type ${it.javaClass.name}")
+                }
+            }
         val dependenciesDisplayNames = dependencies.get().map { it.toString() }
         val fusedLibReport = FusedLibraryReport(
             includedDependenciesDisplayNames,
@@ -92,9 +102,11 @@ abstract class FusedLibraryReportTask : NonIncrementalGlobalTask() {
             super.configure(task)
             val includeConfiguration = task.project.configurations
                 .getByName(FusedLibraryConstants.INCLUDE_CONFIGURATION_NAME)
+            val resolvableRuntimeConfiguration = task.project.configurations
+                .getByName(FusedLibraryConstants.FUSED_RUNTIME_CONFIGURATION_NAME)
 
-            task.includeConfiguration.setDisallowChanges(
-                includeConfiguration.incoming.resolutionResult.rootComponent
+            task.resolvedRuntimeConfiguration.setDisallowChanges(
+                resolvableRuntimeConfiguration.incoming.resolutionResult.rootComponent
             )
             task.dependencies.setDisallowChanges(
                 getFusedLibraryDependencyModuleVersionIdentifiers(includeConfiguration)

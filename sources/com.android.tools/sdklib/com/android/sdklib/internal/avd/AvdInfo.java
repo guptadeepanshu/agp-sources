@@ -18,6 +18,7 @@ package com.android.sdklib.internal.avd;
 
 import static com.android.sdklib.SystemImageTags.XR_TAG;
 import static com.android.sdklib.internal.avd.ConfigKey.TAG_IDS;
+
 import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import com.android.SdkConstants;
@@ -33,8 +34,8 @@ import com.android.sdklib.devices.Device;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.targets.SystemImage;
 import com.android.utils.ILogger;
-
 import com.android.utils.StringHelper;
+
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -139,7 +140,13 @@ public final class AvdInfo {
     /** Returns the name of the AVD. Do not use this as a device ID; use getId instead. */
     @NonNull
     public String getName() {
-        String iniFilename = getIniFile().getFileName().toString();
+        return getAvdNameFromFile(mIniFile);
+    }
+
+    /** Extracts the name of the AVD from the file name. */
+    @NonNull
+    public static String getAvdNameFromFile(Path file) {
+        String iniFilename = file.getFileName().toString();
         return iniFilename.toLowerCase(Locale.ROOT).endsWith(".ini")
                 ? iniFilename.substring(0, iniFilename.length() - 4)
                 : iniFilename;
@@ -149,7 +156,13 @@ public final class AvdInfo {
     @NonNull
     public String getDisplayName() {
         String name = getProperties().get(ConfigKey.DISPLAY_NAME);
-        return name == null ? getName().replace('_', ' ') : name;
+        return name == null ? avdNameToDisplayName(getName()) : name;
+    }
+
+    /** Formats the AVD name for use in UI. */
+    @NonNull
+    public static String avdNameToDisplayName(String avdName) {
+        return avdName.replace('_', ' ');
     }
 
     /** Returns the path of the AVD data directory. */

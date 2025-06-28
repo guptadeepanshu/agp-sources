@@ -19,12 +19,9 @@ package com.android.build.gradle.internal.plugins
 import com.android.SdkConstants
 import com.android.build.gradle.internal.services.RunOnceBuildServiceImpl
 import com.android.build.gradle.options.BooleanOption
-import com.android.ide.common.repository.GradleVersion
-import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
-import java.io.File.separator
+import org.gradle.util.GradleVersion
 
 /**
  * Plugin that only checks the version of Gradle vs our min required version.
@@ -38,8 +35,7 @@ class VersionCheckPlugin: Plugin<Project> {
         // The minimum version of Gradle that this plugin should accept is the version of Gradle
         // whose features the plugin uses, which may be substantially later than the earliest
         // version of Gradle that has all the features that Studio uses directly.
-        @JvmField
-        val GRADLE_MIN_VERSION = GradleVersion.parse(SdkConstants.GRADLE_LATEST_VERSION)
+        val GRADLE_MIN_VERSION = GradleVersion.version(SdkConstants.GRADLE_LATEST_VERSION)!!
     }
 
     override fun apply(project: Project) {
@@ -50,26 +46,29 @@ class VersionCheckPlugin: Plugin<Project> {
                 }
     }
 
-    @VisibleForTesting
-    fun doApply(project: Project) {
-        val logger = project.logger
+    private fun doApply(project: Project) {
+        // Skip this check if the Gradle wrapper task is running (see b/372269616)
+        if (isGradleWrapperTaskRunning(project)) return
 
-        val currentVersion = project.gradle.gradleVersion
+        val currentVersion = GradleVersion.current()
         if (GRADLE_MIN_VERSION > currentVersion) {
-            val file = File(project.rootProject.projectDir, "gradle${separator}wrapper${separator}gradle-wrapper.properties")
-
-            val errorMessage = String.format(
-                "Minimum supported Gradle version is $GRADLE_MIN_VERSION. Current version is $currentVersion. "
-                        + "If using the gradle wrapper, try editing the distributionUrl in ${file.absolutePath} "
-                        + "to gradle-$GRADLE_MIN_VERSION-all.zip")
-
+            val errorMessage =
+                """
+                Minimum supported Gradle version is ${GRADLE_MIN_VERSION.version}. Current version is ${currentVersion.version}.
+                Try updating the 'distributionUrl' property in ${project.rootDir.resolve("gradle/wrapper/gradle-wrapper.properties").path} to 'gradle-${GRADLE_MIN_VERSION.version}-bin.zip'.
+                """.trimIndent()
             if (getVersionCheckOverridePropertyValue(project)) {
-                logger.warn(errorMessage)
-                logger.warn("As ${BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.propertyName} is set, continuing anyway.")
+                project.logger.warn(errorMessage)
+                project.logger.warn("As ${BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.propertyName} is set, continuing anyway.")
             } else {
-                throw RuntimeException(errorMessage)
+                error(errorMessage)
             }
         }
+    }
+
+    private fun isGradleWrapperTaskRunning(project: Project): Boolean {
+        val taskRequests = project.gradle.startParameter.taskRequests
+        return taskRequests.singleOrNull()?.args?.getOrNull(0) == "wrapper"
     }
 
     // Version check override property is not compatible with new pipeline of accessing gradle

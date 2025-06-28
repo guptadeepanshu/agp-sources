@@ -164,8 +164,8 @@ abstract class AarMetadataTask : NonIncrementalTask() {
 
     companion object {
         const val AAR_METADATA_FILE_NAME = "aar-metadata.properties"
-        const val AAR_METADATA_ENTRY_PATH =
-            "META-INF/com/android/build/gradle/$AAR_METADATA_FILE_NAME"
+        const val AAR_METADATA_RELATIVE_PATH = "com/android/build/gradle/$AAR_METADATA_FILE_NAME"
+        const val AAR_METADATA_ENTRY_PATH = "META-INF/$AAR_METADATA_RELATIVE_PATH"
         const val AAR_FORMAT_VERSION = "1.0"
         const val AAR_METADATA_VERSION = "1.0"
         const val DEFAULT_MIN_AGP_VERSION = "1.0.0"

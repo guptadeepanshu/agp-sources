@@ -178,7 +178,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-     *     See studio_stats.proto;l=15672
+     *     See studio_stats.proto;l=15793
      * @return Whether the targetFileType field is set.
      */
     @java.lang.Deprecated boolean hasTargetFileType();
@@ -189,7 +189,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-     *     See studio_stats.proto;l=15672
+     *     See studio_stats.proto;l=15793
      * @return The targetFileType.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileType getTargetFileType();
@@ -209,7 +209,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-     *     See studio_stats.proto;l=15674
+     *     See studio_stats.proto;l=15795
      * @return Whether the testFileType field is set.
      */
     @java.lang.Deprecated boolean hasTestFileType();
@@ -220,7 +220,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-     *     See studio_stats.proto;l=15674
+     *     See studio_stats.proto;l=15795
      * @return The testFileType.
      */
     @java.lang.Deprecated com.google.wireless.android.sdk.stats.FileType getTestFileType();
@@ -349,7 +349,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-     *     See studio_stats.proto;l=15672
+     *     See studio_stats.proto;l=15793
      * @return Whether the targetFileType field is set.
      */
     @java.lang.Override
@@ -363,7 +363,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-     *     See studio_stats.proto;l=15672
+     *     See studio_stats.proto;l=15793
      * @return The targetFileType.
      */
     @java.lang.Override
@@ -391,7 +391,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-     *     See studio_stats.proto;l=15674
+     *     See studio_stats.proto;l=15795
      * @return Whether the testFileType field is set.
      */
     @java.lang.Override
@@ -405,7 +405,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-     *     See studio_stats.proto;l=15674
+     *     See studio_stats.proto;l=15795
      * @return The testFileType.
      */
     @java.lang.Override
@@ -996,7 +996,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-       *     See studio_stats.proto;l=15672
+       *     See studio_stats.proto;l=15793
        * @return Whether the targetFileType field is set.
        */
       @java.lang.Deprecated public boolean hasTargetFileType() {
@@ -1009,7 +1009,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.FileType target_file_type = 2 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.target_file_type is deprecated.
-       *     See studio_stats.proto;l=15672
+       *     See studio_stats.proto;l=15793
        * @return The targetFileType.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType getTargetFileType() {
@@ -1155,7 +1155,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-       *     See studio_stats.proto;l=15674
+       *     See studio_stats.proto;l=15795
        * @return Whether the testFileType field is set.
        */
       @java.lang.Deprecated public boolean hasTestFileType() {
@@ -1168,7 +1168,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional .android_studio.FileType test_file_type = 3 [deprecated = true, lazy = true];</code>
        * @deprecated android_studio.TestScenarioEvent.TestScenarioRequest.test_file_type is deprecated.
-       *     See studio_stats.proto;l=15674
+       *     See studio_stats.proto;l=15795
        * @return The testFileType.
        */
       @java.lang.Deprecated public com.google.wireless.android.sdk.stats.FileType getTestFileType() {
@@ -1495,7 +1495,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-     *     See studio_stats.proto;l=15684
+     *     See studio_stats.proto;l=15805
      * @return Whether the testScenariosCount field is set.
      */
     @java.lang.Deprecated boolean hasTestScenariosCount();
@@ -1507,7 +1507,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-     *     See studio_stats.proto;l=15684
+     *     See studio_stats.proto;l=15805
      * @return The testScenariosCount.
      */
     @java.lang.Deprecated int getTestScenariosCount();
@@ -1519,7 +1519,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-     *     See studio_stats.proto;l=15686
+     *     See studio_stats.proto;l=15807
      * @return Whether the testSignaturesCount field is set.
      */
     @java.lang.Deprecated boolean hasTestSignaturesCount();
@@ -1530,7 +1530,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-     *     See studio_stats.proto;l=15686
+     *     See studio_stats.proto;l=15807
      * @return The testSignaturesCount.
      */
     @java.lang.Deprecated int getTestSignaturesCount();
@@ -1581,7 +1581,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-     *     See studio_stats.proto;l=15684
+     *     See studio_stats.proto;l=15805
      * @return Whether the testScenariosCount field is set.
      */
     @java.lang.Override
@@ -1596,7 +1596,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-     *     See studio_stats.proto;l=15684
+     *     See studio_stats.proto;l=15805
      * @return The testScenariosCount.
      */
     @java.lang.Override
@@ -1613,7 +1613,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-     *     See studio_stats.proto;l=15686
+     *     See studio_stats.proto;l=15807
      * @return Whether the testSignaturesCount field is set.
      */
     @java.lang.Override
@@ -1627,7 +1627,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
      * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-     *     See studio_stats.proto;l=15686
+     *     See studio_stats.proto;l=15807
      * @return The testSignaturesCount.
      */
     @java.lang.Override
@@ -1972,7 +1972,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-       *     See studio_stats.proto;l=15684
+       *     See studio_stats.proto;l=15805
        * @return Whether the testScenariosCount field is set.
        */
       @java.lang.Override
@@ -1987,7 +1987,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-       *     See studio_stats.proto;l=15684
+       *     See studio_stats.proto;l=15805
        * @return The testScenariosCount.
        */
       @java.lang.Override
@@ -2002,7 +2002,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-       *     See studio_stats.proto;l=15684
+       *     See studio_stats.proto;l=15805
        * @param value The testScenariosCount to set.
        * @return This builder for chaining.
        */
@@ -2021,7 +2021,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_scenarios_count = 1 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_scenarios_count is deprecated.
-       *     See studio_stats.proto;l=15684
+       *     See studio_stats.proto;l=15805
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTestScenariosCount() {
@@ -2039,7 +2039,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-       *     See studio_stats.proto;l=15686
+       *     See studio_stats.proto;l=15807
        * @return Whether the testSignaturesCount field is set.
        */
       @java.lang.Override
@@ -2053,7 +2053,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-       *     See studio_stats.proto;l=15686
+       *     See studio_stats.proto;l=15807
        * @return The testSignaturesCount.
        */
       @java.lang.Override
@@ -2067,7 +2067,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-       *     See studio_stats.proto;l=15686
+       *     See studio_stats.proto;l=15807
        * @param value The testSignaturesCount to set.
        * @return This builder for chaining.
        */
@@ -2085,7 +2085,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional int32 test_signatures_count = 2 [deprecated = true];</code>
        * @deprecated android_studio.TestScenarioEvent.InconsistentCount.test_signatures_count is deprecated.
-       *     See studio_stats.proto;l=15686
+       *     See studio_stats.proto;l=15807
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearTestSignaturesCount() {
@@ -3163,7 +3163,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-   *     See studio_stats.proto;l=15713
+   *     See studio_stats.proto;l=15834
    * @return Whether the inconsistentCount field is set.
    */
   @java.lang.Override
@@ -3177,7 +3177,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
    * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-   *     See studio_stats.proto;l=15713
+   *     See studio_stats.proto;l=15834
    * @return The inconsistentCount.
    */
   @java.lang.Override
@@ -3788,7 +3788,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-     *     See studio_stats.proto;l=15713
+     *     See studio_stats.proto;l=15834
      * @return Whether the inconsistentCount field is set.
      */
     @java.lang.Override
@@ -3802,7 +3802,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>.android_studio.TestScenarioEvent.InconsistentCount inconsistent_count = 2 [deprecated = true, lazy = true];</code>
      * @deprecated android_studio.TestScenarioEvent.inconsistent_count is deprecated.
-     *     See studio_stats.proto;l=15713
+     *     See studio_stats.proto;l=15834
      * @return The inconsistentCount.
      */
     @java.lang.Override

@@ -49,7 +49,6 @@ interface GeneratesApk {
     /**
      * Min SDK version for this variant
      */
-    @get:Incubating
     val minSdk: AndroidVersion
 
     /**
@@ -70,6 +69,5 @@ interface GeneratesApk {
     /**
      * Provides access to built artifacts output(e.g. APK) produced by this Variant.
      */
-    @get:Incubating
     val outputProviders: ApkOutputProviders
 }

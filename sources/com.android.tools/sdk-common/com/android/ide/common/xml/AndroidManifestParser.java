@@ -32,15 +32,7 @@ import com.android.resources.Navigation;
 import com.android.resources.TouchScreen;
 import com.android.utils.XmlUtils;
 import com.android.xml.AndroidManifest;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Locale;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -48,6 +40,17 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Locale;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Full Manifest parser that parses the manifest in details, including activities, instrumentations,
@@ -62,7 +65,8 @@ public class AndroidManifestParser {
     private static final int LEVEL_INSIDE_INTENT_FILTER = 4;
 
     private static final String ACTION_MAIN = "android.intent.action.MAIN"; //$NON-NLS-1$
-    private static final String CATEGORY_LAUNCHER = "android.intent.category.LAUNCHER"; //$NON-NLS-1$
+    private static final String CATEGORY_LAUNCHER =
+            "android.intent.category.LAUNCHER"; //$NON-NLS-1$
 
     public interface ManifestErrorHandler extends ErrorHandler {
         /**
@@ -421,6 +425,15 @@ public class AndroidManifestParser {
                             true /* hasNamespace*/);
             if (value != null) {
                 mManifestData.mDebuggable = Boolean.parseBoolean(value);
+            }
+
+            value =
+                    getAttributeValue(
+                            attributes,
+                            AndroidManifest.ATTRIBUTE_EXTRACT_NATIVE_LIBS,
+                            true /* hasNamespace*/);
+            if (value != null) {
+                mManifestData.mExtractNativeLibs = Boolean.parseBoolean(value);
             }
 
             value =

@@ -136,7 +136,7 @@ public interface DeviceInfoOrBuilder extends
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
    * @deprecated android_studio.DeviceInfo.build_api_level is deprecated.
-   *     See studio_stats.proto;l=2491
+   *     See studio_stats.proto;l=2516
    * @return Whether the buildApiLevel field is set.
    */
   @java.lang.Deprecated boolean hasBuildApiLevel();
@@ -147,7 +147,7 @@ public interface DeviceInfoOrBuilder extends
    *
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
    * @deprecated android_studio.DeviceInfo.build_api_level is deprecated.
-   *     See studio_stats.proto;l=2491
+   *     See studio_stats.proto;l=2516
    * @return The buildApiLevel.
    */
   @java.lang.Deprecated int getBuildApiLevel();

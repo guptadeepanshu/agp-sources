@@ -50,6 +50,8 @@ const val NAMESPACED_ANDROID_RESOURCES_FOR_PRIVACY_SANDBOX_ENABLED = false
 object FusedLibraryConstants {
     const val EXTENSION_NAME = "androidFusedLibrary"
     const val INCLUDE_CONFIGURATION_NAME = "include"
+    const val FUSED_API_CONFIGURATION_NAME = "fusedApi"
+    const val FUSED_RUNTIME_CONFIGURATION_NAME = "fusedRuntime"
     const val VALIDATE_DEPENDENCIES_TASK_NAME = "validateDependencies"
 }
 
@@ -178,7 +180,11 @@ internal fun getFusedLibraryDependencyModuleVersionIdentifiers(
     return sourceConfiguration.incoming.resolutionResult.rootComponent.map { sourceRootComponent ->
         val dependenciesIncludedInFusedAar: Set<ModuleVersionIdentifier> =
             sourceRootComponent.dependencies
-                .map { (it as ResolvedDependencyResult).selected.moduleVersion
+                // Unresolved dependencies cannot be published. The fused library validation tasks
+                // will a human friendly error message.
+                .filterIsInstance<ResolvedDependencyResult>()
+                .map {
+                    it.selected.moduleVersion
                     ?: error("${it.selected} cannot have a null moduleVersion") }
                 .toSet()
 

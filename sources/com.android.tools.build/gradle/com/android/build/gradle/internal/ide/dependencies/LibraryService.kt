@@ -307,9 +307,8 @@ class LibraryCacheImpl(
 
                         lintJar = artifact.publishedLintJar,
                         artifact = artifact.artifactFile!!,
-                        srcJar = additionalArtifacts.source,
+                        srcJars = additionalArtifacts.sources,
                         docJar = additionalArtifacts.javadoc,
-                        samplesJar = additionalArtifacts.sample,
                     )
                 }
 
@@ -320,9 +319,8 @@ class LibraryCacheImpl(
                             stringCache.cacheString(libraryInfo.computeKey()),
                             libraryInfo,
                             folder,
-                            additionalArtifacts.source,
+                            additionalArtifacts.sources,
                             additionalArtifacts.javadoc,
-                            additionalArtifacts.sample,
                         )
                     } else {
                         // If privacy sandbox isn't enabled treat the library as an empty artifact
@@ -339,9 +337,8 @@ class LibraryCacheImpl(
                         stringCache.cacheString(libraryInfo.computeKey()),
                         libraryInfo,
                         artifact.artifactFile!!,
-                        additionalArtifacts.source,
+                        additionalArtifacts.sources,
                         additionalArtifacts.javadoc,
-                        additionalArtifacts.sample
                     )
                 }
 
@@ -378,9 +375,8 @@ class LibraryCacheImpl(
                 stringCache.cacheString(libraryInfo.computeKey()),
                 libraryInfo,
                 folder,
-                additionalArtifacts.source,
+                additionalArtifacts.sources,
                 additionalArtifacts.javadoc,
-                additionalArtifacts.sample,
             )
         } else if (artifact.dependencyType == ResolvedArtifact.DependencyType.NO_ARTIFACT_FILE) {
             // Handle projects that have no artifacts (e.g. java-platform)

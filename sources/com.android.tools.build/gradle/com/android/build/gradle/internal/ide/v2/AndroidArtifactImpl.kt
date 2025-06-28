@@ -45,9 +45,9 @@ data class AndroidArtifactImpl(
     override val bundleInfo: BundleInfo?,
     override val codeShrinker: CodeShrinker?,
 
-    override val compileTaskName: String,
-    override val assembleTaskName: String,
-    override val sourceGenTaskName: String,
+    override val compileTaskName: String?,
+    override val assembleTaskName: String?,
+    override val sourceGenTaskName: String?,
     override val resGenTaskName: String?,
     override val ideSetupTaskNames: Set<String>,
 

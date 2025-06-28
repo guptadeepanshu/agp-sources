@@ -134,6 +134,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Input
     abstract val addLocaleConfigAttribute: Property<Boolean>
 
+    @get:Input
+    abstract val namespacedAndroidResources: Property<Boolean>
+
     @Throws(IOException::class)
     override fun doTaskAction() {
         if (baseModuleDebuggable.isPresent) {
@@ -157,7 +160,15 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 throw InvalidUserDataException(errorMessage)
             }
         }
-        val navJsons = navigationJsons?.files ?: setOf()
+        val navJsons = navigationJsons?.files?.filter { it.exists() } ?: setOf()
+
+        // TODO (b/141948909): add support for namespaced navigation files
+        if (namespacedAndroidResources.get() && navJsons.any { it.readText() != "[]" }) {
+            throw RuntimeException(
+                "Namespaced Android resources cannot be enabled when specifying navigation files " +
+                "in the manifest."
+            )
+        }
 
         val mergingReport = mergeManifests(
             mainManifest.get(),
@@ -434,18 +445,19 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         AndroidArtifacts.ArtifactType.FEATURE_NAME
                     )
             }
-            if (!creationConfig.global.namespacedAndroidResources) {
-                task.navigationJsons = creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(NAVIGATION_JSON),
-                    creationConfig
-                        .variantDependencies
-                        .getArtifactFileCollection(
-                            ConsumedConfigType.RUNTIME_CLASSPATH,
-                            ArtifactScope.ALL,
-                            AndroidArtifacts.ArtifactType.NAVIGATION_JSON
-                        )
-                )
-            }
+            task.navigationJsons = creationConfig.services.fileCollection(
+                creationConfig.artifacts.get(NAVIGATION_JSON),
+                creationConfig
+                    .variantDependencies
+                    .getArtifactFileCollection(
+                        ConsumedConfigType.RUNTIME_CLASSPATH,
+                        ArtifactScope.ALL,
+                        AndroidArtifacts.ArtifactType.NAVIGATION_JSON
+                    )
+            )
+            task.namespacedAndroidResources.setDisallowChanges(
+                creationConfig.global.namespacedAndroidResources
+            )
             task.packageOverride.setDisallowChanges(creationConfig.applicationId)
             task.namespace.setDisallowChanges(creationConfig.namespace)
             task.profileable.setDisallowChanges(
@@ -471,7 +483,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 (creationConfig is ApplicationCreationConfig) &&
                 (creationConfig.androidResources.generateLocaleConfig == true)
             )
-            // TODO: here in the "else" block should be the code path for the namespaced pipeline
         }
 
     }

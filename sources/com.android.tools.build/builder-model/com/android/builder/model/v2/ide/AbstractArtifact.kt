@@ -25,14 +25,14 @@ interface AbstractArtifact {
     /**
      * @return the name of the task used to compile the code.
      */
-    val compileTaskName: String
+    val compileTaskName: String?
 
     /**
      * Returns the name of the task used to generate the artifact output(s).
      *
      * @return the name of the task.
      */
-    val assembleTaskName: String
+    val assembleTaskName: String?
 
     /**
      * Set of folders containing the result of the compilation step(s)

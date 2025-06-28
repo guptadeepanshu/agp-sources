@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.options
 
-import com.android.build.gradle.internal.services.R8ParallelBuildService
+import com.android.build.gradle.internal.services.R8D8ThreadPoolBuildService
 import com.android.build.gradle.options.Version.VERSION_8_2
 import com.android.builder.model.AndroidProject
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
@@ -94,7 +94,7 @@ enum class IntegerOption(
      * The size of the thread pool ([java.util.concurrent.ExecutorService]) that runs R8 tasks.
      * If no value is given, a default heuristics-based value will be used.
      */
-    R8_THREAD_POOL_SIZE("android.r8.threadPoolSize", ApiStage.Experimental, R8ParallelBuildService.defaultR8ThreadPoolSize()),
+    R8_THREAD_POOL_SIZE("android.r8.threadPoolSize", ApiStage.Experimental, R8D8ThreadPoolBuildService.defaultThreadPoolSize()),
 
     /**
      * Flags for Android Test Retention

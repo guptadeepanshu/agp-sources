@@ -476,6 +476,60 @@ private static final long serialVersionUID = 0L;
     return attachDurationMs_;
   }
 
+  public static final int IS_XR_FIELD_NUMBER = 11;
+  private boolean isXr_ = false;
+  /**
+   * <pre>
+   * True if connected to a process running on an XR device.
+   * </pre>
+   *
+   * <code>optional bool is_xr = 11;</code>
+   * @return Whether the isXr field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsXr() {
+    return ((bitField0_ & 0x00000400) != 0);
+  }
+  /**
+   * <pre>
+   * True if connected to a process running on an XR device.
+   * </pre>
+   *
+   * <code>optional bool is_xr = 11;</code>
+   * @return The isXr.
+   */
+  @java.lang.Override
+  public boolean getIsXr() {
+    return isXr_;
+  }
+
+  public static final int IS_ON_DEVICE_RENDER_ENABLED_FIELD_NUMBER = 12;
+  private boolean isOnDeviceRenderEnabled_ = false;
+  /**
+   * <pre>
+   * True if on-device render is enabled for this session.
+   * </pre>
+   *
+   * <code>optional bool is_on_device_render_enabled = 12;</code>
+   * @return Whether the isOnDeviceRenderEnabled field is set.
+   */
+  @java.lang.Override
+  public boolean hasIsOnDeviceRenderEnabled() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * True if on-device render is enabled for this session.
+   * </pre>
+   *
+   * <code>optional bool is_on_device_render_enabled = 12;</code>
+   * @return The isOnDeviceRenderEnabled.
+   */
+  @java.lang.Override
+  public boolean getIsOnDeviceRenderEnabled() {
+    return isOnDeviceRenderEnabled_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -519,6 +573,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000200) != 0)) {
       output.writeInt64(10, attachDurationMs_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      output.writeBool(11, isXr_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      output.writeBool(12, isOnDeviceRenderEnabled_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -568,6 +628,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000200) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(10, attachDurationMs_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(11, isXr_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(12, isOnDeviceRenderEnabled_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -632,6 +700,16 @@ private static final long serialVersionUID = 0L;
       if (getAttachDurationMs()
           != other.getAttachDurationMs()) return false;
     }
+    if (hasIsXr() != other.hasIsXr()) return false;
+    if (hasIsXr()) {
+      if (getIsXr()
+          != other.getIsXr()) return false;
+    }
+    if (hasIsOnDeviceRenderEnabled() != other.hasIsOnDeviceRenderEnabled()) return false;
+    if (hasIsOnDeviceRenderEnabled()) {
+      if (getIsOnDeviceRenderEnabled()
+          != other.getIsOnDeviceRenderEnabled()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -689,6 +767,16 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ATTACH_DURATION_MS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getAttachDurationMs());
+    }
+    if (hasIsXr()) {
+      hash = (37 * hash) + IS_XR_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsXr());
+    }
+    if (hasIsOnDeviceRenderEnabled()) {
+      hash = (37 * hash) + IS_ON_DEVICE_RENDER_ENABLED_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsOnDeviceRenderEnabled());
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -843,6 +931,8 @@ private static final long serialVersionUID = 0L;
       autoConnectEnabled_ = false;
       isEmbeddedLayoutInspector_ = false;
       attachDurationMs_ = 0L;
+      isXr_ = false;
+      isOnDeviceRenderEnabled_ = false;
       return this;
     }
 
@@ -919,6 +1009,14 @@ private static final long serialVersionUID = 0L;
         result.attachDurationMs_ = attachDurationMs_;
         to_bitField0_ |= 0x00000200;
       }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.isXr_ = isXr_;
+        to_bitField0_ |= 0x00000400;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.isOnDeviceRenderEnabled_ = isOnDeviceRenderEnabled_;
+        to_bitField0_ |= 0x00000800;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -963,6 +1061,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAttachDurationMs()) {
         setAttachDurationMs(other.getAttachDurationMs());
+      }
+      if (other.hasIsXr()) {
+        setIsXr(other.getIsXr());
+      }
+      if (other.hasIsOnDeviceRenderEnabled()) {
+        setIsOnDeviceRenderEnabled(other.getIsOnDeviceRenderEnabled());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1056,6 +1160,16 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000200;
               break;
             } // case 80
+            case 88: {
+              isXr_ = input.readBool();
+              bitField0_ |= 0x00000400;
+              break;
+            } // case 88
+            case 96: {
+              isOnDeviceRenderEnabled_ = input.readBool();
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 96
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1736,6 +1850,118 @@ private static final long serialVersionUID = 0L;
     public Builder clearAttachDurationMs() {
       bitField0_ = (bitField0_ & ~0x00000200);
       attachDurationMs_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private boolean isXr_ ;
+    /**
+     * <pre>
+     * True if connected to a process running on an XR device.
+     * </pre>
+     *
+     * <code>optional bool is_xr = 11;</code>
+     * @return Whether the isXr field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsXr() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <pre>
+     * True if connected to a process running on an XR device.
+     * </pre>
+     *
+     * <code>optional bool is_xr = 11;</code>
+     * @return The isXr.
+     */
+    @java.lang.Override
+    public boolean getIsXr() {
+      return isXr_;
+    }
+    /**
+     * <pre>
+     * True if connected to a process running on an XR device.
+     * </pre>
+     *
+     * <code>optional bool is_xr = 11;</code>
+     * @param value The isXr to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsXr(boolean value) {
+
+      isXr_ = value;
+      bitField0_ |= 0x00000400;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * True if connected to a process running on an XR device.
+     * </pre>
+     *
+     * <code>optional bool is_xr = 11;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsXr() {
+      bitField0_ = (bitField0_ & ~0x00000400);
+      isXr_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean isOnDeviceRenderEnabled_ ;
+    /**
+     * <pre>
+     * True if on-device render is enabled for this session.
+     * </pre>
+     *
+     * <code>optional bool is_on_device_render_enabled = 12;</code>
+     * @return Whether the isOnDeviceRenderEnabled field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsOnDeviceRenderEnabled() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * True if on-device render is enabled for this session.
+     * </pre>
+     *
+     * <code>optional bool is_on_device_render_enabled = 12;</code>
+     * @return The isOnDeviceRenderEnabled.
+     */
+    @java.lang.Override
+    public boolean getIsOnDeviceRenderEnabled() {
+      return isOnDeviceRenderEnabled_;
+    }
+    /**
+     * <pre>
+     * True if on-device render is enabled for this session.
+     * </pre>
+     *
+     * <code>optional bool is_on_device_render_enabled = 12;</code>
+     * @param value The isOnDeviceRenderEnabled to set.
+     * @return This builder for chaining.
+     */
+    public Builder setIsOnDeviceRenderEnabled(boolean value) {
+
+      isOnDeviceRenderEnabled_ = value;
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * True if on-device render is enabled for this session.
+     * </pre>
+     *
+     * <code>optional bool is_on_device_render_enabled = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearIsOnDeviceRenderEnabled() {
+      bitField0_ = (bitField0_ & ~0x00000800);
+      isOnDeviceRenderEnabled_ = false;
       onChanged();
       return this;
     }

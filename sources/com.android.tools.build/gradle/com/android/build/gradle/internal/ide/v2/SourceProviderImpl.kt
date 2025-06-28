@@ -26,7 +26,7 @@ import java.io.Serializable
  */
 data class SourceProviderImpl(
     override val name: String,
-    override val manifestFile: File,
+    override val manifestFile: File?,
     override val javaDirectories: Collection<File>,
     override val kotlinDirectories: Collection<File>,
     override val resourcesDirectories: Collection<File>,

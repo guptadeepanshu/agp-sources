@@ -18,6 +18,7 @@ package com.android.build.gradle.options
 
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.BUILD_CONFIG_GLOBAL_PROPERTY
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_9_0
+import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_10_0
 import com.android.build.gradle.options.Version.VERSION_3_5
 import com.android.build.gradle.options.Version.VERSION_3_6
 import com.android.build.gradle.options.Version.VERSION_4_0
@@ -36,11 +37,13 @@ import com.android.builder.model.PROPERTY_DEPLOY_AS_INSTANT_APP
 import com.android.builder.model.PROPERTY_EXTRACT_INSTANT_APK
 import com.android.builder.model.PROPERTY_INVOKED_FROM_IDE
 import com.android.builder.model.PROPERTY_REFRESH_EXTERNAL_NATIVE_MODEL
+import com.android.ide.common.repository.AgpVersion
 
 enum class BooleanOption(
     override val propertyName: String,
     override val defaultValue: Boolean,
-    val stage: Stage
+    val stage: Stage,
+    val futureStage: FutureStage? = null
 ) : Option<Boolean> {
 
     /* -----------
@@ -69,8 +72,26 @@ enum class BooleanOption(
     // Features' default values
     BUILD_FEATURE_DATABINDING("android.defaults.buildfeatures.databinding", false, ApiStage.Stable),
     // TODO(b/366029616) deprecate and then remove BUILD_FEATURE_RESVALUES
-    BUILD_FEATURE_RESVALUES("android.defaults.buildfeatures.resvalues", true, ApiStage.Stable),
-    BUILD_FEATURE_SHADERS("android.defaults.buildfeatures.shaders", true, ApiStage.Stable),
+    BUILD_FEATURE_RESVALUES(
+        "android.defaults.buildfeatures.resvalues",
+        true,
+        ApiStage.Stable,
+        FutureStage(
+            false,
+            ApiStage.Stable,
+            AgpVersion.parse("9.0.0")
+        )
+    ),
+    BUILD_FEATURE_SHADERS(
+        "android.defaults.buildfeatures.shaders",
+        true,
+        ApiStage.Stable,
+        FutureStage(
+            false,
+            ApiStage.Stable,
+            AgpVersion.parse("9.0.0")
+        )
+    ),
     BUILD_FEATURE_VIEWBINDING("android.defaults.buildfeatures.viewbinding", false, ApiStage.Stable),
     BUILD_FEATURE_ANDROID_RESOURCES("android.library.defaults.buildfeatures.androidresources", true, ApiStage.Stable),
 
@@ -78,7 +99,16 @@ enum class BooleanOption(
     ENABLE_DATABINDING_KTX("android.defaults.databinding.addKtx", true, ApiStage.Stable),
 
     // AndroidX & Jetifier
-    USE_ANDROID_X("android.useAndroidX", false, ApiStage.Stable),
+    USE_ANDROID_X(
+        "android.useAndroidX",
+        false,
+        ApiStage.Stable,
+        FutureStage(
+            true,
+            ApiStage.Stable,
+            AgpVersion.parse("9.0.0")
+        )
+    ),
     ENABLE_JETIFIER("android.enableJetifier", false, ApiStage.Stable),
 
     DEBUG_OBSOLETE_API("android.debug.obsoleteApi", false, ApiStage.Stable),
@@ -131,7 +161,25 @@ enum class BooleanOption(
         ApiStage.Stable
     ),
 
-    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS("android.dependency.excludeLibraryComponentsFromConstraints", false, ApiStage.Stable),
+    EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS(
+        "android.dependency.excludeLibraryComponentsFromConstraints",
+        false,
+        ApiStage.Stable,
+        FutureStage(
+            true,
+            ApiStage.Stable,
+            AgpVersion.parse("9.0.0")
+        )
+    ),
+
+    /**
+     * This creates a sync issue when library constraints are enabled, because disabling them would
+     * result in a performance boost.
+     *
+     * It is intended to switch to on in the next major release alongside the related flag:
+     * `android.dependency.excludeLibraryComponentsFromConstraints`
+     */
+    GENERATE_SYNC_ISSUE_WHEN_LIBRARY_CONSTRAINTS_ARE_ENABLED("android.generateSyncIssueWhenLibraryConstraintsAreEnabled", false, ApiStage.Stable),
 
     /* ------------------
      * SUPPORTED FEATURES
@@ -140,7 +188,16 @@ enum class BooleanOption(
     // Used by Studio as workaround for b/71054106, b/75955471
     ENABLE_SDK_DOWNLOAD("android.builder.sdkDownload", true, FeatureStage.Supported),
 
-    ENFORCE_UNIQUE_PACKAGE_NAMES("android.uniquePackageNames", false, FeatureStage.Supported),
+    ENFORCE_UNIQUE_PACKAGE_NAMES(
+        "android.uniquePackageNames",
+        false,
+        FeatureStage.Supported,
+        FutureStage(
+            true,
+            FeatureStage.Supported,
+            AgpVersion.parse("9.0.0")
+        )
+    ),
 
     // Flag added to work around b/130596259.
     FORCE_JACOCO_OUT_OF_PROCESS("android.forceJacocoOutOfProcess", false, FeatureStage.Supported),
@@ -182,6 +239,7 @@ enum class BooleanOption(
         defaultValue = false,
         FeatureStage.Supported
     ),
+
 
     /* -----------------
      * EXPERIMENTAL APIs
@@ -258,7 +316,16 @@ enum class BooleanOption(
     /** When set R classes are treated as compilation classpath in libraries, rather than runtime classpath, with values set to 0. */
     ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT("android.enableAdditionalTestOutput", true, FeatureStage.Experimental),
 
-    ENABLE_APP_COMPILE_TIME_R_CLASS("android.enableAppCompileTimeRClass", false, FeatureStage.Experimental),
+    ENABLE_APP_COMPILE_TIME_R_CLASS(
+        "android.enableAppCompileTimeRClass",
+        false,
+        FeatureStage.Experimental,
+        FutureStage(
+            true,
+            FeatureStage.SoftlyEnforced(VERSION_10_0),
+            AgpVersion.parse("9.0.0")
+        )
+    ),
     ENABLE_EXTRACT_ANNOTATIONS("android.enableExtractAnnotations", true, FeatureStage.Experimental),
 
     // Marked as stable to avoid reporting deprecation twice.
@@ -316,7 +383,6 @@ enum class BooleanOption(
 
     VERIFY_AAR_CLASSES("android.experimental.verifyLibraryClasses", false, FeatureStage.Experimental),
     DISABLE_COMPILE_SDK_CHECKS("android.experimental.disableCompileSdkChecks", false, FeatureStage.Experimental),
-    ADDITIONAL_ARTIFACTS_IN_MODEL("android.experimental.additionalArtifactsInModel", false, FeatureStage.Experimental),
 
     // Whether to suppress warnings about android:extractNativeLibs set to true in dependencies
     SUPPRESS_EXTRACT_NATIVE_LIBS_WARNINGS(
@@ -408,36 +474,99 @@ enum class BooleanOption(
         FeatureStage.Experimental
     ),
 
+    /**
+     * Enables gradual R8 shrinking
+     */
+    GRADUAL_R8_SHRINKING(
+        "android.experimental.gradual.r8",
+        false,
+        FeatureStage.Experimental
+    ),
+
+    ENABLE_PROBLEMS_API("android.enableProblemsAPI", false, FeatureStage.Experimental),
+
+    /**
+     * As of AGP 9.0 missing proguard files will throw a runtime exception.
+     */
+    FAIL_ON_MISSING_PROGUARD_FILES(
+        "android.proguard.failOnMissingFiles",
+        false,
+        FeatureStage.Experimental,
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
+    ),
+
+    // Flag should only be used in test.
+    TEST_SIMULATE_AGP_VERSION_BEHAVIOR(
+        "android.testSimulateAgpVersionBehavior",
+        false,
+        FeatureStage.Experimental,
+        FutureStage(
+            true,
+            FeatureStage.Experimental,
+            AgpVersion.parse("10.0.0")
+        )
+    ),
+
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
     ENABLE_RESOURCE_OPTIMIZATIONS(
         "android.enableResourceOptimizations",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     ENABLE_EMULATOR_CONTROL(
         "android.experimental.androidTest.enableEmulatorControl",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)),
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
+    ),
 
     ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM(
         "android.experimental.androidTest.useUnifiedTestPlatform",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     ENABLE_NEW_RESOURCE_SHRINKER_PRECISE(
         "android.enableNewResourceShrinker.preciseShrinking",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     DISABLE_MINIFY_LOCAL_DEPENDENCIES_FOR_LIBRARIES(
         "android.disableMinifyLocalDependenciesForLibraries",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     /**
@@ -447,7 +576,12 @@ enum class BooleanOption(
     LINT_ANALYSIS_PER_COMPONENT(
         "android.experimental.lint.analysisPerComponent",
         true,
-        FeatureStage.SoftlyEnforced(VERSION_9_0)
+        FeatureStage.SoftlyEnforced(VERSION_9_0),
+        FutureStage(
+            true,
+            FeatureStage.Enforced(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     /**
@@ -483,21 +617,37 @@ enum class BooleanOption(
     BUILD_FEATURE_AIDL(
         "android.defaults.buildfeatures.aidl",
         false,
-        ApiStage.Deprecated(VERSION_9_0)
+        ApiStage.Deprecated(VERSION_9_0),
+        FutureStage(
+            false,
+            ApiStage.Removed(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     // TODO(b/254305041) move to ApiStage.Removed
     BUILD_FEATURE_RENDERSCRIPT(
         "android.defaults.buildfeatures.renderscript",
         false,
-        ApiStage.Deprecated(VERSION_9_0)
+        ApiStage.Deprecated(VERSION_9_0),
+        FutureStage(
+            false,
+            ApiStage.Removed(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
     ),
 
     // TODO(b/254305041) move to ApiStage.Removed
     BUILD_FEATURE_BUILDCONFIG(
         "android.defaults.buildfeatures.buildconfig",
         false,
-        ApiStage.Deprecated(BUILD_CONFIG_GLOBAL_PROPERTY))
+        ApiStage.Deprecated(BUILD_CONFIG_GLOBAL_PROPERTY),
+        FutureStage(
+            false,
+            ApiStage.Removed(Version.VERSION_9_0),
+            AgpVersion.parse("9.0.0")
+        )
+    )
     ,
 
     // Flag used to indicate a "deploy as instant" run configuration.
@@ -950,6 +1100,8 @@ enum class BooleanOption(
     @Suppress("unused")
     ENABLE_VCS_INFO("android.enableVcsInfo", false, FeatureStage.Removed(Version.VERSION_8_3, "This feature is now enabled in the DSL per build type with \"vcsInfo.include = true\".")),
 
+    @Suppress("unused")
+    ADDITIONAL_ARTIFACTS_IN_MODEL("android.experimental.additionalArtifactsInModel", false, FeatureStage.Removed(Version.VERSION_8_11, "Android Studio is responsible for managing multi-variant Javadoc/source support.")),
     ; // end of enums
 
     override val status = stage.status

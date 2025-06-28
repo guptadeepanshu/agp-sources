@@ -99,11 +99,22 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
     var navigationJsons: FileCollection? = null
         private set
 
+    @get:Input
+    abstract val namespacedAndroidResources: Property<Boolean>
+
     override fun doTaskAction() {
         val manifestOutputFolder = packagedManifestOutputDirectory.get().asFile
         FileUtils.mkdirs(manifestOutputFolder)
         val manifestOutputFile = File(manifestOutputFolder, SdkConstants.ANDROID_MANIFEST_XML)
-        val navJsons = navigationJsons?.files ?: listOf<File>()
+        val navJsons = navigationJsons?.files?.filter { it.exists() } ?: setOf()
+
+        // TODO (b/141948909): add support for namespaced navigation files
+        if (namespacedAndroidResources.get() && navJsons.any { it.readText() != "[]" }) {
+            throw RuntimeException(
+                "Namespaced Android resources cannot be enabled when specifying navigation files " +
+                "in the manifest."
+            )
+        }
 
         mergeManifestsForTestVariant(
             testApplicationId.get(),
@@ -539,8 +550,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     empty()
                 }
             )
-            if (!creationConfig.global.namespacedAndroidResources) {
-                task.navigationJsons = project.files(
+            task.navigationJsons = project.files(
                     creationConfig
                         .variantDependencies
                         .getArtifactFileCollection(
@@ -549,7 +559,9 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                             AndroidArtifacts.ArtifactType.NAVIGATION_JSON
                         )
                 )
-            }
+            task.namespacedAndroidResources.setDisallowChanges(
+                creationConfig.global.namespacedAndroidResources
+            )
             when (creationConfig) {
                 is DeviceTestCreationConfig -> {
                     task.extractNativeLibs.setDisallowChanges(

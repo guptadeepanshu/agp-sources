@@ -32,7 +32,7 @@ data class AndroidProjectImpl(
     override val androidTestNamespace: String?,
     override val testFixturesNamespace: String?,
     override val variants: Collection<Variant>,
-    override val javaCompileOptions: JavaCompileOptions,
+    override val javaCompileOptions: JavaCompileOptions?,
     override val resourcePrefix: String?,
     override val dynamicFeatures: Collection<String>?,
     override val viewBindingOptions: ViewBindingOptions?,

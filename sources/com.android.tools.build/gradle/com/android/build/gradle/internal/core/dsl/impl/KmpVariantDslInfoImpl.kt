@@ -65,10 +65,7 @@ class KmpVariantDslInfoImpl(
 ), KmpVariantDslInfo {
 
     override val androidResourcesDsl = object: AndroidResourcesDslInfo {
-        override val androidResources = dslServices.newDecoratedInstance(
-            AaptOptions::class.java,
-            dslServices
-        )
+        override val androidResources = extension.androidResources
         override val resourceConfigurations: ImmutableSet<String> = ImmutableSet.of()
         override val vectorDrawables: VectorDrawablesOptions = DefaultVectorDrawablesOptions()
         override val isPseudoLocalesEnabled: Boolean = false

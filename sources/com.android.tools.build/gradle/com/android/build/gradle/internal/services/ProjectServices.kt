@@ -34,6 +34,8 @@ import org.gradle.api.plugins.PluginManager
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildServiceRegistry
 import org.gradle.api.tasks.TaskProvider
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
 import java.io.File
 
 /**
@@ -83,5 +85,13 @@ class ProjectServices constructor(
         aapt2Input.version.setDisallowChanges(aapt2FromMaven?.version)
         aapt2Input.maxWorkerCount.setDisallowChanges(maxWorkerCount)
         aapt2Input.maxAapt2Daemons.setDisallowChanges(computeMaxAapt2Daemons(projectOptions))
+    }
+
+    val builtInKotlinServices: BuiltInKotlinServices by lazy {
+        BuiltInKotlinServices.createFromPlugin(
+            kotlinBaseApiPlugin = projectInfo.getPlugin(KotlinBaseApiPlugin::class.java),
+            kotlinAndroidProjectExtension = projectInfo.getExtension(KotlinAndroidProjectExtension::class.java),
+            projectName = projectInfo.name
+        )
     }
 }

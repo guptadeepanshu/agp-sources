@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  * range [1.5.7, 2.0.0) would work as a dependency because androidx libraries guarantees semantic
  * versioning.
  */
+@Deprecated
 public class GradleVersionRange {
     private static final Pattern RANGE_PATTERN = Pattern.compile("\\[([^,)]+),([^,)]+)\\)");
     private final Version myMin;
@@ -43,6 +44,7 @@ public class GradleVersionRange {
      * @throws IllegalArgumentException if the given value does not conform with any of the
      *     supported version formats.
      */
+    @Deprecated
     @NonNull
     public static GradleVersionRange parse(@NonNull String value) {
         return parse(value, KnownVersionStability.INCOMPATIBLE);
@@ -58,6 +60,7 @@ public class GradleVersionRange {
      *     supported version formats.
      * @see <a href="https://semver.org">Semantic Versioning</a>
      */
+    @Deprecated
     @NonNull
     public static GradleVersionRange parse(
             @NonNull String value, @NonNull KnownVersionStability stability) {
@@ -83,6 +86,7 @@ public class GradleVersionRange {
      * @return the created {@code GradleVersionRange} object, or {@code null} if the given value
      *     does not conform with any of the supported version formats.
      */
+    @Deprecated
     @Nullable
     public static GradleVersionRange tryParse(
             @NonNull String value, @NonNull KnownVersionStability stability) {
@@ -102,6 +106,7 @@ public class GradleVersionRange {
      * @return the created {@code GradleVersionRange} object, or {@code null} if the given value
      *     does not conform with any of the supported version formats.
      */
+    @Deprecated
     @Nullable
     public static GradleVersionRange tryParse(@NonNull String value) {
         return tryParse(value, KnownVersionStability.INCOMPATIBLE);
@@ -122,17 +127,20 @@ public class GradleVersionRange {
     }
 
     /** The lower bound (inclusive) */
+    @Deprecated
     @NonNull
     public Version getMin() {
         return myMin;
     }
 
     /** The upper bound (exclusive) */
+    @Deprecated
     @Nullable
     public Version getMax() {
         return myMax;
     }
 
+    @Deprecated
     @Nullable
     public GradleVersionRange intersection(@NonNull GradleVersionRange other) {
         if (myMax == null && other.myMax == null) {
@@ -153,6 +161,7 @@ public class GradleVersionRange {
         return min.compareTo(max) < 0 ? new GradleVersionRange(min, max) : null;
     }
 
+    @Deprecated
     @Nullable
     public GradleVersionRange intersection(@NonNull Version version) {
         return intersection(new GradleVersionRange(version, null));

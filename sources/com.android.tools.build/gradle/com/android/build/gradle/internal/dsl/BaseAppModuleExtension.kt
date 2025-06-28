@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ApplicationAndroidResources
 import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.gradle.AppExtension
@@ -30,6 +31,7 @@ import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.builder.core.LibraryRequest
 import com.android.repository.Revision
 import com.google.wireless.android.sdk.stats.GradleBuildProject
+import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.declarative.dsl.model.annotations.Configuring
 
@@ -48,14 +50,22 @@ open class BaseAppModuleExtensionInternal(
     publicExtensionImpl,
     stats
 ) {
+    @Deprecated("Use dependencies{} block inside build type and product flavors")
     val dependenciesDcl: DependenciesExtension by lazy {
         dslServices.newInstance(DependenciesExtension::class.java)
     }
 
+    @Deprecated("Use dependencies{} block inside build type and product flavors")
     @Configuring
     fun dependenciesDcl(configure: DependenciesExtension.() -> Unit) {
         configure.invoke(dependenciesDcl)
     }
+
+    override val buildTypes: NamedDomainObjectContainer<DeclarativeBuildType>
+        get() = publicExtensionImpl.buildTypes as NamedDomainObjectContainer<DeclarativeBuildType>
+
+    override val productFlavors: NamedDomainObjectContainer<DeclarativeProductFlavor>
+        get() = publicExtensionImpl.productFlavors as NamedDomainObjectContainer<DeclarativeProductFlavor>
 }
 
 /** The `android` extension for base feature module (application plugin).  */
@@ -77,12 +87,15 @@ open class BaseAppModuleExtension(
 
     // Overrides to make the parameterized types match, due to BaseExtension being part of
     // the previous public API and not wanting to paramerterize that.
-    override val buildTypes: NamedDomainObjectContainer<BuildType>
+    override val buildTypes: NamedDomainObjectContainer<out BuildType>
         get() = publicExtensionImpl.buildTypes as NamedDomainObjectContainer<BuildType>
+
     override val defaultConfig: DefaultConfig
         get() = publicExtensionImpl.defaultConfig as DefaultConfig
-    override val productFlavors: NamedDomainObjectContainer<ProductFlavor>
+
+    override val productFlavors: NamedDomainObjectContainer<out ProductFlavor>
         get() = publicExtensionImpl.productFlavors as NamedDomainObjectContainer<ProductFlavor>
+
     override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
         get() = publicExtensionImpl.sourceSets
 

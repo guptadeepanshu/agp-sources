@@ -12288,7 +12288,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_fetched = 3 [deprecated = true];</code>
      * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-     *     See studio_stats.proto;l=14509
+     *     See studio_stats.proto;l=14606
      * @return Whether the isFetched field is set.
      */
     @java.lang.Deprecated boolean hasIsFetched();
@@ -12301,7 +12301,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_fetched = 3 [deprecated = true];</code>
      * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-     *     See studio_stats.proto;l=14509
+     *     See studio_stats.proto;l=14606
      * @return The isFetched.
      */
     @java.lang.Deprecated boolean getIsFetched();
@@ -12477,7 +12477,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_fetched = 3 [deprecated = true];</code>
      * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-     *     See studio_stats.proto;l=14509
+     *     See studio_stats.proto;l=14606
      * @return Whether the isFetched field is set.
      */
     @java.lang.Override
@@ -12493,7 +12493,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional bool is_fetched = 3 [deprecated = true];</code>
      * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-     *     See studio_stats.proto;l=14509
+     *     See studio_stats.proto;l=14606
      * @return The isFetched.
      */
     @java.lang.Override
@@ -13079,7 +13079,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_fetched = 3 [deprecated = true];</code>
        * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-       *     See studio_stats.proto;l=14509
+       *     See studio_stats.proto;l=14606
        * @return Whether the isFetched field is set.
        */
       @java.lang.Override
@@ -13095,7 +13095,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_fetched = 3 [deprecated = true];</code>
        * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-       *     See studio_stats.proto;l=14509
+       *     See studio_stats.proto;l=14606
        * @return The isFetched.
        */
       @java.lang.Override
@@ -13111,7 +13111,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_fetched = 3 [deprecated = true];</code>
        * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-       *     See studio_stats.proto;l=14509
+       *     See studio_stats.proto;l=14606
        * @param value The isFetched to set.
        * @return This builder for chaining.
        */
@@ -13131,7 +13131,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional bool is_fetched = 3 [deprecated = true];</code>
        * @deprecated android_studio.AppQualityInsightsUsageEvent.EventDetails.is_fetched is deprecated.
-       *     See studio_stats.proto;l=14509
+       *     See studio_stats.proto;l=14606
        * @return This builder for chaining.
        */
       @java.lang.Deprecated public Builder clearIsFetched() {

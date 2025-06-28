@@ -368,11 +368,13 @@ private static final long serialVersionUID = 0L;
    * events).
    * </pre>
    *
-   * <code>optional int32 stopped_device_width = 3;</code>
+   * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+   *     See studio_stats.proto;l=17050
    * @return Whether the stoppedDeviceWidth field is set.
    */
   @java.lang.Override
-  public boolean hasStoppedDeviceWidth() {
+  @java.lang.Deprecated public boolean hasStoppedDeviceWidth() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -381,30 +383,36 @@ private static final long serialVersionUID = 0L;
    * events).
    * </pre>
    *
-   * <code>optional int32 stopped_device_width = 3;</code>
+   * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+   *     See studio_stats.proto;l=17050
    * @return The stoppedDeviceWidth.
    */
   @java.lang.Override
-  public int getStoppedDeviceWidth() {
+  @java.lang.Deprecated public int getStoppedDeviceWidth() {
     return stoppedDeviceWidth_;
   }
 
   public static final int STOPPED_DEVICE_HEIGHT_FIELD_NUMBER = 4;
   private int stoppedDeviceHeight_ = 0;
   /**
-   * <code>optional int32 stopped_device_height = 4;</code>
+   * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+   *     See studio_stats.proto;l=17051
    * @return Whether the stoppedDeviceHeight field is set.
    */
   @java.lang.Override
-  public boolean hasStoppedDeviceHeight() {
+  @java.lang.Deprecated public boolean hasStoppedDeviceHeight() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
-   * <code>optional int32 stopped_device_height = 4;</code>
+   * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+   *     See studio_stats.proto;l=17051
    * @return The stoppedDeviceHeight.
    */
   @java.lang.Override
-  public int getStoppedDeviceHeight() {
+  @java.lang.Deprecated public int getStoppedDeviceHeight() {
     return stoppedDeviceHeight_;
   }
 
@@ -416,11 +424,13 @@ private static final long serialVersionUID = 0L;
    * RESIZE_SAVED events).
    * </pre>
    *
-   * <code>optional int32 saved_device_width = 5;</code>
+   * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+   *     See studio_stats.proto;l=17055
    * @return Whether the savedDeviceWidth field is set.
    */
   @java.lang.Override
-  public boolean hasSavedDeviceWidth() {
+  @java.lang.Deprecated public boolean hasSavedDeviceWidth() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -429,31 +439,122 @@ private static final long serialVersionUID = 0L;
    * RESIZE_SAVED events).
    * </pre>
    *
-   * <code>optional int32 saved_device_width = 5;</code>
+   * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+   *     See studio_stats.proto;l=17055
    * @return The savedDeviceWidth.
    */
   @java.lang.Override
-  public int getSavedDeviceWidth() {
+  @java.lang.Deprecated public int getSavedDeviceWidth() {
     return savedDeviceWidth_;
   }
 
   public static final int SAVED_DEVICE_HEIGHT_FIELD_NUMBER = 6;
   private int savedDeviceHeight_ = 0;
   /**
-   * <code>optional int32 saved_device_height = 6;</code>
+   * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+   *     See studio_stats.proto;l=17056
    * @return Whether the savedDeviceHeight field is set.
    */
   @java.lang.Override
-  public boolean hasSavedDeviceHeight() {
+  @java.lang.Deprecated public boolean hasSavedDeviceHeight() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
-   * <code>optional int32 saved_device_height = 6;</code>
+   * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+   * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+   *     See studio_stats.proto;l=17056
    * @return The savedDeviceHeight.
    */
   @java.lang.Override
-  public int getSavedDeviceHeight() {
+  @java.lang.Deprecated public int getSavedDeviceHeight() {
     return savedDeviceHeight_;
+  }
+
+  public static final int DEVICE_WIDTH_DP_FIELD_NUMBER = 7;
+  private int deviceWidthDp_ = 0;
+  /**
+   * <pre>
+   * Width when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_width_dp = 7;</code>
+   * @return Whether the deviceWidthDp field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceWidthDp() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * Width when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_width_dp = 7;</code>
+   * @return The deviceWidthDp.
+   */
+  @java.lang.Override
+  public int getDeviceWidthDp() {
+    return deviceWidthDp_;
+  }
+
+  public static final int DEVICE_HEIGHT_DP_FIELD_NUMBER = 8;
+  private int deviceHeightDp_ = 0;
+  /**
+   * <pre>
+   * Height when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_height_dp = 8;</code>
+   * @return Whether the deviceHeightDp field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceHeightDp() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * Height when user stops resizing or saves the resized state (relevant for
+   * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+   * </pre>
+   *
+   * <code>optional int32 device_height_dp = 8;</code>
+   * @return The deviceHeightDp.
+   */
+  @java.lang.Override
+  public int getDeviceHeightDp() {
+    return deviceHeightDp_;
+  }
+
+  public static final int DPI_FIELD_NUMBER = 9;
+  private int dpi_ = 0;
+  /**
+   * <pre>
+   * The DPI of the device.
+   * </pre>
+   *
+   * <code>optional int32 dpi = 9;</code>
+   * @return Whether the dpi field is set.
+   */
+  @java.lang.Override
+  public boolean hasDpi() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * The DPI of the device.
+   * </pre>
+   *
+   * <code>optional int32 dpi = 9;</code>
+   * @return The dpi.
+   */
+  @java.lang.Override
+  public int getDpi() {
+    return dpi_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -488,6 +589,15 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       output.writeInt32(6, savedDeviceHeight_);
     }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeInt32(7, deviceWidthDp_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeInt32(8, deviceHeightDp_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeInt32(9, dpi_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -520,6 +630,18 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(6, savedDeviceHeight_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(7, deviceWidthDp_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(8, deviceHeightDp_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(9, dpi_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -564,6 +686,21 @@ private static final long serialVersionUID = 0L;
       if (getSavedDeviceHeight()
           != other.getSavedDeviceHeight()) return false;
     }
+    if (hasDeviceWidthDp() != other.hasDeviceWidthDp()) return false;
+    if (hasDeviceWidthDp()) {
+      if (getDeviceWidthDp()
+          != other.getDeviceWidthDp()) return false;
+    }
+    if (hasDeviceHeightDp() != other.hasDeviceHeightDp()) return false;
+    if (hasDeviceHeightDp()) {
+      if (getDeviceHeightDp()
+          != other.getDeviceHeightDp()) return false;
+    }
+    if (hasDpi() != other.hasDpi()) return false;
+    if (hasDpi()) {
+      if (getDpi()
+          != other.getDpi()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -598,6 +735,18 @@ private static final long serialVersionUID = 0L;
     if (hasSavedDeviceHeight()) {
       hash = (37 * hash) + SAVED_DEVICE_HEIGHT_FIELD_NUMBER;
       hash = (53 * hash) + getSavedDeviceHeight();
+    }
+    if (hasDeviceWidthDp()) {
+      hash = (37 * hash) + DEVICE_WIDTH_DP_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceWidthDp();
+    }
+    if (hasDeviceHeightDp()) {
+      hash = (37 * hash) + DEVICE_HEIGHT_DP_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceHeightDp();
+    }
+    if (hasDpi()) {
+      hash = (37 * hash) + DPI_FIELD_NUMBER;
+      hash = (53 * hash) + getDpi();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -734,6 +883,9 @@ private static final long serialVersionUID = 0L;
       stoppedDeviceHeight_ = 0;
       savedDeviceWidth_ = 0;
       savedDeviceHeight_ = 0;
+      deviceWidthDp_ = 0;
+      deviceHeightDp_ = 0;
+      dpi_ = 0;
       return this;
     }
 
@@ -792,6 +944,18 @@ private static final long serialVersionUID = 0L;
         result.savedDeviceHeight_ = savedDeviceHeight_;
         to_bitField0_ |= 0x00000020;
       }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.deviceWidthDp_ = deviceWidthDp_;
+        to_bitField0_ |= 0x00000040;
+      }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        result.deviceHeightDp_ = deviceHeightDp_;
+        to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.dpi_ = dpi_;
+        to_bitField0_ |= 0x00000100;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -824,6 +988,15 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasSavedDeviceHeight()) {
         setSavedDeviceHeight(other.getSavedDeviceHeight());
+      }
+      if (other.hasDeviceWidthDp()) {
+        setDeviceWidthDp(other.getDeviceWidthDp());
+      }
+      if (other.hasDeviceHeightDp()) {
+        setDeviceHeightDp(other.getDeviceHeightDp());
+      }
+      if (other.hasDpi()) {
+        setDpi(other.getDpi());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -895,6 +1068,21 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000020;
               break;
             } // case 48
+            case 56: {
+              deviceWidthDp_ = input.readInt32();
+              bitField0_ |= 0x00000040;
+              break;
+            } // case 56
+            case 64: {
+              deviceHeightDp_ = input.readInt32();
+              bitField0_ |= 0x00000080;
+              break;
+            } // case 64
+            case 72: {
+              dpi_ = input.readInt32();
+              bitField0_ |= 0x00000100;
+              break;
+            } // case 72
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1035,11 +1223,13 @@ private static final long serialVersionUID = 0L;
      * events).
      * </pre>
      *
-     * <code>optional int32 stopped_device_width = 3;</code>
+     * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+     *     See studio_stats.proto;l=17050
      * @return Whether the stoppedDeviceWidth field is set.
      */
     @java.lang.Override
-    public boolean hasStoppedDeviceWidth() {
+    @java.lang.Deprecated public boolean hasStoppedDeviceWidth() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1048,11 +1238,13 @@ private static final long serialVersionUID = 0L;
      * events).
      * </pre>
      *
-     * <code>optional int32 stopped_device_width = 3;</code>
+     * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+     *     See studio_stats.proto;l=17050
      * @return The stoppedDeviceWidth.
      */
     @java.lang.Override
-    public int getStoppedDeviceWidth() {
+    @java.lang.Deprecated public int getStoppedDeviceWidth() {
       return stoppedDeviceWidth_;
     }
     /**
@@ -1061,11 +1253,13 @@ private static final long serialVersionUID = 0L;
      * events).
      * </pre>
      *
-     * <code>optional int32 stopped_device_width = 3;</code>
+     * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+     *     See studio_stats.proto;l=17050
      * @param value The stoppedDeviceWidth to set.
      * @return This builder for chaining.
      */
-    public Builder setStoppedDeviceWidth(int value) {
+    @java.lang.Deprecated public Builder setStoppedDeviceWidth(int value) {
 
       stoppedDeviceWidth_ = value;
       bitField0_ |= 0x00000004;
@@ -1078,10 +1272,12 @@ private static final long serialVersionUID = 0L;
      * events).
      * </pre>
      *
-     * <code>optional int32 stopped_device_width = 3;</code>
+     * <code>optional int32 stopped_device_width = 3 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_width is deprecated.
+     *     See studio_stats.proto;l=17050
      * @return This builder for chaining.
      */
-    public Builder clearStoppedDeviceWidth() {
+    @java.lang.Deprecated public Builder clearStoppedDeviceWidth() {
       bitField0_ = (bitField0_ & ~0x00000004);
       stoppedDeviceWidth_ = 0;
       onChanged();
@@ -1090,27 +1286,33 @@ private static final long serialVersionUID = 0L;
 
     private int stoppedDeviceHeight_ ;
     /**
-     * <code>optional int32 stopped_device_height = 4;</code>
+     * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+     *     See studio_stats.proto;l=17051
      * @return Whether the stoppedDeviceHeight field is set.
      */
     @java.lang.Override
-    public boolean hasStoppedDeviceHeight() {
+    @java.lang.Deprecated public boolean hasStoppedDeviceHeight() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
-     * <code>optional int32 stopped_device_height = 4;</code>
+     * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+     *     See studio_stats.proto;l=17051
      * @return The stoppedDeviceHeight.
      */
     @java.lang.Override
-    public int getStoppedDeviceHeight() {
+    @java.lang.Deprecated public int getStoppedDeviceHeight() {
       return stoppedDeviceHeight_;
     }
     /**
-     * <code>optional int32 stopped_device_height = 4;</code>
+     * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+     *     See studio_stats.proto;l=17051
      * @param value The stoppedDeviceHeight to set.
      * @return This builder for chaining.
      */
-    public Builder setStoppedDeviceHeight(int value) {
+    @java.lang.Deprecated public Builder setStoppedDeviceHeight(int value) {
 
       stoppedDeviceHeight_ = value;
       bitField0_ |= 0x00000008;
@@ -1118,10 +1320,12 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional int32 stopped_device_height = 4;</code>
+     * <code>optional int32 stopped_device_height = 4 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.stopped_device_height is deprecated.
+     *     See studio_stats.proto;l=17051
      * @return This builder for chaining.
      */
-    public Builder clearStoppedDeviceHeight() {
+    @java.lang.Deprecated public Builder clearStoppedDeviceHeight() {
       bitField0_ = (bitField0_ & ~0x00000008);
       stoppedDeviceHeight_ = 0;
       onChanged();
@@ -1135,11 +1339,13 @@ private static final long serialVersionUID = 0L;
      * RESIZE_SAVED events).
      * </pre>
      *
-     * <code>optional int32 saved_device_width = 5;</code>
+     * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+     *     See studio_stats.proto;l=17055
      * @return Whether the savedDeviceWidth field is set.
      */
     @java.lang.Override
-    public boolean hasSavedDeviceWidth() {
+    @java.lang.Deprecated public boolean hasSavedDeviceWidth() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -1148,11 +1354,13 @@ private static final long serialVersionUID = 0L;
      * RESIZE_SAVED events).
      * </pre>
      *
-     * <code>optional int32 saved_device_width = 5;</code>
+     * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+     *     See studio_stats.proto;l=17055
      * @return The savedDeviceWidth.
      */
     @java.lang.Override
-    public int getSavedDeviceWidth() {
+    @java.lang.Deprecated public int getSavedDeviceWidth() {
       return savedDeviceWidth_;
     }
     /**
@@ -1161,11 +1369,13 @@ private static final long serialVersionUID = 0L;
      * RESIZE_SAVED events).
      * </pre>
      *
-     * <code>optional int32 saved_device_width = 5;</code>
+     * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+     *     See studio_stats.proto;l=17055
      * @param value The savedDeviceWidth to set.
      * @return This builder for chaining.
      */
-    public Builder setSavedDeviceWidth(int value) {
+    @java.lang.Deprecated public Builder setSavedDeviceWidth(int value) {
 
       savedDeviceWidth_ = value;
       bitField0_ |= 0x00000010;
@@ -1178,10 +1388,12 @@ private static final long serialVersionUID = 0L;
      * RESIZE_SAVED events).
      * </pre>
      *
-     * <code>optional int32 saved_device_width = 5;</code>
+     * <code>optional int32 saved_device_width = 5 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_width is deprecated.
+     *     See studio_stats.proto;l=17055
      * @return This builder for chaining.
      */
-    public Builder clearSavedDeviceWidth() {
+    @java.lang.Deprecated public Builder clearSavedDeviceWidth() {
       bitField0_ = (bitField0_ & ~0x00000010);
       savedDeviceWidth_ = 0;
       onChanged();
@@ -1190,27 +1402,33 @@ private static final long serialVersionUID = 0L;
 
     private int savedDeviceHeight_ ;
     /**
-     * <code>optional int32 saved_device_height = 6;</code>
+     * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+     *     See studio_stats.proto;l=17056
      * @return Whether the savedDeviceHeight field is set.
      */
     @java.lang.Override
-    public boolean hasSavedDeviceHeight() {
+    @java.lang.Deprecated public boolean hasSavedDeviceHeight() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
-     * <code>optional int32 saved_device_height = 6;</code>
+     * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+     *     See studio_stats.proto;l=17056
      * @return The savedDeviceHeight.
      */
     @java.lang.Override
-    public int getSavedDeviceHeight() {
+    @java.lang.Deprecated public int getSavedDeviceHeight() {
       return savedDeviceHeight_;
     }
     /**
-     * <code>optional int32 saved_device_height = 6;</code>
+     * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+     *     See studio_stats.proto;l=17056
      * @param value The savedDeviceHeight to set.
      * @return This builder for chaining.
      */
-    public Builder setSavedDeviceHeight(int value) {
+    @java.lang.Deprecated public Builder setSavedDeviceHeight(int value) {
 
       savedDeviceHeight_ = value;
       bitField0_ |= 0x00000020;
@@ -1218,12 +1436,190 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>optional int32 saved_device_height = 6;</code>
+     * <code>optional int32 saved_device_height = 6 [deprecated = true];</code>
+     * @deprecated android_studio.ResizeComposePreviewEvent.saved_device_height is deprecated.
+     *     See studio_stats.proto;l=17056
      * @return This builder for chaining.
      */
-    public Builder clearSavedDeviceHeight() {
+    @java.lang.Deprecated public Builder clearSavedDeviceHeight() {
       bitField0_ = (bitField0_ & ~0x00000020);
       savedDeviceHeight_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int deviceWidthDp_ ;
+    /**
+     * <pre>
+     * Width when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_width_dp = 7;</code>
+     * @return Whether the deviceWidthDp field is set.
+     */
+    @java.lang.Override
+    public boolean hasDeviceWidthDp() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Width when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_width_dp = 7;</code>
+     * @return The deviceWidthDp.
+     */
+    @java.lang.Override
+    public int getDeviceWidthDp() {
+      return deviceWidthDp_;
+    }
+    /**
+     * <pre>
+     * Width when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_width_dp = 7;</code>
+     * @param value The deviceWidthDp to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceWidthDp(int value) {
+
+      deviceWidthDp_ = value;
+      bitField0_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Width when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_width_dp = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceWidthDp() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      deviceWidthDp_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int deviceHeightDp_ ;
+    /**
+     * <pre>
+     * Height when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_height_dp = 8;</code>
+     * @return Whether the deviceHeightDp field is set.
+     */
+    @java.lang.Override
+    public boolean hasDeviceHeightDp() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Height when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_height_dp = 8;</code>
+     * @return The deviceHeightDp.
+     */
+    @java.lang.Override
+    public int getDeviceHeightDp() {
+      return deviceHeightDp_;
+    }
+    /**
+     * <pre>
+     * Height when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_height_dp = 8;</code>
+     * @param value The deviceHeightDp to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceHeightDp(int value) {
+
+      deviceHeightDp_ = value;
+      bitField0_ |= 0x00000080;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Height when user stops resizing or saves the resized state (relevant for
+     * RESIZE_STOPPED and RESIZE_SAVED events). Unit: dp.
+     * </pre>
+     *
+     * <code>optional int32 device_height_dp = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceHeightDp() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      deviceHeightDp_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int dpi_ ;
+    /**
+     * <pre>
+     * The DPI of the device.
+     * </pre>
+     *
+     * <code>optional int32 dpi = 9;</code>
+     * @return Whether the dpi field is set.
+     */
+    @java.lang.Override
+    public boolean hasDpi() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * The DPI of the device.
+     * </pre>
+     *
+     * <code>optional int32 dpi = 9;</code>
+     * @return The dpi.
+     */
+    @java.lang.Override
+    public int getDpi() {
+      return dpi_;
+    }
+    /**
+     * <pre>
+     * The DPI of the device.
+     * </pre>
+     *
+     * <code>optional int32 dpi = 9;</code>
+     * @param value The dpi to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDpi(int value) {
+
+      dpi_ = value;
+      bitField0_ |= 0x00000100;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The DPI of the device.
+     * </pre>
+     *
+     * <code>optional int32 dpi = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDpi() {
+      bitField0_ = (bitField0_ & ~0x00000100);
+      dpi_ = 0;
       onChanged();
       return this;
     }

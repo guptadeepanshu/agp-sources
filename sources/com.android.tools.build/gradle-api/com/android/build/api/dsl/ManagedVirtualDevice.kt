@@ -131,6 +131,26 @@ interface ManagedVirtualDevice : Device {
     var pageAlignment: PageAlignment
 
     /**
+     * What abi the apk should be built with to test against.
+     *
+     * This changes the abi of the testedApk to be installed on the
+     * given managed device. This should be changed to test native code.
+     * If the abi is not compatible with the system image, this will result
+     * in a failure.
+     *
+     * The default is for the abi to match the abi of the system image (which
+     * is selected based on the abi of the host system). Certain system image
+     * sources, such as "google" or "google_apis_playstore" support NDK
+     * translation. This allows for the "arm64-v8a" apks to be installed and
+     * run on an "x86_64" system image.
+     *
+     * Valid values include "x86", "x86_64", and "arm64-v8a"
+     */
+    @get: Incubating
+    @set: Incubating
+    var testedAbi: String?
+
+    /**
      * Defines possible system image selection strategies based on the requested Page Alignment
      *
      * This allows for testing on devices for both 4KB and 16KB page sizes. See

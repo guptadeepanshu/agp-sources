@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.testing.utp
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.BaseTestRunner
 import com.android.build.gradle.internal.testing.StaticTestData
+import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig
 import com.android.builder.testing.api.DeviceConnector
 import com.android.ide.common.process.ProcessExecutor
 import com.android.ide.common.workers.ExecutorServiceAdapter
@@ -42,7 +43,6 @@ class UtpTestRunner @JvmOverloads constructor(
         private val utpDependencies: UtpDependencies,
         private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         private val emulatorControlConfig: EmulatorControlConfig,
-        private val retentionConfig: RetentionConfig,
         private val useOrchestrator: Boolean,
         private val forceCompilation: Boolean,
         private val uninstallIncompatibleApks: Boolean,
@@ -103,7 +103,6 @@ class UtpTestRunner @JvmOverloads constructor(
                     utpOutputDir,
                     utpTmpDir,
                     emulatorControlConfig,
-                    retentionConfig,
                     File(coverageDir, deviceConnector.name),
                     useOrchestrator,
                     forceCompilation,

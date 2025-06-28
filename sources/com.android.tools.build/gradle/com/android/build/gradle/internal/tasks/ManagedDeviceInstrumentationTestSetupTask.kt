@@ -32,6 +32,7 @@ import com.android.build.gradle.internal.testing.utp.ManagedDeviceImageSuggestio
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.repository.Revision
+import com.android.testing.utils.canSourcePerformNdkTranslation
 import com.android.testing.utils.computeSystemImageHashFromDsl
 import com.android.testing.utils.isTvOrAutoDevice
 import com.android.testing.utils.isTvOrAutoSource
@@ -74,7 +75,14 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
     abstract val abi: Property<String>
 
     @get: Input
+    @get: Optional
+    abstract val testedAbi: Property<String>
+
+    @get: Input
     abstract val sdkVersion: Property<Int>
+
+    @get: Input
+    abstract val sdkMinorVersion: Property<Int>
 
     @get: Input
     abstract val systemImageVendor: Property<String>
@@ -102,7 +110,9 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
 
     override fun doTaskAction() {
         assertSourceDoesNotIncludePageAlignment()
+        assertNoMinorVersionOnOldApi()
         assertNoTvOrAuto()
+        assertTestedAbiCompatible()
 
         workerExecutor.noIsolation().submit(ManagedDeviceSetupRunnable::class.java) {
             it.initializeWith(projectPath, path, analyticsService)
@@ -113,6 +123,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             it.deviceName.set(
                 computeAvdName(
                     sdkVersion.get(),
+                    sdkMinorVersion.get(),
                     sdkExtensionVersion.orNull,
                     systemImageVendor.get(),
                     pageAlignmentSuffix.get(),
@@ -124,6 +135,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             it.systemImageVendor.set(systemImageVendor)
             it.pageAlignmentSuffix.set(pageAlignmentSuffix)
             it.sdkVersion.set(sdkVersion)
+            it.sdkMinorVersion.set(sdkMinorVersion)
             it.sdkExtensionVersion.set(sdkExtensionVersion)
             it.require64Bit.set(require64Bit)
             it.abi.set(abi)
@@ -169,6 +181,132 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         }
     }
 
+    private fun assertNoMinorVersionOnOldApi() {
+        // Developers should not specify a minor api version on an old major version
+        // Major version is less than or equal to 35 minor version is not supported.
+        if (sdkVersion.get() <= 35 && sdkMinorVersion.get() != 0) {
+            error(
+                """
+                    ${managedDeviceName.get()} has a minor version specified for
+                    sdkVersion = ${sdkVersion.get()}. The minimum api version that supports minor
+                    versions is 36.
+                """.trimIndent()
+            )
+        }
+    }
+
+    private fun assertTestedAbiCompatible() {
+        val translationEnabled = canSourcePerformNdkTranslation(
+            systemImageVendor.get(), sdkVersion.get())
+
+        when (abi.get()) {
+            ABI_ARM ->
+                when (testedAbi.orNull) {
+                    // null will eventually default to ARM, so no warning is emitted.
+                    ABI_ARM, null -> return
+                    ABI_X86, ABI_X86_64 ->
+                        error(
+                            generateTestedAbiNotCompatibleError(
+                                deviceName = managedDeviceName.get(),
+                                testedAbi = testedAbi.orNull,
+                                abi = abi.get()
+                            )
+                        )
+                    else ->
+                        error(
+                            generateUnrecognizedTestedAbiError(
+                                deviceName = managedDeviceName.get(),
+                                testedAbi = testedAbi.orNull
+                            )
+                        )
+                }
+            ABI_X86 ->
+                when (testedAbi.orNull) {
+                    ABI_X86 -> return
+                    ABI_ARM ->
+                        error(
+                            generateArmTranslationOnX86Error(
+                                deviceName = managedDeviceName.get(),
+                                abi = abi.get()
+                            )
+                        )
+                    ABI_X86_64 ->
+                        error(
+                            generateTestedAbiNotCompatibleError(
+                                deviceName = managedDeviceName.get(),
+                                testedAbi = testedAbi.orNull,
+                                abi = abi.get()
+                            )
+                        )
+                    null -> {
+                        logger.warn(
+                            generateUnspecifiedAbiWarningWithNdkTranslationUnsupported(
+                                deviceName = managedDeviceName.get(),
+                                abi = abi.get()
+                            )
+                        )
+                        return
+                    }
+                    else ->
+                        error(
+                            generateUnrecognizedTestedAbiError(
+                                deviceName = managedDeviceName.get(),
+                                testedAbi = testedAbi.orNull
+                            )
+                        )
+                }
+            ABI_X86_64 ->
+                when (testedAbi.orNull) {
+                    // x64 can be tested on an x86_64 device.
+                    ABI_X86, ABI_X86_64 -> return
+                    ABI_ARM -> {
+                        if (!translationEnabled) {
+                            error (
+                                generateNDKTranslationUnsupportedError(
+                                    deviceName = managedDeviceName.get(),
+                                    systemImageSource = systemImageVendor.get(),
+                                    sdkVersion.get(),
+                                    testedAbi = testedAbi.orNull,
+                                    abi = abi.get()
+                                )
+                            )
+                        } else {
+                            return
+                        }
+                    }
+                    null -> {
+                        if (!translationEnabled) {
+                            logger.warn(
+                                generateUnspecifiedAbiWarningWithNdkTranslationUnsupported(
+                                    deviceName = managedDeviceName.get(),
+                                    abi = abi.get()
+                                )
+                            )
+                        } else {
+                            logger.warn(
+                                generateUnspecifiedAbiWarningWithNdkTranslation(
+                                    deviceName = managedDeviceName.get(),
+                                    abi = abi.get()
+                                )
+                            )
+                        }
+                        return
+                    }
+                    else ->
+                        error(
+                            generateUnrecognizedTestedAbiError(
+                                deviceName = managedDeviceName.get(),
+                                testedAbi = testedAbi.orNull
+                            )
+                        )
+                }
+            else -> {
+                // Unrecognized system abi. This error is not reported here, but rather
+                // in the system image recommendation generator.
+            }
+        }
+    }
+
     abstract class ManagedDeviceSetupRunnable : ProfileAwareWorkAction<ManagedDeviceSetupParams>() {
         override fun run() {
             val versionedSdkLoader = parameters.sdkService.get().sdkLoader(
@@ -182,6 +320,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
                 error(generateSystemImageErrorMessage(
                     parameters.managedDeviceName.get(),
                     parameters.sdkVersion.get(),
+                    parameters.sdkMinorVersion.get(),
                     parameters.sdkExtensionVersion.orNull,
                     parameters.systemImageVendor.get(),
                     parameters.pageAlignmentSuffix.get(),
@@ -207,6 +346,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         private fun computeImageHash(): String =
             computeSystemImageHashFromDsl(
                 parameters.sdkVersion.get(),
+                parameters.sdkMinorVersion.get(),
                 parameters.sdkExtensionVersion.orNull,
                 parameters.systemImageVendor.get(),
                 parameters.pageAlignmentSuffix.get(),
@@ -225,6 +365,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         abstract val systemImageVendor: Property<String>
         abstract val pageAlignmentSuffix: Property<String>
         abstract val sdkVersion: Property<Int>
+        abstract val sdkMinorVersion: Property<Int>
         abstract val sdkExtensionVersion: Property<Int>
         abstract val require64Bit: Property<Boolean>
         abstract val abi: Property<String>
@@ -235,6 +376,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
         private val systemImageSource: String,
         private val pageAlignmentSuffix: String,
         private val sdkVersion: Int,
+        private val sdkMinorVersion: Int,
         private val sdkExtensionVersion: Int?,
         private val abi: String,
         private val hardwareProfile: String,
@@ -252,6 +394,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             managedDevice.systemImageSource,
             managedDevice.pageAlignmentSuffix,
             managedDevice.sdkVersion,
+            managedDevice.sdkMinorVersion,
             managedDevice.sdkExtensionVersion,
             computeAbiFromArchitecture(managedDevice),
             managedDevice.device,
@@ -276,6 +419,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
             task.systemImageVendor.setDisallowChanges(systemImageSource)
             task.pageAlignmentSuffix.setDisallowChanges(pageAlignmentSuffix)
             task.sdkVersion.setDisallowChanges(sdkVersion)
+            task.sdkMinorVersion.setDisallowChanges(sdkMinorVersion)
             task.sdkExtensionVersion.setDisallowChanges(sdkExtensionVersion)
             task.abi.setDisallowChanges(abi)
             task.hardwareProfile.setDisallowChanges(hardwareProfile)
@@ -290,10 +434,86 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
     }
 
     companion object {
+
+        const val ABI_X86 = "x86"
+        const val ABI_X86_64 = "x86_64"
+        const val ABI_ARM = "arm64-v8a"
+
+        private fun generateTestedAbiNotCompatibleError(
+            deviceName: String,
+            testedAbi: String?,
+            abi: String
+        ) = """
+                $deviceName cannot be run in the given environment. Tests cannot be
+                run with testedAbi = "$testedAbi". This may be intentional as $deviceName
+                may be configured for testing on a different machine.
+                If this is not intended, set testedAbi = "$abi".
+            """.trimIndent()
+
+        private fun generateArmTranslationOnX86Error(deviceName: String, abi: String) = """
+                ARM translation is not available for x86 system images.
+                An $ABI_X86 image was selected as the image was available for the
+                given sdkVersion and require64Bit = false for $deviceName.
+                This configuration may be intentional as $deviceName may be configured for
+                testing on a different machine.
+                If ARM translation is not intended for this device, set testedAbi = "$abi"
+            """.trimIndent()
+
+        private fun generateNDKTranslationUnsupportedError(
+            deviceName: String,
+            systemImageSource: String,
+            sdkVersion: Int,
+            testedAbi: String?,
+            abi: String
+        ) = """
+                ARM translation is only available for google apis or playstore images
+                with an api level of 30 or higher.
+                $deviceName has a systemImageSource = "$systemImageSource"
+                and sdkVersion = $sdkVersion
+                This may be intentional as $deviceName may be configured for
+                testing on an ARM system and not an $abi system.
+                If ARM is not the intended abi for this device, set testedAbi = "$abi"
+                If Ndk Translation is intended for this device, set
+                systemImageSource = "google" and set the sdkVersion to 30 or higher.
+            """.trimIndent()
+
+        private fun generateUnrecognizedTestedAbiError(deviceName: String, testedAbi: String? ) =
+            """
+                Could not determine testedAbi "$testedAbi" for $deviceName. Either unset
+                testedAbi or set testedAbi to one of {"$ABI_X86", "$ABI_X86_64", "$ABI_ARM"}
+            """.trimIndent()
+
+        private fun generateUnspecifiedAbiWarningWithNdkTranslationUnsupported(
+            deviceName: String,
+            abi: String
+        ) = """
+                $deviceName has an unspecified testedAbi. This presently defaults to
+                "$abi". However, in 9.0 this will change to "$ABI_ARM"
+
+                $deviceName specifies a system image that that does not support NDK translation,
+                and will no longer be able to run tests in this environment. This
+                device will wtill be able to run on ARM machines.
+                To continue running tests with the current configuration, and not use
+                NDK translation set testedAbi = "$abi"
+            """.trimIndent()
+
+        private fun generateUnspecifiedAbiWarningWithNdkTranslation(
+            deviceName: String,
+            abi: String
+        ) = """
+            $deviceName has an unspecified testedAbi. This presently defaults to
+            "$abi". However, in 9.0 this will change to "$ABI_ARM"
+
+            This device will use NDK translation for native code during testing. To continue
+            running tests using the current configuration and not use NDK translation,
+            set testedAbi = "$abi"
+        """.trimIndent()
+
         @VisibleForTesting
         fun generateSystemImageErrorMessage(
             deviceName: String,
             sdkVersion: Int,
+            sdkMinorVersion: Int,
             extensionVersion: Int?,
             systemImageSource: String,
             pageAlignmentSuffix: String,
@@ -314,6 +534,7 @@ abstract class ManagedDeviceInstrumentationTestSetupTask: NonIncrementalGlobalTa
                 osArchitecture,
                 deviceName,
                 sdkVersion,
+                sdkMinorVersion,
                 extensionVersion,
                 systemImageSource,
                 pageAlignmentSuffix,

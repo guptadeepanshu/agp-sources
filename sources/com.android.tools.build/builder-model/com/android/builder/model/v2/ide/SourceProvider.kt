@@ -39,7 +39,7 @@ interface SourceProvider: AndroidModel {
      *
      * @return the manifest file. It may not exist.
      */
-    val manifestFile: File
+    val manifestFile: File?
 
     /**
      * Returns the java source folders.

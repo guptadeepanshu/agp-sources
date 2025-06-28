@@ -37,6 +37,8 @@ interface LibraryBuildFeatures : BuildFeatures {
      *
      * More information about this feature at: TBD
      */
+    @Deprecated("Use android.androidResources.enable = true/false instead to enable" +
+     " or disable android resource processing. This API will be removed in AGP 10.0")
     var androidResources: Boolean?
 
     /**

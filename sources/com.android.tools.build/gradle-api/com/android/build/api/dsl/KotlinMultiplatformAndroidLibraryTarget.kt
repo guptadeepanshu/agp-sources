@@ -20,9 +20,16 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
 import org.gradle.api.Incubating
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.plugins.ExtensionAware
+import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-interface KotlinMultiplatformAndroidLibraryTarget: KotlinMultiplatformAndroidTarget, KotlinTarget, KotlinMultiplatformAndroidLibraryExtension {
+interface KotlinMultiplatformAndroidLibraryTarget:
+    KotlinMultiplatformAndroidTarget,
+    KotlinTarget,
+    KotlinMultiplatformAndroidLibraryExtension,
+    HasConfigurableKotlinCompilerOptions<KotlinJvmCompilerOptions> {
+
     override val compilations: NamedDomainObjectContainer<KotlinMultiplatformAndroidCompilation>
 
     /**

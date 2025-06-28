@@ -53,7 +53,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
    * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-   *     See studio_stats.proto;l=5448
+   *     See studio_stats.proto;l=5527
    * @return Whether the type field is set.
    */
   @java.lang.Override
@@ -71,7 +71,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional int32 type = 1 [deprecated = true];</code>
    * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-   *     See studio_stats.proto;l=5448
+   *     See studio_stats.proto;l=5527
    * @return The type.
    */
   @java.lang.Override
@@ -543,7 +543,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-     *     See studio_stats.proto;l=5448
+     *     See studio_stats.proto;l=5527
      * @return Whether the type field is set.
      */
     @java.lang.Override
@@ -561,7 +561,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-     *     See studio_stats.proto;l=5448
+     *     See studio_stats.proto;l=5527
      * @return The type.
      */
     @java.lang.Override
@@ -579,7 +579,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-     *     See studio_stats.proto;l=5448
+     *     See studio_stats.proto;l=5527
      * @param value The type to set.
      * @return This builder for chaining.
      */
@@ -601,7 +601,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @deprecated android_studio.GradleTransformExecution.type is deprecated.
-     *     See studio_stats.proto;l=5448
+     *     See studio_stats.proto;l=5527
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearType() {

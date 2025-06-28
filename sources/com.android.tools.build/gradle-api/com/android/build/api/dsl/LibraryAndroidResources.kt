@@ -18,7 +18,12 @@ package com.android.build.api.dsl
 
 /**
  * DSL object for configuring Android resource options for Library plugins.
- *
  * This is accessed via [LibraryExtension.androidResources]
  */
-interface LibraryAndroidResources : AndroidResources
+interface LibraryAndroidResources : AndroidResources {
+    /**
+     * Flag to enable Android resource processing in this library module
+     * Default value is 'true' for plain android libraries and 'false' for multiplatform libraries.
+     */
+    var enable: Boolean
+}

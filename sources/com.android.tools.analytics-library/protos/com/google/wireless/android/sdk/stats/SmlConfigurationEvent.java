@@ -16,6 +16,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private SmlConfigurationEvent() {
+    productVariant_ = 0;
   }
 
   @java.lang.Override
@@ -36,6 +37,120 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_SmlConfigurationEvent_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             com.google.wireless.android.sdk.stats.SmlConfigurationEvent.class, com.google.wireless.android.sdk.stats.SmlConfigurationEvent.Builder.class);
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.SmlConfigurationEvent.SmlProductVariant}
+   */
+  public enum SmlProductVariant
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>PRODUCT_VARIANT_UNKNOWN = 0;</code>
+     */
+    PRODUCT_VARIANT_UNKNOWN(0),
+    /**
+     * <code>PRODUCT_VARIANT_FREE = 1;</code>
+     */
+    PRODUCT_VARIANT_FREE(1),
+    /**
+     * <code>PRODUCT_VARIANT_BUSINESS = 2;</code>
+     */
+    PRODUCT_VARIANT_BUSINESS(2),
+    /**
+     * <code>PRODUCT_VARIANT_DASHER_USER_CHOICE = 3;</code>
+     */
+    PRODUCT_VARIANT_DASHER_USER_CHOICE(3),
+    ;
+
+    /**
+     * <code>PRODUCT_VARIANT_UNKNOWN = 0;</code>
+     */
+    public static final int PRODUCT_VARIANT_UNKNOWN_VALUE = 0;
+    /**
+     * <code>PRODUCT_VARIANT_FREE = 1;</code>
+     */
+    public static final int PRODUCT_VARIANT_FREE_VALUE = 1;
+    /**
+     * <code>PRODUCT_VARIANT_BUSINESS = 2;</code>
+     */
+    public static final int PRODUCT_VARIANT_BUSINESS_VALUE = 2;
+    /**
+     * <code>PRODUCT_VARIANT_DASHER_USER_CHOICE = 3;</code>
+     */
+    public static final int PRODUCT_VARIANT_DASHER_USER_CHOICE_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static SmlProductVariant valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static SmlProductVariant forNumber(int value) {
+      switch (value) {
+        case 0: return PRODUCT_VARIANT_UNKNOWN;
+        case 1: return PRODUCT_VARIANT_FREE;
+        case 2: return PRODUCT_VARIANT_BUSINESS;
+        case 3: return PRODUCT_VARIANT_DASHER_USER_CHOICE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<SmlProductVariant>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        SmlProductVariant> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<SmlProductVariant>() {
+            public SmlProductVariant findValueByNumber(int number) {
+              return SmlProductVariant.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.SmlConfigurationEvent.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final SmlProductVariant[] VALUES = values();
+
+    public static SmlProductVariant valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private SmlProductVariant(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.SmlConfigurationEvent.SmlProductVariant)
   }
 
   private int bitField0_;
@@ -201,6 +316,32 @@ private static final long serialVersionUID = 0L;
     return projectContextEnabled_;
   }
 
+  public static final int PRODUCT_VARIANT_FIELD_NUMBER = 7;
+  private int productVariant_ = 0;
+  /**
+   * <pre>
+   * The product variant that was fetched by the LoadCodeAssist API
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+   * @return Whether the productVariant field is set.
+   */
+  @java.lang.Override public boolean hasProductVariant() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * The product variant that was fetched by the LoadCodeAssist API
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+   * @return The productVariant.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant getProductVariant() {
+    com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant result = com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant.forNumber(productVariant_);
+    return result == null ? com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant.PRODUCT_VARIANT_UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -232,6 +373,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000020) != 0)) {
       output.writeBool(6, projectContextEnabled_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeEnum(7, productVariant_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -265,6 +409,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(6, projectContextEnabled_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(7, productVariant_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -311,6 +459,10 @@ private static final long serialVersionUID = 0L;
       if (getProjectContextEnabled()
           != other.getProjectContextEnabled()) return false;
     }
+    if (hasProductVariant() != other.hasProductVariant()) return false;
+    if (hasProductVariant()) {
+      if (productVariant_ != other.productVariant_) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -351,6 +503,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + PROJECT_CONTEXT_ENABLED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getProjectContextEnabled());
+    }
+    if (hasProductVariant()) {
+      hash = (37 * hash) + PRODUCT_VARIANT_FIELD_NUMBER;
+      hash = (53 * hash) + productVariant_;
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -487,6 +643,7 @@ private static final long serialVersionUID = 0L;
       completionEnabled_ = false;
       transformEnabled_ = false;
       projectContextEnabled_ = false;
+      productVariant_ = 0;
       return this;
     }
 
@@ -545,6 +702,10 @@ private static final long serialVersionUID = 0L;
         result.projectContextEnabled_ = projectContextEnabled_;
         to_bitField0_ |= 0x00000020;
       }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        result.productVariant_ = productVariant_;
+        to_bitField0_ |= 0x00000040;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -577,6 +738,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasProjectContextEnabled()) {
         setProjectContextEnabled(other.getProjectContextEnabled());
+      }
+      if (other.hasProductVariant()) {
+        setProductVariant(other.getProductVariant());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -634,6 +798,18 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000020;
               break;
             } // case 48
+            case 56: {
+              int tmpRaw = input.readEnum();
+              com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant tmpValue =
+                  com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant.forNumber(tmpRaw);
+              if (tmpValue == null) {
+                mergeUnknownVarintField(7, tmpRaw);
+              } else {
+                productVariant_ = tmpRaw;
+                bitField0_ |= 0x00000040;
+              }
+              break;
+            } // case 56
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -983,6 +1159,64 @@ private static final long serialVersionUID = 0L;
     public Builder clearProjectContextEnabled() {
       bitField0_ = (bitField0_ & ~0x00000020);
       projectContextEnabled_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int productVariant_ = 0;
+    /**
+     * <pre>
+     * The product variant that was fetched by the LoadCodeAssist API
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+     * @return Whether the productVariant field is set.
+     */
+    @java.lang.Override public boolean hasProductVariant() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * The product variant that was fetched by the LoadCodeAssist API
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+     * @return The productVariant.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant getProductVariant() {
+      com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant result = com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant.forNumber(productVariant_);
+      return result == null ? com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant.PRODUCT_VARIANT_UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * The product variant that was fetched by the LoadCodeAssist API
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+     * @param value The productVariant to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProductVariant(com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000040;
+      productVariant_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The product variant that was fetched by the LoadCodeAssist API
+     * </pre>
+     *
+     * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProductVariant() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      productVariant_ = 0;
       onChanged();
       return this;
     }

@@ -91,6 +91,7 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfigImpl
 import com.android.build.gradle.internal.testing.ManagedDeviceRegistry
 import com.android.build.gradle.internal.utils.getKotlinAndroidPluginVersion
 import com.android.build.gradle.internal.utils.syncAgpAndKgpSources
+import com.android.build.gradle.internal.utils.toImmutableMap
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.LegacyVariantInputManager
 import com.android.build.gradle.internal.variant.VariantFactory
@@ -117,6 +118,7 @@ import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.provider.Provider
 import org.gradle.build.event.BuildEventsListenerRegistry
+import org.gradle.internal.extensions.stdlib.filterKeysByPrefix
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 import java.io.File
 import java.util.Arrays
@@ -699,7 +701,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         extension.disableWrite()
 
         @Suppress("DEPRECATION")
-        syncAgpAndKgpSources(project, extension.sourceSets)
+        syncAgpAndKgpSources(project, projectServices, extension.sourceSets)
 
         val projectBuilder = configuratorService.getProjectBuilder(
             project.path
@@ -736,10 +738,11 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                         })
             }
         variantManager.createVariants(buildFeatureValues)
-        val variants = variantManager.mainComponents
+        val variantComponents = variantManager.mainComponents
+        val variants = variantComponents.map { it.variant }
         projectBuilder?.let { builder ->
             variants.forEach { variant ->
-                variant.variant.experimentalProperties.get().keys.forEach { modulePropertyKey ->
+                variant.experimentalProperties.get().keys.forEach { modulePropertyKey ->
                     ModulePropertyKey.OptionalString[modulePropertyKey]?.name?.let {
                         AnalyticsUtil.toProto(it).number
                     }?.let { builder.optionsBuilder.addModulePropertyKeys(it) }
@@ -757,7 +760,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         }
         val taskManager = createTaskManager(
             project,
-            variants,
+            variantComponents,
             variantManager.testComponents,
             variantManager.testFixturesComponents,
             globalConfig,
@@ -766,7 +769,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         )
         taskManager.createTasks(variantFactory.componentType, createVariantModel(globalConfig))
         val anyVariantSupportsSdkConsumption =
-                variants.any { it.variant.privacySandboxCreationConfig != null }
+                variants.any { it.privacySandboxCreationConfig != null }
         DependencyConfigurator(
             project,
             projectServices
@@ -775,7 +778,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
             .configureDependencyChecks()
             .configureGeneralTransforms(globalConfig.namespacedAndroidResources, globalConfig.aarOrJarTypeToConsume)
             .configureVariantTransforms(
-                variants.map { it.variant },
+                variants,
                 variantManager.nestedComponents,
                 globalConfig
             )
@@ -785,7 +788,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                     // Registering Jacoco transforms causes the jacoco configuration to be created.
                     // Ensure there is at least one variant with enableAndroidTestCoverage
                     // enabled before registering the transforms.
-                    if (variants.any { it.variant.requiresJacocoTransformation }) {
+                    if (variants.any { it.requiresJacocoTransformation }) {
                         configureJacocoTransforms()
                     }
                 }
@@ -794,15 +797,31 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
                     // configurations for tools it uses. Only register them if privacy sandbox
                     // consumption is enabled.
                     if (anyVariantSupportsSdkConsumption) {
+                        val privacySandboxProperties = mutableMapOf<String, Any>().apply {
+                            variants.forEach {
+                                it.experimentalProperties.apply { disallowChanges() }.get()
+                                    .filterKeysByPrefix("android.privacySandboxSdk")
+                                    .entries
+                                    .forEach { (key, value) ->
+                                        if (key !in this) {
+                                            this[key] = value as Any
+                                        } else if (value != this[key]) {
+                                            error(
+                                                "Privacy Sandbox related properties can not have different values in multiple variants. " +
+                                                        "Gradle property '${key}' was found to have a different value '${value}' in multiple variants."
+                                            )
+                                        }
+                                    }
+                            }
+                        }.toImmutableMap()
+
                         configurePrivacySandboxSdkConsumerTransforms(
                             globalConfig.compileSdkHashString,
                             globalConfig.buildToolsRevision,
                             globalConfig,
-                            variants.map { it.variant }
+                            privacySandboxProperties
                         )
-                        configurePrivacySandboxSdkVariantTransforms(
-                                variants.map { it.variant },
-                        )
+                        configurePrivacySandboxSdkVariantTransforms(variants)
                     }
                 }
 
@@ -811,8 +830,8 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         @Suppress("DEPRECATION")
         val apiObjectFactory = ApiObjectFactory(extension, variantFactory, dslServices)
         for (variant in variants) {
-            apiObjectFactory.create(variant.variant)
-            variant.variant.oldVariantApiLegacySupport?.oldVariantApiCompleted()
+            apiObjectFactory.create(variant)
+            variant.oldVariantApiLegacySupport?.oldVariantApiCompleted()
         }
 
         // lock the Properties of the variant API after the old API because
@@ -830,8 +849,8 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
 
         // now publish all variant artifacts for non test variants since
         // tests don't publish anything.
-        for (component in variants) {
-            component.variant.publishBuildArtifacts()
+        for (variant in variants) {
+            variant.publishBuildArtifacts()
         }
 
         // now publish all testFixtures components artifacts.

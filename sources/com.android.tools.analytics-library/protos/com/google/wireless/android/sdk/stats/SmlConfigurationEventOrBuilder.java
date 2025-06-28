@@ -120,4 +120,23 @@ public interface SmlConfigurationEventOrBuilder extends
    * @return The projectContextEnabled.
    */
   boolean getProjectContextEnabled();
+
+  /**
+   * <pre>
+   * The product variant that was fetched by the LoadCodeAssist API
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+   * @return Whether the productVariant field is set.
+   */
+  boolean hasProductVariant();
+  /**
+   * <pre>
+   * The product variant that was fetched by the LoadCodeAssist API
+   * </pre>
+   *
+   * <code>optional .android_studio.SmlConfigurationEvent.SmlProductVariant product_variant = 7;</code>
+   * @return The productVariant.
+   */
+  com.google.wireless.android.sdk.stats.SmlConfigurationEvent.SmlProductVariant getProductVariant();
 }

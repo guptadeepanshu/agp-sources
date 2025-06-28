@@ -20,12 +20,14 @@ import java.util.regex.Pattern
 
 private const val SYSTEM_IMAGE_PREFIX = "system-images;"
 private const val API_PREFIX = "android-"
+private const val MINOR_API_PREFIX = "."
 private const val API_EXTENSION_PREFIX = "-ext"
 private val PAGE_ALIGNMENT_SUFFIX_FORMAT = Pattern.compile("_ps[0-9]+k$")
 private const val PAGE_16K_SOURCE_SUFFIX = "_ps16k"
 private const val API_OFFSET = 1
 private const val VENDOR_OFFSET = 2
 private const val ABI_OFFSET = 3
+private const val MIN_MINOR_VERSION_API = 37
 
 /**
  * Computes the system image repository hash from the information supplied on the managed
@@ -41,20 +43,30 @@ private const val ABI_OFFSET = 3
  */
 fun computeSystemImageHashFromDsl(
     version: Int,
+    minorVersion: Int,
     extensionVersion: Int?,
     imageSource: String,
     pageAlignmentSuffix: String,
     abi: String) =
-    "$SYSTEM_IMAGE_PREFIX${computeVersionString(version, extensionVersion)};" +
+    "$SYSTEM_IMAGE_PREFIX${computeVersionString(version, minorVersion, extensionVersion)};" +
             "${computeVendorString(imageSource, pageAlignmentSuffix)};$abi"
 
-fun computeVersionString(version: Int, extensionVersion: Int?): String {
-    val extensionSuffix = if (extensionVersion != null) {
-        "-ext$extensionVersion"
+fun computeVersionString(
+    version: Int,
+    minorVersion: Int,
+    extensionVersion: Int?
+): String {
+    val minorSuffix = if (minorVersion != 0 || version >= MIN_MINOR_VERSION_API) {
+        "$MINOR_API_PREFIX$minorVersion"
     } else {
         ""
     }
-    return "android-${version}$extensionSuffix"
+    val extensionSuffix = if (extensionVersion != null) {
+        "$API_EXTENSION_PREFIX$extensionVersion"
+    } else {
+        ""
+    }
+    return "android-${version}$minorSuffix$extensionSuffix"
 }
 
 fun computeVendorString(imageSource: String, pageAlignmentSuffix: String) =
@@ -67,6 +79,14 @@ private fun computeImageSource(imageSource: String) =
         "aosp" -> "default"
         "aosp-atd" -> "aosp_atd"
         else -> imageSource
+    }
+
+fun canSourcePerformNdkTranslation(imageSource: String, version: Int) =
+    when (computeImageSource(imageSource)) {
+        // ndk translation was introduced in api level 30. Only google_apis and playstore images
+        // support translation.
+        "google_apis", "google_apis_playstore" -> version >= 30
+        else -> false
     }
 
 fun isTvOrAutoSource(imageSource: String) =
@@ -87,31 +107,38 @@ fun getPageAlignmentSuffix(vendorString: String) =
 fun isTvOrAutoDevice(deviceName: String) =
     deviceName.contains("TV") || deviceName.contains("Auto")
 
+private fun apiComponentFromHash(systemImageHash: String): String? =
+    systemImageHash.split(";").getOrNull(API_OFFSET)
+
 /**
  * Determine the api level of a system image hash
  */
 fun parseApiFromHash(systemImageHash: String): Int? {
-    val apiComponent = systemImageHash.split(";")[API_OFFSET]
+    val apiComponent = apiComponentFromHash(systemImageHash) ?: return null
     if (!apiComponent.startsWith(API_PREFIX)) {
         return null
     }
-    return try {
-        apiComponent.substringAfter(API_PREFIX).substringBefore(API_EXTENSION_PREFIX).toInt()
-    } catch (e: NumberFormatException) {
-        null
+    return apiComponent.substringAfter(API_PREFIX)
+            .substringBefore(MINOR_API_PREFIX)
+            .substringBefore(API_EXTENSION_PREFIX).toIntOrNull()
+}
+
+fun parseMinorApiFromHash(systemImageHash: String): Int? {
+    val apiComponent = apiComponentFromHash(systemImageHash) ?: return null
+    if (!apiComponent.startsWith(API_PREFIX)) {
+        return null
     }
+    return apiComponent.substringAfter(MINOR_API_PREFIX, missingDelimiterValue = "")
+            .substringBefore(API_EXTENSION_PREFIX).toIntOrNull() ?: 0
 }
 
 fun parseExtensionFromHash(systemImageHash: String): Int? {
-    val apiComponent = systemImageHash.split(";")[API_OFFSET]
+    val apiComponent = apiComponentFromHash(systemImageHash) ?: return null
     if (!apiComponent.startsWith(API_PREFIX)) {
         return null
     }
-    return try {
-        apiComponent.substringAfter(API_EXTENSION_PREFIX)?.toInt()
-    } catch (e: NumberFormatException) {
-        null
-    }
+    return apiComponent.substringAfter(API_EXTENSION_PREFIX, missingDelimiterValue = "")
+        .toIntOrNull()
 }
 
 /**

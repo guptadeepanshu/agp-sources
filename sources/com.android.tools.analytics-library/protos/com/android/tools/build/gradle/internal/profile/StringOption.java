@@ -206,6 +206,14 @@ public enum StringOption
    */
   @java.lang.Deprecated
   VALIDATION_ENGINE_VERSION(48),
+  /**
+   * <code>IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS = 49;</code>
+   */
+  IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS(49),
+  /**
+   * <code>SIMULATE_AGP_VERSION_BEHAVIOR = 50;</code>
+   */
+  SIMULATE_AGP_VERSION_BEHAVIOR(50),
   UNRECOGNIZED(-1),
   ;
 
@@ -405,6 +413,14 @@ public enum StringOption
    * <code>VALIDATION_ENGINE_VERSION = 48 [deprecated = true];</code>
    */
   @java.lang.Deprecated public static final int VALIDATION_ENGINE_VERSION_VALUE = 48;
+  /**
+   * <code>IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS = 49;</code>
+   */
+  public static final int IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS_VALUE = 49;
+  /**
+   * <code>SIMULATE_AGP_VERSION_BEHAVIOR = 50;</code>
+   */
+  public static final int SIMULATE_AGP_VERSION_BEHAVIOR_VALUE = 50;
 
 
   public final int getNumber() {
@@ -480,6 +496,8 @@ public enum StringOption
       case 46: return JACOCO_TOOL_VERSION;
       case 47: return ANDROID_PRIVACY_SANDBOX_SDK_KOTLIN_COMPILER_EMBEDDABLE;
       case 48: return VALIDATION_ENGINE_VERSION;
+      case 49: return IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS;
+      case 50: return SIMULATE_AGP_VERSION_BEHAVIOR;
       default: return null;
     }
   }

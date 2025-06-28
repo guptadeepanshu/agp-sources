@@ -27,17 +27,18 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAP
 import com.android.build.gradle.internal.scope.InternalArtifactType.BUILT_IN_KAPT_GENERATED_KOTLIN_SOURCES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.KotlinBaseApiVersion
-import com.android.build.gradle.internal.services.KotlinServices
+import com.android.build.gradle.internal.services.BuiltInKotlinServices
 import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
-import com.android.builder.errors.IssueReporter
+import org.gradle.api.JavaVersion
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 class KotlinCompileCreationAction(
     creationConfig: ComponentCreationConfig,
-    private val kotlinServices: KotlinServices
+    private val kotlinServices: BuiltInKotlinServices
 ) : KotlinTaskCreationAction<KotlinJvmCompile>(creationConfig) {
 
     private val kotlinJvmFactory = kotlinServices.factory
@@ -46,27 +47,11 @@ class KotlinCompileCreationAction(
 
     override fun getTaskProvider(): TaskProvider<out KotlinJvmCompile> {
         if (kotlinServices.kotlinBaseApiVersion > KotlinBaseApiVersion.VERSION_1) {
-            val compilerOptions =
-                creationConfig.global.kotlinAndroidProjectExtension?.compilerOptions
-            // TODO(b/341765853) never allow null compilerOptions once AGP always adds the kotlin
-            //  extension.
-            val allowNullCompilerOptions =
-                creationConfig.componentType.isTestFixturesComponent ||
-                        creationConfig.componentType.isForScreenshotPreview
-            if (compilerOptions == null && !allowNullCompilerOptions) {
-                // This should never happen.
-                creationConfig.services
-                    .issueReporter
-                    .reportError(
-                        IssueReporter.Type.GENERIC,
-                        RuntimeException("Unable to access kotlin extension.")
-                    )
-            }
+            val kotlinAndroidProjectExtension = kotlinServices.kotlinAndroidProjectExtension
             return kotlinJvmFactory.registerKotlinJvmCompileTask(
                 taskName,
-                compilerOptions ?: kotlinJvmFactory.createCompilerJvmOptions(),
-                creationConfig.services
-                    .provider { creationConfig.global.kotlinAndroidProjectExtension?.explicitApi }
+                kotlinAndroidProjectExtension.compilerOptions,
+                creationConfig.services.provider { kotlinAndroidProjectExtension.explicitApi }
             )
         }
         return kotlinJvmFactory.registerKotlinJvmCompileTask(taskName, creationConfig.name)
@@ -128,11 +113,38 @@ class KotlinCompileCreationAction(
         }
 
         if (kotlinServices.kotlinBaseApiVersion < KotlinBaseApiVersion.VERSION_2) {
-            creationConfig.global
-                .kotlinAndroidProjectExtension
-                ?.compilerOptions
-                ?.let { task.applyCompilerOptions(it) }
+            task.applyCompilerOptions(kotlinServices.kotlinAndroidProjectExtension.compilerOptions)
         }
+
+        task.ensureConsistentJvmTargetWithJavaCompileTask()
+    }
+
+    private fun KotlinJvmCompile.ensureConsistentJvmTargetWithJavaCompileTask() {
+        val javaCompileJvmTarget = creationConfig.global.compileOptions.targetCompatibility.toJvmTarget()
+
+        // Set `javaCompileJvmTarget` as the default JVM target for Kotlin compile tasks
+        // (see b/408242956)
+        creationConfig.services.builtInKotlinServices.kotlinAndroidProjectExtension.compilerOptions
+            .jvmTarget.convention(javaCompileJvmTarget)
+
+        // Also ensure that the user doesn't set a different JVM target for Kotlin compile tasks.
+        // This check needs to run at execution time as `kotlinCompileJvmTarget` may not be finalized yet.
+        inputs.property("javaCompileJvmTarget", javaCompileJvmTarget)
+        doFirst {
+            val kotlinCompileJvmTarget = compilerOptions.jvmTarget.get()
+            check(javaCompileJvmTarget == kotlinCompileJvmTarget) {
+                """
+                Inconsistent JVM targets between Java and Kotlin compile tasks: ${javaCompileJvmTarget.target} and ${kotlinCompileJvmTarget.target}.
+                To fix this issue, use the same JVM target for both tasks.
+                For more details, see https://issuetracker.google.com/408242956.
+                """.trimIndent()
+            }
+        }
+    }
+
+    private fun JavaVersion.toJvmTarget(): JvmTarget {
+        // JvmTarget.fromTarget() can recognize "1.8" but not "8" so we need to special-case it
+        return JvmTarget.fromTarget(if (majorVersion == "8") "1.8" else majorVersion)
     }
 }
 

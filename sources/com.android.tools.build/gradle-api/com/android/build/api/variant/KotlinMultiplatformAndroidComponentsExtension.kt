@@ -26,7 +26,6 @@ import org.gradle.api.Incubating
  * This is the `androidComponents` block when the `com.android.kotlin.multiplatform.library` plugin is applied.
  *
  */
-@Incubating
 interface KotlinMultiplatformAndroidComponentsExtension : AndroidComponentsExtension<
     KotlinMultiplatformAndroidLibraryExtension,
     KotlinMultiplatformAndroidVariantBuilder,
@@ -48,6 +47,8 @@ interface KotlinMultiplatformAndroidComponentsExtension : AndroidComponentsExten
      * information represented as [org.gradle.api.provider.Property] can still be modified ensuring
      * that all [org.gradle.api.Task]s created by the Android Gradle Plugin use the updated value.
      */
+    @Incubating
+    @Deprecated("Use the equivalent onVariants {}. This API will be removed in 9.0", replaceWith = ReplaceWith("onVariants"))
     fun onVariant(
         callback: (KotlinMultiplatformAndroidVariant) -> Unit
     )
@@ -55,6 +56,8 @@ interface KotlinMultiplatformAndroidComponentsExtension : AndroidComponentsExten
     /**
      * [Action] based version of [onVariant] above.
      */
+    @Incubating
+    @Deprecated("Use the equivalent onVariants {}. This API will be removed in 9.0", replaceWith = ReplaceWith("onVariants"))
     fun onVariant(
         callback: Action<KotlinMultiplatformAndroidVariant>
     )

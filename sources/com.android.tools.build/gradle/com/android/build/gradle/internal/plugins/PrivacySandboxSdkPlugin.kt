@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.dependency.configureKotlinPlatformAttri
 import com.android.build.gradle.internal.dsl.InternalPrivacySandboxSdkExtension
 import com.android.build.gradle.internal.dsl.PrivacySandboxSdkExtensionImpl
 import com.android.build.gradle.internal.fusedlibrary.configureElements
+import com.android.build.gradle.internal.fusedlibrary.configureTransformsForFusedLibrary
 import com.android.build.gradle.internal.fusedlibrary.createTasks
 import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
@@ -40,7 +41,8 @@ import com.android.build.gradle.internal.res.PrivacySandboxSdkLinkAndroidResourc
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.internal.services.R8ParallelBuildService
+import com.android.build.gradle.internal.services.R8D8ThreadPoolBuildService
+import com.android.build.gradle.internal.services.R8MaxParallelTasksBuildService
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.tasks.AppMetadataTask
@@ -82,6 +84,7 @@ import org.gradle.api.configuration.BuildFeatures
 import org.gradle.api.plugins.JvmEcosystemPlugin
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.build.event.BuildEventsListenerRegistry
+import org.gradle.internal.extensions.stdlib.filterKeysByPrefix
 import java.util.Locale
 import javax.inject.Inject
 
@@ -154,12 +157,8 @@ class PrivacySandboxSdkPlugin @Inject constructor(
         Aapt2DaemonBuildService.RegistrationAction(project, projectOptions).execute()
         SymbolTableBuildService.RegistrationAction(project).execute()
 
-        R8ParallelBuildService.RegistrationAction(
-            project,
-            // These `IntegerOption`s have default values so get() should return not-null
-            projectOptions.get(IntegerOption.R8_MAX_WORKERS)!!,
-            projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
-        ).execute()
+        R8D8ThreadPoolBuildService.RegistrationAction(project, projectOptions).execute()
+        R8MaxParallelTasksBuildService.RegistrationAction(project, projectOptions).execute()
     }
 
     override fun configureExtension(project: Project) {
@@ -409,7 +408,7 @@ class PrivacySandboxSdkPlugin @Inject constructor(
     }
 
     private fun configureTransforms(project: Project) {
-        com.android.build.gradle.internal.fusedlibrary.configureTransformsForFusedLibrary(
+        configureTransformsForFusedLibrary(
             project,
             projectServices
         )
@@ -428,6 +427,7 @@ class PrivacySandboxSdkPlugin @Inject constructor(
                     { false },
                     false
                 ),
+                variantScope.experimentalProperties.apply { disallowChanges() }.get()
             )
     }
 

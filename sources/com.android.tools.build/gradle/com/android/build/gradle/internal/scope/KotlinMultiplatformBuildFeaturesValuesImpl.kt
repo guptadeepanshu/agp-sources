@@ -16,14 +16,19 @@
 
 package com.android.build.gradle.internal.scope
 
+import com.android.build.api.dsl.LibraryAndroidResources
+
 /**
  * We don't expose public build features dsl, however we use this class internally to indicate
  * whether a component supports a certain feature. For kmp, we support only compiling sources
  * so all feature values are overridden to false.
  */
-class KotlinMultiplatformBuildFeaturesValuesImpl(
-    override val androidResources: Boolean = false
+open class KotlinMultiplatformBuildFeaturesValuesImpl(
+    androidResources: LibraryAndroidResources,
+    legacyAndroidResourceEnabledValue: Boolean, // for backwards compatibility for users setting the experimental property
 ): BuildFeatureValues {
+
+    override val androidResources = if (androidResources.enable) androidResources.enable else legacyAndroidResourceEnabledValue
 
     override val aidl: Boolean = false
     override val buildConfig: Boolean = false
@@ -37,4 +42,12 @@ class KotlinMultiplatformBuildFeaturesValuesImpl(
     override val resValues: Boolean = false
     override val viewBinding: Boolean = false
     override val buildType: Boolean = false
+}
+
+class KotlinMultiplatformHostTestBuildFeaturesValuesImpl(
+    buildFeatures: LibraryAndroidResources,
+    includeAndroidResources: Boolean
+) : KotlinMultiplatformBuildFeaturesValuesImpl(buildFeatures, false) {
+
+    override val androidResources: Boolean = includeAndroidResources
 }

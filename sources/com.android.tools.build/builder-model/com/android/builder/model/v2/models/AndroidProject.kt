@@ -71,7 +71,7 @@ interface AndroidProject: AndroidModel {
     /**
      * Returns the compile options for Java code.
      */
-    val javaCompileOptions: JavaCompileOptions
+    val javaCompileOptions: JavaCompileOptions?
 
     /**
      * Returns the resource prefix to use, if any. This is an optional prefix which can

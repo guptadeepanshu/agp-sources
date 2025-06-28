@@ -24,7 +24,8 @@ import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
-import com.android.build.gradle.internal.scope.ProjectInfo
+import com.android.build.gradle.internal.services.BuiltInKotlinServices
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.ide.common.gradle.Version
 import com.android.utils.appendCapitalized
@@ -344,8 +345,23 @@ private fun KotlinCompile.maybeAddSourceInformationOption(kotlinVersion: KotlinV
  */
 @Suppress("UNCHECKED_CAST")
 fun syncAgpAndKgpSources(
-    project: Project, sourceSets: NamedDomainObjectContainer<out AndroidSourceSet>
+    project: Project,
+    projectServices: ProjectServices,
+    androidSourceSets: NamedDomainObjectContainer<out AndroidSourceSet>
 ) {
+    // Create Kotlin source sets if built-in Kotlin plugin is applied
+    // (similar to what `kotlin-android` plugin does at
+    // org.jetbrains.kotlin.gradle.plugin.sources.android.KotlinAndroidSourceSetFactory)
+    if (projectServices.projectInfo.hasPlugin(ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID)) {
+        val kotlinSourceSetContainer =
+            projectServices.builtInKotlinServices.kotlinAndroidProjectExtension.sourceSets
+        androidSourceSets.forEach {
+            // The source set may have been created by the user, so we call `maybeCreate` instead of
+            // `create`
+            kotlinSourceSetContainer.maybeCreate(it.name)
+        }
+    }
+
     val hasMpp = KOTLIN_MPP_PLUGIN_IDS.any { project.pluginManager.hasPlugin(it) }
     // TODO(b/246910305): Remove once it is gone from Gradle
     val hasConventionSupport = try {
@@ -382,7 +398,7 @@ fun syncAgpAndKgpSources(
         }
     }
 
-    sourceSets.configureEach {
+    androidSourceSets.configureEach {
         val kotlinSourceSet = it.findKotlinSourceSet()
         if (kotlinSourceSet != null) {
             if (!hasMpp) {
@@ -410,13 +426,6 @@ fun findKaptOrKspConfigurationsForVariant(
     }
 }
 
-fun findKotlinBaseApiPlugin(projectInfo: ProjectInfo): KotlinBaseApiPlugin? =
-    try {
-        projectInfo.findPlugin(KotlinBaseApiPlugin::class.java)
-    } catch (e: Throwable) {
-        if (e is ClassNotFoundException || e is NoClassDefFoundError) null else throw e
-    }
-
 /**
  * Add the kotlin stdlib to the compile and runtime classpaths, if it's not added by the user.
  * Similar to https://youtrack.jetbrains.com/issue/KT-38221.
@@ -425,7 +434,8 @@ fun findKotlinBaseApiPlugin(projectInfo: ProjectInfo): KotlinBaseApiPlugin? =
  */
 internal fun maybeAddKotlinStdlibDependency(
     project: Project,
-    creationConfig: ComponentCreationConfig
+    creationConfig: ComponentCreationConfig,
+    kotlinServices: BuiltInKotlinServices
 ) {
     // Honor "kotlin.stdlib.default.dependency=false"
     val kotlinStdlibDefaultDependencyProperty =
@@ -434,9 +444,7 @@ internal fun maybeAddKotlinStdlibDependency(
         return
     }
 
-    val kotlinStdlibVersion =
-        creationConfig.global.kotlinAndroidProjectExtension?.coreLibrariesVersion
-            ?: creationConfig.services.kotlinServices?.kgpVersion
+    val kotlinStdlibVersion = kotlinServices.kotlinAndroidProjectExtension.coreLibrariesVersion
 
     fun Configuration.hasKotlinStdlibDependency(): Boolean {
         val externalDependencies = this.allDependencies.matching { it !is ProjectDependency }
@@ -451,7 +459,7 @@ internal fun maybeAddKotlinStdlibDependency(
         }
         // Use kotlin-stdlib-jdk8 if < Kotlin 1.9.20 (Same behavior as KGP)
         val moduleName =
-            if (kotlinStdlibVersion?.let {Version.parse(it) < Version.parse("1.9.20") } == true) {
+            if (Version.parse(kotlinStdlibVersion) < Version.parse("1.9.20")) {
                 "kotlin-stdlib-jdk8"
             } else {
                 "kotlin-stdlib"

@@ -37,12 +37,15 @@ import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.BuiltInKaptSupportMode
+import com.android.build.gradle.internal.services.BuiltInKotlinSupportMode
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_COMPILE_SDK_EXTENSION
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.testFixtures.testFixturesFeatureName
+import com.android.build.gradle.internal.utils.KOTLIN_ANDROID_PLUGIN_ID
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.BooleanOption.ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT
@@ -171,22 +174,27 @@ open class TestFixturesImpl @Inject constructor(
         return "$testFixturesFeatureName-$name"
     }
 
-    override val useBuiltInKotlinSupport: Boolean
-        get() =
-            if (internalServices.projectOptions.get(ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT)) {
-                true
-            } else {
-                super.useBuiltInKotlinSupport
-            }
+    override val builtInKotlinSupportMode: BuiltInKotlinSupportMode by lazy {
+        val support = super.builtInKotlinSupportMode
+        if (support is BuiltInKotlinSupportMode.NotSupported
+            && internalServices.projectOptions.get(ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT)
+            && internalServices.projectInfo.hasPlugin(KOTLIN_ANDROID_PLUGIN_ID)
+        ) {
+            BuiltInKotlinSupportMode.Supported.TestFixturesSupportEnabledAndKgpApplied
+        } else {
+            support
+        }
+    }
 
-    override val useBuiltInKaptSupport: Boolean
-        get() =
-            if (internalServices.projectOptions.get(ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT)) {
-                // For testFixtures components, the application of the Jetbrains KAPT plugin should
-                // also enable built-in KAPT support.
-                super.useBuiltInKaptSupport ||
-                        internalServices.projectInfo.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
-            } else {
-                super.useBuiltInKaptSupport
-            }
+    override val builtInKaptSupportMode: BuiltInKaptSupportMode by lazy {
+        val support = super.builtInKaptSupportMode
+        if (support is BuiltInKaptSupportMode.NotSupported
+            && internalServices.projectOptions.get(ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT)
+            && internalServices.projectInfo.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
+        ) {
+            BuiltInKaptSupportMode.Supported.TestFixturesSupportEnabledAndKaptApplied
+        } else {
+            support
+        }
+    }
 }

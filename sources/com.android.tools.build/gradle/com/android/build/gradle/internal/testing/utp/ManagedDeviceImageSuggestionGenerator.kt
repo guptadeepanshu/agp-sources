@@ -54,6 +54,7 @@ class ManagedDeviceImageSuggestionGenerator (
     private val architecture: CpuArchitecture,
     private val deviceName: String,
     private val sdkVersion: Int,
+    private val sdkMinorVersion: Int,
     private val sdkExtensionVersion: Int?,
     private val systemImageSource: String,
     private val pageAlignmentSuffix: String,
@@ -139,6 +140,7 @@ class ManagedDeviceImageSuggestionGenerator (
         otherArch: CpuArchitecture = architecture,
         otherRequire64Bit: Boolean = require64Bit,
         otherSdkVersion: Int = sdkVersion,
+        otherSdkMinorVersion: Int = sdkMinorVersion,
         otherSdkExtensionVersion: Int? = sdkExtensionVersion,
         otherImageSource: String = systemImageSource,
         otherPageAlignment: String = pageAlignmentSuffix,
@@ -146,7 +148,12 @@ class ManagedDeviceImageSuggestionGenerator (
         val abi = computeAbiFromArchitecture(
             otherRequire64Bit, otherSdkVersion, otherImageSource, otherArch)
         return computeSystemImageHashFromDsl(
-            otherSdkVersion, otherSdkExtensionVersion, otherImageSource, otherPageAlignment, abi)
+            otherSdkVersion,
+            otherSdkMinorVersion,
+            otherSdkExtensionVersion,
+            otherImageSource,
+            otherPageAlignment,
+            abi)
     }
 
     private fun checkForOtherArchitectureMessage(): String {

@@ -147,20 +147,24 @@ interface TestOptions {
      * }
      * ```
      */
+    /** @suppress */
     @get:Incubating
+    @Deprecated("This feature is no longer developed and supported. API will be removed in AGP 9.0")
     val emulatorSnapshots: EmulatorSnapshots
 
+    /** @suppress */
     @Incubating
+    @Deprecated("This feature is no longer developed and supported. API will be removed in AGP 9.0")
     fun emulatorSnapshots(action: EmulatorSnapshots.() -> Unit)
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
+    /** @suppress */
     @get:Incubating
+    @Deprecated("This feature is no longer developed and supported. API will be removed in AGP 9.0")
     val failureRetention: FailureRetention
 
-    @Suppress("DEPRECATION")
-    @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
+    /** @suppress */
     @Incubating
+    @Deprecated("This feature is no longer developed and supported. API will be removed in AGP 9.0")
     fun failureRetention(action: FailureRetention.() -> Unit)
 
     /**

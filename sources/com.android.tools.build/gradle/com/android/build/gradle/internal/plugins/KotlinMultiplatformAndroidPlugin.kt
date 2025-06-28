@@ -36,6 +36,8 @@ import com.android.build.api.variant.DeviceTestBuilder
 import com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariant
 import com.android.build.api.variant.KotlinMultiplatformAndroidVariantBuilder
+import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
+import com.android.build.api.variant.impl.FlatSourceDirectoriesImpl
 import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.KmpVariantImpl
 import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilationImpl
@@ -69,6 +71,7 @@ import com.android.build.gradle.internal.multiplatform.KotlinMultiplatformAndroi
 import com.android.build.gradle.internal.multiplatform.KotlinMultiplatformAndroidHandlerImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.KotlinMultiplatformBuildFeaturesValuesImpl
+import com.android.build.gradle.internal.scope.KotlinMultiplatformHostTestBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
@@ -77,6 +80,7 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.DslServicesImpl
 import com.android.build.gradle.internal.services.FakeDependencyJarBuildService
 import com.android.build.gradle.internal.services.LintClassLoaderBuildService
+import com.android.build.gradle.internal.services.R8D8ThreadPoolBuildService
 import com.android.build.gradle.internal.services.StringCachingBuildService
 import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -101,7 +105,6 @@ import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.android.utils.appendCapitalized
 import com.google.wireless.android.sdk.stats.GradleBuildProject
-import org.gradle.api.Incubating
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -114,8 +117,8 @@ import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import javax.inject.Inject
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.publishSources
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import java.io.File
 
-@Incubating
 class KotlinMultiplatformAndroidPlugin @Inject constructor(
     listenerRegistry: BuildEventsListenerRegistry,
     private val buildFeatures: BuildFeatures,
@@ -178,19 +181,15 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         ClassesHierarchyBuildService.RegistrationAction(project).execute()
         JacocoInstrumentationService.RegistrationAction(project).execute()
         SymbolTableBuildService.RegistrationAction(project).execute()
+        LintClassLoaderBuildService.RegistrationAction(project).execute()
+        LintFixBuildService.RegistrationAction(project).execute()
+        R8D8ThreadPoolBuildService.RegistrationAction(project, projectServices.projectOptions).execute()
 
         val stringCachingService: Provider<StringCachingBuildService> =
             StringCachingBuildService.RegistrationAction(project).execute()
-        val mavenCoordinatesCacheBuildService =
-            MavenCoordinatesCacheBuildService.RegistrationAction(project, stringCachingService)
-                .execute()
-        LibraryDependencyCacheBuildService.RegistrationAction(
-            project, mavenCoordinatesCacheBuildService
-        ).execute()
+        val mavenCoordinatesCacheBuildService = MavenCoordinatesCacheBuildService.RegistrationAction(project, stringCachingService).execute()
+        LibraryDependencyCacheBuildService.RegistrationAction(project, mavenCoordinatesCacheBuildService).execute()
         GlobalSyncService.RegistrationAction(project, mavenCoordinatesCacheBuildService).execute()
-
-        LintClassLoaderBuildService.RegistrationAction(project).execute()
-        LintFixBuildService.RegistrationAction(project).execute()
 
         // enable the gradle property that enables the kgp IDE import APIs that we rely on.
         project.extensions.extraProperties.set(
@@ -552,6 +551,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             dslInfo = dslInfo,
             internalServices = variantServices,
             buildFeatures = KotlinMultiplatformBuildFeaturesValuesImpl(
+                androidExtension.androidResources,
                 ModulePropertyKey.BooleanWithDefault.KMP_ANDROID_RESOURCES_ENABLED.getValue(
                     dslInfo.experimentalProperties
                 )
@@ -564,7 +564,22 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             global = global,
             androidKotlinCompilation = kotlinCompilation,
             manifestFile = getAndroidManifestDefaultLocation(kotlinCompilation)
-        )
+        ).also { variant ->
+            variant.sources.let { sourcesImpl ->
+                kmpVariantApiOperationsRegistrar.sourceSetExtensions.forEach { sourceDirName ->
+                    kotlinCompilation.defaultSourceSet.resources.srcDirs.map { srcDir ->
+                        sourcesImpl.extras.maybeCreate(sourceDirName).also {
+                            (it as FlatSourceDirectoriesImpl).addStaticSource(
+                                FileBasedDirectoryEntryImpl(
+                                    sourceDirName,
+                                    File(srcDir.parentFile, sourceDirName)
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun createUnitTestComponent(
@@ -601,8 +616,9 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
         return KmpHostTestImpl(
             dslInfo = dslInfo,
             internalServices = variantServices,
-            buildFeatures = KotlinMultiplatformBuildFeaturesValuesImpl(
-                androidResources = global.unitTestOptions.isIncludeAndroidResources
+            buildFeatures = KotlinMultiplatformHostTestBuildFeaturesValuesImpl(
+                androidExtension.androidResources,
+                global.unitTestOptions.isIncludeAndroidResources,
             ),
             variantDependencies = createVariantDependencies(project, dslInfo, kotlinCompilation, androidTarget),
             paths = paths,
@@ -667,6 +683,7 @@ class KotlinMultiplatformAndroidPlugin @Inject constructor(
             dslInfo = dslInfo,
             internalServices = variantServices,
             buildFeatures = KotlinMultiplatformBuildFeaturesValuesImpl(
+                androidExtension.androidResources,
                 ModulePropertyKey.BooleanWithDefault.KMP_ANDROID_RESOURCES_ENABLED.getValue(
                     mainVariant.dslInfo.experimentalProperties
                 )

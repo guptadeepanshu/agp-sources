@@ -20,7 +20,10 @@ import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.gradle.internal.services.DslServices
 import javax.inject.Inject
 
-abstract class LibraryAndroidResourcesImpl @Inject constructor(dslServices: DslServices) :
-        LibraryAndroidResources, AaptOptions(dslServices) {
+abstract class LibraryAndroidResourcesImpl @Inject constructor(
+    dslServices: DslServices,
+    defaultEnable: Boolean
+) : LibraryAndroidResources, AaptOptions(dslServices) {
 
+    override var enable: Boolean = defaultEnable
 }

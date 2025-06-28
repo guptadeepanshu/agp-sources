@@ -255,7 +255,11 @@ private fun cutDomainPrefix(group: String): String {
  * - use group name + artifactId;
  * - use group name + artifactId + /number/.
  */
- fun pickVersionVariableName(dependency: Dependency, caseSensitiveReserved: Set<String>): String {
+ fun pickVersionVariableName(
+    dependency: Dependency,
+    caseSensitiveReserved: Set<String>,
+    includeVersionInKey: Boolean = false
+): String {
     // If using the artifactVersion convention, follow that
     val artifact = dependency.name.toSafeKey()
     val reserved = TreeSet(String.CASE_INSENSITIVE_ORDER)
@@ -263,12 +267,19 @@ private fun cutDomainPrefix(group: String): String {
 
     val transform = getMaybeTransformVersionToCamelCase(reserved) compose obfuscateReservedWords
 
+    val versionIdentifier = dependency.version?.toIdentifier()
+    val versionSuffix = when {
+        versionIdentifier == null -> ""
+        !includeVersionInKey -> ""
+        else -> "-" + "v${versionIdentifier.replace("[^A-Za-z0-9]".toRegex(), "")}".toSafeKey()
+    }
+
     if (reserved.isEmpty()) {
-        return transform(artifact)
+        return transform(artifact + versionSuffix)
     }
 
     if (reserved.isNotEmpty() && reserved.first().lowercase().endsWith("version")) {
-        val withVersion = transform("${artifact}-version")
+        val withVersion = transform("${artifact}-version$versionSuffix")
         if (!reserved.contains(withVersion)) {
             return withVersion
         }
@@ -276,24 +287,24 @@ private fun cutDomainPrefix(group: String): String {
 
     // Default convention listed in https://docs.gradle.org/current/userguide/platforms.html seems to
     // be to just use the artifact name
-    val artifactName = transform(artifact)
+    val artifactName = transform(artifact + versionSuffix)
     if (!reserved.contains(artifactName)) {
         return artifactName
     }
 
-    val withVersion = transform("${artifact}-version")
+    val withVersion = transform("${artifact}-version$versionSuffix")
     if (!reserved.contains(withVersion)) {
         return withVersion
     }
 
     val groupPrefix = getGroupPrefix(dependency)
-    val withGroupIdPrefix = transform("$groupPrefix-$artifact")
+    val withGroupIdPrefix = transform("$groupPrefix-$artifact$versionSuffix")
     if (!reserved.contains(withGroupIdPrefix)) {
         return withGroupIdPrefix
     }
 
 
-    val withGroupIdPrefixVersion = transform("$groupPrefix-${artifact}-version")
+    val withGroupIdPrefixVersion = transform("$groupPrefix-${artifact}-version$versionSuffix")
     if (!reserved.contains(withGroupIdPrefixVersion)) {
         return withGroupIdPrefixVersion
     }
@@ -301,7 +312,7 @@ private fun cutDomainPrefix(group: String): String {
 
     // With full group
     val groupId = dependency.group?.toSafeKey() ?: "nogroup"
-    val withGroupId = "$groupId-$artifact"
+    val withGroupId = "$groupId-$artifact$versionSuffix"
     val transformedWithGroupId = transform(withGroupId)
     if (!reserved.contains(transformedWithGroupId)) {
         return transformedWithGroupId

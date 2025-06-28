@@ -22,6 +22,7 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilationBuilder
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.android.build.api.dsl.KotlinMultiplatformAndroidDeviceTest
 import com.android.build.api.dsl.KotlinMultiplatformAndroidHostTest
+import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.api.variant.impl.KmpAndroidCompilationType
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.internal.coverage.JacocoOptions
@@ -61,6 +62,16 @@ internal abstract class KotlinMultiplatformAndroidLibraryExtensionImpl @Inject c
 
     override fun dependencyVariantSelection(action: DependencyVariantSelection.() -> Unit) {
         action.invoke(dependencyVariantSelection)
+    }
+
+    override val androidResources: LibraryAndroidResources = dslServices.newDecoratedInstance(
+        LibraryAndroidResourcesImpl::class.java,
+        dslServices,
+        false
+    )
+
+    override fun androidResources(action: LibraryAndroidResources.() -> Unit) {
+        action.invoke(androidResources)
     }
 
     abstract val libraryRequests: MutableList<LibraryRequest>
@@ -120,14 +131,14 @@ internal abstract class KotlinMultiplatformAndroidLibraryExtensionImpl @Inject c
         previousConfiguration?.let {
             val type = when (compilationType) {
                 KmpAndroidCompilationType.MAIN -> "main"
-                KmpAndroidCompilationType.HOST_TEST -> "jvm"
+                KmpAndroidCompilationType.HOST_TEST -> "host"
                 KmpAndroidCompilationType.DEVICE_TEST -> "device"
             }
 
             throw IllegalStateException(
-                "Android tests on $type has already been enabled, and a corresponding compilation " +
+                "Android $type tests have already been enabled, and a corresponding compilation " +
                         "(`${it.compilationName}`) has already been created. You can create only " +
-                        "one component of type android tests on $type. Alternatively, you can " +
+                        "one component of type android $type tests on. Alternatively, you can " +
                         "specify a dependency from the default sourceSet " +
                         "(`${it.defaultSourceSetName}`) to another sourceSet and it will be " +
                         "included in the compilation."

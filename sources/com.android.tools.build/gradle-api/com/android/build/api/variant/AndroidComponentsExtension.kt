@@ -225,7 +225,6 @@ interface AndroidComponentsExtension<
      * instance and can be retrieved by [Variant.getExtension] API.
      *
      */
-    @Incubating
     fun registerExtension(
         dslExtension: DslExtension,
         configurator: (variantExtensionConfig: VariantExtensionConfig<VariantT>) -> VariantExtension

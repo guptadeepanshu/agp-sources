@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks;
 
 import static com.android.build.gradle.internal.testing.utp.EmulatorControlConfigKt.createEmulatorControlConfig;
-import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
 import static com.android.builder.core.BuilderConstants.CONNECTED;
 import static com.android.builder.core.BuilderConstants.DEVICE;
 import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
@@ -42,7 +41,6 @@ import com.android.build.gradle.internal.component.InstrumentedTestCreationConfi
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.dsl.features.DeviceTestOptionsDslInfo;
 import com.android.build.gradle.internal.dsl.EmulatorControl;
-import com.android.build.gradle.internal.dsl.EmulatorSnapshots;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.profile.AnalyticsService;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
@@ -60,7 +58,6 @@ import com.android.build.gradle.internal.testing.StaticTestData;
 import com.android.build.gradle.internal.testing.TestData;
 import com.android.build.gradle.internal.testing.TestRunner;
 import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig;
-import com.android.build.gradle.internal.testing.utp.RetentionConfig;
 import com.android.build.gradle.internal.testing.utp.UtpDependencies;
 import com.android.build.gradle.internal.testing.utp.UtpDependencyUtilsKt;
 import com.android.build.gradle.internal.testing.utp.UtpRunProfileManager;
@@ -78,13 +75,11 @@ import com.android.builder.testing.api.DeviceProvider;
 import com.android.ide.common.workers.ExecutorServiceAdapter;
 import com.android.utils.FileUtils;
 import com.android.utils.StringHelper;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.JavaVersion;
@@ -116,7 +111,6 @@ import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.process.ExecOperations;
 import org.gradle.work.DisableCachingByDefault;
 import org.gradle.workers.WorkerExecutor;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -164,9 +158,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
         @Input
         public abstract Property<EmulatorControlConfig> getEmulatorControlConfig();
-
-        @Input
-        public abstract Property<RetentionConfig> getRetentionConfig();
 
         @Internal
         public abstract Property<SdkComponentsBuildService> getSdkBuildService();
@@ -239,7 +230,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                     getBuildTools().getCompileSdkVersion(),
                                     getBuildTools().getBuildToolsRevision()),
                     getEmulatorControlConfig().get(),
-                    getRetentionConfig().get(),
                     useOrchestrator,
                     getForceCompilation().get(),
                     getUninstallIncompatibleApks().get(),
@@ -918,13 +908,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                             createEmulatorControlConfig(
                                     projectOptions,
                                     (EmulatorControl) testOptions.getEmulatorControl()));
-            task.getTestRunnerFactory()
-                    .getRetentionConfig()
-                    .set(
-                            createRetentionConfig(
-                                    projectOptions,
-                                    (EmulatorSnapshots) testOptions.getEmulatorSnapshots()));
-
             task.getTestRunnerFactory()
                     .getInstallApkTimeout()
                     .set(projectOptions.getProvider(IntegerOption.INSTALL_APK_TIMEOUT));

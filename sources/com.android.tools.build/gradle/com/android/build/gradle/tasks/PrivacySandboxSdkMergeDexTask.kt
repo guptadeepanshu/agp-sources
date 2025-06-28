@@ -18,6 +18,8 @@ package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
+import com.android.build.gradle.internal.services.R8D8ThreadPoolBuildService
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.AndroidVariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.DexMergingTask
@@ -30,6 +32,8 @@ import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.dexing.DexingType
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.services.ServiceReference
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Nested
@@ -109,6 +113,13 @@ abstract class PrivacySandboxSdkMergeDexTask: NewIncrementalTask() {
                 )
                 debuggable.setDisallowChanges(false)
                 errorFormatMode.setDisallowChanges(SyncOptions.ErrorFormatMode.HUMAN_READABLE)
+                useThreadPool.setDisallowChanges(true)
+                r8D8ThreadPoolBuildService.setDisallowChanges(
+                    getBuildService(
+                        creationConfig.services.buildServiceRegistry,
+                        R8D8ThreadPoolBuildService::class.java
+                    )
+                )
             }
 
             task.dexDirs.fromDisallowChanges(

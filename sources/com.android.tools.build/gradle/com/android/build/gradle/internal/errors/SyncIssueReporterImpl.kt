@@ -32,6 +32,7 @@ import org.gradle.api.Project
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import javax.annotation.concurrent.GuardedBy
@@ -39,7 +40,8 @@ import javax.annotation.concurrent.GuardedBy
 class SyncIssueReporterImpl(
     private val mode: EvaluationMode,
     errorFormatMode: ErrorFormatMode,
-    logger: Logger
+    logger: Logger,
+    private val problemReporter: AndroidProblemsReporter
 ) : SyncIssueReporter() {
 
     @GuardedBy("this")
@@ -99,6 +101,9 @@ class SyncIssueReporterImpl(
             severity: Severity,
             exception: EvalIssueException) {
         val issue = SyncIssueImpl(type, severity, exception)
+        if (syncIssueKeyFrom(issue) !in _syncIssues) {
+            problemReporter.reportSyncIssue(type, severity, exception)
+        }
         when (mode) {
             EvaluationMode.STANDARD -> {
                 if (severity.severity != SyncIssue.SEVERITY_WARNING) {
@@ -113,7 +118,6 @@ class SyncIssueReporterImpl(
                 }
                 _syncIssues[syncIssueKeyFrom(issue)] = issue
             }
-            else -> throw RuntimeException("Unknown SyncIssue type")
         }
     }
 
@@ -135,12 +139,14 @@ class SyncIssueReporterImpl(
         interface Parameters : BuildServiceParameters {
             val mode: Property<EvaluationMode>
             val errorFormatMode: Property<ErrorFormatMode>
+            val androidProblemReporterProviderService: Property<AndroidProblemReporterProvider>
         }
 
         private val reporter = SyncIssueReporterImpl(
             parameters.mode.get(),
             parameters.errorFormatMode.get(),
-            Logging.getLogger(GlobalSyncIssueService::class.java)
+            Logging.getLogger(GlobalSyncIssueService::class.java),
+            parameters.androidProblemReporterProviderService.get().reporter()
         )
 
         /**
@@ -162,17 +168,19 @@ class SyncIssueReporterImpl(
         }
 
         class RegistrationAction(
-                project: Project,
-                private val evaluationMode: EvaluationMode,
-                private val errorFormatMode: ErrorFormatMode) :
-                ServiceRegistrationAction<GlobalSyncIssueService, Parameters>(
-                        project,
-                        GlobalSyncIssueService::class.java
-                ) {
+            project: Project,
+            private val evaluationMode: EvaluationMode,
+            private val errorFormatMode: ErrorFormatMode,
+            private val androidProblemReporterProviderService: Provider<AndroidProblemReporterProvider>
+        ) : ServiceRegistrationAction<GlobalSyncIssueService, Parameters>(
+            project,
+            GlobalSyncIssueService::class.java
+        ) {
 
             override fun configure(parameters: Parameters) {
                 parameters.mode.set(evaluationMode)
                 parameters.errorFormatMode.set(errorFormatMode)
+                parameters.androidProblemReporterProviderService.set(androidProblemReporterProviderService)
             }
         }
     }

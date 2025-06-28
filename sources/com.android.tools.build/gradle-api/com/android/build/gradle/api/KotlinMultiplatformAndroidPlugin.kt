@@ -17,13 +17,11 @@
 package com.android.build.gradle.api
 
 import com.android.build.gradle.BasePlugin
-import org.gradle.api.Incubating
 import org.gradle.api.Project
 
 /**
  * The plugin applied with 'com.android.kotlin.multiplatform.library'
  */
-@Incubating
 class KotlinMultiplatformAndroidPlugin: BasePlugin() {
     override fun apply(project: Project) {
         super.apply(project)

@@ -39,8 +39,9 @@ interface AndroidSourceDirectorySet : Named {
     fun srcDir(srcDir: Any): Any
 
     /**
-     * Allows to add source directories to this list. `Directories` provides `MutableList` style access to all
-     * source directories that are added via list itself or variety `srcDirs` methods.
+     * Allows to add source directories as path strings to this set.
+     * `Directories` provides `MutableSet` style access to all
+     * source directories that are added via set itself or variety of `srcDirs` methods.
      *
      * Note that tasks or buildscript may add more directories, so you should not read this property
      * and use Variant API instead.

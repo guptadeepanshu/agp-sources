@@ -717,6 +717,10 @@ public enum VariantPropertiesMethodType
    * <code>REGISTER_APK_INSTALLATION = 164;</code>
    */
   REGISTER_APK_INSTALLATION(164),
+  /**
+   * <code>JUNIT_ENGINE_SPEC = 165;</code>
+   */
+  JUNIT_ENGINE_SPEC(165),
   UNRECOGNIZED(-1),
   ;
 
@@ -1428,6 +1432,10 @@ public enum VariantPropertiesMethodType
    * <code>REGISTER_APK_INSTALLATION = 164;</code>
    */
   public static final int REGISTER_APK_INSTALLATION_VALUE = 164;
+  /**
+   * <code>JUNIT_ENGINE_SPEC = 165;</code>
+   */
+  public static final int JUNIT_ENGINE_SPEC_VALUE = 165;
 
 
   public final int getNumber() {
@@ -1619,6 +1627,7 @@ public enum VariantPropertiesMethodType
       case 162: return MIN_SDK;
       case 163: return GET_RESOLVABLE_CONFIGURATION;
       case 164: return REGISTER_APK_INSTALLATION;
+      case 165: return JUNIT_ENGINE_SPEC;
       default: return null;
     }
   }

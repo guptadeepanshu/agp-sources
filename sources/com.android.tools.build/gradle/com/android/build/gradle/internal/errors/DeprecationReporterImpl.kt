@@ -202,11 +202,24 @@ class DeprecationReporterImpl(
             return
         }
 
+        val useSimulatedVersionBehavior =
+            projectOptions.simulatedAGPVersion != null && option is BooleanOption && option.futureStage != null && option.futureStage.version.compareTo(
+                projectOptions.simulatedAGPVersion
+            ) <= 0
+
+        val status =
+            if (useSimulatedVersionBehavior) option.futureStage.stage.status else option.status
+
+        val defaultValue =
+            if (useSimulatedVersionBehavior) option.futureStage.defaultValue else option.defaultValue
+
         val defaultValueMessage =
-            option.defaultValue?.let { "\nThe current default is '$it'." } ?: ""
-        when (val status = option.status) {
+            defaultValue?.let { "\nThe current default is '$it'." } ?: ""
+
+        when (status) {
             is Option.Status.EXPERIMENTAL -> {
-                if (option.defaultValue != value) {
+
+                if (defaultValue != value) {
                     issueReporter.reportWarning(
                         Type.UNSUPPORTED_PROJECT_OPTION_USE,
                         "The option setting '${option.propertyName}=$value' is experimental."
@@ -228,7 +241,7 @@ class DeprecationReporterImpl(
                             && option.recommendedValue != null
                             && option.recommendedValue == value
 
-                if (option.defaultValue != value && !useRecommendedValue) {
+                if (defaultValue != value && !useRecommendedValue) {
                     issueReporter.reportWarning(
                         Type.UNSUPPORTED_PROJECT_OPTION_USE,
                         "The option setting '${option.propertyName}=$value' is deprecated."
@@ -244,7 +257,7 @@ class DeprecationReporterImpl(
                 // breaking tests. TODO: Remove those tests and remove the special treatment for
                 // ENABLE_DEPRECATED_NDK.
                 // Also, report "android.enableR8=true" as warning, otherwise as error.
-                if (option.defaultValue == value
+                if (defaultValue == value
                     || option == BooleanOption.ENABLE_DEPRECATED_NDK
                     || (value == true && option == OptionalBooleanOption.ENABLE_R8)) {
                     issueReporter.reportWarning(

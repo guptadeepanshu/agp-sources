@@ -23,6 +23,7 @@ import com.android.build.api.dsl.KotlinMultiplatformAndroidTarget
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import org.gradle.api.NamedDomainObjectContainer
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.DecoratedExternalKotlinTarget
 
@@ -38,6 +39,9 @@ internal class KotlinMultiplatformAndroidLibraryTargetImpl(
 
     internal var enableJavaSources = false
         private set
+
+    override val compilerOptions: KotlinJvmCompilerOptions
+        get() = super.compilerOptions as KotlinJvmCompilerOptions
 
     override val compilations: NamedDomainObjectContainer<KotlinMultiplatformAndroidCompilation> =
         project.objects.domainObjectContainer(

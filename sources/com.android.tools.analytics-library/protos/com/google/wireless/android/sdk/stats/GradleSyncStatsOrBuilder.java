@@ -249,7 +249,7 @@ public interface GradleSyncStatsOrBuilder extends
    *
    * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
    * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
-   *     See studio_stats.proto;l=8565
+   *     See studio_stats.proto;l=8646
    * @return Whether the syncExecutionType field is set.
    */
   @java.lang.Deprecated boolean hasSyncExecutionType();
@@ -263,7 +263,7 @@ public interface GradleSyncStatsOrBuilder extends
    *
    * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
    * @deprecated android_studio.GradleSyncStats.sync_execution_type is deprecated.
-   *     See studio_stats.proto;l=8565
+   *     See studio_stats.proto;l=8646
    * @return The syncExecutionType.
    */
   @java.lang.Deprecated com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType();

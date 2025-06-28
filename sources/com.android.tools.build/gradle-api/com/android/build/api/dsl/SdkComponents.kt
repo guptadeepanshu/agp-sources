@@ -71,6 +71,5 @@ interface SdkComponents {
      *  The returned [Provider] can be used by tasks requiring AAPT2 as input
      *  with [org.gradle.api.tasks.Nested]. See [Aapt2] for more details.
      */
-    @get:Incubating
     val aapt2: Provider<Aapt2>
 }

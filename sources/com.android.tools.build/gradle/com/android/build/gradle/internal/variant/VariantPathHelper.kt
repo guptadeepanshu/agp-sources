@@ -167,9 +167,6 @@ class VariantPathHelper(
                 }
                 builder.add(dslInfo.buildType!!)
             }
-            else -> {
-                builder.add("main")
-            }
         }
         return builder.build()
     }

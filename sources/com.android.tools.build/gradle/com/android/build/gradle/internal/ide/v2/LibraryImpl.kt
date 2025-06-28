@@ -36,6 +36,7 @@ data class LibraryImpl private constructor(
     override val artifact: File? = null,
     override val lintJar: File?,
     override val srcJar: File?,
+    override val srcJars: List<File>,
     override val docJar: File?,
     override val samplesJar: File?,
     override val androidLibraryData: AndroidLibraryData? = null
@@ -56,6 +57,7 @@ data class LibraryImpl private constructor(
             artifact = artifactFile,
             lintJar = lintJar,
             srcJar = null,
+            srcJars = listOf(),
             docJar = null,
             samplesJar = null,
         )
@@ -64,18 +66,18 @@ data class LibraryImpl private constructor(
             key: String,
             libraryInfo: LibraryInfo,
             artifact: File,
-            srcJar: File?,
+            srcJars: List<File>,
             docJar: File?,
-            samplesJar: File?,
         ) = LibraryImpl(
             key = key,
             type = LibraryType.JAVA_LIBRARY,
             libraryInfo = libraryInfo,
             artifact = artifact,
             lintJar = null,
-            srcJar = srcJar,
+            srcJar = null,
+            srcJars = srcJars,
             docJar = docJar,
-            samplesJar = samplesJar,
+            samplesJar = null,
         )
 
         fun createAndroidLibrary(
@@ -93,9 +95,8 @@ data class LibraryImpl private constructor(
             renderscriptFolder: File,
             proguardRules: File,
             lintJar: File?,
-            srcJar: File?,
+            srcJars: List<File>,
             docJar: File?,
-            samplesJar: File?,
             externalAnnotations: File,
             publicResources: File,
             symbolFile: File
@@ -105,9 +106,10 @@ data class LibraryImpl private constructor(
             libraryInfo = libraryInfo,
             artifact = artifact,
             lintJar = lintJar,
-            srcJar = srcJar,
             docJar = docJar,
-            samplesJar = samplesJar,
+            srcJars = srcJars,
+            srcJar = null,
+            samplesJar = null,
             androidLibraryData = AndroidLibraryDataImpl(
                 manifest = manifest,
                 compileJarFiles = compileJarFiles,
@@ -135,6 +137,7 @@ data class LibraryImpl private constructor(
             artifact = null,
             lintJar = null,
             srcJar = null,
+            srcJars = listOf(),
             docJar = null,
             samplesJar = null,
         )
@@ -149,6 +152,7 @@ data class LibraryImpl private constructor(
             artifact = null,
             lintJar = null,
             srcJar = null,
+            srcJars = listOf(),
             docJar = null,
             samplesJar = null,
         )
@@ -163,6 +167,7 @@ data class LibraryImpl private constructor(
             artifact = null,
             lintJar = null,
             srcJar = null,
+            srcJars = listOf(),
             docJar = null,
             samplesJar = null,
         )

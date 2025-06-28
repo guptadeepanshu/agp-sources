@@ -17,7 +17,6 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidCompilation
-import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidCompilationBuilderImpl
 import com.android.build.gradle.internal.dsl.KotlinMultiplatformAndroidLibraryExtensionImpl
 import com.android.build.gradle.internal.plugins.KotlinMultiplatformAndroidPlugin.Companion.ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME
@@ -26,7 +25,6 @@ import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.ExternalKotlinCompilationDescriptor
 import org.jetbrains.kotlin.gradle.plugin.mpp.external.createCompilation
@@ -49,8 +47,8 @@ internal class KotlinMultiplatformAndroidCompilationFactory(
                 "Kotlin multiplatform android plugin doesn't support creating arbitrary " +
                         "compilations. Only three types of compilations are supported:\n" +
                         "  * main compilation (named \"${KmpAndroidCompilationType.MAIN.defaultCompilationName}\"),\n" +
-                        "  * test on jvm compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withHostTest {}` to enable),\n" +
-                        "  * test on device compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withDeviceTest {}` to enable)."
+                        "  * host test compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withHostTest {}` to enable),\n" +
+                        "  * device test compilation (use `kotlin.$ANDROID_EXTENSION_ON_KOTLIN_EXTENSION_NAME.withDeviceTest {}` to enable)."
             )
         }
 

@@ -22,17 +22,16 @@ import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.tools.build.bundletool.commands.AddTransparencyCommand
 import com.android.tools.build.bundletool.commands.BuildApksCommand
 import com.android.tools.build.bundletool.commands.BuildSdkApksCommand
-import com.android.tools.build.bundletool.model.SigningConfiguration
 import com.android.tools.build.bundletool.model.Password
 import com.android.tools.build.bundletool.model.SignerConfig
+import com.android.tools.build.bundletool.model.SigningConfiguration
 import java.io.File
 import java.security.KeyStore
-import java.util.function.Supplier
 import java.util.Optional
 
 private fun toPassword(password: String?): Optional<Password> =
     Optional.ofNullable(password?.let {
-        Password(Supplier { KeyStore.PasswordProtection("$it".toCharArray()) })
+        Password { KeyStore.PasswordProtection(it.toCharArray()) }
     })
 
 internal fun BuildApksCommand.Builder.setSigningConfiguration(
@@ -53,26 +52,29 @@ internal fun BuildApksCommand.Builder.setSigningConfiguration(
     return this
 }
 
-internal fun BuildSdkApksCommand.Builder.setSigningConfiguration(signingConfig: SigningConfigData): BuildSdkApksCommand.Builder {
-    if (signingConfig.storeFile == null) {
-        return this
-    }
-    return setSigningConfiguration(createSigningConfiguration(
-            keystoreFile = signingConfig.storeFile,
-            keystorePassword = signingConfig.storePassword,
-            keyAlias = signingConfig.keyAlias,
-            keyPassword = signingConfig.keyPassword)
+internal fun BuildSdkApksCommand.Builder.setSigningConfiguration(
+    signingConfig: SigningConfigData
+): BuildSdkApksCommand.Builder = signingConfig.storeFile?.let { storeFile ->
+    setSigningConfiguration(createSigningConfiguration(
+        keystoreFile = storeFile,
+        keystorePassword = signingConfig.storePassword,
+        keyAlias = signingConfig.keyAlias,
+        keyPassword = signingConfig.keyPassword)
     )
-}
+} ?: this
 
 internal fun createSigningConfiguration(
-        keystoreFile: File, keystorePassword: String?, keyAlias: String?, keyPassword: String?
+    keystoreFile: File,
+    keystorePassword: String?,
+    keyAlias: String?,
+    keyPassword: String?
 ) = SigningConfiguration.extractFromKeystore(
-        keystoreFile.toPath(), keyAlias, toPassword(keystorePassword), toPassword(keyPassword)
+    keystoreFile.toPath(), keyAlias, toPassword(keystorePassword), toPassword(keyPassword)
 )
 
-internal fun AddTransparencyCommand.Builder.setSignerConfig(signingConfig: SigningConfigData):
-        AddTransparencyCommand.Builder {
+internal fun AddTransparencyCommand.Builder.setSignerConfig(
+    signingConfig: SigningConfigData
+): AddTransparencyCommand.Builder {
     setSignerConfig(
         SignerConfig.extractFromKeystore(
             signingConfig.storeFile?.toPath(),

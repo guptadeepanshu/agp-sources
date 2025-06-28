@@ -16,10 +16,24 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.LibraryAndroidResources
 import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.options.BooleanOption
+import java.util.function.Supplier
+import javax.inject.Inject
 
-abstract class LibraryBuildFeaturesImpl : BuildFeaturesImpl(), LibraryBuildFeatures {
-    override var androidResources: Boolean? = null
+abstract class LibraryBuildFeaturesImpl @Inject constructor(
+    private val androidResourcesSupplier: Supplier<LibraryAndroidResources>,
+    val dslServices: DslServices
+) : BuildFeaturesImpl(), LibraryBuildFeatures {
+
+    override var androidResources: Boolean?
+        get() = androidResourcesSupplier.get().enable
+        set(value) {
+            androidResourcesSupplier.get().enable = value ?: dslServices.projectOptions[BooleanOption.BUILD_FEATURE_ANDROID_RESOURCES]
+        }
+
     override var dataBinding: Boolean? = null
     override var mlModelBinding: Boolean? = null
     override var prefabPublishing: Boolean? = null

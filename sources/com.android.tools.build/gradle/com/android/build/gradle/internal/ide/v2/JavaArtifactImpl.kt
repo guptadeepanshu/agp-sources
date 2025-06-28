@@ -27,8 +27,8 @@ import java.util.Collections
  */
 data class JavaArtifactImpl(
     override val mockablePlatformJar: File?,
-    override val compileTaskName: String,
-    override val assembleTaskName: String,
+    override val compileTaskName: String?,
+    override val assembleTaskName: String?,
     override val classesFolders: Set<File>,
     override val runtimeResourceFolder: File?,
     override val ideSetupTaskNames: Set<String>,

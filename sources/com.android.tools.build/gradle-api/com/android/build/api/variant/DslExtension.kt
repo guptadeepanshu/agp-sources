@@ -16,8 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-
 /**
  * Third party DSL extension configuration.
  *
@@ -39,7 +37,6 @@ import org.gradle.api.Incubating
  * https://docs.gradle.org/current/userguide/custom_plugins.html#sec:getting_input_from_the_build
  *
  */
-@Incubating
 class DslExtension private constructor(
     val dslName: String,
     val projectExtensionType: Class<out Any>? = null,
@@ -52,7 +49,6 @@ class DslExtension private constructor(
      *
      * @param dslName the extension point name as it appears in build files.
      */
-    @Incubating
     class Builder(private val dslName: String) {
 
         private var projectExtensionType: Class<out Any>? = null

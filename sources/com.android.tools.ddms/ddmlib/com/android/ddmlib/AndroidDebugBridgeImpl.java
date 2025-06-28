@@ -26,7 +26,6 @@ import com.android.annotations.Nullable;
 import com.android.ddmlib.clientmanager.ClientManager;
 import com.android.ddmlib.idevicemanager.IDeviceManager;
 import com.android.ddmlib.idevicemanager.IDeviceManagerFactory;
-import com.android.ddmlib.idevicemanager.IDeviceManagerUtils;
 import com.android.ddmlib.internal.ClientImpl;
 import com.android.ddmlib.internal.DeviceMonitor;
 import com.android.ddmlib.internal.MonitorThread;
@@ -1130,9 +1129,7 @@ class AndroidDebugBridgeImpl extends AndroidDebugBridgeBase {
     private void startMonitoringServices(AndroidDebugBridge localThis) {
         assert (localThis != null);
         if (sIDeviceManagerFactory != null) {
-            mIDeviceManager =
-                    sIDeviceManagerFactory.createIDeviceManager(
-                            localThis, IDeviceManagerUtils.createIDeviceManagerListener());
+            mIDeviceManager = sIDeviceManagerFactory.createIDeviceManager(localThis);
         }
         // If `IDeviceManager` is available then it is used to process the device updates and
         // `DeviceMonitor` is used only to establish and track adb server connection, etc.

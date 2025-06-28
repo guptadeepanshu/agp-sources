@@ -45,6 +45,7 @@ public interface IDevice extends IShellEnabledDevice, IUserDataMap {
 
     String PROP_BUILD_VERSION = "ro.build.version.release";
     String PROP_BUILD_API_LEVEL = "ro.build.version.sdk";
+    String PROP_BUILD_API_LEVEL_FULL = "ro.build.version.sdk_full";
     String PROP_BUILD_CODENAME = "ro.build.version.codename";
     String PROP_BUILD_TAGS = "ro.build.tags";
     String PROP_BUILD_TYPE = "ro.build.type";

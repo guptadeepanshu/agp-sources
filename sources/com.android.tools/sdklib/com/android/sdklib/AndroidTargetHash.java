@@ -21,7 +21,6 @@ import com.android.annotations.Nullable;
 import com.android.repository.api.ProgressIndicator;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.targets.AndroidTargetManager;
-
 import com.google.common.base.Splitter;
 
 import java.util.List;
@@ -35,24 +34,17 @@ public abstract class AndroidTargetHash {
      * Prefix used to build hash strings for platform targets
      * @see AndroidTargetManager#getTargetFromHashString(String, ProgressIndicator)
      */
-    public static final String PLATFORM_HASH_PREFIX = "android-";
+    public static final String PLATFORM_HASH_PREFIX = AndroidVersion.PLATFORM_HASH_PREFIX;
 
     /** Prefix used to build hash strings for system image targets */
     public static final String SYSTEM_IMAGE_PREFIX = "system-images";
 
     /**
-     * Returns the hash string for a given platform version.
-     *
-     * Base SDK AndroidVersion do not maintain the extension level when converting to hashString,
-     * and then back to AndroidVersion, to maintain backwards compatibility with versions of studio
-     * where extension levels of base SDKs are not known.
-     *
-     * @param version A non-null platform version.
-     * @return A non-null hash string uniquely representing this platform target.
+     * @deprecated Use {@link AndroidVersion#getPlatformHashString} instead.
      */
     @NonNull
     public static String getPlatformHashString(@NonNull AndroidVersion version) {
-        return PLATFORM_HASH_PREFIX + version.getApiStringWithExtension();
+        return version.getPlatformHashString();
     }
 
     /**

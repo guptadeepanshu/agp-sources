@@ -60,9 +60,11 @@ import com.android.sdklib.repository.targets.SystemImage;
 import com.android.sdklib.util.CommandLineParser;
 import com.android.utils.ILogger;
 import com.android.utils.IReaderLogger;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -699,7 +701,9 @@ class AvdManagerCli extends CommandLineParser {
         LocalPackage imagePkg = mSdkHandler.getLocalPackage(packagePath, progress);
 
         if (imagePkg == null) {
-            errorAndExit("Package path is not valid. Valid system image paths are:\n" + getValidImagePaths());
+            errorAndExit(
+                    "Package path is not valid. Valid system image paths are:\n"
+                            + getValidImagePaths());
         }
         assert imagePkg != null;
 
@@ -707,7 +711,9 @@ class AvdManagerCli extends CommandLineParser {
                 .getImageMap().get(imagePkg);
 
         if (sysImgs.isEmpty()) {
-            errorAndExit("Package %1$s (%2$s) contains no system images. Valid system image paths are:\n%3$s",
+            errorAndExit(
+                    "Package %1$s (%2$s) contains no system images. Valid system image paths are:\n"
+                            + "%3$s",
                     imagePkg.getDisplayName(), imagePkg.getPath(), getValidImagePaths());
         }
 
@@ -719,7 +725,8 @@ class AvdManagerCli extends CommandLineParser {
 
             if (!RE_AVD_NAME.matcher(avdName).matches()) {
                 errorAndExit(
-                        "AVD name '%1$s' contains invalid characters.\nAllowed characters are: %2$s",
+                        "AVD name '%1$s' contains invalid characters.\n"
+                                + "Allowed characters are: %2$s",
                         avdName, CHARS_AVD_NAME);
                 return;
             }
@@ -992,7 +999,7 @@ class AvdManagerCli extends CommandLineParser {
                 // check if paths are the same. Use File methods to account for OS idiosyncrasies.
                 try {
                     Path f2 = info.getDataFolderPath();
-                    if (CancellableFileIo.isSameFile(paramFolderPath, f2)) {
+                    if (paramFolderPath.normalize().equals(f2.toRealPath())) {
                         // same canonical path, so not actually a move
                         paramFolderPath = null;
                     }
@@ -1049,7 +1056,8 @@ class AvdManagerCli extends CommandLineParser {
 
             if (paramFolderPath != null && CancellableFileIo.exists(paramFolderPath)) {
                 errorAndExit(
-                        "There is already a file or directory at '%s'.\nUse --path to specify a different data folder.",
+                        "There is already a file or directory at '%s'.\n"
+                                + "Use --path to specify a different data folder.",
                         paramFolderPath);
             }
 
@@ -1529,7 +1537,8 @@ class AvdManagerCli extends CommandLineParser {
                 OBJECT_AVD,
                 "k",
                 KEY_IMAGE_PACKAGE,
-                "Package path of the system image for this AVD (e.g. 'system-images;android-19;google_apis;x86').",
+                "Package path of the system image for this AVD (e.g."
+                        + " 'system-images;android-19;google_apis;x86').",
                 null);
         define(Mode.STRING, false,
                 VERB_CREATE, OBJECT_AVD, "c", KEY_SDCARD,
@@ -1537,13 +1546,25 @@ class AvdManagerCli extends CommandLineParser {
         define(Mode.BOOLEAN, false,
                 VERB_CREATE, OBJECT_AVD, "f", KEY_FORCE,
                 "Forces creation (overwrites an existing AVD)", false);
-        define(Mode.STRING, false,
-                VERB_CREATE, OBJECT_AVD, "b", KEY_ABI,
-                "The ABI to use for the AVD. The default is to auto-select the ABI if the platform has only one ABI for its system images.",
+        define(
+                Mode.STRING,
+                false,
+                VERB_CREATE,
+                OBJECT_AVD,
+                "b",
+                KEY_ABI,
+                "The ABI to use for the AVD. The default is to auto-select the ABI if the platform"
+                        + " has only one ABI for its system images.",
                 null);
-        define(Mode.STRING, false,
-                VERB_CREATE, OBJECT_AVD, "g", KEY_TAG,
-                "The sys-img tag to use for the AVD. The default is to auto-select if the platform has only one tag for its system images.",
+        define(
+                Mode.STRING,
+                false,
+                VERB_CREATE,
+                OBJECT_AVD,
+                "g",
+                KEY_TAG,
+                "The sys-img tag to use for the AVD. The default is to auto-select if the platform"
+                        + " has only one tag for its system images.",
                 null);
         define(Mode.STRING, false,
                 VERB_CREATE, OBJECT_AVD, "d", KEY_DEVICE,

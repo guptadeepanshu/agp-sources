@@ -158,8 +158,8 @@ public final class IdeModelsProto {
       "raryB\020\n\016_assets_folderB\r\n\013_jni_folderB\016\n" +
       "\014_aidl_folderB\026\n\024_renderscript_folderB\021\n" +
       "\017_proguard_rulesB\027\n\025_external_annotation" +
-      "sB\023\n\021_public_resourcesB\016\n\014_symbol_file\"\353" +
-      "\003\n\007Library\022\020\n\003key\030\001 \001(\tH\000\210\001\001\022\037\n\004type\030\002 \001" +
+      "sB\023\n\021_public_resourcesB\016\n\014_symbol_file\"\204" +
+      "\004\n\007Library\022\020\n\003key\030\001 \001(\tH\000\210\001\001\022\037\n\004type\030\002 \001" +
       "(\0162\014.LibraryTypeH\001\210\001\001\022\'\n\014project_info\030\003 " +
       "\001(\0132\014.ProjectInfoH\002\210\001\001\022\'\n\014library_info\030\004" +
       " \001(\0132\014.LibraryInfoH\003\210\001\001\022\034\n\010artifact\030\005 \001(" +
@@ -167,15 +167,16 @@ public final class IdeModelsProto {
       "\210\001\001\022\033\n\007src_jar\030\007 \001(\0132\005.FileH\006\210\001\001\022\033\n\007doc_" +
       "jar\030\010 \001(\0132\005.FileH\007\210\001\001\022\037\n\013samples_jar\030\t \001" +
       "(\0132\005.FileH\010\210\001\001\0226\n\024android_library_data\030\n" +
-      " \001(\0132\023.AndroidLibraryDataH\t\210\001\001B\006\n\004_keyB\007" +
-      "\n\005_typeB\017\n\r_project_infoB\017\n\r_library_inf" +
-      "oB\013\n\t_artifactB\013\n\t_lint_jarB\n\n\010_src_jarB" +
-      "\n\n\010_doc_jarB\016\n\014_samples_jarB\027\n\025_android_" +
-      "library_data*f\n\013LibraryType\022\024\n\020NO_ARTIFA" +
-      "CT_FILE\020\000\022\013\n\007PROJECT\020\001\022\023\n\017ANDROID_LIBRAR" +
-      "Y\020\002\022\020\n\014JAVA_LIBRARY\020\003\022\r\n\tRELOCATED\020\004B7\n#" +
-      "com.android.builder.model.proto.ideB\016Ide" +
-      "ModelsProtoP\001b\006proto3"
+      " \001(\0132\023.AndroidLibraryDataH\t\210\001\001\022\027\n\010src_ja" +
+      "rs\030\013 \003(\0132\005.FileB\006\n\004_keyB\007\n\005_typeB\017\n\r_pro" +
+      "ject_infoB\017\n\r_library_infoB\013\n\t_artifactB" +
+      "\013\n\t_lint_jarB\n\n\010_src_jarB\n\n\010_doc_jarB\016\n\014" +
+      "_samples_jarB\027\n\025_android_library_data*f\n" +
+      "\013LibraryType\022\024\n\020NO_ARTIFACT_FILE\020\000\022\013\n\007PR" +
+      "OJECT\020\001\022\023\n\017ANDROID_LIBRARY\020\002\022\020\n\014JAVA_LIB" +
+      "RARY\020\003\022\r\n\tRELOCATED\020\004B7\n#com.android.bui" +
+      "lder.model.proto.ideB\016IdeModelsProtoP\001b\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -258,7 +259,7 @@ public final class IdeModelsProto {
     internal_static_Library_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Library_descriptor,
-        new java.lang.String[] { "Key", "Type", "ProjectInfo", "LibraryInfo", "Artifact", "LintJar", "SrcJar", "DocJar", "SamplesJar", "AndroidLibraryData", "Key", "Type", "ProjectInfo", "LibraryInfo", "Artifact", "LintJar", "SrcJar", "DocJar", "SamplesJar", "AndroidLibraryData", });
+        new java.lang.String[] { "Key", "Type", "ProjectInfo", "LibraryInfo", "Artifact", "LintJar", "SrcJar", "DocJar", "SamplesJar", "AndroidLibraryData", "SrcJars", "Key", "Type", "ProjectInfo", "LibraryInfo", "Artifact", "LintJar", "SrcJar", "DocJar", "SamplesJar", "AndroidLibraryData", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

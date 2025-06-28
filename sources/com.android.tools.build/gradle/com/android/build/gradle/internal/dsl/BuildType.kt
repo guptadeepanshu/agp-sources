@@ -40,11 +40,30 @@ import org.gradle.api.Incubating
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
+import org.gradle.declarative.dsl.model.annotations.Configuring
+import org.gradle.declarative.dsl.model.annotations.ElementFactoryName
 import org.gradle.declarative.dsl.model.annotations.Restricted
 import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
+
+@ElementFactoryName("buildType")
+abstract class DeclarativeBuildType @Inject constructor(
+    private val name: String,
+    private val dslServices: DslServices,
+    private val componentType: ComponentType
+) : BuildType(name, dslServices, componentType) {
+
+    val dependencies: BuildTypeDependenciesExtension by lazy {
+        dslServices.newInstance(BuildTypeDependenciesExtension::class.java)
+    }
+
+    @Configuring
+    fun dependencies(configure: BuildTypeDependenciesExtension.() -> Unit) {
+        configure.invoke(dependencies)
+    }
+}
 
 /** DSL object to configure build types.  */
 abstract class BuildType @Inject constructor(
@@ -110,7 +129,7 @@ abstract class BuildType @Inject constructor(
 
     abstract override var isProfileable: Boolean
 
-    @Deprecated("This property is deprecated. Changing its value has no effect.")
+    @Deprecated("This property is deprecated. Changing its value has no effect (AGP produced artifacts are already aligned).")
     override var isZipAlignEnabled: Boolean
         get() = true
         set(_) { }
@@ -510,7 +529,13 @@ abstract class BuildType @Inject constructor(
             return false
         }
 
+    // This method is present to resolve warning in Gradle 8.13: b/399393875
+    fun getUseProguard(): Boolean? = isUseProguard
+
     abstract override var isCrunchPngs: Boolean?
+
+    // This method is present to resolve warning in Gradle 8.13: b/399393875
+    abstract fun getCrunchPngs(): Boolean?
 
     var postProcessingBlockUsed = false
 

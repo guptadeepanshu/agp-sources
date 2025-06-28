@@ -32,6 +32,7 @@ import com.android.annotations.concurrency.Immutable;
 import com.android.ide.common.xml.XmlFormatPreferences;
 import com.android.ide.common.xml.XmlFormatStyle;
 import com.android.ide.common.xml.XmlPrettyPrinter;
+import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.SdkVersionInfo;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
@@ -1533,7 +1534,9 @@ public class ManifestMerger2 {
         String targetSdkVersion = finalMergedDocument.getTargetSdkVersion(mergingReportBuilder);
         int targetSdkApi =
                 Character.isDigit(targetSdkVersion.charAt(0))
-                        ? Integer.parseInt(targetSdkVersion)
+                        ? AndroidVersion.fromString(targetSdkVersion)
+                                .getAndroidApiLevel()
+                                .getMajorVersion()
                         : SdkVersionInfo.getApiByPreviewName(targetSdkVersion, true);
         if (targetSdkApi > 30) {
             Optional<XmlElement> element =

@@ -31,8 +31,8 @@ private val LOG = Logger.getLogger("EmulatorAccessUtils")
 data class JwtConfig(val token: String, val jwkPath: String)
 
 val INVALID_JWT_CONFIG = JwtConfig("", "")
-fun createTokenConfig(aud: Set<String>, validForSeconds: Int, iss: String, info: EmulatorGrpcInfo?): JwtConfig {
 
+fun createTokenConfig(aud: Set<String>, validForSeconds: Int, iss: String, info: EmulatorGrpcInfo?): JwtConfig {
     if (info == null) {
         return INVALID_JWT_CONFIG;
     }
@@ -49,6 +49,7 @@ fun createTokenConfig(aud: Set<String>, validForSeconds: Int, iss: String, info:
 
     return createJwtConfig(aud, validForSeconds, iss, info.jwks)
 }
+
 fun createJwtConfig(aud: Set<String>, validForSeconds: Int, iss: String, jwkDirectory: String?): JwtConfig {
     if (jwkDirectory.isNullOrEmpty()) {
         return INVALID_JWT_CONFIG;
@@ -85,5 +86,3 @@ fun createJwtConfig(aud: Set<String>, validForSeconds: Int, iss: String, jwkDire
 
     return JwtConfig(signedJwt, jwkOutputFile)
 }
-
-

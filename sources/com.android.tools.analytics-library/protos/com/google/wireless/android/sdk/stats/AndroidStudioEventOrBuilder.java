@@ -6214,4 +6214,85 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.ResizeComposePreviewEvent resize_compose_preview_event = 222 [lazy = true];</code>
    */
   com.google.wireless.android.sdk.stats.ResizeComposePreviewEventOrBuilder getResizeComposePreviewEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   * @return Whether the wifiPairingEvent field is set.
+   */
+  boolean hasWifiPairingEvent();
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   * @return The wifiPairingEvent.
+   */
+  com.google.wireless.android.sdk.stats.WifiPairingEvent getWifiPairingEvent();
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder getWifiPairingEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   * @return Whether the commitMetricsEvent field is set.
+   */
+  boolean hasCommitMetricsEvent();
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   * @return The commitMetricsEvent.
+   */
+  com.google.wireless.android.sdk.stats.CommitMetricsEvent getCommitMetricsEvent();
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder getCommitMetricsEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   * @return Whether the k2ModeEvent field is set.
+   */
+  boolean hasK2ModeEvent();
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   * @return The k2ModeEvent.
+   */
+  com.google.wireless.android.sdk.stats.K2ModeEvent getK2ModeEvent();
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   */
+  com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder getK2ModeEventOrBuilder();
 }

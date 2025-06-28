@@ -62,6 +62,9 @@ public abstract class RenderParams {
     private Map<Key, Object> mFlags;
     private boolean mEnableQuickStep;
 
+    /** Value to be set to Settings.Global.ANIMATOR_DURATION_SCALE before inflation. */
+    private float mAnimatorDurationScale = 1f;
+
     /**
      * @param projectKey An Object identifying the project. This is used for the cache mechanism.
      * @param hardwareConfig the {@link HardwareConfig}.
@@ -119,6 +122,7 @@ public abstract class RenderParams {
         mEnableQuickStep = params.mEnableQuickStep;
         mFontScale = params.mFontScale;
         mLayoutValidationEnabledChecker = params.mLayoutValidationEnabledChecker;
+        mAnimatorDurationScale = params.mAnimatorDurationScale;
     }
 
     public void setTransparentBackground() {
@@ -315,5 +319,13 @@ public abstract class RenderParams {
         // the types match.
         //noinspection unchecked
         return mFlags == null ? null : (T) mFlags.get(key);
+    }
+
+    public void setAnimatorDurationScale(float scale) {
+        mAnimatorDurationScale = scale;
+    }
+
+    public float getAnimatorDurationScale() {
+        return mAnimatorDurationScale;
     }
 }

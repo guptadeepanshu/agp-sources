@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
@@ -56,7 +55,6 @@ import org.gradle.api.tasks.Internal
  *  }
  *  ```
  */
-@Incubating
 interface Aapt2 {
 
     /**

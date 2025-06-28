@@ -39,13 +39,13 @@ import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.R8ParallelBuildService
+import com.android.build.gradle.internal.services.R8MaxParallelTasksBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskConfigAction
 import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.factory.registerTask
-import com.android.build.gradle.options.IntegerOption
+import com.android.build.gradle.tasks.ProcessLibraryArtProfileTask
 import com.android.build.gradle.tasks.BundleAar
 import com.android.build.gradle.tasks.MergeResources
 import com.android.build.gradle.tasks.MergeSourceSetFolders
@@ -181,15 +181,15 @@ class KmpTaskManager(
             )
         )
 
+        taskFactory.register(ProcessLibraryArtProfileTask.CreationAction(variant))
+
         if (variant.optimizationCreationConfig.minifiedEnabled) {
             project.tasks.registerTask(
                 GenerateLibraryProguardRulesTask.CreationAction(variant)
             )
-            R8ParallelBuildService.RegistrationAction(
+            R8MaxParallelTasksBuildService.RegistrationAction(
                 project,
-                // These `IntegerOption`s have default values so get() should return not-null
-                variant.services.projectOptions.get(IntegerOption.R8_MAX_WORKERS)!!,
-                variant.services.projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
+                variant.services.projectOptions
             ).execute()
             project.tasks.registerTask(
                 R8Task.CreationAction(

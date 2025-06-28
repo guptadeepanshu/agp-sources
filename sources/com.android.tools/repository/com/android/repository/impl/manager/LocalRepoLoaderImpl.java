@@ -19,6 +19,7 @@ package com.android.repository.impl.manager;
 import static com.google.common.base.Predicates.in;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
 
 import com.android.ProgressManagerAdapter;
 import com.android.annotations.NonNull;
@@ -132,6 +133,8 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
             mPackages = parsePackages(possiblePackageDirs, progress);
             if (!mPackages.isEmpty()) {
                 writeHashFile(getLocalPackagesHash());
+                progress.logVerbose("SDK Manager found the following installed packages: " +
+                        mPackages.keySet().stream().sorted().collect(joining(" ")));
             }
         }
         return Collections.unmodifiableMap(mPackages);
@@ -324,7 +327,6 @@ public final class LocalRepoLoaderImpl implements LocalRepoLoader {
             throws JAXBException {
         Repository repo;
         try {
-            progress.logVerbose("Parsing " + packageXml);
             try (InputStream stream = CancellableFileIo.newInputStream(packageXml)) {
                 repo =
                         (Repository)

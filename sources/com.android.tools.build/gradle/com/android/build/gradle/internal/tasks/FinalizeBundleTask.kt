@@ -60,7 +60,7 @@ import org.gradle.work.DisableCachingByDefault
 /**
  * Task that copies the bundle file (.aab) to it's final destination and do final touches like:
  * <ul>
- *     <li>Signing the bundle if credentials are available and it's not a debuggable variant.
+ *     <li>Signing the bundle if credentials are available.
  * </ul>
  */
 @DisableCachingByDefault
@@ -302,16 +302,14 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                 task.intermediaryBundleFile
             )
 
-            // Don't sign debuggable bundles.
-            if (!creationConfig.debuggable) {
-                task.signingConfigData =
-                    SigningConfigDataProvider.create(creationConfig)
 
-                creationConfig.bundleConfig?.codeTransparency?.signingConfiguration?.let { codeSigning ->
-                    if (codeSigning.storeFile != null && codeSigning.keyAlias != null) {
-                        task.codeTransparencySigningConfigData =
-                            SigningConfigData.fromDslSigningConfig(codeSigning)
-                    }
+            task.signingConfigData =
+                SigningConfigDataProvider.create(creationConfig)
+
+            creationConfig.bundleConfig?.codeTransparency?.signingConfiguration?.let { codeSigning ->
+                if (codeSigning.storeFile != null && codeSigning.keyAlias != null) {
+                    task.codeTransparencySigningConfigData =
+                        SigningConfigData.fromDslSigningConfig(codeSigning)
                 }
             }
 

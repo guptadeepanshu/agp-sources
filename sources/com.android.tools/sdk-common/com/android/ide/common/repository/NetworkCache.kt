@@ -36,11 +36,8 @@ import kotlin.io.path.absolutePathString
 /**
  * Provides a basic network cache with local disk fallback for data read from a URL.
  */
-abstract class NetworkCache constructor(
+abstract class NetworkCache(
     private val baseUrl: String,
-
-    /** Key used in cache directories to locate the network cache. */
-    private val cacheKey: String,
 
     /** Location to search for cached repository content files. */
     val cacheDir: Path? = null,
@@ -59,6 +56,17 @@ abstract class NetworkCache constructor(
      * */
     private val networkEnabled: Boolean = true
 ) {
+    @Deprecated("The cacheDir parameter is unused, call primary constructor instead",
+                ReplaceWith("NetworkCache(baseUrl, cacheDir, networkTimeoutMs, cacheExpiryHours, networkEnabled)"))
+    constructor(
+        baseUrl: String,
+        cacheKey: String,
+        cacheDir: Path? = null,
+        networkTimeoutMs: Int = 3000,
+        cacheExpiryHours: Int = TimeUnit.DAYS.toHours(7).toInt(),
+        networkEnabled: Boolean = true
+    ) : this(baseUrl, cacheDir, networkTimeoutMs, cacheExpiryHours, networkEnabled)
+
     private val RESERVED_WINDOWS_FILE_NAMES = setOf("CON", "PRN", "AUX", "NUL", "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM¹", "COM²", "COM³", "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "LPT¹", "LPT²", "LPT³")
 
     protected var lastReadSourceType: DataSourceType = DataSourceType.UNKNOWN_SOURCE
@@ -86,7 +94,7 @@ abstract class NetworkCache constructor(
     protected abstract fun readDefaultData(relative: String): InputStream?
 
     /** Reports an error found during I/O. */
-    protected abstract fun error(throwable: Throwable, message: String?)
+    abstract fun error(throwable: Throwable, message: String?)
 
     protected inline fun <T> withLock(file: Path, action: () -> T): T {
         val lock = synchronized(this) {
@@ -129,7 +137,7 @@ abstract class NetworkCache constructor(
      *                         URL, which can't be represented directly on the filesystem.
      */
     @Slow
-    protected open fun findData(relative: String, treatAsDirectory: Boolean = false): InputStream? {
+    open fun findData(relative: String, treatAsDirectory: Boolean = false): InputStream? {
         if (cacheDir != null) {
             var lastModified = 0L
 

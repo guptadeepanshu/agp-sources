@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.errors
 
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.Version
 
@@ -53,6 +52,8 @@ interface DeprecationReporter {
          */
         private val additionalMessage: String? = null
     ) {
+        VERSION_10_0(Version.VERSION_10_0),
+
         VERSION_9_0(Version.VERSION_9_0),
 
         VERSION_8_3(Version.VERSION_8_3),

@@ -19,15 +19,9 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.utils.GradleEnvironmentProvider
-import com.android.build.gradle.internal.utils.MINIMUM_BUILT_IN_KOTLIN_VERSION
-import com.android.build.gradle.internal.utils.getKotlinPluginVersionFromPlugin
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.errors.IssueReporter
-import com.android.ide.common.gradle.Version
 import org.gradle.api.services.BuildServiceRegistry
-import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
-import org.jetbrains.kotlin.gradle.plugin.KotlinJvmFactory
 import java.io.File
 
 /**
@@ -41,68 +35,17 @@ interface BaseServices {
     val buildServiceRegistry: BuildServiceRegistry
     val gradleEnvironmentProvider: GradleEnvironmentProvider
     val projectInfo: ProjectInfo
-    val kotlinServices: KotlinServices?
+
+    /**
+     * Services related to the built-in Kotlin support.
+     *
+     * NOTE: This property is available only when
+     * [com.android.build.gradle.internal.component.ComponentCreationConfig.useBuiltInKotlinSupport] == true.
+     * Otherwise, attempting to access this property will result in an exception.
+     */
+    val builtInKotlinServices: BuiltInKotlinServices
 
     fun <T> newInstance(type: Class<T>, vararg args: Any?): T
 
     fun file(file: Any): File
 }
-
-interface KotlinServices {
-
-    val kgpVersion: String
-    val factory: KotlinJvmFactory
-    val kotlinBaseApiVersion: KotlinBaseApiVersion
-
-    companion object {
-
-        fun createFromPlugin(plugin: KotlinBaseApiPlugin?): KotlinServices? {
-            plugin ?: return null
-            getKotlinPluginVersionFromPlugin(plugin)?.let {
-                if (Version.parse(it) < Version.parse(MINIMUM_BUILT_IN_KOTLIN_VERSION)) {
-                    val message =
-                        """
-                            The current Kotlin Gradle plugin version ($it) is below the required
-                            minimum version ($MINIMUM_BUILT_IN_KOTLIN_VERSION).
-
-                            The following Gradle properties require the Kotlin Gradle plugin version
-                            to be at least $MINIMUM_BUILT_IN_KOTLIN_VERSION:
-
-                            ${BooleanOption.ENABLE_SCREENSHOT_TEST.propertyName},
-                            ${BooleanOption.ENABLE_TEST_FIXTURES_KOTLIN_SUPPORT.propertyName}
-
-                        """.trimIndent()
-                    throw RuntimeException(message)
-                }
-            }
-
-            return object : KotlinServices {
-                override val kgpVersion: String = plugin.pluginVersion
-                override val factory: KotlinJvmFactory = plugin
-                override val kotlinBaseApiVersion = kgpVersion.kotlinBaseApiVersion()
-            }
-        }
-    }
-}
-
-/**
- *  AGP's internal versioning of [KotlinBaseApiPlugin] to track availability of APIs.
- */
-enum class KotlinBaseApiVersion {
-    /** Represents versions < 2.1.0-Beta2  */
-    VERSION_1,
-
-    /** Represents versions >= 2.1.0-Beta2  */
-    VERSION_2;
-}
-
-/**
- * Calculate the [KotlinBaseApiVersion] for the given KGP version
- */
-private fun String.kotlinBaseApiVersion(): KotlinBaseApiVersion =
-    when {
-        Version.parse(this) >= Version.parse("2.1.0-Beta2") -> {
-            KotlinBaseApiVersion.VERSION_2
-        }
-        else -> KotlinBaseApiVersion.VERSION_1
-    }

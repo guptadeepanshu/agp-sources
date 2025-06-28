@@ -110,16 +110,16 @@ abstract class AbstractBuildType : BaseConfigImpl(), BuildType {
         isMinifyEnabled = enabled
     }
 
-    @Deprecated("This property is deprecated. Changing its value has no effect.")
+    @Deprecated("This property is deprecated. Changing its value has no effect (AGP produced artifacts are already aligned).")
     abstract override var isZipAlignEnabled: Boolean
 
-    @Deprecated("This method is deprecated. Invoking this method has no effect.")
+    @Deprecated("This method is deprecated. Invoking this method has no effect (AGP produced artifacts are already aligned).")
     fun setZipAlignEnabled(zipAlign: Boolean): BuildType {
         isZipAlignEnabled = zipAlign
         return this
     }
 
-    @Deprecated("This method is deprecated. Invoking this method has no effect.")
+    @Deprecated("This method is deprecated. Invoking this method has no effect (AGP produced artifacts are already aligned).")
     open fun zipAlignEnabled(zipAlign: Boolean) {
         isZipAlignEnabled = zipAlign
     }

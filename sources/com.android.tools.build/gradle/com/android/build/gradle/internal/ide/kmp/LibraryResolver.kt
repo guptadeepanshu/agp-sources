@@ -39,8 +39,7 @@ class LibraryResolver(
     private val inputsMap = mutableMapOf<KotlinSourceSet, ArtifactCollectionsInputs>()
     private val artifactsMap = mutableMapOf<KotlinSourceSet, Map<VariantKey, ResolvedArtifact>>()
     private val javaDocArtifactsMap = mutableMapOf<KotlinSourceSet, Map<ComponentIdentifier, File>>()
-    private val sourceArtifactsMap = mutableMapOf<KotlinSourceSet, Map<ComponentIdentifier, File>>()
-    private val sampleArtifactsMap = mutableMapOf<KotlinSourceSet, Map<ComponentIdentifier, File>>()
+    private val sourceArtifactsMap = mutableMapOf<KotlinSourceSet, Map<ComponentIdentifier, List<File>>>()
 
     fun registerSourceSetArtifacts(
         sourceSet: KotlinSourceSet
@@ -77,13 +76,7 @@ class LibraryResolver(
         sourceArtifactsMap.computeIfAbsent(sourceSet) {
             component.variantDependencies
                 .getAdditionalArtifacts(configType, AdditionalArtifactType.SOURCE)
-                .associate { it.variant.owner to it.file }
-        }
-
-        sampleArtifactsMap.computeIfAbsent(sourceSet) {
-            component.variantDependencies
-                .getAdditionalArtifacts(configType, AdditionalArtifactType.SAMPLE)
-                .associate { it.variant.owner to it.file }
+                .groupBy({ it.variant.owner} ) { it.file }
         }
     }
 
@@ -91,7 +84,6 @@ class LibraryResolver(
     private fun getArtifacts(sourceSet: KotlinSourceSet) = artifactsMap[sourceSet]!!
     private fun getJavaDoc(sourceSet: KotlinSourceSet) = javaDocArtifactsMap[sourceSet]!!
     private fun getSources(sourceSet: KotlinSourceSet) = sourceArtifactsMap[sourceSet]!!
-    private fun getSamples(sourceSet: KotlinSourceSet) = sampleArtifactsMap[sourceSet]!!
 
     fun getLibrary(
         variant: ResolvedVariantResult,
@@ -104,6 +96,5 @@ class LibraryResolver(
         artifactMap = getArtifacts(sourceSet),
         javadocArtifacts = getJavaDoc(sourceSet),
         sourceArtifacts = getSources(sourceSet),
-        sampleArtifacts = getSamples(sourceSet)
     )
 }

@@ -32,8 +32,8 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VariantServicesImpl
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
-import com.android.build.gradle.internal.utils.validatePreviewTargetValue
-import com.android.sdklib.AndroidVersion
+import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.sdklib.SdkVersionInfo
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -49,7 +49,7 @@ class PrivacySandboxSdkVariantScopeImpl(
     private val extensionProvider: () -> PrivacySandboxSdkExtension,
     private val bootClasspathConfigProvider: () -> BootClasspathConfig,
     override val customLintConfiguration: Configuration?
-): PrivacySandboxSdkVariantScope{
+): PrivacySandboxSdkVariantScope {
 
     override val services: TaskCreationServices
         get() = TaskCreationServicesImpl(projectServices)
@@ -66,17 +66,23 @@ class PrivacySandboxSdkVariantScopeImpl(
     }
 
     override val compileSdkVersion: String by lazy {
-        "android-${getCompileSdkApiVersion(extension).apiStringWithExtension}"
+        getCompileSdkAndroidVersion(extension).platformHashString
     }
 
     override val minSdkVersion: AndroidVersion by lazy {
-        extension.minSdkPreview?.let { SdkVersionInfo.getVersion(it, null) }
-            ?: AndroidVersion(extension.minSdk ?: 34)
+        AndroidVersionImpl(extension.minSdkPreview?.let {
+            SdkVersionInfo.getVersion(
+                it,
+                null
+            ).androidApiLevel.majorVersion
+        } ?: extension.minSdk ?: 34, extension.minSdkPreview)
     }
 
     override val targetSdkVersion: AndroidVersion by lazy {
-        extension.targetSdk?.let { AndroidVersion(it) }
-            ?: getCompileSdkApiVersion(extension)
+        extension.targetSdk?.let { AndroidVersionImpl(it) }
+            ?: AndroidVersionImpl(
+                extension.compileSdk ?: error("compileSdk not set. Please set compileSdk >= 34.")
+            )
     }
 
     override val bootClasspath: Provider<List<RegularFile>>
@@ -91,7 +97,8 @@ class PrivacySandboxSdkVariantScopeImpl(
         get() = internalServices.mapPropertyOf(
             String::class.java,
             Any::class.java,
-            extension.experimentalProperties
+            extension.experimentalProperties,
+            false
         )
     override val aarOrJarTypeToConsume: AarOrJarTypeToConsume
         get() = getAarOrJarTypeToConsume(
@@ -102,24 +109,10 @@ class PrivacySandboxSdkVariantScopeImpl(
     override val lintOptions: Lint
         get() = extension.lint
 
-    private fun getCompileSdkApiVersion(extension: PrivacySandboxSdkExtension): AndroidVersion {
-        return maybeGetCompileSdkPreview(extension)
-            ?: maybeGetCompileSdk(extension)
-            ?: throw RuntimeException("compileSdk version is not set")
-    }
-
-    private fun maybeGetCompileSdk(extension: PrivacySandboxSdkExtension): AndroidVersion? {
-        return extension.compileSdk?.let { apiLevel ->
-            val androidVersion = AndroidVersion(apiLevel)
-            when (val extensionLevel = extension.compileSdkExtension) {
-                null -> androidVersion
-                else -> androidVersion.withExtensionLevel(extensionLevel)
-            }
-        }
-    }
-
-    private fun maybeGetCompileSdkPreview(extension: PrivacySandboxSdkExtension): AndroidVersion? {
-        return extension.compileSdkPreview?.let { validatePreviewTargetValue(it) }
-            ?.let { SdkVersionInfo.getVersion(it, null) }
+    private fun getCompileSdkAndroidVersion(extension: PrivacySandboxSdkExtension): com.android.sdklib.AndroidVersion {
+        return com.android.sdklib.AndroidVersion(
+            extension.compileSdk ?: throw RuntimeException("compileSdk version is not set"),
+            extension.compileSdkPreview
+        )
     }
 }

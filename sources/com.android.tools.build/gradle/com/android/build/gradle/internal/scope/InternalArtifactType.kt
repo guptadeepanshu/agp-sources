@@ -207,6 +207,8 @@ InternalArtifactType<T : FileSystemLocation>(
     // File containing map between a source set identifier and an absolute resource sourceset path
     // for generating absolute paths in resource linking error messages.
     object SOURCE_SET_PATH_MAP: InternalArtifactType<RegularFile>(FILE), Replaceable
+    // File to map the ordering of deviceSpec paths to the directory ordinal
+    object DEVICE_SPEC_PATH_MAP: InternalArtifactType<RegularFile>(FILE), Replaceable
     // The R class jar for compile classpath use.
     object COMPILE_R_CLASS_JAR: InternalArtifactType<RegularFile>(FILE), Replaceable
     // output of the resource merger for unit tests and the resource shrinker.
@@ -267,7 +269,7 @@ InternalArtifactType<T : FileSystemLocation>(
     // The R class jar generated from R.txt for application and tests
     object COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR: InternalArtifactType<RegularFile>(FILE), Replaceable
 
-    // Information neeeded to resolve included navigation graphs into intent filters
+    // Information needed to resolve included navigation graphs into intent filters
     object NAVIGATION_JSON: InternalArtifactType<RegularFile>(FILE), Replaceable
     // Similar to [NAVIGATION_JSON], but it lacks the source file information, which shouldn't be in
     // the AAR.
@@ -471,6 +473,7 @@ InternalArtifactType<T : FileSystemLocation>(
     object SDK_SPLITS_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // output of ExtractApks applied to APKS_FROM_BUNDLE and a device config.
     object EXTRACTED_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
+
     // APK files extracted from SDK_SPLITS_APKS APKS for local Privacy Sandbox deployment.
     object EXTRACTED_SDK_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
     // The manifest meant to be consumed by the bundle.
@@ -669,6 +672,17 @@ InternalArtifactType<T : FileSystemLocation>(
     object MERGED_STARTUP_PROFILE: InternalArtifactType<RegularFile>(
         FILE,
         fileName = BaselineProfiles.StartupProfileFileName
+    )
+
+    object PACKAGES_FOR_R8: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_PACKAGE_LIST
+    )
+
+    // Merged file for the lists of packages collected for gradual R8 shrinking
+    object MERGED_PACKAGES_FOR_R8: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_PACKAGE_LIST
     )
 
     override fun getFileSystemLocationName(): String {

@@ -71,7 +71,16 @@ interface Library: AndroidModel {
      * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      */
+    @Deprecated("Use srcJars to get the source jar together with the sample source jar")
     val srcJar: File?
+
+    /**
+     * Provides the sources for the [artifact] including regular source and sample source
+     *
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     */
+    val srcJars: List<File>
 
     /**
      * The jar containing the documentation for the [artifact]
@@ -87,6 +96,7 @@ interface Library: AndroidModel {
      * Only valid for instance where [type] is [LibraryType.JAVA_LIBRARY] or
      * [LibraryType.ANDROID_LIBRARY]
      */
+    @Deprecated("Sample source jar is now part of the source jars")
     val samplesJar: File?
 
     /**

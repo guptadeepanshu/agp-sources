@@ -520,8 +520,7 @@ public final class DetailsTypes {
     public static String getPlatformPath(@NonNull AndroidVersion version) {
         return SdkConstants.FD_PLATFORMS
                 + RepoPackage.PATH_SEPARATOR
-                + "android-"
-                + version.getApiStringWithExtension();
+                + version.getPlatformHashString();
     }
 
     /** Gets the path/unique id for the sources of the given {@link AndroidVersion}. */
@@ -529,8 +528,7 @@ public final class DetailsTypes {
     public static String getSourcesPath(@NonNull AndroidVersion version) {
         return SdkConstants.FD_PKG_SOURCES
                 + RepoPackage.PATH_SEPARATOR
-                + "android-"
-                + version.getApiStringWithExtension();
+                + version.getPlatformHashString();
     }
 
     /**
@@ -567,8 +565,7 @@ public final class DetailsTypes {
             String abi) {
         return SdkConstants.FD_SYSTEM_IMAGES
                 + RepoPackage.PATH_SEPARATOR
-                + "android-"
-                + version.getApiStringWithExtension()
+                + version.getPlatformHashString()
                 + RepoPackage.PATH_SEPARATOR
                 + name.getId()
                 + RepoPackage.PATH_SEPARATOR

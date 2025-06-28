@@ -88,7 +88,11 @@ const val PROPERTY_APK_LOCATION = "android.injected.apk.location"
 // PROPERTIES FOR DEPLOYMENTS FROM THE IDE
 // ------------------
 const val PROPERTY_DEPLOY_AS_INSTANT_APP = "android.injected.deploy.instant-app"
+
+// Absolute path to the target device spec.
 const val PROPERTY_APK_SELECT_CONFIG = "android.inject.apkselect.config"
+// Invariant paths to all known active device specs.
+const val PROPERTY_APK_SELECT_MULTIPLE_DEVICE_SPECS = "android.inject.apkselect.mutipledevicespecs"
 const val PROPERTY_EXTRACT_INSTANT_APK = "android.inject.bundle.extractinstant"
 const val PROPERTY_SUPPORTS_PRIVACY_SANDBOX = "android.inject.supports-privacy-sandbox"
 

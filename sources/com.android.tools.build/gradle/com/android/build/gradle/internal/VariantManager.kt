@@ -219,6 +219,9 @@ class VariantManager<
                 flavorDimensionList)
         val variants = computer.computeVariants()
 
+        // get some info related to testing
+        val testBuildTypeData = testBuildTypeData
+
         val globalConfig = GlobalVariantBuilderConfigImpl(dslExtension)
 
         // loop on all the new variant objects to create the public instances (both legacy and new
@@ -292,7 +295,8 @@ class VariantManager<
         // variant-specific and multi-flavor name as we add/create the variant providers later.
         for (productFlavorData in productFlavorDataList) {
             variantDslInfoBuilder.addProductFlavor(
-                    productFlavorData.productFlavor, productFlavorData.sourceSet)
+                    productFlavorData.productFlavor, productFlavorData.sourceSet
+            )
         }
         val variantDslInfo = variantDslInfoBuilder.createDslInfo()
         val componentIdentity = variantDslInfo.componentIdentity
@@ -302,7 +306,6 @@ class VariantManager<
         val variantBuilder = variantFactory.createVariantBuilder(
             globalConfig, componentIdentity, variantDslInfo, variantBuilderServices,
         )
-        postVariantBuilderCreation(variantBuilder, buildTypeData)
 
         // now that we have the variant, create the analytics object,
         val configuratorService = getBuildService(
@@ -902,7 +905,7 @@ class VariantManager<
 
         if (variantFactory.componentType.hasTestComponents) {
             (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests?.values
-                ?.filter { it.enable }
+                ?.filter { it.enable && buildTypeData == testBuildTypeData }
                 ?.forEach { deviceTestBuilder ->
                     val deviceTest = createTestComponents<AndroidTestComponentDslInfo>(
                         dimensionCombination,
@@ -1075,20 +1078,6 @@ class VariantManager<
 
     private val canParseManifest = projectServices.objectFactory.property(Boolean::class.java).also {
         it.set(!dslServices.projectOptions[BooleanOption.DISABLE_EARLY_MANIFEST_PARSING])
-    }
-
-    /**
-     * Post configuration of the [VariantBuilderT] instance.
-     */
-    fun postVariantBuilderCreation(
-        variantBuilder: VariantBuilderT,
-        buildTypeData: BuildTypeData<BuildType>,
-    ) {
-        (variantBuilder as? HasDeviceTestsBuilder)?.deviceTests?.forEach { (_, deviceTestBuilder) ->
-            deviceTestBuilder.enable =
-                !variantBuilderServices.projectOptions[BooleanOption.ENABLE_NEW_TEST_DSL]
-                        && (testBuildTypeData == null || buildTypeData == testBuildTypeData)
-        }
     }
 
     fun setHasCreatedTasks(hasCreatedTasks: Boolean) {

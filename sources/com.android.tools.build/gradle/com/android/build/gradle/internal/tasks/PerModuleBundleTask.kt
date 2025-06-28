@@ -298,8 +298,7 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
     private fun getResourcesFile(): File {
         return if (baseModule.get()) {
             if (runResourceShrinkingWithR8.get()) {
-                shrunkResourcesDirectory.get().asFile.walk()
-                    .single { it.path.endsWith(SdkConstants.DOT_RES) }
+                getShrunkResourcesFileInDirectory(shrunkResourcesDirectory.get().asFile)
             } else {
                 linkedResourcesFile.get().asFile
             }
@@ -309,6 +308,21 @@ abstract class PerModuleBundleTask: NonIncrementalTask() {
             } else {
                 featureLinkedResourcesFile.get().asFile
             }
+        }
+    }
+
+    private fun getShrunkResourcesFileInDirectory(shrunkResourcesDirectory: File): File {
+        val shrunkResourcesFiles = shrunkResourcesDirectory.walk()
+            .filter { it.path.endsWith(SdkConstants.DOT_RES) }.toList()
+        return when (shrunkResourcesFiles.size) {
+            0 -> error("No shrunk-resources file found in directory '$shrunkResourcesDirectory'")
+            1 -> shrunkResourcesFiles.single()
+            else -> error(
+                """
+                Multiple shrunk-resources files found in directory '$shrunkResourcesDirectory': $shrunkResourcesFiles
+                Please disable building multiple APKs when building an Android app bundle. See https://issuetracker.google.com/402800800 for more details.
+                """.trimIndent()
+            )
         }
     }
 

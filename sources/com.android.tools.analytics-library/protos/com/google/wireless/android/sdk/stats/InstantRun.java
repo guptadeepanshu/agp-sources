@@ -768,7 +768,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
    * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-   *     See studio_stats.proto;l=4018
+   *     See studio_stats.proto;l=4097
    * @return Whether the instantRunBuildCause field is set.
    */
   @java.lang.Override @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
@@ -783,7 +783,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
    * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-   *     See studio_stats.proto;l=4018
+   *     See studio_stats.proto;l=4097
    * @return The instantRunBuildCause.
    */
   @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause getInstantRunBuildCause() {
@@ -1483,7 +1483,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-     *     See studio_stats.proto;l=4018
+     *     See studio_stats.proto;l=4097
      * @return Whether the instantRunBuildCause field is set.
      */
     @java.lang.Override @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
@@ -1498,7 +1498,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-     *     See studio_stats.proto;l=4018
+     *     See studio_stats.proto;l=4097
      * @return The instantRunBuildCause.
      */
     @java.lang.Override
@@ -1515,7 +1515,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-     *     See studio_stats.proto;l=4018
+     *     See studio_stats.proto;l=4097
      * @param value The instantRunBuildCause to set.
      * @return This builder for chaining.
      */
@@ -1537,7 +1537,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @deprecated android_studio.InstantRun.instant_run_build_cause is deprecated.
-     *     See studio_stats.proto;l=4018
+     *     See studio_stats.proto;l=4097
      * @return This builder for chaining.
      */
     @java.lang.Deprecated public Builder clearInstantRunBuildCause() {

@@ -47,6 +47,7 @@ enum class Version(
     VERSION_8_1("8.1"),
     VERSION_8_2("8.2"),
     VERSION_8_3("8.3"),
+    VERSION_8_11("8.11"),
     VERSION_9_0("9.0"),
     VERSION_10_0("10.0"),
 

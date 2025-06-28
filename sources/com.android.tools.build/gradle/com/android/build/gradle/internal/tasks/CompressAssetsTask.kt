@@ -24,7 +24,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.buildanalyzer.common.TaskCategory
 import com.android.builder.files.KeyedFileCache
 import com.android.builder.packaging.PackagingUtils
-import com.android.zipflinger.BytesSource
+import com.android.zipflinger.LargeFileSource
 import com.android.zipflinger.ZipArchive
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.DirectoryProperty
@@ -184,7 +184,7 @@ abstract class CompressAssetsWorkAction @Inject constructor(
             Files.createDirectories(output.parent)
             ZipArchive(output).use { jar ->
                 jar.add(
-                    BytesSource(
+                    LargeFileSource(
                         compressAssetsWorkParameters.input.get().asFile.toPath(),
                         compressAssetsWorkParameters.entryPath.get(),
                         compressAssetsWorkParameters.entryCompressionLevel.get()

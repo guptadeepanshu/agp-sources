@@ -61,7 +61,7 @@ interface BuildType : BaseConfig {
     val isMinifyEnabled: Boolean
 
     /** Whether zipalign is enabled for this build type. */
-    @Deprecated("This property is deprecated.")
+    @Deprecated("This property is deprecated. Changing its value has no effect (AGP produced artifacts are already aligned).")
     val isZipAlignEnabled: Boolean
 
     /**Whether the variant embeds the micro app. */

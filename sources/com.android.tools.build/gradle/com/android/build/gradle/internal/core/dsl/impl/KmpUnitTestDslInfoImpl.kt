@@ -65,10 +65,7 @@ class KmpUnitTestDslInfoImpl(
     override val androidResourcesDsl: AndroidResourcesDslInfo? by lazy {
         if (testOnJvmConfig.isIncludeAndroidResources) {
             object : AndroidResourcesDslInfo {
-                override val androidResources = dslServices.newDecoratedInstance(
-                    AaptOptions::class.java,
-                    dslServices
-                )
+                override val androidResources = extension.androidResources
                 override val resourceConfigurations: ImmutableSet<String> = ImmutableSet.of()
                 override val vectorDrawables: VectorDrawablesOptions =
                     DefaultVectorDrawablesOptions()

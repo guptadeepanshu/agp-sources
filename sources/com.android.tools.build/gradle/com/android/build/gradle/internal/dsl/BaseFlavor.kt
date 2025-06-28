@@ -35,6 +35,8 @@ import com.android.builder.model.ProductFlavor
 import com.google.common.collect.Iterables
 import java.io.File
 import org.gradle.api.Action
+import org.gradle.declarative.dsl.model.annotations.Adding
+import org.gradle.declarative.dsl.model.annotations.Restricted
 
 /** Base DSL object used to configure product flavors.  */
 abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
@@ -65,6 +67,8 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
         set(value) {
             maxSdkVersion = value
         }
+
+    @get:Restricted
     override var minSdk: Int?
         get() = minSdkVersion?.apiLevel
         set(value) {
@@ -170,6 +174,9 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
         testInstrumentationRunnerArguments[key] = value
     }
 
+    @get:Restricted
+    abstract override var testInstrumentationRunner: String?
+
     /**
      * Adds custom arguments to the test instrumentation runner, e.g:
      *
@@ -200,6 +207,7 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
     }
 
     // -- DSL Methods. TODO remove once the instantiator does what I expect it to do.
+    @Adding
     override fun buildConfigField(
         type: String,
         name: String,

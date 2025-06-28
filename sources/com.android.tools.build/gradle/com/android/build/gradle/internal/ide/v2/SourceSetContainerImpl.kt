@@ -22,7 +22,7 @@ import com.android.builder.model.v2.ide.SourceSetContainer
 import java.io.Serializable
 
 data class SourceSetContainerImpl(
-    override val sourceProvider: SourceProvider,
+    override val sourceProvider: SourceProvider?,
     override val deviceTestSourceProviders: Map<String, SourceProvider>,
     override val hostTestSourceProviders: Map<String, SourceProvider>,
     override val testFixturesSourceProvider: SourceProvider? = null

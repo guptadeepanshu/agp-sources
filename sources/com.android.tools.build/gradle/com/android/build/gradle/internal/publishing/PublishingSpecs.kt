@@ -73,6 +73,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.NATIVE_SYMBO
 import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_JSON
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_RES
+import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGES_FOR_R8
 import com.android.build.gradle.internal.scope.InternalArtifactType.PREFAB_PACKAGE
 import com.android.build.gradle.internal.scope.InternalArtifactType.PREFAB_PACKAGE_CONFIGURATION
 import com.android.build.gradle.internal.scope.InternalArtifactType.PUBLIC_RES
@@ -277,6 +278,7 @@ class PublishingSpecs {
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 runtime(InternalArtifactType.LIBRARY_ART_PROFILE, ArtifactType.ART_PROFILE)
                 runtime(SUPPORTED_LOCALE_LIST, ArtifactType.SUPPORTED_LOCALE_LIST)
+                runtime(PACKAGES_FOR_R8, ArtifactType.PACKAGES_FOR_R8)
 
                 // Publish lint artifacts to API_AND_RUNTIME_ELEMENTS to support compileOnly module
                 // dependencies.

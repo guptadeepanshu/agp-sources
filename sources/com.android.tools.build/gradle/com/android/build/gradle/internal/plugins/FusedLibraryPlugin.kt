@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.plugins
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.impl.InternalScopedArtifacts
 import com.android.build.api.attributes.BuildTypeAttr
@@ -34,8 +33,6 @@ import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.fusedlibrary.getFusedLibraryDependencyModuleVersionIdentifiers
 import com.android.build.gradle.internal.fusedlibrary.toDependenciesProvider
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.publishing.getAttributes
-import com.android.build.gradle.internal.scope.publishArtifactToConfiguration
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.DslServices
@@ -60,6 +57,7 @@ import groovy.util.Node
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ModuleVersionIdentifier
 import org.gradle.api.attributes.Bundling
@@ -68,7 +66,6 @@ import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.component.SoftwareComponentFactory
 import org.gradle.api.configuration.BuildFeatures
-import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
@@ -286,19 +283,52 @@ class FusedLibraryPlugin @Inject constructor(
 
         // 'include' is the configuration that users will use to indicate which dependencies should
         // be fused.
-        val include = project.configurations.create(FusedLibraryConstants.INCLUDE_CONFIGURATION_NAME).also {
-            it.isCanBeConsumed = false
+        val include = project.configurations.create(FusedLibraryConstants.INCLUDE_CONFIGURATION_NAME).also { include ->
+            include.description =
+                "Used for declaring dependencies that should be packaged in the fused artifact."
+            include.isCanBeConsumed = false
             val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
-            it.attributes.attribute(
+            include.attributes.attribute(
                 BuildTypeAttr.ATTRIBUTE,
                 buildType,
             )
         }
+
+        // Platform dependencies must be resolved in a transitive configuration in order to
+        // resolve versioned module dependencies from constraints. Since we never want to include
+        // transitive dependencies in the fused library artifacts, this configuration should never
+        // be extended or resolved from other configurations. It is only used to ensure consistent
+        // version resolution of non-transitive dependencies.
+        fun getIncludeTransitiveResolved(name: String, usage: String): Configuration =
+            project.configurations.create(name)
+                .also { includePlatform ->
+                    includePlatform.description =
+                        "Used for resolving transitive dependency version constraints of include dependencies."
+                    includePlatform.isCanBeDeclared = false
+                    includePlatform.isCanBeConsumed = false
+                    includePlatform.isCanBeResolved = true
+                    includePlatform.isTransitive = true
+                    val buildType: BuildTypeAttr =
+                        project.objects.named(BuildTypeAttr::class.java, "debug")
+                    includePlatform.attributes.attribute(
+                        BuildTypeAttr.ATTRIBUTE,
+                        buildType,
+                    )
+                    includePlatform.attributes.attribute(
+                        Usage.USAGE_ATTRIBUTE,
+                        project.objects.named(Usage::class.java, usage)
+                    )
+                    includePlatform.extendsFrom(include)
+                }
+
+        val includeTransitiveApiResolved = getIncludeTransitiveResolved("includeTransitiveResolvedApi",Usage.JAVA_API)
+        val includeTransitiveRuntimeResolved = getIncludeTransitiveResolved("includeTransitiveResolvedRuntime", Usage.JAVA_RUNTIME)
+
         // This is the internal configuration that will be used to feed tasks that require access
-        // to the resolved 'include' dependency. It is for JAVA_API usage which mean all transitive
-        // dependencies that are implementation() scoped will not be included.
+        // to the resolved 'include' dependency.
         val fusedApi =
-            project.configurations.create("fusedApi").also { apiClasspath ->
+            project.configurations.create(FusedLibraryConstants.FUSED_API_CONFIGURATION_NAME)
+                .also { apiClasspath ->
                 apiClasspath.isCanBeConsumed = false
                 apiClasspath.isCanBeResolved = true
                 apiClasspath.isTransitive = false
@@ -313,17 +343,17 @@ class FusedLibraryPlugin @Inject constructor(
                     BuildTypeAttr.ATTRIBUTE,
                     buildType,
                 )
-
+                apiClasspath.shouldResolveConsistentlyWith(includeTransitiveApiResolved)
                 apiClasspath.extendsFrom(include)
             }
+
         // This is the internal configuration that will be used to feed tasks that require access
-        // to the resolved 'include' dependency. It is for JAVA_RUNTIME usage which mean all transitive
-        // dependencies that are implementation() scoped will  be included.
+        // to the resolved 'include' dependency.
         val fusedRuntime =
-            project.configurations.create("fusedRuntime").also { runtimeClasspath ->
+            project.configurations.create(FusedLibraryConstants.FUSED_RUNTIME_CONFIGURATION_NAME)
+                .also { runtimeClasspath ->
                 runtimeClasspath.isCanBeConsumed = false
                 runtimeClasspath.isCanBeResolved = true
-                // Components declared as include must only be packaged in the AAR.
                 runtimeClasspath.isTransitive = false
 
                 runtimeClasspath.attributes.attribute(
@@ -336,7 +366,7 @@ class FusedLibraryPlugin @Inject constructor(
                     BuildTypeAttr.ATTRIBUTE,
                     buildType,
                 )
-
+                runtimeClasspath.shouldResolveConsistentlyWith(includeTransitiveRuntimeResolved)
                 runtimeClasspath.extendsFrom(include)
             }
 
@@ -356,11 +386,11 @@ class FusedLibraryPlugin @Inject constructor(
             runtimeElements.extendsFrom(include)
         }
 
-        val configurationsToAdd = listOf(fusedApi, fusedRuntime)
-        variantScope.incomingConfigurations.addAll(configurationsToAdd)
+        val resolvableConfigurations = listOf(fusedApi, fusedRuntime)
+        variantScope.incomingConfigurations.addAll(resolvableConfigurations)
 
         val dependenciesModuleVersionIds =
-            getFusedLibraryDependencyModuleVersionIdentifiers(include)
+            getFusedLibraryDependencyModuleVersionIdentifiers(includeTransitiveRuntimeResolved)
         val dependenciesProvider = dependenciesModuleVersionIds.toDependenciesProvider(project)
 
         maybePublishToMaven(

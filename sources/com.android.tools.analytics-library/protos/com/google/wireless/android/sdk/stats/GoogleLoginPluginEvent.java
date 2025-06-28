@@ -216,6 +216,14 @@ private static final long serialVersionUID = 0L;
      * <code>FEATURE_LOGIN = 2;</code>
      */
     FEATURE_LOGIN(2),
+    /**
+     * <pre>
+     * A user signs in via the authentication error notification.
+     * </pre>
+     *
+     * <code>AUTH_ERROR_NOTIFICATION_LOGIN = 3;</code>
+     */
+    AUTH_ERROR_NOTIFICATION_LOGIN(3),
     ;
 
     /**
@@ -238,6 +246,14 @@ private static final long serialVersionUID = 0L;
      * <code>FEATURE_LOGIN = 2;</code>
      */
     public static final int FEATURE_LOGIN_VALUE = 2;
+    /**
+     * <pre>
+     * A user signs in via the authentication error notification.
+     * </pre>
+     *
+     * <code>AUTH_ERROR_NOTIFICATION_LOGIN = 3;</code>
+     */
+    public static final int AUTH_ERROR_NOTIFICATION_LOGIN_VALUE = 3;
 
 
     public final int getNumber() {
@@ -263,6 +279,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_TYPE;
         case 1: return COMBINED_LOGIN;
         case 2: return FEATURE_LOGIN;
+        case 3: return AUTH_ERROR_NOTIFICATION_LOGIN;
         default: return null;
       }
     }
@@ -1026,6 +1043,25 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType.UNKNOWN_TYPE : result;
   }
 
+  public static final int TOTAL_USER_COUNT_FIELD_NUMBER = 4;
+  private int totalUserCount_ = 0;
+  /**
+   * <code>optional int32 total_user_count = 4;</code>
+   * @return Whether the totalUserCount field is set.
+   */
+  @java.lang.Override
+  public boolean hasTotalUserCount() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <code>optional int32 total_user_count = 4;</code>
+   * @return The totalUserCount.
+   */
+  @java.lang.Override
+  public int getTotalUserCount() {
+    return totalUserCount_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1049,6 +1085,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeEnum(3, loginType_);
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeInt32(4, totalUserCount_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -1069,6 +1108,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(3, loginType_);
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(4, totalUserCount_);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -1098,6 +1141,11 @@ private static final long serialVersionUID = 0L;
     if (hasLoginType()) {
       if (loginType_ != other.loginType_) return false;
     }
+    if (hasTotalUserCount() != other.hasTotalUserCount()) return false;
+    if (hasTotalUserCount()) {
+      if (getTotalUserCount()
+          != other.getTotalUserCount()) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -1120,6 +1168,10 @@ private static final long serialVersionUID = 0L;
     if (hasLoginType()) {
       hash = (37 * hash) + LOGIN_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + loginType_;
+    }
+    if (hasTotalUserCount()) {
+      hash = (37 * hash) + TOTAL_USER_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + getTotalUserCount();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1263,6 +1315,7 @@ private static final long serialVersionUID = 0L;
         featuresBuilder_ = null;
       }
       loginType_ = 0;
+      totalUserCount_ = 0;
       return this;
     }
 
@@ -1311,6 +1364,10 @@ private static final long serialVersionUID = 0L;
         result.loginType_ = loginType_;
         to_bitField0_ |= 0x00000004;
       }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.totalUserCount_ = totalUserCount_;
+        to_bitField0_ |= 0x00000008;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -1334,6 +1391,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasLoginType()) {
         setLoginType(other.getLoginType());
+      }
+      if (other.hasTotalUserCount()) {
+        setTotalUserCount(other.getTotalUserCount());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -1392,6 +1452,11 @@ private static final long serialVersionUID = 0L;
               }
               break;
             } // case 24
+            case 32: {
+              totalUserCount_ = input.readInt32();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 32
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1608,6 +1673,46 @@ private static final long serialVersionUID = 0L;
     public Builder clearLoginType() {
       bitField0_ = (bitField0_ & ~0x00000004);
       loginType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int totalUserCount_ ;
+    /**
+     * <code>optional int32 total_user_count = 4;</code>
+     * @return Whether the totalUserCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasTotalUserCount() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional int32 total_user_count = 4;</code>
+     * @return The totalUserCount.
+     */
+    @java.lang.Override
+    public int getTotalUserCount() {
+      return totalUserCount_;
+    }
+    /**
+     * <code>optional int32 total_user_count = 4;</code>
+     * @param value The totalUserCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setTotalUserCount(int value) {
+
+      totalUserCount_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional int32 total_user_count = 4;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearTotalUserCount() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      totalUserCount_ = 0;
       onChanged();
       return this;
     }

@@ -24,7 +24,10 @@ import java.lang.annotation.Target;
 /**
  * The annotated entity is only supposed to be used from tests. Try to avoid using this annotation
  * if possible. Instead, design the interface that is suitable for both production and test cases.
+ *
+ * @deprecated use {@link org.jetbrains.annotations.TestOnly} instead
  */
+@Deprecated
 @Documented
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.TYPE})

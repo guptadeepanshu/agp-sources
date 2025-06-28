@@ -35,6 +35,7 @@ public class AndroidxNameUtils {
     /** Mappings for class names that have been moved to a different package */
     static final ImmutableMap<String, String> ANDROIDX_FULL_CLASS_MAPPING;
 
+    /** Mappings between old (support) and new (androidx) group/artifact ids */
     static final ImmutableMap<String, String> ANDROIDX_COORDINATES_MAPPING;
 
     /** Ordered list of old android support packages sorted by decreasing length */

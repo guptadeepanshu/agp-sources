@@ -36,7 +36,7 @@ data class AndroidDslImpl(
     override val signingConfigs: Collection<SigningConfig>,
     override val aaptOptions: AaptOptions,
     override val lintOptions: LintOptions?,
-    override val installation: Installation,
+    override val installation: Installation?,
     override val buildToolsVersion: String,
     override val dependenciesInfo: DependenciesInfo?,
 ): AndroidDsl, Serializable {

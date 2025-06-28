@@ -94,9 +94,21 @@ class FullDependencyGraphBuilder(
 
         val artifactMap = artifacts.associateBy { it.variant.toKey() }
 
-        val javadocArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.JAVADOC)
-        val sourceArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.SOURCE)
-        val sampleArtifacts = resolveAdditionalArtifact(configType, AdditionalArtifactType.SAMPLE)
+        val javadocArtifacts = if (addAdditionalArtifactsInModel) {
+            resolutionResultProvider
+                .getAdditionalArtifacts(configType, AdditionalArtifactType.JAVADOC)
+                .associate { it.variant.owner to it.file }
+        } else {
+            mapOf()
+        }
+
+        val sourceArtifacts = if (addAdditionalArtifactsInModel) {
+            resolutionResultProvider
+                .getAdditionalArtifacts(configType, AdditionalArtifactType.SOURCE)
+                .groupBy({ it.variant.owner }, { it.file })
+        } else {
+            mapOf()
+        }
 
         // Keep a list of the visited nodes so that we don't revisit them in different branches.
         // This is a map so that we can easy get the matching GraphItem for it,
@@ -108,7 +120,7 @@ class FullDependencyGraphBuilder(
         // constraints come from the runtime classpath
         for (dependency in roots.filter { !it.isConstraint }) {
             handleDependency(dependency, visited, artifactMap,
-                    javadocArtifacts, sourceArtifacts, sampleArtifacts)?.let {
+                    javadocArtifacts, sourceArtifacts)?.let {
                 items.add(it)
             }
         }
@@ -118,7 +130,7 @@ class FullDependencyGraphBuilder(
         val unvisitedArtifacts = artifacts.filter { it.componentIdentifier is OpaqueComponentArtifactIdentifier }
 
         for (artifact in unvisitedArtifacts) {
-            val library = libraryService.getLibrary(artifact, AdditionalArtifacts(null, null, null))
+            val library = libraryService.getLibrary(artifact, AdditionalArtifacts(null, listOf()))
             items.add(GraphItemImpl(library.key, null))
         }
 
@@ -159,8 +171,7 @@ class FullDependencyGraphBuilder(
         visited: MutableMap<ResolvedVariantResult, GraphItem>,
         artifactMap: Map<VariantKey, ResolvedArtifact>,
         javadocArtifacts: Map<ComponentIdentifier, File>,
-        sourceArtifacts: Map<ComponentIdentifier, File>,
-        sampleArtifacts: Map<ComponentIdentifier, File>
+        sourceArtifacts: Map<ComponentIdentifier, List<File>>,
     ): GraphItem? {
         if (dependency.isConstraint) return null
         if (dependency !is ResolvedDependencyResult) {
@@ -209,7 +220,6 @@ class FullDependencyGraphBuilder(
                 artifactMap,
                 javadocArtifacts,
                 sourceArtifacts,
-                sampleArtifacts
             )
         } catch (e: Exception) {
             val name = dependency.requested.toString()
@@ -235,7 +245,7 @@ class FullDependencyGraphBuilder(
             // Now visit children, and add them as dependencies
             variantDependencies.forEach {
                 handleDependency(it, visited, artifactMap,
-                        javadocArtifacts, sourceArtifacts, sampleArtifacts)?.let { childGraphItem ->
+                        javadocArtifacts, sourceArtifacts)?.let { childGraphItem ->
                     libraryGraphItem.addDependency(childGraphItem)
                 }
             }
@@ -243,19 +253,6 @@ class FullDependencyGraphBuilder(
         }
 
         return null
-    }
-
-    private fun resolveAdditionalArtifact(
-            configType: AndroidArtifacts.ConsumedConfigType,
-            additionalArtifactType: AdditionalArtifactType
-    ): Map<ComponentIdentifier, File> {
-        return if (addAdditionalArtifactsInModel) {
-            resolutionResultProvider
-                    .getAdditionalArtifacts(configType, additionalArtifactType)
-                    .associate { it.variant.owner to it.file }
-        } else {
-            mapOf()
-        }
     }
 }
 
@@ -277,16 +274,14 @@ fun getLibrary(
     variantDependencies: List<DependencyResult>,
     artifactMap: Map<VariantKey, ResolvedArtifact>,
     javadocArtifacts: Map<ComponentIdentifier, File>,
-    sourceArtifacts: Map<ComponentIdentifier, File>,
-    sampleArtifacts: Map<ComponentIdentifier, File>,
+    sourceArtifacts: Map<ComponentIdentifier, List<File>>,
 ): Library? {
     val variantKey = variant.toKey()
     val artifact = artifactMap[variantKey]
 
     val javadoc = javadocArtifacts[variant.owner]
-    val source = sourceArtifacts[variant.owner]
-    val sample = sampleArtifacts[variant.owner]
-    val additionalArtifacts = AdditionalArtifacts(javadoc, source, sample)
+    val sources = sourceArtifacts[variant.owner] ?: listOf()
+    val additionalArtifacts = AdditionalArtifacts(javadoc, sources)
 
     // A dependency on an android variant
     fun androidProjectDependency(owner: ProjectComponentIdentifier) =

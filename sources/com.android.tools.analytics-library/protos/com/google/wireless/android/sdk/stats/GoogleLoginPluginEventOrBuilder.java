@@ -43,4 +43,15 @@ public interface GoogleLoginPluginEventOrBuilder extends
    * @return The loginType.
    */
   com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent.LoginType getLoginType();
+
+  /**
+   * <code>optional int32 total_user_count = 4;</code>
+   * @return Whether the totalUserCount field is set.
+   */
+  boolean hasTotalUserCount();
+  /**
+   * <code>optional int32 total_user_count = 4;</code>
+   * @return The totalUserCount.
+   */
+  int getTotalUserCount();
 }

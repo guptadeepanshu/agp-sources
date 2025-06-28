@@ -50,7 +50,7 @@ class ManagedDeviceConfigProvider(val device: UtpManagedDevice) : DeviceConfigPr
      */
     override fun getRegion(): String? = null
 
-    override fun getAbis(): MutableList<String> = mutableListOf(device.abi)
+    override fun getAbis(): MutableList<String> = mutableListOf(device.testedAbi)
 
     override fun getApiCodeName(): String? = null
 

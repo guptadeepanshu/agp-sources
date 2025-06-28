@@ -52,12 +52,10 @@ interface ApplicationVariantBuilder : VariantBuilder,
      * Note the a [RuntimeException] will be thrown at Runtime if a java or groovy code tries
      * to read the property value.
      */
-    @get:Incubating
     @get:Deprecated(
         message="Other plugins can change `profileable` value, it is not safe to read it at this stage",
         level = DeprecationLevel.ERROR
     )
-    @set:Incubating
     var profileable: Boolean
 
     /**

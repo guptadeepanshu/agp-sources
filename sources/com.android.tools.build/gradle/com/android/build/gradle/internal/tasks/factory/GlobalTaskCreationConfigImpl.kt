@@ -45,7 +45,6 @@ import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
 import com.android.build.gradle.internal.publishing.AarOrJarTypeToConsume
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.getAarOrJarTypeToConsume
-import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.services.getBuildService
@@ -62,11 +61,8 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
-import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
-import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 class GlobalTaskCreationConfigImpl(
     project: Project,
@@ -189,16 +185,6 @@ class GlobalTaskCreationConfigImpl(
 
     override val testServers: List<TestServer>
         get() = oldExtension.testServers
-
-    override val kotlinAndroidProjectExtension: KotlinAndroidProjectExtension? by lazy {
-        val extension = project.extensions.findByName("kotlin") as? KotlinAndroidProjectExtension
-        extension?.compilerOptions?.moduleName?.convention(project.name)
-        return@lazy extension
-    }
-
-    override val kaptExtension: KaptExtensionConfig? by lazy {
-        project.extensions.findByName("kapt") as? KaptExtensionConfig
-    }
 
     override val namespacedAndroidResources: Boolean
         get() = extension.androidResources.namespaced

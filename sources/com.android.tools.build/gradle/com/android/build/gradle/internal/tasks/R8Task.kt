@@ -37,7 +37,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.Java8LangSupport
-import com.android.build.gradle.internal.services.R8ParallelBuildService
+import com.android.build.gradle.internal.services.R8D8ThreadPoolBuildService
+import com.android.build.gradle.internal.services.R8MaxParallelTasksBuildService
+import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.doClose
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.utils.LibraryArtifactType
@@ -60,6 +62,7 @@ import com.android.builder.dexing.ToolConfig
 import com.android.builder.dexing.runR8
 import com.android.utils.FileUtils
 import com.android.zipflinger.ZipArchive
+import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemLocation
@@ -238,12 +241,19 @@ abstract class R8Task @Inject constructor(
     @get:Optional
     abstract val partialShrinkingConfig: Property<PartialShrinkingConfig>
 
-    @Suppress("UnstableApiUsage")
     @get:ServiceReference
-    abstract val r8ParallelBuildService: Property<R8ParallelBuildService>
+    abstract val r8D8ThreadPoolBuildService: Property<R8D8ThreadPoolBuildService>
 
     @get:Input
     abstract val r8ThreadPoolSize: Property<Int>
+
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:InputFiles
+    abstract val packageList: RegularFileProperty
+
+    @get:Input
+    abstract val failOnMissingProguardFiles: Property<Boolean>
 
     class PrivacySandboxSdkCreationAction(
         val creationConfig: PrivacySandboxSdkVariantScope,
@@ -286,12 +296,7 @@ abstract class R8Task @Inject constructor(
 
             task.artProfileRewriting.set(false)
 
-            task.r8ParallelBuildService.setDisallowChanges(
-                getBuildService(
-                    creationConfig.services.buildServiceRegistry,
-                    R8ParallelBuildService::class.java
-                )
-            )
+            useR8D8BuildServices(task, creationConfig.services)
             task.r8ThreadPoolSize.setDisallowChanges(
                 // This `IntegerOption` has a default value so get() should return not-null
                 creationConfig.services.projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
@@ -319,6 +324,12 @@ abstract class R8Task @Inject constructor(
                 it.r8OutputType.setDisallowChanges(R8OutputType.DEX)
             }
             task.proguardConfigurations = proguardConfigurations
+
+            task.failOnMissingProguardFiles.setDisallowChanges(
+                creationConfig.services.projectOptions.get(
+                    BooleanOption.FAIL_ON_MISSING_PROGUARD_FILES
+                )
+            )
 
             task.baseJar.disallowChanges()
             task.featureClassJars.disallowChanges()
@@ -468,12 +479,7 @@ abstract class R8Task @Inject constructor(
                 task.artProfileRewriting.set(false)
             }
 
-            task.r8ParallelBuildService.setDisallowChanges(
-                getBuildService(
-                    creationConfig.services.buildServiceRegistry,
-                    R8ParallelBuildService::class.java
-                )
-            )
+            useR8D8BuildServices(task, creationConfig.services)
             task.r8ThreadPoolSize.setDisallowChanges(
                 // This `IntegerOption` has a default value so get() should return not-null
                 creationConfig.services.projectOptions.get(IntegerOption.R8_THREAD_POOL_SIZE)!!
@@ -491,6 +497,12 @@ abstract class R8Task @Inject constructor(
                 creationConfig.global.settingsOptions.executionProfile?.r8Options)
 
             task.proguardConfigurations = proguardConfigurations
+
+            task.failOnMissingProguardFiles.setDisallowChanges(
+                creationConfig.services.projectOptions.get(
+                    BooleanOption.FAIL_ON_MISSING_PROGUARD_FILES
+                )
+            )
 
             if (creationConfig is ApkCreationConfig) {
                 // options applicable only when building APKs, do not apply with AARs
@@ -574,6 +586,9 @@ abstract class R8Task @Inject constructor(
             }
 
             task.partialShrinkingConfig.setDisallowChanges(creationConfig.getPartialShrinkingConfig())
+            task.packageList.setDisallowChanges(
+                creationConfig.artifacts.get(InternalArtifactType.MERGED_PACKAGES_FOR_R8)
+            )
         }
 
         override fun keep(keep: String) {
@@ -617,7 +632,6 @@ abstract class R8Task @Inject constructor(
                 componentType.orNull?.isAar == true -> outputClasses
                 else -> outputDex
             }
-
         // Check for duplicate java resourcesJar if there are dynamic features. We allow duplicate
         // META-INF/services/** entries.
         val featureJavaResourceJarsList = featureJavaResourceJars.toList()
@@ -692,7 +706,10 @@ abstract class R8Task @Inject constructor(
                         finalListOfConfigurationFiles,
                         LoggerWrapper.getLogger(R8Task::class.java),
                         LibraryArtifactType.KEEP_RULES),
-                    extractedDefaultProguardFile))
+                    extractedDefaultProguardFile,
+                    failOnMissingProguardFiles.get()
+                )
+            )
             it.inputProguardMapping.set(
                 if (testedMappingFile.isEmpty) {
                     null
@@ -730,12 +747,12 @@ abstract class R8Task @Inject constructor(
             it.r8Metadata.set(r8Metadata)
             it.toolConfig.set(toolParameters.toToolConfig())
             it.resourceShrinkingConfig.set(resourceShrinkingParams.toConfig())
-            it.partialShrinkingConfig.set(partialShrinkingConfig.orNull)
+            it.partialShrinkingConfig.set(aggregatePartialShrinkingConfig())
             // Note: Build service can only be passed in Gradle worker non-isolation mode
             if (executionOptions.get().runInSeparateProcess) {
                 it.r8ThreadPoolSizeIfIsolationMode.set(r8ThreadPoolSize)
             } else {
-                it.r8ParallelBuildServiceIfNonIsolationMode.set(r8ParallelBuildService)
+                it.r8D8ThreadPoolBuildServiceIfNonIsolationMode.set(r8D8ThreadPoolBuildService)
             }
         }
         if (executionOptions.get().runInSeparateProcess) {
@@ -752,6 +769,26 @@ abstract class R8Task @Inject constructor(
         } else {
             workerExecutor.noIsolation().submit(R8Runnable::class.java, workerAction)
         }
+    }
+
+    // Merge creation config included/excluded patterns with package.txt with merged R8 packages
+    private fun aggregatePartialShrinkingConfig(): PartialShrinkingConfig? {
+        val creationConfig = partialShrinkingConfig.orNull
+        return if (packageList.isPresent) {
+            val packages = loadR8AllowedPackages()
+            val updatedPackages = creationConfig?.includedPatterns?.split(",")?.let {
+                packages + it
+            } ?: packages
+            PartialShrinkingConfig(
+                updatedPackages.joinToString(","),
+                creationConfig?.excludedPatterns
+            )
+        } else creationConfig
+    }
+
+    private fun loadR8AllowedPackages(): List<String> {
+        val packageFile = packageList.get()
+        return packageFile.asFile.readLines()
     }
 
     companion object {
@@ -863,6 +900,24 @@ abstract class R8Task @Inject constructor(
                 }
             }
         }
+
+        private fun useR8D8BuildServices(
+            task: R8Task,
+            services: TaskCreationServices
+        ) {
+            task.usesService(
+                getBuildService(
+                    services.buildServiceRegistry,
+                    R8MaxParallelTasksBuildService::class.java
+                )
+            )
+            task.r8D8ThreadPoolBuildService.setDisallowChanges(
+                getBuildService(
+                    services.buildServiceRegistry,
+                    R8D8ThreadPoolBuildService::class.java
+                )
+            )
+        }
     }
 
     abstract class R8Runnable : WorkAction<R8Runnable.Params> {
@@ -900,7 +955,7 @@ abstract class R8Task @Inject constructor(
             abstract val resourceShrinkingConfig: Property<ResourceShrinkingConfig>
             abstract val partialShrinkingConfig: Property<PartialShrinkingConfig>
             abstract val r8ThreadPoolSizeIfIsolationMode: Property<Int> // Set iff in Gradle worker isolation mode
-            abstract val r8ParallelBuildServiceIfNonIsolationMode: Property<R8ParallelBuildService> // Set iff in Gradle worker non-isolation mode
+            abstract val r8D8ThreadPoolBuildServiceIfNonIsolationMode: Property<R8D8ThreadPoolBuildService> // Set iff in Gradle worker non-isolation mode
         }
 
         override fun execute() {
@@ -908,9 +963,9 @@ abstract class R8Task @Inject constructor(
             // In non-isolation mode, use the shared thread pool for all R8 tasks.
             val isolationMode = parameters.r8ThreadPoolSizeIfIsolationMode.isPresent
             val r8ThreadPool = if (isolationMode) {
-                R8ParallelBuildService.newR8ThreadPool(parameters.r8ThreadPoolSizeIfIsolationMode.get())
+                R8D8ThreadPoolBuildService.newThreadPool(parameters.r8ThreadPoolSizeIfIsolationMode.get())
             } else {
-                parameters.r8ParallelBuildServiceIfNonIsolationMode.get().r8ThreadPool
+                parameters.r8D8ThreadPoolBuildServiceIfNonIsolationMode.get().threadPool
             }
             try {
                 shrink(

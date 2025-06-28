@@ -1408,6 +1408,18 @@ public enum GradleTaskExecutionType
    * <code>ARTIFACTS_LOCATIONS_REPORT = 347;</code>
    */
   ARTIFACTS_LOCATIONS_REPORT(347),
+  /**
+   * <code>COLLECT_PACKAGES_FOR_R8 = 348;</code>
+   */
+  COLLECT_PACKAGES_FOR_R8(348),
+  /**
+   * <code>MERGE_PACKAGE_LISTS_FOR_R8 = 349;</code>
+   */
+  MERGE_PACKAGE_LISTS_FOR_R8(349),
+  /**
+   * <code>TEST_SUITE_TEST = 350;</code>
+   */
+  TEST_SUITE_TEST(350),
   UNRECOGNIZED(-1),
   ;
 
@@ -2803,6 +2815,18 @@ public enum GradleTaskExecutionType
    * <code>ARTIFACTS_LOCATIONS_REPORT = 347;</code>
    */
   public static final int ARTIFACTS_LOCATIONS_REPORT_VALUE = 347;
+  /**
+   * <code>COLLECT_PACKAGES_FOR_R8 = 348;</code>
+   */
+  public static final int COLLECT_PACKAGES_FOR_R8_VALUE = 348;
+  /**
+   * <code>MERGE_PACKAGE_LISTS_FOR_R8 = 349;</code>
+   */
+  public static final int MERGE_PACKAGE_LISTS_FOR_R8_VALUE = 349;
+  /**
+   * <code>TEST_SUITE_TEST = 350;</code>
+   */
+  public static final int TEST_SUITE_TEST_VALUE = 350;
 
 
   public final int getNumber() {
@@ -3177,6 +3201,9 @@ public enum GradleTaskExecutionType
       case 345: return CONVERT_LINKED_RESOURCES_TO_BINARY;
       case 346: return PARSE_DEVICE_TARGETING_CONFIG;
       case 347: return ARTIFACTS_LOCATIONS_REPORT;
+      case 348: return COLLECT_PACKAGES_FOR_R8;
+      case 349: return MERGE_PACKAGE_LISTS_FOR_R8;
+      case 350: return TEST_SUITE_TEST;
       default: return null;
     }
   }

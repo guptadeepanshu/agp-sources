@@ -112,7 +112,6 @@ class UtpConfigFactory {
         outputDir: File,
         tmpDir: File,
         emulatorControlConfig: EmulatorControlConfig,
-        retentionConfig: RetentionConfig,
         coverageOutputDir: File,
         useOrchestrator: Boolean,
         forceCompilation: Boolean,
@@ -141,7 +140,6 @@ class UtpConfigFactory {
                     outputDir,
                     tmpDir,
                     emulatorControlConfig,
-                    retentionConfig,
                     useOrchestrator,
                     forceCompilation,
                     additionalTestOutputDir,
@@ -208,7 +206,6 @@ class UtpConfigFactory {
         outputDir: File,
         tmpDir: File,
         emulatorControlConfig: EmulatorControlConfig,
-        retentionConfig: RetentionConfig,
         coverageOutputDir: File,
         additionalTestOutputDir: File?,
         useOrchestrator: Boolean,
@@ -231,7 +228,7 @@ class UtpConfigFactory {
                 createTestFixture(
                     null, targetApkConfigBundle, additionalInstallOptions, helperApks, testData,
                     utpDependencies, versionedSdkLoader,
-                    outputDir, tmpDir, emulatorControlConfig, retentionConfig, useOrchestrator,
+                    outputDir, tmpDir, emulatorControlConfig, useOrchestrator,
                     forceCompilation,
                     additionalTestOutputDir,
                     additionalTestOutputDir?.let {
@@ -354,7 +351,6 @@ class UtpConfigFactory {
         outputDir: File,
         tmpDir: File,
         emulatorControlConfig: EmulatorControlConfig,
-        retentionConfig: RetentionConfig,
         useOrchestrator: Boolean,
         forceCompilation: Boolean,
         additionalTestOutputDir: File?,
@@ -425,32 +421,14 @@ class UtpConfigFactory {
                 }
             }
 
-            val debug =
-                (testData.instrumentationRunnerArguments
-                    .getOrDefault("debug", "false")
-                    .toBoolean())
+            testDriver = createTestDriver(
+                testData,
+                utpDependencies,
+                useOrchestrator,
+                additionalTestOutputOnDeviceDir,
+                shardConfig, additionalTestParams
+            )
 
-            if (retentionConfig.enabled && !debug) {
-                additionalTestParams["debug"] = "true"
-                testDriver = createTestDriver(
-                    testData, utpDependencies, useOrchestrator,
-                    additionalTestOutputOnDeviceDir, shardConfig, additionalTestParams
-                )
-            } else {
-                if (retentionConfig.enabled && debug) {
-                    logger.warn(
-                        "Automated test snapshot does not work with debugging. Disabling " +
-                                "automated test snapshot."
-                    )
-                }
-                testDriver = createTestDriver(
-                    testData,
-                    utpDependencies,
-                    useOrchestrator,
-                    additionalTestOutputOnDeviceDir,
-                    shardConfig, additionalTestParams
-                )
-            }
             addHostPlugin(
                 createApkInstallerPlugin(
                     targetApkConfigBundle,

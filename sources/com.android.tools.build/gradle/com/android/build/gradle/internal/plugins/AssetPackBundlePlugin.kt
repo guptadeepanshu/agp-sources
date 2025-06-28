@@ -22,6 +22,7 @@ import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.configurationCacheActive
+import com.android.build.gradle.internal.errors.AndroidProblemReporterProvider
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven
@@ -83,10 +84,17 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
             .get()
             .projectOptions
 
+        val androidProblemsReporter = AndroidProblemReporterProvider
+            .RegistrationAction(project, projectOptions)
+            .execute()
+            .get()
+            .reporter()
+
         val syncIssueHandler = SyncIssueReporterImpl(
             SyncOptions.getModelQueryMode(projectOptions),
             SyncOptions.getErrorFormatMode(projectOptions),
-            project.logger
+            project.logger,
+            androidProblemsReporter
         )
 
         val deprecationReporter =
@@ -148,7 +156,9 @@ abstract class AssetPackBundlePlugin : Plugin<Project> {
         SyncIssueReporterImpl.GlobalSyncIssueService.RegistrationAction(
             project,
             SyncOptions.getModelQueryMode(projectOptions),
-            SyncOptions.getErrorFormatMode(projectOptions)
+            SyncOptions.getErrorFormatMode(projectOptions),
+            AndroidProblemReporterProvider.RegistrationAction(project, projectOptions)
+                .execute()
         )
             .execute()
         AndroidLocationsBuildService.RegistrationAction(project).execute()

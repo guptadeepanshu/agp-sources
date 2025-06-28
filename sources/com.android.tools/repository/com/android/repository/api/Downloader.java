@@ -145,6 +145,7 @@ public interface Downloader {
         int bytesRead;
         while ((bytesRead = in.read(buf)) > 0) {
             hasher.putBytes(buf, 0, bytesRead);
+            totalRead += bytesRead;
             progress.setFraction((double) totalRead / (double) fileSize);
         }
         return hasher.hash().toString();

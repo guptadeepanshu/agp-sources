@@ -246,6 +246,6 @@ internal class KotlinMultiplatformAndroidHandlerImpl(
     }
 
     companion object {
-        private val MINIMUM_SUPPORTED_KOTLIN_MULTIPLATFORM_VERSION = Version.parse("1.9.20-Beta")
+        private val MINIMUM_SUPPORTED_KOTLIN_MULTIPLATFORM_VERSION = Version.parse("2.0.0")
     }
 }

@@ -560,7 +560,7 @@ private class LintModelModuleWriter(adapter: LintModelSerializationAdapter) :
     module.resourcePrefix?.let { printer.printAttribute("resourcePrefix", it, indent) }
     printer.printStrings("dynamicFeatures", module.dynamicFeatures, indent)
     printer.printFiles("bootClassPath", module.bootClassPath, indent)
-    printer.printAttribute("javaSourceLevel", module.javaSourceLevel, indent)
+    module.javaSourceLevel?.let { printer.printAttribute("javaSourceLevel", it, indent) }
     printer.printAttribute("compileTarget", module.compileTarget, indent)
     if (module.neverShrinking()) {
       printer.printAttribute("neverShrinking", VALUE_TRUE, indent)

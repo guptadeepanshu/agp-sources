@@ -20,12 +20,16 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Immutable;
 import com.android.build.gradle.internal.utils.AnalyticsSettingsUtils;
+import com.android.ide.common.repository.AgpVersion;
 import com.android.utils.Environment;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import java.util.Map;
+
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
+
+import java.util.Map;
 
 /** Determines if various options, triggered from the command line or environment, are set. */
 @Immutable
@@ -93,6 +97,15 @@ public final class ProjectOptions {
         if (value != null) {
             return value;
         } else {
+            AgpVersion simulatedAGPVersion = getSimulatedAGPVersion();
+            FutureStage futureStage = option.getFutureStage();
+
+            if (simulatedAGPVersion != null
+                    && futureStage != null
+                    && futureStage.getVersion().compareTo(simulatedAGPVersion) <= 0) {
+                return futureStage.getDefaultValue();
+            }
+
             return option.getDefaultValue();
         }
     }
@@ -168,6 +181,15 @@ public final class ProjectOptions {
                         return option.getDefaultValue();
                     }
                 });
+    }
+
+    public AgpVersion getSimulatedAGPVersion() {
+        String simulatedVersionString =
+                getExplicitlySetStringOptions().get(StringOption.SIMULATE_AGP_VERSION_BEHAVIOR);
+        if (simulatedVersionString != null) {
+            return AgpVersion.parse(simulatedVersionString);
+        }
+        return null;
     }
 
     @NonNull

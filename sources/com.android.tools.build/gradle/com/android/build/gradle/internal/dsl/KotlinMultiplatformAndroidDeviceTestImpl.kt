@@ -91,17 +91,6 @@ abstract class KotlinMultiplatformAndroidDeviceTestImpl @Inject constructor(
         action.execute(emulatorControl)
     }
 
-    override val emulatorSnapshots: com.android.build.api.dsl.EmulatorSnapshots =
-        dslServices.newInstance(EmulatorSnapshots::class.java, dslServices)
-
-    override fun emulatorSnapshots(action: com.android.build.api.dsl.EmulatorSnapshots.() -> Unit) {
-        action.invoke(emulatorSnapshots)
-    }
-
-    fun emulatorSnapshots(action: Action<com.android.build.api.dsl.EmulatorSnapshots>) {
-        action.execute(emulatorSnapshots)
-    }
-
     override val signing = dslServices.newDecoratedInstance(
         SigningConfig::class.java, BuilderConstants.DEBUG, dslServices
     )

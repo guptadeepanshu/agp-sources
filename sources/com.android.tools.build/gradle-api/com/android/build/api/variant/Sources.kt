@@ -31,7 +31,6 @@ interface Sources {
     /**
      * Access to the Kotlin source folders.
      */
-    @get:Incubating
     val kotlin: SourceDirectories.Flat?
 
     /**

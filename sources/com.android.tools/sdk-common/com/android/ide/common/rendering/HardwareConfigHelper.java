@@ -88,6 +88,12 @@ public class HardwareConfigHelper {
         return this;
     }
 
+    /** Clears the overridden width and height to be used during rendering. */
+    public void clearOverrideRenderSize() {
+        mOverrideRenderWidth = -1;
+        mOverrideRenderHeight = -1;
+    }
+
     /**
      * Sets the max width and height to be used during rendering.
      *

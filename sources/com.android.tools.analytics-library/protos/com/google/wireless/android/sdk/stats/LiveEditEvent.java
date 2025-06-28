@@ -311,6 +311,14 @@ private static final long serialVersionUID = 0L;
      * <code>NO_IWI = 49;</code>
      */
     NO_IWI(49),
+    /**
+     * <code>MODULE_DISPOSED = 50;</code>
+     */
+    MODULE_DISPOSED(50),
+    /**
+     * <code>INVALID_FILE = 51;</code>
+     */
+    INVALID_FILE(51),
     ;
 
     /**
@@ -574,6 +582,14 @@ private static final long serialVersionUID = 0L;
      * <code>NO_IWI = 49;</code>
      */
     public static final int NO_IWI_VALUE = 49;
+    /**
+     * <code>MODULE_DISPOSED = 50;</code>
+     */
+    public static final int MODULE_DISPOSED_VALUE = 50;
+    /**
+     * <code>INVALID_FILE = 51;</code>
+     */
+    public static final int INVALID_FILE_VALUE = 51;
 
 
     public final int getNumber() {
@@ -646,6 +662,8 @@ private static final long serialVersionUID = 0L;
         case 47: return INTERNAL_ERROR_FILE_MULTI_MODULE;
         case 48: return NO_COMPOSE_PLUGIN;
         case 49: return NO_IWI;
+        case 50: return MODULE_DISPOSED;
+        case 51: return INVALID_FILE;
         default: return null;
       }
     }

@@ -18,6 +18,7 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.SdkConstants.FN_ANDROID_MANIFEST_XML
+import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
@@ -154,8 +155,8 @@ abstract class PrivacySandboxSdkManifestMergerTask: FusedLibraryManifestMergerTa
                 AndroidArtifacts.ArtifactType.MANIFEST
             )
             task.libraryManifests.set(libraryManifests)
-            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiString)
-            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.apiString)
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
+            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.getApiString())
             task.namespace.setDisallowChanges(creationConfig.extension.bundle.applicationId)
             task.tmpDir.setDisallowChanges(
                     creationConfig.layout.buildDirectory.dir("tmp/FusedLibraryManifestMerger")

@@ -206,4 +206,42 @@ public interface DynamicLayoutInspectorAttachToProcessOrBuilder extends
    * @return The attachDurationMs.
    */
   long getAttachDurationMs();
+
+  /**
+   * <pre>
+   * True if connected to a process running on an XR device.
+   * </pre>
+   *
+   * <code>optional bool is_xr = 11;</code>
+   * @return Whether the isXr field is set.
+   */
+  boolean hasIsXr();
+  /**
+   * <pre>
+   * True if connected to a process running on an XR device.
+   * </pre>
+   *
+   * <code>optional bool is_xr = 11;</code>
+   * @return The isXr.
+   */
+  boolean getIsXr();
+
+  /**
+   * <pre>
+   * True if on-device render is enabled for this session.
+   * </pre>
+   *
+   * <code>optional bool is_on_device_render_enabled = 12;</code>
+   * @return Whether the isOnDeviceRenderEnabled field is set.
+   */
+  boolean hasIsOnDeviceRenderEnabled();
+  /**
+   * <pre>
+   * True if on-device render is enabled for this session.
+   * </pre>
+   *
+   * <code>optional bool is_on_device_render_enabled = 12;</code>
+   * @return The isOnDeviceRenderEnabled.
+   */
+  boolean getIsOnDeviceRenderEnabled();
 }

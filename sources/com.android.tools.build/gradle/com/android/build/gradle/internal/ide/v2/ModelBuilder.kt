@@ -264,7 +264,7 @@ class ModelBuilder<
          * method not called by current versions of Studio, the MINIMUM_MODEL_CONSUMER version must
          * be increased to exclude all older versions of Studio that called that method.
          */
-        val modelProducer = VersionImpl(12, 0, humanReadable = "Android Gradle Plugin 8.7")
+        val modelProducer = VersionImpl(14, 0, humanReadable = "Android Gradle Plugin 8.11")
         /**
          * The minimum required model consumer version, to allow AGP to control support for older
          * versions of Android Studio.
@@ -397,7 +397,7 @@ class ModelBuilder<
             })
 
         abstract val variantData: VariantDimensionData
-        abstract val defaultSourceSet: DefaultAndroidSourceSet
+        abstract val defaultSourceSet: DefaultAndroidSourceSet?
 
         private fun getAndroidTestSourceSet() =
             variantData.getSourceSetForModel(ComponentTypeImpl.ANDROID_TEST)
@@ -421,7 +421,7 @@ class ModelBuilder<
 
         fun build() =
             SourceSetContainerImpl(
-                sourceProvider = defaultSourceSet.convert(buildFeatures, additionalDefaultConfig()),
+                sourceProvider = defaultSourceSet?.convert(buildFeatures, additionalDefaultConfig()),
                 deviceTestSourceProviders = mutableMapOf<String, SourceProvider>().apply {
                     getAndroidTestSourceSet()
                         ?.takeIf { shouldTakeAndroidTestSourceSet() }
@@ -716,8 +716,8 @@ class ModelBuilder<
             val failures = mutableListOf<Throwable>()
             val graphs = configTypes.associateWith { configType ->
                 fun getAdditionalArtifacts(type: AdditionalArtifactType) =
-                    if (variant.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL))
-                        variant.variantDependencies.getAdditionalArtifacts(configType, type).artifactFiles.files.single()
+                    if (parameter.additionalArtifactsInModel)
+                        variant.variantDependencies.getAdditionalArtifacts(configType, type).artifactFiles.files
                     else
                         null
 
@@ -725,12 +725,10 @@ class ModelBuilder<
                     failures.addAll(it)
                 }
 
-
                 artifacts.map {
-                    val javadoc = getAdditionalArtifacts(AdditionalArtifactType.JAVADOC)
-                    val source = getAdditionalArtifacts(AdditionalArtifactType.SOURCE)
-                    val sample = getAdditionalArtifacts(AdditionalArtifactType.SAMPLE)
-                    val additionalArtifacts = AdditionalArtifacts(javadoc, source, sample)
+                    val javadoc = getAdditionalArtifacts(AdditionalArtifactType.JAVADOC)?.single()
+                    val source = getAdditionalArtifacts(AdditionalArtifactType.SOURCE)?.toList() ?: listOf()
+                    val additionalArtifacts = AdditionalArtifacts(javadoc, source)
                     libraryService.getLibrary(it, additionalArtifacts).key
                 }
             }
@@ -785,7 +783,8 @@ class ModelBuilder<
                         it,
                         libraryService,
                         graphEdgeCache,
-                        parameter.dontBuildAndroidTestRuntimeClasspath
+                        parameter.dontBuildAndroidTestRuntimeClasspath,
+                        parameter.additionalArtifactsInModel,
                     )
             }
             val hostTestArtifacts = mutableMapOf<String, ArtifactDependenciesAdjacencyList>()
@@ -795,7 +794,8 @@ class ModelBuilder<
                         hostTest,
                         libraryService,
                         graphEdgeCache,
-                        parameter.dontBuildUnitTestRuntimeClasspath
+                        parameter.dontBuildUnitTestRuntimeClasspath,
+                        parameter.additionalArtifactsInModel,
                     )
             }
 
@@ -805,7 +805,8 @@ class ModelBuilder<
                             variant,
                             libraryService,
                             graphEdgeCache,
-                            parameter.dontBuildRuntimeClasspath
+                            parameter.dontBuildRuntimeClasspath,
+                            parameter.additionalArtifactsInModel,
                     ),
                     deviceTestArtifacts = deviceTestArtifacts,
                     hostTestArtifacts = hostTestArtifacts,
@@ -814,7 +815,8 @@ class ModelBuilder<
                             it,
                             libraryService,
                             graphEdgeCache,
-                            parameter.dontBuildTestFixtureRuntimeClasspath
+                            parameter.dontBuildTestFixtureRuntimeClasspath,
+                            parameter.additionalArtifactsInModel,
                         )
                     },
                     libraryService.getAllLibraries()
@@ -826,7 +828,8 @@ class ModelBuilder<
                     createDependencies(
                         it,
                         libraryService,
-                        parameter.dontBuildAndroidTestRuntimeClasspath
+                        parameter.dontBuildAndroidTestRuntimeClasspath,
+                        parameter.additionalArtifactsInModel,
                     )
             }
             val hostTestArtifacts = mutableMapOf<String, ArtifactDependencies>()
@@ -835,6 +838,7 @@ class ModelBuilder<
                     it,
                     libraryService,
                     parameter.dontBuildHostTestRuntimeClasspath[it.componentType.suffix] ?: false,
+                    parameter.additionalArtifactsInModel,
                 )
             }
             return VariantDependenciesImpl(
@@ -842,7 +846,8 @@ class ModelBuilder<
                     mainArtifact = createDependencies(
                             variant,
                             libraryService,
-                            parameter.dontBuildRuntimeClasspath
+                            parameter.dontBuildRuntimeClasspath,
+                            parameter.additionalArtifactsInModel,
                     ),
                     deviceTestArtifacts = deviceTestArtifacts,
                     hostTestArtifacts = hostTestArtifacts,
@@ -850,7 +855,8 @@ class ModelBuilder<
                         createDependencies(
                             it,
                             libraryService,
-                            parameter.dontBuildTestFixtureRuntimeClasspath
+                            parameter.dontBuildTestFixtureRuntimeClasspath,
+                            parameter.additionalArtifactsInModel,
                         )
                     },
                     libraryService.getAllLibraries()
@@ -1162,15 +1168,18 @@ class ModelBuilder<
         component: ComponentCreationConfig,
         libraryService: LibraryService,
         dontBuildRuntimeClasspath: Boolean,
-    ) = getGraphBuilder(dontBuildRuntimeClasspath, component, libraryService).build()
+        additionalArtifactsInModel: Boolean,
+    ) = getGraphBuilder(dontBuildRuntimeClasspath, additionalArtifactsInModel, component, libraryService).build()
 
     private fun createDependenciesWithAdjacencyList(
         component: ComponentCreationConfig,
         libraryService: LibraryService,
         graphEdgeCache: GraphEdgeCache,
-        dontBuildRuntimeClasspath: Boolean
+        dontBuildRuntimeClasspath: Boolean,
+        additionalArtifactsInModel: Boolean,
     ): ArtifactDependenciesAdjacencyList = getGraphBuilder(
         dontBuildRuntimeClasspath,
+        additionalArtifactsInModel,
         component,
         libraryService,
         graphEdgeCache
@@ -1178,6 +1187,7 @@ class ModelBuilder<
 
     private fun getGraphBuilder(
         dontBuildRuntimeClasspath: Boolean,
+        additionalArtifactsInModel: Boolean,
         component: ComponentCreationConfig,
         libraryService: LibraryService,
         graphEdgeCache: GraphEdgeCache? = null,
@@ -1187,7 +1197,7 @@ class ModelBuilder<
         component.variantDependencies,
         libraryService,
         graphEdgeCache,
-        component.services.projectOptions.get(BooleanOption.ADDITIONAL_ARTIFACTS_IN_MODEL),
+        additionalArtifactsInModel,
         dontBuildRuntimeClasspath
     )
 

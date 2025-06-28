@@ -203,6 +203,9 @@ internal fun Library.convert() =
             srcJar?.convert(), LibraryProto.Builder::setSrcJar
         )
         .setIfNotNull(
+            srcJars.map { it.convert() }, LibraryProto.Builder::addAllSrcJars
+        )
+        .setIfNotNull(
             docJar?.convert(), LibraryProto.Builder::setDocJar
         )
         .setIfNotNull(

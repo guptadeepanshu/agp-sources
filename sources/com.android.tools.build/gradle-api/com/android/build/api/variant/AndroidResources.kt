@@ -54,12 +54,10 @@ interface AndroidResources {
     /**
      * Flag indicating whether viewbinding feature is on
      */
-    @get:Incubating
     val viewBinding: Boolean
 
     /**
      * Flag indicating whether databinding feature is on
      */
-    @get:Incubating
     val dataBinding: Boolean
 }

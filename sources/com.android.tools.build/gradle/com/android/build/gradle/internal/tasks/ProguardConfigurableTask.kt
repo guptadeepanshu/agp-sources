@@ -168,7 +168,8 @@ abstract class ProguardConfigurableTask(
      */
     internal fun reconcileDefaultProguardFile(
         proguardFiles: FileCollection,
-        extractedDefaultProguardFile: Provider<Directory>
+        extractedDefaultProguardFile: Provider<Directory>,
+        failOnMissingProguardFiles: Boolean
     ): Collection<File> {
 
 
@@ -177,7 +178,7 @@ abstract class ProguardConfigurableTask(
         // return.
         if (!componentType.get().isBaseModule) {
             return proguardFiles.files.mapNotNull { proguardFile ->
-                removeIfAbsent(proguardFile)
+                removeIfAbsent(proguardFile, failOnMissingProguardFiles)
             }
         }
 
@@ -195,20 +196,31 @@ abstract class ProguardConfigurableTask(
             if (defaultFiles.contains(proguardFile) && extractedDefaultProguardFile.isPresent) {
                extractedDefaultProguardFile.get().file(proguardFile.name).asFile
             } else {
-                removeIfAbsent(proguardFile)
+                removeIfAbsent(proguardFile, failOnMissingProguardFiles)
             }
         }
     }
 
-    private fun removeIfAbsent(file: File): File? {
-        return if(file.isFile) {
+    private fun removeIfAbsent(
+        file: File,
+        failOnMissingProguardFiles: Boolean
+    ): File? {
+        return if (file.isFile) {
             file
-        } else if(file.isDirectory) {
-            logger.warn("Directories as proguard configuration are not supported: ${file.path}")
-            null
+        } else if (file.isDirectory) {
+            if (failOnMissingProguardFiles) {
+                throw RuntimeException("Directories as proguard configuration are not supported: ${file.path}")
+            } else {
+                logger.warn("Directories as proguard configuration are not supported: ${file.path}")
+                null
+            }
         } else {
-            logger.warn("Supplied proguard configuration does not exist: ${file.path}")
-            null
+            if (failOnMissingProguardFiles) {
+                throw RuntimeException("Supplied proguard configuration does not exist: ${file.path}")
+            } else {
+                logger.warn("Supplied proguard configuration does not exist: ${file.path}")
+                null
+            }
         }
     }
 

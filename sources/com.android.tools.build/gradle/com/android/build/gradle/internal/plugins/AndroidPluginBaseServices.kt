@@ -26,6 +26,7 @@ import com.android.build.gradle.internal.core.DEFAULT_EXECUTION_PROFILE
 import com.android.build.gradle.internal.core.ExecutionProfileOptions
 import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.core.ToolExecutionOptions
+import com.android.build.gradle.internal.errors.AndroidProblemReporterProvider
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven.Companion.from
@@ -55,6 +56,7 @@ import com.google.wireless.android.sdk.stats.GradleBuildProject
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.configuration.BuildFeatures
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.StopExecutionException
 import org.gradle.build.event.BuildEventsListenerRegistry
 import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
@@ -71,12 +73,20 @@ abstract class AndroidPluginBaseServices(
         }
     }
 
+    private val androidProblemReporterProviderService: Provider<AndroidProblemReporterProvider> by lazy {
+        withProject("androidProblemReporterProviderService") {
+            AndroidProblemReporterProvider.RegistrationAction(it, optionService.projectOptions)
+                .execute()
+        }
+    }
+
     protected val syncIssueReporter: SyncIssueReporterImpl by lazy {
         withProject("syncIssueReporter") {
             SyncIssueReporterImpl(
                 SyncOptions.getModelQueryMode(optionService.projectOptions),
                 SyncOptions.getErrorFormatMode(optionService.projectOptions),
-                it.logger
+                it.logger,
+                androidProblemReporterProviderService.get().reporter()
             )
         }
     }
@@ -171,10 +181,11 @@ abstract class AndroidPluginBaseServices(
         SyncIssueReporterImpl.GlobalSyncIssueService.RegistrationAction(
             project,
             SyncOptions.getModelQueryMode(projectOptions),
-            SyncOptions.getErrorFormatMode(projectOptions)
+            SyncOptions.getErrorFormatMode(projectOptions),
+            androidProblemReporterProviderService
         ).execute()
 
-        registerDependencyCheck(project, projectOptions, gradleBuildFeatures)
+        registerDependencyCheck(project, projectOptions)
         checkPathForErrors()
         val attributionFileLocation =
             projectOptions.get(StringOption.IDE_ATTRIBUTION_FILE_LOCATION)

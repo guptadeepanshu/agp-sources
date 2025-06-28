@@ -50,7 +50,7 @@ data class RichVersion(
                         when {
                             rangeId.indexOf("!!") != -1 -> null
                             prefer?.equals(Version.parse("")) == true -> null
-                            else -> "${rangeId}${prefer?.let { "!!$it" } ?: ""}"
+                            else -> "${rangeId}${prefer?.let { "!!$it" } ?: "!!"}"
                         }
                     }
                 }
@@ -155,6 +155,10 @@ data class RichVersion(
         @JvmStatic
         fun require(version: Version): RichVersion =
             RichVersion(Declaration(Kind.REQUIRE, VersionRange(Range.singleton(version))))
+
+        @JvmStatic
+        fun strictly(version: Version): RichVersion =
+            RichVersion(Declaration(Kind.STRICTLY, VersionRange(Range.singleton(version))))
     }
 
     enum class Kind {

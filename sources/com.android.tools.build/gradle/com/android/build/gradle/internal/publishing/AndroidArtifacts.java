@@ -61,6 +61,7 @@ public class AndroidArtifacts {
     private static final String TYPE_PREPROCESSED_AAR_FOR_AUTO_NAMESPACE =
             "preprocessed-aar-for-auto-namespace";
     private static final String TYPE_CLASSES = "android-classes";
+    private static final String TYPE_PACKAGES_FOR_R8 = "android-packages-for-r8";
 
     // type for enumerated classes
     private static final String TYPE_ENUMERATED_RUNTIME_CLASSES = "enumerated-runtime-classes";
@@ -154,7 +155,8 @@ public class AndroidArtifacts {
     private static final String TYPE_FEATURE_RESOURCE_PKG = "android-feature-res-ap_";
     private static final String TYPE_FEATURE_DEX = "android-feature-dex";
     private static final String TYPE_FEATURE_SHRUNK_JAVA_RES = "android-feature-shrunk-java-res";
-    private static final String TYPE_FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT = "android-feature-shrunk-resources-proto-format";
+    private static final String TYPE_FEATURE_SHRUNK_RESOURCES_PROTO_FORMAT =
+            "android-feature-shrunk-resources-proto-format";
     private static final String TYPE_FEATURE_SIGNING_CONFIG_DATA =
             "android-feature-signing-config-data";
     private static final String TYPE_FEATURE_SIGNING_CONFIG_VERSIONS =
@@ -653,6 +655,8 @@ public class AndroidArtifacts {
 
         // native libs to be packaged with test components instead of main components.
         MERGED_TEST_ONLY_NATIVE_LIBS(TYPE_MERGED_TEST_ONLY_NATIVE_LIBS),
+
+        PACKAGES_FOR_R8(TYPE_PACKAGES_FOR_R8),
         ;
 
         @NonNull private final String type;

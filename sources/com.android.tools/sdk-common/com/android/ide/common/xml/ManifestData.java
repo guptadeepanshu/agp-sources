@@ -21,7 +21,9 @@ import com.android.annotations.Nullable;
 import com.android.resources.Keyboard;
 import com.android.resources.Navigation;
 import com.android.resources.TouchScreen;
+
 import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -61,6 +63,10 @@ public final class ManifestData {
     Set<String> mProcesses = null;
     /** debuggable attribute value. If null, the attribute is not present. */
     Boolean mDebuggable = null;
+
+    /** extractNativeLibs attribute value. If null, the attribute is not present. */
+    Boolean mExtractNativeLibs = null;
+
     /** API level requirement. if null the attribute was not present. */
     private String mMinSdkVersionString = null;
     /** API level requirement. Default is 1 even if missing. If value is a codename, then it'll be
@@ -661,6 +667,11 @@ public final class ManifestData {
      */
     public Boolean getDebuggable() {
         return mDebuggable;
+    }
+
+    /** Returns the <code>extractNativeLibs</code> attribute value or null if it is not set. */
+    public Boolean getExtractNativeLibs() {
+        return mExtractNativeLibs;
     }
 
     /**

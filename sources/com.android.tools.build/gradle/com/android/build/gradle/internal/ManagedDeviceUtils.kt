@@ -47,6 +47,7 @@ fun getManagedDeviceAvdFolder(
 fun computeAvdName(device: ManagedVirtualDevice): String =
     computeAvdName(
         device.sdkVersion,
+        device.sdkMinorVersion,
         device.sdkExtensionVersion,
         device.systemImageSource,
         device.pageAlignmentSuffix,
@@ -55,6 +56,7 @@ fun computeAvdName(device: ManagedVirtualDevice): String =
 
 fun computeAvdName(
     sdkVersion: Int,
+    sdkMinorVersion: Int,
     extensionVersion: Int?,
     imageSource: String,
     pageAlignmentSuffix: String,
@@ -62,13 +64,17 @@ fun computeAvdName(
     hardwareProfile: String
 ): String {
     val sanitizedProfile = sanitizeProfileName(hardwareProfile)
-    val version = computeVersionIdentifier(sdkVersion, extensionVersion)
+    val version = computeVersionIdentifier(
+        sdkVersion, sdkMinorVersion, extensionVersion)
     val vendor = computeVendorString(imageSource, pageAlignmentSuffix)
     return "dev${version}_${vendor}_${abi}_$sanitizedProfile"
 }
 
-fun computeVersionIdentifier(sdkVersion: Int, extensionVersion: Int?) =
-    sdkVersion.toString() + if (extensionVersion != null) "_ext$extensionVersion" else ""
+fun computeVersionIdentifier(
+    sdkVersion: Int, sdkMinorVersion: Int, extensionVersion: Int?) =
+    sdkVersion.toString() +
+            if (sdkMinorVersion != 0) "_m$sdkMinorVersion" else "" +
+            if (extensionVersion != null) "_ext$extensionVersion" else ""
 
 fun sanitizeProfileName(hardwareProfile: String) =
     hardwareProfile.replace(Regex("[() \"]"), "_")

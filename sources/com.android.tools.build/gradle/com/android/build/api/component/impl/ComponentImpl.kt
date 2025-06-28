@@ -55,6 +55,8 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.BuiltInKaptSupportMode
+import com.android.build.gradle.internal.services.BuiltInKotlinSupportMode
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
@@ -64,13 +66,11 @@ import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.OptionalBooleanOption.ENABLE_API_MODELING_AND_GLOBAL_SYNTHETICS
 import com.android.builder.core.ComponentType
-import com.android.builder.errors.IssueReporter
 import com.android.utils.appendCapitalized
 import org.gradle.api.JavaVersion
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
-import org.jetbrains.kotlin.gradle.plugin.KotlinBaseApiPlugin
 import java.io.File
 import java.util.Locale
 import java.util.function.Predicate
@@ -208,56 +208,19 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
         ProductFlavor(it.first, it.second)
     }
 
-    override val useBuiltInKotlinSupport: Boolean by lazy {
+    override val builtInKotlinSupportMode: BuiltInKotlinSupportMode by lazy {
         if (internalServices.projectInfo.hasPlugin(ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID)) {
-            if (isKotlinBaseApiPluginInTheSameClassloader()) {
-                true
-            } else {
-                val message =
-                    """
-                        The KotlinBaseApiPlugin class is not loaded in the same classloader
-                        as AGP, so the "$ANDROID_BUILT_IN_KOTLIN_PLUGIN_ID" Gradle plugin
-                        cannot be used in this module.
-                        """.trimIndent()
-                internalServices.issueReporter.reportError(IssueReporter.Type.GENERIC, message)
-                false
-            }
+            BuiltInKotlinSupportMode.Supported.BuiltInKotlinPluginApplied
         } else {
-            false
+            BuiltInKotlinSupportMode.NotSupported.BuiltInKotlinPluginNotApplied
         }
     }
 
-    override val useBuiltInKaptSupport: Boolean by lazy {
+    override val builtInKaptSupportMode: BuiltInKaptSupportMode by lazy {
         if (internalServices.projectInfo.hasPlugin(ANDROID_BUILT_IN_KAPT_PLUGIN_ID)) {
-            if (isKotlinBaseApiPluginInTheSameClassloader()) {
-                true
-            } else {
-                val message =
-                    """
-                        The KotlinBaseApiPlugin class is not loaded in the same classloader
-                        as AGP, so the "$ANDROID_BUILT_IN_KAPT_PLUGIN_ID" Gradle plugin
-                        cannot be used in this module.
-                        """.trimIndent()
-                internalServices.issueReporter.reportError(IssueReporter.Type.GENERIC, message)
-                false
-            }
+            BuiltInKaptSupportMode.Supported.BuiltInKaptPluginApplied
         } else {
-            false
-        }
-    }
-
-    // TODO(b/341765853) - no need to have this function once KotlinBaseApiPlugin has been added as
-    //  a runtime dependency.
-    private fun isKotlinBaseApiPluginInTheSameClassloader(): Boolean {
-        try {
-            KotlinBaseApiPlugin::class.java
-            return true
-        } catch (e: Throwable) {
-            if (e is ClassNotFoundException || e is NoClassDefFoundError) {
-                return false
-            } else {
-                throw e
-            }
+            BuiltInKaptSupportMode.NotSupported.BuiltInKaptPluginNotApplied
         }
     }
 

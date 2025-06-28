@@ -36,6 +36,8 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.BuiltInKaptSupportMode
+import com.android.build.gradle.internal.services.BuiltInKotlinSupportMode
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.VariantPathHelper
@@ -75,8 +77,14 @@ interface ComponentCreationConfig : ComponentIdentity {
     val debuggable: Boolean
     val minSdk: AndroidVersion
 
+    val builtInKotlinSupportMode: BuiltInKotlinSupportMode
+    val builtInKaptSupportMode: BuiltInKaptSupportMode
+
     val useBuiltInKotlinSupport: Boolean
+        get() = builtInKotlinSupportMode is BuiltInKotlinSupportMode.Supported
+
     val useBuiltInKaptSupport: Boolean
+        get() = builtInKaptSupportMode is BuiltInKaptSupportMode.Supported
 
     // ---------------------------------------------------------------------------------------------
     // OPTIONAL FEATURES

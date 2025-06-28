@@ -53,7 +53,7 @@ public class EmulatedProperties {
     public static final int MAX_NUMBER_OF_CORES = Integer.max(1, Runtime.getRuntime().availableProcessors() / 2);
     public static final int RECOMMENDED_NUMBER_OF_CORES = Integer.min(4, MAX_NUMBER_OF_CORES);
 
-    public static final Storage DEFAULT_INTERNAL_STORAGE = new Storage(2, Storage.Unit.GiB);
+    public static final Storage DEFAULT_INTERNAL_STORAGE = new Storage(6, Storage.Unit.GiB);
     public static final Storage DEFAULT_HEAP = new Storage(16, Storage.Unit.MiB);
     public static final AvdNetworkSpeed DEFAULT_NETWORK_SPEED = AvdNetworkSpeed.FULL;
     public static final AvdNetworkLatency DEFAULT_NETWORK_LATENCY = AvdNetworkLatency.NONE;
@@ -212,9 +212,6 @@ public class EmulatedProperties {
     }
 
     public static Storage defaultInternalStorage(@NonNull Device device) {
-        if (Device.isXr(device)) {
-            return new Storage(4, Storage.Unit.GiB);
-        }
         return DEFAULT_INTERNAL_STORAGE;
     }
 }

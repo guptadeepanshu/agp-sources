@@ -19,6 +19,7 @@ package com.android.build.gradle.options
 import com.android.builder.model.AndroidProject
 import com.android.builder.model.PROPERTY_APK_LOCATION
 import com.android.builder.model.PROPERTY_APK_SELECT_CONFIG
+import com.android.builder.model.PROPERTY_APK_SELECT_MULTIPLE_DEVICE_SPECS
 import com.android.builder.model.PROPERTY_ATTRIBUTION_FILE_LOCATION
 import com.android.builder.model.PROPERTY_BUILD_ABI
 import com.android.builder.model.PROPERTY_BUILD_API_CODENAME
@@ -57,6 +58,7 @@ enum class StringOption(
 
     // device config for ApkSelect
     IDE_APK_SELECT_CONFIG(PROPERTY_APK_SELECT_CONFIG, ApiStage.Stable),
+    IDE_APK_SELECT_MULTIPLE_DEVICE_SPECS(PROPERTY_APK_SELECT_MULTIPLE_DEVICE_SPECS, ApiStage.Experimental),
 
     // location where to write the APK/BUNDLE
     IDE_APK_LOCATION(PROPERTY_APK_LOCATION, ApiStage.Stable),
@@ -154,6 +156,12 @@ enum class StringOption(
 
     // An override for the Jacoco version to be set per module
     JACOCO_TOOL_VERSION("com.android.test.jacocoVersion", ApiStage.Experimental),
+
+    /**
+     * If a value is set, all version-gated [Option] with a minimum AGP version less than or equal
+     * to this value will be enabled.
+     */
+    SIMULATE_AGP_VERSION_BEHAVIOR("android.simulateAgpVersionBehavior", ApiStage.Experimental),
 
     /* ---------------
      * DEPRECATED APIs

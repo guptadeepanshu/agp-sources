@@ -65,13 +65,7 @@ abstract class ExtractProGuardRulesTransform @Inject constructor() :
             extractLegacyProguardRules: Boolean = true
         ): Boolean {
             ZipFile(jarFile, StandardCharsets.UTF_8).use { zipFile ->
-                val entries = zipFile
-                    .stream()
-                    .filter { zipEntry ->
-                        isToolsConfigurationFile(zipEntry)
-                                || (extractLegacyProguardRules && isProguardRule(zipEntry))
-                    }.iterator()
-
+                val entries = getEntriesWithProguardRules(zipFile, extractLegacyProguardRules)
                 if (!entries.hasNext()) {
                     return false;
                 }
@@ -89,6 +83,19 @@ abstract class ExtractProGuardRulesTransform @Inject constructor() :
                 }
                 return true
             }
+        }
+
+        @JvmStatic
+        fun getEntriesWithProguardRules(
+            zipFile: ZipFile,
+            extractLegacyProguardRules: Boolean
+        ): Iterator<ZipEntry> {
+            return zipFile
+                .stream()
+                .filter { zipEntry ->
+                    isToolsConfigurationFile(zipEntry)
+                        || (extractLegacyProguardRules && isProguardRule(zipEntry))
+                }.iterator()
         }
     }
 }

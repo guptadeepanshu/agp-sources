@@ -37,9 +37,12 @@ import com.android.build.gradle.internal.core.dsl.impl.DEFAULT_TEST_RUNNER
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.BuiltInKaptSupportMode
+import com.android.build.gradle.internal.services.BuiltInKotlinSupportMode
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.utils.KOTLIN_ANDROID_PLUGIN_ID
 import com.android.build.gradle.internal.utils.KOTLIN_KAPT_PLUGIN_ID
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
@@ -87,8 +90,8 @@ abstract class HostTestImpl @Inject constructor(
     override val codeCoverageEnabled: Boolean = hostTestBuilder._enableCodeCoverage
 
     final override val hostTestName: String
-    final override val useBuiltInKotlinSupport: Boolean
-    final override val useBuiltInKaptSupport: Boolean
+    final override val builtInKotlinSupportMode: BuiltInKotlinSupportMode
+    final override val builtInKaptSupportMode: BuiltInKaptSupportMode
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
@@ -192,17 +195,31 @@ abstract class HostTestImpl @Inject constructor(
         when(dslInfo.componentType) {
             ComponentTypeImpl.UNIT_TEST -> {
                 hostTestName = HostTestBuilder.UNIT_TEST_TYPE
-                useBuiltInKotlinSupport = mainVariant.useBuiltInKotlinSupport
-                useBuiltInKaptSupport = mainVariant.useBuiltInKaptSupport
+                builtInKotlinSupportMode = mainVariant.builtInKotlinSupportMode
+                builtInKaptSupportMode = mainVariant.builtInKaptSupportMode
             }
             ComponentTypeImpl.SCREENSHOT_TEST -> {
                 hostTestName = HostTestBuilder.SCREENSHOT_TEST_TYPE
-                useBuiltInKotlinSupport = true
-                // For screenshotTest components, the application of the Jetbrains KAPT plugin
-                // should also enable built-in KAPT support.
-                useBuiltInKaptSupport =
-                    mainVariant.useBuiltInKaptSupport ||
-                            internalServices.projectInfo.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
+                builtInKotlinSupportMode = run {
+                    val support = mainVariant.builtInKotlinSupportMode
+                    if (support is BuiltInKotlinSupportMode.NotSupported
+                        && internalServices.projectInfo.hasPlugin(KOTLIN_ANDROID_PLUGIN_ID)
+                    ) {
+                        BuiltInKotlinSupportMode.Supported.ScreenshotTestAndKgpApplied
+                    } else {
+                        support
+                    }
+                }
+                builtInKaptSupportMode = run {
+                    val support = mainVariant.builtInKaptSupportMode
+                    if (support is BuiltInKaptSupportMode.NotSupported
+                        && internalServices.projectInfo.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
+                    ) {
+                        BuiltInKaptSupportMode.Supported.ScreenshotTestAndKaptApplied
+                    } else {
+                        support
+                    }
+                }
             }
             else -> throw IllegalStateException(
                 "Expected a test component type, but ${componentIdentity.name} has type " +

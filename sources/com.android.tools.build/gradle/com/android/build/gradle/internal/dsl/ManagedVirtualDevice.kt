@@ -39,6 +39,9 @@ open class ManagedVirtualDevice @Inject constructor(private val name: String) :
             apiVersion = DefaultApiVersion(value)
         }
 
+    @get: Input
+    var sdkMinorVersion: Int = 0
+
     @get: Internal
     override var sdkPreview: String?
         get() = apiVersion?.codename
@@ -59,6 +62,10 @@ open class ManagedVirtualDevice @Inject constructor(private val name: String) :
     @get: Internal
     override var pageAlignment: PageAlignment =
         PageAlignment.DEFAULT_FOR_SDK_VERSION
+
+    @get: Optional
+    @get: Input
+    override var testedAbi: String? = null
 
     @get: Input
     val pageAlignmentSuffix: String

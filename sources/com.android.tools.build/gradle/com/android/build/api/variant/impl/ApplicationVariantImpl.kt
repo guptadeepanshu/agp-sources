@@ -21,8 +21,8 @@ import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.component.impl.features.DexingImpl
 import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.ApkInstallGroup
 import com.android.build.api.variant.ApkOutput
+import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.api.variant.ApplicationVariant
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.DependenciesInfo
@@ -33,7 +33,6 @@ import com.android.build.api.variant.HasHostTests
 import com.android.build.api.variant.HasUnitTest
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.VariantOutputConfiguration
-import com.android.build.api.variant.ApkOutputProviders
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.HostTestCreationConfig
 import com.android.build.gradle.internal.component.features.DexingCreationConfig
@@ -307,6 +306,9 @@ open class ApplicationVariantImpl @Inject constructor(
     )
 
     override val isWearAppUnbundled: Boolean? = dslInfo.isWearAppUnbundled
+
+    // This method is present to resolve warning in Gradle 8.13: b/399393875
+    fun getWearAppUnbundled(): Boolean? = isWearAppUnbundled
 
     override val enableApiModeling: Boolean
         get() = isApiModelingEnabled()

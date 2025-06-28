@@ -51,16 +51,4 @@ class KotlinMultiplatformFlatSourceDirectoriesImpl(
             }
         })
     }
-
-    override fun addSource(directoryEntry: DirectoryEntry) {
-        throw IllegalAccessException("$name sources for kotlin multiplatform android plugin " +
-                "are read-only, to append to the $name sources you need to add your sources to " +
-                "the compilation named (${compilation.name}).")
-    }
-
-    override fun addStaticSource(directoryEntry: DirectoryEntry) {
-        throw IllegalAccessException("$name sources for kotlin multiplatform android plugin " +
-                "are read-only, to append to the $name sources you need to add your sources to " +
-                "the compilation named (${compilation.name}).")
-    }
 }

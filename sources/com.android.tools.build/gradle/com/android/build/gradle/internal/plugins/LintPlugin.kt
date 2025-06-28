@@ -26,6 +26,7 @@ import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRu
 import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.LintOptions
 import com.android.build.gradle.internal.dsl.decorator.androidPluginDslDecorator
+import com.android.build.gradle.internal.errors.AndroidProblemReporterProvider
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
@@ -61,9 +62,9 @@ import com.android.build.gradle.internal.services.FakeDependencyJarBuildService
 import com.android.build.gradle.internal.services.LintClassLoaderBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.StringCachingBuildService
-import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.options.BooleanOption.LINT_ANALYSIS_PER_COMPONENT
 import com.android.build.gradle.options.Option
@@ -890,11 +891,15 @@ abstract class LintPlugin : Plugin<Project> {
         val projectPath = project.path
         val projectOptions = ProjectOptionService.RegistrationAction(project).execute().get()
             .projectOptions
+        val androidProblemsReporter = AndroidProblemReporterProvider
+            .RegistrationAction(project, projectOptions).execute().get().reporter()
         val syncIssueReporter =
                 SyncIssueReporterImpl(
                         SyncOptions.getModelQueryMode(projectOptions),
                         SyncOptions.getErrorFormatMode(projectOptions),
-                        logger)
+                        logger,
+                        androidProblemsReporter
+                )
         val deprecationReporter =
             DeprecationReporterImpl(syncIssueReporter, projectOptions, projectPath)
         val projectInfo = ProjectInfo(project)
@@ -958,11 +963,15 @@ abstract class LintPlugin : Plugin<Project> {
         ).execute()
         GlobalSyncService.RegistrationAction(project, mavenCoordinatesCacheBuildService)
             .execute()
-
+        val androidProblemReporterProvider =
+            AndroidProblemReporterProvider.RegistrationAction(project, projectOptions)
+                .execute()
         SyncIssueReporterImpl.GlobalSyncIssueService.RegistrationAction(
                 project,
                 SyncOptions.getModelQueryMode(projectServices.projectOptions),
-                SyncOptions.getErrorFormatMode(projectServices.projectOptions)
+                SyncOptions.getErrorFormatMode(projectServices.projectOptions),
+                androidProblemReporterProvider
+
         ).execute()
 
         AndroidLocationsBuildService.RegistrationAction(project).execute()

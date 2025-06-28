@@ -76,7 +76,7 @@ interface AndroidDsl: AndroidModel {
     /**
      * Returns the adb tool options
      */
-    val installation: Installation
+    val installation: Installation?
 
     /**
      * Returns the lint options.

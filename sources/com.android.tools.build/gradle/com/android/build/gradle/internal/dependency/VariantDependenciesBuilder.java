@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.dependency;
 
 import static com.android.build.gradle.internal.dependency.KotlinPlatformAttributeKt.configureKotlinPlatformAttribute;
+import static com.android.build.gradle.internal.dependency.SourceTypeAttributeKt.configureSourceTypeAttribute;
 import static com.android.build.gradle.internal.dependency.VariantDependencies.CONFIG_NAME_TESTED_APKS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.AAB_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS;
@@ -349,8 +350,11 @@ public class VariantDependenciesBuilder {
             configureKotlinPlatformAttribute(List.of(compileClasspath, runtimeClasspath), project);
         }
 
+        configureSourceTypeAttribute(project);
+
         boolean isLibraryConstraintApplied =
                 maybeAddDependencyConstraints(componentType, compileClasspath, runtimeClasspath);
+        maybeReportLibraryConstraintIssue(issueReporter);
 
         Configuration globalTestedApks =
                 configurations.findByName(VariantDependencies.CONFIG_NAME_TESTED_APKS);
@@ -716,6 +720,26 @@ public class VariantDependenciesBuilder {
                 isLibraryConstraintApplied,
                 isSelfInstrumenting,
                 sourceSetConfigurationsMap);
+    }
+
+    private void maybeReportLibraryConstraintIssue(IssueReporter issueReporter) {
+        if (!projectOptions.get(
+                        BooleanOption.GENERATE_SYNC_ISSUE_WHEN_LIBRARY_CONSTRAINTS_ARE_ENABLED)
+                || projectOptions.get(BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS)) {
+            return;
+        }
+
+        issueReporter.reportWarning(
+                IssueReporter.Type.LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED,
+                "The property "
+                        + BooleanOption.EXCLUDE_LIBRARY_COMPONENTS_FROM_CONSTRAINTS
+                                .getPropertyName()
+                        + " improves project import performance for very large projects. It should"
+                        + " be enabled to improve performance.\n"
+                        + "To suppress this warning, add "
+                        + BooleanOption.GENERATE_SYNC_ISSUE_WHEN_LIBRARY_CONSTRAINTS_ARE_ENABLED
+                                .getPropertyName()
+                        + "=false to gradle.properties");
     }
 
     // TODO(b/338596003) Update this method to handle built-in kotlin support

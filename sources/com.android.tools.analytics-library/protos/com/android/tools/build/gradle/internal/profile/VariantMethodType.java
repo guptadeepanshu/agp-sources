@@ -124,6 +124,14 @@ public enum VariantMethodType
    * <code>VARIANT_BUILDER_DEBUGGABLE = 27;</code>
    */
   VARIANT_BUILDER_DEBUGGABLE(27),
+  /**
+   * <code>JUNIT_ENGINE_SPEC_BUILDER = 28;</code>
+   */
+  JUNIT_ENGINE_SPEC_BUILDER(28),
+  /**
+   * <code>TEST_SUITE_DEPENDENCIES = 29;</code>
+   */
+  TEST_SUITE_DEPENDENCIES(29),
   UNRECOGNIZED(-1),
   ;
 
@@ -243,6 +251,14 @@ public enum VariantMethodType
    * <code>VARIANT_BUILDER_DEBUGGABLE = 27;</code>
    */
   public static final int VARIANT_BUILDER_DEBUGGABLE_VALUE = 27;
+  /**
+   * <code>JUNIT_ENGINE_SPEC_BUILDER = 28;</code>
+   */
+  public static final int JUNIT_ENGINE_SPEC_BUILDER_VALUE = 28;
+  /**
+   * <code>TEST_SUITE_DEPENDENCIES = 29;</code>
+   */
+  public static final int TEST_SUITE_DEPENDENCIES_VALUE = 29;
 
 
   public final int getNumber() {
@@ -297,6 +313,8 @@ public enum VariantMethodType
       case 25: return DEVICE_TEST_ENABLE_CODE_COVERAGE;
       case 26: return DEVICE_TEST_DEBUGGABLE;
       case 27: return VARIANT_BUILDER_DEBUGGABLE;
+      case 28: return JUNIT_ENGINE_SPEC_BUILDER;
+      case 29: return TEST_SUITE_DEPENDENCIES;
       default: return null;
     }
   }

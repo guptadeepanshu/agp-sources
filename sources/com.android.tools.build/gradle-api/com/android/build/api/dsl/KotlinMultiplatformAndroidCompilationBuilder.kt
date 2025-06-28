@@ -21,7 +21,6 @@ import org.gradle.api.Incubating
 /**
  * Options to build a [KotlinMultiplatformAndroidCompilation] object.
  */
-@Incubating
 interface KotlinMultiplatformAndroidCompilationBuilder {
     /**
      * The name of the compilation object. The name can be used later to access the compilation
@@ -80,7 +79,5 @@ interface KotlinMultiplatformAndroidCompilationBuilder {
      *
      * @see [org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension.targetHierarchy]
      */
-    @get:Incubating
-    @set:Incubating
     var sourceSetTreeName: String?
 }

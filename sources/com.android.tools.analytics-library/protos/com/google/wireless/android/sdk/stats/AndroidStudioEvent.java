@@ -3244,6 +3244,30 @@ private static final long serialVersionUID = 0L;
      * <code>RESIZE_COMPOSE_PREVIEW_EVENT = 341;</code>
      */
     RESIZE_COMPOSE_PREVIEW_EVENT(341),
+    /**
+     * <pre>
+     * Even describing a Wi-Fi Pairing operation
+     * </pre>
+     *
+     * <code>WIFI_PAIRING_EVENT = 342;</code>
+     */
+    WIFI_PAIRING_EVENT(342),
+    /**
+     * <pre>
+     * Event with a commit timestamps for developer productivity analysis
+     * </pre>
+     *
+     * <code>COMMIT_METRICS_EVENT = 343;</code>
+     */
+    COMMIT_METRICS_EVENT(343),
+    /**
+     * <pre>
+     * Event indicating a user is using K2 mode
+     * </pre>
+     *
+     * <code>K2_MODE_EVENT = 345;</code>
+     */
+    K2_MODE_EVENT(345),
     ;
 
     /**
@@ -5797,6 +5821,30 @@ private static final long serialVersionUID = 0L;
      * <code>RESIZE_COMPOSE_PREVIEW_EVENT = 341;</code>
      */
     public static final int RESIZE_COMPOSE_PREVIEW_EVENT_VALUE = 341;
+    /**
+     * <pre>
+     * Even describing a Wi-Fi Pairing operation
+     * </pre>
+     *
+     * <code>WIFI_PAIRING_EVENT = 342;</code>
+     */
+    public static final int WIFI_PAIRING_EVENT_VALUE = 342;
+    /**
+     * <pre>
+     * Event with a commit timestamps for developer productivity analysis
+     * </pre>
+     *
+     * <code>COMMIT_METRICS_EVENT = 343;</code>
+     */
+    public static final int COMMIT_METRICS_EVENT_VALUE = 343;
+    /**
+     * <pre>
+     * Event indicating a user is using K2 mode
+     * </pre>
+     *
+     * <code>K2_MODE_EVENT = 345;</code>
+     */
+    public static final int K2_MODE_EVENT_VALUE = 345;
 
 
     public final int getNumber() {
@@ -6156,6 +6204,9 @@ private static final long serialVersionUID = 0L;
         case 339: return AUTO_SYNC_SETTING_CHANGE;
         case 340: return SUPPRESSED_SYNC;
         case 341: return RESIZE_COMPOSE_PREVIEW_EVENT;
+        case 342: return WIFI_PAIRING_EVENT;
+        case 343: return COMMIT_METRICS_EVENT;
+        case 345: return K2_MODE_EVENT;
         default: return null;
       }
     }
@@ -7261,6 +7312,10 @@ private static final long serialVersionUID = 0L;
      * <code>COMPOSE_NAVIGATION_UI_ACTIVITY = 72;</code>
      */
     COMPOSE_NAVIGATION_UI_ACTIVITY(72),
+    /**
+     * <code>JOURNEY_XML_FILE = 73;</code>
+     */
+    JOURNEY_XML_FILE(73),
     ;
 
     /**
@@ -7559,6 +7614,10 @@ private static final long serialVersionUID = 0L;
      * <code>COMPOSE_NAVIGATION_UI_ACTIVITY = 72;</code>
      */
     public static final int COMPOSE_NAVIGATION_UI_ACTIVITY_VALUE = 72;
+    /**
+     * <code>JOURNEY_XML_FILE = 73;</code>
+     */
+    public static final int JOURNEY_XML_FILE_VALUE = 73;
 
 
     public final int getNumber() {
@@ -7654,6 +7713,7 @@ private static final long serialVersionUID = 0L;
         case 70: return KOTLIN_MULTIPLATFORM_LIBRARY_MODULE;
         case 71: return EXPERIMENTAL_ACTIVITY_2;
         case 72: return COMPOSE_NAVIGATION_UI_ACTIVITY;
+        case 73: return JOURNEY_XML_FILE;
         default: return null;
       }
     }
@@ -9019,6 +9079,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN = 66;</code>
      */
     TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN(66),
+    /**
+     * <pre>
+     * Disabling the library constraints results in better sync performance,
+     * this will be surfaced to the user via this issue.
+     * </pre>
+     *
+     * <code>TYPE_LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED = 67;</code>
+     */
+    TYPE_LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED(67),
     ;
 
     /**
@@ -9500,6 +9569,15 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN = 66;</code>
      */
     public static final int TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN_VALUE = 66;
+    /**
+     * <pre>
+     * Disabling the library constraints results in better sync performance,
+     * this will be surfaced to the user via this issue.
+     * </pre>
+     *
+     * <code>TYPE_LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED = 67;</code>
+     */
+    public static final int TYPE_LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED_VALUE = 67;
 
 
     public final int getNumber() {
@@ -9589,6 +9667,7 @@ private static final long serialVersionUID = 0L;
         case 64: return TYPE_NAMESPACE_NOT_SET;
         case 65: return TYPE_INCONSISTENT_BUILD_FEATURE_SETTING;
         case 66: return TYPE_MISSING_COMPOSE_COMPILER_GRADLE_PLUGIN;
+        case 67: return TYPE_LIBRARY_CONSTRAINTS_SHOULD_BE_DISABLED;
         default: return null;
       }
     }
@@ -9859,6 +9938,10 @@ private static final long serialVersionUID = 0L;
      * <code>ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK = 52;</code>
      */
     ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK(52),
+    /**
+     * <code>DISABLE_LIBRARY_CONSTRAINTS_HYPERLINK = 53;</code>
+     */
+    DISABLE_LIBRARY_CONSTRAINTS_HYPERLINK(53),
     ;
 
     /**
@@ -10073,6 +10156,10 @@ private static final long serialVersionUID = 0L;
      * <code>ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK = 52;</code>
      */
     public static final int ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK_VALUE = 52;
+    /**
+     * <code>DISABLE_LIBRARY_CONSTRAINTS_HYPERLINK = 53;</code>
+     */
+    public static final int DISABLE_LIBRARY_CONSTRAINTS_HYPERLINK_VALUE = 53;
 
 
     public final int getNumber() {
@@ -10148,6 +10235,7 @@ private static final long serialVersionUID = 0L;
         case 50: return OPEN_UPGRADE_ASSISTANT_HYPERLINK;
         case 51: return SUPPRESS_UNSUPPORTED_SDK_HYPERLINK;
         case 52: return ADD_COMPOSE_COMPILER_GRADLE_PLUGIN_HYPERLINK;
+        case 53: return DISABLE_LIBRARY_CONSTRAINTS_HYPERLINK;
         default: return null;
       }
     }
@@ -10442,7 +10530,7 @@ private static final long serialVersionUID = 0L;
        * <pre>
        * The different template components (eg Activities, Fragments, Services,
        * etc) the template engine could be asked to render
-       * Next ID: 65
+       * Next ID: 66
        * </pre>
        *
        * Protobuf enum {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType}
@@ -10675,6 +10763,10 @@ private static final long serialVersionUID = 0L;
          * <code>SHORTCUTS_XML_FILE = 59;</code>
          */
         SHORTCUTS_XML_FILE(59),
+        /**
+         * <code>JOURNEY_XML_FILE = 65;</code>
+         */
+        JOURNEY_XML_FILE(65),
         /**
          * <code>CUSTOM_VIEW = 50;</code>
          */
@@ -10938,6 +11030,10 @@ private static final long serialVersionUID = 0L;
          */
         public static final int SHORTCUTS_XML_FILE_VALUE = 59;
         /**
+         * <code>JOURNEY_XML_FILE = 65;</code>
+         */
+        public static final int JOURNEY_XML_FILE_VALUE = 65;
+        /**
          * <code>CUSTOM_VIEW = 50;</code>
          */
         public static final int CUSTOM_VIEW_VALUE = 50;
@@ -11051,6 +11147,7 @@ private static final long serialVersionUID = 0L;
             case 48: return LAYOUT_XML_FILE;
             case 49: return VALUES_XML_FILE;
             case 59: return SHORTCUTS_XML_FILE;
+            case 65: return JOURNEY_XML_FILE;
             case 50: return CUSTOM_VIEW;
             case 51: return BROADCAST_RECEIVER;
             case 52: return INTENT_SERVICE;
@@ -11879,7 +11976,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
        * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-       *     See studio_stats.proto;l=1984
+       *     See studio_stats.proto;l=2004
        * @return Whether the minSdk field is set.
        */
       @java.lang.Deprecated boolean hasMinSdk();
@@ -11890,7 +11987,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
        * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-       *     See studio_stats.proto;l=1984
+       *     See studio_stats.proto;l=2004
        * @return The minSdk.
        */
       @java.lang.Deprecated int getMinSdk();
@@ -12421,7 +12518,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
        * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-       *     See studio_stats.proto;l=1984
+       *     See studio_stats.proto;l=2004
        * @return Whether the minSdk field is set.
        */
       @java.lang.Override
@@ -12435,7 +12532,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
        * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-       *     See studio_stats.proto;l=1984
+       *     See studio_stats.proto;l=2004
        * @return The minSdk.
        */
       @java.lang.Override
@@ -13073,7 +13170,7 @@ private static final long serialVersionUID = 0L;
          *
          * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
          * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-         *     See studio_stats.proto;l=1984
+         *     See studio_stats.proto;l=2004
          * @return Whether the minSdk field is set.
          */
         @java.lang.Override
@@ -13087,7 +13184,7 @@ private static final long serialVersionUID = 0L;
          *
          * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
          * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-         *     See studio_stats.proto;l=1984
+         *     See studio_stats.proto;l=2004
          * @return The minSdk.
          */
         @java.lang.Override
@@ -13101,7 +13198,7 @@ private static final long serialVersionUID = 0L;
          *
          * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
          * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-         *     See studio_stats.proto;l=1984
+         *     See studio_stats.proto;l=2004
          * @param value The minSdk to set.
          * @return This builder for chaining.
          */
@@ -13119,7 +13216,7 @@ private static final long serialVersionUID = 0L;
          *
          * <code>optional uint32 min_sdk = 2 [deprecated = true];</code>
          * @deprecated android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.min_sdk is deprecated.
-         *     See studio_stats.proto;l=1984
+         *     See studio_stats.proto;l=2004
          * @return This builder for chaining.
          */
         @java.lang.Deprecated public Builder clearMinSdk() {
@@ -24258,6 +24355,120 @@ private static final long serialVersionUID = 0L;
     return resizeComposePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ResizeComposePreviewEvent.getDefaultInstance() : resizeComposePreviewEvent_;
   }
 
+  public static final int WIFI_PAIRING_EVENT_FIELD_NUMBER = 223;
+  private com.google.wireless.android.sdk.stats.WifiPairingEvent wifiPairingEvent_;
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   * @return Whether the wifiPairingEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasWifiPairingEvent() {
+    return ((bitField6_ & 0x01000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   * @return The wifiPairingEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.WifiPairingEvent getWifiPairingEvent() {
+    return wifiPairingEvent_ == null ? com.google.wireless.android.sdk.stats.WifiPairingEvent.getDefaultInstance() : wifiPairingEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = WIFI_PAIRING_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder getWifiPairingEventOrBuilder() {
+    return wifiPairingEvent_ == null ? com.google.wireless.android.sdk.stats.WifiPairingEvent.getDefaultInstance() : wifiPairingEvent_;
+  }
+
+  public static final int COMMIT_METRICS_EVENT_FIELD_NUMBER = 224;
+  private com.google.wireless.android.sdk.stats.CommitMetricsEvent commitMetricsEvent_;
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   * @return Whether the commitMetricsEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasCommitMetricsEvent() {
+    return ((bitField6_ & 0x02000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   * @return The commitMetricsEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.CommitMetricsEvent getCommitMetricsEvent() {
+    return commitMetricsEvent_ == null ? com.google.wireless.android.sdk.stats.CommitMetricsEvent.getDefaultInstance() : commitMetricsEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = COMMIT_METRICS_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder getCommitMetricsEventOrBuilder() {
+    return commitMetricsEvent_ == null ? com.google.wireless.android.sdk.stats.CommitMetricsEvent.getDefaultInstance() : commitMetricsEvent_;
+  }
+
+  public static final int K2_MODE_EVENT_FIELD_NUMBER = 226;
+  private com.google.wireless.android.sdk.stats.K2ModeEvent k2ModeEvent_;
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   * @return Whether the k2ModeEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasK2ModeEvent() {
+    return ((bitField6_ & 0x04000000) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   * @return The k2ModeEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.K2ModeEvent getK2ModeEvent() {
+    return k2ModeEvent_ == null ? com.google.wireless.android.sdk.stats.K2ModeEvent.getDefaultInstance() : k2ModeEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = K2_MODE_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder getK2ModeEventOrBuilder() {
+    return k2ModeEvent_ == null ? com.google.wireless.android.sdk.stats.K2ModeEvent.getDefaultInstance() : k2ModeEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -24937,6 +25148,15 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField6_ & 0x00800000) != 0)) {
       output.writeMessage(222, getResizeComposePreviewEvent());
+    }
+    if (((bitField6_ & 0x01000000) != 0)) {
+      output.writeMessage(223, getWifiPairingEvent());
+    }
+    if (((bitField6_ & 0x02000000) != 0)) {
+      output.writeMessage(224, getCommitMetricsEvent());
+    }
+    if (((bitField6_ & 0x04000000) != 0)) {
+      output.writeMessage(226, getK2ModeEvent());
     }
     getUnknownFields().writeTo(output);
   }
@@ -25840,6 +26060,18 @@ private static final long serialVersionUID = 0L;
     if (((bitField6_ & 0x00800000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(222, getResizeComposePreviewEvent());
+    }
+    if (((bitField6_ & 0x01000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(223, getWifiPairingEvent());
+    }
+    if (((bitField6_ & 0x02000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(224, getCommitMetricsEvent());
+    }
+    if (((bitField6_ & 0x04000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(226, getK2ModeEvent());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -26937,6 +27169,21 @@ private static final long serialVersionUID = 0L;
       if (!getResizeComposePreviewEvent()
           .equals(other.getResizeComposePreviewEvent())) return false;
     }
+    if (hasWifiPairingEvent() != other.hasWifiPairingEvent()) return false;
+    if (hasWifiPairingEvent()) {
+      if (!getWifiPairingEvent()
+          .equals(other.getWifiPairingEvent())) return false;
+    }
+    if (hasCommitMetricsEvent() != other.hasCommitMetricsEvent()) return false;
+    if (hasCommitMetricsEvent()) {
+      if (!getCommitMetricsEvent()
+          .equals(other.getCommitMetricsEvent())) return false;
+    }
+    if (hasK2ModeEvent() != other.hasK2ModeEvent()) return false;
+    if (hasK2ModeEvent()) {
+      if (!getK2ModeEvent()
+          .equals(other.getK2ModeEvent())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -27838,6 +28085,18 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + RESIZE_COMPOSE_PREVIEW_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getResizeComposePreviewEvent().hashCode();
     }
+    if (hasWifiPairingEvent()) {
+      hash = (37 * hash) + WIFI_PAIRING_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getWifiPairingEvent().hashCode();
+    }
+    if (hasCommitMetricsEvent()) {
+      hash = (37 * hash) + COMMIT_METRICS_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getCommitMetricsEvent().hashCode();
+    }
+    if (hasK2ModeEvent()) {
+      hash = (37 * hash) + K2_MODE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getK2ModeEvent().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -28165,6 +28424,9 @@ private static final long serialVersionUID = 0L;
         getAutoSyncSettingChangeEventFieldBuilder();
         getSuppressedSyncEventFieldBuilder();
         getResizeComposePreviewEventFieldBuilder();
+        getWifiPairingEventFieldBuilder();
+        getCommitMetricsEventFieldBuilder();
+        getK2ModeEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -28177,6 +28439,7 @@ private static final long serialVersionUID = 0L;
       bitField4_ = 0;
       bitField5_ = 0;
       bitField6_ = 0;
+      bitField7_ = 0;
       category_ = 0;
       kind_ = 0;
       studioSessionId_ = "";
@@ -29204,6 +29467,21 @@ private static final long serialVersionUID = 0L;
         resizeComposePreviewEventBuilder_.dispose();
         resizeComposePreviewEventBuilder_ = null;
       }
+      wifiPairingEvent_ = null;
+      if (wifiPairingEventBuilder_ != null) {
+        wifiPairingEventBuilder_.dispose();
+        wifiPairingEventBuilder_ = null;
+      }
+      commitMetricsEvent_ = null;
+      if (commitMetricsEventBuilder_ != null) {
+        commitMetricsEventBuilder_.dispose();
+        commitMetricsEventBuilder_ = null;
+      }
+      k2ModeEvent_ = null;
+      if (k2ModeEventBuilder_ != null) {
+        k2ModeEventBuilder_.dispose();
+        k2ModeEventBuilder_ = null;
+      }
       return this;
     }
 
@@ -29238,6 +29516,7 @@ private static final long serialVersionUID = 0L;
       if (bitField4_ != 0) { buildPartial4(result); }
       if (bitField5_ != 0) { buildPartial5(result); }
       if (bitField6_ != 0) { buildPartial6(result); }
+      if (bitField7_ != 0) { buildPartial7(result); }
       onBuilt();
       return result;
     }
@@ -30587,7 +30866,31 @@ private static final long serialVersionUID = 0L;
             : resizeComposePreviewEventBuilder_.build();
         to_bitField6_ |= 0x00800000;
       }
+      if (((from_bitField6_ & 0x40000000) != 0)) {
+        result.wifiPairingEvent_ = wifiPairingEventBuilder_ == null
+            ? wifiPairingEvent_
+            : wifiPairingEventBuilder_.build();
+        to_bitField6_ |= 0x01000000;
+      }
+      if (((from_bitField6_ & 0x80000000) != 0)) {
+        result.commitMetricsEvent_ = commitMetricsEventBuilder_ == null
+            ? commitMetricsEvent_
+            : commitMetricsEventBuilder_.build();
+        to_bitField6_ |= 0x02000000;
+      }
       result.bitField5_ |= to_bitField5_;
+      result.bitField6_ |= to_bitField6_;
+    }
+
+    private void buildPartial7(com.google.wireless.android.sdk.stats.AndroidStudioEvent result) {
+      int from_bitField7_ = bitField7_;
+      int to_bitField6_ = 0;
+      if (((from_bitField7_ & 0x00000001) != 0)) {
+        result.k2ModeEvent_ = k2ModeEventBuilder_ == null
+            ? k2ModeEvent_
+            : k2ModeEventBuilder_.build();
+        to_bitField6_ |= 0x04000000;
+      }
       result.bitField6_ |= to_bitField6_;
     }
 
@@ -31372,6 +31675,15 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasResizeComposePreviewEvent()) {
         mergeResizeComposePreviewEvent(other.getResizeComposePreviewEvent());
+      }
+      if (other.hasWifiPairingEvent()) {
+        mergeWifiPairingEvent(other.getWifiPairingEvent());
+      }
+      if (other.hasCommitMetricsEvent()) {
+        mergeCommitMetricsEvent(other.getCommitMetricsEvent());
+      }
+      if (other.hasK2ModeEvent()) {
+        mergeK2ModeEvent(other.getK2ModeEvent());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -33021,6 +33333,27 @@ private static final long serialVersionUID = 0L;
               bitField6_ |= 0x20000000;
               break;
             } // case 1778
+            case 1786: {
+              input.readMessage(
+                  getWifiPairingEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField6_ |= 0x40000000;
+              break;
+            } // case 1786
+            case 1794: {
+              input.readMessage(
+                  getCommitMetricsEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField6_ |= 0x80000000;
+              break;
+            } // case 1794
+            case 1810: {
+              input.readMessage(
+                  getK2ModeEventFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField7_ |= 0x00000001;
+              break;
+            } // case 1810
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -33043,6 +33376,7 @@ private static final long serialVersionUID = 0L;
     private int bitField4_;
     private int bitField5_;
     private int bitField6_;
+    private int bitField7_;
 
     private int category_ = 0;
     /**
@@ -66790,6 +67124,471 @@ private static final long serialVersionUID = 0L;
         resizeComposePreviewEvent_ = null;
       }
       return resizeComposePreviewEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.WifiPairingEvent wifiPairingEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.WifiPairingEvent, com.google.wireless.android.sdk.stats.WifiPairingEvent.Builder, com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder> wifiPairingEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     * @return Whether the wifiPairingEvent field is set.
+     */
+    public boolean hasWifiPairingEvent() {
+      return ((bitField6_ & 0x40000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     * @return The wifiPairingEvent.
+     */
+    public com.google.wireless.android.sdk.stats.WifiPairingEvent getWifiPairingEvent() {
+      if (wifiPairingEventBuilder_ == null) {
+        return wifiPairingEvent_ == null ? com.google.wireless.android.sdk.stats.WifiPairingEvent.getDefaultInstance() : wifiPairingEvent_;
+      } else {
+        return wifiPairingEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public Builder setWifiPairingEvent(com.google.wireless.android.sdk.stats.WifiPairingEvent value) {
+      if (wifiPairingEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        wifiPairingEvent_ = value;
+      } else {
+        wifiPairingEventBuilder_.setMessage(value);
+      }
+      bitField6_ |= 0x40000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public Builder setWifiPairingEvent(
+        com.google.wireless.android.sdk.stats.WifiPairingEvent.Builder builderForValue) {
+      if (wifiPairingEventBuilder_ == null) {
+        wifiPairingEvent_ = builderForValue.build();
+      } else {
+        wifiPairingEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField6_ |= 0x40000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public Builder mergeWifiPairingEvent(com.google.wireless.android.sdk.stats.WifiPairingEvent value) {
+      if (wifiPairingEventBuilder_ == null) {
+        if (((bitField6_ & 0x40000000) != 0) &&
+          wifiPairingEvent_ != null &&
+          wifiPairingEvent_ != com.google.wireless.android.sdk.stats.WifiPairingEvent.getDefaultInstance()) {
+          getWifiPairingEventBuilder().mergeFrom(value);
+        } else {
+          wifiPairingEvent_ = value;
+        }
+      } else {
+        wifiPairingEventBuilder_.mergeFrom(value);
+      }
+      bitField6_ |= 0x40000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public Builder clearWifiPairingEvent() {
+      bitField6_ = (bitField6_ & ~0x40000000);
+      wifiPairingEvent_ = null;
+      if (wifiPairingEventBuilder_ != null) {
+        wifiPairingEventBuilder_.dispose();
+        wifiPairingEventBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.WifiPairingEvent.Builder getWifiPairingEventBuilder() {
+      bitField6_ |= 0x40000000;
+      onChanged();
+      return getWifiPairingEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder getWifiPairingEventOrBuilder() {
+      if (wifiPairingEventBuilder_ != null) {
+        return wifiPairingEventBuilder_.getMessageOrBuilder();
+      } else {
+        return wifiPairingEvent_ == null ?
+            com.google.wireless.android.sdk.stats.WifiPairingEvent.getDefaultInstance() : wifiPairingEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = WIFI_PAIRING_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.WifiPairingEvent wifi_pairing_event = 223 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.WifiPairingEvent, com.google.wireless.android.sdk.stats.WifiPairingEvent.Builder, com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder> 
+        getWifiPairingEventFieldBuilder() {
+      if (wifiPairingEventBuilder_ == null) {
+        wifiPairingEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.WifiPairingEvent, com.google.wireless.android.sdk.stats.WifiPairingEvent.Builder, com.google.wireless.android.sdk.stats.WifiPairingEventOrBuilder>(
+                getWifiPairingEvent(),
+                getParentForChildren(),
+                isClean());
+        wifiPairingEvent_ = null;
+      }
+      return wifiPairingEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.CommitMetricsEvent commitMetricsEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.CommitMetricsEvent, com.google.wireless.android.sdk.stats.CommitMetricsEvent.Builder, com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder> commitMetricsEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     * @return Whether the commitMetricsEvent field is set.
+     */
+    public boolean hasCommitMetricsEvent() {
+      return ((bitField6_ & 0x80000000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     * @return The commitMetricsEvent.
+     */
+    public com.google.wireless.android.sdk.stats.CommitMetricsEvent getCommitMetricsEvent() {
+      if (commitMetricsEventBuilder_ == null) {
+        return commitMetricsEvent_ == null ? com.google.wireless.android.sdk.stats.CommitMetricsEvent.getDefaultInstance() : commitMetricsEvent_;
+      } else {
+        return commitMetricsEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public Builder setCommitMetricsEvent(com.google.wireless.android.sdk.stats.CommitMetricsEvent value) {
+      if (commitMetricsEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        commitMetricsEvent_ = value;
+      } else {
+        commitMetricsEventBuilder_.setMessage(value);
+      }
+      bitField6_ |= 0x80000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public Builder setCommitMetricsEvent(
+        com.google.wireless.android.sdk.stats.CommitMetricsEvent.Builder builderForValue) {
+      if (commitMetricsEventBuilder_ == null) {
+        commitMetricsEvent_ = builderForValue.build();
+      } else {
+        commitMetricsEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField6_ |= 0x80000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public Builder mergeCommitMetricsEvent(com.google.wireless.android.sdk.stats.CommitMetricsEvent value) {
+      if (commitMetricsEventBuilder_ == null) {
+        if (((bitField6_ & 0x80000000) != 0) &&
+          commitMetricsEvent_ != null &&
+          commitMetricsEvent_ != com.google.wireless.android.sdk.stats.CommitMetricsEvent.getDefaultInstance()) {
+          getCommitMetricsEventBuilder().mergeFrom(value);
+        } else {
+          commitMetricsEvent_ = value;
+        }
+      } else {
+        commitMetricsEventBuilder_.mergeFrom(value);
+      }
+      bitField6_ |= 0x80000000;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public Builder clearCommitMetricsEvent() {
+      bitField6_ = (bitField6_ & ~0x80000000);
+      commitMetricsEvent_ = null;
+      if (commitMetricsEventBuilder_ != null) {
+        commitMetricsEventBuilder_.dispose();
+        commitMetricsEventBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.CommitMetricsEvent.Builder getCommitMetricsEventBuilder() {
+      bitField6_ |= 0x80000000;
+      onChanged();
+      return getCommitMetricsEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder getCommitMetricsEventOrBuilder() {
+      if (commitMetricsEventBuilder_ != null) {
+        return commitMetricsEventBuilder_.getMessageOrBuilder();
+      } else {
+        return commitMetricsEvent_ == null ?
+            com.google.wireless.android.sdk.stats.CommitMetricsEvent.getDefaultInstance() : commitMetricsEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMMIT_METRICS_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.CommitMetricsEvent commit_metrics_event = 224 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.CommitMetricsEvent, com.google.wireless.android.sdk.stats.CommitMetricsEvent.Builder, com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder> 
+        getCommitMetricsEventFieldBuilder() {
+      if (commitMetricsEventBuilder_ == null) {
+        commitMetricsEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.CommitMetricsEvent, com.google.wireless.android.sdk.stats.CommitMetricsEvent.Builder, com.google.wireless.android.sdk.stats.CommitMetricsEventOrBuilder>(
+                getCommitMetricsEvent(),
+                getParentForChildren(),
+                isClean());
+        commitMetricsEvent_ = null;
+      }
+      return commitMetricsEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.K2ModeEvent k2ModeEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.K2ModeEvent, com.google.wireless.android.sdk.stats.K2ModeEvent.Builder, com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder> k2ModeEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     * @return Whether the k2ModeEvent field is set.
+     */
+    public boolean hasK2ModeEvent() {
+      return ((bitField7_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     * @return The k2ModeEvent.
+     */
+    public com.google.wireless.android.sdk.stats.K2ModeEvent getK2ModeEvent() {
+      if (k2ModeEventBuilder_ == null) {
+        return k2ModeEvent_ == null ? com.google.wireless.android.sdk.stats.K2ModeEvent.getDefaultInstance() : k2ModeEvent_;
+      } else {
+        return k2ModeEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public Builder setK2ModeEvent(com.google.wireless.android.sdk.stats.K2ModeEvent value) {
+      if (k2ModeEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        k2ModeEvent_ = value;
+      } else {
+        k2ModeEventBuilder_.setMessage(value);
+      }
+      bitField7_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public Builder setK2ModeEvent(
+        com.google.wireless.android.sdk.stats.K2ModeEvent.Builder builderForValue) {
+      if (k2ModeEventBuilder_ == null) {
+        k2ModeEvent_ = builderForValue.build();
+      } else {
+        k2ModeEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField7_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public Builder mergeK2ModeEvent(com.google.wireless.android.sdk.stats.K2ModeEvent value) {
+      if (k2ModeEventBuilder_ == null) {
+        if (((bitField7_ & 0x00000001) != 0) &&
+          k2ModeEvent_ != null &&
+          k2ModeEvent_ != com.google.wireless.android.sdk.stats.K2ModeEvent.getDefaultInstance()) {
+          getK2ModeEventBuilder().mergeFrom(value);
+        } else {
+          k2ModeEvent_ = value;
+        }
+      } else {
+        k2ModeEventBuilder_.mergeFrom(value);
+      }
+      bitField7_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public Builder clearK2ModeEvent() {
+      bitField7_ = (bitField7_ & ~0x00000001);
+      k2ModeEvent_ = null;
+      if (k2ModeEventBuilder_ != null) {
+        k2ModeEventBuilder_.dispose();
+        k2ModeEventBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.K2ModeEvent.Builder getK2ModeEventBuilder() {
+      bitField7_ |= 0x00000001;
+      onChanged();
+      return getK2ModeEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    public com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder getK2ModeEventOrBuilder() {
+      if (k2ModeEventBuilder_ != null) {
+        return k2ModeEventBuilder_.getMessageOrBuilder();
+      } else {
+        return k2ModeEvent_ == null ?
+            com.google.wireless.android.sdk.stats.K2ModeEvent.getDefaultInstance() : k2ModeEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = K2_MODE_EVENT
+     * </pre>
+     *
+     * <code>optional .android_studio.K2ModeEvent k2_mode_event = 226 [lazy = true];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.K2ModeEvent, com.google.wireless.android.sdk.stats.K2ModeEvent.Builder, com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder> 
+        getK2ModeEventFieldBuilder() {
+      if (k2ModeEventBuilder_ == null) {
+        k2ModeEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.K2ModeEvent, com.google.wireless.android.sdk.stats.K2ModeEvent.Builder, com.google.wireless.android.sdk.stats.K2ModeEventOrBuilder>(
+                getK2ModeEvent(),
+                getParentForChildren(),
+                isClean());
+        k2ModeEvent_ = null;
+      }
+      return k2ModeEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

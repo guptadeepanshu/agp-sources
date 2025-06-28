@@ -25,8 +25,10 @@ import com.android.build.api.dsl.LibraryProductFlavor
 import com.android.build.api.dsl.Prefab
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.NamedDomainObjectContainer
 import javax.inject.Inject
+import java.util.function.Supplier
 
 /** Internal implementation of the 'new' DSL interface */
 abstract class LibraryExtensionImpl @Inject constructor(
@@ -50,7 +52,7 @@ abstract class LibraryExtensionImpl @Inject constructor(
     InternalLibraryExtension {
 
     override val buildFeatures: LibraryBuildFeatures =
-        dslServices.newInstance(LibraryBuildFeaturesImpl::class.java)
+        dslServices.newDecoratedInstance(LibraryBuildFeaturesImpl::class.java, Supplier { androidResources }, dslServices)
 
     @get:Suppress("WrongTerminology")
     @set:Suppress("WrongTerminology")
@@ -72,8 +74,11 @@ abstract class LibraryExtensionImpl @Inject constructor(
             PrefabModuleFactory(dslServices)
         )
 
-    override val androidResources: LibraryAndroidResources
-        = dslServices.newDecoratedInstance(LibraryAndroidResourcesImpl::class.java, dslServices)
+    override val androidResources: LibraryAndroidResources = dslServices.newDecoratedInstance(
+        LibraryAndroidResourcesImpl::class.java,
+        dslServices,
+        dslServices.projectOptions[BooleanOption.BUILD_FEATURE_ANDROID_RESOURCES]
+    )
 
     override val installation: LibraryInstallation
         = dslServices.newDecoratedInstance(LibraryInstallationImpl::class.java, dslServices)

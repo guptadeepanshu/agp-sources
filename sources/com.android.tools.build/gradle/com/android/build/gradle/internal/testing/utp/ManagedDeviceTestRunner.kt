@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.computeAbiFromArchitecture
 import com.android.build.gradle.internal.computeAvdName
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
+import com.android.build.gradle.internal.testing.utp.EmulatorControlConfig
 import com.android.builder.testing.api.DeviceException
 import com.android.builder.testing.api.TestException
 import com.android.utils.ILogger
@@ -43,7 +44,6 @@ class ManagedDeviceTestRunner(
     private val utpJvmExecutable: File,
     private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
     private val emulatorControlConfig: EmulatorControlConfig,
-    private val retentionConfig: RetentionConfig,
     private val useOrchestrator: Boolean,
     private val forceCompilation: Boolean,
     private val numShards: Int?,
@@ -90,11 +90,13 @@ class ManagedDeviceTestRunner(
         Preconditions.checkArgument(
             emulatorProvider.isPresent(),
             "The emulator is missing. Download the emulator in order to use managed devices.")
+        val abi = computeAbiFromArchitecture(managedDevice)
         val utpManagedDevice = UtpManagedDevice(
             managedDevice.name,
             computeAvdName(managedDevice),
             managedDevice.apiLevel,
             computeAbiFromArchitecture(managedDevice),
+            managedDevice.testedAbi ?: abi,
             avdComponents.avdFolder.get().asFile.absolutePath,
             runId,
             emulatorProvider.get().asFile.resolve(FN_EMULATOR).absolutePath,
@@ -151,7 +153,6 @@ class ManagedDeviceTestRunner(
                                 utpOutputDir,
                                 utpTmpDir,
                                 emulatorControlConfig,
-                                retentionConfig,
                                 coverageOutputDirectory,
                                 additionalTestOutputDir,
                                 useOrchestrator,

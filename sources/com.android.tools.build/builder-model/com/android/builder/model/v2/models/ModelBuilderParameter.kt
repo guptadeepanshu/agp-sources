@@ -90,4 +90,10 @@ interface ModelBuilderParameter {
      * See [dontBuildRuntimeClasspath] for additional details.
      */
     var dontBuildHostTestRuntimeClasspath: Map<String, Boolean>
+
+    /**
+     * If true, javadoc, source, sample source artifacts of libraries will be obtained in AGP
+     * and passed to studio through the model.
+     */
+    var additionalArtifactsInModel: Boolean
 }

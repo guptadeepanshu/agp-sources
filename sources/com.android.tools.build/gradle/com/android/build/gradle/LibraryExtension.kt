@@ -24,6 +24,8 @@ import com.android.build.gradle.api.LibraryVariant
 import com.android.build.gradle.internal.DependenciesExtension
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
+import com.android.build.gradle.internal.dsl.DeclarativeBuildType
+import com.android.build.gradle.internal.dsl.DeclarativeProductFlavor
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.InternalLibraryExtension
 import com.android.build.gradle.internal.dsl.LibraryExtensionImpl
@@ -54,14 +56,22 @@ open class LibraryExtensionInternal(
     publicExtensionImpl,
     stats,
 ) {
+    @Deprecated("Use dependencies{} block inside build type and product flavors")
     val dependenciesDcl: DependenciesExtension by lazy {
         dslServices.newInstance(DependenciesExtension::class.java)
     }
 
     @Configuring
+    @Deprecated("Use dependencies{} block inside build type and product flavors")
     fun dependenciesDcl(configure: DependenciesExtension.() -> Unit) {
         configure.invoke(dependenciesDcl)
     }
+
+    override val buildTypes: NamedDomainObjectContainer<DeclarativeBuildType>
+        get() = publicExtensionImpl.buildTypes as NamedDomainObjectContainer<DeclarativeBuildType>
+
+    override val productFlavors: NamedDomainObjectContainer<DeclarativeProductFlavor>
+        get() = publicExtensionImpl.productFlavors as NamedDomainObjectContainer<DeclarativeProductFlavor>
 }
 
 /**
@@ -90,12 +100,15 @@ open class LibraryExtension(
 
     // Overrides to make the parameterized types match, due to BaseExtension being part of
     // the previous public API and not wanting to paramerterize that.
-    override val buildTypes: NamedDomainObjectContainer<BuildType>
+    override val buildTypes: NamedDomainObjectContainer<out BuildType>
         get() = publicExtensionImpl.buildTypes as NamedDomainObjectContainer<BuildType>
+
     override val defaultConfig: DefaultConfig
         get() = publicExtensionImpl.defaultConfig as DefaultConfig
-    override val productFlavors: NamedDomainObjectContainer<ProductFlavor>
+
+    override val productFlavors: NamedDomainObjectContainer<out ProductFlavor>
         get() = publicExtensionImpl.productFlavors as NamedDomainObjectContainer<ProductFlavor>
+
     override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
         get() = publicExtensionImpl.sourceSets
 

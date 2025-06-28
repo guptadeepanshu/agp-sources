@@ -345,4 +345,58 @@ public interface LibraryOrBuilder extends
    * <code>optional .AndroidLibraryData android_library_data = 10;</code>
    */
   com.android.builder.model.proto.ide.AndroidLibraryDataOrBuilder getAndroidLibraryDataOrBuilder();
+
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  java.util.List<com.android.builder.model.proto.ide.File> 
+      getSrcJarsList();
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  com.android.builder.model.proto.ide.File getSrcJars(int index);
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  int getSrcJarsCount();
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  java.util.List<? extends com.android.builder.model.proto.ide.FileOrBuilder> 
+      getSrcJarsOrBuilderList();
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  com.android.builder.model.proto.ide.FileOrBuilder getSrcJarsOrBuilder(
+      int index);
 }

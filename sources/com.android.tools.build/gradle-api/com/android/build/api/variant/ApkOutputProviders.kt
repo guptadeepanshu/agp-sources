@@ -59,7 +59,6 @@ import org.gradle.api.tasks.TaskProvider
  *  }
  *  ```
  */
-@Incubating
 interface ApkOutputProviders {
 
     /**
@@ -71,7 +70,6 @@ interface ApkOutputProviders {
      * @param taskInput The method reference the [TaskT] will use to retrieve the current artifact
      * @param deviceSpec the device specification
      */
-    @Incubating
     fun <TaskT: Task> provideApkOutputToTask(
         taskProvider: TaskProvider<TaskT>,
         taskInput: (TaskT) -> Property<ApkOutput>,

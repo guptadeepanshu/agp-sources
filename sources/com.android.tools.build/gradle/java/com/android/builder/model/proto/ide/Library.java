@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   private Library() {
     key_ = "";
     type_ = 0;
+    srcJars_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -511,6 +512,77 @@ private static final long serialVersionUID = 0L;
     return androidLibraryData_ == null ? com.android.builder.model.proto.ide.AndroidLibraryData.getDefaultInstance() : androidLibraryData_;
   }
 
+  public static final int SRC_JARS_FIELD_NUMBER = 11;
+  @SuppressWarnings("serial")
+  private java.util.List<com.android.builder.model.proto.ide.File> srcJars_;
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<com.android.builder.model.proto.ide.File> getSrcJarsList() {
+    return srcJars_;
+  }
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends com.android.builder.model.proto.ide.FileOrBuilder> 
+      getSrcJarsOrBuilderList() {
+    return srcJars_;
+  }
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  @java.lang.Override
+  public int getSrcJarsCount() {
+    return srcJars_.size();
+  }
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  @java.lang.Override
+  public com.android.builder.model.proto.ide.File getSrcJars(int index) {
+    return srcJars_.get(index);
+  }
+  /**
+   * <pre>
+   * Provides the sources for the [artifact] including regular source and sample source
+   * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+   * [LibraryType.ANDROID_LIBRARY]
+   * </pre>
+   *
+   * <code>repeated .File src_jars = 11;</code>
+   */
+  @java.lang.Override
+  public com.android.builder.model.proto.ide.FileOrBuilder getSrcJarsOrBuilder(
+      int index) {
+    return srcJars_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -554,6 +626,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000200) != 0)) {
       output.writeMessage(10, getAndroidLibraryData());
+    }
+    for (int i = 0; i < srcJars_.size(); i++) {
+      output.writeMessage(11, srcJars_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -602,6 +677,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000200) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(10, getAndroidLibraryData());
+    }
+    for (int i = 0; i < srcJars_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(11, srcJars_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -667,6 +746,8 @@ private static final long serialVersionUID = 0L;
       if (!getAndroidLibraryData()
           .equals(other.getAndroidLibraryData())) return false;
     }
+    if (!getSrcJarsList()
+        .equals(other.getSrcJarsList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -717,6 +798,10 @@ private static final long serialVersionUID = 0L;
     if (hasAndroidLibraryData()) {
       hash = (37 * hash) + ANDROID_LIBRARY_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getAndroidLibraryData().hashCode();
+    }
+    if (getSrcJarsCount() > 0) {
+      hash = (37 * hash) + SRC_JARS_FIELD_NUMBER;
+      hash = (53 * hash) + getSrcJarsList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -858,6 +943,7 @@ private static final long serialVersionUID = 0L;
         getDocJarFieldBuilder();
         getSamplesJarFieldBuilder();
         getAndroidLibraryDataFieldBuilder();
+        getSrcJarsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -906,6 +992,13 @@ private static final long serialVersionUID = 0L;
         androidLibraryDataBuilder_.dispose();
         androidLibraryDataBuilder_ = null;
       }
+      if (srcJarsBuilder_ == null) {
+        srcJars_ = java.util.Collections.emptyList();
+      } else {
+        srcJars_ = null;
+        srcJarsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000400);
       return this;
     }
 
@@ -932,9 +1025,22 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public com.android.builder.model.proto.ide.Library buildPartial() {
       com.android.builder.model.proto.ide.Library result = new com.android.builder.model.proto.ide.Library(this);
+      buildPartialRepeatedFields(result);
       if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
+    }
+
+    private void buildPartialRepeatedFields(com.android.builder.model.proto.ide.Library result) {
+      if (srcJarsBuilder_ == null) {
+        if (((bitField0_ & 0x00000400) != 0)) {
+          srcJars_ = java.util.Collections.unmodifiableList(srcJars_);
+          bitField0_ = (bitField0_ & ~0x00000400);
+        }
+        result.srcJars_ = srcJars_;
+      } else {
+        result.srcJars_ = srcJarsBuilder_.build();
+      }
     }
 
     private void buildPartial0(com.android.builder.model.proto.ide.Library result) {
@@ -1043,6 +1149,32 @@ private static final long serialVersionUID = 0L;
       if (other.hasAndroidLibraryData()) {
         mergeAndroidLibraryData(other.getAndroidLibraryData());
       }
+      if (srcJarsBuilder_ == null) {
+        if (!other.srcJars_.isEmpty()) {
+          if (srcJars_.isEmpty()) {
+            srcJars_ = other.srcJars_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            ensureSrcJarsIsMutable();
+            srcJars_.addAll(other.srcJars_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.srcJars_.isEmpty()) {
+          if (srcJarsBuilder_.isEmpty()) {
+            srcJarsBuilder_.dispose();
+            srcJarsBuilder_ = null;
+            srcJars_ = other.srcJars_;
+            bitField0_ = (bitField0_ & ~0x00000400);
+            srcJarsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getSrcJarsFieldBuilder() : null;
+          } else {
+            srcJarsBuilder_.addAllMessages(other.srcJars_);
+          }
+        }
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -1135,6 +1267,19 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000200;
               break;
             } // case 82
+            case 90: {
+              com.android.builder.model.proto.ide.File m =
+                  input.readMessage(
+                      com.android.builder.model.proto.ide.File.parser(),
+                      extensionRegistry);
+              if (srcJarsBuilder_ == null) {
+                ensureSrcJarsIsMutable();
+                srcJars_.add(m);
+              } else {
+                srcJarsBuilder_.addMessage(m);
+              }
+              break;
+            } // case 90
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -2775,6 +2920,354 @@ private static final long serialVersionUID = 0L;
         androidLibraryData_ = null;
       }
       return androidLibraryDataBuilder_;
+    }
+
+    private java.util.List<com.android.builder.model.proto.ide.File> srcJars_ =
+      java.util.Collections.emptyList();
+    private void ensureSrcJarsIsMutable() {
+      if (!((bitField0_ & 0x00000400) != 0)) {
+        srcJars_ = new java.util.ArrayList<com.android.builder.model.proto.ide.File>(srcJars_);
+        bitField0_ |= 0x00000400;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.android.builder.model.proto.ide.File, com.android.builder.model.proto.ide.File.Builder, com.android.builder.model.proto.ide.FileOrBuilder> srcJarsBuilder_;
+
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public java.util.List<com.android.builder.model.proto.ide.File> getSrcJarsList() {
+      if (srcJarsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(srcJars_);
+      } else {
+        return srcJarsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public int getSrcJarsCount() {
+      if (srcJarsBuilder_ == null) {
+        return srcJars_.size();
+      } else {
+        return srcJarsBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public com.android.builder.model.proto.ide.File getSrcJars(int index) {
+      if (srcJarsBuilder_ == null) {
+        return srcJars_.get(index);
+      } else {
+        return srcJarsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder setSrcJars(
+        int index, com.android.builder.model.proto.ide.File value) {
+      if (srcJarsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSrcJarsIsMutable();
+        srcJars_.set(index, value);
+        onChanged();
+      } else {
+        srcJarsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder setSrcJars(
+        int index, com.android.builder.model.proto.ide.File.Builder builderForValue) {
+      if (srcJarsBuilder_ == null) {
+        ensureSrcJarsIsMutable();
+        srcJars_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        srcJarsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder addSrcJars(com.android.builder.model.proto.ide.File value) {
+      if (srcJarsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSrcJarsIsMutable();
+        srcJars_.add(value);
+        onChanged();
+      } else {
+        srcJarsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder addSrcJars(
+        int index, com.android.builder.model.proto.ide.File value) {
+      if (srcJarsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureSrcJarsIsMutable();
+        srcJars_.add(index, value);
+        onChanged();
+      } else {
+        srcJarsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder addSrcJars(
+        com.android.builder.model.proto.ide.File.Builder builderForValue) {
+      if (srcJarsBuilder_ == null) {
+        ensureSrcJarsIsMutable();
+        srcJars_.add(builderForValue.build());
+        onChanged();
+      } else {
+        srcJarsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder addSrcJars(
+        int index, com.android.builder.model.proto.ide.File.Builder builderForValue) {
+      if (srcJarsBuilder_ == null) {
+        ensureSrcJarsIsMutable();
+        srcJars_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        srcJarsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder addAllSrcJars(
+        java.lang.Iterable<? extends com.android.builder.model.proto.ide.File> values) {
+      if (srcJarsBuilder_ == null) {
+        ensureSrcJarsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, srcJars_);
+        onChanged();
+      } else {
+        srcJarsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder clearSrcJars() {
+      if (srcJarsBuilder_ == null) {
+        srcJars_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000400);
+        onChanged();
+      } else {
+        srcJarsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public Builder removeSrcJars(int index) {
+      if (srcJarsBuilder_ == null) {
+        ensureSrcJarsIsMutable();
+        srcJars_.remove(index);
+        onChanged();
+      } else {
+        srcJarsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public com.android.builder.model.proto.ide.File.Builder getSrcJarsBuilder(
+        int index) {
+      return getSrcJarsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public com.android.builder.model.proto.ide.FileOrBuilder getSrcJarsOrBuilder(
+        int index) {
+      if (srcJarsBuilder_ == null) {
+        return srcJars_.get(index);  } else {
+        return srcJarsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public java.util.List<? extends com.android.builder.model.proto.ide.FileOrBuilder> 
+         getSrcJarsOrBuilderList() {
+      if (srcJarsBuilder_ != null) {
+        return srcJarsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(srcJars_);
+      }
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public com.android.builder.model.proto.ide.File.Builder addSrcJarsBuilder() {
+      return getSrcJarsFieldBuilder().addBuilder(
+          com.android.builder.model.proto.ide.File.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public com.android.builder.model.proto.ide.File.Builder addSrcJarsBuilder(
+        int index) {
+      return getSrcJarsFieldBuilder().addBuilder(
+          index, com.android.builder.model.proto.ide.File.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * Provides the sources for the [artifact] including regular source and sample source
+     * Only valid for instances where [type] is [LibraryType.JAVA_LIBRARY] or
+     * [LibraryType.ANDROID_LIBRARY]
+     * </pre>
+     *
+     * <code>repeated .File src_jars = 11;</code>
+     */
+    public java.util.List<com.android.builder.model.proto.ide.File.Builder> 
+         getSrcJarsBuilderList() {
+      return getSrcJarsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.android.builder.model.proto.ide.File, com.android.builder.model.proto.ide.File.Builder, com.android.builder.model.proto.ide.FileOrBuilder> 
+        getSrcJarsFieldBuilder() {
+      if (srcJarsBuilder_ == null) {
+        srcJarsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            com.android.builder.model.proto.ide.File, com.android.builder.model.proto.ide.File.Builder, com.android.builder.model.proto.ide.FileOrBuilder>(
+                srcJars_,
+                ((bitField0_ & 0x00000400) != 0),
+                getParentForChildren(),
+                isClean());
+        srcJars_ = null;
+      }
+      return srcJarsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

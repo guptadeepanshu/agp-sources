@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.core.dsl.features
 
 import com.android.build.api.dsl.EmulatorControl
-import com.android.build.api.dsl.EmulatorSnapshots
 import com.android.build.api.dsl.ManagedDevices
 
 /**
@@ -31,6 +30,5 @@ interface DeviceTestOptionsDslInfo: TestOptionsDslInfo {
     val reportDir: String?
     val managedDevices: ManagedDevices
     val emulatorControl: EmulatorControl
-    val emulatorSnapshots: EmulatorSnapshots
     val codeCoverageEnabled:Boolean
 }

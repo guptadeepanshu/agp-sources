@@ -462,7 +462,7 @@ abstract class BaseExtension protected constructor(
 
     abstract override val adbOptions: AdbOptions
 
-    abstract override val buildTypes: NamedDomainObjectContainer<BuildType>
+    abstract override val buildTypes: NamedDomainObjectContainer<out BuildType>
     abstract fun buildTypes(action: Action<in NamedDomainObjectContainer<BuildType>>)
 
     abstract override val compileOptions: CompileOptions
@@ -480,7 +480,7 @@ abstract class BaseExtension protected constructor(
 
     abstract override val packagingOptions: PackagingOptions
 
-    abstract override val productFlavors: NamedDomainObjectContainer<ProductFlavor>
+    abstract override val productFlavors: NamedDomainObjectContainer<out ProductFlavor>
     abstract fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavor>>)
 
     abstract override val signingConfigs: NamedDomainObjectContainer<SigningConfig>

@@ -2391,6 +2391,44 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.VulkanIcd.UNKNOWN_VK : result;
   }
 
+  public static final int EMU_COMPAT_INFO_FIELD_NUMBER = 40;
+  private com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo emuCompatInfo_;
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   * @return Whether the emuCompatInfo field is set.
+   */
+  @java.lang.Override
+  public boolean hasEmuCompatInfo() {
+    return ((bitField1_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   * @return The emuCompatInfo.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo getEmuCompatInfo() {
+    return emuCompatInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.getDefaultInstance() : emuCompatInfo_;
+  }
+  /**
+   * <pre>
+   * Results of emulator compatibility checks.
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder getEmuCompatInfoOrBuilder() {
+    return emuCompatInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.getDefaultInstance() : emuCompatInfo_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2518,6 +2556,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField1_ & 0x00000002) != 0)) {
       output.writeEnum(39, vulkanIcd_);
+    }
+    if (((bitField1_ & 0x00000004) != 0)) {
+      output.writeMessage(40, getEmuCompatInfo());
     }
     getUnknownFields().writeTo(output);
   }
@@ -2678,6 +2719,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField1_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(39, vulkanIcd_);
+    }
+    if (((bitField1_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(40, getEmuCompatInfo());
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -2866,6 +2911,11 @@ private static final long serialVersionUID = 0L;
     if (hasVulkanIcd()) {
       if (vulkanIcd_ != other.vulkanIcd_) return false;
     }
+    if (hasEmuCompatInfo() != other.hasEmuCompatInfo()) return false;
+    if (hasEmuCompatInfo()) {
+      if (!getEmuCompatInfo()
+          .equals(other.getEmuCompatInfo())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -3037,6 +3087,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + VULKAN_ICD_FIELD_NUMBER;
       hash = (53 * hash) + vulkanIcd_;
     }
+    if (hasEmuCompatInfo()) {
+      hash = (37 * hash) + EMU_COMPAT_INFO_FIELD_NUMBER;
+      hash = (53 * hash) + getEmuCompatInfo().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -3190,6 +3244,7 @@ private static final long serialVersionUID = 0L;
         getScreenshotFieldBuilder();
         getIceboxFieldBuilder();
         getResizableDisplayFieldBuilder();
+        getEmuCompatInfoFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3327,6 +3382,11 @@ private static final long serialVersionUID = 0L;
       emuPid_ = 0;
       qemuPid_ = 0;
       vulkanIcd_ = 0;
+      emuCompatInfo_ = null;
+      if (emuCompatInfoBuilder_ != null) {
+        emuCompatInfoBuilder_.dispose();
+        emuCompatInfoBuilder_ = null;
+      }
       return this;
     }
 
@@ -3579,6 +3639,12 @@ private static final long serialVersionUID = 0L;
         result.vulkanIcd_ = vulkanIcd_;
         to_bitField1_ |= 0x00000002;
       }
+      if (((from_bitField1_ & 0x00000040) != 0)) {
+        result.emuCompatInfo_ = emuCompatInfoBuilder_ == null
+            ? emuCompatInfo_
+            : emuCompatInfoBuilder_.build();
+        to_bitField1_ |= 0x00000004;
+      }
       result.bitField0_ |= to_bitField0_;
       result.bitField1_ |= to_bitField1_;
     }
@@ -3802,6 +3868,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasVulkanIcd()) {
         setVulkanIcd(other.getVulkanIcd());
+      }
+      if (other.hasEmuCompatInfo()) {
+        mergeEmuCompatInfo(other.getEmuCompatInfo());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -4127,6 +4196,13 @@ private static final long serialVersionUID = 0L;
               }
               break;
             } // case 312
+            case 322: {
+              input.readMessage(
+                  getEmuCompatInfoFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField1_ |= 0x00000040;
+              break;
+            } // case 322
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -8930,6 +9006,161 @@ private static final long serialVersionUID = 0L;
       vulkanIcd_ = 0;
       onChanged();
       return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo emuCompatInfo_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder> emuCompatInfoBuilder_;
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     * @return Whether the emuCompatInfo field is set.
+     */
+    public boolean hasEmuCompatInfo() {
+      return ((bitField1_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     * @return The emuCompatInfo.
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo getEmuCompatInfo() {
+      if (emuCompatInfoBuilder_ == null) {
+        return emuCompatInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.getDefaultInstance() : emuCompatInfo_;
+      } else {
+        return emuCompatInfoBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public Builder setEmuCompatInfo(com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo value) {
+      if (emuCompatInfoBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        emuCompatInfo_ = value;
+      } else {
+        emuCompatInfoBuilder_.setMessage(value);
+      }
+      bitField1_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public Builder setEmuCompatInfo(
+        com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.Builder builderForValue) {
+      if (emuCompatInfoBuilder_ == null) {
+        emuCompatInfo_ = builderForValue.build();
+      } else {
+        emuCompatInfoBuilder_.setMessage(builderForValue.build());
+      }
+      bitField1_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public Builder mergeEmuCompatInfo(com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo value) {
+      if (emuCompatInfoBuilder_ == null) {
+        if (((bitField1_ & 0x00000040) != 0) &&
+          emuCompatInfo_ != null &&
+          emuCompatInfo_ != com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.getDefaultInstance()) {
+          getEmuCompatInfoBuilder().mergeFrom(value);
+        } else {
+          emuCompatInfo_ = value;
+        }
+      } else {
+        emuCompatInfoBuilder_.mergeFrom(value);
+      }
+      bitField1_ |= 0x00000040;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public Builder clearEmuCompatInfo() {
+      bitField1_ = (bitField1_ & ~0x00000040);
+      emuCompatInfo_ = null;
+      if (emuCompatInfoBuilder_ != null) {
+        emuCompatInfoBuilder_.dispose();
+        emuCompatInfoBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.Builder getEmuCompatInfoBuilder() {
+      bitField1_ |= 0x00000040;
+      onChanged();
+      return getEmuCompatInfoFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder getEmuCompatInfoOrBuilder() {
+      if (emuCompatInfoBuilder_ != null) {
+        return emuCompatInfoBuilder_.getMessageOrBuilder();
+      } else {
+        return emuCompatInfo_ == null ?
+            com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.getDefaultInstance() : emuCompatInfo_;
+      }
+    }
+    /**
+     * <pre>
+     * Results of emulator compatibility checks.
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorCompatibilityInfo emu_compat_info = 40;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder> 
+        getEmuCompatInfoFieldBuilder() {
+      if (emuCompatInfoBuilder_ == null) {
+        emuCompatInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfo.Builder, com.google.wireless.android.sdk.stats.EmulatorCompatibilityInfoOrBuilder>(
+                getEmuCompatInfo(),
+                getParentForChildren(),
+                isClean());
+        emuCompatInfo_ = null;
+      }
+      return emuCompatInfoBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

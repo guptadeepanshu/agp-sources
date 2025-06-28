@@ -120,26 +120,6 @@ interface KotlinMultiplatformAndroidDeviceTest {
     fun emulatorControl(action: EmulatorControl.() -> Unit)
 
     /**
-     * Configures Android Test Retention.
-     *
-     * Android Test Retention automatically takes emulator snapshots on test failures. It can only
-     * work with Unified Test Platform (UTP).
-     *
-     * ```
-     * emulatorSnapshots {
-     *   enableForTestFailures true
-     *   maxSnapshotsForTestFailures 2
-     *   compressSnapshots false
-     * }
-     * ```
-     */
-    @get:Incubating
-    val emulatorSnapshots: EmulatorSnapshots
-
-    @Incubating
-    fun emulatorSnapshots(action: EmulatorSnapshots.() -> Unit)
-
-    /**
      * Specifies options for the
      * [Android Debug Bridge (ADB)](https://developer.android.com/studio/command-line/adb.html),
      * such as APK installation options.
