@@ -25,6 +25,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.kotlin.multiplatform.ide.models.serialization.androidDependencyKey
 import com.android.kotlin.multiplatform.models.DependencyInfo
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.jetbrains.kotlin.gradle.ExternalKotlinTargetApi
 import org.jetbrains.kotlin.gradle.idea.tcs.IdeaKotlinDependency
 import org.jetbrains.kotlin.gradle.idea.tcs.IdeaKotlinProjectArtifactDependency
@@ -86,7 +87,7 @@ internal class ProjectDependencyResolver(
                     variant = artifact.variant,
                     sourceSet = sourceSet
                 )
-                if (library != null && artifact.variant.attributes.contains(AgpVersionAttr.ATTRIBUTE)) {
+                if (library != null && isAndroidProject(artifact)) {
                     // Android project, could be kmp or android lib, let the IDE extension points
                     // handle each case
                     dependency.extras[androidDependencyKey] =
@@ -103,4 +104,6 @@ internal class ProjectDependencyResolver(
             }
         }.toSet()
     }
+
+    private fun isAndroidProject(artifact: ResolvedArtifactResult): Boolean = artifact.variant.attributes.getAttribute(AgpVersionAttr.ATTRIBUTE) != null
 }
