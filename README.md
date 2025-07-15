@@ -1,3 +1,7 @@
+# Archived
+> ⚠️ This project is no longer maintained.
+![Maintenance](https://img.shields.io/badge/maintenance-no--longer--maintained-red)
+
 # agp-sources
 Since Android Gradle Plugin sources aren't available easily on github, I created
 this repository to automatically download and update the sources. Each commit
